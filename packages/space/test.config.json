@@ -1,0 +1,43 @@
+{
+  "appName": "space",
+  "appVersion": "v1.0.0",
+  "author": "suey",
+  "email": "sueyeternal@163.com",
+  "windows": {
+    "mainWindow": {
+      "type": "main",
+      "icon": "/resources/icon.png",
+      "width": 1650,
+      "minWidth": 900,
+      "height": 780,
+      "minHeight": 500,
+      "descriptor": ";—ã„Mn, maxWidth, maxHeight Ø¤:OU„'"
+    },
+    "largePopupWindow": {
+      "type": "pop",
+      "icon": "/resources/icon.png",
+      "descriptor": "'‹9—'„Mn"
+    },
+    "mediumPopupWindow": {
+      "type": "pop",
+      "icon": "/resources/icon.png",
+      "width": 450,
+      "heiht": 200,
+      "resizable": false,
+      "descriptor": "-‹9—'„Mn"
+    },
+    "smallPopupWindow": {
+      "type": "pop",
+      "icon": "/resources/icon.png",
+      "descriptor": "‹9—'„Mn"
+    }
+  },
+  "miscellaneous": {
+    "script": {
+      "reptile": {
+        "log": true
+      }
+    }
+  },
+  "name": "fffffffffff"
+}

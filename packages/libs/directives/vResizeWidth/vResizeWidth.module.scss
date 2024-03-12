@@ -1,0 +1,24 @@
+
+
+// 自定义指令拖拽条的样式
+div.dragAndDropBar {
+  height: 100%;
+  position: absolute;
+  z-index: 9;
+  cursor: ew-resize;
+  background-color: unset;
+  transition: background-color .2s ease-out;
+}
+div.dragAndDropBarHover {
+  background-color: rgb(145, 211, 239);
+}
+div.dragAndDropBarActive {
+  background-color: rgb(145, 211, 239) !important;
+}
+
+@keyframes dragEnterHover {
+  to {
+    background-color: rgb(145, 211, 239);
+  }
+}
+

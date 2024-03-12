@@ -1,0 +1,30 @@
+/**
+ * ==========================================
+ * Scss 变量定义
+ * ==========================================
+ */
+
+$mobileSize: 992px;
+$padSize: 1024px;
+$pcSize: 2025px;
+
+
+// $sMainFrameContainerPadding: 4px; // 主窗口外部容器的内边距值
+// $sMainFrameContainerRadius: 114px; // 主窗口外部容器的圆角值, 需要设置窗口选项 transparent 为 true
+$sMainCaptionBarHeight: 30px; // 主窗口自定义标题栏的高度
+
+:root {
+  --s-main-frame-sidebar-width: 40px; // 主窗口左侧 sidebar 的宽度
+
+  --s-main-frame-bg-deep-color: black; // 深色
+  --s-main-frame-bg-darkness-color: #f8f8f8; // 暗色
+  --s-main-frame-bg-normal-color: #FFF; // 正常色
+  --s-main-frame-bg-hover-color: black; // hover 色
+  --s-main-frame-bg-bright-color: white; // 亮色
+
+  --s-main-frame-deep-color: black; // 暗色
+  --s-main-frame-light-color: gray; // 淡色
+  --s-main-frame-bright-color: white; // 亮色
+
+  --s-block-border-radius: 8px; // 页面块的圆角尺寸
+}

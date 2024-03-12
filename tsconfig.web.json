@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNEXT", "DOM"],
+    "types": ["vite/client"]
+  }
+}

@@ -1,0 +1,76 @@
+@import './var.scss';
+
+@mixin overflow($scroll: scroll) { // 溢出影藏
+  overflow-x: hidden;
+  overflow-y: $scroll !important;
+}
+
+@mixin beautifulBar($status: scroll) { // 修改滚动条得样式, chorm 内核有效
+  overflow-y: $status !important;
+
+  @media screen and (orientation:portrait) and (max-device-width:768px) and (max-device-height:1024px),
+  screen and (orientation:landscape) and (max-device-width:1024px) and (max-device-height:768px) {
+    &::-webkit-scrollbar {
+      width: 4px !important;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    border: 1px solid transparent;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+    background-clip: content-box;
+    background-color: #000A;
+    //滚动条的颜色
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -ms-border-radius: 100px;
+    -o-border-radius: 100px;
+    -webkit-border-radius: 100px;
+  }
+}
+
+@mixin noneBar { // 是否具有滚动条宽度, chorm 内核有效
+  &::-webkit-scrollbar { width: 0; }
+}
+
+@mixin forMobile {
+  @media screen and (max-width: ($mobileSize - 1px)) { @content; }
+}
+@mixin forPad {
+  @media screen and (min-width: $mobileSize) and (max-width: ($padSize - 1px)) { @content; }
+}
+@mixin forPC {
+  @media screen and (min-width: $padSize) { @content; }
+}
+@mixin forNotPC {
+  @media screen and (max-width: $padSize) { @content; }
+}
+
+@mixin mobileDisplay { // 手机才展示
+  @include forPC { display: none !important; }
+  @content;
+}
+
+@mixin padDisplay { // pad
+  @include forPC { display: none !important; }
+  @content;
+}
+
+@mixin pcDisplay { // pc才展示
+  @include forMobile { display: none !important; }
+  @include forPad { display: none !important; }
+  @content;
+}
+

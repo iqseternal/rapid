@@ -1,0 +1,18 @@
+{
+  "import": {
+    "scope": "javascript,typescript",
+    "prefix": "imp",
+    "body": [
+      "import { $1 } from '$2';"
+    ],
+    "description": "Import a module"
+  },
+  "log": {
+    "scope": "javascript,typescript",
+    "prefix": "log",
+    "body": [
+      "console.log($1);"
+    ],
+    "description": "print"
+  }
+}

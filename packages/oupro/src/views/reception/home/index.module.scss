@@ -1,0 +1,66 @@
+@import '@scss/mixin.scss';
+@import '@scss/var.scss';
+
+.receptionHeader {
+  color: black;
+  // position: relative;
+}
+
+.home {
+  // background-color: rgba(0, 0, 0, .2);
+  width: 100%;
+
+  .blendedText {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+
+    .blendedTextMain {
+      background-color: black;
+
+      @include forPC { font-size: 100px; }
+      @include forPad { font-size: 100px; }
+      @include forMobile { font-size: 70px; }
+    }
+
+    .blendedTextSecondary {
+      // background-color: white;
+      background-color: black;
+
+      @include forPC { font-size: 70px; }
+      @include forPad { font-size: 70px; }
+      @include forMobile { font-size: 50px; }
+    }
+
+    .blendedTextDesc {
+      font-size: 20px;
+      // background-color: white;
+      background-color: black;
+
+      @include forPC { font-size: 70px; }
+      @include forPad { font-size: 70px; }
+      @include forMobile { font-size: 30px; }
+    }
+  }
+
+  .logoAnimation {
+    animation: logRotate 5.5s linear infinite;
+    transform: rotate(0deg);
+  }
+
+}
+
+
+@keyframes logRotate {
+
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+
+
+}

@@ -1,0 +1,43 @@
+/**
+ * ==========================================
+ * 用于处理 antd 样式覆盖
+ * ==========================================
+ */
+@import './var.scss';
+
+
+// card 组件
+div.ant-card.ant-card-bordered {
+  border: unset;
+  background-color: var(--s-main-frame-bg-normal-color);
+
+  div.ant-card-body {
+    padding: 12px;
+    border-radius: unset;
+  }
+}
+
+div.ant-card.ant-card-bordered ~ div.ant-card.ant-card-bordered {
+  margin-top: 10px;
+}
+
+// form 组件
+form.ant-form {
+  div.ant-form-item {
+    margin-bottom: 10px;
+  }
+}
+
+// 折叠，口风琴?
+
+div.ant-collapse {
+  div.ant-collapse-item {
+    div.ant-collapse-header {
+      flex-direction: row-reverse;
+    }
+
+    div.ant-collapse-content .ant-collapse-content-box {
+
+    }
+  }
+}

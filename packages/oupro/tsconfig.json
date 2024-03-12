@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "baseUrl": "./",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext", "WebWorker"],
+    "typeRoots": ["./src/@types", "./node_modules/@types"],
+    "paths": {
+      "@scss/*": ["src/scss/*"],
+      "@components/*": ["src/components/*"],
+      "@features/*": ["src/features/*"],
+      "@views/*": ["src/views/*"],
+      "@libs/*": ["src/libs/*"],
+      "@/*": ["src/*"]
+    },
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "allowUnusedLabels": true,
+    "noImplicitAny": false,
+    "allowUmdGlobalAccess": true,
+    "resolveJsonModule": true,
+    "noEmit": false
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "dist", ".git", ".ignore"]
+}
+
