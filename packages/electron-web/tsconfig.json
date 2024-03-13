@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "@electron-toolkit/tsconfig/tsconfig.web.json",
+    "@rapid/config/tsconfig.web.json"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["./src/@types", "../config/@types", "../electron-preload/src/@types"],
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@pages/*": ["src/pages/*"],
+      "@libs/*": ["src/libs/*"],
+      "@meta/*": ["src/meta/*"],
+      "@scss/*": ["src/scss/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "#constants/*": ["src/constants/*"],
+      "@indexedDB/*": ["src/indexedDB/*"],
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.vue", "./src/**/*.tsx"]
+}

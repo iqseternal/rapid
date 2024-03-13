@@ -1,0 +1,11 @@
+
+
+
+/**
+ * 窗口状态机的 KEY
+ */
+export enum WINDOW_STATE_MACHINE_KEYS {
+  SETTING_WINDOW = 'SETTING_WINDOW',
+  DIALOG_WINDOW = 'DIALOG_WINDOW',
+  // MAIN_WINDOW: '',
+};

@@ -1,6 +1,6 @@
 
 {
-  "extends": "../../tsconfig.web.json",
+  "extends": "@rapid/config/tsconfig.web.json",
   "include": [
     "./**/*.ts",
     "./**/*.d.ts",

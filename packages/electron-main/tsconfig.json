@@ -1,0 +1,15 @@
+{
+  "extends": "@rapid/config/tsconfig.node.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["../config/@types"],
+    "paths": {
+
+      "@constants/*": ["./src/constants/*"],
+      "@service/*": ["./src/service/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

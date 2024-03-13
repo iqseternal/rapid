@@ -423,7 +423,7 @@
   },
   "terminal.integrated.fontSize": 16,
   "workbench.colorTheme": "GitHub Dark",
-  "terminal.integrated.fontFamily": "monospace",
+  "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "git.openRepositoryInParentFolders": "never",
   "window.zoomLevel": -1,
   "git.ignoreLegacyWarning": true,

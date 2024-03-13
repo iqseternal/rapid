@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+
+    "baseUrl": ".",
+    "types": ["vite/client", "./@types"]
+
+  },
+  "include": ["./**/*.ts"]
+}

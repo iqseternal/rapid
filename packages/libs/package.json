@@ -2,10 +2,11 @@
   "name": "@rapid/libs",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@rapid/config": "workspace:^"
+  }
 }

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNEXT", "DOM"],
+    "target": "ESNEXT",
+
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["vite/client"],
+    "allowUnusedLabels": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "allowArbitraryExtensions": true,
+    "allowUnreachableCode": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noImplicitThis": false,
+    "strict": true
+  }
+}

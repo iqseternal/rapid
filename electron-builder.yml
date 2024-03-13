@@ -1,0 +1,73 @@
+appId: com.electron.app
+productName: space
+directories:
+  buildResources: build
+files:
+  - '**/*'
+  - '!**/.vscode/*'
+  - '!src/**/*'
+  - '!docs/**/*'
+  - '!scripts/*'
+  - '!libs/*'
+  - '!modules/*'
+  - '!readme/*'
+  - '!*.{js,ts,sh}'
+  - '!.husky/*'
+  - '!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}'
+  - '!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}'
+  - '!**/node_modules/*.d.ts'
+  - '!**/node_modules/.bin'
+  - '!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}'
+  - '!.editorconfig'
+  - '!**/._*'
+  - '!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}'
+  - '!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}'
+  - '!**/{appveyor.yml,.travis.yml,circle.yml}'
+  - '!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json'
+  - '!**/node_modules/electron/dist/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!vite.config.util.ts'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.libs.json,tsconfig.node.json,tsconfig.web.json}'
+  - './packages/space/*.config.json'
+  # - '!*.config.json'
+asarUnpack:
+  - resources/**
+  - scripts/**
+  - app.config.json
+  - user.config.json
+  - storage/**
+afterSign: build/notarize.js
+win:
+  executableName: space
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  installerIcon: 'build/icon.ico'
+  uninstallerIcon: 'build/icon.ico'
+mac:
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    - NSCameraUsageDescription: Application requests access to the device's camera.
+    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+dmg:
+  artifactName: ${name}-${version}.${ext}
+linux:
+  target:
+    - AppImage
+    - snap
+    - deb
+  maintainer: electronjs.org
+  category: Utility
+appImage:
+  artifactName: ${name}-${version}.${ext}
+npmRebuild: false
+publish:
+  provider: generic
+  url: https://example.com/auto-updates

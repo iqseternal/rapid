@@ -3,18 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "main": "index.js",
+  "main": "./out/main/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue",
+    "postinstall": "electron-builder install-app-deps",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.26",
+    "electron-vite": "^1.0.25",
     "pkg": "^5.8.1",
     "terser": "^5.29.1",
     "ts-node-dev": "^2.0.0",
+    "tsc": "^2.0.4",
     "tsc-alias": "^1.8.8",
     "typescript": "5.3.3",
     "vite": "^4.3.9"
@@ -25,5 +31,11 @@
     "@suey/printer": "^1.1.5",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
+  },
+  "lint-staged": {
+    "*.{vue,ts,jsx,tsx,json}": "eslint",
+    "*.md": [
+      "prettier --write"
+    ]
   }
 }
