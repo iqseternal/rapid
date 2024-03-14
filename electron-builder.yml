@@ -30,14 +30,10 @@ files:
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
   - '!{tsconfig.json,tsconfig.libs.json,tsconfig.node.json,tsconfig.web.json}'
-  - './packages/space/*.config.json'
   # - '!*.config.json'
 asarUnpack:
   - resources/**
   - scripts/**
-  - app.config.json
-  - user.config.json
-  - storage/**
 afterSign: build/notarize.js
 win:
   executableName: space

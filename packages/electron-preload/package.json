@@ -12,5 +12,8 @@
   "dependencies": {
     "@rapid/config": "workspace:^",
     "@rapid/libs": "workspace:^"
+  },
+  "devDependencies": {
+    "@electron-toolkit/preload": "^3.0.0"
   }
 }

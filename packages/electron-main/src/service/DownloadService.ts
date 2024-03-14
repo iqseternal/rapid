@@ -1,5 +1,4 @@
 import https from 'https';
-import request from 'request';
 import * as fs from 'fs';
 
 export class DownloadService {
@@ -48,13 +47,13 @@ export class DownloadService {
     return new Promise<string>((resolve, reject) => {
       const writeStream = fs.createWriteStream(distPath);
 
-      request(src).pipe(writeStream).on('error', (err) => {
-        reject(err);
-      }).on('finish', () => {
-        resolve(distPath);
-      }).on('close', () => {
-        writeStream.close();
-      })
+      // request(src).pipe(writeStream).on('error', (err) => {
+      //   reject(err);
+      // }).on('finish', () => {
+      //   resolve(distPath);
+      // }).on('close', () => {
+      //   writeStream.close();
+      // })
     })
   }
 }

@@ -35,7 +35,7 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
       }
     },
     sourcemap: false,
-    outDir: DIRS.DESCKTOP_OUT_DIRS.MAIN
+    outDir: DIRS.DESKTOP_OUT_DIRS.MAIN
   }
 });
 
@@ -47,7 +47,7 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
   ],
   define: defineVars(configEnv),
   build: {
-    outDir: DIRS.DESCKTOP_OUT_DIRS.PRELOAD
+    outDir: DIRS.DESKTOP_OUT_DIRS.PRELOAD
   }
 }));
 
@@ -75,7 +75,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
       }
     },
     sourcemap: false,
-    outDir: DIRS.DESCKTOP_OUT_DIRS.RENDERER,
+    outDir: DIRS.DESKTOP_OUT_DIRS.RENDERER,
   }
 });
 
