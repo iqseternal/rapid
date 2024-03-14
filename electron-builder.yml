@@ -5,8 +5,7 @@ directories:
 files:
   - '**/*'
   - '!**/.vscode/*'
-  - '!src/**/*'
-  - '!docs/**/*'
+  - '!packages/**/*'
   - '!scripts/*'
   - '!libs/*'
   - '!modules/*'
@@ -25,12 +24,9 @@ files:
   - '!**/{appveyor.yml,.travis.yml,circle.yml}'
   - '!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json'
   - '!**/node_modules/electron/dist/*'
-  - '!electron.vite.config.{js,ts,mjs,cjs}'
-  - '!vite.config.util.ts'
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
-  - '!{tsconfig.json,tsconfig.libs.json,tsconfig.node.json,tsconfig.web.json}'
-  # - '!*.config.json'
+  - '!*.json'
 asarUnpack:
   - resources/**
   - scripts/**

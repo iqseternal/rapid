@@ -13,7 +13,7 @@
     "website:build": "pnpm -C ./packages/website run build",
     "scripts:dev": "pnpm -C scripts dev",
     "scripts:build": "pnpm -C scripts build",
-    "packages:build": "pnpm -r run build",
+    "packages:build": "pnpm -r --filter=./packages/* run build",
     "build": "pnpm typecheck && pnpm scripts:build && pnpm packages:build && pnpm build:only",
     "build:only": "electron-vite build",
     "build:win": "pnpm build && electron-builder --win --config",

@@ -23,10 +23,10 @@ export class UserConfigService extends SingleInstanceService<UserConfigService> 
       return;
     }
 
-    FileService.saveObjToJson(this.config, join(__dirname, '../../user.config.json')).then(() => {
-      PrinterService.printInfo('应用程序即将退出, 覆写 UserConfigJson');
-    }).catch(() => {
-      PrinterService.printWarn('应用程序即将退出, 覆写 UserConfigJson 失败!!');
-    });
+    // FileService.saveObjToJson(this.config, join(__dirname, '../../user.config.json')).then(() => {
+    //   PrinterService.printInfo('应用程序即将退出, 覆写 UserConfigJson');
+    // }).catch(() => {
+    //   PrinterService.printWarn('应用程序即将退出, 覆写 UserConfigJson 失败!!');
+    // });
   }
 }
