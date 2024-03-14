@@ -7,27 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AAvatar: typeof import('ant-design-vue/es')['Avatar']
-    AButton: typeof import('ant-design-vue/es')['Button']
-    ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
-    ACollapse: typeof import('ant-design-vue/es')['Collapse']
-    ACollapsePanel: typeof import('ant-design-vue/es')['CollapsePanel']
-    ADivider: typeof import('ant-design-vue/es')['Divider']
-    ADropdown: typeof import('ant-design-vue/es')['Dropdown']
-    AEmpty: typeof import('ant-design-vue/es')['Empty']
-    AFloatButton: typeof import('ant-design-vue/es')['FloatButton']
-    AFloatButtonGroup: typeof import('ant-design-vue/es')['FloatButtonGroup']
-    AForm: typeof import('ant-design-vue/es')['Form']
-    AFormItem: typeof import('ant-design-vue/es')['FormItem']
-    AInput: typeof import('ant-design-vue/es')['Input']
-    AMenu: typeof import('ant-design-vue/es')['Menu']
-    AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
-    ASpace: typeof import('ant-design-vue/es')['Space']
-    ASubMenu: typeof import('ant-design-vue/es')['SubMenu']
-    ASwitch: typeof import('ant-design-vue/es')['Switch']
-    ATabPane: typeof import('ant-design-vue/es')['TabPane']
-    ATabs: typeof import('ant-design-vue/es')['Tabs']
-    ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

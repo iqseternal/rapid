@@ -1,6 +1,0 @@
-{
-  "name": "scripts",
-  "scripts": {
-    "dev": "nodemon -e ts --exec (ts-node ./index.ts -h)"
-  }
-}

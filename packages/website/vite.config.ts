@@ -2,7 +2,7 @@ import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import { obfuscator } from 'rollup-obfuscator';
 import { alias, proxy } from './vite.config.util';
-import { DIRS } from '@rapid/config/dirs';
+import { DIRS } from '../config/dirs';
 
 import postcssPresetEnv from 'postcss-preset-env';
 import autoprefixer from 'autoprefixer';

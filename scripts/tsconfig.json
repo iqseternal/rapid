@@ -1,0 +1,10 @@
+{
+  "include": ["./**/*.ts"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitAny": true
+  }
+}

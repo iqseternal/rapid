@@ -6,11 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "dev:scripts": "pnpm run -C scripts dev",
     "build": "vite build",
-    "scp": "pwsh ./auto.ps1",
-    "pub:web": "pnpm build && pnpm scp",
-
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },
   "author": "sueyeternal@163.com",
