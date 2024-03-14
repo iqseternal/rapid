@@ -1,15 +1,12 @@
 {
   "extends": "@rapid/config/tsconfig.node.json",
   "compilerOptions": {
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "types": ["../config/@types"],
-    "paths": {
-
-      "@constants/*": ["./src/constants/*"],
-      "@service/*": ["./src/service/*"],
-      "@/*": ["./src/*"]
-    }
+    "types": ["../config/@types"]
   },
   "include": ["./src/**/*.ts", "../config/@types"],
   "exclude": ["node_modules"]
 }
+

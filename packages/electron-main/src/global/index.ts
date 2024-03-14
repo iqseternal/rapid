@@ -6,7 +6,7 @@
  * ==========================================
  */
 import { ipcR } from '@/core/common/ipcR';
-import type { StoreKeyMap } from '@/constants';
+import type { StoreKeyMap } from '@rapid/config/constants';
 import ElectronStore from 'electron-store';
 
 

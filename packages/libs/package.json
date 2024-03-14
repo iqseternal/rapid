@@ -2,11 +2,13 @@
   "name": "@rapid/libs",
   "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@rapid/config": "workspace:^"
   }
 }

@@ -64,6 +64,8 @@ module.exports = {
     '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-namespace': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+
     'no-undef': 'off',
     'vue/attribute-hyphenation': ['error', 'never'],
     'multiline-ternary': 'off',

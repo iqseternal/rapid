@@ -5,6 +5,8 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "types": ["./src/@types", "../config/@types", "../electron-preload/src/@types"],
     "paths": {
       "@components/*": ["src/components/*"],
@@ -18,5 +20,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["./src/**/*.ts", "./src/**/*.vue", "./src/**/*.tsx"]
+  "include": ["./src/**/*.ts", "./src/**/*.vue", "./src/**/*.tsx", "../config/@types"]
 }

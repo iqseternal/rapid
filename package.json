@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
+    "typecheck": "pnpm -r --filter=./packages/* run typecheck",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue",
     "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"
@@ -20,7 +21,6 @@
     "pkg": "^5.8.1",
     "terser": "^5.29.1",
     "ts-node-dev": "^2.0.0",
-    "tsc": "^2.0.4",
     "tsc-alias": "^1.8.8",
     "typescript": "5.3.3",
     "vite": "^4.3.9"

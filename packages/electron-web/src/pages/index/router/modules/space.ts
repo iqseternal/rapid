@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { terminalSvg, dashboardSvg, settingSvg } from '@/assets';
-import { View, makeRoute, toRoutes } from '@libs/router';
+import { View, makeRoute } from '@libs/router';
 
 export const spaceRoutes = makeRoute({
   name: 'Space',

@@ -6,7 +6,7 @@ export namespace CSSTypes {
   export type PixelValue = `${number}px`;
 
   /** CSS Style 声明映射表 */
-  export type CSSStyleProperttDeclaration = Omit<CSSStyleDeclaration, symbol>;
+  export type CSSStyleProperttDeclaration = Omit<CSSStyleDeclaration, symbol | number>;
 
 
   /** CSS 属性的 key 值类型 */
@@ -36,7 +36,7 @@ export class CssValueConverts {
 }
 
 /** 在为 dom 设置样式属性值的时候会进行调用的转换函数, 可以将值转换为特定的格式并返回 */
-export type CssValueSetterCovertFn<T extends string = string> = (value: T) => string;
+export type CssValueSetterCovertFn<T extends unknown = any> = (value: T) => string;
 
 /** 在获取 dom 样式的时候可以进行转换, 获得其自身想要的类型 */
 export type CssValueGetterCovertFn<T = string> = (value: string) => T;
@@ -56,7 +56,7 @@ export type CssValueSetterOptions = {
  * @param propertyName
  * @returns
  */
-export const getStyleProperty = <T = string, Key extends keyof CSSTypes.CSSStyleProperttDeclaration = keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, propertyName: Key, options: CSSValueGetterOptions<T> = {}) => {
+export const getStyleProperty = <T extends any = string, Key extends keyof CSSTypes.CSSStyleProperttDeclaration = keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, propertyName: Key, options: CSSValueGetterOptions<T> = {}) => {
   const str = node.style.getPropertyValue(propertyName as string);
 
   if (options.convert) return options.convert(str);
@@ -91,10 +91,15 @@ export const setStyleProperty = <Key extends keyof CSSTypes.CSSStyleProperttDecl
  * @param properties
  * @returns
  */
-export const setStyleProperties = (node: HTMLElement, properties: Partial<CSSTypes.CSSStyleProperttDeclaration>, options: Omit<CssValueSetterOptions, 'isImportant'>) => {
-  return Object.keys(properties).forEach((propertyName) => setStyleProperty(node, propertyName as keyof CSSTypes.CSSStyleProperttDeclaration, properties[propertyName], {
-    convert: options.convert
-  }));
+export const setStyleProperties = <Key extends keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, properties: Partial<CSSTypes.CSSStyleProperttDeclaration>, options: Omit<CssValueSetterOptions, 'isImportant'>) => {
+  return Object.keys(properties).forEach((propertyName) => {
+    const value = properties[propertyName as Key];
+    if (!value) return;
+
+    setStyleProperty(node, propertyName as keyof CSSTypes.CSSStyleProperttDeclaration, value, {
+      convert: options.convert
+    })
+  });
 }
 
 /**
@@ -103,7 +108,7 @@ export const setStyleProperties = (node: HTMLElement, properties: Partial<CSSTyp
  * @param cssVarName
  * @returns
  */
-export const getCssVar = <T = string, Key extends keyof CSSTypes.CSSStyleVarsDeclaration = keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVarName: Key, options: CSSValueGetterOptions<T> = {}) => {
+export const getCssVar = <T extends any = string, Key extends keyof CSSTypes.CSSStyleVarsDeclaration = keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVarName: Key, options: CSSValueGetterOptions<T> = {}) => {
   return getStyleProperty(node, cssVarName as keyof CSSTypes.CSSStyleProperttDeclaration, options);
 }
 
@@ -124,8 +129,13 @@ export const setCssVar = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(no
  * @param cssVars
  * @returns
  */
-export const setCssVars = (node: HTMLElement, cssVars: Partial<CSSTypes.CSSStyleVarsDeclaration>, options: Omit<CssValueSetterOptions, 'isImportant'> = {}) => {
-  return Object.keys(cssVars).forEach((cssVarName) => setCssVar(node, cssVarName as keyof CSSTypes.CSSStyleVarsDeclaration, cssVars[cssVarName], {
-    convert: options.convert
-  }));
+export const setCssVars = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVars: Partial<CSSTypes.CSSStyleVarsDeclaration>, options: Omit<CssValueSetterOptions, 'isImportant'> = {}) => {
+  return Object.keys(cssVars).forEach((cssVarName) => {
+    const value = cssVars[cssVarName as Key];
+    if (!value) return;
+
+    setCssVar(node, cssVarName as keyof CSSTypes.CSSStyleVarsDeclaration, value, {
+      convert: options.convert
+    })
+  });
 }

@@ -3,7 +3,7 @@ import { computed, getCurrentInstance, reactive, ref, watchEffect, watch, onBefo
 import { setStyleProperty } from '../../common';
 import { isDef, isUndefined } from '@suey/pkg-utils';
 import { printError } from '@suey/printer';
-import { IS_DEV } from '../../constants';
+import { IS_DEV } from '@rapid/config/constants';
 import type { SpaceHTMLElement } from '../basic';
 import { registerUnmountEvt, unmountAllEvts } from '../basic';
 
@@ -20,7 +20,7 @@ const DEFAULT_BINDINGS = {
   canDrag: false,
   direction: 'right' as ('left' | 'right'),
   canExec: true
-}
+};
 
 export { styles };
 

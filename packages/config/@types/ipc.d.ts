@@ -1,4 +1,5 @@
 
+
 interface IpcResponse<T = any> {
   ok: boolean; // 响应状态是否正确
 

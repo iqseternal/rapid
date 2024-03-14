@@ -2,9 +2,12 @@ import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import { obfuscator } from 'rollup-obfuscator';
 import { alias, proxy } from './vite.config.util';
+import { DIRS } from '@rapid/config/dirs';
 
 import postcssPresetEnv from 'postcss-preset-env';
 import autoprefixer from 'autoprefixer';
+
+import * as path from 'path';
 
 export default defineConfig(({ mode }): UserConfig => ({
   root: __dirname,
@@ -17,7 +20,7 @@ export default defineConfig(({ mode }): UserConfig => ({
         javascriptEnabled: true
       },
       postcss: {
-        plugins: [postcssPresetEnv()]
+        plugins: [postcssPresetEnv(), autoprefixer()]
       }
     }
   },
@@ -27,8 +30,10 @@ export default defineConfig(({ mode }): UserConfig => ({
   build: {
     chunkSizeWarningLimit: 2000,
     assetsDir: 'static',
+    manifest: false,
+    outDir: path.join(DIRS.DIST_DIR, 'website'),
+    emptyOutDir: true,
     minify: 'terser',
-    manifest: true,
     terserOptions: {
       compress: {
         drop_console: true,
@@ -38,8 +43,13 @@ export default defineConfig(({ mode }): UserConfig => ({
     rollupOptions: {
       plugins: [
 
-      ]
-    }
+      ],
+      onwarn(warnning, warn) {
+        if (warnning.code === 'MODULE_LEVEL_DIRECTIVE') return;
+        warn(warnning);
+      }
+    },
+
   },
   server: {
     hmr: true,

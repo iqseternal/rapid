@@ -1,4 +1,5 @@
 import type { CSSObject } from 'styled-components';
+import type { CSSProperties } from 'react';
 import { FlexRowBetween, FlexCloumnBetween } from '@/styled';
 import { isString } from '@suey/pkg-utils';
 
@@ -27,7 +28,7 @@ export function SubfieldSpace({ size = 1, children = '' as React.ReactNode, styl
  * @returns
  */
 export function SubfieldRow({ children, slots, style, className, size, gap = '0px' }: SubfieldProps) {
-  const styles: CSSObject = {
+  const styles: CSSProperties = {
     ...style,
     flex: size
   };
@@ -55,7 +56,7 @@ export function SubfieldRow({ children, slots, style, className, size, gap = '0p
  * @returns
  */
 export function SubfieldCloumn({ children, slots, style, className, size, gap = '0px' }: SubfieldProps) {
-  const styles: CSSObject = {
+  const styles: CSSProperties = {
     ...style,
     flex: size
   };

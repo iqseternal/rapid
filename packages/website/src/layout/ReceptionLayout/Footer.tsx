@@ -72,9 +72,9 @@ export default function Footer() {
       <Subfield style={{ marginTop: '30px', borderTop: '1px solid rgba(0, 0, 0, .2)', paddingTop: '50px' }}>
         <SubfieldCloumn gap='30px' style={{ alignItems: 'flex-start' }}>
           <Space size={25}>
-            <Link>隐私</Link>
-            <Link>Cookie</Link>
-            <Link>关于本站</Link>
+            <Link to='#'>隐私</Link>
+            <Link to='#'>Cookie</Link>
+            <Link to='#'>关于本站</Link>
           </Space>
 
           <Space direction='vertical'>

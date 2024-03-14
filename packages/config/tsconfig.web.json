@@ -3,6 +3,9 @@
     "lib": ["ESNEXT", "DOM"],
     "target": "ESNEXT",
 
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "types": ["vite/client"],

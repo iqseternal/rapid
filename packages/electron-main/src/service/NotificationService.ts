@@ -1,5 +1,5 @@
 
-import { CONFIG } from '@/constants';
+import { CONFIG } from '@rapid/config/constants';
 import { Notification } from 'electron';
 // import icon from '#/resources/icon.png?asset';
 

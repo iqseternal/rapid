@@ -5,7 +5,7 @@
 
 # . "$(dirname -- "$0")/typecheck.sh"
 
-# pnpm run typecheck
+pnpm typecheck
 
 pnpm exec lint-staged
 pnpm lint

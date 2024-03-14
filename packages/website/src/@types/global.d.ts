@@ -35,7 +35,7 @@ declare global {
 
   interface BaseProps {
     children?: React.ReactNode;
-    style?: CSSObject | CSSProperties;
+    style?: CSSProperties;
     className?: string;
   };
 }

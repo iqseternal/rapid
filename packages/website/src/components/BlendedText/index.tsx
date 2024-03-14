@@ -14,8 +14,6 @@ export default function BlendedText(props: BlendedTextProps) {
   const blended = useRef<HTMLDivElement>(null);
   const [hasAnimation, setHasAnimation] = useState(false);
 
-  const cssVars = useCssVar(blended, '');
-
   useEffect(() => {
     if (!blended.current) return;
 

@@ -9,7 +9,9 @@
     "dev:scripts": "pnpm run -C scripts dev",
     "build": "vite build",
     "scp": "pwsh ./auto.ps1",
-    "pub:web": "pnpm build && pnpm scp"
+    "pub:web": "pnpm build && pnpm scp",
+
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },
   "author": "sueyeternal@163.com",
   "devDependencies": {
@@ -26,6 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@rapid/config": "workspace:^",
     "@rapid/libs": "workspace:^",
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.0.0",

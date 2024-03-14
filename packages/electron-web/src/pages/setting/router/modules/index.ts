@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { makeRoute, toRoutes } from '@libs/router';
+import { makeRoute } from '@libs/router';
 
 export const settingRoutes = makeRoute({
   name: 'Setting',

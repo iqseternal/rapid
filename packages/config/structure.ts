@@ -1,5 +1,4 @@
 import type { UserConfig, UserConfigFn, UserConfigSchema } from 'electron-vite';
-import { defineConfig } from 'electron-vite';
 import type { AliasOptions, Alias } from 'vite';
 
 import * as path from 'path';
@@ -7,8 +6,6 @@ import * as path from 'path';
 export type ConfigEnv = Parameters<UserConfigFn>[0];
 
 export type ConfigFn = (env: ConfigEnv) => UserConfigSchema;
-
-export const ROOT_DIR = path.join(__dirname, '../../../');
 
 export function defineElectronMainConfig(configFn: (env: ConfigEnv) => UserConfig['main']) {
   return configFn;

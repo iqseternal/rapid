@@ -1,9 +1,15 @@
 {
+  "extends": "./tsconfig.node.json",
   "compilerOptions": {
 
-    "baseUrl": ".",
-    "types": ["vite/client", "./@types"]
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
 
+    "baseUrl": "./",
+    "types": ["./@types"]
   },
   "include": ["./**/*.ts"]
 }
