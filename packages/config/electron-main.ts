@@ -1,5 +1,4 @@
 import type { BrowserWindowConstructorOptions } from 'electron';
-import type { ObjAutoComplete } from '@rapid/libs/types';
 
 export { default as iconUrl } from '../../resources/icon.png?asset';
 
