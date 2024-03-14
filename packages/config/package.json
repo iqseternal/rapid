@@ -2,16 +2,6 @@
   "name": "@rapid/config",
   "version": "1.0.0",
   "description": "",
-  "exports": {
-    "./dirs": {
-      "module": "./dirs.ts",
-      "import": "./dirs.ts",
-      "require": "./dirs.cts",
-      "default": "./dirs.ts"
-    },
-    "./constants": "./constants/index.ts",
-    "./*": "./*"
-  },
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },

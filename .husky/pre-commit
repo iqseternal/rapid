@@ -2,9 +2,6 @@
 # pnpm run test
 
 . "$(dirname -- "$0")/_/husky.sh"
-
-# . "$(dirname -- "$0")/typecheck.sh"
-
 pnpm typecheck
 
 pnpm exec lint-staged
