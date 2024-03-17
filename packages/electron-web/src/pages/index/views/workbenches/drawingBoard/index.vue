@@ -60,10 +60,10 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 
-
 .workbenches {
   --tool-bar-height: 40px;
   --tool-bar-size: calc(var(--tool-bar-height) * 0.6);
+
   --tool-bar-widget-padding: 4px;
   --tool-bar-gap: 4px;
   --tool-bar-margin: 4px;

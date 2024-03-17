@@ -8,7 +8,7 @@ import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber } from '@suey/pkg-utils';
 import { iconUrl } from '@rapid/config/electron-main';
 
-const DEFAILT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
+const DEFAULT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
   show: false,
   autoHideMenuBar: true,
   disableAutoHideCursor: false,
@@ -37,7 +37,7 @@ export class WindowService {
     this.window = new BrowserWindow({
       width: 1650,
       height: 780,
-      ...DEFAILT_OPTIONS,
+      ...DEFAULT_OPTIONS,
       ...windowOptions,
       ...(IS_LINUX ? { icon: iconUrl } : {}),
       webPreferences: {

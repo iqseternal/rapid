@@ -25,6 +25,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { SYSYTEM_GRAPHIC_GROUPS } from '../../preset';
+
 import Ellipsis from '@components/Ellipsis';
 
 const activeKey = ref(SYSYTEM_GRAPHIC_GROUPS[0].name);

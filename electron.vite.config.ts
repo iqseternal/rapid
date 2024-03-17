@@ -1,9 +1,7 @@
-import type { UserConfig, UserConfigFn } from 'electron-vite';
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin } from 'electron-vite';
 import { join } from 'path';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND } from './target.config';
-import type { ProxyOptions, AliasOptions, Alias, Plugin } from 'vite';
+import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
 import { DIRS } from './packages/config/dirs';
@@ -16,7 +14,7 @@ import rendererConfigFn from './packages/electron-web/structure';
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
   LINT_ON_BUILD: true, // build 模式下启用 lint
-}
+} as const;
 
 const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig, MainConfig>(mainConfigFn(configEnv), {
   plugins: [
@@ -47,6 +45,13 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
   ],
   define: defineVars(configEnv),
   build: {
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
     outDir: DIRS.DESKTOP_OUT_DIRS.PRELOAD
   }
 }));

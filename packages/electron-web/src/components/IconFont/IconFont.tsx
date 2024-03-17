@@ -1,4 +1,3 @@
-
 import type { RouteMeta } from 'vue-router';
 import { defineComponent, computed } from 'vue';
 import * as icons from '@ant-design/icons-vue';
@@ -26,3 +25,6 @@ export const IconFont = defineComponent({
         : (<div />)
   }
 })
+
+
+const c = <IconFont type='' />

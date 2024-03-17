@@ -4,7 +4,7 @@
  * ==========================================
  */
 
-import { PrinterService } from '../service/PrinterService';
+import { PrinterService } from '@service/PrinterService';
 
 // 捕捉没有 处理 Catch 的 Promise
 process.on('unhandledRejection', (reason, promise) => {

@@ -12,7 +12,7 @@ export const validatorIsSpaceStr = (str: string) => isString(str) && str.trim() 
  * @param str
  * @returns
  */
-export const validatorValidStr = (str: string) => !validatorIsSpaceStr(str);
+export const validatorValidStr = (str: string) => isString(str) && !validatorIsSpaceStr(str);
 
 /**
  * 校验用户真实姓名是否符合规范，是否在Unicode码中并且支持译名

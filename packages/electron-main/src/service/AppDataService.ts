@@ -3,6 +3,8 @@ import { join, relative } from 'path';
 import { FileService } from './FileService';
 import { DownloadService } from './DownloadService';
 
+export type DirectoryName = Parameters<typeof app.getPath>[0];
+
 /**
  * 应用程序数据存储服务
  */
@@ -11,10 +13,7 @@ export class AppDataService {
   public readonly relativeSourcePath: string;
 
   constructor(
-    relativeSourcePath:
-      'home' | 'appData' | 'userData' | 'sessionData' | 'temp' |
-      'exe' | 'module' | 'desktop' | 'documents' | 'downloads' |
-      'music' | 'pictures' | 'videos' | 'recent' | 'logs' | 'crashDumps',
+    relativeSourcePath: DirectoryName,
     public readonly absoluteSourcePath: string
   ) {
     this.relativeSourcePath = app.getPath(relativeSourcePath);
