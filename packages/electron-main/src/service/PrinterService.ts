@@ -17,6 +17,11 @@ const judgeExec = <T>(fn: (...args: T[]) => void) => {
   }
 }
 
+export enum THREAD {
+  MAIN = 'MAIN',
+  RENDER = 'RENDER'
+}
+
 /**
  * 按照格式创建打印的Message信息
  * @param appColor
@@ -28,11 +33,13 @@ const judgeExec = <T>(fn: (...args: T[]) => void) => {
  * @param message
  * @returns
  */
-function makePrintMessage(
+export function makePrintMessage(
   appColor: PrintColor,
   timeColor: PrintColor,
-  typeColor: PrintColor, typeMessage: string,
-  thread: string, messageColor: PrintColor,
+  typeColor: PrintColor,
+  typeMessage: string,
+  thread: THREAD,
+  messageColor: PrintColor,
   ...message: unknown[]
 ) {
   const ms = message.reduce((pre: string, cur: unknown) => pre + cur, `[${appConfigService.config.appName.toUpperCase()}] [${getCurFullDate()}] [${typeMessage}] [${thread}:]`);
@@ -58,13 +65,13 @@ export class PrinterService {
    * 打印一条普通日志，蓝色
    * @param message
    */
-  static printInfo = judgeExec((...message: unknown[]) => {
+  static readonly printInfo = judgeExec((...message: unknown[]) => {
     print(
       ...makePrintMessage(
         toColor(['magenta', 'bright']),
         toColor(['cyan', 'bright']),
         toColor(['blue', 'underline']), 'INFO',
-        'MAIN',
+        THREAD.MAIN,
         toColor(['blue']),
         ...message
       ).typeMs
@@ -75,13 +82,13 @@ export class PrinterService {
    * 打印一条警告信息
    * @param message
    */
-  static printWarn = judgeExec((...message: unknown[]) => {
+  static readonly printWarn = judgeExec((...message: unknown[]) => {
     print(
       ...makePrintMessage(
         toColor(['magenta', 'bright']),
         toColor(['cyan', 'bright']),
         toColor(['yellow', 'underline']), 'WARN',
-        'MAIN',
+        THREAD.MAIN,
         toColor(['yellow']),
         ...message
       ).typeMs
@@ -92,13 +99,13 @@ export class PrinterService {
    * 打印一条错误信息
    * @param message
    */
-  static printError = judgeExec((...message: unknown[]) => {
+  static readonly printError = judgeExec((...message: unknown[]) => {
     print(
       ...makePrintMessage(
         toColor(['magenta:bg', 'white', 'bright']),
         toColor(['cyan', 'bright']),
         toColor(['red', 'underline']), 'ERROR',
-        'MAIN',
+        THREAD.MAIN,
         toColor(['red']),
         ...message
       ).typeMs

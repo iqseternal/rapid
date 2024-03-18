@@ -1,5 +1,6 @@
 import type { UserConfig, UserConfigFn, UserConfigSchema } from 'electron-vite';
 import type { AliasOptions, Alias } from 'vite';
+import { mergeConfig } from 'vite';
 
 import * as path from 'path';
 

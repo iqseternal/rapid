@@ -18,5 +18,6 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // 处理没有捕捉的异常
 process.on('uncaughtException', (reason, exception) => {
+
   PrinterService.printError(reason.stack);
 });
