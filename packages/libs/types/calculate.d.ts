@@ -157,3 +157,9 @@ export type ReverseObjKeyValue<Obj extends Record<string | number | symbol, any>
  * R: 接口目标
  */
 export type ObjAutoComplete<T extends Record<string | number | symbol, any>, R extends Record<string | number | symbol, any>> = T & Pick<R, Exclude<keyof R, keyof T>>;
+
+
+/**
+ * 切除一个数组的头部，将剩余部分返回结果
+ */
+export type CutHead<Tuple extends any[]> = ((...args: Tuple) => any) extends (first: any, ...rest: infer Result) => any ? Result : never;

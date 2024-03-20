@@ -56,7 +56,9 @@
     "unplugin-vue-components": "^0.26.0",
     "vite": "^4.5.2",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-svg-loader": "^5.1.0"
+    "vite-svg-loader": "^5.1.0",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "dependencies": {
     "@suey/pkg-utils": "^0.0.11",
@@ -73,9 +75,7 @@
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
     "proxy-from-env": "^1.1.0",
-    "ts-md5": "^1.3.1",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "ts-md5": "^1.3.1"
   },
   "lint-staged": {
     "*.{vue,ts,jsx,tsx,json}": "eslint",

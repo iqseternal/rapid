@@ -7,6 +7,7 @@ import type { CONFIG } from './config';
 import { STORE_KEYS, StoreKeyMap } from './store';
 import { WINDOW_STATE_MACHINE_KEYS } from './others';
 
+
 export class IPC_MAIN_WINDOW {
   public static readonly DEV_OPEN_TOOL = 'DEV_OPEN_TOOL'; // 打开 devtools
 
@@ -45,10 +46,10 @@ export class IPC_RENDER_DIALOG_WINDOW {
 
 /** 定义每一个 Channel 所对应的类型 */
 export type MainEventHandlers = {
-  [IPC_MAIN_WINDOW.DEV_OPEN_TOOL]: (status: boolean, options?: {
+  [IPC_MAIN_WINDOW.DEV_OPEN_TOOL](status: boolean, options?: {
     mode: ('left' | 'right' | 'bottom' | 'undocked' | 'detach');
     activate?: boolean;
-  }) => IpcResponse<boolean>;
+  }): IpcResponse<boolean> | Promise<IpcResponse<boolean>>;
 
   // store
   [IPC_MAIN_WINDOW.STORE_GET]: <T extends keyof StoreKeyMap, K extends StoreKeyMap[T]>(key: T, defaultValue?: K) => IpcResponse<K | undefined>;

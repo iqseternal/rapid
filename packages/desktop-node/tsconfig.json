@@ -1,0 +1,13 @@
+{
+  "extends": "@rapid/config/tsconfig.node.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["../config/@types"],
+    "experimentalDecorators": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["./src/**/*.ts", "../config/@types", "./preload/**/*.ts"],
+  "exclude": ["node_modules"]
+}

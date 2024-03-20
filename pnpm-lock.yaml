@@ -53,12 +53,6 @@ importers:
       ts-md5:
         specifier: ^1.3.1
         version: 1.3.1
-      vue:
-        specifier: ^3.3.4
-        version: 3.4.21(typescript@5.3.3)
-      vue-router:
-        specifier: ^4.2.4
-        version: 4.3.0(vue@3.4.21)
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.1.0
@@ -144,36 +138,41 @@ importers:
       vite-svg-loader:
         specifier: ^5.1.0
         version: 5.1.0(vue@3.4.21)
+      vue:
+        specifier: ^3.4.21
+        version: 3.4.21(typescript@5.3.3)
+      vue-router:
+        specifier: ^4.3.0
+        version: 4.3.0(vue@3.4.21)
 
   packages/config: {}
 
-  packages/electron-main:
+  packages/desktop-node:
     dependencies:
-      electron-store:
-        specifier: ^8.2.0
-        version: 8.2.0
-    devDependencies:
-      '@electron-toolkit/utils':
-        specifier: ^3.0.0
-        version: 3.0.0(electron@29.1.4)
-      '@rapid/config':
-        specifier: workspace:^
-        version: link:../config
-
-  packages/electron-preload:
-    dependencies:
-      '@rapid/config':
-        specifier: workspace:^
-        version: link:../config
       '@rapid/libs':
         specifier: workspace:^
         version: link:../libs
+      electron-store:
+        specifier: ^8.2.0
+        version: 8.2.0
+      reflect:
+        specifier: ^0.1.3
+        version: 0.1.3
+      reflect-metadata:
+        specifier: ^0.2.1
+        version: 0.2.1
     devDependencies:
       '@electron-toolkit/preload':
         specifier: ^3.0.0
-        version: 3.0.0(electron@29.1.4)
+        version: 3.0.0(electron@24.8.8)
+      '@electron-toolkit/utils':
+        specifier: ^3.0.0
+        version: 3.0.0(electron@24.8.8)
+      '@rapid/config':
+        specifier: workspace:^
+        version: link:../config
 
-  packages/electron-web:
+  packages/desktop-web:
     dependencies:
       '@ant-design/icons-vue':
         specifier: ^7.0.1
@@ -242,6 +241,9 @@ importers:
       '@rapid/config':
         specifier: workspace:^
         version: link:../config
+      '@rapid/desktop-node':
+        specifier: workspace:^
+        version: link:../desktop-node
       '@types/mousetrap':
         specifier: ^1.6.15
         version: 1.6.15
@@ -355,7 +357,7 @@ importers:
         version: 4.1.1(javascript-obfuscator@4.1.0)
       typescript-plugin-css-modules:
         specifier: ^5.0.1
-        version: 5.1.0(typescript@5.4.2)
+        version: 5.1.0(typescript@5.3.3)
 
   scripts: {}
 
@@ -1415,12 +1417,12 @@ packages:
       ajv-keywords: 3.5.2(ajv@6.12.6)
     dev: true
 
-  /@electron-toolkit/preload@3.0.0(electron@29.1.4):
+  /@electron-toolkit/preload@3.0.0(electron@24.8.8):
     resolution: {integrity: sha512-DTyvNGits43J1RiQGFN00/OxjjcTcozLWMjgQBANt97FFptEYiLVasq7kMC24nMwwoOpdDYY9CE6C+4wQJ55/w==}
     peerDependencies:
       electron: '>=13.0.0'
     dependencies:
-      electron: 29.1.4
+      electron: 24.8.8
     dev: true
 
   /@electron-toolkit/tsconfig@1.0.1(@types/node@20.11.26):
@@ -1431,12 +1433,12 @@ packages:
       '@types/node': 20.11.26
     dev: true
 
-  /@electron-toolkit/utils@3.0.0(electron@29.1.4):
+  /@electron-toolkit/utils@3.0.0(electron@24.8.8):
     resolution: {integrity: sha512-GaXHDhiT7KCvMJjXdp/QqpYinq69T/Pdl49Z1XLf8mKGf63dnsODMWyrmIjEQ0z/vG7dO8qF3fvmI6Eb2lUNZA==}
     peerDependencies:
       electron: '>=13.0.0'
     dependencies:
-      electron: 29.1.4
+      electron: 24.8.8
     dev: true
 
   /@electron/get@2.0.3:
@@ -2264,6 +2266,7 @@ packages:
 
   /@types/minimatch@3.0.5:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
+    requiresBuild: true
     dev: true
 
   /@types/mousetrap@1.6.15:
@@ -2287,9 +2290,11 @@ packages:
 
   /@types/node@20.11.28:
     resolution: {integrity: sha512-M/GPWVS2wLkSkNHVeLkrF2fD5Lx5UC4PxA0uZcKc6QqbIQUJyW1jVjueJYi1z8n0I5PxYrtpnPnWglE+y9A0KA==}
+    requiresBuild: true
     dependencies:
       undici-types: 5.26.5
     dev: true
+    optional: true
 
   /@types/pako@2.0.3:
     resolution: {integrity: sha512-bq0hMV9opAcrmE0Byyo0fY3Ew4tgOevJmQ9grUhpXQhYfyLJ1Kqg3P33JT5fdbT2AjeAjR51zqqVjAL/HMkx7Q==}
@@ -2303,7 +2308,7 @@ packages:
     resolution: {integrity: sha512-E6OCaRmAe4WDmWNsL/9RMqdkkzDCY1etutkflWk4c+AcjDU07Pcz1fQwTX0TQz+Pxqn9i4L1TU3UFpjnrcDgxA==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.11.26
+      '@types/node': 20.11.28
       xmlbuilder: 15.1.1
     dev: true
     optional: true
@@ -2714,7 +2719,6 @@ packages:
 
   /@vue/devtools-api@6.6.1:
     resolution: {integrity: sha512-LgPscpE3Vs0x96PzSSB4IGVSZXZBZHpfxs+ZA1d+VEPwHdOXowy/Y2CsvCAIFrf+ssVU1pD1jidj505EpUnfbA==}
-    dev: false
 
   /@vue/reactivity@3.4.21:
     resolution: {integrity: sha512-UhenImdc0L0/4ahGCyEzc/pZNwVgcglGy9HVzJ1Bq2Mm9qXOpP8RyNTjookw/gOCUlXSEtuZ2fUg5nrHcoqJcw==}
@@ -4277,19 +4281,6 @@ packages:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 18.19.24
-      extract-zip: 2.0.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /electron@29.1.4:
-    resolution: {integrity: sha512-IWXys0SqgmIfrqXusUGQC0gGG7CCqA5vfmNsUMj8dFkAnK3lisKyjSESStWlrsste/OX/AAC5wsVlf23reUNnw==}
-    engines: {node: '>= 12.20.55'}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      '@electron/get': 2.0.3
-      '@types/node': 20.11.28
       extract-zip: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -8032,6 +8023,15 @@ packages:
     resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
     dev: true
 
+  /reflect-metadata@0.2.1:
+    resolution: {integrity: sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==}
+    dev: false
+
+  /reflect@0.1.3:
+    resolution: {integrity: sha512-2c5cybmpJqWWnz7PviqZZXGtYBQ3EaFAjNFPug/5tnFvC53WXPoNjpLlgzr9W3VyzY8Em9DWump40PySN1sKrw==}
+    engines: {node: '>= 0.4'}
+    dev: false
+
   /regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
     dev: false
@@ -9008,7 +9008,7 @@ packages:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: false
 
-  /typescript-plugin-css-modules@5.1.0(typescript@5.4.2):
+  /typescript-plugin-css-modules@5.1.0(typescript@5.3.3):
     resolution: {integrity: sha512-6h+sLBa4l+XYSTn/31vZHd/1c3SvAbLpobY6FxDiUOHJQG1eD9Gh3eCs12+Eqc+TCOAdxcO+zAPvUq0jBfdciw==}
     peerDependencies:
       typescript: '>=4.0.0'
@@ -9029,7 +9029,7 @@ packages:
       source-map-js: 1.0.2
       stylus: 0.62.0
       tsconfig-paths: 4.2.0
-      typescript: 5.4.2
+      typescript: 5.3.3
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -9039,12 +9039,6 @@ packages:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
     hasBin: true
-
-  /typescript@5.4.2:
-    resolution: {integrity: sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-    dev: true
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}
@@ -9299,7 +9293,7 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.6.1
       vue: 3.4.21(typescript@5.3.3)
-    dev: false
+    dev: true
 
   /vue-types@3.0.2(vue@3.4.21):
     resolution: {integrity: sha512-IwUC0Aq2zwaXqy74h4WCvFCUtoV0iSWr0snWnE9TnU18S66GAQyqQbRf2qfJtUuiFsBf6qp0MEwdonlwznlcrw==}

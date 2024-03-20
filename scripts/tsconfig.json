@@ -5,6 +5,8 @@
     "outDir": "./dist",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

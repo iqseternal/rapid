@@ -5,11 +5,10 @@ import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
 import { DIRS } from './packages/config/dirs';
+import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/sturcture';
 
 import eslintPlugin from 'vite-plugin-eslint';
-import mainConfigFn from './packages/electron-main/sturcture';
-import preloadConfigFn from './packages/electron-preload/structure';
-import rendererConfigFn from './packages/electron-web/structure';
+import rendererConfigFn from './packages/desktop-web/structure';
 
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
@@ -57,7 +56,7 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
 }));
 
 const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<RendererConfig, RendererConfig>(rendererConfigFn(configEnv), {
-  root: join(__dirname, './packages/electron-web'),
+  root: join(__dirname, './packages/desktop-web'),
   define: defineVars(configEnv),
   plugins: [...loadLintPlugins(configEnv)],
   server: {

@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 
 import type { BrowserWindow } from 'electron';
 import type { PLATFORMS, ENV } from '../constants';

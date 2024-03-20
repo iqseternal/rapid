@@ -1,0 +1,23 @@
+{
+  "name": "@rapid/desktop-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-toolkit/preload": "^3.0.0",
+    "@electron-toolkit/utils": "^3.0.0",
+    "@rapid/config": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/libs": "workspace:^",
+    "electron-store": "^8.2.0",
+    "reflect": "^0.1.3",
+    "reflect-metadata": "^0.2.1"
+  }
+}
