@@ -1,11 +1,8 @@
-import { print, printError } from '@suey/printer';
 import { ipcMain } from 'electron';
 import type { IpcMainInvokeEvent } from 'electron';
-import { Exception } from '../exception';
 import { IS_DEV } from '@rapid/config/constants';
 import { Printer } from '../core';
 import type { SetupOptions, DescendantClass } from '../core';
-import { isFunction } from '@suey/pkg-utils';
 
 import { IPC_META_CONTROLLER, IPC_META_HANDLER, IPC_EMITTER_TYPE } from './decorator';
 

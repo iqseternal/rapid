@@ -7,14 +7,13 @@ import type { ElectronAPI as BaseElectionAPI, NodeProcess, IpcRenderer as BaseIc
 import type { IpcRendererEvent } from 'electron';
 
 import type { CutHead } from '@rapid/libs/types';
-import type { IpcMainHandler } from '../src/framework';
 import type { IpcDevTool, IpcStore, IpcWindow } from '../src/setupHandles';
 
-export type PureHandler<T extends IpcMainHandler> = {
+export type PureHandler<T> = {
   [Key in keyof T]: T[Key];
 }
 
-export type NamedHandler<T extends IpcMainHandler> = {
+export type NamedHandler<T> = {
   [Key in Exclude<keyof PureHandler<T>, symbol | 'id'> as `${PureHandler<T>['id']}/${Key}`]: T[Key] extends Function ? (...args: CutHead<Parameters<T[Key]>>) => ReturnType<T[Key]> : never;
 }
 

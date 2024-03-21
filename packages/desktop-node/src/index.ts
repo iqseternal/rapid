@@ -1,11 +1,10 @@
+import './global';
 import { PrinterService } from '@/service/PrinterService';
-import { MainEventHandlers, IPC_MAIN_WINDOW, STORE_KEYS, StoreKeyMap } from '@rapid/config/constants';
-import { print } from '@suey/printer';
 import { setupMainWindow } from './setupService';
-import { WindowService, WindowStateMachine } from '@/service/WindowService';
+import { WindowService } from '@/service/WindowService';
 import { setupIpcMainHandler, FrameworkIpcServer, IPC_EMITTER_TYPE } from '@rapid/framework';
-
 import { setupApp } from './setupApp';
+
 import * as IpcModules from './setupHandles';
 
 // setupFilter({ use: FilterServer, modules: [] })
@@ -19,6 +18,8 @@ class IpcServer extends FrameworkIpcServer<WindowService> {
   }
 }
 
+
+
 setupIpcMainHandler({
   use: IpcServer,
   modules: [
@@ -27,6 +28,7 @@ setupIpcMainHandler({
     IpcModules.IpcWindow
   ]
 })
+
 
 setupApp(async () => {
   const mainWindowService = await setupMainWindow();
