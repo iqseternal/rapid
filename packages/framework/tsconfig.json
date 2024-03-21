@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["../config/@types"],
+    "experimentalDecorators": true
+  },
+  "include": [
+    "./**/*.ts",
+    "../config/@types"
+  ],
+  "exclude": ["node_modules"]
+}

@@ -1,5 +1,5 @@
 import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
-import { IpcMainHandlers, IpcMain, IPC_EMITTER_TYPE, runAndErrorCallback, IpcMainHandler } from '@/framework';
+import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler } from '@rapid/framework';
 import { IS_DEV, MainEventHandlers, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { WindowService } from '@/service/WindowService';
 import { setWindowOpenHandler, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
@@ -15,7 +15,7 @@ import { setupSettingWindow } from '../setupService';
 import { print } from '@suey/printer';
 
 @IpcMain.IpcController()
-export class IpcWindow extends IpcMainHandler {
+export class IpcWindow extends FrameworkIpcHandler {
   public readonly id = 'IpcWindow';
 
   @IpcMain.Handler()

@@ -162,10 +162,6 @@ export class WindowStateMachine {
   public static findWindowService(key: string): WindowService | null;
   public static findWindowService(id: number): WindowService | null;
   public static findWindowService(key: string | number): WindowService | null {
-
-
-    PrinterService.printInfo('findWindowService', key);
-
     if (isString(key)) {
       return WindowStateMachine.keyToServiceMap.get(key) ?? null;
     }

@@ -15,6 +15,7 @@
     "@rapid/config": "workspace:^"
   },
   "dependencies": {
+    "@rapid/framework": "workspace:^",
     "@rapid/libs": "workspace:^",
     "electron-store": "^8.2.0",
     "reflect": "^0.1.3",

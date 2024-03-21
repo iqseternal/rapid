@@ -149,6 +149,9 @@ importers:
 
   packages/desktop-node:
     dependencies:
+      '@rapid/framework':
+        specifier: workspace:^
+        version: link:../framework
       '@rapid/libs':
         specifier: workspace:^
         version: link:../libs
@@ -250,6 +253,16 @@ importers:
       '@types/pako':
         specifier: ^2.0.3
         version: 2.0.3
+
+  packages/framework:
+    dependencies:
+      reflect-metadata:
+        specifier: ^0.2.1
+        version: 0.2.1
+    devDependencies:
+      '@rapid/config':
+        specifier: workspace:^
+        version: link:../config
 
   packages/libs:
     devDependencies:

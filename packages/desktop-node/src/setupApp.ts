@@ -6,8 +6,6 @@ import { print, printError } from '@suey/printer';
 import { WindowService, WindowServiceOptions } from '@/service/WindowService';
 import { isString, isNumber } from '@suey/pkg-utils';
 
-import './setupHandles';
-
 export interface AppOptions {
   modelId: string;
 };

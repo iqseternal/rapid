@@ -1,12 +1,19 @@
 
-import { Exception } from '@/framework';
+import { Exception } from '@rapid/framework';
 
-export class RuntimeException extends Exception {}
+export interface ExceptionErrorMsgData {
 
-export class TypeException extends Exception {}
+  label: string;
 
-export class AsyncException extends Exception {}
+  time?: number;
+}
 
-export class RequestException extends Exception {}
+export class RuntimeException extends Exception<ExceptionErrorMsgData> {}
 
-export class PermissionException extends Exception {}
+export class TypeException extends Exception<ExceptionErrorMsgData> {}
+
+export class AsyncException extends Exception<ExceptionErrorMsgData> {}
+
+export class RequestException extends Exception<ExceptionErrorMsgData> {}
+
+export class PermissionException extends Exception<ExceptionErrorMsgData> {}
