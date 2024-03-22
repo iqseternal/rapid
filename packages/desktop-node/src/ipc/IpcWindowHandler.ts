@@ -1,13 +1,12 @@
 import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
 import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler } from '@rapid/framework';
-import { IS_DEV, MainEventHandlers, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { WindowService } from '@/service/WindowService';
 import { setWindowOpenHandler, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
 import { screen } from 'electron';
 import { reloadApp } from '../core/common/app';
-import { ok, fail } from '@/core/common/ipcR';
 import { PrinterService } from '@/service/PrinterService';
-import { RuntimeException, PermissionException, TypeException } from '../common/exception';
+import { RuntimeException, PermissionException, TypeException } from '../common/exceptions';
 import { isNumber, isString, isUndefined } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
@@ -15,7 +14,7 @@ import { setupSettingWindow } from '../setupService';
 import { print } from '@suey/printer';
 
 @IpcMain.IpcController()
-export class IpcWindow extends FrameworkIpcHandler {
+export class IpcWindowHandler extends FrameworkIpcHandler {
   public readonly id = 'IpcWindow';
 
   @IpcMain.Handler()
@@ -106,7 +105,7 @@ export class IpcWindow extends FrameworkIpcHandler {
     }
 
     throw new TypeException('传入了未指定类型 type', {
-      label: `${IpcWindow.name}:resetCustomSize`
+      label: `${IpcWindowHandler.name}:resetCustomSize`
     })
   }
 

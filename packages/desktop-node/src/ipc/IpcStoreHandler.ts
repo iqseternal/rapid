@@ -1,17 +1,16 @@
 import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
 import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler } from '@rapid/framework';
-import { IS_DEV, MainEventHandlers, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { WindowService } from '@/service/WindowService';
 import { setWindowOpenHandler } from '@/core/common/window';
 import { screen } from 'electron';
-import { ok, fail } from '@/core/common/ipcR';
 import { PrinterService } from '@/service/PrinterService';
 import { isNumber, isString, isUndefined } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
 
 @IpcMain.IpcController()
-export class IpcStore<Store extends StoreKeyMap = StoreKeyMap> extends FrameworkIpcHandler {
+export class IpcStoreHandler<Store extends StoreKeyMap = StoreKeyMap> extends FrameworkIpcHandler {
   public readonly id = 'IpcStore';
 
   @IpcMain.Handler()

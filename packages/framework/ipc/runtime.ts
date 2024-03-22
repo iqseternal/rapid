@@ -10,7 +10,7 @@ export class FrameworkIpcHandler {
   public id = 'IpcMainHandler';
 }
 
-export class FrameworkIpcServer<EventConvertArg> {
+export class FrameworkIpcHandlerServer<EventConvertArg> {
   convertArgs(type: IPC_EMITTER_TYPE, e: IpcMainInvokeEvent, ...args: unknown[]): [EventConvertArg, ...unknown[]] {
     return [e as any, ...args];
   }
@@ -21,7 +21,7 @@ export class FrameworkIpcServer<EventConvertArg> {
 }
 
 export interface SetupIpcMainHandlerOptions<
-  T extends DescendantClass<FrameworkIpcServer<any>>,
+  T extends DescendantClass<FrameworkIpcHandlerServer<any>>,
   U extends DescendantClass<FrameworkIpcHandler>
 > extends SetupOptions<T, U> {
 
@@ -30,7 +30,7 @@ export interface SetupIpcMainHandlerOptions<
 export const isIpcMainHandler = (target: any): target is typeof FrameworkIpcHandler => target instanceof FrameworkIpcHandler;
 
 export const setupIpcMainHandler = async <
-  T extends DescendantClass<FrameworkIpcServer<any>>,
+  T extends DescendantClass<FrameworkIpcHandlerServer<any>>,
   U extends DescendantClass<FrameworkIpcHandler>
 >(options: SetupIpcMainHandlerOptions<T, U>) => {
   const { use: Server, modules } = options;
@@ -45,7 +45,7 @@ export const setupIpcMainHandler = async <
   const server = new Server();
 
   if (IS_DEV) {
-    if (!(server instanceof FrameworkIpcServer)) {
+    if (!(server instanceof FrameworkIpcHandlerServer)) {
       Printer.printError(`\`use\` value must be a subclass of IpcMainHandlerServer.`);
       return;
     }

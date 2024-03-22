@@ -1,5 +1,3 @@
-import { IPC_MAIN_WINDOW } from '@rapid/config/constants';
-import type { MainEventHandlers } from '@rapid/config/constants';
 import type { Handlers } from 'node_modules/@rapid/desktop-node/preload';
 
 export class WindowPopup {

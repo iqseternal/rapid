@@ -16,6 +16,8 @@ import { receptionMenuRoutes } from '@/router';
 import type { RequiredRouteConfig } from '@/router/utils';
 import { useReactive } from '@/hooks';
 import { isArray, isDef, isUnDef } from '@suey/pkg-utils';
+import { CONFIG } from '@rapid/config/constants';
+
 import styled, { css } from 'styled-components';
 import styles from './header.module.scss';
 
@@ -30,7 +32,7 @@ function Trademark({ onClick = () => {} }) {
   return <Space className={styles.trademark}>
     <Logo onClick={onClick} />
 
-    <span onClick={onClick}>SPACE</span>
+    <span onClick={onClick}>{CONFIG.PROJECT}</span>
   </Space>;
 }
 

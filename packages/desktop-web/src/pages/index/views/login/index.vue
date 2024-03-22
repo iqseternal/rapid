@@ -69,7 +69,7 @@ useFadeIn(async () => {
   // 如果一切没有问题, 那么就准备就绪, 就可以展示页面了
   await windowSetSize({ width: 850, height: 550 });
   await windowResizeAble({ able: false });
-  await windowSetPosition({ x: 'center', y: 'center' });
+  windowSetPosition({ x: 'center', y: 'center' });
 });
 
 onBeforeUnmount(async () => {

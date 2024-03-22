@@ -8,7 +8,7 @@ import { FlexRow } from '@/styled';
 import { Space } from 'antd';
 import { ScrollParallax } from 'react-just-parallax';
 import type { CSSObject } from 'styled-components';
-
+import { CONFIG } from '@rapid/config/constants';
 import { ParallaxContainer } from './components/Parallax';
 
 import styled from 'styled-components';
@@ -36,7 +36,7 @@ export default function Home() {
     >
       <SubfieldCloumn className={styles.blendedText} style={{ justifyContent: 'center' }}>
         <BlendedTextField><BlendedText className={styles.blendedTextMain} text='OUPRO' /></BlendedTextField>
-        <BlendedTextField><BlendedText className={styles.blendedTextMain} text='SPACE' /></BlendedTextField>
+        <BlendedTextField><BlendedText className={styles.blendedTextMain} text={CONFIG.PROJECT} /></BlendedTextField>
         <BlendedTextField><BlendedText className={styles.blendedTextMain} text='Building....' /></BlendedTextField>
       </SubfieldCloumn>
     </Perpose>
@@ -44,7 +44,7 @@ export default function Home() {
     <Caption
       title={
         <FlexRow style={{ gap: '20px' }}>
-          <div>Welcome to SPACE</div>
+          <div>Welcome to {CONFIG.PROJECT}</div>
           <Logo size={30} className={styles.logoAnimation} />
         </FlexRow>
       }
@@ -55,7 +55,7 @@ export default function Home() {
     <ParallaxContainer isFirst bgSrc='http://www.fluttuo.com/wp-content/uploads/2013/11/Fluttuo_Made-Once-Only_Traugott-Collection_Cover_mini.jpg'>
       <h2>流程图构建</h2>
       <p>
-        
+
       </p>
     </ParallaxContainer>
 

@@ -24,7 +24,7 @@ export const runtimeContext = {
   }[]
 }
 
-export const setupFilter = <T extends DescendantClass<FrameworkFilter>>(options: SetupFilterOptions<T>) => {
+export const setupFilters = async <T extends DescendantClass<FrameworkFilter>>(options: SetupFilterOptions<T>) => {
   const { modules } = options;
 
   if (IS_DEV) {
@@ -37,7 +37,7 @@ export const setupFilter = <T extends DescendantClass<FrameworkFilter>>(options:
   modules.forEach(Filter => {
     const filter = new Filter();
 
-    const Exception = Reflect.getMetadata(FILTER_META_CATCH, filter);
+    const Exception = Reflect.getMetadata(FILTER_META_CATCH, filter.constructor);
 
     if (!Exception) {
       if (IS_DEV) Printer.printError(`Catch decorator must receive an Exception.`);

@@ -1,5 +1,6 @@
 import { print, toColor, printClear, type PrintTargetType, toPrintClear } from '@suey/printer';
-import { getCurDate, getCurFullDate, getCurTime } from '@/core/common/common';
+import { getCurFullDate } from '@/core/common/common';
+import {  } from '@rapid/libs/common';
 
 type PrintColor = ReturnType<typeof toColor>;
 

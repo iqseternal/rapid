@@ -1,6 +1,6 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin } from 'electron-vite';
 import { join } from 'path';
-import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND } from './target.config';
+import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from './target.config';
 import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
@@ -27,7 +27,7 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        // drop_console: true,
         drop_debugger: true
       }
     },
@@ -87,7 +87,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
  * 加载lint插件
  * @returns
  */
-export function loadLintPlugins({ command }: ConfigEnv): Plugin[] {
+function loadLintPlugins({ command }: ConfigEnv): Plugin[] {
   if (command === CONFIG_ENV_COMMAND.SERVE) {
     if (!START_OPTIONS.LINT_ON_DEV) return [];
   }
@@ -109,19 +109,6 @@ export function loadLintPlugins({ command }: ConfigEnv): Plugin[] {
     })
   ]
 }
-
-export function defineVars({ mode }: ConfigEnv) {
-  const vars = {
-    CURRENT_PLATFORM: PLATFORMS.WINDOWS,
-    CURRENT_ENV: ENV.DEV
-  }
-
-  if (mode === CONFIG_ENV_MODE.DEVELOPMENT) vars.CURRENT_ENV = ENV.DEV;
-  else if (mode === CONFIG_ENV_MODE.PRODUCTION) vars.CURRENT_ENV = ENV.PROD;
-
-  return vars;
-}
-
 
 const defaultConfig = defineConfig((configEnv) => ({
   main: mainConfig(configEnv),

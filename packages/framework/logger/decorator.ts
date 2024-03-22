@@ -1,4 +1,3 @@
-
 import { print } from '@suey/printer';
 import { runtimeContext } from './runtime';
 import { Printer } from '../core';

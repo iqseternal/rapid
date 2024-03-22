@@ -7,7 +7,7 @@ import { PAGES_WINDOW_SETTING, PAGES_WINDOW_MAIN } from '@/config';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber } from '@suey/pkg-utils';
 import { iconUrl } from '@rapid/config/electron-main';
-import { RuntimeException } from '@/common/exception';
+import { RuntimeException } from '@/common/exceptions';
 import { print } from '@suey/printer';
 import { PrinterService } from './PrinterService';
 

@@ -3,7 +3,6 @@ import { computed, getCurrentInstance, reactive, ref, watchEffect, watch, onBefo
 import { setStyleProperty } from '../../common';
 import { isDef, isUndefined } from '@suey/pkg-utils';
 import { printError } from '@suey/printer';
-import { IS_DEV } from '@rapid/config/constants';
 import type { SpaceHTMLElement } from '../basic';
 import { registerUnmountEvt, unmountAllEvts } from '../basic';
 
@@ -40,7 +39,7 @@ export const vResizeWidth: Directive<HTMLElement, VResizeWidthBindings> = {
     if (!['absolute', 'relative'].includes(position)) el.parentElement.style.position = 'relative';
 
     const { value, modifiers, oldValue, dir, arg } = bindings as DirectiveBinding<Required<typeof DEFAULT_BINDINGS>>;
-    if (IS_DEV && !value) {
+    if (!value) {
       printError(`vResizeWidth: 未传递参数`);
       return;
     }

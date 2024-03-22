@@ -3,17 +3,19 @@ import { defineConfig } from 'vite';
 import { obfuscator } from 'rollup-obfuscator';
 import { alias, proxy } from './vite.config.util';
 import { DIRS } from '../config/dirs';
+import { defineVars } from '../config/structure';
 
 import postcssPresetEnv from 'postcss-preset-env';
 import autoprefixer from 'autoprefixer';
 
 import * as path from 'path';
 
-export default defineConfig(({ mode }): UserConfig => ({
+export default defineConfig((configEnv): UserConfig => ({
   root: __dirname,
   resolve: {
     alias
   },
+  define: defineVars(configEnv),
   css: {
     preprocessorOptions: {
       less: {
@@ -54,6 +56,6 @@ export default defineConfig(({ mode }): UserConfig => ({
   server: {
     hmr: true,
     host: '0.0.0.0',
-    proxy: proxy(mode)
+    proxy: proxy(configEnv.mode)
   }
 }));

@@ -1,34 +1,16 @@
 import './global';
-import { PrinterService } from '@/service/PrinterService';
-import { setupMainWindow } from './setupService';
-import { WindowService } from '@/service/WindowService';
-import { setupIpcMainHandler, FrameworkIpcServer, IPC_EMITTER_TYPE } from '@rapid/framework';
+import { setupContext } from '@rapid/framework';
+import { filterModules } from './common';
+import { ipcModules } from './ipc';
+import { LoggerServer, IpcHandlerServer } from './server';
 import { setupApp } from './setupApp';
+import { setupMainWindow } from './setupService';
 
-import * as IpcModules from './setupHandles';
-
-// setupFilter({ use: FilterServer, modules: [] })
-// setupLogger({ use: LoggerServer })
-
-class IpcServer extends FrameworkIpcServer<WindowService> {
-  convertArgs(type: IPC_EMITTER_TYPE, e: Electron.IpcMainInvokeEvent, ...args: unknown[]): [WindowService, ...unknown[]] {
-    const windowService = WindowService.findWindowService(e);
-
-    return [windowService, ...args];
-  }
-}
-
-
-
-setupIpcMainHandler({
-  use: IpcServer,
-  modules: [
-    IpcModules.IpcDevTool,
-    IpcModules.IpcStore,
-    IpcModules.IpcWindow
-  ]
+setupContext({
+  logger: { use: LoggerServer },
+  filters: { modules: filterModules },
+  ipcMain: { use: IpcHandlerServer, modules: ipcModules }
 })
-
 
 setupApp(async () => {
   const mainWindowService = await setupMainWindow();

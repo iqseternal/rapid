@@ -1,5 +1,5 @@
 
-import { IPC_MAIN_WINDOW, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 
 /**
  * 打开设置页面

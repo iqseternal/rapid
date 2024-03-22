@@ -1,18 +1,14 @@
 
 {
-  "extends": "@rapid/config/tsconfig.node.json",
   "include": [
     "./**/*.ts",
     "./**/*.d.ts",
-    "./**/*.vue",
-
-    "../config/@types"
+    "./**/*.vue"
   ],
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "baseUrl": ".",
-    "types": ["../config/@types"]
+    "baseUrl": "."
   },
   "exclude": ["node_modules"]
 }

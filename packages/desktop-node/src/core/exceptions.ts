@@ -1,5 +1,23 @@
+
 import { Catch, Exception, FrameworkFilter } from '@rapid/framework';
-import { RuntimeException, TypeException, AsyncException, RequestException, PermissionException } from '../exceptions';
+
+export interface ExceptionErrorMsgData {
+
+  label: string;
+
+  time?: number;
+}
+
+export class RuntimeException extends Exception<ExceptionErrorMsgData> {}
+
+export class TypeException extends Exception<ExceptionErrorMsgData> {}
+
+export class AsyncException extends Exception<ExceptionErrorMsgData> {}
+
+export class RequestException extends Exception<ExceptionErrorMsgData> {}
+
+export class PermissionException extends Exception<ExceptionErrorMsgData> {}
+
 
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter extends FrameworkFilter {

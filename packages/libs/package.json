@@ -7,8 +7,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@rapid/config": "workspace:^"
-  }
+  "license": "ISC"
 }

@@ -5,11 +5,8 @@
  * 避免过多挂载
  * ==========================================
  */
-import { ipcR } from '@/core/common/ipcR';
 import type { StoreKeyMap } from '@rapid/config/constants';
 import ElectronStore from 'electron-store';
 
-
-globalThis.ipcR = ipcR;
 
 globalThis.appStore = new ElectronStore<StoreKeyMap>;

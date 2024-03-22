@@ -3,7 +3,7 @@ import type { SetupOptions, DescendantClass } from '../core';
 import { IS_DEV } from '@rapid/config/constants';
 import { Printer } from '../core';
 
-export class FrameworkLogger {
+export class FrameworkLoggerServer {
   /**
    * 正常的日志
    * @param message
@@ -29,17 +29,17 @@ export class FrameworkLogger {
   }
 }
 
-export interface SetupLoggerOptions<T extends DescendantClass<FrameworkLogger>> extends Omit<SetupOptions<T, never>, 'modules'> {
+export interface SetupLoggerOptions<T extends DescendantClass<FrameworkLoggerServer>> extends Omit<SetupOptions<T, never>, 'modules'> {
 
 }
 
-export const isLoggerServer = (target: any): target is FrameworkLogger => target instanceof FrameworkLogger;
+export const isLoggerServer = (target: any): target is FrameworkLoggerServer => target instanceof FrameworkLoggerServer;
 
 export const runtimeContext = {
-  server: new FrameworkLogger()
+  server: new FrameworkLoggerServer()
 }
 
-export const setupLogger = <T extends DescendantClass<FrameworkLogger>>(options: SetupLoggerOptions<T>) => {
+export const setupLogger = async <T extends DescendantClass<FrameworkLoggerServer>>(options: SetupLoggerOptions<T>) => {
   const { use: Server } = options;
 
   if (IS_DEV) {

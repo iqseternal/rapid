@@ -4,6 +4,8 @@ import { mergeConfig } from 'vite';
 
 import * as path from 'path';
 
+export { defineVars } from '../../target.config';
+
 export type ConfigEnv = Parameters<UserConfigFn>[0];
 export type ConfigFn = (env: ConfigEnv) => UserConfigSchema;
 

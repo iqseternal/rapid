@@ -1,4 +1,4 @@
-import { StoreKeyMap, IPC_MAIN_WINDOW } from '@rapid/config/constants';
+import { StoreKeyMap } from '@rapid/config/constants';
 
 export class AppStore {
   static get<Key extends keyof StoreKeyMap>(key: Key, defaultValue?: StoreKeyMap[Key]) {

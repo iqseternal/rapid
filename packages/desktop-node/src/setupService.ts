@@ -2,8 +2,10 @@ import { WindowService, WindowStateMachine } from '@/service/WindowService';
 import { WallpaperService } from '@/service/WallpaperService';
 import { DownloadService } from '@/service/DownloadService';
 import { AppDataService } from '@/service/AppDataService';
-import { IpcResponseOk, sendToRenderer, setIpcMainHandle } from '@/core/common/ipcR';
-import { CONFIG, IPC_MAIN_WINDOW, IPC_RENDER_DIALOG_WINDOW, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+// import { IpcResponseOk, sendToRenderer } from '@/core/common/ipcR';
+// import { CONFIG, IPC_MAIN_WINDOW, IPC_RENDER_DIALOG_WINDOW, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from '@/config';
@@ -98,7 +100,7 @@ export async function setupDialogWindow(options: DialogWindowOptions) {
   windowService.addOpenThenCb(() => {
     PrinterService.printWarn(`弹窗打开成功了`);
 
-    sendToRenderer(windowService.window, IPC_RENDER_DIALOG_WINDOW.DIALOG_TYPE, new IpcResponseOk(options.type));
+    // sendToRenderer(windowService.window, IPC_RENDER_DIALOG_WINDOW.DIALOG_TYPE, new IpcResponseOk(options.type));
   });
   windowService.addOpenCatchCb(() => {
     PrinterService.printWarn(`弹窗打开失败了`);

@@ -9,7 +9,7 @@ export * from './config';
 
 export * from './store';
 
-export * from './ipc';
+// export * from './ipc';
 
 export * from './others';
 
