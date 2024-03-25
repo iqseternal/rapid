@@ -3,12 +3,10 @@ import { RuntimeException, TypeException, AsyncException, RequestException, Perm
 
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter extends FrameworkFilter {
-
-
   catch(err: RuntimeException): void {
 
+    console.log('111');
   }
-
 }
 
 

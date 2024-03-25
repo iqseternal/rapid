@@ -4,6 +4,9 @@
     "module": "ESNext",
     "target": "ESNext",
     "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": false,
+    "composite": false,
+    "declaration": false,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
@@ -28,7 +31,7 @@
     "noImplicitAny": false,
     "allowUmdGlobalAccess": true,
     "resolveJsonModule": true,
-    "noEmit": false
+    "noEmit": true
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx", "../config/@types"],
   "exclude": ["node_modules", "dist", ".git", ".ignore"]

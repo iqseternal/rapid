@@ -24,10 +24,6 @@ export const setupApp = async (startApp: () => void, ops?: Partial<AppOptions>):
   PrinterService.printInfo('开始构建应用程序, setupApp...');
   const options = { ...DEFAULT_APP_OPTIONS, ...ops } as Required<AppOptions>;
 
-  const safeStartApp = safeRunNoneArgAsyncFn(startApp, () => {
-    app.quit();
-  });
-
   app.whenReady().then(() => {
     electronApp.setAppUserModelId(options.modelId);
 
@@ -36,10 +32,10 @@ export const setupApp = async (startApp: () => void, ops?: Partial<AppOptions>):
     if (BrowserWindow.getAllWindows().length !== 0) {
       BrowserWindow.getAllWindows()[0].focus();
     }
-    else safeStartApp();
+    else startApp();
 
     app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0)  safeStartApp();
+      if (BrowserWindow.getAllWindows().length === 0)  startApp();
     });
   });
 

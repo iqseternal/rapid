@@ -21,7 +21,7 @@ export async function setupAppDataDownload() {
 }
 
 export async function setupMainWindow() {
-  PrinterService.printInfo('窗口构建');
+  PrinterService.printInfo('窗口开始构建');
   const appConfigService = AppConfigService.getInstance();
 
   const windowService = new WindowService(appConfigService.config.windows.mainWindow, {

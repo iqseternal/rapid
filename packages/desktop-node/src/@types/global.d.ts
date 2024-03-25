@@ -6,7 +6,7 @@ import ElectronStore from 'electron-store';
 import type { StoreKeyMap } from '@constants/store';
 
 declare global {
-  var appStore: ElectronStore<StoreKeyMap>;
+
 }
 
 export {};

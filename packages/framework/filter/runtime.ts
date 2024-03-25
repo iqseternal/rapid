@@ -40,7 +40,7 @@ export const setupFilters = async <T extends DescendantClass<FrameworkFilter>>(o
     const Exception = Reflect.getMetadata(FILTER_META_CATCH, filter.constructor);
 
     if (!Exception) {
-      if (IS_DEV) Printer.printError(`Catch decorator must receive an Exception.`);
+      if (IS_DEV) Printer.printError(`\`Catch\` decorator must receive an Exception.`);
       return;
     }
 
@@ -48,7 +48,26 @@ export const setupFilters = async <T extends DescendantClass<FrameworkFilter>>(o
   })
 }
 
+export const filterCatch = <Err extends Error>(err: Err): Promise<void> => {
+  return new Promise(async (resolve, reject) => {
+    if (!(err instanceof Exception)) return reject();
 
+    let isResolved = false;
+
+    for (let i = 0;i < runtimeContext.modules.length;i ++) {
+
+      const { filter, Exception } = runtimeContext.modules[i];
+
+      if (err instanceof Exception) {
+        filter.catch(err);
+        isResolved = true;
+      }
+    }
+
+    if (isResolved) resolve();
+    else reject();
+  })
+}
 
 
 

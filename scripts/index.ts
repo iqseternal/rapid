@@ -1,3 +1,4 @@
 
 
-import {  } from '@suey/pkg-utils';
+
+console.log('你好');

@@ -53,7 +53,7 @@ export const settingRoutes = makeRoute({
 });
 
 export const rootRoute = makeRoute({
-  name: 'root',
+  name: 'Root',
   path: '/',
   redirect: settingRoutes.path
 });

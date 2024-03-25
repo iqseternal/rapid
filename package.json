@@ -7,7 +7,7 @@
   "scripts": {
     "typecheck": "pnpm -r --filter=./packages/* run typecheck",
     "start": "electron-vite preview",
-    "dev": "electron-vite dev",
+    "dev": "chcp 65001 && electron-vite dev",
     "dev:app": "electron-vite dev --watch",
     "website:dev": "pnpm -C ./packages/website run dev",
     "website:build": "pnpm -C ./packages/website run build",

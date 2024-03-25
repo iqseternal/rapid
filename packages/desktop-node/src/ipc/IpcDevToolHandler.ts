@@ -15,7 +15,7 @@ export class IpcDevToolHandler extends FrameworkIpcHandler {
   public readonly id = 'IpcDevTool';
 
   @IpcMain.Handler()
-  @NoteInfo((win: WindowService, status: boolean) => `${win.window.id}${status ? '打开' : '关闭'}了开发者工具`)
+  @NoteInfo((win: WindowService, status: boolean) => `${win.window.id}${status ? 'open' : '关闭'}了开发者工具`)
   openDevTool(windowService: WindowService, status: boolean, options?: OpenDevToolsOptions) {
 
     if (status) {
