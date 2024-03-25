@@ -36,6 +36,18 @@
 $ pnpm install
 ```
 
+如果安装过程中出现错误，请首先请检查你的源是否为官方源，不建议使用其他源。
+
+如果你存在与 npm 仓库连接不稳定的问题，例如：`pnpm will retry in 10 seconds 2 retries left`
+
+那么你可能需要如下软件地址。
+
+[Clash](https://www.clash.la/releases/)
+
+[Proxifier - The Most Advanced Proxy Client](https://www.proxifier.com/)
+
+当你配置完成你的代理之后，再重试。
+
 ### Development
 
 ```bash
