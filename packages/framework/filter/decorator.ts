@@ -4,6 +4,11 @@ import type { DescendantClass } from '../core';
 
 export const FILTER_META_CATCH = Symbol(`reflect:filter:catch`);
 
+/**
+ * Catch 装饰器, 告知需要捕捉那一种类型的异常
+ * @param Exception
+ * @returns
+ */
 export const Catch = (Exception: DescendantClass<Exception>): ClassDecorator => {
 
   return (target) => {

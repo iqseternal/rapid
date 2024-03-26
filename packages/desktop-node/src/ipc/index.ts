@@ -1,14 +1,5 @@
 
-import { IpcStoreHandler } from './IpcStoreHandler';
-import { IpcWindowHandler } from './IpcWindowHandler';
-import { IpcDevToolHandler } from './IpcDevToolHandler';
 
-export const ipcModules = [
-  IpcStoreHandler, IpcWindowHandler, IpcDevToolHandler
-]
-
-export { IpcDevToolHandler }
-
-export { IpcStoreHandler }
-
-export { IpcWindowHandler }
+export { IpcStoreHandler } from './IpcStoreHandler';
+export { IpcWindowHandler } from './IpcWindowHandler';
+export { IpcDevToolHandler } from './IpcDevToolHandler';

@@ -1,7 +1,9 @@
 
 
 export interface SetupOptions<Server, Service> {
+  /** 服务对象 */
   use: Server;
+  /** 创建的模块 */
   modules: Service[];
 }
 

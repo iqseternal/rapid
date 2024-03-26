@@ -6,6 +6,9 @@ export const IPC_META_HANDLER_ONCE = Symbol('reflect:ipcMain:handlerOnce');
 export const IPC_META_ON = Symbol('reflect:ipcMain:on');
 export const IPC_META_ON_ONCE = Symbol('reflect:ipcMain:once)');
 
+/**
+ * ipc 监听通信的类型
+ */
 export enum IPC_EMITTER_TYPE {
   HANDLE = 'handle',
   HANDLE_ONCE = 'handleOnce',
@@ -13,7 +16,14 @@ export enum IPC_EMITTER_TYPE {
   ONCE = 'once'
 }
 
+/**
+ * Ipc 主进程的装饰器合集
+ */
 export const IpcMain = {
+  /**
+   * 标识一个 Ipc 控制器句柄
+   * @returns
+   */
   IpcController: (): ClassDecorator => {
     return (target) => {
       Reflect.defineMetadata(IPC_META_CONTROLLER, true, target);
@@ -23,6 +33,12 @@ export const IpcMain = {
       if (!Reflect.hasMetadata(IPC_META_ON_ONCE, target)) Reflect.defineMetadata(IPC_META_ON_ONCE, [], target);
     }
   },
+  /**
+   * ipc 进行监听回复的总和
+   * @param type
+   * @param channel
+   * @returns
+   */
   IpcType: (type: IPC_EMITTER_TYPE = IPC_EMITTER_TYPE.HANDLE, channel?: string): MethodDecorator => {
     if (type === IPC_EMITTER_TYPE.HANDLE) return IpcMain.Handler(channel);
     if (type === IPC_EMITTER_TYPE.HANDLE_ONCE) return IpcMain.HandlerOnce(channel);
@@ -33,6 +49,11 @@ export const IpcMain = {
 
     }
   },
+  /**
+   * ipc 以 handler 句柄监听
+   * @param channel
+   * @returns
+   */
   Handler: (channel?: string): MethodDecorator => {
     return (target, propertyName) => {
       if (!Reflect.hasMetadata(IPC_META_HANDLER, target.constructor)) {
@@ -43,6 +64,11 @@ export const IpcMain = {
       values.push(propertyName);
     }
   },
+  /**
+   * ipc 以 HandlerOnce 句柄监听
+   * @param channel
+   * @returns
+   */
   HandlerOnce: (channel?: string): MethodDecorator => {
 
     return (target, propertyName) => {
@@ -54,6 +80,11 @@ export const IpcMain = {
       values.push(propertyName);
     }
   },
+  /**
+   * ipc 以 On 句柄监听
+   * @param channel
+   * @returns
+   */
   On: (channel?: string): MethodDecorator => {
 
     return (target, propertyName) => {
@@ -65,6 +96,11 @@ export const IpcMain = {
       values.push(propertyName);
     }
   },
+  /**
+   * ipc 以 Once 句柄监听
+   * @param channel
+   * @returns
+   */
   Once: (channel?: string): MethodDecorator => {
 
     return (target, propertyName) => {

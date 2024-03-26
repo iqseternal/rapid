@@ -1,7 +1,7 @@
 import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
 import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler } from '@rapid/framework';
 import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
-import { WindowService } from '@/service/WindowService';
+import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
 import { setWindowOpenHandler, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
 import { screen } from 'electron';
 import { reloadApp } from '../core/common/app';
@@ -150,6 +150,10 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   @IpcMain.Handler()
   closeWindow(windowService: WindowService, id?: number) {
+    const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
+
+    if (isSameWindowService(mainWindowService, windowService)) return windowService.window.hide();
+
     windowService.destroy();
   }
 

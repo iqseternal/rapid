@@ -6,8 +6,15 @@ import { Exception } from '../exception';
 
 import { Catch, FILTER_META_CATCH } from './decorator';
 
+/**
+ * 捕捉 Exception 异常的拦截器 Filter
+ */
 @Catch(Exception)
 export class FrameworkFilter {
+  /**
+   * 当发生异常并被此拦截器拦截，会调用当前 catch 方法
+   * @param err
+   */
   catch(err: Exception) {
 
   }
@@ -24,6 +31,11 @@ export const runtimeContext = {
   }[]
 }
 
+/**
+ * 创建 filter 的上下文
+ * @param options
+ * @returns
+ */
 export const setupFilters = async <T extends DescendantClass<FrameworkFilter>>(options: SetupFilterOptions<T>) => {
   const { modules } = options;
 

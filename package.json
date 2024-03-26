@@ -5,10 +5,11 @@
   "private": true,
   "main": "./out/main/index.js",
   "scripts": {
+    "useUtf8": "chcp 65001",
     "typecheck": "pnpm -r --filter=./packages/* run typecheck",
     "start": "electron-vite preview",
-    "dev": "chcp 65001 && electron-vite dev",
-    "dev:app": "electron-vite dev --watch",
+    "dev": "pnpm useUtf8 && electron-vite dev",
+    "dev:app": "pnpm useUtf8 && electron-vite dev --watch",
     "website:dev": "pnpm -C ./packages/website run dev",
     "website:build": "pnpm -C ./packages/website run build",
     "scripts:dev": "pnpm -C scripts dev",

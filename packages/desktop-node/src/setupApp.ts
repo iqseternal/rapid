@@ -35,15 +35,15 @@ export const setupApp = async (startApp: () => void, ops?: Partial<AppOptions>):
     else startApp();
 
     app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0)  startApp();
+      if (BrowserWindow.getAllWindows().length === 0) startApp();
     });
   });
 
   app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
-      app.quit();
-    };
+    // if (process.platform !== 'darwin') {
+    //   PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
+    //   app.quit();
+    // };
   });
 
   return Promise.resolve();
