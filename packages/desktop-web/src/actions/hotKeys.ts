@@ -24,35 +24,35 @@ export const hotKeys = makeHotKeys({
     key: 'Ctrl+N',
     tip: '新建文件', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   openFile: {
     key: 'Ctrl+O',
     tip: '打开文件', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   saveFile: {
     key: 'Ctrl+S',
     tip: '保存文件', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   saveFileTo: {
     key: 'Ctrl+Shift+S',
     tip: '文件另存为', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   printFile: {
     key: 'Ctrl+Shift+P',
     tip: '打印文件', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
 
@@ -71,21 +71,21 @@ export const hotKeys = makeHotKeys({
     key: 'Ctrl+X',
     tip: '剪切', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   copy: {
     key: 'Ctrl+C',
     tip: '复制', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   snippets: {
     key: 'Ctrl+V',
     tip: '粘贴', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
 
@@ -93,14 +93,14 @@ export const hotKeys = makeHotKeys({
     key: 'Ctrl+A',
     tip: '全选', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   delete: {
     key: 'Delete',
     tip: '删除', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
 
@@ -109,7 +109,7 @@ export const hotKeys = makeHotKeys({
     key: 'Ctrl+R', moreKey: ['F5'],
     tip: '刷新页面', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   fullScreen: {
@@ -123,21 +123,21 @@ export const hotKeys = makeHotKeys({
     tip: '打开开发者工具', changeAble: false,
     description: '会在生产模式的时候失效',
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   closeWindow: {
     key: 'Alt+F4',
     tip: '关闭窗口', changeAble: false,
     evt: () => {
-
+      window.alert('没有完成');
     }
   },
   logout: {
     key: '',
     tip: '退出登录', changeAble: true,
     evt: () => {
-
+      window.alert('没有完成');
     }
   }
 })

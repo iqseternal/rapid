@@ -27,8 +27,7 @@ setupContext({
 })
 
 setupApp(async () => {
-  setupTrayMenu();
+  setupMainWindow();
 
-  // const mainWindowService = await setupMainWindow();
-  // mainWindowService.open();
+  setupTrayMenu();
 })

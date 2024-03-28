@@ -23,18 +23,14 @@ export async function setupAppDataDownload() {
  */
 export async function setupMainWindow() {
   const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
-
-  if (mainWindowService) {
-    PrinterService.printInfo(`已经拥有了主页面, 重复的构建`);
-    return mainWindowService;
-  }
+  if (mainWindowService) return mainWindowService;
 
   PrinterService.printInfo('窗口开始构建');
   const appConfigService = AppConfigService.getInstance();
 
   const windowService = new WindowService(appConfigService.config.windows.mainWindow, {
     url: PAGES_WINDOW_MAIN,
-    autoShow: false,
+    autoLoad: true,
     windowKey: WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW
   });
 
@@ -43,10 +39,6 @@ export async function setupMainWindow() {
   setWindowDevtoolsDetach(windowService.window);
 
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
-
-  windowService.addOpenCatchCb(() => {
-    app.exit();
-  });
   return windowService;
 }
 
@@ -55,34 +47,21 @@ export async function setupMainWindow() {
  * @param parentWindowService
  * @returns
  */
-export async function setupSettingWindow(parentWindowService: WindowService) {
+export async function setupSettingWindow() {
   const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
 
-  if (settingWindowService) {
-    PrinterService.printInfo(`已经拥有了设置页面, 重复的构建`);
-    return settingWindowService;
-  }
-
+  if (settingWindowService) return settingWindowService;
   PrinterService.printInfo('构建设置页面');
 
   const appConfigService = AppConfigService.getInstance();
   const windowService = new WindowService(appConfigService.config.windows.mediumPopupWindow, {
     url: PAGES_WINDOW_SETTING,
-    autoShow: true,
+    autoLoad: true,
     windowKey: WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW
   });
 
   windowService.window.setResizable(false);
   windowService.window.setMenu(null);
-
-  parentWindowService.window.blurWebView();
-  parentWindowService.window.setEnabled(false);
-
-  windowService.window.setParentWindow(parentWindowService.window);
-  windowService.addDestroyCb(() => {
-    parentWindowService.window.setEnabled(true);
-  });
-
   return windowService;
 }
 
@@ -98,17 +77,13 @@ export interface DialogWindowOptions {
 export async function setupDialogWindow(options: DialogWindowOptions) {
   const dialogWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.DIALOG_WINDOW);
 
-  if (dialogWindowService) {
-    PrinterService.printInfo(`已经拥有了弹窗页面, 重复的构建`);
-    return dialogWindowService;
-  }
-
+  if (dialogWindowService) return dialogWindowService;
   PrinterService.printInfo('构建弹窗');
 
   const appConfigService = AppConfigService.getInstance();
   const windowService = new WindowService(appConfigService.config.windows.smallPopupWindow, {
     url: PAGES_WINDOW_DIALOG,
-    autoShow: true,
+    autoLoad: true,
     windowKey: WINDOW_STATE_MACHINE_KEYS.DIALOG_WINDOW
   });
 
@@ -137,27 +112,47 @@ export async function setupDialogWindow(options: DialogWindowOptions) {
 export async function setupTrayMenu() {
   const tray = new Tray(nativeImage.createFromPath(iconUrl));
 
-  tray.on('click', () => {
-    const mainWindowService = WindowService.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
-    mainWindowService.window.show();
+  tray.on('click', async () => {
+    const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
+    if (!mainWindowService) return setupMainWindow();
+
+    if (!mainWindowService.window.isVisible()) mainWindowService.window.show();
+    else mainWindowService.window.focus();
   });
 
   tray.setTitle(CONFIG.PROJECT);
   tray.setToolTip(CONFIG.PROJECT);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio', click: () => {
+    {
+      label: '没什么用的选项1',
+      type: 'radio',
+      click: () => {
 
       console.log('click');
-    } },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' },
+      }
+    },
+    { label: '没用的选项2', type: 'radio' },
+    { label: '没用的选项3', type: 'radio', checked: true },
+    { label: '没用的选项4', type: 'radio' },
     { type: 'separator' },
     { label: '????', type: 'normal' },
+    {
+      label: '设置',
+      type: 'normal',
+      click: async () => {
+        const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+        if (!settingWindowService) return setupSettingWindow();
+
+        if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
+        else settingWindowService.window.focus();
+      }
+    },
     { type: 'separator' },
     {
-      label: '退出', type: 'normal', click: () => app.quit()
+      label: '退出',
+      type: 'normal',
+      click: () => app.quit()
     }
   ])
   tray.setContextMenu(contextMenu);

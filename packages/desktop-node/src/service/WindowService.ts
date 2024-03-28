@@ -5,7 +5,7 @@ import { Tray, Menu, app, screen } from 'electron';
 import { setWindowCross, setWindowMaxSize, setWindowMinSize, setWindowOpenHandler, setWindowCaption, setWindowDevtoolsDetach, getWindowFrom, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
 import { PAGES_WINDOW_SETTING, PAGES_WINDOW_MAIN } from '@/config';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
-import { isString, isNumber } from '@suey/pkg-utils';
+import { isString, isNumber, isNull } from '@suey/pkg-utils';
 import { iconUrl } from '@rapid/config/electron-main';
 import { RuntimeException } from '@/core';
 import { print } from '@suey/printer';
@@ -23,7 +23,7 @@ const DEFAULT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
 
 export interface WindowServiceOptions {
   url: string;
-  autoShow: boolean;
+  autoLoad: boolean;
   windowKey?: string;
 }
 
@@ -31,8 +31,8 @@ export class WindowService {
   public static readonly id = `WindowService`;
 
   public readonly window: BrowserWindow;
-  private openThenCbs: BaseCb[] = [];
-  private openCatchCbs: BaseCb[] = [];
+  private loadThenCbs: BaseCb[] = [];
+  private loadCatchCbs: BaseCb[] = [];
   private destroyCbs: BaseCb[] = [];
 
   constructor(
@@ -62,8 +62,6 @@ export class WindowService {
     setWindowCaption(this.window, iconUrl, CONFIG.PROJECT);
     setWindowOpenHandler(this.window);
 
-    if (this.options.autoShow) this.window.on('ready-to-show', () => this.window.show());
-
     if (this.options.windowKey) WindowStateMachine.addKey(this.options.windowKey, this);
     else WindowStateMachine.addId(this);
 
@@ -71,18 +69,33 @@ export class WindowService {
       if (this.options.windowKey) WindowStateMachine.removeKey(this.options.windowKey);
       else WindowStateMachine.removeId(this);
     });
+
+    if (options.autoLoad) this.load();
   }
 
   /**
    * 添加一个打开窗口成功的回调函数
    * @param cb
    */
-  addOpenThenCb(cb: BaseCb) { this.openThenCbs.push(cb); }
+  addOpenThenCb(cb: BaseCb) { this.loadThenCbs.push(cb); }
   /**
    * 添加一个打开窗口失败的回调函数
    * @param cb
    */
-  addOpenCatchCb(cb: BaseCb) { this.openCatchCbs.push(cb); }
+  addOpenCatchCb(cb: BaseCb) { this.loadCatchCbs.push(cb); }
+
+  private load() {
+    let p: Promise<void>;
+
+    if (IS_DEV) p = this.window.loadURL(this.options.url);
+    else p = this.window.loadFile(this.options.url);
+
+    p.then(() => {
+      this.loadThenCbs.forEach(cb => cb());
+    }).catch(() => {
+      this.loadCatchCbs.forEach(cb => cb());
+    })
+  }
 
   /**
    * 打开窗口
@@ -90,28 +103,22 @@ export class WindowService {
    * @param fail 打开失败的回调函数
    * @returns
    */
-  open(ok?: BaseCb, fail?: BaseCb) {
-    return new Promise<void>(async (resolve, reject) => {
-      if (this.window.isVisible()) {
-        this.window.focus();
-        return resolve();
-      }
+  show(ok?: BaseCb, fail?: BaseCb) {
+    return new Promise<void>((resolve, reject) => {
+      let isResolved = false;
 
-      let p: Promise<void>;
-
-      if (IS_DEV) p = this.window.loadURL(this.options.url);
-      else p = this.window.loadFile(this.options.url);
-
-      p.then(async () => {
-        ok && ok();
-        this.openThenCbs.forEach(cb => cb());
-        resolve();
-      }).catch(async () => {
-        fail && fail();
-        this.openCatchCbs.forEach(cb => cb());
+      setTimeout(() => {
+        fail();
         reject();
-      });
-    });
+      }, 1000);
+
+      this.window.once('ready-to-show', () => {
+        ok();
+        isResolved = true;
+        this.window.show();
+        resolve();
+      })
+    })
   }
 
   /**
@@ -150,13 +157,27 @@ export class WindowService {
    * @param args
    * @returns
    */
-  static findWindowService(name: string): WindowService | null;
-  static findWindowService(...args: Parameters<typeof getWindowFrom>): WindowService | null;
-  static findWindowService(...args: [string] | Parameters<typeof getWindowFrom>) {
-    if (isString(args[0])) return WindowStateMachine.findWindowService(args[0]);
+  static findWindowService(name: string): WindowService;
+  static findWindowService(name: string, init?: () => WindowService | Promise<WindowService>): Promise<WindowService>;
+  static findWindowService(...args: Parameters<typeof getWindowFrom>): WindowService;
+  static findWindowService(...args: [string] | [string, (() => WindowService | Promise<WindowService>)?] | Parameters<typeof getWindowFrom>) {
+    if (isString(args[0])) {
+
+      const service = WindowStateMachine.findWindowService(args[0]);
+
+
+      if (!service) {
+        if (args[1]) return Promise.resolve(args[1]());
+
+        throw new RuntimeException(`not found BrowserWindow object in ${args[0]}.`, {
+          label: `WindowService:findWindowService`
+        })
+      }
+      else return service;
+    }
 
     const window = getWindowFrom(...(args as Parameters<typeof getWindowFrom>));
-    if (!window) throw new RuntimeException('not found BrowserWindow object.', {
+    if (!window) throw new RuntimeException(`not found WindowService object in ${args}.`, {
       label: this.id
     });
 
@@ -171,9 +192,8 @@ export class WindowStateMachine {
   private static readonly keyToServiceMap = new Map<string, WindowService>();
   private static readonly idToServiceMap = new Map<number, WindowService>();
 
-
   /**
-   * 放回当前状态机中是否含有 Service
+   * 返回当前状态机中是否含有 Service
    * @param windowService
    * @returns
    */
@@ -227,24 +247,22 @@ export class WindowStateMachine {
    * 通过名字或者 id 查找一个 Service
    * @param key
    */
-  public static findWindowService(key: string): WindowService;
-  public static findWindowService(id: number): WindowService;
-  public static findWindowService(key: string | number): WindowService {
-    let windowService: WindowService;
+  public static findWindowService(key: string): WindowService | null;
+  public static findWindowService(id: number): WindowService | null;
+  public static findWindowService(key: string | number): WindowService | null {
+    let windowService: WindowService = void 0;
 
     if (isString(key)) windowService = WindowStateMachine.keyToServiceMap.get(key);
     else if (isNumber(key)) windowService = WindowStateMachine.idToServiceMap.get(key);
 
-    if (!windowService) throw new RuntimeException('not found WindowService object.', {
-      label: `WindowStateMachine`
-    });
+    if (!windowService) return null;
 
     return windowService;
   }
 
   public static desotryWindowService(windowService: WindowService) {
     if (!WindowStateMachine.hasWindowService(windowService)) {
-      throw new RuntimeException('WindowStateMachine: does not have a window object that is about to be destroyedd', {
+      throw new RuntimeException('WindowStateMachine: does not have a window object that is about to be destroyed', {
         label: 'WindowStateMachine'
       })
     }
@@ -259,6 +277,8 @@ export class WindowStateMachine {
  * @returns
  */
 export const isSameWindowService = (_1: WindowService, _2: WindowService) => {
+  if (isNull(_1) || isNull(_2)) return false;
+
   if (_1 === _2) return true;
   if (_1.window.id === _2.window.id) return true;
 

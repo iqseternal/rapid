@@ -142,8 +142,13 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
   @IpcMain.Handler()
   async openWindow(windowService: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
     if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) {
-      const settingWindowService = await setupSettingWindow(windowService);
-      settingWindowService.open();
+      const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+      if (!settingWindowService) {
+        await setupSettingWindow();
+        return;
+      }
+
+      settingWindowService.window.show();
     }
   }
 
