@@ -6,6 +6,7 @@
 import { createApiRequest } from '@suey/pkg-utils';
 import { getToken } from '@libs/storage';
 import { inflate } from 'pako';
+import { CONFIG } from '@rapid/config/constants';
 
 const isOkStatus = (status: number): boolean => {
   if (status >= 200 && status < 300) return true;
@@ -18,7 +19,7 @@ const isOkStatus = (status: number): boolean => {
 
 export { REQ_METHODS, type RequestConfig } from '@suey/pkg-utils';
 
-export const { apiGet, apiPost, request, createApi } = createApiRequest<HConfig, BasicResponse>('https://www.oupro.cn:3000/api/v1.0.0/', {
+export const { apiGet, apiPost, request, createApi } = createApiRequest<HConfig, BasicResponse>(CONFIG.API_URL, {
   // timeout: +import.meta.env.SPACE_API_TIMEOUT
 }, {
   onFulfilled: config => {

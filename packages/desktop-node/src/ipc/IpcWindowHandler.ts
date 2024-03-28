@@ -4,9 +4,8 @@ import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/co
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
 import { setWindowOpenHandler, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
 import { screen } from 'electron';
-import { reloadApp } from '../core/common/app';
 import { PrinterService } from '@/service/PrinterService';
-import { RuntimeException, PermissionException, TypeException } from '../common/exceptions';
+import { RuntimeException, PermissionException, TypeException } from '@/core';
 import { isNumber, isString, isUndefined } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
@@ -49,7 +48,7 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   @IpcMain.Handler()
   relanuch(windowService: WindowService) {
-    reloadApp();
+    app.relaunch();
   }
 
   @IpcMain.Handler()

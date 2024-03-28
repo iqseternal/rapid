@@ -1,12 +1,9 @@
-import { setupContext, setupSingleApplication } from '@rapid/framework';
-import { RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter, RuntimeExceptionFilter, AsyncExceptionFilter } from './common';
+import { RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter, RuntimeExceptionFilter, AsyncExceptionFilter } from './core';
 import { IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler } from './ipc';
 import { LoggerServer, IpcHandlerServer } from './server';
-import { setupApp } from './setupApp';
+import { setupContext, setupSingleApplication } from '@rapid/framework';
 import { setupMainWindow, setupTrayMenu } from './setupService';
-import { Menu, Tray, nativeImage } from 'electron';
-import { iconUrl } from '@rapid/config/electron-main';
-import { CONFIG } from '@rapid/config/constants';
+import { setupApp } from './setupApp';
 
 setupSingleApplication();
 
@@ -30,9 +27,8 @@ setupContext({
 })
 
 setupApp(async () => {
-  const tray = await setupTrayMenu();
+  setupTrayMenu();
 
-
-  const mainWindowService = await setupMainWindow();
-  mainWindowService.open();
+  // const mainWindowService = await setupMainWindow();
+  // mainWindowService.open();
 })

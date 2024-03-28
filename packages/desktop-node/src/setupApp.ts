@@ -1,7 +1,6 @@
 import { app, BrowserView, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from '@/service/PrinterService';
-import { safeRunNoneArgAsyncFn } from './core/common/app';
 import { print, printError } from '@suey/printer';
 import { WindowService, WindowServiceOptions } from '@/service/WindowService';
 import { isString, isNumber } from '@suey/pkg-utils';

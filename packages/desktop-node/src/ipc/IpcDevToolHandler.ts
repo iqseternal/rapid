@@ -5,7 +5,7 @@ import { WindowService } from '@/service/WindowService';
 import { setWindowOpenHandler } from '@/core/common/window';
 import { screen } from 'electron';
 import { PrinterService } from '@/service/PrinterService';
-import { RuntimeException, PermissionException, TypeException } from '../common/exceptions';
+import { RuntimeException, PermissionException, TypeException } from '@/core';
 import { isNumber, isString, isUndefined } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';

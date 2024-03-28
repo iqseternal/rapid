@@ -2,17 +2,13 @@ import { WindowService, WindowStateMachine } from '@/service/WindowService';
 import { WallpaperService } from '@/service/WallpaperService';
 import { DownloadService } from '@/service/DownloadService';
 import { AppDataService } from '@/service/AppDataService';
-// import { IpcResponseOk, sendToRenderer } from '@/core/common/ipcR';
-// import { CONFIG, IPC_MAIN_WINDOW, IPC_RENDER_DIALOG_WINDOW, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
-
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from '@/config';
 import { UserConfigService } from '@/service/UserConfigService';
 import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron';
-import { exitApp } from '@/core/common/app';
-import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach, setWindowOpenHandler } from '@/core/common/window';
+import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach } from '@/core/common/window';
 import { iconUrl } from '@rapid/config/electron-main';
 
 export async function setupAppDataDownload() {
@@ -48,7 +44,9 @@ export async function setupMainWindow() {
 
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
 
-  windowService.addOpenCatchCb(exitApp);
+  windowService.addOpenCatchCb(() => {
+    app.exit();
+  });
   return windowService;
 }
 
@@ -138,6 +136,11 @@ export async function setupDialogWindow(options: DialogWindowOptions) {
  */
 export async function setupTrayMenu() {
   const tray = new Tray(nativeImage.createFromPath(iconUrl));
+
+  tray.on('click', () => {
+    const mainWindowService = WindowService.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
+    mainWindowService.window.show();
+  });
 
   tray.setTitle(CONFIG.PROJECT);
   tray.setToolTip(CONFIG.PROJECT);

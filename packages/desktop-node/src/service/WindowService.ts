@@ -7,7 +7,7 @@ import { PAGES_WINDOW_SETTING, PAGES_WINDOW_MAIN } from '@/config';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber } from '@suey/pkg-utils';
 import { iconUrl } from '@rapid/config/electron-main';
-import { RuntimeException } from '@/common/exceptions';
+import { RuntimeException } from '@/core';
 import { print } from '@suey/printer';
 import { PrinterService } from './PrinterService';
 
@@ -138,6 +138,8 @@ export class WindowService {
    * 销毁窗口对象
    */
   destroy() {
+    if (this.window.isDestroyed()) return;
+
     this.destroyCbs.forEach(cb => cb());
     this.window.close();
     this.window.destroy();
@@ -148,22 +150,19 @@ export class WindowService {
    * @param args
    * @returns
    */
-  static findWindowService(...args: Parameters<typeof getWindowFrom>) {
-    const window = getWindowFrom(...args);
+  static findWindowService(name: string): WindowService | null;
+  static findWindowService(...args: Parameters<typeof getWindowFrom>): WindowService | null;
+  static findWindowService(...args: [string] | Parameters<typeof getWindowFrom>) {
+    if (isString(args[0])) return WindowStateMachine.findWindowService(args[0]);
+
+    const window = getWindowFrom(...(args as Parameters<typeof getWindowFrom>));
     if (!window) throw new RuntimeException('not found BrowserWindow object.', {
       label: this.id
     });
 
-    const windowService = WindowStateMachine.findWindowService(window.id);
-    if (!windowService) throw new RuntimeException('not found WindowService object.', {
-      label: this.id
-    });
-
-    return windowService;
+    return WindowStateMachine.findWindowService(window.id);
   }
 }
-
-
 
 /**
  * window的状态机, 用于记录创建了那些窗口服务
@@ -228,18 +227,19 @@ export class WindowStateMachine {
    * 通过名字或者 id 查找一个 Service
    * @param key
    */
-  public static findWindowService(key: string): WindowService | null;
-  public static findWindowService(id: number): WindowService | null;
-  public static findWindowService(key: string | number): WindowService | null {
-    if (isString(key)) {
-      return WindowStateMachine.keyToServiceMap.get(key) ?? null;
-    }
+  public static findWindowService(key: string): WindowService;
+  public static findWindowService(id: number): WindowService;
+  public static findWindowService(key: string | number): WindowService {
+    let windowService: WindowService;
 
-    if (isNumber(key)) {
-      return WindowStateMachine.idToServiceMap.get(key) ?? null;
-    }
+    if (isString(key)) windowService = WindowStateMachine.keyToServiceMap.get(key);
+    else if (isNumber(key)) windowService = WindowStateMachine.idToServiceMap.get(key);
 
-    return null;
+    if (!windowService) throw new RuntimeException('not found WindowService object.', {
+      label: `WindowStateMachine`
+    });
+
+    return windowService;
   }
 
   public static desotryWindowService(windowService: WindowService) {

@@ -1,11 +1,12 @@
 import { Catch, Exception, FrameworkFilter } from '@rapid/framework';
 import { RuntimeException, TypeException, AsyncException, RequestException, PermissionException } from '../exceptions';
+import { PrinterService } from '@/service/PrinterService';
 
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter extends FrameworkFilter {
   catch(err: RuntimeException): void {
 
-    console.log('111');
+    PrinterService.printError('RuntimeException ==>', err.errMsgData.label, err.stack);
   }
 }
 
@@ -15,7 +16,7 @@ export class TypeExceptionFilter extends FrameworkFilter {
 
 
   catch(err: TypeException): void {
-
+    PrinterService.printError('TypeException ==>', err.stack);
   }
 
 }
@@ -26,7 +27,7 @@ export class AsyncExceptionFilter extends FrameworkFilter {
 
 
   catch(err: AsyncException): void {
-
+    PrinterService.printError('AsyncException ==>', err.stack);
   }
 
 }
@@ -37,7 +38,7 @@ export class RequestExceptionFilter extends FrameworkFilter {
 
 
   catch(err: RequestException): void {
-
+    PrinterService.printError('RequestException ==>', err.stack);
   }
 
 }
@@ -48,7 +49,7 @@ export class PermissionExceptionFilter extends FrameworkFilter {
 
 
   catch(err: PermissionException): void {
-
+    PrinterService.printError('PermissionException ==>', err.stack);
   }
 
 }
