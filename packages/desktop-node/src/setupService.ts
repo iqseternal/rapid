@@ -114,7 +114,10 @@ export async function setupTrayMenu() {
 
   tray.on('click', async () => {
     const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
-    if (!mainWindowService) return setupMainWindow();
+    if (!mainWindowService) {
+      setupMainWindow();
+      return;
+    }
 
     if (!mainWindowService.window.isVisible()) mainWindowService.window.show();
     else mainWindowService.window.focus();
@@ -129,7 +132,7 @@ export async function setupTrayMenu() {
       type: 'radio',
       click: () => {
 
-      console.log('click');
+        console.log('click');
       }
     },
     { label: '没用的选项2', type: 'radio' },
@@ -142,7 +145,10 @@ export async function setupTrayMenu() {
       type: 'normal',
       click: async () => {
         const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
-        if (!settingWindowService) return setupSettingWindow();
+        if (!settingWindowService) {
+          setupSettingWindow();
+          return;
+        }
 
         if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
         else settingWindowService.window.focus();
@@ -155,6 +161,7 @@ export async function setupTrayMenu() {
       click: () => app.quit()
     }
   ])
+
   tray.setContextMenu(contextMenu);
 
   return tray;

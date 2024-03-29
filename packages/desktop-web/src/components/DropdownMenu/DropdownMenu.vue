@@ -17,11 +17,11 @@
 import { ref, watchEffect, provide, getCurrentInstance, inject } from 'vue';
 import type { Ref } from 'vue';
 import { DROPDOWN_STATUS, setupDropdownOpenModel } from './declare';
-import { useEventListener, useEventListenerForElement, useMousetrap } from '@/hooks';
+import { useEventListener, useEventListenerForElement, useMousetrap, useThrottle } from '@/hooks';
 
 const open = setupDropdownOpenModel();
 
-useEventListenerForElement(window, 'resize', () => {
+useEventListenerForElement(window, 'resize', useThrottle(() => {
   open.value = false;
-});
+}));
 </script>

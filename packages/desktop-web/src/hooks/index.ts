@@ -6,6 +6,7 @@
 
 export { useCssVar, useCssVarForRoot } from './useCssVar';
 export { useDebounce, useDebounceHook } from './useDebounce';
+export { useThrottle, useThrottleHook } from './useThrottle';
 export { useEventListener, useEventListenerForElement } from './useEventListener';
 
 export type { MousetrapAction, MousetrapBindFn, MousetrapBinds } from './useMousetrap';
@@ -40,3 +41,5 @@ export { useStorageStack } from './useStorageStack';
 export { useDisableRouterBack, useDisableRouterBackHook } from './useRouterJump';
 
 export { useDisableDragText } from './useDisableDragText';
+
+

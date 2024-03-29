@@ -1,18 +1,24 @@
 import { ref, reactive, watch } from 'vue';
-import { useDebounceHook } from '@/hooks';
 import { Meta2d, Pen, register, registerAnchors, registerCanvasDraw, deepClone } from '@meta2d/core';
 import { flowPens, flowAnchors } from '@meta2d/flow-diagram';
 import { activityDiagram, activityDiagramByCtx } from '@meta2d/activity-diagram';
 import { classPens } from '@meta2d/class-diagram';
 import { sequencePens, sequencePensbyCtx } from '@meta2d/sequence-diagram';
-import { register as registerEcharts } from '@meta2d/chart-diagram';
+import {
+  register as registerEcharts,
+  registerHighcharts,
+  registerLightningChart
+} from '@meta2d/chart-diagram';
+import { mindBoxPlugin } from '@meta2d/plugin-mind-core';
+import { collapseChildPlugin } from '@meta2d/plugin-mind-collapse';
 import { formPens } from '@meta2d/form-diagram';
 import { chartsPens } from '@meta2d/le5le-charts';
 import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
 import { setupIndexedDB } from '@/indexedDB';
 import { TABLES, TABLE_DOCUMENT, DATABASES_META2D } from '@indexedDB/type';
 import { useSelection } from './selections';
-import pako from 'pako';
+import { myTriangle, myTriangleAnchors } from './don';
+import { canvasTriangle, canvasTriangleAnchors } from './canvas';
 
 export * from './actions';
 export * from './selections';
@@ -49,19 +55,51 @@ export async function setupMeta2dView(target: HTMLElement) {
 
   // 按需注册图形库
   // 以下为自带基础图形库
-  register(flowPens());
-  registerAnchors(flowAnchors());
+
+  // 注册注册活动图元
   register(activityDiagram());
+  // 原生canvas绘画的图库，支持逻辑复杂的需求
   registerCanvasDraw(activityDiagramByCtx());
-  register(classPens());
+  // 注册时序图
   register(sequencePens());
   registerCanvasDraw(sequencePensbyCtx());
-  registerEcharts();
+  meta2d.installPenPlugins({ name: 'mindNode2' }, [
+    { plugin: mindBoxPlugin },
+    { plugin: collapseChildPlugin }
+  ])
+
+  // 注册类图
+  register(classPens());
+
+  // 注册表单图元
   registerCanvasDraw(formPens());
+
+  // 直接调用Echarts的注册函数
+  registerEcharts();
+  // 直接调用HighCharts的注册函数
+  registerHighcharts();
+  // 直接调用LightningChart的注册函数
+  registerLightningChart();
+
+
+
+  register(flowPens());
+  registerAnchors(flowAnchors());
   registerCanvasDraw(chartsPens());
   register(ftaPens());
   registerCanvasDraw(ftaPensbyCtx());
   registerAnchors(ftaAnchors());
+
+
+  //注册自定义path2d图元
+  meta2d.register({ myTriangle })
+  // 注册自定义图元的m锚点信息
+  meta2d.registerAnchors({ myTriangle: myTriangleAnchors });
+
+  // 注册自定义canvasDraw函数
+  meta2d.registerCanvasDraw({ canvasTriangle })
+  // 注册锚点
+  meta2d.registerAnchors({ canvasTriangle: canvasTriangleAnchors })
 
   await setupMeta2dEvts();
   // 注册其他自定义图形库

@@ -1,5 +1,5 @@
 
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onBeforeUnmount, ref } from 'vue';
 
 export const useTimeout = () => {
   const timer = ref<NodeJS.Timeout | undefined>(void 0);
@@ -19,6 +19,10 @@ export const useTimeout = () => {
   onBeforeMount(() => {
     cancelTimeout();
   });
+
+  onBeforeUnmount(() => {
+    cancelTimeout();
+  })
 
   return { perTimeout, timer, cancelTimeout };
 };

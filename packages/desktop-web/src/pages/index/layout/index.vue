@@ -39,7 +39,6 @@
 <script lang="ts" setup>
 import { onMounted, nextTick, onBeforeMount, ref, onErrorCaptured, computed, reactive, onDeactivated, onBeforeUpdate, onActivated } from 'vue';
 import type { Ref } from 'vue';
-import { IPC_MAIN_WINDOW } from '@rapid/config/constants';
 import type { DropdownDataType, ComboBoxMenuDataType } from '@components/DropdownMenu';
 import { DropdownMenu, MenuDriver, SingleMenu, ComboBoxMenu, AutoDropdownMenu } from '@components/DropdownMenu';
 import { UserOutlined, ReloadOutlined, BugOutlined } from '@ant-design/icons-vue';
@@ -86,10 +85,7 @@ const navMenusStackMenu = computed<DropdownDataType>(() => navMenusStack.value.m
   children: stackItem.menu
 })));
 
-useFadeIn(() => {
-  // windowResizeAble({ able: true });
-  // windowResetCustomSize({ type: 'mainWindow' });
-});
+useFadeIn();
 
 useResizeObserver(computed(() => sloganInstance.value?.centerContainer), () => {
   const dom = sloganInstance.value?.centerContainer;

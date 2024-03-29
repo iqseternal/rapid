@@ -34,8 +34,8 @@ export interface Graphic {
 
 export type GraphicGroup = {
   name: string;
-  show: boolean;
-  list: Graphic[];
+  show?: boolean;
+  list?: Graphic[];
 }[];
 
 

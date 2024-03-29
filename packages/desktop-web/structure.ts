@@ -52,6 +52,9 @@ export default defineElectronRendererConfig(({ mode }) => ({
         dialog: join(__dirname, './dialog.html')
       }
     },
+  },
+  server: {
+    strictPort: false
   }
 }))
 

@@ -108,12 +108,12 @@ export class WindowService {
       let isResolved = false;
 
       setTimeout(() => {
-        fail();
+        fail && fail();
         reject();
       }, 1000);
 
       this.window.once('ready-to-show', () => {
-        ok();
+        ok && ok();
         isResolved = true;
         this.window.show();
         resolve();
@@ -250,7 +250,7 @@ export class WindowStateMachine {
   public static findWindowService(key: string): WindowService | null;
   public static findWindowService(id: number): WindowService | null;
   public static findWindowService(key: string | number): WindowService | null {
-    let windowService: WindowService = void 0;
+    let windowService: WindowService | undefined = void 0;
 
     if (isString(key)) windowService = WindowStateMachine.keyToServiceMap.get(key);
     else if (isNumber(key)) windowService = WindowStateMachine.idToServiceMap.get(key);
@@ -276,7 +276,7 @@ export class WindowStateMachine {
  * @param _2
  * @returns
  */
-export const isSameWindowService = (_1: WindowService, _2: WindowService) => {
+export const isSameWindowService = (_1: WindowService | null, _2: WindowService | null) => {
   if (isNull(_1) || isNull(_2)) return false;
 
   if (_1 === _2) return true;
