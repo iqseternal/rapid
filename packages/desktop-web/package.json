@@ -12,8 +12,7 @@
   "devDependencies": {
     "@rapid/config": "workspace:^",
     "@rapid/desktop-node": "workspace:^",
-    "@types/mousetrap": "^1.6.15",
-    "@types/pako": "^2.0.3"
+    "@types/mousetrap": "^1.6.15"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
@@ -36,7 +35,6 @@
     "dayjs": "^1.11.10",
     "fake-progress": "^1.0.4",
     "mousetrap": "^1.6.5",
-    "pako": "^2.1.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "vue-pick-colors": "^1.6.3"

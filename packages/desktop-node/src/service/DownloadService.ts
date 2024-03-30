@@ -1,4 +1,4 @@
-import https from 'https';
+import * as https from 'https';
 import * as fs from 'fs';
 
 export class DownloadService {

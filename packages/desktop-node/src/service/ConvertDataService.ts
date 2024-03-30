@@ -1,10 +1,20 @@
 import { isNull, isNumber, isObject, isString } from '@suey/pkg-utils';
-import * as pako from 'pako';
+import { deflateRaw, inflateRaw } from 'pako';
 import * as fs from 'fs';
 
 export type ConvertDataType = string | number | Uint8Array | Buffer | object | Blob;
 
+/**
+ * 数据格式转换类, 在 ts 类型约束的前提下, 保证数据进行合适的转换
+ *
+ * 保证项目中对文件操作后进行转换时, 保持一致的使用 该类
+ *
+ */
 export class ConvertDataService {
+  /**
+   * 将目标数据转换为一个合适的 string
+   * @param data
+   */
   static toString<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<string> : string;
   static toString<Data extends ConvertDataType>(data: Data): string | Promise<string> {
     if (isString(data)) return data;
@@ -23,6 +33,10 @@ export class ConvertDataService {
     return JSON.stringify(data);
   }
 
+  /**
+   * 将目标数据转化为一个合适的 json 对象以供使用
+   * @param data
+   */
   static toJson<Resp extends any, Data extends ConvertDataType>(data: Data): Data extends Blob ?  Promise<Resp> : Resp;
   static toJson<Resp extends any, Data extends ConvertDataType>(data: Data): Promise<Resp> | Resp {
     if (data instanceof Blob) {
@@ -42,6 +56,10 @@ export class ConvertDataService {
     return data as unknown as Resp;
   }
 
+  /**
+   * 将目标转化为一个 buffer 对象
+   * @param data
+   */
   static toBuffer<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<Buffer> : Buffer;
   static toBuffer<Data extends ConvertDataType>(data: Data): Promise<Buffer> | Buffer {
     if (data instanceof Blob) {
@@ -63,6 +81,10 @@ export class ConvertDataService {
     return Buffer.from(data);
   }
 
+  /**
+   * 将目标转化为一个 uint8Array
+   * @param data
+   */
   static toUint8Array<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<Uint8Array> : Uint8Array;
   static toUint8Array<Data extends ConvertDataType>(data: Data): Promise<Uint8Array> | Uint8Array {
     if (data instanceof Blob) {
@@ -82,6 +104,10 @@ export class ConvertDataService {
     return Uint8Array.from(ConvertDataService.toBuffer(data as Exclude<ConvertDataService, Blob>));
   }
 
+  /**
+   * 将目标转化为一个二进制对象
+   * @param data
+   */
   static toBlob<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<Blob> : Blob;
   static toBlob<Data extends ConvertDataType>(data: Data): Promise<Blob> | Blob {
     if (data instanceof Blob) {
@@ -111,12 +137,12 @@ export class ConvertDataService {
     if (data instanceof Blob) {
       return new Promise(async (resolve, reject) => {
         ConvertDataService.toBuffer(data).then(res => {
-          resolve(pako.deflate(res));
+          resolve(deflateRaw(res));
         }).catch(reject);
       })
     }
 
-    return pako.deflateRaw(ConvertDataService.toBuffer(data as Exclude<ConvertDataType, Blob>));
+    return deflateRaw(ConvertDataService.toBuffer(data as Exclude<ConvertDataType, Blob>));
   }
 
   /**
@@ -125,33 +151,13 @@ export class ConvertDataService {
    */
   static toInflate<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<string> : string;
   static toInflate<Data extends ConvertDataType>(data: Data): Promise<string> | string {
-    if (data instanceof Uint8Array) return pako.inflateRaw(data, { to: 'string' });
+    if (data instanceof Uint8Array) return inflateRaw(data, { to: 'string' });
 
     if (data instanceof Blob) return new Promise(async (resolve, reject) => {
       ConvertDataService.toUint8Array(data).then(res => {
-        resolve(pako.inflateRaw(res, { to: 'string' }));
+        resolve(inflateRaw(res, { to: 'string' }));
       }).catch(reject);
     })
-    else return pako.inflateRaw(ConvertDataService.toUint8Array(data as Exclude<Data, Blob>), { to: 'string' });
+    else return inflateRaw(ConvertDataService.toUint8Array(data as Exclude<Data, Blob>), { to: 'string' });
   }
 }
-
-const str = {
-  a: 1,
-  b: 'asdsds',
-  c: [
-    '1'
-  ],
-  d: {
-
-  }
-}
-
-;(async () => {
-  fs.writeFileSync('./test.rd', ConvertDataService.toDeflate(str));
-
-  const data = fs.readFileSync('./test.rd');
-
-  console.log(ConvertDataService.toBuffer(str));
-  console.log(ConvertDataService.toBuffer(ConvertDataService.toInflate(data)));
-})();

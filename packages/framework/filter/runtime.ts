@@ -10,14 +10,12 @@ import { Catch, FILTER_META_CATCH } from './decorator';
  * 捕捉 Exception 异常的拦截器 Filter
  */
 @Catch(Exception)
-export class FrameworkFilter {
+export abstract class FrameworkFilter {
   /**
    * 当发生异常并被此拦截器拦截，会调用当前 catch 方法
    * @param err
    */
-  catch(err: Exception) {
-
-  }
+  abstract catch(err: Exception): void;
 }
 
 export interface SetupFilterOptions<T extends DescendantClass<FrameworkFilter>> extends Omit<SetupOptions<never, T>, 'use'> {

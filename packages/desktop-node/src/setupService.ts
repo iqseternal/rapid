@@ -11,10 +11,10 @@ import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach } from '@/core/common/window';
 import { iconUrl } from '@rapid/config/electron-main';
 
-export async function setupAppDataDownload() {
-  const wallpaperSaveService = new AppDataService('userData', 'download');
-  const downloadService = new DownloadService();
-  return { wallpaperSaveService, downloadService };
+export async function setupAppDataService(subPath: string) {
+  const appDataService = new AppDataService('userData', subPath);
+
+  return appDataService;
 }
 
 /**

@@ -1,6 +1,8 @@
-import * as fs from 'fs';
 import { DownloadService } from './DownloadService';
 import { PrinterService } from './PrinterService';
+import { ConvertDataService } from './ConvertDataService';
+
+import * as fs from 'fs';
 
 /**
  * 文件服务, 为应用程序的文件服务

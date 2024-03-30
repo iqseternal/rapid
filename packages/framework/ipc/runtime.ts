@@ -6,14 +6,14 @@ import type { SetupOptions, DescendantClass } from '../core';
 
 import { IPC_META_CONTROLLER, IPC_META_HANDLER, IPC_EMITTER_TYPE } from './decorator';
 
-export class FrameworkIpcHandler {
-  public id = 'IpcMainHandler';
+export abstract class FrameworkIpcHandler {
+  public abstract readonly id: string;
 }
 
 /**
  * ipc 局部的服务类
  */
-export class FrameworkIpcHandlerServer<EventConvertArg> {
+export abstract class FrameworkIpcHandlerServer<EventConvertArg> {
   /**
    * 通过转换参数的方式，让第一个事件 e, 能够转换为自己想要的参数类型
    * @param type
@@ -21,9 +21,7 @@ export class FrameworkIpcHandlerServer<EventConvertArg> {
    * @param args
    * @returns
    */
-  convertArgs(type: IPC_EMITTER_TYPE, e: IpcMainInvokeEvent, ...args: unknown[]): [EventConvertArg, ...unknown[]] {
-    return [e as any, ...args];
-  }
+  abstract convertArgs(type: IPC_EMITTER_TYPE, e: IpcMainInvokeEvent, ...args: unknown[]): [EventConvertArg, ...unknown[]];
 
   /**
    * 默认是将类示例 id 与方法名作为ipc传递信号
@@ -33,6 +31,12 @@ export class FrameworkIpcHandlerServer<EventConvertArg> {
    */
   syntheticChannel(handlerServerId: string, propertyName: string): string {
     return handlerServerId + '/' + propertyName;
+  }
+}
+
+class IpcHandlerServer<EventConvertArg> extends FrameworkIpcHandlerServer<EventConvertArg> {
+  convertArgs(type: IPC_EMITTER_TYPE, e: IpcMainInvokeEvent, ...args: unknown[]): [EventConvertArg, ...unknown[]] {
+    return [e as any, ...args];
   }
 }
 
@@ -49,6 +53,10 @@ export interface SetupIpcMainHandlerOptions<
  * @returns
  */
 export const isIpcMainHandler = (target: any): target is typeof FrameworkIpcHandler => target instanceof FrameworkIpcHandler;
+
+const runtimeContext = {
+  server: new IpcHandlerServer()
+}
 
 /**
  * 设置 ipc 运行的上下文，注册 ipc 事件

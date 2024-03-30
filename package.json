@@ -65,6 +65,7 @@
     "@suey/pkg-utils": "^0.0.11",
     "@suey/pkg-web": "^0.0.3",
     "@suey/printer": "^1.1.5",
+    "@types/pako": "^2.0.3",
     "asynckit": "^0.4.0",
     "axios": "^1.6.7",
     "combined-stream": "^1.0.8",
@@ -75,6 +76,7 @@
     "jsrsasign": "^11.1.0",
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
+    "pako": "^2.1.0",
     "proxy-from-env": "^1.1.0",
     "ts-md5": "^1.3.1"
   },
