@@ -104,7 +104,7 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     }
 
     throw new TypeException('传入了未指定类型 type', {
-      label: `${IpcWindowHandler.name}:resetCustomSize`
+      label: `${this.id}:resetCustomSize`
     })
   }
 

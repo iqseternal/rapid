@@ -13,8 +13,12 @@ import { iconUrl } from '@rapid/config/electron-main';
 
 export async function setupAppDataService(subPath: string) {
   const appDataService = new AppDataService('userData', subPath);
-
   return appDataService;
+}
+
+export async function setupDownloadService(subPath: string) {
+  const downloadService = new AppDataService('downloads', subPath);
+  return downloadService;
 }
 
 /**

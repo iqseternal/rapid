@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: space
+productName: rapid
 directories:
   buildResources: build
 files:
@@ -45,9 +45,8 @@ nsis:
   createStartMenuShortcut: true # 创建开始菜单图标
   runAfterFinish: true # 安装完后是否运行项目
   artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: '图元'
+  shortcutName: 'Rapid'
   uninstallDisplayName: ${productName}
-  include: 'build/nsis/installer.nsh'
   packElevateHelper: true # 是否打包 elevate 可执行文件（如果使用或将来可以使用每台计算机安装程序，则 electron-updater 需要）
 mac:
   entitlementsInherit: build/entitlements.mac.plist

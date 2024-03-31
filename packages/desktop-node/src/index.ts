@@ -40,7 +40,7 @@ setupContext({
 setupApp(async () => {
   // setupMainWindow();
 
-  // setupTrayMenu();
+  setupTrayMenu();
 
   const appDataService = await setupAppDataService('docs');
 
@@ -56,9 +56,19 @@ setupApp(async () => {
   FileService.saveFile(Buffer.from(data), distPath).then(() => {
     PrinterService.printInfo('保存成功');
 
-    const Sdata = fs.readFileSync(distPath);
 
-    PrinterService.printInfo('读取成功', ConvertDataService.toInflate(Sdata));
+    const readStream = fs.createReadStream(distPath);
+
+
+    console.log('!!', readStream.read(120));
+    readStream.on('data', (chunk) => {
+      PrinterService.printInfo('读取成功', ConvertDataService.toInflate(chunk));
+    });
+
+
+    // const Sdata = fs.readFileSync(distPath);
+
+    // PrinterService.printInfo('读取成功', ConvertDataService.toInflate(Sdata));
   }).catch(() => {
     PrinterService.printWarn('保存失败');
   });
