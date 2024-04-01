@@ -55,3 +55,12 @@ export const validateChinaPhone = (val: string) => {
   return regex.test(val);
 };
 
+/**
+ * 验证一个本地路径字符串是否带有盘符
+ * @param val
+ */
+export const validateLocalPathHasDriveLetter = (val: string) => {
+  const regex = /^[a-zA-Z]:.*$/;
+
+  return regex.test(val);
+}

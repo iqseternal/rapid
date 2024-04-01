@@ -1,6 +1,7 @@
 import { isNull, isNumber, isObject, isString } from '@suey/pkg-utils';
 import { deflateRaw, inflateRaw } from 'pako';
 import * as fs from 'fs';
+import { Printer } from '@suey/printer';
 
 export type ConvertDataType = string | number | Uint8Array | Buffer | object | Blob;
 
@@ -10,7 +11,9 @@ export type ConvertDataType = string | number | Uint8Array | Buffer | object | B
  * 保证项目中对文件操作后进行转换时, 保持一致的使用 该类
  *
  */
-export class ConvertDataService {
+export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataType, Blob>> {
+  constructor(private readonly data: Data) {}
+
   /**
    * 将目标数据转换为一个合适的 string
    * @param data
@@ -33,6 +36,10 @@ export class ConvertDataService {
     return JSON.stringify(data);
   }
 
+  toString() {
+    return ConvertService.toString(this.data);
+  }
+
   /**
    * 将目标数据转化为一个合适的 json 对象以供使用
    * @param data
@@ -53,7 +60,11 @@ export class ConvertDataService {
     if (data instanceof Buffer) return JSON.parse((data as Buffer).toString());
     if (data instanceof Uint8Array) return JSON.parse(Buffer.from((data as Uint8Array).buffer).toString());
 
-    return data as unknown as Resp;
+    return JSON.parse(data.toString());
+  }
+
+  toJson<Resp extends any>() {
+    return ConvertService.toJson<Resp, typeof this.data>(this.data);
   }
 
   /**
@@ -76,9 +87,11 @@ export class ConvertDataService {
     if (data instanceof Buffer) return data;
     if (data instanceof Uint8Array) return Buffer.from(data);
 
-    if (isObject(data)) return Buffer.from(JSON.stringify(data));
+    return Buffer.from(JSON.stringify(data));
+  }
 
-    return Buffer.from(data);
+  toBuffer() {
+    return ConvertService.toBuffer(this.data);
   }
 
   /**
@@ -101,7 +114,11 @@ export class ConvertDataService {
     if (data instanceof Buffer) return Uint8Array.from(data);
     if (data instanceof Uint8Array) return data;
 
-    return Uint8Array.from(ConvertDataService.toBuffer(data as Exclude<ConvertDataService, Blob>));
+    return Uint8Array.from(ConvertService.toBuffer(data as Exclude<Data, Blob>));
+  }
+
+  toUint8Array() {
+    return ConvertService.toUint8Array(this.data);
   }
 
   /**
@@ -124,7 +141,11 @@ export class ConvertDataService {
     if (data instanceof Buffer) return new Blob([data])
     if (data instanceof Uint8Array) return new Blob([data]);
 
-    return new Blob([ConvertDataService.toString(data as Exclude<Data, Blob>)]);
+    return new Blob([ConvertService.toString(data as Exclude<Data, Blob>)]);
+  }
+
+  toBlob() {
+    return ConvertService.toBlob(this.data);
   }
 
   /**
@@ -136,13 +157,17 @@ export class ConvertDataService {
   static toDeflate<Data extends ConvertDataType>(data: Data): Promise<Uint8Array> | Uint8Array {
     if (data instanceof Blob) {
       return new Promise(async (resolve, reject) => {
-        ConvertDataService.toBuffer(data).then(res => {
+        ConvertService.toBuffer(data).then(res => {
           resolve(deflateRaw(res));
         }).catch(reject);
       })
     }
 
-    return deflateRaw(ConvertDataService.toBuffer(data as Exclude<ConvertDataType, Blob>));
+    return deflateRaw(ConvertService.toBuffer(data as Exclude<ConvertDataType, Blob>));
+  }
+
+  toDeflate() {
+    return ConvertService.toDeflate(this.data);
   }
 
   /**
@@ -154,10 +179,14 @@ export class ConvertDataService {
     if (data instanceof Uint8Array) return inflateRaw(data, { to: 'string' });
 
     if (data instanceof Blob) return new Promise(async (resolve, reject) => {
-      ConvertDataService.toUint8Array(data).then(res => {
+      ConvertService.toUint8Array(data).then(res => {
         resolve(inflateRaw(res, { to: 'string' }));
       }).catch(reject);
     })
-    else return inflateRaw(ConvertDataService.toUint8Array(data as Exclude<Data, Blob>), { to: 'string' });
+    else return inflateRaw(ConvertService.toUint8Array(data as Exclude<Data, Blob>), { to: 'string' });
+  }
+
+  toInflate() {
+    return ConvertService.toInflate(this.data);
   }
 }

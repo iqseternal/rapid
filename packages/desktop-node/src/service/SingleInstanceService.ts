@@ -1,9 +1,19 @@
 import { app } from 'electron';
 
+export class CustomSingleInstanceService {
+  static getInstance(...args: unknown[]): any {
+    return new this();
+  }
+
+  destory(): void {
+
+  }
+}
+
 /**
  * 单实例基类
  */
-export class SingleInstanceService<T extends SingleInstanceService<T>> {
+export class SingleInstanceService<T extends SingleInstanceService<T>> extends CustomSingleInstanceService {
   private static instanceMap: Record<string, SingleInstanceService<any>> = {};
   private static isCanNew = false;
 
@@ -13,6 +23,8 @@ export class SingleInstanceService<T extends SingleInstanceService<T>> {
     }
 
     app.on('will-quit', () => this.destory());
+
+    super();
   }
 
   /**

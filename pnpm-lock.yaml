@@ -161,6 +161,9 @@ importers:
       '@rapid/libs':
         specifier: workspace:^
         version: link:../libs
+      '@rapid/validates':
+        specifier: workspace:^
+        version: link:../validates
       electron-store:
         specifier: ^8.2.0
         version: 8.2.0
@@ -245,7 +248,7 @@ importers:
         version: 1.6.5
       pinia:
         specifier: ^2.1.7
-        version: 2.1.7(vue@3.4.21)
+        version: 2.1.7(typescript@5.3.3)(vue@3.4.21)
       pinia-plugin-persistedstate:
         specifier: ^3.2.1
         version: 3.2.1(pinia@2.1.7)
@@ -466,7 +469,7 @@ packages:
     dependencies:
       '@ant-design/colors': 6.0.0
       '@ant-design/icons-svg': 4.4.2
-      vue: 3.4.21
+      vue: 3.4.21(typescript@5.3.3)
     dev: false
 
   /@ant-design/icons@5.3.1(react-dom@18.2.0)(react@18.2.0):
@@ -2788,7 +2791,7 @@ packages:
     dependencies:
       '@vue/compiler-ssr': 3.4.21
       '@vue/shared': 3.4.21
-      vue: 3.4.21
+      vue: 3.4.21(typescript@5.3.3)
 
   /@vue/shared@3.4.21:
     resolution: {integrity: sha512-PuJe7vDIi6VYSinuEbUIQgMIRZGgM8e4R+G+/dQTk0X1NEdvgvvgv7m+rfmDH1gZzyA1OjjoWskvHlfRNfQf3g==}
@@ -2958,7 +2961,7 @@ packages:
       shallow-equal: 1.2.1
       stylis: 4.3.1
       throttle-debounce: 5.0.0
-      vue: 3.4.21
+      vue: 3.4.21(typescript@5.3.3)
       vue-types: 3.0.2(vue@3.4.21)
       warning: 4.0.3
     dev: false
@@ -6675,10 +6678,10 @@ packages:
     peerDependencies:
       pinia: ^2.0.0
     dependencies:
-      pinia: 2.1.7(vue@3.4.21)
+      pinia: 2.1.7(typescript@5.3.3)(vue@3.4.21)
     dev: false
 
-  /pinia@2.1.7(vue@3.4.21):
+  /pinia@2.1.7(typescript@5.3.3)(vue@3.4.21):
     resolution: {integrity: sha512-+C2AHFtcFqjPih0zpYuvof37SFxMQ7OEG2zV9jRI12i9BOy3YQVAHwdKtyyc8pDcDyIc33WCIsZaCFWU7WWxGQ==}
     peerDependencies:
       '@vue/composition-api': ^1.4.0
@@ -6691,7 +6694,8 @@ packages:
         optional: true
     dependencies:
       '@vue/devtools-api': 6.6.1
-      vue: 3.4.21
+      typescript: 5.3.3
+      vue: 3.4.21(typescript@5.3.3)
       vue-demi: 0.14.7(vue@3.4.21)
     dev: false
 
@@ -9307,7 +9311,7 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      vue: 3.4.21
+      vue: 3.4.21(typescript@5.3.3)
     dev: false
 
   /vue-eslint-parser@9.4.2(eslint@8.57.0):
@@ -9335,7 +9339,7 @@ packages:
       vue: ^3.2.26
     dependencies:
       '@popperjs/core': 2.11.8
-      vue: 3.4.21
+      vue: 3.4.21(typescript@5.3.3)
     dev: false
 
   /vue-router@4.3.0(vue@3.4.21):
@@ -9354,22 +9358,8 @@ packages:
       vue: ^3.0.0
     dependencies:
       is-plain-object: 3.0.1
-      vue: 3.4.21
+      vue: 3.4.21(typescript@5.3.3)
     dev: false
-
-  /vue@3.4.21:
-    resolution: {integrity: sha512-5hjyV/jLEIKD/jYl4cavMcnzKwjMKohureP8ejn3hhEjwhWIhWeuzL2kJAjzl/WyVsgPY56Sy4Z40C3lVshxXA==}
-    peerDependencies:
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@vue/compiler-dom': 3.4.21
-      '@vue/compiler-sfc': 3.4.21
-      '@vue/runtime-dom': 3.4.21
-      '@vue/server-renderer': 3.4.21(vue@3.4.21)
-      '@vue/shared': 3.4.21
 
   /vue@3.4.21(typescript@5.3.3):
     resolution: {integrity: sha512-5hjyV/jLEIKD/jYl4cavMcnzKwjMKohureP8ejn3hhEjwhWIhWeuzL2kJAjzl/WyVsgPY56Sy4Z40C3lVshxXA==}

@@ -1,7 +1,6 @@
 import { WindowService, WindowStateMachine } from '@/service/WindowService';
 import { WallpaperService } from '@/service/WallpaperService';
 import { DownloadService } from '@/service/DownloadService';
-import { AppDataService } from '@/service/AppDataService';
 import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';
@@ -10,16 +9,14 @@ import { UserConfigService } from '@/service/UserConfigService';
 import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach } from '@/core/common/window';
 import { iconUrl } from '@rapid/config/electron-main';
+import { AppStorageService } from './service/AppStorageService';
 
-export async function setupAppDataService(subPath: string) {
-  const appDataService = new AppDataService('userData', subPath);
-  return appDataService;
-}
-
-export async function setupDownloadService(subPath: string) {
-  const downloadService = new AppDataService('downloads', subPath);
-  return downloadService;
-}
+/** /user/Appdata/Roaming/rapid/docs */
+export const documentsStorageService = new AppStorageService('userData', 'docs');
+/** /user/Desktop */
+export const desktopStorageService = new AppStorageService('desktop');
+/** /user/Appdata/Roaming/rapid/logs */
+export const logsStorageService = new AppStorageService('logs');
 
 /**
  * 创建主窗口的函数

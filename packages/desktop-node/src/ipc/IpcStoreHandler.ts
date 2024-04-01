@@ -1,6 +1,6 @@
 import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
 import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler } from '@rapid/framework';
-import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { IS_DEV, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { WindowService } from '@/service/WindowService';
 import { setWindowOpenHandler } from '@/core/common/window';
 import { screen } from 'electron';
@@ -8,40 +8,43 @@ import { PrinterService } from '@/service/PrinterService';
 import { isNumber, isString, isUndefined } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
-import { appStore } from '@/core';
+import { AppStore, APP_STORE_KEYS, StoreKeyToMap } from '@/service/AppStoreService';
+
+type IpcStoreType = StoreKeyToMap['APP_STORE'];
 
 @IpcMain.IpcController()
 export class IpcStoreHandler extends FrameworkIpcHandler {
   public readonly id = 'IpcStore';
+  private readonly appStore = AppStore.getInstance(APP_STORE_KEYS.APP_STORE);
 
   @IpcMain.Handler()
-  get<Key extends keyof StoreKeyMap, V extends StoreKeyMap[Key]>(windowService: WindowService, key: Key, defaultValue?: V) {
-    if (defaultValue) return appStore.get(key, defaultValue);
-    return appStore.get(key);
+  get<Key extends keyof IpcStoreType, V extends IpcStoreType[Key]>(windowService: WindowService, key: Key, defaultValue?: V) {
+    if (defaultValue) return this.appStore.get(key, defaultValue);
+    return this.appStore.get(key);
   }
 
   @IpcMain.Handler()
-  set<Key extends keyof StoreKeyMap, V extends StoreKeyMap[Key]>(windowService: WindowService, key: Key, value: V) {
-    return appStore.set(key, value);
+  set<Key extends keyof IpcStoreType, V extends IpcStoreType[Key]>(windowService: WindowService, key: Key, value: V) {
+    return this.appStore.set(key, value);
   }
 
   @IpcMain.Handler()
-  has<Key extends keyof StoreKeyMap>(windowService: WindowService, key: Key) {
-    return appStore.has(key)
+  has<Key extends keyof IpcStoreType>(windowService: WindowService, key: Key) {
+    return this.appStore.has(key)
   }
 
   @IpcMain.Handler()
-  reset<Key extends keyof StoreKeyMap>(windowService: WindowService, ...keys: Key[]) {
-    return appStore.reset(...keys);
+  reset<Key extends keyof IpcStoreType>(windowService: WindowService, ...keys: Key[]) {
+    return this.appStore.reset(...keys);
   }
 
   @IpcMain.Handler()
-  delete<Key extends keyof StoreKeyMap>(windowService: WindowService, key: Key) {
-    return appStore.delete(key);
+  delete<Key extends keyof IpcStoreType>(windowService: WindowService, key: Key) {
+    return this.appStore.delete(key);
   }
 
   @IpcMain.Handler()
   clear(windowService: WindowService) {
-    return appStore.clear();
+    return this.appStore.clear();
   }
 }
