@@ -37,7 +37,7 @@ export class AppStore extends CustomSingleInstanceService {
 
     const store = new ElectronStore<StoreKeyToMap[StoreKey]>({
       name: storeKey,
-      fileExtension: EXTENSIONS.STORE_EXT,
+      fileExtension: EXTENSIONS.STORE.EXTENSION,
       serialize: (value) => {
         const uInt8Array = ConvertService.toUint8Array(value);
         return new ConvertService(Buffer.from(uInt8Array).toJSON().data).toString();

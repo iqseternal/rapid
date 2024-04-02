@@ -2,20 +2,44 @@ import { app } from 'electron';
 import { join, relative, isAbsolute } from 'path';
 import { FileService } from './FileService';
 import { DownloadService } from './DownloadService';
-import { TypeException } from '@/core';
+import { RuntimeException, TypeException } from '@/core';
 import { statSync, createReadStream, createWriteStream } from 'fs';
 import { ConvertDataType, ConvertService } from './ConvertService';
 import { validateLocalPathHasDriveLetter } from '@rapid/validates';
 import { EXTENSIONS } from '@rapid/config/constants';
 import { Printer } from '@suey/printer';
+import * as fs from 'fs';
 
 /** 内置目录的名称 */
 export type AppDirectoryName = Parameters<typeof app.getPath>[0];
 
 /**
+ * 应用程序文件的自定义保存
+ * 在此处自定义扩展名文件的保存和读写动作
+ */
+export class AppFileStorageService {
+  constructor(
+    public readonly filePath: string
+  ) {}
+
+  /** 按照指定格式保存当前想要的文件 */
+  async save<T extends ConvertDataType>(content: T) {
+    const data = await ConvertService.toDeflate(content);
+    return FileService.saveFile(this.filePath, data);
+  }
+
+  /** 按照指定格式读取当前想要的文件 */
+  async read() {
+    const content = await FileService.readFile(this.filePath);
+    return new ConvertService<Exclude<ConvertDataType, Blob>>(ConvertService.toInflate(content));
+  }
+}
+
+
+/**
  * 应用程序的存储服务
  */
-export class AppStorageService {
+export class AppDirStorageService {
   /** 此服务对应本地某个路径 url */
   public readonly targetUrl: string;
 
@@ -32,6 +56,12 @@ export class AppStorageService {
         label: 'AppStorageService:constructor'
       });
     }
+
+    if (!fs.statSync(this.targetUrl).isDirectory()) {
+      throw new RuntimeException('targetUrl 不是目录', {
+        label: 'AppStorageService:constructor'
+      })
+    }
   }
 
   /**
@@ -41,7 +71,7 @@ export class AppStorageService {
    */
   createSubService(sub: string) {
     const subPath = join(this.absoluteTargetUrl, sub);
-    return new AppStorageService(this.targetName, subPath);
+    return new AppDirStorageService(this.targetName, subPath);
   }
 
   /**
@@ -69,9 +99,7 @@ export class AppStorageService {
       throw new TypeException(`the filePath is not absolute path`, { label: `AppStorageService:save` });
     }
 
-    const data = await ConvertService.toDeflate(content);
-
-    return FileService.saveFile(join(this.targetUrl, filePath), data);
+    return new AppFileStorageService(join(this.targetUrl, filePath)).save(content);
   }
 
   /**
@@ -80,8 +108,7 @@ export class AppStorageService {
    * @returns
    */
   async readFile(filePath: string) {
-    const content = await FileService.readFile(join(this.targetUrl, filePath));
-    return new ConvertService<Exclude<ConvertDataType, Blob>>(ConvertService.toInflate(content));
+    return new AppFileStorageService(join(this.targetUrl, filePath)).read();
   }
 
   /**
@@ -95,3 +122,5 @@ export class AppStorageService {
     return list;
   }
 }
+
+

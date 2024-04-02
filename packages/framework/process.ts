@@ -5,16 +5,18 @@ import { IS_DEV } from '@rapid/config/constants';
 process.on('uncaughtException', (reason: Error, origin: string) => {
   filterCatch(reason).catch(err => {
 
-
-
-    console.log(reason.stack, '?');
   })
 });
 
 
 if (IS_DEV) {
   // 多次 Resolve 或者 Reject 同一个 promise
-  process.on('multipleResolves', (type, promise) => {
+  // process.on('multipleResolves', (type, promise) => {
+
+  // })
+
+
+  process.on('rejectionHandled', (promise) => {
 
   })
 
@@ -27,11 +29,7 @@ if (IS_DEV) {
   process.on('unhandledRejection', (reason: Error, promise) => {
     filterCatch(reason).catch(err => {
 
-
-
-      console.log(reason.stack, '?');
     })
-
     // PrinterService.printWarn(`出现了未处理Promise REJECTED:: ${reason}`);
   });
 }

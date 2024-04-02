@@ -1,36 +1,55 @@
 import { ref } from 'vue';
 import { onRedo, onUndo } from '@/meta';
 import type { DropdownDataType } from '@components/DropdownMenu';
-import { hotKeys } from '@/actions';
+import { hotKeys, docImport, docExport } from '@/actions';
+import { useDocStoreHook } from '@/store/modules/doc';
+import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
+
+const docStore = useDocStoreHook();
 
 export const fileMenu = ref<DropdownDataType>([
+  // {
+  //   title: '新建窗口',
+  //   mark: 'WindowsOutlined', shortcut: hotKeys.createFile.key,
+
+  // },
   {
-    title: '新建',
-    mark: 'FileAddOutlined', shortcut: hotKeys.createFile.key,
-    onClick: hotKeys.createFile.evt
+    title: '新建文档',
+
+    mark: 'FileAddOutlined',
+
+    onClick: () => docStore.createDoc()
   },
+  true,
   {
     title: '打开',
     mark: 'FolderOpenOutlined', shortcut: hotKeys.openFile.key,
-    onClick: hotKeys.openFile.evt
-  },
-  {
-    title: '导入',
-    mark: 'ImportOutlined',
-    onClick: () => {
+    onClick: () => docStore.openDoc()
 
-    }
   },
+
   true,
   {
     title: '保存',
     mark: 'SaveOutlined', shortcut: hotKeys.saveFile.key,
-    onClick: hotKeys.saveFile.evt
+    onClick: () => docStore.saveDoc()
   },
   {
     title: '另存为',
     shortcut: hotKeys.saveFileTo.key,
-    onClick: hotKeys.saveFileTo.evt
+    onClick: () => docStore.saveAsDoc()
+  },
+  true,
+  {
+    title: '导入',
+    mark: 'ImportOutlined',
+    children: [
+      {
+        title: 'json',
+        mark: 'FileJpgOutlined',
+        onClick: () => docStore.importDoc()
+      }
+    ]
   },
   {
     title: '导出',
@@ -39,39 +58,17 @@ export const fileMenu = ref<DropdownDataType>([
       {
         title: 'JSON',
         mark: 'FileJpgOutlined',
-        onClick: () => {
-
-        }
+        onClick: () => docExport(EXPORTS_EXTENSIONS.JSON, meta2d.data())
       },
       true,
       {
         title: 'PNG',
         mark: 'FileImageOutlined',
-        onClick: () => {
-
-        }
-      },
-      {
-        title: 'SVG',
-        onClick: () => {
-
-        }
-      },
-      true,
-      {
-        title: 'Pdf',
-        mark: 'FilePdfOutlined'
-      },
-      {
-        title: 'Html',
-        mark: 'Html5Outlined'
-      },
-      {
-        title: 'Markdown',
-        mark: 'FileMarkdownFilled'
+        onClick: () => docExport(EXPORTS_EXTENSIONS.PNG, meta2d.toPng())
       }
     ]
   },
+  true,
   {
     title: '打印',
     mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key

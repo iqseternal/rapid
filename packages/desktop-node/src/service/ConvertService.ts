@@ -44,8 +44,8 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
    * 将目标数据转化为一个合适的 json 对象以供使用
    * @param data
    */
-  static toJson<Resp extends any, Data extends ConvertDataType>(data: Data): Data extends Blob ?  Promise<Resp> : Resp;
-  static toJson<Resp extends any, Data extends ConvertDataType>(data: Data): Promise<Resp> | Resp {
+  static toJson<Resp extends any, Data extends ConvertDataType = ConvertDataType>(data: Data): Data extends Blob ?  Promise<Resp> : Resp;
+  static toJson<Resp extends any, Data extends ConvertDataType = ConvertDataType>(data: Data): Promise<Resp> | Resp {
     if (data instanceof Blob) {
       return new Promise<Resp>(async (resolve, reject) => {
         (data as Blob).arrayBuffer().then(buffer => {
@@ -70,9 +70,10 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
   /**
    * 将目标转化为一个 buffer 对象
    * @param data
+   * @param options 当数据为字符串的时候才生效
    */
-  static toBuffer<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<Buffer> : Buffer;
-  static toBuffer<Data extends ConvertDataType>(data: Data): Promise<Buffer> | Buffer {
+  static toBuffer<Data extends ConvertDataType>(data: Data, options?: BufferEncoding): Data extends Blob ? Promise<Buffer> : Buffer;
+  static toBuffer<Data extends ConvertDataType>(data: Data, options?: BufferEncoding): Promise<Buffer> | Buffer {
     if (data instanceof Blob) {
       return new Promise<Buffer>(async (resolve, reject) => {
         (data as Blob).arrayBuffer().then(buffer => {
@@ -81,17 +82,22 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
       })
     }
 
-    if (isString(data)) return Buffer.from(data);
-    if (isNumber(data)) return Buffer.from(data.toString());
+    if (isString(data)) return Buffer.from(data, options);
+    if (isNumber(data)) return Buffer.from(data.toString(), options);
 
     if (data instanceof Buffer) return data;
     if (data instanceof Uint8Array) return Buffer.from(data);
 
-    return Buffer.from(JSON.stringify(data));
+    return Buffer.from(JSON.stringify(data), options);
   }
 
-  toBuffer() {
-    return ConvertService.toBuffer(this.data);
+  /**
+   *
+   * @param options 仅当数据为字符串时候生效
+   * @returns
+   */
+  toBuffer(options?: BufferEncoding) {
+    return ConvertService.toBuffer(this.data, options);
   }
 
   /**

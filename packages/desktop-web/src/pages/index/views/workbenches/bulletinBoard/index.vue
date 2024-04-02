@@ -71,13 +71,11 @@ enum TABPANE_KEYS {
 const activeKey = ref(TABPANE_KEYS.RecentFiles);
 
 
-const { createDoc, setDocId } = useDocStore();
+const { createDoc } = useDocStore();
 
 const handleCreateDoc = async () => {
-  const doc = await createDoc().catch(err => err);
+  await createDoc();
 
-
-  setDocId(2);
 }
 
 onMounted(async () => {

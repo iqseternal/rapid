@@ -4,6 +4,7 @@
  * ==========================================
  */
 import { PLATFORMS, ENV } from '../../../target.config';
+import { CONFIG } from './config';
 
 export * from './config';
 
@@ -24,9 +25,21 @@ export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS.LINUX;
 export const IS_DEV = CURRENT_ENV === ENV.DEV;
 export const IS_PROD = CURRENT_ENV === ENV.PROD;
 
-export enum EXTENSIONS {
-  DOCS_EXT = 'rd',
+export const EXTENSIONS = {
+  DOCS: {
+    NAME: `${CONFIG.PROJECT}文档`,
+    EXTENSION: 'rd',
+    EXTENSIONS: ['rd']
+  },
+  STORE: {
+    NAME: `Store`,
+    EXTENSION: 'rdc',
+    EXTENSIONS: ['rdc']
+  }
+}
 
-  STORE_EXT = 'rdc'
-
+export enum EXPORTS_EXTENSIONS {
+  SVG = 'svg',
+  PNG = 'png',
+  JSON = 'json'
 }

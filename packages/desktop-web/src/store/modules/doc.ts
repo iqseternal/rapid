@@ -2,63 +2,84 @@ import { defineStore } from 'pinia';
 import { reactive, watch, watchEffect, computed, ref } from 'vue';
 import { setupIndexedDB, DATABASES_META2D, type TablesType } from '@/indexedDB';
 import { IndexedDB } from '@rapid/libs/indexedDB';
-import { windowClose } from '@/actions';
 import { isDef, isUnDef } from '@suey/pkg-utils';
+import { windowClose, docOpen, docSaveAs, docSave, WindowPopup, docImport } from '@/actions';
+import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
 
 import store from '@/store';
 
 export const DOC_STORE_NAME = 'docStore';
 
 export const useDocStore = defineStore(DOC_STORE_NAME, () => {
-  let indexedDB = void 0 as unknown as IndexedDB<TablesType>;
+  const fileName = ref<undefined | string>();
+  const filePath = ref<undefined | string>();
 
-  const currentId = ref<number | undefined>(void 0);
-  const isWork = computed(() => isDef(currentId.value));
+  /** 当文件名存在,那么就表示当前正在工作区绘图 */
+  const isWork = computed(() => fileName.value);
 
-  const setDocId = (id: number | undefined) => {
-    currentId.value = id;
+  const loadDoc = async () => {
+    if (!filePath.value) return;
+
+    const message = await docOpen(filePath.value);
+
+    fileName.value = message.filename;
+    filePath.value = message.filePath;
+    meta2d.clear();
+    meta2d.open(message.data);
   }
 
-
-  const initIndexedFn = <Args extends unknown[], R>(fn: (...args: Args) => R) => {
-    return async (...args: Args): Promise<R> => {
-      if (!indexedDB) {
-        const indexed = await setupIndexedDB();
-        if (!indexed) {
-          windowClose();
-          throw new Error();
-        }
-        indexedDB = indexed;
-      }
-      return fn(...args);
+  const importDoc = async () => {
+    if (isWork.value) {
+      const needSave = WindowPopup.confim('当前工作区还有文档,是否先保存?');
+      if (needSave) await saveDoc();
     }
+
+    const data = await docImport(EXPORTS_EXTENSIONS.JSON);
+
+
+    filePath.value = '导入文档';
+    filePath.value = void 0;
+
+    meta2d.clear();
+    meta2d.open(data);
   }
 
-  const createDoc = initIndexedFn(() => {
-    const objectStore = indexedDB.transaction(DATABASES_META2D.TABLES_NAMES.TABLE_DOCUMENT, 'readwrite').objectStore(DATABASES_META2D.TABLES_NAMES.TABLE_DOCUMENT);
-
-    const data = {
-      id: 2
+  const createDoc = async () => {
+    if (isWork.value) {
+      const needSave = WindowPopup.confim('当前工作区还有文档,是否先保存?');
+      if (needSave) await saveDoc();
     }
 
-    const promi = objectStore.create(data);
+    fileName.value = '新建文档';
+    filePath.value = void 0;
+    meta2d.clear();
+  }
 
-    return promi as Promise<typeof data>;
-  })
-  const deleteDoc = initIndexedFn(() => {
+  /** 另存为文档 */
+  const saveAsDoc = () => docSaveAs(meta2d.data());
 
-  })
-  const putDocData = initIndexedFn((id: number) => {
+  const saveDoc = async () => {
+    if (fileName.value && filePath.value) return docSave(filePath.value, meta2d.data());
+    return docSaveAs(meta2d.data());
+  }
 
-  })
+  const openDoc = async () => {
+    // if (isWork.value) await saveDoc();
+    const message = await docOpen();
+
+    fileName.value = message.filename;
+    filePath.value = message.filePath;
+
+    meta2d.clear();
+    meta2d.open(message.data);
+  }
 
   return {
-    currentId,
+    fileName,
+    filePath,
     isWork,
 
-    setDocId,
-
-    createDoc, deleteDoc, putDocData
+    loadDoc, createDoc, saveDoc, openDoc, saveAsDoc, importDoc
   }
 }, {
   persist: {

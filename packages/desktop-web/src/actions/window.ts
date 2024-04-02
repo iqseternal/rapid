@@ -17,8 +17,6 @@ export class WindowPopup {
   }
 }
 
-
-
 /**
  * 刷新页面
  * @returns

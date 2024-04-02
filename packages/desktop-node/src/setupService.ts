@@ -9,14 +9,14 @@ import { UserConfigService } from '@/service/UserConfigService';
 import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach } from '@/core/common/window';
 import { iconUrl } from '@rapid/config/electron-main';
-import { AppStorageService } from './service/AppStorageService';
+import { AppDirStorageService } from './service/AppStorageService';
 
 /** /user/Appdata/Roaming/rapid/docs */
-export const documentsStorageService = new AppStorageService('userData', 'docs');
+export const documentsStorageService = new AppDirStorageService('userData', 'docs');
 /** /user/Desktop */
-export const desktopStorageService = new AppStorageService('desktop');
+export const desktopStorageService = new AppDirStorageService('desktop');
 /** /user/Appdata/Roaming/rapid/logs */
-export const logsStorageService = new AppStorageService('logs');
+export const logsStorageService = new AppDirStorageService('logs');
 
 /**
  * 创建主窗口的函数

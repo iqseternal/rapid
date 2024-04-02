@@ -1,6 +1,10 @@
 import { app } from 'electron';
 
 export class CustomSingleInstanceService {
+  constructor() {
+    app.on('will-quit', () => this.destory());
+  }
+
   static getInstance(...args: unknown[]): any {
     return new this();
   }
@@ -21,8 +25,6 @@ export class SingleInstanceService<T extends SingleInstanceService<T>> extends C
     if (!SingleInstanceService.isCanNew) {
       throw new Error(`请不要使用 New 操作符手动实例化 SingleInstanceService 对象, 请使用 SingleInstanceService 对象.getInstance().`);
     }
-
-    app.on('will-quit', () => this.destory());
 
     super();
   }

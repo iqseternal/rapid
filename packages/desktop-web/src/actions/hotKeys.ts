@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 import { onRedo, onUndo, onAddShape, onCopy, onCut, onDelete, onPaste, onScaleDefault, onScaleWindow } from '@/meta';
 import { windowAutoFullScreen } from './window';
+import { docOpen, docSaveAs } from './docs';
 
 /**
  * 这个函数的意义为让 hotKeys 拥有编写的类型提示, 并且导出的时候能够具有编写时的运行时类型
@@ -30,9 +31,7 @@ export const hotKeys = makeHotKeys({
   openFile: {
     key: 'Ctrl+O',
     tip: '打开文件', changeAble: false,
-    evt: () => {
-      window.alert('没有完成');
-    }
+    evt: () => {}
   },
   saveFile: {
     key: 'Ctrl+S',
@@ -44,9 +43,7 @@ export const hotKeys = makeHotKeys({
   saveFileTo: {
     key: 'Ctrl+Shift+S',
     tip: '文件另存为', changeAble: false,
-    evt: () => {
-      window.alert('没有完成');
-    }
+    evt: () => {}
   },
   printFile: {
     key: 'Ctrl+Shift+P',

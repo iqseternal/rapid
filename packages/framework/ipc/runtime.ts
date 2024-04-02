@@ -3,8 +3,10 @@ import type { IpcMainInvokeEvent } from 'electron';
 import { IS_DEV } from '@rapid/config/constants';
 import { Printer } from '../core';
 import type { SetupOptions, DescendantClass } from '../core';
+import { filterCatch } from '../filter/runtime';
 
 import { IPC_META_CONTROLLER, IPC_META_HANDLER, IPC_EMITTER_TYPE } from './decorator';
+import { Exception } from '../exception';
 
 export abstract class FrameworkIpcHandler {
   public abstract readonly id: string;
@@ -101,15 +103,22 @@ export const setupIpcMainHandler = async <
       }
     }
 
+    ipcMain.removeAllListeners('uncaughtException');
+
     const handlers = Reflect.getMetadata(IPC_META_HANDLER, handler.constructor);
     handlers.forEach((propertyName: string) => {
       const channel = server.syntheticChannel(handler.id, propertyName);
 
       ipcMain.handle(channel, (e, ...args) => new Promise(async (resolve, reject) => {
         const convertArgs = server.convertArgs(IPC_EMITTER_TYPE.HANDLE, e, ...args);
-        const r = await Promise.resolve(handler[propertyName](...convertArgs)).catch(reject);
 
-        resolve(r);
+        Promise.resolve(handler[propertyName](...convertArgs)).then(resolve).catch(async err => {
+          filterCatch(err).then(() => {
+            reject((err as Exception).message);
+          }).catch(() => {
+            reject('unCaught exception');
+          });
+        })
       }))
     })
   })

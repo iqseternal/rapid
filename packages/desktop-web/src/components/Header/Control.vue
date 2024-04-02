@@ -19,11 +19,8 @@
 </template>
 
 <script lang="tsx" setup>
-
-
-
 import { ref } from 'vue';
-import { IPC_MAIN_WINDOW, IPC_RENDER_WINDOW, CONFIG, IS_DEV, IS_PROD } from '@rapid/config/constants';
+import { CONFIG, IS_DEV, IS_PROD } from '@rapid/config/constants';
 import { windowCloseSvg, windowMaxSvg, windowMinSvg, windowRegionSvg } from '@/assets';
 import { useMousetrap } from '@/hooks/useMousetrap';
 import { windowMax, windowMin, windowClose, windowReduction, windowDevtool, windowAutoFullScreen } from '@/actions';

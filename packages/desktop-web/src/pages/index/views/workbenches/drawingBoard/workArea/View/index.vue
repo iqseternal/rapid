@@ -8,6 +8,7 @@ import { useDebounce } from '@/hooks';
 import { AutoDropdownMenu, setupDropdownOpenModel } from '@components/DropdownMenu';
 import { meta2dViewMenu } from '@/menus';
 import { useSelection, SelectionMode, setupMeta2dView, setupMeta2dEvts, meta2dState } from '@/meta';
+import { useDocStore } from '@/store/modules/doc';
 
 const props = defineProps({
   width: { type: [Number, String], default: () => '' }
@@ -15,15 +16,16 @@ const props = defineProps({
 
 const { selections } = useSelection();
 
-const instance = getCurrentInstance();
+const docStore = useDocStore();
 
+const instance = getCurrentInstance();
 const view = ref<HTMLDivElement>();
 
 const metaSetuped = ref(false);
 
-const setupMeta2dLife = () => {
+const setupMeta2dLife = async () => {
   if (metaSetuped.value || !view.value) return;
-  setupMeta2dView(view.value);
+  await setupMeta2dView(view.value);
   metaSetuped.value = true;
 }
 
@@ -33,7 +35,10 @@ const destroyMeta2dLife = () => {
   metaSetuped.value = false;
 }
 
-onMounted(setupMeta2dLife);
+onMounted(async () => {
+  await setupMeta2dLife();
+  await docStore.loadDoc();
+});
 onActivated(setupMeta2dLife);
 
 onDeactivated(destroyMeta2dLife);

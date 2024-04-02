@@ -10,7 +10,7 @@ import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
 import { AppStore, APP_STORE_KEYS, StoreKeyToMap } from '@/service/AppStoreService';
 
-type IpcStoreType = StoreKeyToMap['APP_STORE'];
+type IpcStoreType = StoreKeyToMap[APP_STORE_KEYS.APP_STORE];
 
 @IpcMain.IpcController()
 export class IpcStoreHandler extends FrameworkIpcHandler {

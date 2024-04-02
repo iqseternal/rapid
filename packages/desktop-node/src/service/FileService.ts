@@ -1,4 +1,4 @@
-import { join } from 'path';
+import path, { join } from 'path';
 import { DownloadService } from './DownloadService';
 import { PrinterService } from './PrinterService';
 
@@ -97,7 +97,7 @@ export class FileService {
             const file: File = {
               isDirectory: false,
               isFile: true,
-              ext: filePath.split('.').pop() || '',
+              ext: path.extname(filePath),
               path: filePath
             }
 

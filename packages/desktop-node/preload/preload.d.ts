@@ -24,6 +24,8 @@ export type Handlers =
   NamedHandler<IpcDocHandler> &
   NamedHandler<IpcWindowHandler>;
 
+export type HandlerMethodTyped<Handler, HandlerMethod extends keyof Handler> = Handler[HandlerMethod];
+
 /**
  * 原本的 IcpRenderer 返回类型为 Promise<any>, 所需需要自己重新修改一下返回值
  */
@@ -33,7 +35,7 @@ Omit<
   'invoke' | 'send' | 'sendSync' | 'on' | 'once'
 > & {
   // 向主进程发送事件
-  invoke<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): Promise<ReturnType<Handlers[T]>>;
+  invoke<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): ReturnType<Handlers[T]> extends Promise ? ReturnType<Handlers[T]> : Promise<ReturnType<Handlers[T]>>;
   send<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
   sendSync<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
 
