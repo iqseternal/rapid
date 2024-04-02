@@ -65,3 +65,10 @@ export const onScaleDefault = () => {
 export const onScaleWindow = () => {
   meta2d.fitView();
 };
+
+
+/**
+ * 获取 meta2d 的数据
+ * @returns
+ */
+export const getMeta2dData = () => JSON.parse(JSON.stringify(meta2d.data()));

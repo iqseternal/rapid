@@ -7,7 +7,7 @@
   "scripts": {
     "useUtf8": "chcp 65001",
     "typecheck": "pnpm -r --filter=./packages/* run typecheck",
-    "start": "electron-vite preview",
+    "start": "pnpm useUtf8 && electron-vite preview",
     "dev": "pnpm useUtf8 && electron-vite dev",
     "dev:app": "pnpm useUtf8 && electron-vite dev --watch",
     "website:dev": "pnpm -C ./packages/website run dev",

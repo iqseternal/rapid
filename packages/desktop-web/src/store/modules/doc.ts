@@ -5,6 +5,7 @@ import { IndexedDB } from '@rapid/libs/indexedDB';
 import { isDef, isUnDef } from '@suey/pkg-utils';
 import { windowClose, docOpen, docSaveAs, docSave, WindowPopup, docImport } from '@/actions';
 import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
+import { getMeta2dData } from '@meta/actions';
 
 import store from '@/store';
 
@@ -56,11 +57,17 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
   }
 
   /** 另存为文档 */
-  const saveAsDoc = () => docSaveAs(meta2d.data());
+  const saveAsDoc = async () => {
+
+    console.log();
+
+
+    return docSaveAs(getMeta2dData());
+  }
 
   const saveDoc = async () => {
-    if (fileName.value && filePath.value) return docSave(filePath.value, meta2d.data());
-    return docSaveAs(meta2d.data());
+    if (fileName.value && filePath.value) return docSave(filePath.value, getMeta2dData());
+    return saveAsDoc();
   }
 
   const openDoc = async () => {

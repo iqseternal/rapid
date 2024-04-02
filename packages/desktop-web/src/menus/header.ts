@@ -1,10 +1,9 @@
 import { ref } from 'vue';
-import { onRedo, onUndo } from '@/meta';
+import { onRedo, onUndo, getMeta2dData } from '@/meta';
 import type { DropdownDataType } from '@components/DropdownMenu';
 import { hotKeys, docImport, docExport } from '@/actions';
 import { useDocStoreHook } from '@/store/modules/doc';
 import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
-
 const docStore = useDocStoreHook();
 
 export const fileMenu = ref<DropdownDataType>([
@@ -58,7 +57,7 @@ export const fileMenu = ref<DropdownDataType>([
       {
         title: 'JSON',
         mark: 'FileJpgOutlined',
-        onClick: () => docExport(EXPORTS_EXTENSIONS.JSON, meta2d.data())
+        onClick: () => docExport(EXPORTS_EXTENSIONS.JSON, getMeta2dData())
       },
       true,
       {

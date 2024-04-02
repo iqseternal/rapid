@@ -10,26 +10,5 @@ import { IS_PROD } from '@rapid/config/constants';
  */
 export function useErrorCaptured() {
   // 生产模式才启用
-  if (IS_PROD) {
-    const state = reactive({
-      errNums: 0
-    })
 
-    onErrorCaptured((err, instance, info) => {
-
-      state.errNums ++;
-
-      printError(err);
-      printError(`[HAS ERROR]: ${info}, AT => `, instance);
-      return false;
-    })
-
-    watch(() => state.errNums, () => {
-      // 如果单页面报错超过了一百个, 直接重启 App
-
-      if (state.errNums >= 100) {
-        windowRelaunch();
-      }
-    })
-  }
 }
