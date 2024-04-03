@@ -33,7 +33,8 @@ export class IpcDocHandler extends FrameworkIpcHandler {
 
     PrinterService.printWarn(filePath, ext);
     if (!EXTENSIONS.DOCS.EXTENSIONS.includes(ext)) throw new RuntimeException('保存的图纸文件路径扩展名不符合要求', {
-      label: 'IpcDocHandler:save'
+      label: 'IpcDocHandler:save',
+      level: 'warning'
     })
     return new AppFileStorageService(filePath).save(data);
   }
@@ -45,7 +46,8 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       filters: [{ extensions: EXTENSIONS.DOCS.EXTENSIONS, name: EXTENSIONS.DOCS.NAME }]
     });
     if (!filePath) throw new RuntimeException('选择另存为文件路径失败', {
-      label: 'IpcDocHandler:saveAs'
+      label: 'IpcDocHandler:saveAs',
+      level: 'warning'
     })
 
     return this.save(windowService, filePath, data);
@@ -58,7 +60,8 @@ export class IpcDocHandler extends FrameworkIpcHandler {
     });
 
     if (!filePath || filePath.length === 0) throw new RuntimeException('打开文件时未选择任何文件', {
-      label: 'IpcDocHandler:openDoc'
+      label: 'IpcDocHandler:openDoc',
+      level: 'warning'
     })
 
     const data = (await new AppFileStorageService(filePath[0]).read()).toJson<Meta2dData>();
@@ -77,7 +80,8 @@ export class IpcDocHandler extends FrameworkIpcHandler {
     });
 
     if (!filePath) throw new RuntimeException('选择另存为文件路径失败', {
-      label: 'IpcDocHandler:exportsDoc'
+      label: 'IpcDocHandler:exportsDoc',
+      level: 'warning'
     })
 
 
@@ -104,7 +108,8 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       });
 
       if (!filePath || filePath.length === 0) throw new RuntimeException('选择导入文件路径失败', {
-        label: 'IpcDocHandler:importDoc'
+        label: 'IpcDocHandler:importDoc',
+        level: 'warning'
       })
 
       return ConvertService.toJson<Meta2dData>(await FileService.readFile(filePath[0]));

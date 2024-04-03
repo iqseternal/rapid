@@ -4,12 +4,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { useErrorCaptured } from '@/hooks';
-
-useErrorCaptured();
-</script>
-
 <style lang="scss" scoped>
 @import '@scss/var.scss';
 @import '@scss/mixin.scss';

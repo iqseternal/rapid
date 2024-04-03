@@ -12,7 +12,7 @@ export const loginRoute = makeRoute({
 export const rootRoute = makeRoute({
   name: 'Root',
   path: '/',
-  redirect: loginRoute.meta.fullpath
+  redirect: spaceRoutes.path
 } as const);
 
 export * from './space';

@@ -8,6 +8,8 @@ export interface ExceptionErrorMsgData {
 
   label: string;
 
+  level?: 'error' | 'warning' | 'info';
+
   time?: number;
 }
 

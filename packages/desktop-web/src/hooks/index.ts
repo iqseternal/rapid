@@ -32,7 +32,6 @@ export { useColumns } from './useColumns';
 export type { AntdRuleObject, AntdRules, Rules, RuleObject, RuleArr, ValidatorFn } from './useRules';
 export { useRules, is, not, and, or } from './useRules';
 
-export { useErrorCaptured } from './useErrorCaptured';
 export { useResizeObserver } from './useResizeObserver';
 
 export type { StorageStackOptions, JudgeIsCanControlStack } from './useStorageStack';

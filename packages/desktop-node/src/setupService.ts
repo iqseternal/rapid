@@ -1,6 +1,4 @@
 import { WindowService, WindowStateMachine } from '@/service/WindowService';
-import { WallpaperService } from '@/service/WallpaperService';
-import { DownloadService } from '@/service/DownloadService';
 import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';

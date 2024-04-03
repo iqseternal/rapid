@@ -66,12 +66,20 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   /** 另存为文档 */
   const saveAsDoc = async () => {
-    return docSaveAs(getMeta2dData());
+    if (window.meta2d && isWork.value) {
+      return docSaveAs(getMeta2dData());
+    }
+
+    return Promise.reject();
   }
 
   const saveDoc = async () => {
-    if (fileName.value && filePath.value) return docSave(filePath.value, getMeta2dData());
-    return saveAsDoc();
+    if (window.meta2d && isWork.value) {
+      if (fileName.value && filePath.value) return docSave(filePath.value, getMeta2dData());
+      return saveAsDoc();
+    }
+
+    return Promise.reject();
   }
 
   const openDoc = async () => {
@@ -81,8 +89,10 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
     fileName.value = message.filename;
     filePath.value = message.filePath;
 
-    meta2d.clear();
-    meta2d.open(message.data);
+    if (window.meta2d) {
+      meta2d.clear();
+      meta2d.open(message.data);
+    }
   }
 
   return {

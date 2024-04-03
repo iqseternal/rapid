@@ -5,11 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useErrorCaptured, useDisableDragText } from '@/hooks';
+import { useDisableDragText } from '@/hooks';
 
 useDisableDragText();
-
-useErrorCaptured();
 </script>
 
 <style lang="scss" scoped>
