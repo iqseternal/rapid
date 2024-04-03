@@ -14,10 +14,10 @@ import Logo from '@components/Logo/Logo.vue';
 @import "@scss/var.scss";
 
 .indicator {
-  width: var(--s-main-frame-sidebar-width);
-  height: $sMainCaptionBarHeight;
+  width: calc($sMainCaptionBarHeight - 0px);
+  height: calc($sMainCaptionBarHeight - 0px);
   aspect-ratio: 1 / 1;
-  padding: 5px;
+  padding: 7px 5px 7px 9px;
   display: flex;
   justify-content: center;
 

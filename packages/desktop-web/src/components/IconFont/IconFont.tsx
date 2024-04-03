@@ -25,6 +25,3 @@ export const IconFont = defineComponent({
         : (<div />)
   }
 })
-
-
-const c = <IconFont type='' />

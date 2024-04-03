@@ -1,6 +1,7 @@
 <template>
   <div class="compose">
-    <Sidebar class="sidebar" />
+    <!-- <Sidebar class="sidebar" /> -->
+    <div class="sidebarPlaceholder" />
     <Header class="header">
       <template #left>
         <Slogan ref="sloganInstance">
@@ -25,6 +26,9 @@
           </template>
         </Slogan>
       </template>
+      <template #center>
+        <Search />
+      </template>
     </Header>
     <main class="container">
       <RouterView v-slot="{ Component }">
@@ -48,7 +52,7 @@ import { canCopyText } from '@rapid/libs/common';
 import { useMousetrap, useFadeIn, useEventListener, useResizeObserver, useStorageStack } from '@/hooks';
 import { fileMenu, editMenu, helpMenu } from '@/menus';
 import type { HeaderInstance, SloganInstance } from '@components/Header';
-import { Header, Indicator, Slogan } from '@components/Header';
+import { Header, Indicator, Slogan, Search } from '@components/Header';
 import { isDef } from '@suey/pkg-utils';
 
 import Sidebar from './sidebar/index.vue';
@@ -107,20 +111,10 @@ div.compose {
   width: 100%;
   height: 100%;
 
-  --p: 5px; // 微调系数, 用于加宽顶部的 padding 值
-
-  .sidebar {
-    width: var(--s-main-frame-sidebar-width);
-    height: calc(100% - $sMainCaptionBarHeight - var(--p));
-    position: absolute;
-    top: calc($sMainCaptionBarHeight + var(--p));
-    left: 0px;
-  }
-
   .header {
     width: 100%;
-    padding: var(--p) 0px;
-    height: calc($sMainCaptionBarHeight + var(--p));
+    padding: 0px;
+    height: calc($sMainCaptionBarHeight);
     min-height: $sMainCaptionBarHeight;
     position: absolute;
     top: 0px;
@@ -151,15 +145,43 @@ div.compose {
     }
   }
 
+  .sidebar {
+    /* width: var(--s-main-frame-sidebar-width); */
+    height: calc(100% - $sMainCaptionBarHeight);
+    position: absolute;
+    top: calc($sMainCaptionBarHeight);
+    left: 0px;
+  }
+
+  .sidebarPlaceholder {
+    position: absolute;
+    width: 8px;
+    height: calc(100% - $sMainCaptionBarHeight - 4px);
+    /* background-color: red; */
+    background: repeating-linear-gradient(
+      48deg,
+      rgba(68, 206, 246, 0.5),
+      rgba(68, 206, 246, 0.5) 10px,
+      white 10px,
+      white 20px
+    );
+    top: calc($sMainCaptionBarHeight + 4px);
+  }
+
   main.container {
     padding: 4px 5px;
-    width: calc(100% - var(--s-main-frame-sidebar-width));
-    height: calc(100% - $sMainCaptionBarHeight - 1 * var(--p));
+    /* width: calc(100% - var(--s-main-frame-sidebar-width)); */
+    width: calc(100% - 4px);
+    height: calc(100% - $sMainCaptionBarHeight);
     background-color: var(--s-main-frame-bg-darkness-color);
     position: absolute;
-    top: calc($sMainCaptionBarHeight + var(--p));
-    left: var(--s-main-frame-sidebar-width);
-    padding-top: var(--p);
+    top: calc($sMainCaptionBarHeight);
+    /* left: var(--s-main-frame-sidebar-width); */
+
+    left: 8px;
+
+
+
     @include beautifulBar(auto);
     @include overflow;
   }

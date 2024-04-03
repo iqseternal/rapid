@@ -1,4 +1,4 @@
-import type { Ref } from 'vue';
+import type { ComputedRef, Ref } from 'vue';
 import { ref, inject, provide } from 'vue';
 import { isBoolean, isUndefined } from '@suey/pkg-utils';
 import type { SubMenuProps } from 'ant-design-vue';
@@ -24,7 +24,7 @@ export type SingleMenuProps = {
 /** 快捷菜单单项的类型 */
 export type SingleMenuDataType = SingleMenuProps & {
   title: string;
-  disabled?: boolean;
+  disabled?: boolean ;
   onClick?: MouseOnClickCallBack;
 };
 

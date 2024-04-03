@@ -14,8 +14,6 @@ const props = defineProps({
   width: { type: [Number, String], default: () => '' }
 });
 
-const { selections } = useSelection();
-
 const docStore = useDocStore();
 
 const instance = getCurrentInstance();
@@ -25,8 +23,9 @@ const metaSetuped = ref(false);
 
 const setupMeta2dLife = async () => {
   if (metaSetuped.value || !view.value) return;
-  await setupMeta2dView(view.value);
   metaSetuped.value = true;
+  setupMeta2dView(view.value);
+  await docStore.loadDoc();
 }
 
 const destroyMeta2dLife = () => {
@@ -35,10 +34,7 @@ const destroyMeta2dLife = () => {
   metaSetuped.value = false;
 }
 
-onMounted(async () => {
-  await setupMeta2dLife();
-  await docStore.loadDoc();
-});
+onMounted(setupMeta2dLife);
 onActivated(setupMeta2dLife);
 
 onDeactivated(destroyMeta2dLife);

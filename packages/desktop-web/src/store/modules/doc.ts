@@ -6,17 +6,24 @@ import { isDef, isUnDef } from '@suey/pkg-utils';
 import { windowClose, docOpen, docSaveAs, docSave, WindowPopup, docImport } from '@/actions';
 import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
 import { getMeta2dData } from '@meta/actions';
+import { useRoute } from 'vue-router';
+import { workbenchesRoute } from '@pages/index/router/modules';
 
 import store from '@/store';
 
 export const DOC_STORE_NAME = 'docStore';
 
 export const useDocStore = defineStore(DOC_STORE_NAME, () => {
+  const route = useRoute();
+
   const fileName = ref<undefined | string>();
   const filePath = ref<undefined | string>();
 
   /** 当文件名存在,那么就表示当前正在工作区绘图 */
-  const isWork = computed(() => fileName.value);
+  const isWork = computed(() => {
+
+    return route.path === workbenchesRoute.meta.fullpath && fileName.value;
+  });
 
   const loadDoc = async () => {
     if (!filePath.value) return;

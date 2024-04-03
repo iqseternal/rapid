@@ -28,3 +28,5 @@ export const spaceRoutes = makeRoute({
     }
   ]
 });
+
+export const [workbenchesRoute] = spaceRoutes.children;

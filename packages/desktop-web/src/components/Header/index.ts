@@ -7,8 +7,9 @@
 import Header from './index.vue';
 import Indicator from './Indicator.vue';
 import Slogan from './Slogan.vue';
+import Search from './Search.vue';
 
-export { Header, Indicator, Slogan };
+export { Header, Indicator, Slogan, Search };
 
 export type * from './declare';
 

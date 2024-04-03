@@ -55,7 +55,6 @@ const open = ref(false);
     width: 60%;
     height: 60%;
     object-fit: contain;
-
   }
 }
 

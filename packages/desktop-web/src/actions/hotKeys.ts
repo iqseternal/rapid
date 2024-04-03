@@ -52,8 +52,6 @@ export const hotKeys = makeHotKeys({
       window.alert('没有完成');
     }
   },
-
-
   rollback: {
     key: 'Ctrl+Z',
     tip: '撤销', changeAble: false,
