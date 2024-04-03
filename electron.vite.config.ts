@@ -27,7 +27,7 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
     minify: 'terser',
     terserOptions: {
       compress: {
-        // drop_console: true,
+        drop_console: true,
         drop_debugger: true
       }
     },
@@ -74,8 +74,8 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
     manifest: false,
     terserOptions: {
       compress: {
-        // drop_console: true,
-        // drop_debugger: true
+        drop_console: true,
+        drop_debugger: true
       }
     },
     sourcemap: false,

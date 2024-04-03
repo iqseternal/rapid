@@ -20,7 +20,7 @@ declare global {
 
   }
 
-  declare const meta2d: Meta2d;
+  declare var meta2d: Meta2d;
   declare const C2S: any;
 
   declare type ModalEvtCallBack = EvtCallback;

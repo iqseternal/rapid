@@ -60,15 +60,12 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
     fileName.value = '新建文档';
     filePath.value = void 0;
-    meta2d.clear();
+
+    if (window.meta2d) meta2d.clear();
   }
 
   /** 另存为文档 */
   const saveAsDoc = async () => {
-
-    console.log();
-
-
     return docSaveAs(getMeta2dData());
   }
 
