@@ -36,7 +36,7 @@ export const EXTENSIONS = {
     EXTENSION: 'rdc',
     EXTENSIONS: ['rdc']
   }
-}
+};
 
 export enum EXPORTS_EXTENSIONS {
   SVG = 'svg',

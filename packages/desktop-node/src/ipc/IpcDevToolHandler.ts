@@ -14,9 +14,15 @@ import { UserConfigService } from '@/service/UserConfigService';
 export class IpcDevToolHandler extends FrameworkIpcHandler {
   public readonly id = 'IpcDevTool';
 
+  /**
+   * 打开开发者工具
+   * @param windowService
+   * @param status
+   * @param options
+   */
   @IpcMain.Handler()
   @NoteInfo((win: WindowService, status: boolean) => `${win.window.id}${status ? 'open' : '关闭'}了开发者工具`)
-  openDevTool(windowService: WindowService, status: boolean, options?: OpenDevToolsOptions) {
+  async openDevTool(windowService: WindowService, status: boolean, options?: OpenDevToolsOptions) {
 
     if (status) {
       if (IS_DEV) windowService.window.webContents.openDevTools(options);

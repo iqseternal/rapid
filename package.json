@@ -17,7 +17,7 @@
     "packages:build": "pnpm -r --filter=./packages/* run build",
     "build": "pnpm typecheck && pnpm scripts:build && pnpm packages:build && pnpm build:only",
     "build:only": "electron-vite build",
-    "build:win": "pnpm build && pnpm build:win:only",
+    "build:win": "pnpm build && electron-builder --win --config",
     "build:win:only": "pnpm build:only && electron-builder --win --config",
     "build:mac": "pnpm build && electron-builder --mac --config",
     "build:linux": "pnpm build && electron-builder --linux --config",

@@ -26,6 +26,13 @@ type ExportFileTypeToData = {
 export class IpcDocHandler extends FrameworkIpcHandler {
   public readonly id = 'IpcDoc';
 
+  /**
+   * 保存一个文档到本地
+   * @param windowService
+   * @param filePath
+   * @param data
+   * @returns
+   */
   @IpcMain.Handler()
   async save(windowService: WindowService, filePath: string, data: Meta2dData) {
     const ext = path.extname(filePath).substring(1);
@@ -40,6 +47,12 @@ export class IpcDocHandler extends FrameworkIpcHandler {
   }
 
 
+  /**
+   * 另存为一个文档到本地
+   * @param windowService
+   * @param data
+   * @returns
+   */
   @IpcMain.Handler()
   async saveAs(windowService: WindowService, data: Meta2dData) {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
@@ -53,6 +66,12 @@ export class IpcDocHandler extends FrameworkIpcHandler {
     return this.save(windowService, filePath, data);
   }
 
+  /**
+   * 从本地打开一个文档
+   * @param windowService
+   * @param docPath
+   * @returns
+   */
   @IpcMain.Handler()
   async openDoc(windowService: WindowService, docPath?: string) {
     const filePath = docPath ? [docPath] : dialog.showOpenDialogSync(windowService.window, {
@@ -73,6 +92,13 @@ export class IpcDocHandler extends FrameworkIpcHandler {
     };
   }
 
+  /**
+   * 导出一个文档数据到本地
+   * @param windowService
+   * @param filetype
+   * @param data
+   * @returns
+   */
   @IpcMain.Handler()
   async exportsDoc<FileType extends EXPORTS_EXTENSIONS>(windowService: WindowService, filetype: FileType, data: ExportFileTypeToData[FileType]) {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
@@ -100,6 +126,12 @@ export class IpcDocHandler extends FrameworkIpcHandler {
     }
   }
 
+  /**
+   * 从本地导入一个文档数据
+   * @param windowService
+   * @param filetype
+   * @returns
+   */
   @IpcMain.Handler()
   async importDoc<FileType extends EXPORTS_EXTENSIONS.JSON>(windowService: WindowService, filetype: FileType) {
     if (filetype === EXPORTS_EXTENSIONS.JSON) {

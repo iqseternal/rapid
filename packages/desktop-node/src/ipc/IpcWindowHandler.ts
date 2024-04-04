@@ -12,21 +12,40 @@ import { UserConfigService } from '@/service/UserConfigService';
 import { setupSettingWindow } from '../setupService';
 import { print } from '@suey/printer';
 
+/**
+ * Ipc 关于窗口操作的 句柄
+ */
 @IpcMain.IpcController()
 export class IpcWindowHandler extends FrameworkIpcHandler {
   public readonly id = 'IpcWindow';
 
+  /**
+   * 最大化窗口
+   * @param windowService
+   * @param id
+   */
   @IpcMain.Handler()
   maxSize(windowService: WindowService, id?: number) {
     windowService.window.maximize();
   }
 
+  /**
+   * 最小化窗口
+   * @param windowService
+   * @param id
+   */
   @IpcMain.Handler()
   minSize(windowService: WindowService, id?: number) {
 
     windowService.window.minimize();
   }
 
+  /**
+   * 重置窗口
+   * @param windowService
+   * @param id
+   * @returns
+   */
   @IpcMain.Handler()
   reduction(windowService: WindowService, id?: number) {
 
@@ -38,6 +57,11 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     return true;
   }
 
+  /**
+   * 调整窗口是否可以托拽改变大小
+   * @param windowService
+   * @param options
+   */
   @IpcMain.Handler()
   resizeAble(windowService: WindowService, options: {
     id?: number,
@@ -46,11 +70,20 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     windowService.window.setResizable(options.able);
   }
 
+  /**
+   * 重启
+   * @param windowService
+   */
   @IpcMain.Handler()
   relanuch(windowService: WindowService) {
     app.relaunch();
   }
 
+  /**
+   * 设置窗口大小
+   * @param windowService
+   * @param options
+   */
   @IpcMain.Handler()
   setSize(windowService: WindowService, options: {
     id?: number
@@ -63,6 +96,12 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     windowService.window.setSize(options.width, options.height);
   }
 
+  /**
+   * 设置窗口为用户的自定义大小
+   * @param windowService
+   * @param options
+   * @returns
+   */
   @IpcMain.Handler()
   resetCustomSize(windowService: WindowService, options: {
     id?: number,
@@ -108,6 +147,11 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     })
   }
 
+  /**
+   * 设置窗口的位置
+   * @param windowService
+   * @param options
+   */
   @IpcMain.Handler()
   setPosition(windowService: WindowService, options: {
     id?: number,
@@ -139,6 +183,12 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     windowService.window.setPosition(targetPx, targetPy);
   }
 
+  /**
+   * 打开一个内置定义窗口对象
+   * @param windowService
+   * @param type
+   * @returns
+   */
   @IpcMain.Handler()
   async openWindow(windowService: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
     if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) {
@@ -152,6 +202,12 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     }
   }
 
+  /**
+   * 关闭窗口
+   * @param windowService
+   * @param id
+   * @returns
+   */
   @IpcMain.Handler()
   closeWindow(windowService: WindowService, id?: number) {
     const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
@@ -161,6 +217,11 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     windowService.destroy();
   }
 
+  /**
+   * 管理窗口是否可以显示
+   * @param windowService
+   * @param options
+   */
   @IpcMain.Handler()
   showWindow(windowService: WindowService, options: {
     id?: number

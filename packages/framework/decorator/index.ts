@@ -4,6 +4,7 @@ import { IS_PROD } from '@rapid/config/constants';
 
 /**
  * 标记一个弃用的类或者一个弃用的方法
+ * 这对于项目后期持续维护有作用, 为开发人员调试时告知使用了不应该使用的方法或者参数
  * @returns
  */
 export function Deprecated() {

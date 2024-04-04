@@ -105,7 +105,8 @@ export const setupIpcMainHandler = async <
 
     ipcMain.removeAllListeners('uncaughtException');
 
-    const handlers = Reflect.getMetadata(IPC_META_HANDLER, handler.constructor);
+    const handlers = Reflect.getMetadata(IPC_META_HANDLER, handler.constructor) as (keyof typeof handler)[];
+
     handlers.forEach((propertyName: string) => {
       const channel = server.syntheticChannel(handler.id, propertyName);
 
