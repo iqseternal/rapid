@@ -1,7 +1,7 @@
 import { isNull, isNumber, isObject, isString } from '@suey/pkg-utils';
-import { deflateRaw, inflateRaw } from 'pako';
-import * as fs from 'fs';
+import { PakoService } from './PakoService';
 import { Printer } from '@suey/printer';
+import * as fs from 'fs';
 
 export type ConvertDataType = string | number | Uint8Array | Buffer | object | Blob;
 
@@ -164,12 +164,12 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
     if (data instanceof Blob) {
       return new Promise(async (resolve, reject) => {
         ConvertService.toBuffer(data).then(res => {
-          resolve(deflateRaw(res));
+          resolve(PakoService.deflateRaw(res));
         }).catch(reject);
       })
     }
 
-    return deflateRaw(ConvertService.toBuffer(data as Exclude<ConvertDataType, Blob>));
+    return PakoService.deflateRaw(ConvertService.toBuffer(data as Exclude<ConvertDataType, Blob>));
   }
 
   toDeflate() {
@@ -182,14 +182,14 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
    */
   static toInflate<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<string> : string;
   static toInflate<Data extends ConvertDataType>(data: Data): Promise<string> | string {
-    if (data instanceof Uint8Array) return inflateRaw(data, { to: 'string' });
+    if (data instanceof Uint8Array) return PakoService.inflateRaw(data);
 
     if (data instanceof Blob) return new Promise(async (resolve, reject) => {
       ConvertService.toUint8Array(data).then(res => {
-        resolve(inflateRaw(res, { to: 'string' }));
+        resolve(PakoService.inflateRaw(res));
       }).catch(reject);
     })
-    else return inflateRaw(ConvertService.toUint8Array(data as Exclude<Data, Blob>), { to: 'string' });
+    else return PakoService.inflateRaw(ConvertService.toUint8Array(data as Exclude<Data, Blob>));
   }
 
   toInflate() {

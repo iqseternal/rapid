@@ -56,11 +56,12 @@ export class AppDirStorageService {
       });
     }
 
-    if (!fs.statSync(this.targetUrl).isDirectory()) {
-      throw new RuntimeException('targetUrl 不是目录', {
-        label: 'AppStorageService:constructor'
-      })
-    }
+    // if (!fs.existsSync(this.targetUrl)) fs.mkdirSync(this.targetUrl);
+    // if (!fs.statSync(this.targetUrl).isDirectory()) {
+    //   throw new RuntimeException('targetUrl 不是目录', {
+    //     label: 'AppStorageService:constructor'
+    //   })
+    // }
   }
 
   /**
