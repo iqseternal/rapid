@@ -1,6 +1,5 @@
 <template>
   <div class="toolBar flex-start">
-
     <Widget title="撤销">
       <span @click="onUndo">
         <svg class="l-icon" aria-hidden="true"><use xlink:href="#l-undo" /></svg>
@@ -36,7 +35,6 @@
         </svg>
       </span>
     </Widget>
-
     <DropdownMenu>
       <Widget title="线型">
         <svg class="l-icon" aria-hidden="true">
