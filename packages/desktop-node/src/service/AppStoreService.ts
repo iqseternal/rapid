@@ -44,7 +44,7 @@ export class AppStore extends CustomSingleInstanceService {
       },
       deserialize: (text: string) => {
         const uInt8Array = JSON.parse(text);
-        return new ConvertService(Uint8Array.from(uInt8Array)).toJson() as any;
+        return new ConvertService(Uint8Array.from(uInt8Array)).toJson<StoreKeyToMap[StoreKey]>();
       }
     });
 

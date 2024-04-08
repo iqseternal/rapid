@@ -22,12 +22,14 @@ export interface SetupFilterOptions<T extends DescendantClass<FrameworkFilter>> 
 
 }
 
-export const runtimeContext = {
+const runtimeContext = {
   modules: [] as {
     filter: FrameworkFilter;
     Exception: DescendantClass<Exception>
   }[]
 }
+
+export const getFilterRuntimeContext = () => runtimeContext;
 
 /**
  * 创建 filter 的上下文

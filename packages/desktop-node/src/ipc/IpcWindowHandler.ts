@@ -1,5 +1,5 @@
 import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
-import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler } from '@rapid/framework';
+import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler, Deprecated } from '@rapid/framework';
 import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
 import { setWindowOpenHandler, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';

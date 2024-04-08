@@ -5,7 +5,7 @@ import { Printer } from '../core';
 import type { SetupOptions, DescendantClass } from '../core';
 import { filterCatch } from '../filter/runtime';
 
-import { IPC_META_CONTROLLER, IPC_META_HANDLER, IPC_EMITTER_TYPE } from './decorator';
+import { IPC_META_CONTROLLER, IPC_META_HANDLE, IPC_EMITTER_TYPE, IPC_META_HANDLE_ONCE, IPC_META_ON, IPC_META_ON_ONCE } from './decorator';
 import { Exception } from '../exception';
 
 export abstract class FrameworkIpcHandler {
@@ -31,8 +31,8 @@ export abstract class FrameworkIpcHandlerServer<EventConvertArg> {
    * @param propertyName
    * @returns
    */
-  syntheticChannel(handlerServerId: string, propertyName: string): string {
-    return handlerServerId + '/' + propertyName;
+  syntheticChannel<T extends string, K extends string>(handlerServerId: T, propertyName: K): `${T}/${K}` {
+    return `${handlerServerId}/${propertyName}`;
   }
 }
 
@@ -56,8 +56,87 @@ export interface SetupIpcMainHandlerOptions<
  */
 export const isIpcMainHandler = (target: any): target is typeof FrameworkIpcHandler => target instanceof FrameworkIpcHandler;
 
+/**
+ * 执行上下文
+ */
 const runtimeContext = {
-  server: new IpcHandlerServer()
+  /** ipc Server */
+  server: new IpcHandlerServer(),
+  /** ipc 注册句柄的类 */
+  modules: [] as FrameworkIpcHandler[]
+}
+
+export const getIpcRuntimeContext = () => runtimeContext;
+
+/**
+ * 直接注册一个 ipc 句柄
+ * @param type
+ * @param channel
+ * @param listener
+ */
+export const registerIpcMain = <
+  Class extends FrameworkIpcHandler,
+  Channel extends `${Class['id']}/${Exclude<keyof Class, 'id' | number | symbol>}` = `${Class['id']}/${Exclude<keyof Class, 'id' | number | symbol>}`
+>(type: IPC_EMITTER_TYPE, channel: Channel, listener: (...args: unknown[]) => any) => {
+  ipcMain[type](channel, (e, ...args) => new Promise(async (resolve, reject) => {
+    const convertArgs = runtimeContext.server.convertArgs(IPC_EMITTER_TYPE.HANDLE, e, ...args);
+    const response = listener(...convertArgs);
+
+    Promise.resolve(response).then(resolve).catch(async err => {
+      filterCatch(err).then(() => {
+        reject((err as Exception).message);
+      }).catch(() => {
+        reject('unCaught exception');
+      });
+    })
+  }))
+}
+
+/**
+ * 为一个 FrameworkIpcHandler 子类注册 ipc 句柄
+ * @param Class
+ * @returns
+ */
+export const registerIpcMainHandler = <T extends DescendantClass<FrameworkIpcHandler>>(Class: T): FrameworkIpcHandler => {
+  const handler = new Class();
+  type HandlerMethodNames = Exclude<keyof typeof handler, 'id' | number | symbol>;
+
+  if (IS_DEV) {
+    const isController = Reflect.getMetadata(IPC_META_CONTROLLER, handler.constructor);
+    if (!isIpcMainHandler(handler) || !isController) {
+      throw new Exception(`\`registerIpcMainHandler\` Class value must be a subclass of IpcMainHandler and decorated by IpcController.`, null);
+    }
+  }
+
+  const handles = Reflect.getMetadata(IPC_META_HANDLE, handler.constructor) as HandlerMethodNames[];
+  handles.forEach((propertyName: string) => {
+    const channel = runtimeContext.server.syntheticChannel(handler.id, propertyName as HandlerMethodNames);
+    const listener = (...args: unknown[]) => handler[propertyName](...args);
+    registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.HANDLE, channel, listener);
+  });
+
+  const handleOnces = Reflect.getMetadata(IPC_META_HANDLE_ONCE, handler.constructor) as HandlerMethodNames[];
+  handleOnces.forEach((propertyName: string) => {
+    const channel = runtimeContext.server.syntheticChannel(handler.id, propertyName as HandlerMethodNames);
+    const listener = (...args: unknown[]) => handler[propertyName](...args);
+    registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.HANDLE_ONCE, channel, listener);
+  });
+
+  const ons = Reflect.getMetadata(IPC_META_ON, handler.constructor) as HandlerMethodNames[];
+  ons.forEach((propertyName: string) => {
+    const channel = runtimeContext.server.syntheticChannel(handler.id, propertyName as HandlerMethodNames);
+    const listener = (...args: unknown[]) => handler[propertyName](...args);
+    registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.ON, channel, listener);
+  });
+
+  const onOnces = Reflect.getMetadata(IPC_META_ON_ONCE, handler.constructor) as HandlerMethodNames[];
+  onOnces.forEach((propertyName: string) => {
+    const channel = runtimeContext.server.syntheticChannel(handler.id, propertyName as HandlerMethodNames);
+    const listener = (...args: unknown[]) => handler[propertyName](...args);
+    registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.ON_ONCE, channel, listener);
+  });
+
+  return handler;
 }
 
 /**
@@ -92,36 +171,14 @@ export const setupIpcMainHandler = async <
     }
   }
 
-  modules.forEach(Handler => {
-    const handler = new Handler();
+  runtimeContext.server = new Server();
 
-    if (IS_DEV) {
-      const isController = Reflect.getMetadata(IPC_META_CONTROLLER, handler.constructor);
-      if (!isIpcMainHandler(handler) || !isController) {
-        Printer.printError(`\`modules\` each value must be a subclass of IpcMainHandler and decorated by IpcController.`);
-        return;
-      }
-    }
+  ipcMain.removeAllListeners('uncaughtException');
 
-    ipcMain.removeAllListeners('uncaughtException');
+  modules.forEach((Handler) => {
+    const handler = registerIpcMainHandler(Handler);
 
-    const handlers = Reflect.getMetadata(IPC_META_HANDLER, handler.constructor) as (keyof typeof handler)[];
-
-    handlers.forEach((propertyName: string) => {
-      const channel = server.syntheticChannel(handler.id, propertyName);
-
-      ipcMain.handle(channel, (e, ...args) => new Promise(async (resolve, reject) => {
-        const convertArgs = server.convertArgs(IPC_EMITTER_TYPE.HANDLE, e, ...args);
-
-        Promise.resolve(handler[propertyName](...convertArgs)).then(resolve).catch(async err => {
-          filterCatch(err).then(() => {
-            reject((err as Exception).message);
-          }).catch(() => {
-            reject('unCaught exception');
-          });
-        })
-      }))
-    })
-  })
+    runtimeContext.modules.push(handler);
+  });
 }
 

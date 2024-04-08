@@ -44,6 +44,8 @@ export const runtimeContext = {
   server: new LoggerServer()
 }
 
+export const getLoggerRuntimeContext = () => runtimeContext;
+
 export const setupLogger = async <T extends DescendantClass<FrameworkLoggerServer>>(options: SetupLoggerOptions<T>) => {
   const { use: Server } = options;
 

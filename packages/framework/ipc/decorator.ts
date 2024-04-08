@@ -1,10 +1,10 @@
 
 export const IPC_META_CONTROLLER = Symbol('reflect:ipcMain:controller');
 
-export const IPC_META_HANDLER = Symbol('reflect:ipcMain:handler');
-export const IPC_META_HANDLER_ONCE = Symbol('reflect:ipcMain:handlerOnce');
+export const IPC_META_HANDLE = Symbol('reflect:ipcMain:handle');
+export const IPC_META_HANDLE_ONCE = Symbol('reflect:ipcMain:handleOnce');
 export const IPC_META_ON = Symbol('reflect:ipcMain:on');
-export const IPC_META_ON_ONCE = Symbol('reflect:ipcMain:once)');
+export const IPC_META_ON_ONCE = Symbol('reflect:ipcMain:onOnce)');
 
 /**
  * ipc 监听通信的类型
@@ -13,7 +13,7 @@ export enum IPC_EMITTER_TYPE {
   HANDLE = 'handle',
   HANDLE_ONCE = 'handleOnce',
   ON = 'on',
-  ONCE = 'once'
+  ON_ONCE = 'once'
 }
 
 /**
@@ -27,8 +27,8 @@ export const IpcMain = {
   IpcController: (): ClassDecorator => {
     return (target) => {
       Reflect.defineMetadata(IPC_META_CONTROLLER, true, target);
-      if (!Reflect.hasMetadata(IPC_META_HANDLER, target)) return Reflect.defineMetadata(IPC_META_HANDLER, [], target);
-      if (!Reflect.hasMetadata(IPC_META_HANDLER_ONCE, target)) return Reflect.defineMetadata(IPC_META_HANDLER_ONCE, [], target);
+      if (!Reflect.hasMetadata(IPC_META_HANDLE, target)) return Reflect.defineMetadata(IPC_META_HANDLE, [], target);
+      if (!Reflect.hasMetadata(IPC_META_HANDLE_ONCE, target)) return Reflect.defineMetadata(IPC_META_HANDLE_ONCE, [], target);
       if (!Reflect.hasMetadata(IPC_META_ON, target)) Reflect.defineMetadata(IPC_META_ON, [], target);
       if (!Reflect.hasMetadata(IPC_META_ON_ONCE, target)) Reflect.defineMetadata(IPC_META_ON_ONCE, [], target);
     }
@@ -43,7 +43,7 @@ export const IpcMain = {
     if (type === IPC_EMITTER_TYPE.HANDLE) return IpcMain.Handler(channel);
     if (type === IPC_EMITTER_TYPE.HANDLE_ONCE) return IpcMain.HandlerOnce(channel);
     if (type === IPC_EMITTER_TYPE.ON) return IpcMain.On(channel);
-    if (type === IPC_EMITTER_TYPE.ONCE) return IpcMain.Once(channel);
+    if (type === IPC_EMITTER_TYPE.ON_ONCE) return IpcMain.Once(channel);
 
     return (target, property) => {
 
@@ -56,11 +56,11 @@ export const IpcMain = {
    */
   Handler: (channel?: string): MethodDecorator => {
     return (target, propertyName) => {
-      if (!Reflect.hasMetadata(IPC_META_HANDLER, target.constructor)) {
-        return Reflect.defineMetadata(IPC_META_HANDLER, [propertyName], target.constructor);
+      if (!Reflect.hasMetadata(IPC_META_HANDLE, target.constructor)) {
+        return Reflect.defineMetadata(IPC_META_HANDLE, [propertyName], target.constructor);
       }
 
-      const values = Reflect.getMetadata(IPC_META_HANDLER, target.constructor);
+      const values = Reflect.getMetadata(IPC_META_HANDLE, target.constructor);
       values.push(propertyName);
     }
   },
@@ -72,11 +72,11 @@ export const IpcMain = {
   HandlerOnce: (channel?: string): MethodDecorator => {
 
     return (target, propertyName) => {
-      if (!Reflect.hasMetadata(IPC_META_HANDLER_ONCE, target.constructor)) {
-        return Reflect.defineMetadata(IPC_META_HANDLER_ONCE, [propertyName], target.constructor);
+      if (!Reflect.hasMetadata(IPC_META_HANDLE_ONCE, target.constructor)) {
+        return Reflect.defineMetadata(IPC_META_HANDLE_ONCE, [propertyName], target.constructor);
       }
 
-      const values = Reflect.getMetadata(IPC_META_HANDLER_ONCE, target.constructor);
+      const values = Reflect.getMetadata(IPC_META_HANDLE_ONCE, target.constructor);
       values.push(propertyName);
     }
   },

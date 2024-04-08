@@ -108,6 +108,8 @@ export class WindowService {
       let isResolved = false;
 
       setTimeout(() => {
+        if (isResolved) return;
+
         fail && fail();
         reject();
       }, 1000);

@@ -28,6 +28,26 @@
 
 后续会部署在 https://www.oupro.cn
 
+## Preface
+
+想要了解本项目, 并具有改造和修正和扩展能力, 你应该具有如下基本概念：
+
+- pnpm monorepo 依赖安装和管理
+
+- Nodejs 对本地文件的基本操作能力
+
+- Pako 的基本认知
+
+- Javascript 类编程
+
+- Electron 基本知识概念
+
+- Typescript 类型运算基本能力
+
+- 装饰器集成以及 Reflect-metadata 基本概念
+
+- Vue.js Vite 构建 Web / React 也行， 以及 Vite 树摇的形成，变量注入
+
 ## Project Setup
 
 ### Install

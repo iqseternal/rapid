@@ -9,16 +9,13 @@ import { IS_PROD } from '@rapid/config/constants';
  */
 export function Deprecated() {
 
-  return <T>(target: Function | object, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<T>) => {
+  return <T extends Function>(target: T | object, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<T>): void => {
     if (IS_PROD) return;
 
     // ClassDecorator
     if (isUnDef(propertyKey) && isUnDef(descriptor)) {
-      const Constructor = target as Function;
-
       Printer.printWarn(`Deprecated`, new Error().stack);
-
-      return Constructor;
+      return;
     }
 
     if (!descriptor) return;
@@ -31,7 +28,5 @@ export function Deprecated() {
 
       method.call(this, ...args);
     } as unknown as T;
-
-    return descriptor;
   }
 }
