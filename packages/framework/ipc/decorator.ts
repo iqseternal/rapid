@@ -27,8 +27,8 @@ export const IpcMain = {
   IpcController: (): ClassDecorator => {
     return (target) => {
       Reflect.defineMetadata(IPC_META_CONTROLLER, true, target);
-      if (!Reflect.hasMetadata(IPC_META_HANDLE, target)) return Reflect.defineMetadata(IPC_META_HANDLE, [], target);
-      if (!Reflect.hasMetadata(IPC_META_HANDLE_ONCE, target)) return Reflect.defineMetadata(IPC_META_HANDLE_ONCE, [], target);
+      if (!Reflect.hasMetadata(IPC_META_HANDLE, target)) Reflect.defineMetadata(IPC_META_HANDLE, [], target);
+      if (!Reflect.hasMetadata(IPC_META_HANDLE_ONCE, target)) Reflect.defineMetadata(IPC_META_HANDLE_ONCE, [], target);
       if (!Reflect.hasMetadata(IPC_META_ON, target)) Reflect.defineMetadata(IPC_META_ON, [], target);
       if (!Reflect.hasMetadata(IPC_META_ON_ONCE, target)) Reflect.defineMetadata(IPC_META_ON_ONCE, [], target);
     }
