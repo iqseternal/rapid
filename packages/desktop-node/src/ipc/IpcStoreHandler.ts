@@ -25,7 +25,7 @@ export class IpcStoreHandler extends FrameworkIpcHandler {
    * @returns
    */
   @IpcMain.Handler()
-  get<Key extends keyof IpcStoreType, V extends IpcStoreType[Key]>(windowService: WindowService, key: Key, defaultValue?: V) {
+  get<Key extends keyof IpcStoreType, V extends Required<IpcStoreType>[Key]>(windowService: WindowService, key: Key, defaultValue?: V) {
     if (defaultValue) return this.appStore.get(key, defaultValue);
     return this.appStore.get(key);
   }

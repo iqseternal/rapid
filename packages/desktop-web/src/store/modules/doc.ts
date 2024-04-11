@@ -26,7 +26,12 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
   });
 
   const loadDoc = async () => {
-    if (!filePath.value) return;
+    if (!filePath.value) {
+
+      createDoc();
+
+      return;
+    }
 
     const message = await docOpen(filePath.value);
 

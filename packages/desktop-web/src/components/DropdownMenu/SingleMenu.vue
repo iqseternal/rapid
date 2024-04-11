@@ -43,7 +43,7 @@ const emits = defineEmits(['click']);
 const dropdownStatus = inject<Ref<boolean>>(DROPDOWN_STATUS);
 
 const itemClick = () => {
-  emits('click');
   if (dropdownStatus?.value === true) dropdownStatus.value = false;
+  emits('click');
 }
 </script>

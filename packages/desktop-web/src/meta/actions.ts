@@ -72,3 +72,20 @@ export const onScaleWindow = () => {
  * @returns
  */
 export const getMeta2dData = () => JSON.parse(JSON.stringify(meta2d.data()));
+
+/**
+ * 托拽或者点击图元
+ * @param e
+ * @param elem
+ * @returns
+ */
+export const dragStart = (e: any, elem: any) => {
+  if (!elem) return;
+  e.stopPropagation();
+
+  // 拖拽事件
+  // 设置拖拽数据
+  if (e instanceof DragEvent) e.dataTransfer?.setData('Meta2d', JSON.stringify(elem.data));
+// 支持单击添加图元。平板模式
+  else meta2d.canvas.addCaches = [elem.data];
+};

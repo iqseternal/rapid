@@ -93,6 +93,17 @@ export const registerIpcMain = <
 }
 
 /**
+ * 取消注册 ipc 句柄
+ * @param channel
+ */
+export const unRegisterIpcMain = <
+  Class extends FrameworkIpcHandler,
+  Channel extends `${Class['id']}/${Exclude<keyof Class, 'id' | number | symbol>}` = `${Class['id']}/${Exclude<keyof Class, 'id' | number | symbol>}`
+>(channel: Channel) => {
+  ipcMain.removeHandler(channel);
+}
+
+/**
  * 为一个 FrameworkIpcHandler 子类注册 ipc 句柄
  * @param Class
  * @returns
@@ -138,6 +149,25 @@ export const registerIpcMainHandler = <T extends DescendantClass<FrameworkIpcHan
 
   return handler;
 }
+
+/**
+ * 取消注册一个 ipc controller
+ * @param Class
+ */
+export const unRegisterIpcMainHandler = <T extends DescendantClass<FrameworkIpcHandler>>(Class: T) => {
+  type HandlerMethodNames = Exclude<keyof T, 'id' | number | symbol>;
+  const handles = Reflect.getMetadata(IPC_META_HANDLE, Class) as HandlerMethodNames[];
+  const handleOnces = Reflect.getMetadata(IPC_META_HANDLE_ONCE, Class) as HandlerMethodNames[];
+  const ons = Reflect.getMetadata(IPC_META_ON, Class) as HandlerMethodNames[];
+  const onOnces = Reflect.getMetadata(IPC_META_ON_ONCE, Class) as HandlerMethodNames[];
+
+  const methods = [...handles, ...handleOnces, ...ons, ...onOnces];
+
+  methods.forEach(method => {
+    ipcMain.removeHandler(method);
+  })
+}
+
 
 /**
  * 设置 ipc 运行的上下文，注册 ipc 事件

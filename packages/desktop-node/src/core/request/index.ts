@@ -6,7 +6,7 @@
 import { CONFIG } from '@rapid/config/constants';
 import { REQ_METHODS, createApiRequest } from '@suey/pkg-utils';
 
-export const { apiGet, apiPost, createApi } = createApiRequest(CONFIG.API_URL, {}, {
+export const { apiGet, apiPost, createApi } = createApiRequest(CONFIG.API.URL, {}, {
 
 })
 

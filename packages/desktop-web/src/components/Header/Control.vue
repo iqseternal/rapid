@@ -2,7 +2,7 @@
   <Subfield class="overflow-hidden">
     <div />
     <Subfield :gap="4" style="margin: 0 8px;justify-content: flex-end;" class="control overflow-hidden">
-      <slot name="control" />
+      <slot name="right" />
       <template v-if="!props.isDialog && !props.isPane">
         <Widget title="全屏" icon="FullscreenOutlined" @click="() => windowAutoFullScreen()" />
       </template>

@@ -1,11 +1,19 @@
 <template>
-  <input ref="searchInput" class="search" placeholder="搜索🔍(Command+Shift+K)" />
+  <input ref="searchInput" class="search" :placeholder="props.searchTitle ?? '搜索🔍(Command+Shift+K)'" :disabled="props.disabledSearch" />
 </template>
 
 <script lang="ts" setup>
 import type { Ref } from 'vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, withDefaults } from 'vue';
 import { useMousetrap } from '@hooks/useMousetrap';
+import type { SearchProps } from './Search.d';
+
+const props = withDefaults(defineProps<SearchProps>(), {
+  disabledSearch: false,
+  searchTitle: void 0
+})
+
+console.log(props.searchTitle);
 
 const emits = defineEmits(['search']);
 

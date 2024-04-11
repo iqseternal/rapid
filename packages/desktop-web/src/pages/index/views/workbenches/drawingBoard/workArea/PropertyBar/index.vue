@@ -22,6 +22,7 @@ const { selections } = useSelection();
   width: 300px;
   z-index: 99;
   background-color: var(--s-main-frame-bg-normal-color);
+  border-radius: var(--s-block-border-radius);
   padding: 8px;
   @include beautifulBar;
 }

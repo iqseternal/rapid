@@ -7,14 +7,6 @@
       <View :width="viewWidth" />
       <PropertyBar v-ResizeWidth="propertyBindings" />
     </div>
-
-    <AFloatButtonGroup trigger="click" type="primary" :style="{ right: '24px' }">
-      <template #icon>
-        <IconFont type="CustomerServiceOutlined" />
-      </template>
-
-      <AFloatButton />
-    </AFloatButtonGroup>
   </div>
 </template>
 

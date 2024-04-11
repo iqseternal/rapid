@@ -13,12 +13,12 @@
     <template v-else><span class="slogan animate__animated animate__slideInLeft">{{ 'SPACE' }}</span></template>
 
     <Subfield gap="2px" style="width: unset;flex: unset;flex-shrink: 0;">
-      <Widget title="后退 Alt+LeftArrow" @click="() => router.back()">
+      <!-- <Widget title="后退 Alt+LeftArrow" @click="() => router.back()">
         <IconFont type="LeftOutlined" :size="14" />
       </Widget>
       <Widget title="前进 Alt+RightArrow" @click="() => router.forward()">
         <IconFont type="RightOutlined" :size="14" />
-      </Widget>
+      </Widget> -->
       <slot name="right" />
       <div style="width: 6px;" />
     </Subfield>

@@ -1,15 +1,13 @@
 <template>
   <div class="compose">
-    <!-- <Sidebar class="sidebar" /> -->
-    <div class="sidebarPlaceholder" />
     <Header class="header">
       <template #left>
         <Slogan ref="sloganInstance">
           <template #center>
             <Subfield class="navMenu w-full" style="justify-content: flex-start;">
               <template v-for="navMenu in navMenus" :key="navMenu.title">
-                <AutoDropdownMenu :menu="navMenu.menu" trigger="click">
-                  <span class="navItemTitle">{{ navMenu.title }}</span>
+                <AutoDropdownMenu :menu="navMenu.value.menuList" trigger="click">
+                  <span class="navItemTitle">{{ navMenu.value.title }}</span>
                 </AutoDropdownMenu>
               </template>
               <AutoDropdownMenu :menu="navMenusStackMenu" trigger="click">
@@ -27,16 +25,22 @@
         </Slogan>
       </template>
       <template #center>
-        <Search />
+        <Search disabledSearch :searchTitle="docStore.fileName" />
       </template>
     </Header>
-    <main class="container">
-      <RouterView v-slot="{ Component }">
-        <KeepAlive>
-          <component :is="Component" />
-        </KeepAlive>
-      </RouterView>
-    </main>
+
+    <section class="composeMain">
+      <template v-if="genericStore.appearance.showLeftSideBar"><Sidebar class="sidebar" /></template>
+      <template v-else><div class="sidebarPlaceholder" /></template>
+
+      <main class="container full">
+        <RouterView v-slot="{ Component }">
+          <KeepAlive>
+            <component :is="Component" />
+          </KeepAlive>
+        </RouterView>
+      </main>
+    </section>
   </div>
 </template>
 
@@ -49,45 +53,45 @@ import { UserOutlined, ReloadOutlined, BugOutlined } from '@ant-design/icons-vue
 import { hotKeys, windowReload, windowDevtool, copyText, pasteText, windowResizeAble, openSettingPage, WindowPopup, windowResetCustomSize } from '@/actions';
 import { windowMaxSvg, windowCloseSvg } from '@/assets';
 import { canCopyText } from '@rapid/libs/common';
-import { useMousetrap, useFadeIn, useEventListener, useResizeObserver, useStorageStack } from '@/hooks';
-import { fileMenu, editMenu, helpMenu } from '@/menus';
+import { useMousetrap, useFadeIn, useEventListener, useResizeObserver, useStorageStack, useFadeOut } from '@/hooks';
+import { fileMenu, editMenu, appearanceMenu, helpMenu } from '@/menus';
+import type { AppNavigationMenu } from '@/menus';
 import type { HeaderInstance, SloganInstance } from '@components/Header';
 import { Header, Indicator, Slogan, Search } from '@components/Header';
+import { useGenericStore, useDocStore } from '@/store/modules';
 import { isDef } from '@suey/pkg-utils';
+import { useRouter } from 'vue-router';
+import { loginRoute } from '@pages/index/router/modules';
 
 import Sidebar from './sidebar/index.vue';
 import IconFont from '@components/IconFont';
 import Widget from '@components/Widget';
 import Subfield from '@components/Subfield';
 
+const router = useRouter()
+
+const docStore = useDocStore();
+const genericStore = useGenericStore();
 const sloganInstance = ref<SloganInstance>();
 
-interface NavMenuItem {
-  /** 菜单附带的响应式数据,当原来的数据被更改的时候,这里跟着改 */
-  menu: DropdownDataType | Ref<DropdownDataType>;
-  title: string;
-  /** 当容器宽度大于这个宽度的时候才能展示,否则被收纳进栈 */
-  maxWidth: number;
-  /** 被收纳的时候展示的mark */
-  mark?: IconRealKey;
-}
-
-const { preStack: navMenus, nextStack: navMenusStack, pushStack, popStack } = useStorageStack<NavMenuItem>({
-  preStack: [
-    { menu: fileMenu, title: '文件', mark: 'FolderOutlined', maxWidth: 120 },
-    { menu: editMenu, title: '编辑', mark: 'EditOutlined', maxWidth: 120 },
-    { menu: helpMenu, title: '帮助', maxWidth: 160 }
-  ],
+const { preStack: navMenus, nextStack: navMenusStack, pushStack, popStack } = useStorageStack({
+  preStack: [fileMenu, editMenu, helpMenu],
+  otherStack: [80, 110, 150, 160],
   nextStack: []
 });
 
 /** 转换被收纳的菜单项,并作出展示数据 */
-const navMenusStackMenu = computed<DropdownDataType>(() => navMenusStack.value.map(stackItem => ({
-  title: stackItem.title,
-  shortcut: 'Ctrl',
-  mark: stackItem.mark,
-  children: stackItem.menu
+const navMenusStackMenu = computed<DropdownDataType>(() => navMenusStack.value.map((stackItem) => ({
+  title: stackItem.value.title,
+  shortcut: '',
+  disabled: stackItem.value.disabled,
+  mark: stackItem.value.mark,
+  children: stackItem.value.menuList
 })));
+
+const logout = () => useFadeOut(() => {
+  router.push(loginRoute.meta.fullpath);
+});
 
 useFadeIn();
 
@@ -95,8 +99,8 @@ useResizeObserver(computed(() => sloganInstance.value?.centerContainer), () => {
   const dom = sloganInstance.value?.centerContainer;
   if (!isDef(dom)) return;
 
-  pushStack((current) => current.maxWidth >= dom.clientWidth);
-  popStack((current) => current.maxWidth < dom.clientWidth);
+  pushStack((_, maxWidth = dom.clientHeight + 1) => maxWidth >= dom.clientWidth);
+  popStack((_, maxWidth = dom.clientHeight - 1) => maxWidth < dom.clientWidth);
 });
 
 useMousetrap(hotKeys.reload.allKey, windowReload);
@@ -145,45 +149,39 @@ div.compose {
     }
   }
 
-  .sidebar {
-    /* width: var(--s-main-frame-sidebar-width); */
+  section.composeMain {
+    position: absolute;
+    top: $sMainCaptionBarHeight;
+    width: 100%;
     height: calc(100% - $sMainCaptionBarHeight);
-    position: absolute;
-    top: calc($sMainCaptionBarHeight);
-    left: 0px;
-  }
+    display: flex;
+    justify-content: left;
+    align-items: center;
 
-  .sidebarPlaceholder {
-    position: absolute;
-    width: 8px;
-    height: calc(100% - $sMainCaptionBarHeight - 4px);
-    /* background-color: red; */
-    background: repeating-linear-gradient(
-      48deg,
-      rgba(68, 206, 246, 0.5),
-      rgba(68, 206, 246, 0.5) 10px,
-      white 10px,
-      white 20px
-    );
-    top: calc($sMainCaptionBarHeight + 4px);
-  }
+    .sidebar {
+      width: var(--s-main-frame-sidebar-width);
+      height: 100%;
+    }
 
-  main.container {
-    padding: 4px 5px;
-    /* width: calc(100% - var(--s-main-frame-sidebar-width)); */
-    width: calc(100% - 4px);
-    height: calc(100% - $sMainCaptionBarHeight);
-    background-color: var(--s-main-frame-bg-darkness-color);
-    position: absolute;
-    top: calc($sMainCaptionBarHeight);
-    /* left: var(--s-main-frame-sidebar-width); */
+    .sidebarPlaceholder {
+      width: 8px;
+      margin-top: 4px;
+      height: calc(100% - 4px);
+      background: repeating-linear-gradient(
+        48deg,
+        rgba(68, 206, 246, 0.5),
+        rgba(68, 206, 246, 0.5) 10px,
+        white 10px,
+        white 20px
+      );
+    }
 
-    left: 8px;
-
-
-
-    @include beautifulBar(auto);
-    @include overflow;
+    main.container {
+      padding: 4px 0px 7px 5px;
+      background-color: var(--s-main-frame-bg-darkness-color);
+      @include beautifulBar(auto);
+      @include overflow;
+    }
   }
 }
 </style>

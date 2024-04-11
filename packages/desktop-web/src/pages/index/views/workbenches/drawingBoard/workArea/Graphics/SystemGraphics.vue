@@ -25,19 +25,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { SYSYTEM_GRAPHIC_GROUPS } from '../../preset';
-
+import { dragStart } from '@/meta';
 import Ellipsis from '@components/Ellipsis';
 
 const activeKey = ref(SYSYTEM_GRAPHIC_GROUPS[0].name);
-
-const dragStart = (e: any, elem: any) => {
-  if (!elem) return;
-  e.stopPropagation();
-
-  // 拖拽事件
-  // 设置拖拽数据
-  if (e instanceof DragEvent) e.dataTransfer?.setData('Meta2d', JSON.stringify(elem.data));
-// 支持单击添加图元。平板模式
-  else meta2d.canvas.addCaches = [elem.data];
-};
 </script>

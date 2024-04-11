@@ -7,8 +7,8 @@
 
 
     <Control :isPane="props.isPane" :isDialog="props.isDialog">
-      <template v-if="$slots.control" #control>
-        <slot name="control" />
+      <template v-if="$slots.right" #right>
+        <slot name="right" />
       </template>
     </Control>
   </Subfield>

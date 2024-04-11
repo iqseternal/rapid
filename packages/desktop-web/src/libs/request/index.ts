@@ -19,8 +19,8 @@ const isOkStatus = (status: number): boolean => {
 
 export { REQ_METHODS, type RequestConfig } from '@suey/pkg-utils';
 
-export const { apiGet, apiPost, request, createApi } = createApiRequest<HConfig, BasicResponse>(CONFIG.API_URL, {
-  // timeout: +import.meta.env.SPACE_API_TIMEOUT
+export const { apiGet, apiPost, request, createApi } = createApiRequest<HConfig, BasicResponse>(CONFIG.API.URL, {
+  timeout: CONFIG.API.TIMEOUT
 }, {
   onFulfilled: config => {
     if (config.hConfig?.needAuth) {

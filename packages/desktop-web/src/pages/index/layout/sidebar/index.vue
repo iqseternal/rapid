@@ -20,5 +20,6 @@ import Personal from './Personal.vue';
 .sidebars {
   background-color: var(--s-main-frame-bg-normal-color);
   user-select: none;
+  flex: unset !important;
 }
 </style>

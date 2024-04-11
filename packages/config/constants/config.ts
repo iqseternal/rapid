@@ -11,8 +11,11 @@
  */
 
 export const CONFIG = {
-  API_URL: 'https://www.oupro.cn:3000/api/v1.0.0/',
-
+  API: {
+    URL: 'https://www.oupro.cn:3000/api/v1.0.0/',
+    // URL: 'https://localhost:3000/api/v1.0.0',
+    TIMEOUT: 5000,
+  },
   PROJECT: 'Rapid',
   VIEW: {
     TOOLTIP_ENTER_TIME: 1, // tooltip 进入x s后显示
