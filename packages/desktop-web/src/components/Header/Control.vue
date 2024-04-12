@@ -43,17 +43,6 @@ const closeWindow = () => windowClose();
 
 const DeBugWidget = IS_DEV ? <Widget title="打开开发者工具" icon="BugFilled" onClick={openDevTool} /> : <div />;
 
-
-const c = () => {
-
-
-  return <>
-
-    <div>1</div>
-  </>
-}
-
-
 useMousetrap(['ctrl+shift+i', 'command+shift+i'], () => openDevTool());
 </script>
 

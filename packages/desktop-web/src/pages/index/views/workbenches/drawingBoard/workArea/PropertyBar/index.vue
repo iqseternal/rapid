@@ -7,11 +7,11 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import { useSelection, SelectionMode } from '@/meta';
+import { useSelections, SelectionMode } from '@/meta';
 import FileProps from './FileProps.vue';
 import PenProps from './PenProps.vue';
 
-const { selections } = useSelection();
+const { selections } = useSelections();
 </script>
 
 <style lang="scss" scoped>

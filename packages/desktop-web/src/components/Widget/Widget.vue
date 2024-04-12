@@ -8,7 +8,7 @@
       </template>
 
       <template v-else>
-        <img class="widgetImg" :src="props.src" alt="" />
+        <img class="widgetImg" :style="props.full ? { width: '90%', height: '90%' } : {}" :src="props.src" alt="" />
       </template>
     </div>
   </ATooltip>
@@ -23,6 +23,7 @@ import IconFont from '@components/IconFont';
 
 const props = defineProps({
   src: { type: String },
+  full: { type: Boolean, default: false },
   autoHover: { type: Boolean, default: true },
   icon: { type: String as PropType<IconRealKey | `icon-${string}`> },
   title: { type: String },
@@ -41,6 +42,7 @@ const open = ref(false);
 .widget {
   width: 100%;
   height: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: center;

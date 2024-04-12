@@ -16,8 +16,7 @@ const selections: UnwrapNestedRefs<{
   pen: void 0 as (Pen | undefined),
 });
 
-export const useSelection = (): { selections: UnwrapNestedRefs<{ mode: SelectionMode, pen?: Pen }>;select: (pens?: Pen[]) => void; } => {
-
+export const useSelections = (): { selections: UnwrapNestedRefs<{ mode: SelectionMode, pen?: Pen }>;select: (pens?: Pen[]) => void; } => {
   const select = (pens?: Pen[]): void => {
     if (!pens || pens.length !== 1) {
       selections.mode = SelectionMode.File;
@@ -28,8 +27,12 @@ export const useSelection = (): { selections: UnwrapNestedRefs<{ mode: Selection
     selections.mode = SelectionMode.Pen;
     selections.pen = pens[0];
   };
+
+
   return {
     selections,
     select,
   };
 };
+
+export const useSelectionsHook = useSelections;

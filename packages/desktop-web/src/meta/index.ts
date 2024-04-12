@@ -4,11 +4,7 @@ import { flowPens, flowAnchors } from '@meta2d/flow-diagram';
 import { activityDiagram, activityDiagramByCtx } from '@meta2d/activity-diagram';
 import { classPens } from '@meta2d/class-diagram';
 import { sequencePens, sequencePensbyCtx } from '@meta2d/sequence-diagram';
-import {
-  register as registerEcharts,
-  registerHighcharts,
-  registerLightningChart
-} from '@meta2d/chart-diagram';
+import { register as registerEcharts, registerHighcharts, registerLightningChart } from '@meta2d/chart-diagram';
 import { mindBoxPlugin } from '@meta2d/plugin-mind-core';
 import { collapseChildPlugin } from '@meta2d/plugin-mind-collapse';
 import { formPens } from '@meta2d/form-diagram';
@@ -16,16 +12,14 @@ import { chartsPens } from '@meta2d/le5le-charts';
 import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
 import { setupIndexedDB } from '@/indexedDB';
 import { TABLES, TABLE_DOCUMENT, DATABASES_META2D } from '@indexedDB/type';
-import { useSelection } from './selections';
-import { myTriangle, myTriangleAnchors } from './don';
-import { canvasTriangle, canvasTriangleAnchors } from './canvas';
+import { useSelections } from './useSelections';
+import { useMetaState, useMetaStateHook, scaleHasEffect } from './useMetaState';
 
 export * from './actions';
-export * from './selections';
+export * from './useSelections';
+export * from './useMetaState';
 
-export const meta2dState = reactive({
-  isSetup: false
-});
+const { metaState } = useMetaStateHook();
 
 export async function saveMeta2dData() {
   const data = meta2d.data();
@@ -35,7 +29,12 @@ export async function saveMeta2dData() {
 }
 
 export async function setupMeta2dEvts() {
-  meta2d.on('scale', saveMeta2dData);
+  meta2d.on('scale', async () => {
+    scaleHasEffect.value = false;
+    await saveMeta2dData();
+    metaState.scale = meta2d.store.data.scale * 100;
+    scaleHasEffect.value = true;
+  });
   meta2d.on('add', saveMeta2dData);
   meta2d.on('opened', saveMeta2dData);
   meta2d.on('undo', saveMeta2dData);
@@ -47,11 +46,14 @@ export async function setupMeta2dEvts() {
 }
 
 export async function setupMeta2dView(target: HTMLElement) {
+  if (metaState.isSetup) return;
+
   const meta2dOptions = {
     rule: true,
   };
 
   new Meta2d(target, meta2dOptions);
+  metaState.isSetup = true;
 
   // 按需注册图形库
   // 以下为自带基础图形库
@@ -66,7 +68,7 @@ export async function setupMeta2dView(target: HTMLElement) {
   meta2d.installPenPlugins({ name: 'mindNode2' }, [
     { plugin: mindBoxPlugin },
     { plugin: collapseChildPlugin }
-  ])
+  ]);
 
   // 注册类图
   register(classPens());
@@ -81,8 +83,6 @@ export async function setupMeta2dView(target: HTMLElement) {
   // 直接调用LightningChart的注册函数
   registerLightningChart();
 
-
-
   register(flowPens());
   registerAnchors(flowAnchors());
   registerCanvasDraw(chartsPens());
@@ -90,24 +90,9 @@ export async function setupMeta2dView(target: HTMLElement) {
   registerCanvasDraw(ftaPensbyCtx());
   registerAnchors(ftaAnchors());
 
-
-  //注册自定义path2d图元
-  meta2d.register({ myTriangle })
-  // 注册自定义图元的m锚点信息
-  meta2d.registerAnchors({ myTriangle: myTriangleAnchors });
-
-  // 注册自定义canvasDraw函数
-  meta2d.registerCanvasDraw({ canvasTriangle })
-  // 注册锚点
-  meta2d.registerAnchors({ canvasTriangle: canvasTriangleAnchors })
-
   await setupMeta2dEvts();
   // 注册其他自定义图形库
   // ...
-
-  // const indexedDB = await setupIndexDB();
-  // const objectStore = indexedDB.transition(DATABASES_META2D.TABLES_NAMES.TABLE_DOCUMENT).objectStore(DATABASES_META2D.TABLES_NAMES.TABLE_DOCUMENT);
-
 
   // 读取本地存储
   let data: any = localStorage.getItem('meta2d');
@@ -127,8 +112,13 @@ export async function setupMeta2dView(target: HTMLElement) {
   meta2d.on('inactive', inactive);
 }
 
+export async function desotryMeta2dView() {
+  if (!metaState.isSetup) return;
+  meta2d.destroy();
+  metaState.isSetup = false;
+}
 
-const { select } = useSelection();
+const { select } = useSelections();
 const active = (pens?: Pen[]) => {
   select(pens);
 };

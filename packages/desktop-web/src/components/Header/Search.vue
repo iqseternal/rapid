@@ -13,8 +13,6 @@ const props = withDefaults(defineProps<SearchProps>(), {
   searchTitle: void 0
 })
 
-console.log(props.searchTitle);
-
 const emits = defineEmits(['search']);
 
 const searchInput = ref() as Ref<HTMLInputElement>;

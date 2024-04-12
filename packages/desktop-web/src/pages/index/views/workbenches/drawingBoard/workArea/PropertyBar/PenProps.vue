@@ -71,23 +71,20 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { useSelection } from '@/meta';
+import { useSelections } from '@/meta';
 import { isUndefined } from '@suey/pkg-utils';
 
 import PickColors from 'vue-pick-colors';
 
-const { selections } = useSelection();
+const { selections } = useSelections();
 
 const pen = ref();
 
 const rect = ref();
 
-
 const getPen = () => {
   pen.value = selections.pen;
-
   if (isUndefined(pen.value.globalAlpha)) pen.value.globalAlpha = 1;
-
   rect.value = meta2d.getPenRect(pen.value);
 }
 

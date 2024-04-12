@@ -191,10 +191,10 @@ export const appearanceMenu: Ref<AppNavigationMenu> = ref({
 export const helpMenu = ref<AppNavigationMenu>({
   title: '帮助',
   menuList: [
-    {
-      title: '快捷键',
-      mark: 'KeyOutlined', shortcut: ''
-    },
+    // {
+    //   title: '快捷键',
+    //   mark: 'KeyOutlined', shortcut: ''
+    // },
     {
       title: '反馈',
       mark: 'QuestionCircleOutlined'

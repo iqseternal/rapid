@@ -7,32 +7,28 @@ import { onBeforeUnmount, onMounted, ref, watch, computed, watchEffect, nextTick
 import { useDebounce } from '@/hooks';
 import { AutoDropdownMenu, setupDropdownOpenModel } from '@components/DropdownMenu';
 import { meta2dViewMenu } from '@/menus';
-import { useSelection, SelectionMode, setupMeta2dView, setupMeta2dEvts, meta2dState } from '@/meta';
+import { useSelections, SelectionMode, setupMeta2dView, setupMeta2dEvts, useMetaState, desotryMeta2dView } from '@/meta';
 import { useDocStore } from '@/store/modules/doc';
 
 const props = defineProps({
   width: { type: [Number, String], default: () => '' }
 });
 
+const { metaState } = useMetaState();
+
 const docStore = useDocStore();
 
 const instance = getCurrentInstance();
 const view = ref<HTMLDivElement>();
 
-const metaSetuped = ref(false);
-
 const setupMeta2dLife = async () => {
-  if (metaSetuped.value || !view.value) return;
-  metaSetuped.value = true;
+  if (!view.value) return;
+  if (metaState.isSetup) return;
   setupMeta2dView(view.value);
   await docStore.loadDoc();
 }
 
-const destroyMeta2dLife = () => {
-  if (!metaSetuped.value) return;
-  meta2d.destroy();
-  metaSetuped.value = false;
-}
+const destroyMeta2dLife = desotryMeta2dView
 
 onMounted(setupMeta2dLife);
 onActivated(setupMeta2dLife);
