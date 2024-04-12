@@ -27,8 +27,6 @@ export * from './filter';
 
 export * from './decorator';
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
-
 export interface SetupContextOptions {
   ipcMain?: Parameters<typeof setupIpcMainHandler>[0];
   filters?: Parameters<typeof setupFilters>[0];

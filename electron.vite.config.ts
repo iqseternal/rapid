@@ -1,10 +1,10 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin } from 'electron-vite';
-import { join } from 'path';
+import path, { join } from 'path';
 import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from './target.config';
 import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
-import { DIRS } from './packages/config/dirs';
+import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR } from './packages/config/dirs';
 import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/sturcture';
 
 import eslintPlugin from 'vite-plugin-eslint';
@@ -32,7 +32,7 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
       }
     },
     sourcemap: false,
-    outDir: DIRS.DESKTOP_OUT_DIRS.MAIN
+    outDir: OUT_DESKTOP_MAIN_DIR
   }
 });
 
@@ -51,7 +51,7 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
         drop_debugger: true
       }
     },
-    outDir: DIRS.DESKTOP_OUT_DIRS.PRELOAD
+    outDir: OUT_DESKTOP_PRELOAD_DIR
   }
 }));
 
@@ -65,7 +65,8 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
     host: '0.0.0.0',
     proxy: {
 
-    }
+    },
+    sourcemapIgnoreList: (sourcePath: string, sourcemapPath: string) => false
   },
   build: {
     chunkSizeWarningLimit: 2000,
@@ -79,7 +80,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
       }
     },
     sourcemap: false,
-    outDir: DIRS.DESKTOP_OUT_DIRS.RENDERER,
+    outDir: OUT_DESKTOP_RENDERER_DIR
   }
 });
 

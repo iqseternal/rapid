@@ -1,28 +1,32 @@
 import * as path from 'path';
 
-const ROOT_DIR = path.join(__dirname, '../../');
-const DIST_DIR = path.join(ROOT_DIR, './dist');
+/** 项目根目录 */
+export const ROOT_DIR = path.join(__dirname, '../../');
 
-const DIST_WEBSITE_DIR = path.join(DIST_DIR, './website');
-const DIST_DESKTOP_DIR = path.join(DIST_DIR, './desktop');
+// =================================================================
 
-const DIST_DESKTOP_MAIN_DIR = path.join(DIST_DESKTOP_DIR, './main');
-const DIST_DESKTOP_PRELOAD_DIR = path.join(DIST_DESKTOP_DIR, './prelod');
-const DIST_DESKTOP_RENDERER_DIR = path.join(DIST_DESKTOP_DIR, './renderer');
+/** 项目开发 node 目录 */
+export const DEV_DESKTOP_NODE_DIR = path.join(ROOT_DIR, './packages/desktop-node');
+/** 项目开发 Web 目录 */
+export const DEV_DESKTOP_WEB_DIR = path.join(ROOT_DIR, './packages/desktop-web');
 
-const DESKTOP_OUT_DIRS = {
-  MAIN: path.join(ROOT_DIR, './out/main'),
-  PRELOAD: path.join(ROOT_DIR, './out/preload'),
-  RENDERER: path.join(ROOT_DIR, './out/renderer')
-}
+// =================================================================
 
-export const DIRS = {
-  ROOT_DIR,
-  DIST_DIR,
+/** 打包根目录 */
+export const DIST_DIR = path.join(ROOT_DIR, './dist');
 
-  DIST_WEBSITE_DIR,
-  DIST_DESKTOP_DIR,
-  DIST_DESKTOP_MAIN_DIR, DIST_DESKTOP_PRELOAD_DIR, DIST_DESKTOP_RENDERER_DIR,
+/** 打包 website 的输出目录 */
+export const DIST_WEBSITE_DIR = path.join(DIST_DIR, './website');
+/** 打包 desktop 的输出目录 */
+export const DIST_DESKTOP_DIR = path.join(DIST_DIR, './desktop');
 
-  DESKTOP_OUT_DIRS
-}
+// =================================================================
+
+export const OUT_DESKTOP_ROOT_DIR = path.join(ROOT_DIR, './out');
+
+/** desktop main 的输出目录 */
+export const OUT_DESKTOP_MAIN_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './main');
+/** desktop preload 的输出目录 */
+export const OUT_DESKTOP_PRELOAD_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './prelod');
+/** desktop renderer 的输出目录 */
+export const OUT_DESKTOP_RENDERER_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './renderer');
