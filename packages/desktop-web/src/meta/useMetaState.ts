@@ -8,8 +8,8 @@ const metaState = reactive({
   preview: false,
 
   scale: 100, // 放大倍数
-  minScale: 50,
-  maxScale: 500,
+  minScale: 30,
+  maxScale: 1000,
 
   useMagnifier: false, // 是否使用了放大镜
   useMap: false,

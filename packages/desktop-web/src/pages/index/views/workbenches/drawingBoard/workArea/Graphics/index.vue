@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { meta2dState } from '@/meta';
+import { useMetaState } from '@/meta';
 
 import SystemGraphics from './SystemGraphics.vue';
 import CustomGraphics from './CustomGraphics.vue';
