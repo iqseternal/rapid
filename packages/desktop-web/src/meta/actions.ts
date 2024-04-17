@@ -89,3 +89,5 @@ export const dragStart = (e: any, elem: any) => {
 // 支持单击添加图元。平板模式
   else meta2d.canvas.addCaches = [elem.data];
 };
+
+export const refresh = () => meta2d.render();

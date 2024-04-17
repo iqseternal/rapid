@@ -15,8 +15,10 @@ import { TABLES, TABLE_DOCUMENT, DATABASES_META2D } from '@indexedDB/type';
 import { useSelections } from './useSelections';
 import { useMetaState, useMetaStateHook, scaleHasEffect } from './useMetaState';
 
+
 export * from './actions';
 export * from './useSelections';
+export * from './useProps';
 export * from './useMetaState';
 
 const { metaState } = useMetaStateHook();

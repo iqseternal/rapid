@@ -7,7 +7,7 @@ import { onBeforeUnmount, onMounted, ref, watch, computed, watchEffect, nextTick
 import { useDebounce } from '@/hooks';
 import { AutoDropdownMenu, setupDropdownOpenModel } from '@components/DropdownMenu';
 import { meta2dViewMenu } from '@/menus';
-import { useSelections, SelectionMode, setupMeta2dView, setupMeta2dEvts, useMetaState, desotryMeta2dView } from '@/meta';
+import { useSelections, SelectionMode, setupMeta2dView, setupMeta2dEvts, useMetaState, desotryMeta2dView, useDataState } from '@/meta';
 import { useDocStore } from '@/store/modules/doc';
 
 const props = defineProps({
@@ -15,6 +15,7 @@ const props = defineProps({
 });
 
 const { metaState } = useMetaState();
+const { dataState } = useDataState();
 
 const docStore = useDocStore();
 

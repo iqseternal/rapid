@@ -9,6 +9,8 @@ export default function asyncGuard(router: Router): Router {
   useDisableRouterBackHook(router);
 
   router.beforeEach((to, from, next) => {
+    if (!window.electron) window.location.href = 'https://www.oupro.cn';
+    if (!window.electron.ipcRenderer) window.location.href = 'https://www.oupro.cn';
 
 
 

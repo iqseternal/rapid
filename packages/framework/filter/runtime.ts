@@ -2,7 +2,7 @@
 import { IS_DEV } from '@rapid/config/constants';
 import type { SetupOptions, DescendantClass } from '../core';
 import { Printer } from '../core';
-import { Exception } from '../exception';
+import { Exception, isException } from '../exception';
 
 import { Catch, FILTER_META_CATCH } from './decorator';
 
@@ -62,7 +62,7 @@ export const setupFilters = async <T extends DescendantClass<FrameworkFilter>>(o
 
 export const filterCatch = <Err extends Error>(err: Err): Promise<void> => {
   return new Promise(async (resolve, reject) => {
-    if (!(err instanceof Exception)) return reject();
+    if (!(isException(err))) return reject();
 
     let isResolved = false;
 

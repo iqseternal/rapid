@@ -158,6 +158,29 @@ export type ReverseObjKeyValue<Obj extends Record<string | number | symbol, any>
  */
 export type ObjAutoComplete<T extends Record<string | number | symbol, any>, R extends Record<string | number | symbol, any>> = T & Pick<R, Exclude<keyof R, keyof T>>;
 
+/**
+ * 自动补全类型, 当你的一个类型是另一个的子类型的时候, 你编写了子类型, 但是当前子类型需要和父类型所含有当前子类型的 key 做交叉
+ *
+ * 例如
+ *
+ * interface A {
+ *  name: string;
+ *  age: number | undefined;
+ * }
+ *
+ * function makeA<T extends Partial<T>>(props: T) { // 你的返回类型是 T
+ *
+ *  return props;
+ * }
+ *
+ * const a = makeA({ // 你的返回类型是 { age: number } 但是你希望 age 是基类的全类型, 也就是 { age: number | undefined }
+ *  age: 1
+ * })
+ *
+ */
+export type ObjAutoObtainComplete<T extends Record<string | number | symbol, any>, R extends Record<string | number | symbol, any>> = {
+  [Key in keyof T]: T[Key] extends R[Key] ? R[Key] : never;
+}
 
 /**
  * 切除一个数组的头部，将剩余部分返回结果

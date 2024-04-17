@@ -114,7 +114,7 @@
 
     <Widget :autoHover="false" />
     <ADropdown>
-      <Widget :autoHover="false"><div style="line-height: 100%;">{{ NumberFilters.toFixed(() => metaState.scale, 0) }}%</div></Widget>
+      <Widget :autoHover="false"><div style="line-height: 100%;">{{ NumberFilters.toFixed(metaState.scale, 0) }}%</div></Widget>
 
       <template #overlay>
         <div style="width: 200px;height: 10px;background-color: white;">

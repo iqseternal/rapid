@@ -10,19 +10,21 @@ import { useRoute } from 'vue-router';
 import { workbenchesRoute } from '@pages/index/router/modules';
 
 import store from '@/store';
+import { useDataState, useDataStateHook } from '@meta/useProps';
+
+const { dataState } = useDataStateHook();
 
 export const DOC_STORE_NAME = 'docStore';
 
 export const useDocStore = defineStore(DOC_STORE_NAME, () => {
   const route = useRoute();
 
-  const fileName = ref<undefined | string>();
   const filePath = ref<undefined | string>();
 
   /** 当文件名存在,那么就表示当前正在工作区绘图 */
   const isWork = computed(() => {
 
-    return route.path === workbenchesRoute.meta.fullpath && fileName.value;
+    return route.path === workbenchesRoute.meta.fullpath;
   });
 
   const loadDoc = async () => {
@@ -35,7 +37,6 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
     const message = await docOpen(filePath.value);
 
-    fileName.value = message.filename;
     filePath.value = message.filePath;
     meta2d.clear();
     meta2d.open(message.data);
@@ -59,11 +60,10 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   const createDoc = async () => {
     if (isWork.value) {
-      const needSave = WindowPopup.confim('当前工作区还有文档,是否先保存?');
-      if (needSave) await saveDoc();
+      // const needSave = WindowPopup.confim('当前工作区还有文档,是否先保存?');
+      // if (needSave) await saveDoc();
     }
 
-    fileName.value = '新建文档';
     filePath.value = void 0;
 
     if (window.meta2d) meta2d.clear();
@@ -80,7 +80,7 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   const saveDoc = async () => {
     if (window.meta2d && isWork.value) {
-      if (fileName.value && filePath.value) return docSave(filePath.value, getMeta2dData());
+      if (filePath.value) return docSave(filePath.value, getMeta2dData());
       return saveAsDoc();
     }
 
@@ -91,7 +91,6 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
     // if (isWork.value) await saveDoc();
     const message = await docOpen();
 
-    fileName.value = message.filename;
     filePath.value = message.filePath;
 
     if (window.meta2d) {
@@ -101,7 +100,6 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
   }
 
   return {
-    fileName,
     filePath,
     isWork,
 

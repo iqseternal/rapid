@@ -49,6 +49,6 @@ export const setupContext = (options: SetupContextOptions) => {
 export const setupSingleApplication = () => {
   const goTheLock = app.requestSingleInstanceLock();
   if (!goTheLock) {
-    app.quit();
+    return app.quit();
   }
 }

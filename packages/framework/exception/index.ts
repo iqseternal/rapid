@@ -1,3 +1,3 @@
 
 
-export { Exception } from './runtime';
+export { Exception, isException } from './runtime';

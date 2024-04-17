@@ -1,9 +1,10 @@
 import type { Handlers, HandlerMethodTyped } from 'node_modules/@rapid/desktop-node/preload';
+import { makeInvokeActions } from './ipcRenderer';
 
 
-export const docOpen = (...args: Parameters<Handlers['IpcDoc/openDoc']>) => window.electron.ipcRenderer.invoke('IpcDoc/openDoc', ...args);
+export const docOpen = makeInvokeActions('IpcDoc/openDoc');
 
-export const docSave = (...args: Parameters<Handlers['IpcDoc/save']>) => window.electron.ipcRenderer.invoke('IpcDoc/save', ...args);
+export const docSave = makeInvokeActions('IpcDoc/save');
 
 export const docSaveAs: Handlers['IpcDoc/saveAs'] = (...args) => window.electron.ipcRenderer.invoke('IpcDoc/saveAs', ...args);
 

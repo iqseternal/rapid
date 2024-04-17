@@ -40,7 +40,7 @@ export interface SetupLoggerOptions<T extends DescendantClass<FrameworkLoggerSer
 
 export const isLoggerServer = (target: any): target is FrameworkLoggerServer => target instanceof FrameworkLoggerServer;
 
-export const runtimeContext = {
+const runtimeContext = {
   server: new LoggerServer()
 }
 

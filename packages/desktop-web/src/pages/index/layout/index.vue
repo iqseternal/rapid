@@ -25,7 +25,7 @@
         </Slogan>
       </template>
       <template #center>
-        <Search disabledSearch :searchTitle="docStore.fileName" />
+        <Search disabledSearch :searchTitle="StringFilters.toValidStr(dataState.name, '未命名文档')" />
       </template>
     </Header>
 
@@ -59,16 +59,20 @@ import type { AppNavigationMenu } from '@/menus';
 import type { HeaderInstance, SloganInstance } from '@components/Header';
 import { Header, Indicator, Slogan, Search } from '@components/Header';
 import { useGenericStore, useDocStore } from '@/store/modules';
+import { useDataState } from '@/meta';
 import { isDef } from '@suey/pkg-utils';
 import { useRouter } from 'vue-router';
 import { loginRoute } from '@pages/index/router/modules';
+import { StringFilters } from '@rapid/libs/filters';
 
 import Sidebar from './sidebar/index.vue';
 import IconFont from '@components/IconFont';
 import Widget from '@components/Widget';
 import Subfield from '@components/Subfield';
 
-const router = useRouter()
+const { dataState } = useDataState();
+
+const router = useRouter();
 
 const docStore = useDocStore();
 const genericStore = useGenericStore();

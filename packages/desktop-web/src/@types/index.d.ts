@@ -20,7 +20,11 @@ declare global {
 
   }
 
-  declare var meta2d: Meta2d;
+  declare var meta2d: Meta2d & {
+    store: {
+      patchFlagsBackground: boolean;
+    }
+  };
   declare const C2S: any;
 
   declare type ModalEvtCallBack = EvtCallback;

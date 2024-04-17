@@ -13,7 +13,7 @@ export type PureHandler<T> = { [Key in keyof T]: T[Key]; }
 export type NamedHandler<T> = {
   [Key in Exclude<keyof PureHandler<T>, symbol | 'id'> as `${PureHandler<T>['id']}/${Key}`]:
     T[Key] extends Function
-      ? (...args: CutHead<Parameters<T[Key]>>) => ReturnType<T[Key]>
+      ? (...args: CutHead<Parameters<T[Key]>>) => ReturnType<T[Key]> extends Promise<any> ? ReturnType<T[Key]> : Promise<ReturnType<T[Key]>>
       : never;
 }
 
@@ -35,7 +35,7 @@ Omit<
   'invoke' | 'send' | 'sendSync' | 'on' | 'once'
 > & {
   // 向主进程发送事件
-  invoke<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): ReturnType<Handlers[T]> extends Promise ? ReturnType<Handlers[T]> : Promise<ReturnType<Handlers[T]>>;
+  invoke<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): ReturnType<Handlers[T]>;
   send<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
   sendSync<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
 

@@ -1,7 +1,9 @@
 import { print } from '@suey/printer';
-import { runtimeContext } from './runtime';
+import { getLoggerRuntimeContext } from './runtime';
 import { Printer } from '../core';
 import { IS_DEV } from '@rapid/config/constants';
+
+const runtimeContext = getLoggerRuntimeContext();
 
 /**
  * 方法调用后运行当前 NoteInfo， 当前作用为打印调用日志，函数参数与方法参数保持一致
