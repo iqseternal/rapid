@@ -2,7 +2,7 @@ import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import { obfuscator } from 'rollup-obfuscator';
 import { alias, proxy } from './vite.config.util';
-import { DIRS } from '../config/dirs';
+import { DIST_WEBSITE_DIR } from '../config/dirs';
 import { defineVars } from '../config/structure';
 
 import postcssPresetEnv from 'postcss-preset-env';
@@ -33,7 +33,7 @@ export default defineConfig((configEnv): UserConfig => ({
     chunkSizeWarningLimit: 2000,
     assetsDir: 'static',
     manifest: false,
-    outDir: path.join(DIRS.DIST_DIR, 'website'),
+    outDir: DIST_WEBSITE_DIR,
     emptyOutDir: true,
     minify: 'terser',
     terserOptions: {

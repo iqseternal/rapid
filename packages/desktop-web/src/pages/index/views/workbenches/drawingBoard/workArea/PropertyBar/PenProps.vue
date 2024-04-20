@@ -1,6 +1,33 @@
 
 <template>
-  <div class="propsPanel">
+  <ATabs class="propsPanel">
+    <ATabPane :key="1" tab="位置与大小">
+      <ACollapse>
+        <ACollapsePanel :key="1.1" header="位置">
+          <AForm>
+            <AFormItem name="x" label="x">
+              <AInput v-model:value="penPropsState.x" type="number" @change="setCurrentPenProps({ x: penPropsState.x })" />
+            </AFormItem>
+            <AFormItem name="y" label="y">
+              <AInput v-model:value="penPropsState.y" type="number" @change="setCurrentPenProps({ y: penPropsState.y })" />
+            </AFormItem>
+          </AForm>
+        </ACollapsePanel>
+
+        <ACollapsePanel :key="1.2" header="大小">
+          <AForm>
+            <AFormItem name="width" label="宽度">
+              <AInput v-model:value="penPropsState.width" type="number" @change="setCurrentPenProps({ width: penPropsState.width })" />
+            </AFormItem>
+            <AFormItem name="height" label="高度">
+              <AInput v-model:value="penPropsState.height" type="number" @change="setCurrentPenProps({ height: penPropsState.height })" />
+            </AFormItem>
+          </AForm>
+        </ACollapsePanel>
+
+      </ACollapse>
+    </ATabPane>
+
     <AForm v-if="pen">
       <h5>图元</h5>
 
@@ -66,15 +93,23 @@
         <AButton @click="down">下一层</AButton>
       </ASpace>
     </AForm>
-  </div>
+  </ATabs>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import { useSelections } from '@/meta';
+import { useSelections, useDataState, useMetaState, useOptionsState, usePenProps } from '@/meta';
 import { isUndefined } from '@suey/pkg-utils';
+import { SelectionMode } from '@meta/useSelections';
+
+import { useEventListener, useStorageStack, useSurvivalCycle } from '@/hooks';
 
 import PickColors from 'vue-pick-colors';
+
+const { dataState, onChangeData, onChangeBkImage, onChangeGridRotate } = useDataState();
+const { metaState, metaRefresh } = useMetaState();
+const { optionsState, onChangeOptions } = useOptionsState();
+const { penPropsState, setCurrentPenProps } = usePenProps();
 
 const { selections } = useSelections();
 
@@ -83,10 +118,29 @@ const pen = ref();
 const rect = ref();
 
 const getPen = () => {
+  if (selections.mode !== SelectionMode.Pen) return;
+
   pen.value = selections.pen;
   if (isUndefined(pen.value.globalAlpha)) pen.value.globalAlpha = 1;
   rect.value = meta2d.getPenRect(pen.value);
 }
+
+
+
+useSurvivalCycle({
+
+  survival: () => {
+    meta2d.on('valueUpdate', (e) => {
+
+
+      console.log(e);
+    })
+  },
+  extinction: () => {
+
+  }
+})
+
 
 onMounted(getPen);
 

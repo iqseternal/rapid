@@ -5,15 +5,18 @@ import { reactive } from 'vue';
 export enum SelectionMode {
   File,
   Pen,
+  Rect
 }
 
 const selections: UnwrapNestedRefs<{
   mode: SelectionMode;
   pen: Pen | undefined;
+  pens: Pen[];
 }> = reactive({
   // 选中对象类型：0 - 画布；1 - 单个图元
   mode: SelectionMode.File,
   pen: void 0 as (Pen | undefined),
+  pens: []
 });
 
 export const useSelections = (): { selections: UnwrapNestedRefs<{ mode: SelectionMode, pen?: Pen }>;select: (pens?: Pen[]) => void; } => {
@@ -21,11 +24,20 @@ export const useSelections = (): { selections: UnwrapNestedRefs<{ mode: Selectio
     if (!pens || pens.length !== 1) {
       selections.mode = SelectionMode.File;
       selections.pen = void 0;
+      selections.pens = [];
       return;
     }
 
-    selections.mode = SelectionMode.Pen;
-    selections.pen = pens[0];
+    if (pens.length === 1) {
+      selections.mode = SelectionMode.Pen;
+      selections.pen = pens[0];
+      selections.pens = pens;
+      return;
+    }
+
+    selections.mode = SelectionMode.Rect;
+    selections.pen = void 0;
+    selections.pens = pens;
   };
 
 

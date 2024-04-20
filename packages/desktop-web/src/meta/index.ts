@@ -20,6 +20,7 @@ export * from './actions';
 export * from './useSelections';
 export * from './useProps';
 export * from './useMetaState';
+export * from './usePenProps';
 
 const { metaState } = useMetaStateHook();
 

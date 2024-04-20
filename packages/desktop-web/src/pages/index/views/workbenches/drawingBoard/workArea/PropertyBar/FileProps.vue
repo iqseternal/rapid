@@ -70,9 +70,7 @@
           <AFormItem name="hoverBackground" label="hover背景颜色">
             <PickColors v-model:value="optionsState.hoverBackground" v-bind="pickColorsAttrs" @change="onChangeOptions('hoverBackground')" />
           </AFormItem>
-
         </ACollapsePanel>
-
 
         <ACollapsePanel :key="2.2" header="锚点">
           <AFormItem name="anchorColor" label="锚点颜色">
