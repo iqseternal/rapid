@@ -33,11 +33,9 @@ export async function setupApp(...args: Partial<SetupAppArgs>) {
   const cb = args.pop() as SetupAppCallback;
 
   if (!App) {
-
     if (IS_PROD) {
-      windowClose();
+      await windowClose();
     }
-
     throw '';
   }
 

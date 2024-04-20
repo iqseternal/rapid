@@ -214,7 +214,7 @@
 import { reactive, onMounted, ref, watch } from 'vue';
 
 import { useDataState, useOptionsState } from '@/meta';
-import { usePickColorsAttrs } from '@/hooks';
+import { usePickColorsAttrs, useEventListener, useEventListenerForElement } from '@/hooks';
 
 import PickColors from 'vue-pick-colors';
 
