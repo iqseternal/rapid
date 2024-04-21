@@ -3,13 +3,13 @@
  * preload 需要的类型声明
  * ==========================================
  */
-import type { ElectronAPI as BaseElectionAPI, NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame } from '@electron-toolkit/preload';
-import type { IpcRendererEvent } from 'electron';
-
+import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame } from '@electron-toolkit/preload';
 import type { CutHead } from '@rapid/libs/types';
-import type { IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler, IpcGraphicHandler, IpcDocHandler } from '../src/ipc';
+import type { IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler, IpcGraphicHandler, IpcDocHandler } from '@/ipc';
 
+/** 显示原本得类型 */
 export type PureHandler<T> = { [Key in keyof T]: T[Key]; }
+/** 将类型转换为想要得格式 */
 export type NamedHandler<T> = {
   [Key in Exclude<keyof PureHandler<T>, symbol | 'id'> as `${PureHandler<T>['id']}/${Key}`]:
     T[Key] extends Function

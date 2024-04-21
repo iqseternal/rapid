@@ -37,7 +37,7 @@ export interface SetupContextOptions {
  * 设置 framework 运行的上下文
  * @param options
  */
-export const setupContext = (options: SetupContextOptions) => {
+export const setupContext = async (options: SetupContextOptions) => {
   if (options.logger) setupLogger(options.logger);
   if (options.filters) setupFilters(options.filters);
   if (options.ipcMain) setupIpcMainHandler(options.ipcMain);

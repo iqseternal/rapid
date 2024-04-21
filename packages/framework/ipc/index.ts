@@ -6,5 +6,6 @@ export {
   FrameworkIpcHandler, FrameworkIpcHandlerServer,
   setupIpcMainHandler,
   registerIpcMain, registerIpcMainHandler,
+  unRegisterIpcMain, unRegisterIpcMainHandler,
   getIpcRuntimeContext
 } from './runtime';

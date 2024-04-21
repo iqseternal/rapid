@@ -30,3 +30,14 @@ export function Deprecated() {
     } as unknown as T;
   }
 }
+
+/**
+ * 未来得方法, 还有待考究
+ * @constructor
+ */
+export function Feature() {
+
+  return <T extends Function>(target: T | object, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<T>): void => {
+
+  }
+}

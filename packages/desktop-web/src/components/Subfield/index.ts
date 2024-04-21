@@ -5,6 +5,10 @@ import SubfieldSpace from './SubfieldSpace.vue';
 
 export { Subfield, SubfieldSpace };
 
-export type { SubfieldInstance } from './index.d';
+export interface SubfieldInstance {
+
+  container: HTMLElement | undefined;
+}
+
 
 export default Subfield;

@@ -16,12 +16,12 @@ import Logo from '@components/Logo';
 import IconFont from '@components/IconFont';
 
 const FooterContainer = combinationStyled('footer', FullSizeWidth, AppAdapter);
-const FooterSubContianer = combinationStyled('div', FullSizeWidth, MaxScreenWidth);
+const FooterSubContainer = combinationStyled('div', FullSizeWidth, MaxScreenWidth);
 
 export default function Footer() {
 
   return <FooterContainer className={styles.receptionFooterContainer}>
-    <FooterSubContianer className={styles.receptionSubContainer}>
+    <FooterSubContainer className={styles.receptionSubContainer}>
       <Subfield>
         {/* <Logo size={40} /> */}
       </Subfield>
@@ -97,6 +97,6 @@ export default function Footer() {
         </Space>
         <div />
       </Subfield>
-    </FooterSubContianer>
+    </FooterSubContainer>
   </FooterContainer>
 }

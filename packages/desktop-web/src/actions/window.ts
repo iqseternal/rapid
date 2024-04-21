@@ -1,4 +1,5 @@
 import type { Handlers } from 'node_modules/@rapid/desktop-node/preload';
+import { makeInvokeActions } from './ipcRenderer';
 
 export class WindowPopup {
   /**
@@ -12,7 +13,7 @@ export class WindowPopup {
   /**
    * 弹出一个确认框
    */
-  static confim(message?: string) {
+  static confirm(message?: string) {
     return window.confirm(message);
   }
 }
@@ -21,34 +22,27 @@ export class WindowPopup {
  * 刷新页面
  * @returns
  */
-export const windowReload = (...args: Parameters<Handlers['IpcWindow/relanuch']>) => window.location.reload();
+export const windowReload = () => window.location.reload();
 
 /**
  * 是否展示页面
- * @param show
- * @param id
  * @returns
  */
-export const windowShow = (...args: Parameters<Handlers['IpcWindow/showWindow']>) => window.electron.ipcRenderer.invoke('IpcWindow/showWindow', ...args);
+export const windowShow = makeInvokeActions('IpcWindow/showWindow');
 
 /**
  * 窗口是否可以调整大小
- * @param able
- * @returns
  */
 export const windowResizeAble = (...args: Parameters<Handlers['IpcWindow/resizeAble']>) => window.electron.ipcRenderer.invoke('IpcWindow/resizeAble', ...args);
 
 /**
  * 设置窗口的大小
- * @param width
- * @param height
  * @returns
  */
 export const windowSetSize = (...args: Parameters<Handlers['IpcWindow/setSize']>) => window.electron.ipcRenderer.invoke('IpcWindow/setSize', ...args);
 
 /**
  * 设置窗口的位置
- * @param args
  * @returns
  */
 export const windowSetPosition = (...args: Parameters<Handlers['IpcWindow/setPosition']>) => window.electron.ipcRenderer.invoke('IpcWindow/setPosition', ...args)
@@ -57,39 +51,34 @@ export const windowSetPosition = (...args: Parameters<Handlers['IpcWindow/setPos
  * 重启应用
  * @returns
  */
-export const windowRelaunch = (...args: Parameters<Handlers['IpcWindow/relanuch']>) => window.electron.ipcRenderer.invoke('IpcWindow/relanuch');
+export const windowRelaunch = (...args: Parameters<Handlers['IpcWindow/relaunch']>) => window.electron.ipcRenderer.invoke('IpcWindow/relaunch');
 
 /**
  * 恢复窗口为定制化大小
- * @param type
  * @returns
  */
 export const windowResetCustomSize = (...args: Parameters<Handlers['IpcWindow/resetCustomSize']>) => window.electron.ipcRenderer.invoke('IpcWindow/resetCustomSize', ...args);
 
 /**
  * 最大化窗口
- * @param id
  * @returns
  */
 export const windowMax = (...args: Parameters<Handlers['IpcWindow/maxSize']>) => window.electron.ipcRenderer.invoke('IpcWindow/maxSize', ...args);
 
 /**
  * 最小化窗口
- * @param id
  * @returns
  */
 export const windowMin = (...args: Parameters<Handlers['IpcWindow/minSize']>) => window.electron.ipcRenderer.invoke('IpcWindow/minSize', ...args);
 
 /**
  * 还原窗口
- * @param id
  * @returns
  */
 export const windowReduction = (...args: Parameters<Handlers['IpcWindow/reduction']>) => window.electron.ipcRenderer.invoke('IpcWindow/reduction', ...args);
 
 /**
  * 关闭窗口
- * @param id
  * @returns
  */
 export const windowClose = (...args: Parameters<Handlers['IpcWindow/closeWindow']>) => window.electron.ipcRenderer.invoke('IpcWindow/closeWindow', ...args);

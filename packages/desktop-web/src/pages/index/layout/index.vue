@@ -49,9 +49,7 @@ import { onMounted, nextTick, onBeforeMount, ref, onErrorCaptured, computed, rea
 import type { Ref } from 'vue';
 import type { DropdownDataType, ComboBoxMenuDataType } from '@components/DropdownMenu';
 import { DropdownMenu, MenuDriver, SingleMenu, ComboBoxMenu, AutoDropdownMenu } from '@components/DropdownMenu';
-import { UserOutlined, ReloadOutlined, BugOutlined } from '@ant-design/icons-vue';
 import { hotKeys, windowReload, windowDevtool, copyText, pasteText, windowResizeAble, openSettingPage, WindowPopup, windowResetCustomSize } from '@/actions';
-import { windowMaxSvg, windowCloseSvg } from '@/assets';
 import { canCopyText } from '@rapid/libs/common';
 import { useMousetrap, useFadeIn, useEventListener, useResizeObserver, useStorageStack, useFadeOut } from '@/hooks';
 import { fileMenu, editMenu, appearanceMenu, helpMenu } from '@/menus';

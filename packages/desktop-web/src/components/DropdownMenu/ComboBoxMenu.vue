@@ -28,5 +28,5 @@ const props = defineProps({
 })
 const dropdownStatus = inject<Ref<boolean>>(DROPDOWN_STATUS);
 
-const isClose = computed(() => dropdownStatus && dropdownStatus.value === false);
+const isClose = computed(() => dropdownStatus && !dropdownStatus.value);
 </script>

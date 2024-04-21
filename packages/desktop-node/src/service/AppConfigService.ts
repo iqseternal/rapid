@@ -1,6 +1,3 @@
-import { app } from 'electron';
-import { FileService } from './FileService';
-import { join } from 'path';
 import { PrinterService } from './PrinterService';
 import { SingleInstanceService } from './SingleInstanceService';
 import { APP_CONFIG } from '@rapid/config/electron-main';

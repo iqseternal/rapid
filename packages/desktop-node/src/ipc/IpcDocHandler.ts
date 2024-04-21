@@ -28,13 +28,10 @@ export class IpcDocHandler extends FrameworkIpcHandler {
 
   /**
    * 保存一个文档到本地
-   * @param windowService
-   * @param filePath
-   * @param data
    * @returns
    */
   @IpcMain.Handler()
-  async save(windowService: WindowService, filePath: string, data: Meta2dData) {
+  async save(_: WindowService, filePath: string, data: Meta2dData) {
     const ext = path.extname(filePath).substring(1);
 
 
@@ -49,8 +46,6 @@ export class IpcDocHandler extends FrameworkIpcHandler {
 
   /**
    * 另存为一个文档到本地
-   * @param windowService
-   * @param data
    * @returns
    */
   @IpcMain.Handler()

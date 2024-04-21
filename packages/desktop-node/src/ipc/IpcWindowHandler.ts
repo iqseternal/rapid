@@ -1,16 +1,12 @@
-import { app, type IpcMainInvokeEvent, type OpenDevToolsOptions } from 'electron';
-import { IpcMain, IPC_EMITTER_TYPE, FrameworkIpcHandler, Deprecated } from '@rapid/framework';
-import { IS_DEV, StoreKeyMap, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { app , screen } from 'electron';
+import { IpcMain, FrameworkIpcHandler } from '@rapid/framework';
+import { WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
-import { setWindowOpenHandler, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
-import { screen } from 'electron';
-import { PrinterService } from '@/service/PrinterService';
-import { RuntimeException, PermissionException, TypeException } from '@/core';
-import { isNumber, isString, isUndefined } from '@suey/pkg-utils';
+import { TypeException } from '@/core';
+import { isNumber } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
-import { setupSettingWindow } from '../setupService';
-import { print } from '@suey/printer';
+import { setupSettingWindow } from '@/setupService';
 
 /**
  * Ipc 关于窗口操作的 句柄
@@ -21,33 +17,27 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   /**
    * 最大化窗口
-   * @param windowService
-   * @param id
    */
   @IpcMain.Handler()
-  maxSize(windowService: WindowService, id?: number) {
+  maxSize(windowService: WindowService, _?: number) {
     windowService.window.maximize();
   }
 
   /**
    * 最小化窗口
-   * @param windowService
-   * @param id
    */
   @IpcMain.Handler()
-  minSize(windowService: WindowService, id?: number) {
+  minSize(windowService: WindowService, _?: number) {
 
     windowService.window.minimize();
   }
 
   /**
    * 重置窗口
-   * @param windowService
-   * @param id
    * @returns
    */
   @IpcMain.Handler()
-  reduction(windowService: WindowService, id?: number) {
+  reduction(windowService: WindowService, _?: number) {
 
     if (windowService.window.isMaximized()) {
       windowService.window.restore();
@@ -59,8 +49,6 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   /**
    * 调整窗口是否可以托拽改变大小
-   * @param windowService
-   * @param options
    */
   @IpcMain.Handler()
   resizeAble(windowService: WindowService, options: {
@@ -72,10 +60,9 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   /**
    * 重启
-   * @param windowService
    */
   @IpcMain.Handler()
-  relanuch(windowService: WindowService) {
+  relaunch() {
     app.relaunch();
   }
 
@@ -120,15 +107,21 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
       const [width, height] = windowService.window.getSize();
       const [positionX, positionY] = windowService.window.getPosition();
 
-      let targetWidth: number = 0, targetHeight: number = 0;
-      let gapWidth: number = 0, gapHeight: number = 0;
-      let targetPx: number = 0, targetPy: number = 0;
+      let targetWidth: number, targetHeight: number;
+      // let gapWidth: number, gapHeight: number;
+      let targetPx: number, targetPy: number;
 
-      if (!userWidth || !userHeight) targetWidth = appWidth, targetHeight = appHeight;
-      else targetWidth = userWidth, targetHeight = userHeight;
+      if (!userWidth || !userHeight) {
+        targetWidth = appWidth;
+        targetHeight = appHeight;
+      }
+      else {
+        targetWidth = userWidth;
+        targetHeight = userHeight;
+      }
 
-      gapWidth = (targetWidth - width) * (targetWidth > width ? 1 : -1);
-      gapHeight = (targetHeight - height) * (targetHeight > height ? 1 : -1);
+      const gapWidth = (targetWidth - width) * (targetWidth > width ? 1 : -1);
+      const gapHeight = (targetHeight - height) * (targetHeight > height ? 1 : -1);
 
       targetPx = positionX + gapWidth / 2 * -1;
       targetPy = positionY + gapHeight / 2 * -1;
@@ -185,12 +178,10 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   /**
    * 打开一个内置定义窗口对象
-   * @param windowService
-   * @param type
    * @returns
    */
   @IpcMain.Handler()
-  async openWindow(windowService: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
+  async openWindow(_: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
     if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) {
       const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
       if (!settingWindowService) {
@@ -204,12 +195,10 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   /**
    * 关闭窗口
-   * @param windowService
-   * @param id
    * @returns
    */
   @IpcMain.Handler()
-  closeWindow(windowService: WindowService, id?: number) {
+  closeWindow(windowService: WindowService, _?: number) {
     const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
 
     if (isSameWindowService(mainWindowService, windowService)) return windowService.window.hide();
@@ -219,8 +208,6 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
   /**
    * 管理窗口是否可以显示
-   * @param windowService
-   * @param options
    */
   @IpcMain.Handler()
   showWindow(windowService: WindowService, options: {

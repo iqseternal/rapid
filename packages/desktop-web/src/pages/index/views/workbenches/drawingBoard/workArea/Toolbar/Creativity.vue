@@ -134,9 +134,6 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { Pen, PenType, deepClone } from '@meta2d/core';
 import { message } from 'ant-design-vue';
 import { DropdownMenu, MenuDriver, ComboBoxMenu, SingleMenu } from '@components/DropdownMenu';
 import { lineTypes, fromArrows, toArrows } from '../../preset';

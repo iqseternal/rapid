@@ -43,7 +43,6 @@ export async function setupMainWindow() {
 
 /**
  * 创建设置窗口的函数
- * @param parentWindowService
  * @returns
  */
 export async function setupSettingWindow() {
@@ -145,7 +144,7 @@ export async function setupTrayMenu() {
       click: async () => {
         const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
         if (!settingWindowService) {
-          setupSettingWindow();
+          await setupSettingWindow();
           return;
         }
 

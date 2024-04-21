@@ -1,8 +1,11 @@
 import { print, toColor, printClear, type PrintTargetType, toPrintClear } from '@suey/printer';
 import { getCurFullDate } from '@/core/common/common';
 import {  } from '@rapid/libs/common';
+import { CONFIG } from '@rapid/config/constants';
 
 type PrintColor = ReturnType<typeof toColor>;
+
+const AppName = CONFIG.PROJECT.toUpperCase();
 
 /**
  * 打印服务的方法的条件执行
@@ -45,7 +48,7 @@ export function makePrintMessage(
   return {
     ms,
     typeMs: [
-      appColor, `[${'SPACE'}]`,
+      appColor, `[${AppName}]`,
       toPrintClear(),
       timeColor, `[${getCurFullDate()}]`,
       toPrintClear(),

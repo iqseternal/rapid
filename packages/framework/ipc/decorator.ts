@@ -41,9 +41,9 @@ export const IpcMain = {
    */
   IpcType: (type: IPC_EMITTER_TYPE = IPC_EMITTER_TYPE.HANDLE, channel?: string): MethodDecorator => {
     if (type === IPC_EMITTER_TYPE.HANDLE) return IpcMain.Handler(channel);
-    if (type === IPC_EMITTER_TYPE.HANDLE_ONCE) return IpcMain.HandlerOnce(channel);
-    if (type === IPC_EMITTER_TYPE.ON) return IpcMain.On(channel);
-    if (type === IPC_EMITTER_TYPE.ON_ONCE) return IpcMain.Once(channel);
+    else if (type === IPC_EMITTER_TYPE.HANDLE_ONCE) return IpcMain.HandlerOnce(channel);
+    else if (type === IPC_EMITTER_TYPE.ON) return IpcMain.On(channel);
+    else if (type === IPC_EMITTER_TYPE.ON_ONCE) return IpcMain.Once(channel);
 
     return (target, property) => {
 

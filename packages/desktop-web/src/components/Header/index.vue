@@ -1,5 +1,5 @@
 <template>
-  <Subfield ref="subfiledInstance" class="captionBar">
+  <Subfield ref="subfieldInstance" class="captionBar">
     <template v-if="$slots.left"><slot name="left" /></template>
     <template v-else><Slogan v-if="props.isPane === false" /></template>
     <template v-if="$slots.center"><slot name="center" /></template>
@@ -30,10 +30,10 @@ const props = defineProps({
   isDialog: { type: Boolean, default: false } // 弹窗, 警告类型
 });
 
-const subfiledInstance = ref<SubfieldInstance>();
+const subfieldInstance = ref<SubfieldInstance>();
 
 const expose = reactive({
-  container: computed(() => subfiledInstance.value?.container) as unknown as Ref<HTMLDivElement>
+  container: computed(() => subfieldInstance.value?.container) as unknown as Ref<HTMLDivElement>
 });
 
 defineExpose<HeaderInstance>(expose);

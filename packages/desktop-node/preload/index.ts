@@ -3,18 +3,18 @@
  * preload 注入变量 Api
  * ==========================================
  */
-import type { Handlers } from './preload.d';
 import { autoExpose } from './autoExpose';
 import { electronAPI } from '@electron-toolkit/preload';
+import type { ElectronAPI } from './preload.d';
 
-export type { Handlers, HandlerMethodTyped } from './preload';
+export type { Handlers, HandlerMethodTyped } from './preload.d';
 
 export interface ExposeApi {
-  electron: typeof electronAPI;
+  electron: ElectronAPI;
 }
 
 autoExpose<ExposeApi>({
-  electron: electronAPI
+  electron: electronAPI as ElectronAPI
 });
 
 

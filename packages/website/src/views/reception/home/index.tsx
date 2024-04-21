@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useState, useEffect, useRef } from 'react';
 import { SubfieldCloumn, Subfield, SubfieldSpace } from '@components/Subfield';
 import { Parallax } from 'react-parallax';
 import { homeImages } from '@/assets';
@@ -10,12 +9,10 @@ import { ScrollParallax } from 'react-just-parallax';
 import type { CSSObject } from 'styled-components';
 import { CONFIG } from '@rapid/config/constants';
 import { ParallaxContainer } from './components/Parallax';
-
-import styled, { css } from 'styled-components';
 import styles from './index.module.scss';
 import IconFont from '@components/IconFont';
 import GradualImg from '@components/GradualImg';
-import Perpose from '@/layout/ReceptionLayout/Prepose';
+import Prepose from '@/layout/ReceptionLayout/Prepose';
 import BlendedText from '@components/BlendedText';
 import Caption from './components/Caption';
 import Logo from '@components/Logo';
@@ -32,7 +29,7 @@ export default function Home() {
 
 
   return <div className={styles.home}>
-    <Perpose
+    <Prepose
       src='https://www.chali.com/assets/images/banner.7d377cc.jpg'
       headerClassName={styles.receptionHeader}
     >
@@ -41,7 +38,7 @@ export default function Home() {
         <BlendedTextField><BlendedText className={styles.blendedTextMain} text={CONFIG.PROJECT} /></BlendedTextField>
         <BlendedTextField><BlendedText className={styles.blendedTextMain} text='Building....' /></BlendedTextField>
       </SubfieldCloumn>
-    </Perpose>
+    </Prepose>
 
     <Caption
       title={

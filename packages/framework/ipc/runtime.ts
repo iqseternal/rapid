@@ -37,7 +37,7 @@ export abstract class FrameworkIpcHandlerServer<EventConvertArg> {
 }
 
 class IpcHandlerServer<EventConvertArg> extends FrameworkIpcHandlerServer<EventConvertArg> {
-  convertArgs(type: IPC_EMITTER_TYPE, e: IpcMainInvokeEvent, ...args: unknown[]): [EventConvertArg, ...unknown[]] {
+  convertArgs(_: IPC_EMITTER_TYPE, e: IpcMainInvokeEvent, ...args: unknown[]): [EventConvertArg, ...unknown[]] {
     return [e as any, ...args];
   }
 }
@@ -126,8 +126,8 @@ export const registerIpcMainHandler = <T extends DescendantClass<FrameworkIpcHan
     registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.HANDLE, channel, listener);
   });
 
-  const handleOnces = Reflect.getMetadata(IPC_META_HANDLE_ONCE, handler.constructor) as HandlerMethodNames[];
-  handleOnces.forEach((propertyName: string) => {
+  const handleOnes = Reflect.getMetadata(IPC_META_HANDLE_ONCE, handler.constructor) as HandlerMethodNames[];
+  handleOnes.forEach((propertyName: string) => {
     const channel = runtimeContext.server.syntheticChannel(handler.id, propertyName as HandlerMethodNames);
     const listener = (...args: unknown[]) => handler[propertyName](...args);
     registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.HANDLE_ONCE, channel, listener);
@@ -140,8 +140,8 @@ export const registerIpcMainHandler = <T extends DescendantClass<FrameworkIpcHan
     registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.ON, channel, listener);
   });
 
-  const onOnces = Reflect.getMetadata(IPC_META_ON_ONCE, handler.constructor) as HandlerMethodNames[];
-  onOnces.forEach((propertyName: string) => {
+  const onOnes = Reflect.getMetadata(IPC_META_ON_ONCE, handler.constructor) as HandlerMethodNames[];
+  onOnes.forEach((propertyName: string) => {
     const channel = runtimeContext.server.syntheticChannel(handler.id, propertyName as HandlerMethodNames);
     const listener = (...args: unknown[]) => handler[propertyName](...args);
     registerIpcMain<typeof handler>(IPC_EMITTER_TYPE.ON_ONCE, channel, listener);
@@ -157,11 +157,11 @@ export const registerIpcMainHandler = <T extends DescendantClass<FrameworkIpcHan
 export const unRegisterIpcMainHandler = <T extends DescendantClass<FrameworkIpcHandler>>(Class: T) => {
   type HandlerMethodNames = Exclude<keyof T, 'id' | number | symbol>;
   const handles = Reflect.getMetadata(IPC_META_HANDLE, Class) as HandlerMethodNames[];
-  const handleOnces = Reflect.getMetadata(IPC_META_HANDLE_ONCE, Class) as HandlerMethodNames[];
+  const handleOnes = Reflect.getMetadata(IPC_META_HANDLE_ONCE, Class) as HandlerMethodNames[];
   const ons = Reflect.getMetadata(IPC_META_ON, Class) as HandlerMethodNames[];
-  const onOnces = Reflect.getMetadata(IPC_META_ON_ONCE, Class) as HandlerMethodNames[];
+  const onOnes = Reflect.getMetadata(IPC_META_ON_ONCE, Class) as HandlerMethodNames[];
 
-  const methods = [...handles, ...handleOnces, ...ons, ...onOnces];
+  const methods = [...handles, ...handleOnes, ...ons, ...onOnes];
 
   methods.forEach(method => {
     ipcMain.removeHandler(method);

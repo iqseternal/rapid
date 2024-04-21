@@ -44,7 +44,7 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   const importDoc = async () => {
     if (isWork.value) {
-      const needSave = WindowPopup.confim('当前工作区还有文档,是否先保存?');
+      const needSave = WindowPopup.confirm('当前工作区还有文档,是否先保存?');
       if (needSave) await saveDoc();
     }
 

@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, provide, getCurrentInstance, inject } from 'vue';
 import type { Ref } from 'vue';
 import { DROPDOWN_STATUS, setupDropdownOpenModel } from './declare';
 import { useEventListener, useEventListenerForElement, useMousetrap, useThrottle } from '@/hooks';

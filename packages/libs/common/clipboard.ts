@@ -4,7 +4,7 @@
  * @param text
  */
 export const copySpecifiedText = (text: string) => {
-  if (text) window.navigator.clipboard.writeText(text);
+  if (text) window.navigator.clipboard.writeText(text).catch(err => err);
 }
 
 /**
