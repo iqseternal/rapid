@@ -1,3 +1,4 @@
+import type { Ref } from 'vue';
 
 
 export interface Graphic {
@@ -34,8 +35,9 @@ export interface Graphic {
 
 export type GraphicGroup = {
   name: string;
-  show?: boolean;
+  show?: boolean | Ref<boolean>;
   list?: Graphic[];
 }[];
+
 
 

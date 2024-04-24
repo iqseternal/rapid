@@ -1,9 +1,7 @@
 <template>
   <div class="propertyBar h-full overflow-x-hidden">
-    <!-- <FileProps v-if="selections.mode === SelectionMode.File" /> -->
-    <!-- <PenProps v-if="selections.mode === SelectionMode.Pen" /> -->
-
-    <PenProps />
+    <FileProps v-if="selections.mode === SelectionMode.File" />
+    <PenProps v-else-if="selections.mode === SelectionMode.Pen" />
   </div>
 </template>
 
@@ -14,6 +12,7 @@ import FileProps from './FileProps.vue';
 import PenProps from './PenProps.vue';
 
 const { selections } = useSelections();
+
 </script>
 
 <style lang="scss" scoped>

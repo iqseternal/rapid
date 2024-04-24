@@ -3,11 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, watch, computed, watchEffect, nextTick, provide, getCurrentInstance, onDeactivated, onActivated } from 'vue';
-import { useDebounce } from '@/hooks';
-import { AutoDropdownMenu, setupDropdownOpenModel } from '@components/DropdownMenu';
-import { meta2dViewMenu } from '@/menus';
-import { useSelections, SelectionMode, setupMeta2dView, setupMeta2dEvts, useMetaState, desotryMeta2dView, useDataState } from '@/meta';
+import { onBeforeUnmount, onMounted, ref, watch, getCurrentInstance, onDeactivated, onActivated } from 'vue';
+import { useDebounce } from '@/hooks'
+import { setupMeta2dView, useMetaState, destroyMeta2dView, useDataState } from '@/meta';
 import { useDocStore } from '@/store/modules/doc';
 
 const props = defineProps({
@@ -25,11 +23,13 @@ const view = ref<HTMLDivElement>();
 const setupMeta2dLife = async () => {
   if (!view.value) return;
   if (metaState.isSetup) return;
-  setupMeta2dView(view.value);
+  setupMeta2dView(view.value).catch(() => {
+
+  });
   await docStore.loadDoc();
 }
 
-const destroyMeta2dLife = desotryMeta2dView
+const destroyMeta2dLife = destroyMeta2dView;
 
 onMounted(setupMeta2dLife);
 onActivated(setupMeta2dLife);

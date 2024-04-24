@@ -1,16 +1,13 @@
 import { defineStore } from 'pinia';
-import { reactive, watch, watchEffect, computed, ref } from 'vue';
-import { setupIndexedDB, DATABASES_META2D, type TablesType } from '@/indexedDB';
-import { IndexedDB } from '@rapid/libs/indexedDB';
-import { isDef, isUnDef } from '@suey/pkg-utils';
-import { windowClose, docOpen, docSaveAs, docSave, WindowPopup, docImport } from '@/actions';
+import { computed, ref } from 'vue';
+import { docOpen, docSaveAs, docSave, WindowPopup, docImport } from '@/actions';
 import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
 import { getMeta2dData } from '@meta/actions';
 import { useRoute } from 'vue-router';
 import { workbenchesRoute } from '@pages/index/router/modules';
 
 import store from '@/store';
-import { useDataState, useDataStateHook } from '@meta/useProps';
+import { useDataStateHook } from '@meta/useProps';
 
 const { dataState } = useDataStateHook();
 
@@ -29,9 +26,7 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   const loadDoc = async () => {
     if (!filePath.value) {
-
       createDoc();
-
       return;
     }
 
@@ -60,7 +55,7 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   const createDoc = async () => {
     if (isWork.value) {
-      // const needSave = WindowPopup.confim('当前工作区还有文档,是否先保存?');
+      // const needSave = WindowPopup.confirm('当前工作区还有文档,是否先保存?');
       // if (needSave) await saveDoc();
     }
 

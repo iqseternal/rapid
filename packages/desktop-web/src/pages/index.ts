@@ -41,7 +41,8 @@ export async function setupApp(...args: Partial<SetupAppArgs>) {
 
   const app = createApp((await App).default, appArg);
 
-  app.use(store);
+
+  app.use(store as unknown as Plugin);
 
   cb(app, async (plugin) => {
     const pl = (await plugin).default;

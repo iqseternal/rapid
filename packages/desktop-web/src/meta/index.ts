@@ -1,5 +1,4 @@
-import { ref, reactive, watch } from 'vue';
-import { Meta2d, Pen, register, registerAnchors, registerCanvasDraw, deepClone } from '@meta2d/core';
+import { Meta2d, Pen, register, registerAnchors, registerCanvasDraw } from '@meta2d/core';
 import { flowPens, flowAnchors } from '@meta2d/flow-diagram';
 import { activityDiagram, activityDiagramByCtx } from '@meta2d/activity-diagram';
 import { classPens } from '@meta2d/class-diagram';
@@ -10,11 +9,8 @@ import { collapseChildPlugin } from '@meta2d/plugin-mind-collapse';
 import { formPens } from '@meta2d/form-diagram';
 import { chartsPens } from '@meta2d/le5le-charts';
 import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
-import { setupIndexedDB } from '@/indexedDB';
-import { TABLES, TABLE_DOCUMENT, DATABASES_META2D } from '@indexedDB/type';
-import { useSelections } from './useSelections';
-import { useMetaState, useMetaStateHook, scaleHasEffect } from './useMetaState';
-
+import { useSelectionsHook } from './useSelections';
+import { useMetaStateHook, scaleHasEffect } from './useMetaState';
 
 export * from './actions';
 export * from './useSelections';
@@ -23,6 +19,7 @@ export * from './useMetaState';
 export * from './usePenProps';
 
 const { metaState } = useMetaStateHook();
+const { select } = useSelectionsHook();
 
 export async function saveMeta2dData() {
   const data = meta2d.data();
@@ -31,7 +28,7 @@ export async function saveMeta2dData() {
   localStorage.setItem('meta2d', JSON.stringify(data));
 }
 
-export async function setupMeta2dEvts() {
+export async function setupMeta2dEvents() {
   meta2d.on('scale', async () => {
     scaleHasEffect.value = false;
     await saveMeta2dData();
@@ -93,7 +90,7 @@ export async function setupMeta2dView(target: HTMLElement) {
   registerCanvasDraw(ftaPensbyCtx());
   registerAnchors(ftaAnchors());
 
-  await setupMeta2dEvts();
+  await setupMeta2dEvents();
   // 注册其他自定义图形库
   // ...
 
@@ -111,22 +108,18 @@ export async function setupMeta2dView(target: HTMLElement) {
     meta2d.open(data);
   }
 
-  meta2d.on('active', active);
-  meta2d.on('inactive', inactive);
+  meta2d.on('active', (pens?: Pen[]) => {
+    select(pens);
+  });
+  meta2d.on('inactive', () => {
+    select();
+  });
 }
 
-export async function desotryMeta2dView() {
+export async function destroyMeta2dView() {
   if (!metaState.isSetup) return;
   meta2d.destroy();
   metaState.isSetup = false;
 }
 
-const { select } = useSelections();
-const active = (pens?: Pen[]) => {
-  select(pens);
-};
-
-const inactive = () => {
-  select();
-};
 

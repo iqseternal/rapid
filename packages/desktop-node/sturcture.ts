@@ -1,5 +1,4 @@
 import { defineElectronMainConfig, resolveAlias, defineElectronPreloadConfig } from '../config/structure';
-import { DIRS } from '../config/dirs';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.json';

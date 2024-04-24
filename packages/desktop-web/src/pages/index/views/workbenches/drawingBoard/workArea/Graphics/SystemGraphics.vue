@@ -1,7 +1,7 @@
 <template>
   <ACollapse v-model:activeKey="activeKey">
     <ACollapsePanel
-      v-for="item in SYSYTEM_GRAPHIC_GROUPS"
+      v-for="item in SYSTEM_GRAPHIC_GROUPS"
       :key="item.name"
       :header="item.name"
     >
@@ -24,9 +24,9 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { SYSYTEM_GRAPHIC_GROUPS } from '../../preset';
+import { SYSTEM_GRAPHIC_GROUPS } from '@meta/preset';
 import { dragStart } from '@/meta';
 import Ellipsis from '@components/Ellipsis';
 
-const activeKey = ref(SYSYTEM_GRAPHIC_GROUPS[0].name);
+const activeKey = ref(SYSTEM_GRAPHIC_GROUPS[0].name);
 </script>

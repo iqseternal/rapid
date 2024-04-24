@@ -1,6 +1,27 @@
 
 <template>
-  <ATabs class="propsPanel">
+  <ATabs>
+    <ATabPane :key="appearanceTab.key" :tab="appearanceTab.tab">
+      <ACollapse>
+        <template v-for="item in appearanceTab.list" :key="item.key">
+          <ACollapsePanel :header="item.header">
+            <AForm>
+              <template v-for="(prop, index) in item.list" :key="index">
+                <AFormItem :name="prop.prop" :label="prop.prop">
+                  <template v-if="prop.showType === ShowTypeMode.InputNumber">
+                    <AInput v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
+                  </template>
+                </AFormItem>
+              </template>
+            </AForm>
+          </ACollapsePanel>
+        </template>
+      </ACollapse>
+    </ATabPane>
+  </ATabs>
+
+
+  <ATabs class="propsPanel" v-if="false">
     <ATabPane :key="1" tab="位置与大小">
       <ACollapse>
         <ACollapsePanel :key="1.1" header="位置">
@@ -22,13 +43,87 @@
             <AFormItem name="height" label="高度">
               <AInput v-model:value="penPropsState.height" type="number" @change="setCurrentPenProps({ height: penPropsState.height })" />
             </AFormItem>
+            <AFormItem name="ratio" label="锁定宽高比">
+              <ASwitch v-model:checked="penPropsState.ratio" @change="setCurrentPenProps({ ratio: penPropsState.ratio })" />
+            </AFormItem>
+
+            <AFormItem name="borderRadius" label="圆角">
+              <AInput v-model:value="penPropsState.borderRadius" type="number" :min="0" @change="setCurrentPenProps({ borderRadius: penPropsState.borderRadius })" />
+            </AFormItem>
+
+            <AFormItem name="rotate" label="旋转">
+              <AInput v-model:value="penPropsState.rotate" type="number" @change="setCurrentPenProps({ rotate: penPropsState.rotate })" />
+            </AFormItem>
+
+
+            <AFormItem name="paddingTop" label="内边距上">
+              <AInput v-model:value="penPropsState.paddingTop" type="number" @change="setCurrentPenProps({ paddingTop: penPropsState.paddingTop })" />
+            </AFormItem>
+            <AFormItem name="paddingBottom" label="内边距下">
+              <AInput v-model:value="penPropsState.paddingBottom" type="number" @change="setCurrentPenProps({ paddingBottom: penPropsState.paddingBottom })" />
+            </AFormItem>
+            <AFormItem name="paddingLeft" label="内边距左">
+              <AInput v-model:value="penPropsState.paddingLeft" type="number" @change="setCurrentPenProps({ paddingLeft: penPropsState.paddingLeft })" />
+            </AFormItem>
+            <AFormItem name="paddingRight" label="内边距右">
+              <AInput v-model:value="penPropsState.paddingRight" type="number" @change="setCurrentPenProps({ paddingRight: penPropsState.paddingRight })" />
+            </AFormItem>
+            <AFormItem name="progress" label="进度">
+              <AInput v-model:value="penPropsState.progress" type="number" @change="setCurrentPenProps({ progress: penPropsState.progress })" />
+            </AFormItem>
+            <AFormItem name="verticalProgress" label="垂直进度">
+              <ASwitch v-model:checked="penPropsState.verticalProgress" @change="setCurrentPenProps({ verticalProgress: penPropsState.verticalProgress })" />
+            </AFormItem>
+            <AFormItem name="flipX" label="水平翻转">
+              <ASwitch v-model:checked="penPropsState.flipX" @change="setCurrentPenProps({ flipX: penPropsState.flipX })" />
+            </AFormItem>
+            <AFormItem name="flipY" label="垂直翻转">
+              <ASwitch v-model:checked="penPropsState.flipY" @change="setCurrentPenProps({ flipY: penPropsState.flipY })" />
+            </AFormItem>
           </AForm>
         </ACollapsePanel>
 
+
+        <ACollapsePanel :key="1.3" header="样式">
+          <AForm>
+            <AFormItem name="lineDash" label="线条样式">
+              <ASelect v-model:value="penPropsState.lineDash" @change="setCurrentPenProps({ lineDash: penPropsState.lineDash })">
+                <ASelectOption :value="0">
+                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
+                    <g fill="none" stroke="black" stroke-width="1">
+                      <path d="M0 9 l85 0" />
+                    </g>
+                  </svg>
+                </ASelectOption>
+                <ASelectOption :value="1">
+                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
+                    <g fill="none" stroke="black" stroke-width="1">
+                      <path stroke-dasharray="5 5" d="M0 9 l85 0" />
+                    </g>
+                  </svg>
+                </ASelectOption>
+                <ASelectOption :value="2">
+                  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
+                    <g fill="none" stroke="black" stroke-width="1">
+                      <path stroke-dasharray="10 10 2 10" d="M0 9 l85 0" />
+                    </g>
+                  </svg>
+                </ASelectOption>
+              </ASelect>
+            </AFormItem>
+
+
+
+
+
+
+
+          </AForm>
+        </ACollapsePanel>
       </ACollapse>
     </ATabPane>
 
-    <AForm v-if="pen">
+    <AForm v-if="false">
       <h5>图元</h5>
 
       <AFormItem name="text" label="文本">
@@ -101,6 +196,8 @@ import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useSelections, useDataState, useMetaState, useOptionsState, usePenProps } from '@/meta';
 import { isUndefined } from '@suey/pkg-utils';
 import { SelectionMode } from '@meta/useSelections';
+
+import { ShowTypeMode, appearanceTab } from '@meta/preset';
 
 import { useEventListener, useStorageStack, useSurvivalCycle } from '@/hooks';
 

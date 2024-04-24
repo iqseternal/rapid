@@ -29,10 +29,11 @@ export function useMousetrap<T extends HTMLElement>(
   _3?: (MousetrapBindFn) | MousetrapAction,
   _4?: MousetrapAction
 ): Ref<MousetrapInstance> {
-  let dom = ref(void 0) as unknown as Ref<HTMLElement>;
+  let dom = ref<HTMLElement>(void 0 as unknown as HTMLElement);
 
   if (isRef(_1)) dom = _1;
   else if (_1 instanceof HTMLElement) dom = ref(_1);
+
 
   let binds: MousetrapBinds = [];
 

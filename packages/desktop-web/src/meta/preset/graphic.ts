@@ -1,8 +1,8 @@
 import { reactive } from 'vue';
-import type { Graphic, GraphicGroup } from './graphic.d';
+import type { Graphic, GraphicGroup } from './graphic.declare';
 import { ReplaceMode } from '@meta2d/chart-diagram';
 
-export const SYSYTEM_GRAPHIC_GROUPS: GraphicGroup = reactive([
+export const SYSTEM_GRAPHIC_GROUPS: GraphicGroup = reactive([
 	{
 		name: '基本形状',
 		show: true,

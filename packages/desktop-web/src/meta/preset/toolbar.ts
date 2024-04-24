@@ -1,6 +1,7 @@
 
 import { reactive } from 'vue';
 
+/** 线型 */
 export const lineTypes = reactive([
   { name: '曲线', icon: '#l-curve2', value: 'curve' },
   { name: '线段', icon: '#l-polyline', value: 'polyline' },
@@ -8,6 +9,7 @@ export const lineTypes = reactive([
   { name: '脑图曲线', icon: '#l-mind', value: 'mind' },
 ]);
 
+/** 左箭头 */
 export const fromArrows = reactive([
   { icon: '#l-line', value: '' },
   { icon: '#l-from-triangle', value: 'triangle' },
@@ -21,6 +23,7 @@ export const fromArrows = reactive([
   { icon: '#l-from-line', value: 'line' },
 ]);
 
+/** 右箭头 */
 export const toArrows = reactive([
   { icon: '#l-line', value: '' },
   { icon: '#l-to-triangle', value: 'triangle' },

@@ -3,24 +3,20 @@
     <Toolbar />
 
     <div class="w-full flex-between overflow-hidden viewContainer">
-      <Graphics v-ResizeWidth="graphicsBindings" />
+      <Graphics v-resize-width="graphicsBindings" />
       <View :width="viewWidth" />
-      <PropertyBar v-ResizeWidth="propertyBindings" />
+      <PropertyBar v-resize-width="propertyBindings" />
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { onMounted, onBeforeMount, ref, getCurrentInstance, reactive, computed, watchEffect, watch, onActivated, onDeactivated, onBeforeUnmount } from 'vue';
+<script lang="tsx" setup>
+import { reactive, computed, h } from 'vue';
 import { PropertyBar, Toolbar, View, Graphics } from './workArea';
-import { setupIndexedDB } from '@/indexedDB';
-import { setupMeta2dView, setupMeta2dEvts, saveMeta2dData } from '@/meta';
 import { vResizeWidth } from '@rapid/libs/directives';
+
 import type { VResizeWidthBindings } from '@rapid/libs/directives';
-
-import IconFont from '@components/IconFont';
-
-const instance = getCurrentInstance();
+import { useSurvivalCycle } from '@/hooks';
 
 const graphicsBindings: VResizeWidthBindings = reactive({
   minWidth: 190,
@@ -36,17 +32,15 @@ const propertyBindings: VResizeWidthBindings = reactive({
 
 const viewWidth = computed(() => graphicsBindings.width + propertyBindings.width);
 
-onActivated(() => {
-  graphicsBindings.canExec = true;
-  propertyBindings.canExec = true;
-})
-onDeactivated(() => {
-  graphicsBindings.canExec = false;
-  propertyBindings.canExec = false;
-})
-onBeforeUnmount(() => {
-  graphicsBindings.canExec = false;
-  propertyBindings.canExec = false;
+useSurvivalCycle({
+  survival: () => {
+    graphicsBindings.canExec = true;
+    propertyBindings.canExec = true;
+  },
+  extinction: () => {
+    graphicsBindings.canExec = false;
+    propertyBindings.canExec = false;
+  }
 })
 </script>
 

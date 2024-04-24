@@ -19,9 +19,9 @@ const selections: UnwrapNestedRefs<{
   pens: []
 });
 
-export const useSelections = (): { selections: UnwrapNestedRefs<{ mode: SelectionMode, pen?: Pen }>;select: (pens?: Pen[]) => void; } => {
+export const useSelections = (): { selections: UnwrapNestedRefs<{ mode: SelectionMode, pen?: Pen, pens: Pen[] }>;select: (pens?: Pen[]) => void; } => {
   const select = (pens?: Pen[]): void => {
-    if (!pens || pens.length !== 1) {
+    if (!pens || pens.length === 0) {
       selections.mode = SelectionMode.File;
       selections.pen = void 0;
       selections.pens = [];

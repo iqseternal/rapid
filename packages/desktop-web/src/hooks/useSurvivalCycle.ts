@@ -30,11 +30,9 @@ export function useSurvivalCycle(options?: SurvivalCycleOptions) {
     extinction();
   }
 
-
-
   onMounted(survivalCycle);
-  onActivated(extinctionCycle);
+  onActivated(survivalCycle);
 
-  onDeactivated(survivalCycle);
+  onDeactivated(extinctionCycle);
   onBeforeUnmount(extinctionCycle);
 }

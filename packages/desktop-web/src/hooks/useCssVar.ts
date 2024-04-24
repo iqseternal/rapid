@@ -1,5 +1,5 @@
 
-import type { Ref } from 'vue';
+import type { Ref, UnwrapRef } from 'vue';
 
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
@@ -11,7 +11,7 @@ interface USE_CSS_VAR_OPTIONS<T> {
   set: (val: T) => string; // 你的指定格式的值被设置到 HTMLElement 元素中的时候, 需要进行格式化的操作
 }
 
-export const cssRoot = document.querySelector(':root') as HTMLElement;
+export const cssRoot: HTMLElement = document.querySelector(':root') as HTMLElement;
 
 export const useCssVar = <KEY extends `--${string}`, T>(el: Ref<HTMLElement>, cssVar: KEY, options: USE_CSS_VAR_OPTIONS<T> = {
   get(str: string) { return str as unknown as T; },
@@ -38,6 +38,6 @@ export const useCssVar = <KEY extends `--${string}`, T>(el: Ref<HTMLElement>, cs
 export const useCssVarForRoot = <KEY extends `--${string}`, T>(cssVar: KEY, options: USE_CSS_VAR_OPTIONS<T> = {
   get(str: string) { return str as unknown as T; },
   set(val: T) { return val as string; }
-}) => useCssVar(ref(cssRoot), cssVar, options);
+}) => useCssVar(ref(cssRoot) as Ref<HTMLElement>, cssVar, options);
 
 

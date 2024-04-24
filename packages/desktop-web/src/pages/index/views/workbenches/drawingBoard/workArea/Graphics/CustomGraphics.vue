@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { CUSTOM_GRAPHIC_GROUPS } from '../../preset';
+import { CUSTOM_GRAPHIC_GROUPS } from '@meta/preset';
 import { ref } from 'vue';
 
 import { dragStart } from '@/meta';

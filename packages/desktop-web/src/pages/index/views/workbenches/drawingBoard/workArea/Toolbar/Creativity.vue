@@ -136,7 +136,7 @@
 <script lang="ts" setup>
 import { message } from 'ant-design-vue';
 import { DropdownMenu, MenuDriver, ComboBoxMenu, SingleMenu } from '@components/DropdownMenu';
-import { lineTypes, fromArrows, toArrows } from '../../preset';
+import { lineTypes, fromArrows, toArrows } from '@meta/preset';
 import { onUndo, onRedo, onAddShape, onCopy, onDelete, onPaste, onScaleDefault, onScaleWindow, useSelections, useMetaState } from '@/meta';
 import { pencilUrl, penUrl } from '@/assets';
 import { NumberFilters } from '@rapid/libs/filters';
