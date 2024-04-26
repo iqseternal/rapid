@@ -19,12 +19,17 @@ export function usePenProps() {
     if (selections.mode !== SelectionMode.Pen) return;
     if (!selections.pen) return;
 
-    selections.pens.forEach(pen => {
-      meta2d.setValue({
-        id: pen.id,
-        ...props
-      })
+    meta2d.setValue({
+      id: selections.pen.id,
+     ...props
     })
+
+    // selections.pens.forEach(pen => {
+    //   meta2d.setValue({
+    //     id: pen.id,
+    //     ...props
+    //   })
+    // })
 
     // meta2d.setValue({
     //   id: selections.pen?.id,

@@ -1,8 +1,5 @@
-
 import type { Ref, UnwrapRef } from 'vue';
-
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
-
 import { setCssVar, getCssVar } from '@rapid/libs/common';
 
 interface USE_CSS_VAR_OPTIONS<T> {

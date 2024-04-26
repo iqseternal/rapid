@@ -41,7 +41,7 @@ export { useDisableRouterBack, useDisableRouterBackHook } from './useRouterJump'
 
 export { useDisableDragText } from './useDisableDragText';
 
-export { usePickColorsAttrs } from './usePickColors';
+export { usePickColorsAttrs, usePickColorsAttrsHook } from './usePickColors';
 export type { PickColorsProps } from './usePickColors';
 
 export type { SurvivalCycleOptions } from './useSurvivalCycle';

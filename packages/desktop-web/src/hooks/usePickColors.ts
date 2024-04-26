@@ -12,13 +12,10 @@ export function usePickColorsAttrs() {
     showAlpha: true,
 
     format: 'hex'
-
-
   }
-
-
 
   return { pickColorsAttrs }
 }
 
 
+export const usePickColorsAttrsHook = usePickColorsAttrs;

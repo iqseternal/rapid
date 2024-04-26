@@ -5,23 +5,33 @@ import type { Pen } from '@meta2d/core';
 import { useSelections } from '@/meta';
 
 import type { SelectOption, Switch, InputProps, InputNumberProps, SelectProps } from 'ant-design-vue';
-import type { ComponentsProps } from '@rapid/libs/types';
+import type { ComponentsProps, ObjAutoComplete } from '@rapid/libs/types';
+
+import type { PickColorsProps } from '@hooks/usePickColors';
 
 const { selections } = useSelections();
 
+/**
+ * 展示类型的枚举
+ */
 export enum ShowTypeMode {
   InputString,
   InputNumber,
   Switch,
-  Select
+  Select,
+  Color
 }
 
 /** 基本 */
 export interface PropItem<PropName extends keyof PenProps> {
   showType: ShowTypeMode;
 
+  /** 解释 label */
+  label: string;
+
   /** 某个属性 */
   prop: PropName;
+
   /** 当属性发生变化时如何处理 */
   onChange: (value: Required<PenProps>[PropName]) => void;
 
@@ -38,7 +48,9 @@ export interface SelectProp<PropName extends keyof PenProps = keyof PenProps> ex
   options: {
     content: number | string | JSX.IntrinsicElements;
 
-    attrs: Partial<ComponentsProps<typeof SelectOption>>;
+    attrs: Partial<ComponentsProps<typeof SelectOption>> & {
+      value: string | number;
+    };
   }[]
 }
 
@@ -61,6 +73,12 @@ export interface InputNumberProp<PropName extends keyof PenProps = keyof PenProp
   attrs?: InputProps & InputNumberProps;
 }
 
+export interface ColorProp<PropName extends keyof PenProps = keyof PenProps> extends PropItem<PropName> {
+  showType: ShowTypeMode.Color;
+
+  attrs?: PickColorsProps;
+}
+
 /** 组, 用于编写 ACollapsePanel */
 export interface PenPropGroup {
   key: number | string;
@@ -71,7 +89,8 @@ export interface PenPropGroup {
     SelectProp |
     SwitchProp |
     InputStringProp |
-    InputNumberProp
+    InputNumberProp |
+    ColorProp
   )[];
 }
 
@@ -84,16 +103,19 @@ export interface PenPropTab {
   list: PenPropGroup[];
 }
 
-
+/**
+ * make 一个 pen 的 属性
+ * @param value
+ */
 export function makePenProp<
   PropName extends keyof PenProps,
-  Item extends (InputNumberProp<PropName> | InputStringProp<PropName> | SelectProp<PropName> | SwitchProp<PropName>)
->(value: { prop: PropName; } & Item): Required<Item> {
-  const item = value as Item;
+  Item extends (InputNumberProp<PropName> | InputStringProp<PropName> | SelectProp<PropName> | SwitchProp<PropName> | ColorProp<PropName>)
+>(value: { prop: PropName; } & Item): Required<Item> & Required<PropItem<PropName>> {
+  const item = value as Required<Item> & Required<PropItem<PropName>>;
 
   if (!item.getValue) item.getValue = () => selections.pen?.[item.prop as keyof Pen];
 
-  return item as unknown as Required<Item>;
+  return item;
 }
 
 

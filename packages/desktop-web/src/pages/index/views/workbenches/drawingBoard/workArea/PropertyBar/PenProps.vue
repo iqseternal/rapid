@@ -7,10 +7,21 @@
           <ACollapsePanel :header="item.header">
             <AForm>
               <template v-for="(prop, index) in item.list" :key="index">
-                <AFormItem :name="prop.prop" :label="prop.prop">
+                <AFormItem :name="prop.prop" :label="prop.label">
                   <template v-if="prop.showType === ShowTypeMode.InputNumber">
                     <AInput v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
                   </template>
+                  <template v-else-if="prop.showType === ShowTypeMode.InputString">
+                    <AInput v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
+                  </template>
+                  <template v-else-if="prop.showType === ShowTypeMode.Switch">
+                    <ASwitch v-model:checked="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
+                  </template>
+
+                  <template v-else-if="prop.showType === ShowTypeMode.Color">
+                    <PickColors v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
+                  </template>
+
                 </AFormItem>
               </template>
             </AForm>
@@ -202,6 +213,7 @@ import { ShowTypeMode, appearanceTab } from '@meta/preset';
 import { useEventListener, useStorageStack, useSurvivalCycle } from '@/hooks';
 
 import PickColors from 'vue-pick-colors';
+import { bind } from 'mousetrap';
 
 const { dataState, onChangeData, onChangeBkImage, onChangeGridRotate } = useDataState();
 const { metaState, metaRefresh } = useMetaState();

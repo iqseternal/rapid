@@ -1,23 +1,21 @@
-import type { Ref } from 'vue';
-import { ref } from 'vue';
-import { usePenProps, usePenPropsHook, useSelections, useSelectionsHook } from '@/meta';
-import type { PenProps } from '@/meta';
-
 import { ShowTypeMode, makePenProp, makePenPropGroup, makePenPropTab } from './penProps.declare';
 import type { PenPropTab, InputNumberProp, InputStringProp, SelectProp, SwitchProp } from './penProps.declare';
 import {
-  x, y, width, height, ratio, borderRadius, rotate, paddingTop, paddingBottom, paddingLeft, paddingRight, process, verticalProgress, flipX, flipY
-} from './penProps.term';
+  x, y, width, height, ratio, borderRadius, rotate, paddingTop, paddingBottom, paddingLeft, paddingRight, process, verticalProgress, flipX, flipY,
 
-const { selections } = useSelectionsHook();
-const { penPropsState, setCurrentPenProps } = usePenPropsHook();
+  lineDash, lineJoin, lineCap, color, hoverColor, activeColor, lineWidth, background, hoverBackground, activeBackground, globalAlpha, anchorColor, shadowColor, shadowBlur, shadowOffsetX, shadowOffsetY, textHasShadow,
+
+  fontFamily, fontSize, textColor, hoverTextColor, activeTextColor, textBackground, textAlign, textBaseline, lineHeight, whiteSpace, textWidth, textHeight, ellipsis, hiddenText, text,
+
+  disableInput, disableRotate, disableSize, disableAnchor
+} from './penProps.term';
 
 export const positionAndSizeGroup = makePenPropGroup({
   header: '位置与大小',
   list: [
     x, y,
-    width, height,
-    ratio, borderRadius, rotate,
+    width, height, ratio, borderRadius,
+    rotate,
     paddingTop, paddingBottom, paddingLeft, paddingRight,
     process, verticalProgress,
     flipX, flipY
@@ -27,21 +25,38 @@ export const positionAndSizeGroup = makePenPropGroup({
 export const styleGroup = makePenPropGroup({
   header: '样式',
   list: [
-
+    lineDash, lineJoin, lineCap,
+    color, hoverColor, activeColor,
+    lineWidth,
+    background, hoverBackground, activeBackground,
+    globalAlpha,
+    anchorColor,
+    shadowColor, shadowBlur,
+    shadowOffsetX, shadowOffsetY,
+    textHasShadow
   ]
 })
 
 export const textGroup = makePenPropGroup({
   header: '文字',
   list: [
+    fontFamily, fontSize,
 
+    textColor, hoverTextColor, activeTextColor, textBackground,
+    textAlign, textBaseline,
+    lineHeight,
+    whiteSpace,
+    textWidth, textHeight,
+    ellipsis,
+    hiddenText,
+    text
   ]
 })
 
-export const diabledGroup = makePenPropGroup({
+export const disabledGroup = makePenPropGroup({
   header: '禁止',
   list: [
-
+    disableInput, disableRotate, disableSize, disableAnchor
   ]
 })
 
@@ -51,7 +66,7 @@ export const appearanceTab: PenPropTab = makePenPropTab({
     positionAndSizeGroup,
     styleGroup,
     textGroup,
-    diabledGroup
+    disabledGroup
   ]
 })
 
