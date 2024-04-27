@@ -5,7 +5,7 @@
         <ACollapsePanel :key="1.1" header="图纸">
           <AForm>
             <AFormItem name="name" label="图纸名称">
-              <AInput v-model:value="dataState.name" @change="onChangeData('name')" />
+              <AInput v-model:value="dataState.name" :placeholder="StringFilters.toValidStr(dataState.name, '未命名文档')" @change="onChangeData('name')" />
             </AFormItem>
           </AForm>
         </ACollapsePanel>
@@ -15,7 +15,7 @@
               <PickColors v-model:value="optionsState.color" v-bind="pickColorsAttrs" @change="onChangeOptions('color')" />
             </AFormItem>
             <AFormItem name="penBackground" label="画笔填充颜色">
-              <PickColors v-model:value="dataState.penBackground" @change="onChangeData('penBackground')" />
+              <PickColors v-model:value="dataState.penBackground" v-bind="pickColorsAttrs" @change="onChangeData('penBackground')" />
             </AFormItem>
             <AFormItem name="background" label="背景颜色">
               <PickColors v-model:value="optionsState.background" v-bind="pickColorsAttrs" @change="onChangeOptions('background')" />
@@ -40,8 +40,9 @@
             <AFormItem name="gridColor" label="网格颜色">
               <PickColors v-model:value="optionsState.gridColor" v-bind="pickColorsAttrs" @change="onChangeOptions('gridColor')" />
             </AFormItem>
+
             <AFormItem name="gridSize" label="网格大小">
-              <AInput v-model:value="optionsState.gridSize" @change="onChangeOptions('gridSize')" />
+              <AInput v-model:value="optionsState.gridSize" type="number" @change="onChangeOptions('gridSize')" />
             </AFormItem>
             <AFormItem name="gridRotate" label="网格角度">
               <!-- 奇怪的属性分类 -->
@@ -51,6 +52,16 @@
         </ACollapsePanel>
       </ACollapse>
     </ATabPane>
+
+
+
+
+
+
+
+
+
+
 
     <ATabPane :key="2" tab="全局配置">
       <ACollapse>
@@ -71,7 +82,6 @@
             <PickColors v-model:value="optionsState.hoverBackground" v-bind="pickColorsAttrs" @change="onChangeOptions('hoverBackground')" />
           </AFormItem>
         </ACollapsePanel>
-
         <ACollapsePanel :key="2.2" header="锚点">
           <AFormItem name="anchorColor" label="锚点颜色">
             <PickColors v-model:value="optionsState.anchorColor" v-bind="pickColorsAttrs" @change="onChangeOptions('anchorColor')" />
@@ -85,7 +95,6 @@
             <PickColors v-model:value="optionsState.anchorBackground" v-bind="pickColorsAttrs" @change="onChangeOptions('anchorBackground')" />
           </AFormItem>
         </ACollapsePanel>
-
         <ACollapsePanel :key="2.3" header="辅助线">
           <AFormItem name="dockColor" label="锚点颜色">
             <PickColors v-model:value="optionsState.dockColor" v-bind="pickColorsAttrs" @change="onChangeOptions('dockColor')" />
@@ -99,8 +108,6 @@
             <PickColors v-model:value="optionsState.animateColor" v-bind="pickColorsAttrs" @change="onChangeOptions('animateColor')" />
           </AFormItem>
         </ACollapsePanel>
-
-
         <ACollapsePanel :key="2.4" header="文字">
           <AFormItem name="textColor" label="文字颜色">
             <PickColors v-model:value="optionsState.textColor" v-bind="pickColorsAttrs" @change="onChangeOptions('textColor')" />
@@ -135,7 +142,6 @@
             </ASelect>
           </AFormItem>
         </ACollapsePanel>
-
         <ACollapsePanel :key="2.5" header="鼠标样式">
           <AFormItem name="rotateCursor" label="旋转控制点的">
             <AInput v-model:value="optionsState.rotateCursor" @change="onChangeOptions('rotateCursor')" />
@@ -144,8 +150,6 @@
             <AInput v-model:value="optionsState.hoverCursor" @change="onChangeOptions('hoverCursor')" />
           </AFormItem>
         </ACollapsePanel>
-
-
         <ACollapsePanel :key="2.6" header="禁止">
           <AFormItem name="disableInput" label="禁止双击弹出输入框">
             <ASwitch v-model:checked="optionsState.disableInput" @change="onChangeOptions('disableInput')" />
@@ -175,7 +179,6 @@
             <ASwitch v-model:checked="optionsState.disableTranslate" @change="onChangeOptions('disableTranslate')" />
           </AFormItem>
         </ACollapsePanel>
-
         <ACollapsePanel :key="2.7" header="画布设置">
           <AFormItem name="minScale" label="画布最小缩放比例">
             <ASwitch v-model:checked="optionsState.minScale" @change="onChangeOptions('minScale')" />
@@ -184,7 +187,6 @@
             <ASwitch v-model:checked="optionsState.maxScale" @change="onChangeOptions('maxScale')" />
           </AFormItem>
         </ACollapsePanel>
-
         <ACollapsePanel :key="2.8" header="其他设置">
           <AFormItem name="autoAnchor" label="自动选中节点锚点">
             <ASwitch v-model:checked="optionsState.autoAnchor" @change="onChangeOptions('autoAnchor')" />
@@ -204,36 +206,27 @@
             <ASwitch v-model:checked="optionsState.textFlip" @change="onChangeOptions('textFlip')" />
           </AFormItem>
         </ACollapsePanel>
-
       </ACollapse>
     </ATabPane>
   </ATabs>
 </template>
 
 <script lang="ts" setup>
-import { reactive, onMounted, ref, watch } from 'vue';
-
 import { useDataState, useOptionsState } from '@/meta';
-import { usePickColorsAttrs, useEventListener, useEventListenerForElement } from '@/hooks';
+import { usePickColorsAttrs, useSurvivalCycle } from '@/hooks';
 
+import { StringFilters } from '@rapid/libs/filters';
 import PickColors from 'vue-pick-colors';
 
 const { pickColorsAttrs } = usePickColorsAttrs();
 
-const { dataState, onChangeData, onChangeBkImage, onChangeGridRotate } = useDataState();
-const { optionsState, onChangeOptions } = useOptionsState();
+const { dataState, onChangeData, onChangeBkImage, onChangeGridRotate, onChangePenBackground, updateDataState } = useDataState();
+const { optionsState, onChangeOptions, updateOptionsState } = useOptionsState();
 
-onMounted(() => {
-  const d = meta2d.data();
-  dataState.name = d.name || '';
-  dataState.penBackground = d.penBackground || '';
-
-  console.log(dataState);
-
-  Object.assign(optionsState, meta2d.getOptions());
-});
+useSurvivalCycle({
+  survival: () => {
+    updateDataState();
+    updateOptionsState();
+  }
+})
 </script>
-
-<style lang="scss" scoped>
-@import '@scss/var.scss';
-</style>

@@ -10,15 +10,20 @@ import { formPens } from '@meta2d/form-diagram';
 import { chartsPens } from '@meta2d/le5le-charts';
 import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
 import { useSelectionsHook } from './useSelections';
-import { useMetaStateHook, scaleHasEffect } from './useMetaState';
+import { useMetaStateHook, scalreNoEffectSetter } from './useMetaState';
+import { useDataState, useDataStateHook, useOptionsState, useOptionsStateHook } from './useProps';
 
 export * from './actions';
 export * from './useSelections';
 export * from './useProps';
 export * from './useMetaState';
 export * from './usePenProps';
+export * from './useDistribution';
 
 const { metaState } = useMetaStateHook();
+const { updateDataState } = useDataStateHook();
+const { updateOptionsState } = useOptionsStateHook();
+
 const { select } = useSelectionsHook();
 
 export async function saveMeta2dData() {
@@ -26,23 +31,38 @@ export async function saveMeta2dData() {
   // const buffer = pako.deflate(JSON.stringify(data));
   // console.log(buffer);
   localStorage.setItem('meta2d', JSON.stringify(data));
+
+  const options = meta2d.getOptions();
+  localStorage.setItem('meta2dOptions', JSON.stringify(options));
 }
 
 export async function setupMeta2dEvents() {
   meta2d.on('scale', async () => {
-    scaleHasEffect.value = false;
     await saveMeta2dData();
-    metaState.scale = meta2d.store.data.scale * 100;
-    scaleHasEffect.value = true;
+    scalreNoEffectSetter(() => {
+      metaState.scale = meta2d.store.data.scale * 100;
+    })
   });
   meta2d.on('add', saveMeta2dData);
-  meta2d.on('opened', saveMeta2dData);
+  meta2d.on('opened', async () => {
+    await saveMeta2dData();
+
+    updateDataState();
+    updateOptionsState();
+  });
   meta2d.on('undo', saveMeta2dData);
   meta2d.on('redo', saveMeta2dData);
   meta2d.on('add', saveMeta2dData);
   meta2d.on('delete', saveMeta2dData);
   meta2d.on('rotatePens', saveMeta2dData);
   meta2d.on('translatePens', saveMeta2dData);
+
+  // meta2d.on('destroy', () => {
+  //   metaState.isSetup = false;
+  // });
+
+  meta2d.on('active', (pens?: Pen[]) => select(pens));
+  meta2d.on('inactive', () => select());
 }
 
 export async function setupMeta2dView(target: HTMLElement) {
@@ -106,14 +126,20 @@ export async function setupMeta2dView(target: HTMLElement) {
       data.locked = 0;
     }
     meta2d.open(data);
+
+    console.log('opened data..');
+
+    updateDataState();
   }
 
-  meta2d.on('active', (pens?: Pen[]) => {
-    select(pens);
-  });
-  meta2d.on('inactive', () => {
-    select();
-  });
+  let options: any = localStorage.getItem('meta2dOptions');
+  if (options) {
+    options = JSON.parse(options);
+
+    meta2d.setOptions(options);
+
+    updateOptionsState();
+  }
 }
 
 export async function destroyMeta2dView() {

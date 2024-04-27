@@ -6,10 +6,14 @@ import { getMeta2dData } from '@meta/actions';
 import { useRoute } from 'vue-router';
 import { workbenchesRoute } from '@pages/index/router/modules';
 
-import store from '@/store';
 import { useDataStateHook } from '@meta/useProps';
+import { useGlobalStatusStateHook } from '@/state';
+import store from '@/store';
+import { useMetaStateHook } from '@meta/useMetaState';
 
+const { metaState } = useMetaStateHook();
 const { dataState } = useDataStateHook();
+const { globalStatusState, widthLoadingLife } = useGlobalStatusStateHook();
 
 export const DOC_STORE_NAME = 'docStore';
 
@@ -21,20 +25,20 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
   /** 当文件名存在,那么就表示当前正在工作区绘图 */
   const isWork = computed(() => {
 
-    return route.path === workbenchesRoute.meta.fullpath;
+    return metaState.isSetup && route.path === workbenchesRoute.meta.fullpath;
   });
 
   const loadDoc = async () => {
     if (!filePath.value) {
-      createDoc();
-      return;
+      return createDoc();
     }
 
     const message = await docOpen(filePath.value);
 
     filePath.value = message.filePath;
     meta2d.clear();
-    meta2d.open(message.data);
+    meta2d.open(message.data.data);
+    meta2d.setOptions(message.data.options);
   }
 
   const importDoc = async () => {
@@ -43,14 +47,15 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
       if (needSave) await saveDoc();
     }
 
-    const data = await docImport(EXPORTS_EXTENSIONS.JSON);
+    const message = await docImport(EXPORTS_EXTENSIONS.JSON);
 
 
     filePath.value = '导入文档';
     filePath.value = void 0;
 
     meta2d.clear();
-    meta2d.open(data);
+    meta2d.open(message.data);
+    meta2d.setOptions(message.options);
   }
 
   const createDoc = async () => {
@@ -67,7 +72,10 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
   /** 另存为文档 */
   const saveAsDoc = async () => {
     if (window.meta2d && isWork.value) {
-      return docSaveAs(getMeta2dData());
+      return docSaveAs({
+        data: getMeta2dData(),
+        options: meta2d.getOptions()
+      });
     }
 
     return Promise.reject();
@@ -75,7 +83,11 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   const saveDoc = async () => {
     if (window.meta2d && isWork.value) {
-      if (filePath.value) return docSave(filePath.value, getMeta2dData());
+      if (filePath.value) return docSave(filePath.value, {
+        data: getMeta2dData(),
+        options: meta2d.getOptions()
+      });
+
       return saveAsDoc();
     }
 
@@ -88,17 +100,23 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
     filePath.value = message.filePath;
 
-    if (window.meta2d) {
-      meta2d.clear();
-      meta2d.open(message.data);
-    }
+    console.log(message);
+
+    meta2d.clear();
+    meta2d.open(message.data.data);
+    meta2d.setOptions(message.data.options);
   }
 
   return {
     filePath,
     isWork,
 
-    loadDoc, createDoc, saveDoc, openDoc, saveAsDoc, importDoc
+    loadDoc: widthLoadingLife(loadDoc),
+    createDoc: widthLoadingLife(createDoc),
+    saveDoc: widthLoadingLife(saveDoc),
+    openDoc: widthLoadingLife(openDoc),
+    saveAsDoc: widthLoadingLife(saveAsDoc),
+    importDoc: widthLoadingLife(importDoc)
   }
 }, {
   persist: {

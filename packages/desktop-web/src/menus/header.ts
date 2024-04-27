@@ -2,7 +2,7 @@ import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
 import { onRedo, onUndo, getMeta2dData } from '@/meta';
 import type { DropdownDataType } from '@components/DropdownMenu';
-import { hotKeys, docImport, docExport } from '@/actions';
+import { hotKeys, docImport, docExport, windowReload } from '@/actions';
 import { useDocStoreHook } from '@/store/modules/doc';
 import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
 import { useGenericStoreHook } from '@/store/modules';
@@ -33,6 +33,7 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
         {
           title: '空白文档',
           mark: 'FileAddOutlined',
+          disabled: computed(() => !docStore.isWork),
           onClick: () => docStore.createDoc(),
         },
         // {
@@ -53,13 +54,13 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
     {
       title: '保存',
       mark: 'SaveOutlined', shortcut: hotKeys.saveFile.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: () => docStore.saveDoc()
     },
     {
       title: '另存为',
       shortcut: hotKeys.saveFileTo.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: () => docStore.saveAsDoc()
     },
     true,
@@ -77,12 +78,15 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
     {
       title: '导出',
       mark: 'ExportOutlined',
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       children: [
         {
           title: 'JSON',
           mark: 'FileJpgOutlined',
-          onClick: () => docExport(EXPORTS_EXTENSIONS.JSON, getMeta2dData())
+          onClick: () => docExport(EXPORTS_EXTENSIONS.JSON, {
+            data: getMeta2dData(),
+            options: meta2d.getOptions()
+          })
         },
         true,
         {
@@ -110,7 +114,7 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
     {
       title: '打印',
       mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: () => {
 
       }
@@ -125,45 +129,45 @@ export const editMenu: Ref<AppNavigationMenu> = ref({
     {
       title: '撤销',
       mark: 'RollbackOutlined', shortcut: hotKeys.rollback.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.rollback.evt
     },
     {
       title: '恢复',
       mark: 'UndoOutlined', shortcut: hotKeys.undo.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.undo.evt
     },
     true,
     {
       title: '剪切',
       mark: 'ScissorOutlined', shortcut: hotKeys.scissor.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.scissor.evt
     },
     {
       title: '复制',
       mark: 'CopyOutlined', shortcut: hotKeys.copy.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.copy.evt
     },
     {
       title: '粘贴',
       mark: 'PauseOutlined', shortcut: hotKeys.snippets.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.snippets.evt
     },
     true,
     {
       title: '全选',
       mark: 'SelectOutlined', shortcut: hotKeys.allSelect.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.allSelect.evt
     },
     {
       title: '删除',
       mark: 'DeleteOutlined', shortcut: hotKeys.delete.key,
-      // disabled: computed(() => !docStore.isWork),
+      disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.delete.evt
     }
   ]
@@ -201,3 +205,21 @@ export const helpMenu = ref<AppNavigationMenu>({
     }
   ]
 })
+
+export const headerMenus = [
+  fileMenu, editMenu,
+
+  ref<AppNavigationMenu>({
+    title: '工具',
+    menuList: [
+      {
+        title: '重新加载',
+        mark: 'ReloadOutlined', shortcut: hotKeys.reload.key,
+
+        onClick: () => windowReload()
+      }
+    ]
+  }),
+
+  helpMenu
+]

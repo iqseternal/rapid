@@ -9,22 +9,12 @@
 import { ref, reactive } from 'vue';
 import { useSelections, SelectionMode } from '@/meta';
 import FileProps from './FileProps.vue';
-import PenProps from './PenProps.vue';
+import PenProps from './PenProps';
 
 const { selections } = useSelections();
 
 </script>
 
 <style lang="scss" scoped>
-@import '@scss/mixin.scss';
-@import '@scss/var.scss';
-
-.propertyBar {
-  width: 300px;
-  z-index: 99;
-  background-color: var(--s-main-frame-bg-normal-color);
-  border-radius: var(--s-block-border-radius);
-  padding: 8px;
-  @include beautifulBar;
-}
+@import './index.scss';
 </style>

@@ -1,28 +1,55 @@
-import { reactive, ref, watch } from 'vue';
+import {reactive, ref} from 'vue';
 import type { UnwrapNestedRefs } from 'vue';
 import type { Meta2d } from '@meta2d/core';
-import type { ChangeEventHandler, ChangeEvent } from 'ant-design-vue/es/_util/EventInterface';
+import type { ChangeEvent } from 'ant-design-vue/es/_util/EventInterface';
 import type { ObjAutoObtainComplete } from '@rapid/libs/types';
 import { refresh } from './actions';
-import { isDef, isNumber, isString } from '@suey/pkg-utils';
+import { isDef, isString } from '@suey/pkg-utils';
+import { useMetaStateHook } from './useMetaState';
 
 const makeState = <T extends object, V extends Partial<T>>(props: V): UnwrapNestedRefs<ObjAutoObtainComplete<V, Partial<T>>> => reactive<any>(props);
 
 export type DataProps = Meta2d['store']['data'];
 export const makeDataState = <T extends Partial<DataProps>>(props: T) => makeState<DataProps, T>(props);
 
+
+
 export type OptionsProps = Required<Parameters<Meta2d['setOptions']>>[0];
 export const makeOptionsState = <T extends OptionsProps>(props: T) => makeState<OptionsProps, T>(props);
 
+
+const { metaState, onReSetup } = useMetaStateHook();
+
+
 const dataState = makeDataState({
   name: '',
-  penBackground: void 0,
-  bkImage: void 0,
+
+  penBackground: '',
+  bkImage: '',
 
   gridRotate: 0,
 })
 
-const onChangeBkImage = (e: any) => {
+/***
+ * 更新 state 状态
+ */
+const updateDataState = () => {
+  if (!metaState.isSetup || !window.meta2d) return;
+
+  const data = meta2d.store.data;
+
+  dataState.name = data.name || '';
+
+  dataState.penBackground = data.penBackground || '';
+
+  dataState.bkImage = data.bkImage || '';
+
+  dataState.gridRotate = data.gridRotate || 0;
+}
+
+onReSetup(updateDataState);
+
+const onChangeBkImage = async (e: any) => {
   if (!e.target) return;
   if (!e.target.files) return;
 
@@ -30,7 +57,7 @@ const onChangeBkImage = (e: any) => {
   if (!file) return;
 
   const fileUrl = URL.createObjectURL(file);
-  meta2d.setBackgroundImage(fileUrl);
+  await meta2d.setBackgroundImage(fileUrl);
   dataState.bkImage = fileUrl;
   refresh();
 }
@@ -44,6 +71,12 @@ const onChangeGridRotate = () => {
   refresh();
 }
 
+const onChangePenBackground = () => {
+  meta2d.store.data.penBackground = dataState.penBackground;
+  meta2d.store.patchFlagsBackground = true;
+  refresh();
+}
+
 const onChangeData = <DataKey extends keyof typeof dataState>(dataKey?: DataKey | ChangeEvent) => {
   if (dataKey && isString(dataKey)) Object.assign(meta2d.store.data, { [dataKey]: dataState[dataKey] });
   else Object.assign(meta2d.store.data, dataState);
@@ -54,6 +87,7 @@ const onChangeData = <DataKey extends keyof typeof dataState>(dataKey?: DataKey 
 const optionsState = makeOptionsState({
   background: '',
 
+  // 网格
   grid: false,
   gridSize: 10,
   gridColor: '',
@@ -154,6 +188,18 @@ const optionsState = makeOptionsState({
   textFlip: true
 })
 
+/**
+ * 更新 options state 状态
+ */
+const updateOptionsState = () => {
+  if (!metaState.isSetup || !window.meta2d) return;
+
+  const options = meta2d.getOptions();
+  Object.assign(optionsState, options);
+}
+
+onReSetup(updateOptionsState);
+
 const onChangeOptions = <OptionsKey extends keyof typeof optionsState>(optionsKey?: OptionsKey | ChangeEvent) => {
   if (optionsKey && isString(optionsKey)) meta2d.setOptions({ [optionsKey]: optionsState[optionsKey] })
   else meta2d.setOptions(optionsState);
@@ -167,12 +213,17 @@ export const useDataState = () => ({
   dataState,
   onChangeData,
   onChangeBkImage,
-  onChangeGridRotate
+  onChangeGridRotate,
+  onChangePenBackground,
+
+  updateDataState
 });
 export const useDataStateHook = useDataState;
 
 export const useOptionsState = () => ({
   optionsState,
-  onChangeOptions
+  onChangeOptions,
+
+  updateOptionsState
 });
 export const useOptionsStateHook = useOptionsState;

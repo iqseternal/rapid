@@ -5,21 +5,21 @@ import { isString, isDecimal, isDef } from '@suey/pkg-utils';
  * @param str
  * @returns
  */
-export const validatorIsSpaceStr = (str: string) => isString(str) && str.trim() === '';
+export const validateIsSpaceStr = (str: string) => isString(str) && str.trim() === '';
 
 /**
  * 校验字符串是否有效，即非空字符串
  * @param str
  * @returns
  */
-export const validatorValidStr = (str: string) => isString(str) && !validatorIsSpaceStr(str);
+export const validateValidStr = (str: string) => isString(str) && !validateIsSpaceStr(str);
 
 /**
  * 校验用户真实姓名是否符合规范，是否在Unicode码中并且支持译名
  * @param str
  * @returns
  */
-export const validatorRealName = (str: string) => isString(str) && /^[\u4E00-\u9FA5]{2,10}(·[\u4E00-\u9FA5]{2,10}){0,2}$/.test(str);
+export const validateRealName = (str: string) => isString(str) && /^[\u4E00-\u9FA5]{2,10}(·[\u4E00-\u9FA5]{2,10}){0,2}$/.test(str);
 
 /**
  * 返回一个验证函数，验证改值是否在指定数字范围中
@@ -27,7 +27,7 @@ export const validatorRealName = (str: string) => isString(str) && /^[\u4E00-\u9
  * @param max
  * @returns
  */
-export const validatorNumberRange = (min: number, max: number) => (value: string | number) => {
+export const validateNumberRange = (min: number, max: number) => (value: string | number) => {
   const vn = +value;
   if (vn < min || vn > max) return false;
   return true;

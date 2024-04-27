@@ -1,5 +1,6 @@
 import type { Prop, Ref, UnwrapNestedRefs } from 'vue';
 import type { PenProps } from '@/meta';
+import type { JSX } from 'vue/jsx-runtime';
 
 import type { Pen } from '@meta2d/core';
 import { useSelections } from '@/meta';
@@ -46,10 +47,10 @@ export interface SelectProp<PropName extends keyof PenProps = keyof PenProps> ex
   attrs?: SelectProps;
 
   options: {
-    content: number | string | JSX.IntrinsicElements;
+    content: JSX.Element;
 
     attrs: Partial<ComponentsProps<typeof SelectOption>> & {
-      value: string | number;
+      value: Required<PenProps>[PropName];
     };
   }[]
 }
@@ -120,7 +121,7 @@ export function makePenProp<
 
 
 let groupKey = 0;
-export function makePenPropGroup<PenGroup extends PenPropGroup>(group: Omit<PenGroup, 'key'>): PenGroup {
+export function makePenPropGroup<PenGroup extends PenPropGroup>(group: Omit<PenGroup, 'key'>): PenPropGroup {
 
   const penGroup = group as PenGroup;
 

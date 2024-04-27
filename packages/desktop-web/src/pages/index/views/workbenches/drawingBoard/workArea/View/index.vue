@@ -23,9 +23,7 @@ const view = ref<HTMLDivElement>();
 const setupMeta2dLife = async () => {
   if (!view.value) return;
   if (metaState.isSetup) return;
-  setupMeta2dView(view.value).catch(() => {
-
-  });
+  await setupMeta2dView(view.value);
   await docStore.loadDoc();
 }
 

@@ -30,16 +30,22 @@
     </Header>
 
     <section class="composeMain">
-      <template v-if="genericStore.appearance.showLeftSideBar"><Sidebar class="sidebar" /></template>
-      <template v-else><div class="sidebarPlaceholder" /></template>
+      <template v-if="globalStatusState.isLoading">
+        <Loading1 />
+      </template>
+      <template v-else>
 
-      <main class="container full">
-        <RouterView v-slot="{ Component }">
-          <KeepAlive>
-            <component :is="Component" />
-          </KeepAlive>
-        </RouterView>
-      </main>
+        <template v-if="genericStore.appearance.showLeftSideBar"><Sidebar class="sidebar" /></template>
+        <template v-else><div class="sidebarPlaceholder" /></template>
+
+        <main class="container full">
+          <RouterView v-slot="{ Component }">
+            <KeepAlive>
+              <component :is="Component" />
+            </KeepAlive>
+          </RouterView>
+        </main>
+      </template>
     </section>
   </div>
 </template>
@@ -52,7 +58,7 @@ import { DropdownMenu, MenuDriver, SingleMenu, ComboBoxMenu, AutoDropdownMenu } 
 import { hotKeys, windowReload, windowDevtool, copyText, pasteText, windowResizeAble, openSettingPage, WindowPopup, windowResetCustomSize } from '@/actions';
 import { canCopyText } from '@rapid/libs/common';
 import { useMousetrap, useFadeIn, useEventListener, useResizeObserver, useStorageStack, useFadeOut } from '@/hooks';
-import { fileMenu, editMenu, appearanceMenu, helpMenu } from '@/menus';
+import { headerMenus } from '@/menus';
 import type { AppNavigationMenu } from '@/menus';
 import type { HeaderInstance, SloganInstance } from '@components/Header';
 import { Header, Indicator, Slogan, Search } from '@components/Header';
@@ -62,6 +68,8 @@ import { isDef } from '@suey/pkg-utils';
 import { useRouter } from 'vue-router';
 import { loginRoute } from '@pages/index/router/modules';
 import { StringFilters } from '@rapid/libs/filters';
+import { Loading1 } from '@components/Loading';
+import { useGlobalStatusState } from '@/state';
 
 import Sidebar from './sidebar/index.vue';
 import IconFont from '@components/IconFont';
@@ -69,6 +77,7 @@ import Widget from '@components/Widget';
 import Subfield from '@components/Subfield';
 
 const { dataState } = useDataState();
+const { globalStatusState } = useGlobalStatusState();
 
 const router = useRouter();
 
@@ -77,8 +86,8 @@ const genericStore = useGenericStore();
 const sloganInstance = ref<SloganInstance>();
 
 const { preStack: navMenus, nextStack: navMenusStack, pushStack, popStack } = useStorageStack({
-  preStack: [fileMenu, editMenu, helpMenu],
-  otherStack: [80, 110, 150, 160],
+  preStack: [...headerMenus],
+  otherStack: [80, 110, 150, 160, 170],
   nextStack: []
 });
 
@@ -94,6 +103,10 @@ const navMenusStackMenu = computed<DropdownDataType>(() => navMenusStack.value.m
 const logout = () => useFadeOut(() => {
   router.push(loginRoute.meta.fullpath);
 });
+
+onMounted(() => {
+  globalStatusState.isLoading = false;
+})
 
 useFadeIn();
 

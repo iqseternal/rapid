@@ -7,20 +7,26 @@ import { EXTENSIONS, EXPORTS_EXTENSIONS } from '@rapid/config/constants';
 import { AppFileStorageService } from '@/service/AppStorageService';
 
 import { RuntimeException } from '@/core';
-import type { Meta2dData } from '@/../../desktop-web/node_modules/@meta2d/core';
+import type { Meta2dData, Options } from '@/../../desktop-web/node_modules/@meta2d/core';
 
 import { Printer } from '@suey/printer';
 import { PrinterService } from '@/service/PrinterService';
 
-
 import * as path from 'path';
 import * as fs from 'fs';
 
+type DocData = {
+  data: Meta2dData;
+  options: Options;
+}
+
 type ExportFileTypeToData = {
-  [EXPORTS_EXTENSIONS.JSON]: Meta2dData;
+  [EXPORTS_EXTENSIONS.JSON]: DocData;
   [EXPORTS_EXTENSIONS.PNG]: string;
   [EXPORTS_EXTENSIONS.SVG]: string;
 }
+
+
 
 @IpcMain.IpcController()
 export class IpcDocHandler extends FrameworkIpcHandler {
@@ -31,7 +37,7 @@ export class IpcDocHandler extends FrameworkIpcHandler {
    * @returns
    */
   @IpcMain.Handler()
-  async save(_: WindowService, filePath: string, data: Meta2dData) {
+  async save(_: WindowService, filePath: string, data: DocData) {
     const ext = path.extname(filePath).substring(1);
 
 
@@ -40,6 +46,7 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       label: 'IpcDocHandler:save',
       level: 'warning'
     })
+
     return new AppFileStorageService(filePath).save(data);
   }
 
@@ -49,7 +56,7 @@ export class IpcDocHandler extends FrameworkIpcHandler {
    * @returns
    */
   @IpcMain.Handler()
-  async saveAs(windowService: WindowService, data: Meta2dData) {
+  async saveAs(windowService: WindowService, data: DocData) {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
       filters: [{ extensions: EXTENSIONS.DOCS.EXTENSIONS, name: EXTENSIONS.DOCS.NAME }]
     });
@@ -78,7 +85,7 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       level: 'warning'
     })
 
-    const data = (await new AppFileStorageService(filePath[0]).read()).toJson<Meta2dData>();
+    const data = (await new AppFileStorageService(filePath[0]).read()).toJson<DocData>();
 
     return {
       filename: filePath[0],
@@ -139,7 +146,7 @@ export class IpcDocHandler extends FrameworkIpcHandler {
         level: 'warning'
       })
 
-      return ConvertService.toJson<Meta2dData>(await FileService.readFile(filePath[0]));
+      return ConvertService.toJson<DocData>(await FileService.readFile(filePath[0]));
     }
 
     throw new RuntimeException(`在导入文件时传递了错误的扩展名 ${filetype}`, {

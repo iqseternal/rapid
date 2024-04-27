@@ -52,7 +52,7 @@ export async function useFadeOut(callback: FadeCallback, options?: FadeOptions) 
   isFaded.value = false;
 
   await windowShow({ show: false }).catch(windowRelaunch);
-  await setTimeout(async () => {
+  setTimeout(async () => {
     await callback();
     setTimeout(() => {
       if (isFaded.value === false) {

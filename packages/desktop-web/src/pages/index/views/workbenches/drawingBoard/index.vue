@@ -1,6 +1,6 @@
 <template>
-  <div class="h-full overflow user-select-none workbenches">
-    <Toolbar />
+  <div ref="workbenches" class="h-full overflow user-select-none workbenches">
+   <Toolbar />
 
     <div class="w-full flex-between overflow-hidden viewContainer">
       <Graphics v-resize-width="graphicsBindings" />
@@ -11,12 +11,15 @@
 </template>
 
 <script lang="tsx" setup>
-import { reactive, computed, h } from 'vue';
+import { reactive, computed, h, ref, onMounted } from 'vue';
 import { PropertyBar, Toolbar, View, Graphics } from './workArea';
 import { vResizeWidth } from '@rapid/libs/directives';
 
 import type { VResizeWidthBindings } from '@rapid/libs/directives';
-import { useSurvivalCycle } from '@/hooks';
+import { useSurvivalCycle, usePickColorsAttrs } from '@/hooks';
+
+const { setPopupContainer } = usePickColorsAttrs();
+
 
 const graphicsBindings: VResizeWidthBindings = reactive({
   minWidth: 190,
@@ -26,11 +29,18 @@ const graphicsBindings: VResizeWidthBindings = reactive({
 
 const propertyBindings: VResizeWidthBindings = reactive({
   width: 300,
+  minWidth: 150,
   direction: 'left',
   canExec: true
 });
 
 const viewWidth = computed(() => graphicsBindings.width + propertyBindings.width);
+const workbenches = ref<HTMLElement>();
+
+onMounted(() => {
+  if (!workbenches.value) return;
+  setPopupContainer(workbenches.value);
+})
 
 useSurvivalCycle({
   survival: () => {

@@ -1,13 +1,17 @@
+import type { WatchStopHandle, WatchCallback } from 'vue';
 import { reactive, ref, watch } from 'vue';
 import { Pen, PenType, LockState } from '@meta2d/core';
+import { useNoEffectHook } from '@hooks/useNoEffect';
 
+/** meta2d 的基本工作状态 */
 const metaState = reactive({
   isSetup: false,
 
   locked: false,
   preview: false,
 
-  scale: 100, // 放大倍数
+  /** 当前放大的倍数 */
+  scale: 100,
   minScale: 30,
   maxScale: 1000,
 
@@ -25,20 +29,42 @@ const metaState = reactive({
     toArrow: '', // 线型右箭头
   }
 });
-watch(() => metaState.isSetup, (isSetup) => {
+
+/** 当第一次建立的时候调用这个函数 */
+const onFirstSetup = (callback: WatchCallback<boolean, boolean>) => {
+  const stopHandle = watch<boolean>(() => metaState.isSetup, (...args) => {
+
+    callback(...args);
+    stopHandle();
+  });
+}
+
+/** 当 meta2d 被重新建立的时候, 做出一次回调 */
+const onReSetup = (callback: WatchCallback<boolean, boolean>) => watch<boolean>(() => metaState.isSetup, (...args) => {
+  const isSetup = args[0];
+
+  if (isSetup) callback(...args);
+});
+
+/** 当 meta2d 被重新建立的时候, 回复放大的倍数 */
+onReSetup((isSetup) => {
   if (isSetup) meta2d.scale(metaState.scale / 100);
 })
 
-export const scaleHasEffect = ref(true);
-watch(() => metaState.scale, (nv) => {
-  if (!scaleHasEffect.value) return;
+/** 防止循环副作用, 使用不附带副作用的 set */
+const { watch: scaleWatch, noEffectSetter: scalreNoEffectSetter } = useNoEffectHook(() => metaState.scale);
+/** 当 metaState.scale 的值发生变化的时候, 自动同步 meta2d */
+scaleWatch((nv) => {
   if (!metaState.isSetup) return;
   meta2d.scale(nv / 100);
 })
 
+export { scalreNoEffectSetter };
 
+/** 刷新 meta2d 图纸 */
 const metaRefresh = () => meta2d.render();
 
+/** 为 meta2d 进行锁定 */
 const useLock = () => {
   const status = !metaState.locked;
 
@@ -48,12 +74,14 @@ const useLock = () => {
   metaState.locked = status;
 }
 
+/** 为 meta2d 进行预览 */
 const usePreview = () => {
   const status = !metaState.preview;
 
   metaState.preview = status;
 }
 
+/** 为 meta2d 使用鸟瞰图 */
 const useMap = () => {
   if (window.meta2d.map?.isShow) {
     window.meta2d.hideMap()
@@ -64,6 +92,7 @@ const useMap = () => {
   metaState.useMap = window.meta2d.map.isShow;
 }
 
+/** 为 图纸使用放大镜功能 */
 const useMagnifier = () => {
   if (meta2d.canvas.magnifierCanvas.magnifier) { // 判断放大镜状态
     meta2d.hideMagnifier()  // 关闭放大镜
@@ -73,16 +102,10 @@ const useMagnifier = () => {
   metaState.useMagnifier = meta2d.canvas.magnifierCanvas.magnifier;
 }
 
-
+/** 使用钢笔工具 */
 const usePen = () => {
   if (!metaState.isSetup) return;
-
-
-
-
   metaState.isPen = !metaState.isPen;
-
-  console.log(metaState.isPen);
 
   if (meta2d.canvas.drawingLineName) {
     meta2d.drawLine();
@@ -92,6 +115,7 @@ const usePen = () => {
   }
 }
 
+/** 使用铅笔工具 */
 const usePencil = () => {
   if (!metaState.isSetup) return;
 
@@ -173,13 +197,18 @@ const lineFn = {
   }
 }
 
-
+/**
+ * 使用当前 meta2d 的基本工作状态
+ * @returns
+ */
 export function useMetaState() {
 
   return {
     metaState,
     lineFn,
 
+    onFirstSetup,
+    onReSetup,
 
     usePen, usePencil,
     useMagnifier,

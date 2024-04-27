@@ -1,9 +1,11 @@
 import { useSelectionsHook, usePenPropsHook, refresh } from '@/meta';
 import { makePenProp, ShowTypeMode } from './penProps.declare';
 import { usePickColorsAttrsHook } from '@hooks/usePickColors';
+import type { ShowCountProps } from 'ant-design-vue/es/input/inputProps';
+import { NumberFilters } from '@rapid/libs/filters';
 
 const { selections } = useSelectionsHook();
-const { penPropsState, setCurrentPenProps } = usePenPropsHook();
+const { setCurrentPenProps } = usePenPropsHook();
 
 const { pickColorsAttrs } = usePickColorsAttrsHook();
 
@@ -16,7 +18,6 @@ export const x = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     min: 0,
-    max: 100,
     type: 'number',
     placeholder: 'px'
   },
@@ -153,6 +154,7 @@ export const rotate = makePenProp({
   label: '旋转',
   showType: ShowTypeMode.InputNumber,
   attrs: {
+    type: 'number',
     placeholder: '角度'
   },
   onChange: value => {
@@ -163,13 +165,14 @@ export const rotate = makePenProp({
 })
 
 /**
- * 圆角
+ * 内 上边距
  */
 export const paddingTop = makePenProp({
   prop: 'paddingTop',
-  label: '圆角',
+  label: '内 上边距',
   showType: ShowTypeMode.InputNumber,
   attrs: {
+    type: 'number',
     placeholder: 'px'
   },
   onChange: value => {
@@ -187,6 +190,7 @@ export const paddingRight = makePenProp({
   label: '内 右边距',
   showType: ShowTypeMode.InputNumber,
   attrs: {
+    type: 'number',
     placeholder: 'px'
   },
   onChange: value => {
@@ -204,6 +208,7 @@ export const paddingBottom = makePenProp({
   label: '内 下边距',
   showType: ShowTypeMode.InputNumber,
   attrs: {
+    type: 'number',
     placeholder: 'px'
   },
   onChange: value => {
@@ -221,6 +226,7 @@ export const paddingLeft = makePenProp({
   label: '内 左边距',
   showType: ShowTypeMode.InputNumber,
   attrs: {
+    type: 'number',
     placeholder: 'px'
   },
   onChange: value => {
@@ -233,12 +239,13 @@ export const paddingLeft = makePenProp({
 /**
  * 进度
  */
-export const process = makePenProp({
+export const progress = makePenProp({
   prop: 'progress',
   label: '进度',
   showType: ShowTypeMode.InputNumber,
   attrs: {
     placeholder: 'px',
+    type: 'number',
     min: 0,
     max: 1,
     step: 0.1
@@ -306,12 +313,19 @@ export const lineDash = makePenProp({
     setCurrentPenProps({
       lineDash: value
     })
+
+    meta2d.setValue({
+      id: selections.pen?.id,
+      lineDash: value
+    })
+
+    refresh();
   },
 
   options: [
     {
       attrs: {
-        value: 0
+        value: [0, 0]
       },
       content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
         <g fill="none" stroke="black" stroke-width="1">
@@ -321,7 +335,7 @@ export const lineDash = makePenProp({
     },
     {
       attrs: {
-        value: 1
+        value: [5, 5]
       },
       content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
         <g fill="none" stroke="black" stroke-width="1">
@@ -331,7 +345,7 @@ export const lineDash = makePenProp({
     },
     {
       attrs: {
-        value: 2
+        value: [10, 10, 2, 10]
       },
       content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
         <g fill="none" stroke="black" stroke-width="1">
@@ -357,7 +371,7 @@ export const lineJoin = makePenProp({
   options: [
     {
       attrs: {
-        value: 'mitter'
+        value: 'miter'
       },
       content: <>默认</>
     },
@@ -770,7 +784,7 @@ export const textBaseline = makePenProp({
     },
     {
       attrs: {
-        value:'center'
+        value: 'middle'
       },
       content: <>居中</>
     },

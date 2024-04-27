@@ -1,7 +1,7 @@
 import { ShowTypeMode, makePenProp, makePenPropGroup, makePenPropTab } from './penProps.declare';
 import type { PenPropTab, InputNumberProp, InputStringProp, SelectProp, SwitchProp } from './penProps.declare';
 import {
-  x, y, width, height, ratio, borderRadius, rotate, paddingTop, paddingBottom, paddingLeft, paddingRight, process, verticalProgress, flipX, flipY,
+  x, y, width, height, ratio, borderRadius, rotate, paddingTop, paddingBottom, paddingLeft, paddingRight, progress, verticalProgress, flipX, flipY,
 
   lineDash, lineJoin, lineCap, color, hoverColor, activeColor, lineWidth, background, hoverBackground, activeBackground, globalAlpha, anchorColor, shadowColor, shadowBlur, shadowOffsetX, shadowOffsetY, textHasShadow,
 
@@ -17,7 +17,7 @@ export const positionAndSizeGroup = makePenPropGroup({
     width, height, ratio, borderRadius,
     rotate,
     paddingTop, paddingBottom, paddingLeft, paddingRight,
-    process, verticalProgress,
+    progress, verticalProgress,
     flipX, flipY
   ]
 });
@@ -60,6 +60,7 @@ export const disabledGroup = makePenPropGroup({
   ]
 })
 
+/** 外观 */
 export const appearanceTab: PenPropTab = makePenPropTab({
   tab: '外观',
   list: [
@@ -70,3 +71,9 @@ export const appearanceTab: PenPropTab = makePenPropTab({
   ]
 })
 
+/**
+ * 对 Pen 的属性进行展示 Tab
+ */
+export const penPropsTabs = [
+  appearanceTab
+];

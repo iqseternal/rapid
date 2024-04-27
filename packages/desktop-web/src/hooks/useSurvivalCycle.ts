@@ -4,8 +4,8 @@ import { onMounted, onBeforeUnmount, onActivated, onDeactivated, ref } from 'vue
 export interface SurvivalCycleOptions {
   allowMoreTimes?: boolean;
 
-  survival: () => void | Promise<void>;
-  extinction: () => void | Promise<void>;
+  survival?: () => void | Promise<void>;
+  extinction?: () => void | Promise<void>;
 }
 
 /**

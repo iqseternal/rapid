@@ -12,6 +12,7 @@
 <script lang="ts" setup>
 import { nextTick, ref, watch, onMounted } from 'vue';
 import { CONFIG } from '@rapid/config/constants';
+import { useResizeObserver, useDebounce } from '@/hooks';
 
 const props = defineProps({
   tag: { type: String, default: 'span' },
@@ -19,13 +20,17 @@ const props = defineProps({
 });
 
 const show = ref(false);
-const ellipsis = ref<HTMLElement | null>(null);
+const ellipsis = ref<HTMLElement>();
 
 const resizeWidth = () => {
   const fatherWidth = ellipsis.value?.offsetWidth ?? 0;
   const childWidth = (ellipsis.value?.firstChild as HTMLElement).offsetWidth;
   show.value = fatherWidth < childWidth;
 }
+
+useResizeObserver(ellipsis, useDebounce(() => {
+  resizeWidth();
+}, 20))
 
 onMounted(()=>{
   resizeWidth();

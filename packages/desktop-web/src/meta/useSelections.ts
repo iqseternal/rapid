@@ -19,6 +19,10 @@ const selections: UnwrapNestedRefs<{
   pens: []
 });
 
+/**
+ * 当前 meta2d 的元素选中的情况
+ * @returns
+ */
 export const useSelections = (): { selections: UnwrapNestedRefs<{ mode: SelectionMode, pen?: Pen, pens: Pen[] }>;select: (pens?: Pen[]) => void; } => {
   const select = (pens?: Pen[]): void => {
     if (!pens || pens.length === 0) {
