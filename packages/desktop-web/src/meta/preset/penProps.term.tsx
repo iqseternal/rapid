@@ -3,6 +3,7 @@ import { makePenProp, ShowTypeMode } from './penProps.declare';
 import { usePickColorsAttrsHook } from '@hooks/usePickColors';
 import type { ShowCountProps } from 'ant-design-vue/es/input/inputProps';
 import { NumberFilters } from '@rapid/libs/filters';
+import { _lineDashMap } from './penProps.preset';
 
 const { selections } = useSelectionsHook();
 const { setCurrentPenProps } = usePenPropsHook();
@@ -17,9 +18,7 @@ export const x = makePenProp({
   label: '横向坐标',
   showType: ShowTypeMode.InputNumber,
   attrs: {
-    min: 0,
-    type: 'number',
-    placeholder: 'px'
+    type: 'number'
   },
   onChange: value => {
     meta2d.canvas.calcActiveRect();
@@ -54,6 +53,7 @@ export const width = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     min: 0,
+    step: 1,
     type: 'number',
     placeholder: 'px'
   },
@@ -88,6 +88,7 @@ export const height = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     min: 0,
+    step: 1,
     type: 'number',
     placeholder: 'px'
   },
@@ -139,7 +140,6 @@ export const borderRadius = makePenProp({
     placeholder: '<1为比例'
   },
   onChange: value => {
-
     setCurrentPenProps({
       borderRadius: value
     })
@@ -173,6 +173,7 @@ export const paddingTop = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     type: 'number',
+    step: 0.1,
     placeholder: 'px'
   },
   onChange: value => {
@@ -191,6 +192,7 @@ export const paddingRight = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     type: 'number',
+    step: 0.1,
     placeholder: 'px'
   },
   onChange: value => {
@@ -209,6 +211,7 @@ export const paddingBottom = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     type: 'number',
+    step: 0.1,
     placeholder: 'px'
   },
   onChange: value => {
@@ -227,6 +230,7 @@ export const paddingLeft = makePenProp({
   showType: ShowTypeMode.InputNumber,
   attrs: {
     type: 'number',
+    step: 0.1,
     placeholder: 'px'
   },
   onChange: value => {
@@ -299,6 +303,10 @@ export const flipY = makePenProp({
   }
 })
 
+
+
+const lineDashNames = Object.keys(_lineDashMap);
+
 /**
  * 线形
  */
@@ -307,27 +315,25 @@ export const lineDash = makePenProp({
   label: '线形',
   showType: ShowTypeMode.Select,
   attrs: {
-
+    optionLabelProp: 'children'
   },
   onChange: value => {
-    setCurrentPenProps({
-      lineDash: value
-    })
+    if (!selections.pen) return;
+    const lineDash = _lineDashMap[value as unknown as keyof typeof _lineDashMap];
+    selections.pen.lineDash = lineDash;
 
-    meta2d.setValue({
-      id: selections.pen?.id,
-      lineDash: value
-    })
-
-    refresh();
+    meta2d.setValue({ id: selections.pen.id, lineDash }, { render: true });
   },
-
   options: [
     {
       attrs: {
-        value: [0, 0]
+        value: lineDashNames[0] as unknown as [],
+        style: {
+          width: '80px',
+          height: '20px'
+        }
       },
-      content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
+      content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
         <g fill="none" stroke="black" stroke-width="1">
           <path d="M0 9 l85 0" />
         </g>
@@ -335,9 +341,14 @@ export const lineDash = makePenProp({
     },
     {
       attrs: {
-        value: [5, 5]
+        value: lineDashNames[1] as unknown as [],
+
+        style: {
+          width: '80px',
+          height: '20px'
+        }
       },
-      content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
+      content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
         <g fill="none" stroke="black" stroke-width="1">
           <path stroke-dasharray="5 5" d="M0 9 l85 0" />
         </g>
@@ -345,9 +356,13 @@ export const lineDash = makePenProp({
     },
     {
       attrs: {
-        value: [10, 10, 2, 10]
+        value: lineDashNames[2] as unknown as [],
+        style: {
+          width: '80px',
+          height: '20px'
+        }
       },
-      content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="height: 20px;width: 80px;">
+      content: <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
         <g fill="none" stroke="black" stroke-width="1">
           <path stroke-dasharray="10 10 2 10" d="M0 9 l85 0" />
         </g>
@@ -641,6 +656,9 @@ export const fontFamily = makePenProp({
   prop: 'fontFamily',
   label: '字体名',
   showType: ShowTypeMode.Select,
+  attrs: {
+    defaultValue: '宋体'
+  },
   onChange: value => {
     setCurrentPenProps({
       fontFamily: value
@@ -924,6 +942,9 @@ export const text = makePenProp({
   prop: 'text',
   label: '文字内容',
   showType: ShowTypeMode.InputString,
+  attrs: {
+    placeholder: '< 空 >'
+  },
   onChange: value => {
     setCurrentPenProps({
       text: value

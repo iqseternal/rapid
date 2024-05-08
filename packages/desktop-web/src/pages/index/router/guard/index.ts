@@ -1,18 +1,16 @@
 import type { Router } from 'vue-router';
-import { loginRoute, spaceRoutes } from '../modules';
+import { loginRoute, spaceRoutes, notFoundRoute } from '../modules';
 import { useUserStore } from '@/store/modules/user';
 import { isBooleanObject } from 'util/types';
-
 import { useDisableRouterBackHook } from '@/hooks';
 
 export default function asyncGuard(router: Router): Router {
   useDisableRouterBackHook(router);
 
   router.beforeEach((to, from, next) => {
-    if (!window.electron) window.location.href = 'https://www.oupro.cn';
-    if (!window.electron.ipcRenderer) window.location.href = 'https://www.oupro.cn';
-
-
+    if (to.path !== notFoundRoute.path) {
+      if (!window.electron || !window.electron.ipcRenderer) return next({ name: notFoundRoute.name });
+    }
 
 
     return next();
@@ -20,7 +18,6 @@ export default function asyncGuard(router: Router): Router {
 
   /** 做页面恢复 */
   router.afterEach((to, from) => {
-
 
   });
 

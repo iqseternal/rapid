@@ -31,6 +31,7 @@
     "@meta2d/sequence-diagram": "^1.0.0",
     "@meta2d/svg": "^1.0.4",
     "@rapid/libs": "workspace:^",
+    "@rapid/validates": "workspace:^",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^4.1.2",
     "dayjs": "^1.11.10",

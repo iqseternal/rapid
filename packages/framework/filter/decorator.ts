@@ -17,8 +17,7 @@ export const Catch = (Exception: DescendantClass<Exception>): ClassDecorator => 
 }
 
 
-
-
+export const getCatchExceptions = (target: object): DescendantClass<Exception>[] => Reflect.getMetadata(FILTER_META_CATCH, target) ?? [];
 
 
 

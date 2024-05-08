@@ -20,6 +20,7 @@ const metaState = reactive({
 
   isPen: false,
   isPencil: false,
+  isLine: false,
 
   line: {
     /** 当前是否选择绘制线条 */
@@ -53,6 +54,7 @@ onReSetup((isSetup) => {
 
 /** 防止循环副作用, 使用不附带副作用的 set */
 const { watch: scaleWatch, noEffectSetter: scalreNoEffectSetter } = useNoEffectHook(() => metaState.scale);
+
 /** 当 metaState.scale 的值发生变化的时候, 自动同步 meta2d */
 scaleWatch((nv) => {
   if (!metaState.isSetup) return;
@@ -77,18 +79,13 @@ const useLock = () => {
 /** 为 meta2d 进行预览 */
 const usePreview = () => {
   const status = !metaState.preview;
-
   metaState.preview = status;
 }
 
 /** 为 meta2d 使用鸟瞰图 */
 const useMap = () => {
-  if (window.meta2d.map?.isShow) {
-    window.meta2d.hideMap()
-  } else {
-    window.meta2d.showMap()
-  }
-
+  if (window.meta2d.map?.isShow) window.meta2d.hideMap();
+  else window.meta2d.showMap();
   metaState.useMap = window.meta2d.map.isShow;
 }
 
@@ -131,6 +128,8 @@ const usePencil = () => {
 const lineFn = {
   /** 绘制线条 */
   drawLine: () => {
+    metaState.isLine = !metaState.isLine;
+
     if (metaState.line.isDrawLine) {
       metaState.line.isDrawLine = false;
       meta2d.finishDrawLine();

@@ -64,17 +64,17 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
       onClick: () => docStore.saveAsDoc()
     },
     true,
-    // {
-    //   title: '导入',
-    //   mark: 'ImportOutlined',
-    //   children: [
-    //     {
-    //       title: 'JSON',
-    //       mark: 'FileJpgOutlined',
-    //       onClick: () => docStore.importDoc()
-    //     }
-    //   ]
-    // },
+    {
+      title: '导入',
+      mark: 'ImportOutlined',
+      children: [
+        {
+          title: 'JSON',
+          mark: 'FileJpgOutlined',
+          onClick: () => docStore.importDoc()
+        }
+      ]
+    },
     {
       title: '导出',
       mark: 'ExportOutlined',
@@ -110,15 +110,15 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
     //     }
     //   ]
     // },
-    true,
-    {
-      title: '打印',
-      mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key,
-      disabled: computed(() => !docStore.isWork),
-      onClick: () => {
+    // true,
+    // {
+    //   title: '打印',
+    //   mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key,
+    //   disabled: computed(() => !docStore.isWork),
+    //   onClick: () => {
 
-      }
-    }
+    //   }
+    // }
   ]
 })
 
@@ -221,5 +221,5 @@ export const headerMenus = [
     ]
   }),
 
-  helpMenu
+  // helpMenu
 ]

@@ -4,6 +4,7 @@ import type { TableColumnType as AntdTableColumnType } from 'ant-design-vue';
 import type { EvtCallback } from '@components/Modal/index.d';
 import type { Meta2d } from '@meta2d/core';
 import type { ExposeApi } from 'node_modules/@rapid/desktop-node/preload';
+import type { ObjKeyToArr, CustomColumn } from '@rapid/libs/types';
 
 declare global {
   namespace JSX {
@@ -42,10 +43,14 @@ declare global {
     export type Columns<T> = Column<T>[];
 
     export type BodyCell<T> = {
-      column: Column<T>;
+      column: TableType.Column<T>;
+
       record: T;
+
       text: any;
+
       index: number;
+
       value: any;
     };
   };

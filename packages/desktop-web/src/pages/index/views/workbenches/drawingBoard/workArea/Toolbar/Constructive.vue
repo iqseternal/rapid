@@ -19,7 +19,6 @@ import { useRouter } from 'vue-router';
 import { Pen, PenType, deepClone } from '@meta2d/core';
 import { message } from 'ant-design-vue';
 import { DropdownMenu, MenuDriver, ComboBoxMenu, SingleMenu } from '@components/DropdownMenu';
-import { lineTypes, fromArrows, toArrows } from '../../preset';
 import { onUndo, onRedo, onAddShape, onCopy, onDelete, onPaste, onScaleDefault, onScaleWindow } from '@/meta';
 import Widget from '@components/Widget';
 import IconFont from '@components/IconFont';

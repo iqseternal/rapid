@@ -25,7 +25,8 @@ export const positionAndSizeGroup = makePenPropGroup({
 export const styleGroup = makePenPropGroup({
   header: '样式',
   list: [
-    lineDash, lineJoin, lineCap,
+    lineDash,
+    // lineJoin, lineCap,
     color, hoverColor, activeColor,
     lineWidth,
     background, hoverBackground, activeBackground,
@@ -40,6 +41,7 @@ export const styleGroup = makePenPropGroup({
 export const textGroup = makePenPropGroup({
   header: '文字',
   list: [
+    text,
     fontFamily, fontSize,
 
     textColor, hoverTextColor, activeTextColor, textBackground,
@@ -48,8 +50,7 @@ export const textGroup = makePenPropGroup({
     whiteSpace,
     textWidth, textHeight,
     ellipsis,
-    hiddenText,
-    text
+    hiddenText
   ]
 })
 

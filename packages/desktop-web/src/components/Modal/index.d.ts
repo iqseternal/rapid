@@ -1,4 +1,2 @@
 
-// export type BaseCb = () => void;
-
-export type EvtCallback = (next: BaseCb) => void | Promise<void>;
+export type EvtCallback = (next: () => void | Promise<void>) => void | Promise<void>;

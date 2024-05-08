@@ -17,5 +17,5 @@ declare interface ShortcutKey {
 
   description?: string;
 
-  evt?: BaseCb;
+  evt?: () => void;
 }

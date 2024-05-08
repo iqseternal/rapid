@@ -9,6 +9,8 @@
               <template v-for="(prop, index) in item.list" :key="index">
                 <AFormItem :name="prop.prop" :label="prop.label">
                   <template v-if="prop.showType === ShowTypeMode.InputNumber">
+                    <!-- <AInputNumber v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" style="width: 100%;" @change="() => prop.onChange(penPropsState[prop.prop])" /> -->
+
                     <AInput v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
                   </template>
 
@@ -26,7 +28,7 @@
 
 
                   <template v-else-if="prop.showType === ShowTypeMode.Select">
-                    <ASelect v-model:value="penPropsState[prop.prop]">
+                    <ASelect v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="value => prop.onChange(value)">
                       <template v-for="(option, optionIndex) in prop.options" :key="optionIndex">
                         <ASelectOption v-bind="option.attrs">
                           <RenderJsx :jsx="option.content" />
@@ -42,14 +44,14 @@
       </ACollapse>
     </ATabPane>
 
-    <ATabPane key="动效" tab="动效">
+    <!-- <ATabPane key="动效" tab="动效">
       <AnimateProps />
-    </ATabPane>
+    </ATabPane> -->
   </ATabs>
 </template>
 
 <script lang="tsx" setup>
-import {ref, onMounted, onUnmounted, watch, VNode} from 'vue';
+import { ref, onMounted, onUnmounted, watch, VNode, onBeforeMount } from 'vue';
 import { useSelections, useDataState, useMetaState, useOptionsState, usePenProps } from '@/meta';
 import { isUndefined } from '@suey/pkg-utils';
 import { SelectionMode } from '@meta/useSelections';
@@ -86,19 +88,36 @@ const getPen = () => {
   rect.value = meta2d.getPenRect(pen.value);
 }
 
+onMounted(() => {
+  if (!metaState.isSetup || !window.meta2d) return;
+  meta2d.on('active', updatePenPropState);
+})
+
+onBeforeMount(() => {
+  if (!metaState.isSetup || !window.meta2d) return;
+  meta2d.off('active', updatePenPropState);
+})
 
 useSurvivalCycle({
   survival: () => {
-    meta2d.on('valueUpdate', (e) => {
+    updatePenPropState();
 
 
-      console.log(e);
-    })
   },
   extinction: () => {
 
   }
 })
+
+
+const linedashChange = (prop) => {
+
+
+  console.log(penPropsState);
+
+
+  return prop.onChange(penPropsState[prop.prop])
+}
 
 
 onMounted(getPen);

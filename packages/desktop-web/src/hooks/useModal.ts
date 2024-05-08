@@ -2,6 +2,7 @@
 import type { UnwrapNestedRefs, Ref, ComponentPublicInstance } from 'vue';
 import { reactive, ref, toRefs, computed, getCurrentInstance, watch, ToRefs, toValue } from 'vue';
 import type { ModalEmits, ModalProps } from '@components/Modal';
+import { isBoolean } from '@suey/pkg-utils';
 
 const defaultModalProps = {
   visible: false,
@@ -108,6 +109,8 @@ export function useModalEvt<R>(evts: Partial<ModalEvt<Partial<R>>>) {
   })) as ModalAllAttrs<R>;
 
   watch(() => attrs.value.visible, nv => {
+    if (!isBoolean(nv)) return;
+
     if (nv) evts.init && evts.init(attrs.value);
     else evts.reset && evts.reset(attrs.value);
   })

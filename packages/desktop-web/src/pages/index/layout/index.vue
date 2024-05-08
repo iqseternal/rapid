@@ -18,9 +18,9 @@
             </Subfield>
           </template>
           <template #right>
-            <Widget title="历史记录">
+            <!-- <Widget title="历史记录">
               <IconFont type="HistoryOutlined" />
-            </Widget>
+            </Widget> -->
           </template>
         </Slogan>
       </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="propertyBar h-full overflow-x-hidden">
-    <FileProps v-if="selections.mode === SelectionMode.File" />
-    <PenProps v-else-if="selections.mode === SelectionMode.Pen" />
+    <FileProps v-show="selections.mode === SelectionMode.File" />
+    <PenProps v-show="selections.mode === SelectionMode.Pen || selections.mode === SelectionMode.Rect" />
   </div>
 </template>
 

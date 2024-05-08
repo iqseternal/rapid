@@ -1,8 +1,10 @@
 import type { OpenDevToolsOptions } from 'electron';
 import {
   IpcMain,
-  FrameworkIpcHandler,
-  NoteInfo
+  FrameworkIpcHandler, FrameworkIpcHandlerServer,
+  NoteInfo,
+  setupIpcMainHandler,
+  IPC_EMITTER_TYPE
 } from '@rapid/framework';
 import { IS_DEV } from '@rapid/config/constants';
 import { WindowService } from '@/service/WindowService';

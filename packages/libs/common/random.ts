@@ -25,6 +25,8 @@ export type HexColorStr = `#${string}`;
  * @returns
  */
 export const randomHexColor = (): HexColorStr => {
+  // return `#${~~(Math.random() * 0xFFFFFF).toString(16)}`;
+
   const charactors = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
   return new Array(6).fill(0).reduce((color) => color + charactors[randomRegionForInt(0, 16)], '#') as HexColorStr;
 }

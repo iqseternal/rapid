@@ -7,18 +7,18 @@ import { usePagination } from './usePaginationAttrs';
 import { useModalAttrs } from './useModal';
 
 export type InitTableFn<R> = (
-  next: BaseCb,
+  next: () => Promise<void>,
   refent: {
     params: ReturnType<typeof usePagination>['paginParams'],
     pagination: ReturnType<typeof usePagination>,
     modal: ReturnType<typeof useModalAttrs<R>>,
-    tableAttrs: UnwrapNestedRefs<Partial<TableProps<R>>>
+    tableAttrs: Partial<TableProps<R>>
   }
 ) => void | R[] | Promise<void> | Promise<R[]>;
 
 export function useTableAttrs<
-  R,
-  T = Partial<TableProps<R>>,
+  R extends object,
+  T extends Partial<TableProps<R>> = Partial<TableProps<R>>,
   FN extends InitTableFn<R> = InitTableFn<R>
 >(
   props: T,
@@ -38,11 +38,16 @@ export function useTableAttrs<
     pagination: pagination.paginAttrs,
     loading: false,
     ...props
-  });
+  }) as unknown as (
+    typeof props & {
+      pagination: typeof pagination.paginAttrs;
+      loading: boolean;
+    }
+  );
 
   async function loadData() {
     tableAttrs.loading = true;
-    const next = () => { tableAttrs.loading = false; }
+    const next = async () => { tableAttrs.loading = false; }
     const res = await loadDataFn(next, {
       params: pagination.paginParams,
       pagination,

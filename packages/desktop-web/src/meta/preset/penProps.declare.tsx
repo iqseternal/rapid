@@ -46,7 +46,7 @@ export interface SelectProp<PropName extends keyof PenProps = keyof PenProps> ex
 
   attrs?: SelectProps;
 
-  options: {
+  options?: {
     content: JSX.Element;
 
     attrs: Partial<ComponentsProps<typeof SelectOption>> & {

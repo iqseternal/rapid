@@ -8,7 +8,12 @@ import { Space } from 'antd';
 import { ScrollParallax } from 'react-just-parallax';
 import type { CSSObject } from 'styled-components';
 import { CONFIG } from '@rapid/config/constants';
-import { ParallaxContainer } from './components/Parallax';
+import { useState, useContext, useRef, useEffect } from 'react';
+import { autoGetScrollContainer } from '@libs/dom';
+import { useEventListener, useReactive, useDebounceHook } from '@/hooks';
+import { combinationCName } from '@libs/common';
+import type { GradualImgProps } from '@components/GradualImg';
+
 import styles from './index.module.scss';
 import IconFont from '@components/IconFont';
 import GradualImg from '@components/GradualImg';
@@ -25,8 +30,48 @@ const BlendedTextField: FC<BaseProps> = (props) => {
   </Subfield>
 }
 
-export default function Home() {
+interface ParallaxContainerProps extends BaseProps {
+  bgSrc?: string;
 
+  isFirst?: boolean;
+}
+
+function ParallaxContainer(props: ParallaxContainerProps) {
+  // 写js的原因是因为内容默认放到了上面，为了不影响后续的元素，所以最上面的元素需要写一个margintop，并且要根据传递的内容来确定大小
+
+  const state = useReactive({
+    firstMarginTop: 0
+  });
+  const contentContainer = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!props.isFirst) return;
+    if (!isDef(contentContainer.current)) return;
+    state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
+  }, []);
+
+  useEventListener(window, 'resize', useDebounceHook(() => {
+    if (!props.isFirst) return;
+    if (!isDef(contentContainer.current)) return;
+    state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
+  }));
+
+
+  return <div className={combinationCName(styles.parallaxContainer, props.className)} style={props.isFirst ? { marginTop: state.firstMarginTop + 'px' } : {}}>
+    <div
+      style={{ backgroundImage: `url('${props.bgSrc}')` }}
+      className={combinationCName(styles.parallaxBackground)}
+    />
+
+    <div ref={contentContainer} className={combinationCName(styles.parallaxContentContainer)}>
+
+      <div className={combinationCName(styles.parallaxContent)}>{props.children}</div>
+    </div>
+  </div>;
+}
+
+
+export default function Home() {
 
   return <div className={styles.home}>
     <Prepose

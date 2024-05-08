@@ -99,9 +99,6 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
     const message = await docOpen();
 
     filePath.value = message.filePath;
-
-    console.log(message);
-
     meta2d.clear();
     meta2d.open(message.data.data);
     meta2d.setOptions(message.data.options);

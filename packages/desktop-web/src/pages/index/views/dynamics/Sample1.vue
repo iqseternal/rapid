@@ -9,74 +9,51 @@
       </div>
     </Subfield>
 
-    <ATable
-      :dataSource="dataList"
-      :columns="columns"
-      :pagination="pagination"
-    >
-      <template #bodyCell="{ column }">
+    <ATable v-bind="tableAttrs" :dataSource="dataList" :columns="columns">
+      <template #bodyCell="{ record, column }">
+
         <template v-if="column.dataIndex === 'operator'">
-          <AButton @click="handleEdit">编辑</AButton>
+          <AButton @click="handleEdit(record as Response)">编辑</AButton>
         </template>
+
       </template>
     </ATable>
-  </ACard>
 
-  <NewLi :visiable="visiable" @ok="handleOk" @cancel="handleCancel" />
+    <NewLi v-bind="modalAllAttrs" />
+  </ACard>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onBeforeMount } from 'vue';
-import type { TableColumnType, TableProps } from 'ant-design-vue';
-import { message } from 'ant-design-vue';
+import { ref } from 'vue';
+import { useTableAttrs, useColumns } from '@/hooks';
+import type { Response } from './api';
 import { getListApi } from './api';
+
 import Subfield from '@components/Subfield';
 import NewLi from './NewLi.vue';
 
-const dataList = ref<unknown[]>([]);
-const columns: TableColumnType[] = [
+const dataList = ref<Response[]>([]);
+const { columns } = useColumns<Response>([
   { title: '名称', dataIndex: 'name' },
   { title: '年龄', dataIndex: 'age' },
   { title: '源地址', dataIndex: ['data', 's_addr'] },
   { title: '目的地址', dataIndex: ['data', 'd_addr'] },
   { title: '操作', dataIndex: 'operator' }
-];
-const visiable = ref(false);
+]);
 
-const selectedKeys = ref([]);
-const selectedRowKeys = ref([]);
-
-const mode = ref('create');
-
-const loadData = () => {
-  getListApi().then((res) => {
+// 创建表格需要的 attrs，并且其中定义了一些动作行为回调
+const { tableAttrs, modalAllAttrs, open } = useTableAttrs<Response>({
+  // 创建每一行的 Key
+  rowKey: row => row.name
+}, next => { // 表格请求有时还需要一些其他参数，可以从第二个参数中解构
+  // 调用 next 进行下一步
+  getListApi().then(res => {
     dataList.value = res;
+    next();
   })
-}
+});
 
-const pagination: TableProps['pagination'] = {
-  onChange() {
-    loadData()
-  }
-}
+const handleCreate = () => open('新建', 'create', {}); // 页面新建动作
 
-const handleCreate = () => {
-  mode.value = 'create';
-  visiable.value = true;
-  console.log('click')
-}
-const handleEdit = () => {
-  mode.value = 'edit';
-  visiable.value = true;
-}
-
-const handleOk = () => {
-  visiable.value = false;
-  loadData()
-}
-const handleCancel = () => {
-  visiable.value = false;
-}
-
-onBeforeMount(loadData);
+const handleEdit = (record: Response) => open('编辑', 'edit', { ...record }); // 页面编辑动作
 </script>

@@ -15,11 +15,19 @@ export const rootRoute = makeRoute({
   redirect: spaceRoutes.path
 } as const);
 
+export const notFoundRoute = makeRoute({
+  name: 'NotFound',
+  path: '/404',
+  component: () => import('@pages/index/views/dynamics/index.vue')
+} as const);
+
 export * from './space';
 
 export const routes = [
   rootRoute,
+  notFoundRoute,
   loginRoute,
+
   spaceRoutes
 ] as const;
 

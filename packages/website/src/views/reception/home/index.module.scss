@@ -6,6 +6,49 @@
   // position: relative;
 }
 
+
+
+.parallaxContainer {
+  position: relative;
+  height: 940px;
+
+  .parallaxContentContainer {
+    text-align: center;
+    height: max-content;
+    min-height: 200px;
+    padding: 20px 0;
+    width: 100%;
+    position: absolute;
+    // bottom: 150px;
+    left: 0;
+    background-color: white;
+    z-index: 1;
+    transform:
+      skew(0, -4deg)
+      translateY(-50%);
+    overflow: hidden;
+
+    .parallaxContent {
+      transform: skew(0, 4deg);
+    }
+  }
+
+  .parallaxBackground {
+    position: absolute;
+    // top: 200px;
+    left: 0;
+    width: 100%;
+    height: 940px;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    z-index: -1111;
+  }
+}
+
+
+
 .home {
   // background-color: rgba(0, 0, 0, .2);
   width: 100%;

@@ -40,7 +40,7 @@ module.exports = {
     camelcase: ['error', { properties: 'never' }],
     'no-console': 'off',
     'no-debugger': 'warn',
-    'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
+    'no-restricted-syntax': ['off', 'LabeledStatement', 'WithStatement'],
     'no-return-await': 'error',
     'no-var': 'off',
     'no-empty': ['error', { allowEmptyCatch: true }],

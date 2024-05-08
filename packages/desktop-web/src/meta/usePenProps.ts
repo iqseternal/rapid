@@ -4,6 +4,7 @@ import { reactive, watch } from 'vue';
 import { useSelectionsHook, useSelections, SelectionMode } from './useSelections';
 import { useNoEffectHook } from '@hooks/useNoEffect';
 import { useMetaState, useMetaStateHook } from './useMetaState';
+import { _findSameLineDash } from './preset/penProps.preset';
 
 export type PenProps = Pen & Partial<ChartData> & Partial<Record<'tag' | 'newId', string>>;
 
@@ -27,7 +28,7 @@ const penPropsState = reactive<PenProps>({
   flipX: false,
   flipY: false,
 
-  lineDash: [],
+  lineDash: '直线' as unknown as [],
   lineJoin: 'miter',
   lineCap: 'butt',
   color: '',
@@ -71,6 +72,10 @@ const updatePenPropState = () => {
   if (!window.meta2d) return;
   if (selections.mode === SelectionMode.Pen && selections.pen) {
     Object.assign(penPropsState, selections.pen);
+
+    const lineDash = _findSameLineDash(penPropsState.lineDash);
+    penPropsState.lineDash = lineDash as unknown as [];
+
   }
 }
 
@@ -91,13 +96,27 @@ export function usePenProps() {
 
   const setCurrentPenProps = (props: PenProps) => {
     if (!meta2d) return;
-    if (selections.mode !== SelectionMode.Pen) return;
-    if (!selections.pen) return;
 
-    meta2d.setValue({
-      id: selections.pen.id,
-     ...props
-    })
+    if (selections.mode === SelectionMode.Pen) {
+      if (!selections.pen) return;
+      meta2d.setValue({
+        id: selections.pen.id,
+        ...props
+      })
+    }
+    else if (selections.mode === SelectionMode.Rect) {
+      selections.pens.forEach(pen => {
+        meta2d.setValue({
+          id: pen.id,
+          ...props
+        }, {
+          render: false
+        });
+      })
+    }
+
+
+
 
     // selections.pens.forEach(pen => {
     //   meta2d.setValue({
@@ -111,7 +130,7 @@ export function usePenProps() {
     //   ...props
     // })
 
-    meta2d.render();
+    // meta2d.render();
   }
 
   return {

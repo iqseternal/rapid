@@ -33,3 +33,14 @@ export const StringFilters = {
     return realValue;
   }
 }
+
+/** 时间类的 Filter */
+export const DateFilters = {
+
+
+
+
+  toFullDate: () => {
+    // TODO
+  }
+}

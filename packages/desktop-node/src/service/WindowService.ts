@@ -31,9 +31,9 @@ export class WindowService {
   public static readonly id = `WindowService`;
 
   public readonly window: BrowserWindow;
-  private loadThenCbs: BaseCb[] = [];
-  private loadCatchCbs: BaseCb[] = [];
-  private destroyCbs: BaseCb[] = [];
+  private loadThenCbs: (() => void)[] = [];
+  private loadCatchCbs: (() => void)[] = [];
+  private destroyCbs: (() => void)[] = [];
 
   constructor(
     windowOptions: Partial<BrowserWindowConstructorOptions>,
@@ -77,12 +77,12 @@ export class WindowService {
    * 添加一个打开窗口成功的回调函数
    * @param cb
    */
-  addOpenThenCb(cb: BaseCb) { this.loadThenCbs.push(cb); }
+  addOpenThenCb(cb: () => void) { this.loadThenCbs.push(cb); }
   /**
    * 添加一个打开窗口失败的回调函数
    * @param cb
    */
-  addOpenCatchCb(cb: BaseCb) { this.loadCatchCbs.push(cb); }
+  addOpenCatchCb(cb: () => void) { this.loadCatchCbs.push(cb); }
 
   private load() {
     let p: Promise<void>;
@@ -103,7 +103,7 @@ export class WindowService {
    * @param fail 打开失败的回调函数
    * @returns
    */
-  show(ok?: BaseCb, fail?: BaseCb) {
+  show(ok?: () => void, fail?: () => void) {
     return new Promise<void>((resolve, reject) => {
       let isResolved = false;
 
@@ -142,7 +142,7 @@ export class WindowService {
    * 添加一个销毁时回调
    * @param cb
    */
-  addDestroyCb(cb: BaseCb) { this.destroyCbs.push(cb); }
+  addDestroyCb(cb: () => void) { this.destroyCbs.push(cb); }
   /**
    * 销毁窗口对象
    */

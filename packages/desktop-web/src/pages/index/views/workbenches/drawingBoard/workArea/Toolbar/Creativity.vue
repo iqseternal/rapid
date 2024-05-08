@@ -10,6 +10,8 @@
       <IconFont type="EnvironmentOutlined" />
     </Tool>
 
+
+
     <DropdownMenu>
       <Tool title="起点">
         <svg class="l-icon" aria-hidden="true">
@@ -18,17 +20,18 @@
       </Tool>
       <template #overlay>
         <template v-for="item in fromArrows" :key="item">
-          <SingleMenu>
+          <SingleMenu style="aspect-ratio: unset;width: 100%;">
             <Widget @click="lineFn.changeFromArrow(item.value)">
               <div class="flex middle" style="height: 30px">
-                <svg class="l-icon" aria-hidden="true"><use :xlink:href="item.icon" /></svg>
+                <svg class="l-icon full" aria-hidden="true">
+                  <use :xlink:href="item.icon" />
+                </svg>
               </div>
             </Widget>
           </SingleMenu>
         </template>
       </template>
     </DropdownMenu>
-
     <DropdownMenu>
       <Tool title="终点">
         <svg class="l-icon" aria-hidden="true">
@@ -37,10 +40,10 @@
       </Tool>
       <template #overlay>
         <template v-for="item in toArrows" :key="item">
-          <SingleMenu>
+          <SingleMenu style="aspect-ratio: unset;width: 100%;">
             <Widget @click="lineFn.changeToArrow(item.value)">
               <div class="flex middle" style="height: 30px">
-                <svg class="l-icon" aria-hidden="true">
+                <svg class="l-icon full" aria-hidden="true">
                   <use :xlink:href="item.icon" />
                 </svg>
               </div>
@@ -52,42 +55,21 @@
 
 
 
+    <Tool title="线段">
+      <span :draggable="true" @dragstart="e => onAddShape(e, 'line')" @click="e => onAddShape(e, 'line')">
+        <IconFont type="LineOutlined" />
+      </span>
+    </Tool>
 
 
-    <Tool title="连线">
-      <span @click="lineFn.drawLine">
+
+    <Tool title="连线" :active="metaState.isLine" @click="lineFn.drawLine">
+      <span>
         <svg width="1em" height="1em" viewBox="0 0 1024 1024">
           <path
             d="M192 64a128 128 0 0 1 123.968 96H384a160 160 0 0 1 159.68 149.504L544 320v384a96 96 0 0 0 86.784 95.552L640 800h68.032a128 128 0 1 1 0 64.064L640 864a160 160 0 0 1-159.68-149.504L480 704V320a96 96 0 0 0-86.784-95.552L384 224l-68.032 0.064A128 128 0 1 1 192 64z m640 704a64 64 0 1 0 0 128 64 64 0 0 0 0-128zM192 128a64 64 0 1 0 0 128 64 64 0 0 0 0-128z"
             fill="currentColor"
           />
-        </svg>
-      </span>
-    </Tool>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <Tool>
-      <span :draggable="true" @dragstart="e => onAddShape(e, 'line')" @click="e => onAddShape(e, 'line')">
-        <IconFont type="LineOutlined" />
-      </span>
-    </Tool>
-    <Tool title="文字">
-      <span :draggable="true" @dragstart="e => onAddShape(e, 'text')" @click="e => onAddShape(e, 'text')">
-        <svg class="l-icon" aria-hidden="true">
-          <use xlink:href="#l-text" />
         </svg>
       </span>
     </Tool>
@@ -101,18 +83,33 @@
 
       <template #overlay>
         <template v-for="item in lineTypes" :key="item.value">
-          <SingleMenu class="flex">
-            <Widget :title="item.name" @click="lineFn.changeLineType(item.value)">
-              <svg class="l-icon" aria-hidden="true">
-                <use :xlink:href="item.icon" />
-              </svg>
-            </Widget>
+          <SingleMenu style="aspect-ratio: unset;width: 100%;">
+            <template #icon>
+              {{ item.name }}
+            </template>
+
+            <template #default>
+              <div :title="item.name" style="width: 80px;height: 30px;" @click="lineFn.changeLineType(item.value)">
+                <svg class="l-icon full" aria-hidden="true">
+                  <use :xlink:href="item.icon" />
+                </svg>
+              </div>
+            </template>
           </SingleMenu>
         </template>
       </template>
     </DropdownMenu>
 
+    <Tool title="文字">
+      <span :draggable="true" @dragstart="e => onAddShape(e, 'text')" @click="e => onAddShape(e, 'text')">
+        <svg class="l-icon" aria-hidden="true">
+          <use xlink:href="#l-text" />
+        </svg>
+      </span>
+    </Tool>
+
     <Widget :autoHover="false" />
+
     <ADropdown>
       <Widget :autoHover="false"><div style="line-height: 100%;">{{ NumberFilters.toFixed(metaState.scale, 0) }}%</div></Widget>
 

@@ -8,7 +8,7 @@ import {
 } from './ipc';
 import { LoggerServer, IpcHandlerServer } from './server';
 import { setupContext, setupSingleApplication } from '@rapid/framework';
-import { setupMainWindow, setupTrayMenu, documentsStorageService, logsStorageService, desktopStorageService } from './setupService';
+import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
 
 setupSingleApplication();

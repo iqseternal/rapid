@@ -103,7 +103,6 @@ export async function setupDialogWindow(options: DialogWindowOptions) {
   return windowService;
 }
 
-
 /**
  * 创建托盘和托盘菜单
  */
@@ -125,33 +124,33 @@ export async function setupTrayMenu() {
   tray.setToolTip(CONFIG.PROJECT);
 
   const contextMenu = Menu.buildFromTemplate([
-    {
-      label: '没什么用的选项1',
-      type: 'radio',
-      click: () => {
+    // {
+    //   label: '没什么用的选项1',
+    //   type: 'radio',
+    //   click: () => {
 
-        console.log('click');
-      }
-    },
-    { label: '没用的选项2', type: 'radio' },
-    { label: '没用的选项3', type: 'radio', checked: true },
-    { label: '没用的选项4', type: 'radio' },
-    { type: 'separator' },
-    { label: '????', type: 'normal' },
-    {
-      label: '设置',
-      type: 'normal',
-      click: async () => {
-        const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
-        if (!settingWindowService) {
-          await setupSettingWindow();
-          return;
-        }
+    //     console.log('click');
+    //   }
+    // },
+    // { label: '没用的选项2', type: 'radio' },
+    // { label: '没用的选项3', type: 'radio', checked: true },
+    // { label: '没用的选项4', type: 'radio' },
+    // { type: 'separator' },
+    // { label: '????', type: 'normal' },
+    // {
+    //   label: '设置',
+    //   type: 'normal',
+    //   click: async () => {
+    //     const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+    //     if (!settingWindowService) {
+    //       await setupSettingWindow();
+    //       return;
+    //     }
 
-        if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
-        else settingWindowService.window.focus();
-      }
-    },
+    //     if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
+    //     else settingWindowService.window.focus();
+    //   }
+    // },
     { type: 'separator' },
     {
       label: '退出',

@@ -1,8 +1,7 @@
 import path, { join } from 'path';
 import { PrinterService } from './PrinterService';
-
-import * as fs from 'fs';
 import { Printer } from '@suey/printer';
+import * as fs from 'fs';
 
 /**
  * 文件服务, 为应用程序的文件服务
