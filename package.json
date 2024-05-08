@@ -30,6 +30,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/plugin-transform-arrow-functions": "^7.24.1",
     "@commitlint/cli": "^19.1.0",
     "@commitlint/config-conventional": "^19.1.0",
     "@electron-toolkit/tsconfig": "^1.0.1",

@@ -60,6 +60,9 @@ importers:
         specifier: ^1.3.1
         version: 1.3.1
     devDependencies:
+      '@babel/plugin-transform-arrow-functions':
+        specifier: ^7.24.1
+        version: 7.24.1(@babel/core@7.24.0)
       '@commitlint/cli':
         specifier: ^19.1.0
         version: 19.1.0(@types/node@20.11.26)(typescript@5.3.3)
@@ -940,8 +943,8 @@ packages:
       '@babel/helper-plugin-utils': 7.24.0
     dev: true
 
-  /@babel/plugin-transform-arrow-functions@7.23.3(@babel/core@7.24.0):
-    resolution: {integrity: sha512-NzQcQrzaQPkaEwoTm4Mhyl8jI1huEL/WWIEvudjTCMJ9aBZNpsJbMASx7EQECtQQPS/DcnFpo0FIh3LvEO9cxQ==}
+  /@babel/plugin-transform-arrow-functions@7.24.1(@babel/core@7.24.0):
+    resolution: {integrity: sha512-ngT/3NkRhsaep9ck9uj2Xhv9+xB1zShY3tM3g6om4xxCELwCDN4g4Aq5dRn48+0hasAql7s2hdBOysCfNpr4fw==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -5092,7 +5095,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.24.0
-      '@babel/plugin-transform-arrow-functions': 7.23.3(@babel/core@7.24.0)
+      '@babel/plugin-transform-arrow-functions': 7.24.1(@babel/core@7.24.0)
       cac: 6.7.14
       esbuild: 0.18.20
       magic-string: 0.30.8
