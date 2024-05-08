@@ -27,6 +27,6 @@ export const OUT_DESKTOP_ROOT_DIR = path.join(ROOT_DIR, './out');
 /** desktop main 的输出目录 */
 export const OUT_DESKTOP_MAIN_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './main');
 /** desktop preload 的输出目录 */
-export const OUT_DESKTOP_PRELOAD_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './prelod');
+export const OUT_DESKTOP_PRELOAD_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './preload');
 /** desktop renderer 的输出目录 */
 export const OUT_DESKTOP_RENDERER_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './renderer');
