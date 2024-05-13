@@ -1,6 +1,6 @@
 
 import type { Meta2d, Pen, ChartData } from '@meta2d/core';
-import { reactive, watch } from 'vue';
+import { reactive, watch, nextTick } from 'vue';
 import { useSelectionsHook, useSelections, SelectionMode } from './useSelections';
 import { useNoEffectHook } from '@hooks/useNoEffect';
 import { useMetaState, useMetaStateHook } from './useMetaState';
@@ -71,11 +71,45 @@ const penPropsState = reactive<PenProps>({
 const updatePenPropState = () => {
   if (!window.meta2d) return;
   if (selections.mode === SelectionMode.Pen && selections.pen) {
-    Object.assign(penPropsState, selections.pen);
 
-    const lineDash = _findSameLineDash(penPropsState.lineDash);
-    penPropsState.lineDash = lineDash as unknown as [];
+    if (!selections.pen) return;
 
+    const state = Object.assign({}, selections.pen) as Pen;
+
+    for (const key in state) {
+      if (['width', 'height', 'x', 'y'].includes(key)) {
+        const rect = meta2d.getPenRect(state);
+        penPropsState[key] = rect[key];
+        continue;
+      }
+
+      if (key === 'lineDash') {
+        const lineDash = _findSameLineDash(state.lineDash);
+        penPropsState.lineDash = lineDash as unknown as [];
+        continue;
+      }
+
+      if (state[key]) {
+        penPropsState[key] = state[key]
+      }
+      else {
+        penPropsState[key] = state.calculative?.[key];
+      }
+
+      if (!penPropsState[key]) {
+        switch (typeof penPropsState[key]) {
+          case 'string':
+            penPropsState[key] = '';
+            break
+          case 'number':
+            penPropsState[key] = 0;
+            break
+          case 'boolean':
+            penPropsState[key] = false;
+            break
+        }
+      }
+    }
   }
 }
 
