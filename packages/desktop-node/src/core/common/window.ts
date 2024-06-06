@@ -1,7 +1,5 @@
 import type { IpcMainInvokeEvent, IpcMainEvent } from 'electron';
-import { is } from '@electron-toolkit/utils';
-import { printInfo, printWarn } from '@suey/printer';
-import { BrowserWindow, globalShortcut, app, screen, Tray, Menu, shell } from 'electron';
+import { BrowserWindow, app, screen, shell } from 'electron';
 import { isNumber } from '@suey/pkg-utils';
 import { IS_DEV } from '@rapid/config/constants';
 

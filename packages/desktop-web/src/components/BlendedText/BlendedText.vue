@@ -17,8 +17,8 @@ const blended = ref() as Ref<HTMLElement>;
 
 onMounted(() => {
   setCssVars(blended.value, {
-    '--spacing': parseInt(getCssVar(blended.value, 'fontSize')) * -1,
-    '--dist-spacing': props.distSpacing
+    '--spacing': `${parseInt(getCssVar(blended.value, 'fontSize')) * -1}`,
+    '--dist-spacing': `${props.distSpacing}`
   }, {
     convert: [CssValueConverts.toPixel]
   })

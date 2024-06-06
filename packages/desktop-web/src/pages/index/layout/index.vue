@@ -18,14 +18,18 @@
             </Subfield>
           </template>
           <template #right>
-            <!-- <Widget title="历史记录">
+            <Widget title="历史记录">
               <IconFont type="HistoryOutlined" />
-            </Widget> -->
+            </Widget>
           </template>
         </Slogan>
       </template>
       <template #center>
         <Search disabledSearch :searchTitle="StringFilters.toValidStr(dataState.name, '未命名文档')" />
+      </template>
+
+      <template #right>
+        <Widget v-if="!genericStore.appearance.showLeftSideBar" icon="SettingOutlined" title="设置" />
       </template>
     </Header>
 
@@ -69,7 +73,7 @@ import { useRouter } from 'vue-router';
 import { loginRoute } from '@pages/index/router/modules';
 import { StringFilters } from '@rapid/libs/filters';
 import { Loading1 } from '@components/Loading';
-import { useGlobalStatusState } from '@/state';
+import { useGlobalStatusState } from '@/state/modules';
 
 import Sidebar from './sidebar/index.vue';
 import IconFont from '@components/IconFont';

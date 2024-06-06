@@ -12,9 +12,11 @@ import FileProps from './FileProps.vue';
 import PenProps from './PenProps';
 
 const { selections } = useSelections();
-
 </script>
 
 <style lang="scss" scoped>
 @import './index.scss';
+.propertyBar {
+  touch-action: none;
+}
 </style>

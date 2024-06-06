@@ -19,6 +19,10 @@ const isOkStatus = (status: number): boolean => {
 
 export { REQ_METHODS, type RequestConfig } from '@suey/pkg-utils';
 
+export enum RSP_ERR_CODE {
+  ECONNABORTED = 'ECONNABORTED'
+}
+
 export const { apiGet, apiPost, request, createApi } = createApiRequest<HConfig, BasicResponse>(CONFIG.API.URL, {
   timeout: CONFIG.API.TIMEOUT
 }, {
@@ -42,7 +46,9 @@ export const { apiGet, apiPost, request, createApi } = createApiRequest<HConfig,
     return Promise.resolve(response);
   },
   onRejected: err => {
-    if (err.data && err.data.status && err.data.flag) err.data = err.data.data as any;
+    // if (err.code === RSP_ERR_CODE.ECONNABORTED) {
+
+    // }
     return Promise.reject(err);
   }
 });

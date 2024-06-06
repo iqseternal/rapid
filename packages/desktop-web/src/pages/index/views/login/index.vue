@@ -39,7 +39,7 @@
 import type { Ref } from 'vue';
 import { onBeforeMount, onBeforeUnmount, onMounted, ref, computed, provide } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { IPC_MAIN_WINDOW, CONFIG } from '@rapid/config/constants';
+import { CONFIG } from '@rapid/config/constants';
 import { useMousetrap, useFadeIn, useDisableRouterBack, useFadeOut } from '@/hooks';
 import { loginTakeFilePng } from '@/assets';
 import { useStage, DEFINE_PROVIDE_PROP_KEYS } from './useStage';

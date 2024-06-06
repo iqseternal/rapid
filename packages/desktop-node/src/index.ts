@@ -1,17 +1,13 @@
-import {
-  RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter,
-  RuntimeExceptionFilter, AsyncExceptionFilter
-} from './core';
-import {
-  IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler,
-  IpcGraphicHandler, IpcDocHandler
-} from './ipc';
+import { RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter, RuntimeExceptionFilter, AsyncExceptionFilter } from './core';
+import { IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler, IpcGraphicHandler, IpcDocHandler } from './ipc';
 import { LoggerServer, IpcHandlerServer } from './server';
 import { setupContext, setupSingleApplication } from '@rapid/framework';
-import { setupMainWindow, setupTrayMenu } from './setupService';
+import { setupMainWindow, setupTrayMenu, setupReportBugsWindow } from './setupService';
 import { setupApp } from './setupApp';
 
-setupSingleApplication();
+setupSingleApplication().catch(() => {
+
+});
 
 setupContext({
   logger: { use: LoggerServer },
@@ -31,11 +27,22 @@ setupContext({
       IpcGraphicHandler, IpcDocHandler
     ]
   }
+}).catch(() => {
+
 })
 
 setupApp(async () => {
+  // throw new RuntimeException('', {
+  //   label: 'sss'
+  // })
+
   setupMainWindow();
-
-
   setupTrayMenu();
-})
+
+}, {
+  onFailed: async (err) => {
+    const reportBugsWindowService = await setupReportBugsWindow();
+
+    reportBugsWindowService.show();
+  }
+});

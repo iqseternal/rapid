@@ -40,7 +40,7 @@ import { ref, onMounted, nextTick } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { Space, FormItem, Modal, Form, Input, InputPassword, notification, message, Checkbox, Radio } from 'ant-design-vue';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
-import { IPC_MAIN_WINDOW, CONFIG } from '@rapid/config/constants';
+import { CONFIG } from '@rapid/config/constants';
 import { useMousetrap, useFadeOut } from '@/hooks';
 import { apiUrl, apiPost, loginReq } from '@/api';
 import type { LoginFormRef, FormValidateRefResult } from '@components/Login';

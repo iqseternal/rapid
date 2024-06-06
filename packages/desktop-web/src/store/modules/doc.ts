@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router';
 import { workbenchesRoute } from '@pages/index/router/modules';
 
 import { useDataStateHook } from '@meta/useProps';
-import { useGlobalStatusStateHook } from '@/state';
+import { useGlobalStatusStateHook } from '@/state/modules';
 import store from '@/store';
 import { useMetaStateHook } from '@meta/useMetaState';
 
@@ -24,15 +24,11 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   /** 当文件名存在,那么就表示当前正在工作区绘图 */
   const isWork = computed(() => {
-
     return metaState.isSetup && route.path === workbenchesRoute.meta.fullpath;
   });
 
   const loadDoc = async () => {
-    if (!filePath.value) {
-      return createDoc();
-    }
-
+    if (!filePath.value) return createDoc();
     const message = await docOpen(filePath.value);
 
     filePath.value = message.filePath;
@@ -121,6 +117,10 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
     storage: sessionStorage
   }
 });
+
+export function clearDocStore() {
+  sessionStorage.removeItem(DOC_STORE_NAME);
+}
 
 export function useDocStoreHook() {
   return useDocStore(store);

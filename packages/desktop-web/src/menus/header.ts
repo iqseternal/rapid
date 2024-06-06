@@ -22,11 +22,11 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
   title: '文件',
   mark: 'FileOutlined',
   menuList: [
-    // {
-    //   title: '新建窗口',
-    //   mark: 'WindowsOutlined', shortcut: hotKeys.createFile.key,
+    {
+      title: '新建窗口',
+      mark: 'WindowsOutlined', shortcut: hotKeys.createFile.key,
 
-    // },
+    },
     {
       title: '新建文档',
       children: [
@@ -36,10 +36,10 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
           disabled: computed(() => !docStore.isWork),
           onClick: () => docStore.createDoc(),
         },
-        // {
-        //   title: '模板文档',
-        //   mark: 'FileAddOutlined'
-        // }
+        {
+          title: '模板文档',
+          mark: 'FileAddOutlined'
+        }
       ]
     },
     true,
@@ -96,29 +96,29 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
         }
       ]
     },
-    // true,
-    // {
-    //   title: '发布',
-    //   disabled: computed(() => !docStore.isWork),
-    //   children: [
-    //     {
-    //       title: '模板'
-    //     },
-    //     {
-    //       title: 'Web',
-    //       mark: 'MediumWorkmarkOutlined'
-    //     }
-    //   ]
-    // },
-    // true,
-    // {
-    //   title: '打印',
-    //   mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key,
-    //   disabled: computed(() => !docStore.isWork),
-    //   onClick: () => {
+    true,
+    {
+      title: '发布',
+      disabled: computed(() => !docStore.isWork),
+      children: [
+        {
+          title: '模板'
+        },
+        {
+          title: 'Web',
+          mark: 'MediumWorkmarkOutlined'
+        }
+      ]
+    },
+    true,
+    {
+      title: '打印',
+      mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key,
+      disabled: computed(() => !docStore.isWork),
+      onClick: () => {
 
-    //   }
-    // }
+      }
+    }
   ]
 })
 
@@ -195,10 +195,10 @@ export const appearanceMenu: Ref<AppNavigationMenu> = ref({
 export const helpMenu = ref<AppNavigationMenu>({
   title: '帮助',
   menuList: [
-    // {
-    //   title: '快捷键',
-    //   mark: 'KeyOutlined', shortcut: ''
-    // },
+    {
+      title: '快捷键',
+      mark: 'KeyOutlined', shortcut: ''
+    },
     {
       title: '反馈',
       mark: 'QuestionCircleOutlined'
@@ -221,5 +221,7 @@ export const headerMenus = [
     ]
   }),
 
-  // helpMenu
+  appearanceMenu,
+
+  helpMenu
 ]

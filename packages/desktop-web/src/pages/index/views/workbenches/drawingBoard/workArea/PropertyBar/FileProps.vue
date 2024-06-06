@@ -192,12 +192,12 @@
             <ASwitch v-model:checked="optionsState.autoAnchor" @change="onChangeOptions('autoAnchor')" />
           </AFormItem>
 
-          <!-- <AFormItem name="interval" label="绘制帧时长">
+          <AFormItem name="interval" label="绘制帧时长">
             <AInput v-model:value="optionsState.interval" type="number" @change="onChangeOptions('interval')" />
           </AFormItem>
           <AFormItem name="animateInterval" label="动画帧时长">
             <AInput v-model:value="optionsState.animateInterval" type="number" @change="onChangeOptions('animateInterval')" />
-          </AFormItem> -->
+          </AFormItem>
 
           <AFormItem name="textRotate" label="文字是否选择">
             <ASwitch v-model:checked="optionsState.textRotate" @change="onChangeOptions('textRotate')" />

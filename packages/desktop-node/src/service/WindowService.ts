@@ -1,15 +1,10 @@
 import { join } from 'path';
-import { BrowserWindow, shell, type BrowserWindowConstructorOptions } from 'electron';
-import { is } from '@electron-toolkit/utils';
-import { Tray, Menu, app, screen } from 'electron';
-import { setWindowCross, setWindowMaxSize, setWindowMinSize, setWindowOpenHandler, setWindowCaption, setWindowDevtoolsDetach, getWindowFrom, getWindowFromId, getWindowFromIpcEvt } from '@/core/common/window';
-import { PAGES_WINDOW_SETTING, PAGES_WINDOW_MAIN } from '@/config';
+import { BrowserWindow, type BrowserWindowConstructorOptions } from 'electron';
+import { setWindowCross, setWindowMaxSize, setWindowOpenHandler, setWindowCaption, getWindowFrom } from '@/core/common/window';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber, isNull } from '@suey/pkg-utils';
 import { iconUrl } from '@rapid/config/electron-main';
 import { RuntimeException } from '@/core';
-import { print } from '@suey/printer';
-import { PrinterService } from './PrinterService';
 
 const DEFAULT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
   show: false,
@@ -74,7 +69,7 @@ export class WindowService {
   }
 
   /**
-   * 添加一个打开窗口成功的回调函数
+   * 添加一个打开窗口成功地回调函数
    * @param cb
    */
   addOpenThenCb(cb: () => void) { this.loadThenCbs.push(cb); }
@@ -99,7 +94,7 @@ export class WindowService {
 
   /**
    * 打开窗口
-   * @param ok 打开成功的回调函数
+   * @param ok 打开成功地回调函数
    * @param fail 打开失败的回调函数
    * @returns
    */
@@ -128,13 +123,13 @@ export class WindowService {
    * @returns
    */
   close() {
-    return new Promise<boolean>((resolve, rejecet) => {
+    return new Promise<boolean>((resolve, reject) => {
       if (this.window.closable) {
 
         this.window.close();
         resolve(true);
       }
-      else rejecet(false);
+      else reject(false);
     });
   }
 
@@ -143,6 +138,7 @@ export class WindowService {
    * @param cb
    */
   addDestroyCb(cb: () => void) { this.destroyCbs.push(cb); }
+
   /**
    * 销毁窗口对象
    */
@@ -156,8 +152,8 @@ export class WindowService {
 
   /**
    * 从事件或者窗口id获得一个创建时的 Service 对象
-   * @param args
    * @returns
+   * @param name
    */
   static findWindowService(name: string): WindowService;
   static findWindowService(name: string, init?: () => WindowService | Promise<WindowService>): Promise<WindowService>;
@@ -202,11 +198,7 @@ export class WindowStateMachine {
   public static hasWindowService(windowService: WindowService) {
     const service = WindowStateMachine.findWindowService(windowService.window.id);
 
-    if (service && isSameWindowService(service, windowService)) {
-      return true;
-    }
-
-    return false;
+    return service && isSameWindowService(service, windowService);
   }
 
   /**
@@ -262,7 +254,7 @@ export class WindowStateMachine {
     return windowService;
   }
 
-  public static desotryWindowService(windowService: WindowService) {
+  public static destoryWindowService(windowService: WindowService) {
     if (!WindowStateMachine.hasWindowService(windowService)) {
       throw new RuntimeException('WindowStateMachine: does not have a window object that is about to be destroyed', {
         label: 'WindowStateMachine'
@@ -282,7 +274,6 @@ export const isSameWindowService = (_1: WindowService | null, _2: WindowService 
   if (isNull(_1) || isNull(_2)) return false;
 
   if (_1 === _2) return true;
-  if (_1.window.id === _2.window.id) return true;
 
-  return false;
+  return _1.window.id === _2.window.id;
 }

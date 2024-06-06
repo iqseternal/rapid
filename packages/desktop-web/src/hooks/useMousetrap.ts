@@ -65,7 +65,7 @@ export function useMousetrap<T extends HTMLElement>(
         return;
       }
 
-      mousetrap.value.bind(bind[0], bind[1], bind[2])
+      mousetrap.value.bind(bind[0], bind[1], bind[2]);
     });
   });
 

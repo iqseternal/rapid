@@ -63,9 +63,6 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
     port: 8888,
     hmr: true,
     host: '0.0.0.0',
-    proxy: {
-
-    },
     sourcemapIgnoreList: (sourcePath: string, sourcemapPath: string) => false
   },
   build: {

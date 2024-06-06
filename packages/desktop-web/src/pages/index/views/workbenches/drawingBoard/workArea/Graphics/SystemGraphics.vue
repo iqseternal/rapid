@@ -26,6 +26,7 @@
 import { ref } from 'vue';
 import { SYSTEM_GRAPHIC_GROUPS } from '@meta/preset';
 import { dragStart } from '@/meta';
+
 import Ellipsis from '@components/Ellipsis';
 
 const activeKey = ref(SYSTEM_GRAPHIC_GROUPS[0].name);

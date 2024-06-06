@@ -126,9 +126,6 @@ export async function setupMeta2dView(target: HTMLElement) {
       data.locked = 0;
     }
     meta2d.open(data);
-
-    console.log('opened data..');
-
     updateDataState();
   }
 

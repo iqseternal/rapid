@@ -7,10 +7,13 @@ import { isString, isNumber } from '@suey/pkg-utils';
 
 export interface AppOptions {
   modelId: string;
-};
+
+  onFailed: <Err extends any>(err: Err) => void | Promise<void>;
+}
 
 export const DEFAULT_APP_OPTIONS: Required<AppOptions> = {
-  modelId: 'com.electron'
+  modelId: 'com.electron',
+  onFailed: () => {}
 };
 
 /**
@@ -19,9 +22,15 @@ export const DEFAULT_APP_OPTIONS: Required<AppOptions> = {
  * @param ops
  * @returns
  */
-export const setupApp = async (startApp: () => void, ops?: Partial<AppOptions>): Promise<void> => {
+export const setupApp = (startApp: () => void | Promise<void>, ops?: Partial<AppOptions>) => {
   PrinterService.printInfo('开始构建应用程序, setupApp...');
   const options = { ...DEFAULT_APP_OPTIONS, ...ops } as Required<AppOptions>;
+
+  const safeStartApp = () => {
+    Promise.resolve(startApp()).catch(err => {
+      ops.onFailed(err);
+    })
+  }
 
   app.whenReady().then(() => {
     electronApp.setAppUserModelId(options.modelId);
@@ -31,20 +40,18 @@ export const setupApp = async (startApp: () => void, ops?: Partial<AppOptions>):
     if (BrowserWindow.getAllWindows().length !== 0) {
       BrowserWindow.getAllWindows()[0].focus();
     }
-    else startApp();
+    else safeStartApp();
 
     app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) startApp();
+      if (BrowserWindow.getAllWindows().length === 0) safeStartApp();
     });
   });
 
-  app.on('window-all-closed', () => {
-    // if (process.platform !== 'darwin') {
-    //   PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
-    //   app.quit();
-    // };
-  });
-
-  return Promise.resolve();
+  // app.on('window-all-closed', () => {
+  //   if (process.platform !== 'darwin') {
+  //     PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
+  //     app.quit();
+  //   }
+  // });
 }
 

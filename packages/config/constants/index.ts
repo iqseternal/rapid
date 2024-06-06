@@ -20,6 +20,8 @@ export { PLATFORMS, ENV };
 export const IS_WINDOWS = CURRENT_PLATFORM === PLATFORMS.WINDOWS;
 export const IS_MAC = CURRENT_PLATFORM === PLATFORMS.MAC;
 export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS.LINUX;
+// 是否构建 Web 平台代码
+export const IS_WEB = CURRENT_PLATFORM === PLATFORMS.WEB;
 
 // 当前的开发环境
 export const IS_DEV = CURRENT_ENV === ENV.DEV;

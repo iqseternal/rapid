@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { getToken, removeToken, setToken } from '@libs/storage';
 import { apiUrl, apiPost } from '@/api';
 import type { RouteRecordRaw } from 'vue-router';
+
 import store from '@/store';
 
 export const USER_STORE_NAME = 'userStore';
@@ -67,7 +68,16 @@ export const useUserStore = defineStore(USER_STORE_NAME, () => {
   }
 
   return { routes, setRoutes, token, roles, username, setRoles, login, getInfo, logout, resetToken };
+}, {
+  persist: {
+    key: USER_STORE_NAME,
+    storage: sessionStorage
+  }
 })
+
+export function clearUserStore() {
+  sessionStorage.removeItem(USER_STORE_NAME);
+}
 
 /** 在 setup 外使用 */
 export function useUserStoreHook() {

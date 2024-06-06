@@ -36,3 +36,6 @@ export const PAGES_WINDOW_SETTING = makeStartUrl(PAGES_WINDOW_SETTING_NAME);
 
 const PAGES_WINDOW_DIALOG_NAME = 'dialog.html';
 export const PAGES_WINDOW_DIALOG = makeStartUrl(PAGES_WINDOW_DIALOG_NAME);
+
+const PAGES_WINDOW_REPORT_BUGS_NAME = 'reportBugs.html';
+export const PAGES_WINDOW_REPORT_BUGS = makeStartUrl(PAGES_WINDOW_REPORT_BUGS_NAME);

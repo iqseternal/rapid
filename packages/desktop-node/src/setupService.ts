@@ -2,19 +2,10 @@ import { WindowService, WindowStateMachine } from '@/service/WindowService';
 import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';
-import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from '@/config';
-import { UserConfigService } from '@/service/UserConfigService';
-import { BrowserWindow, Menu, Tray, app, nativeImage } from 'electron';
+import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
+import { Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach } from '@/core/common/window';
 import { iconUrl } from '@rapid/config/electron-main';
-import { AppDirStorageService } from './service/AppStorageService';
-
-/** /user/Appdata/Roaming/rapid/docs */
-export const documentsStorageService = new AppDirStorageService('userData', 'docs');
-/** /user/Desktop */
-export const desktopStorageService = new AppDirStorageService('desktop');
-/** /user/Appdata/Roaming/rapid/logs */
-export const logsStorageService = new AppDirStorageService('logs');
 
 /**
  * 创建主窗口的函数
@@ -102,6 +93,38 @@ export async function setupDialogWindow(options: DialogWindowOptions) {
 
   return windowService;
 }
+
+export interface ReportBugsWindowOptions {
+  /** 是否汇报 BUG 后自动重启 App */
+  autoReloadApp?: boolean;
+}
+
+/**
+ * 创建汇报BUG页面的函数
+ * @returns
+ */
+export async function setupReportBugsWindow() {
+  const reportBugsWindow = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW);
+  if (reportBugsWindow) return reportBugsWindow;
+
+  const windowService = new WindowService({
+    width: 550,
+    height: 400,
+    frame: false,
+    autoHideMenuBar: false
+  }, {
+    url: PAGES_WINDOW_REPORT_BUGS,
+    autoLoad: true,
+    windowKey: WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW
+  });
+
+  // windowService.window.setMenu(null);
+  // setWindowCloseCaptionContextmenu(windowService.window);
+  setWindowDevtoolsDetach(windowService.window);
+
+  return windowService;
+}
+
 
 /**
  * 创建托盘和托盘菜单

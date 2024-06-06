@@ -13,22 +13,26 @@
 
 <script lang="ts" setup>
 import type { MenuProps } from 'ant-design-vue';
+import type { Ref } from 'vue';
 import { ref } from 'vue';
 import { settingRoutes } from '@pages/setting/router/modules';
 import { useRouter, useRoute } from 'vue-router';
 
 import Ellipsis from '@components/Ellipsis';
 
-const routes: MenuProps['items'] = settingRoutes.children.map((item) => {
+const routes: Required<MenuProps>['items'] = settingRoutes.children.map((item) => {
   return {
     key: item.meta?.fullpath ?? '',
     label: item.meta?.title,
     title: item.meta?.title,
   };
 }) ?? [];
+
 const router = useRouter();
 const route = useRoute();
-const items = ref(routes);
+
+const items = ref(routes) as Ref<typeof routes>;
+
 const selectedKeys = ref([route.meta.fullpath ?? '']);
 const handlePath = ({ selectedKeys }: Parameters<Required<MenuProps>['onSelect']>[0]) => {
   router.push(selectedKeys[0] as string);

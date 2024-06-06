@@ -5,6 +5,7 @@ import { useSelectionsHook, useSelections, SelectionMode } from './useSelections
 import { useNoEffectHook } from '@hooks/useNoEffect';
 import { useMetaState, useMetaStateHook } from './useMetaState';
 import { _findSameLineDash } from './preset/penProps.preset';
+import { NumberFilters } from '@rapid/libs/filters';
 
 export type PenProps = Pen & Partial<ChartData> & Partial<Record<'tag' | 'newId', string>>;
 
@@ -71,15 +72,12 @@ const penPropsState = reactive<PenProps>({
 const updatePenPropState = () => {
   if (!window.meta2d) return;
   if (selections.mode === SelectionMode.Pen && selections.pen) {
-
-    if (!selections.pen) return;
-
     const state = Object.assign({}, selections.pen) as Pen;
 
     for (const key in state) {
       if (['width', 'height', 'x', 'y'].includes(key)) {
         const rect = meta2d.getPenRect(state);
-        penPropsState[key] = rect[key];
+        penPropsState[key] = NumberFilters.toFixed(rect[key], 4);
         continue;
       }
 
@@ -100,13 +98,13 @@ const updatePenPropState = () => {
         switch (typeof penPropsState[key]) {
           case 'string':
             penPropsState[key] = '';
-            break
+            break;
           case 'number':
             penPropsState[key] = 0;
-            break
+            break;
           case 'boolean':
             penPropsState[key] = false;
-            break
+            break;
         }
       }
     }

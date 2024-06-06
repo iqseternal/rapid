@@ -46,8 +46,9 @@ export const setupContext = async (options: SetupContextOptions) => {
 /**
  * 设置单实例程序
  */
-export const setupSingleApplication = () => {
+export const setupSingleApplication = async () => {
   const goTheLock = app.requestSingleInstanceLock();
+
   if (!goTheLock) {
     return app.quit();
   }

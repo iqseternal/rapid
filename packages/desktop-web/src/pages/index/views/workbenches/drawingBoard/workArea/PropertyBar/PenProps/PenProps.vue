@@ -14,7 +14,6 @@
                     <AInput v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
                   </template>
 
-
                   <template v-else-if="prop.showType === ShowTypeMode.InputString">
                     <AInput v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
                   </template>
@@ -25,7 +24,6 @@
                   <template v-else-if="prop.showType === ShowTypeMode.Color">
                     <PickColors v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="() => prop.onChange(penPropsState[prop.prop])" />
                   </template>
-
 
                   <template v-else-if="prop.showType === ShowTypeMode.Select">
                     <ASelect v-model:value="penPropsState[prop.prop]" v-bind="prop.attrs" @change="value => prop.onChange(value)">
@@ -44,9 +42,9 @@
       </ACollapse>
     </ATabPane>
 
-    <!-- <ATabPane key="动效" tab="动效">
+    <ATabPane key="动效" tab="动效">
       <AnimateProps />
-    </ATabPane> -->
+    </ATabPane>
   </ATabs>
 </template>
 

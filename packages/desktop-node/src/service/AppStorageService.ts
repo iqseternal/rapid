@@ -125,4 +125,12 @@ export class AppDirStorageService {
   }
 }
 
+/** /user/Appdata/Roaming/rapid/docs */
+export const documentsStorageService = new AppDirStorageService('userData', 'docs');
+
+/** /user/Desktop */
+export const desktopStorageService = new AppDirStorageService('desktop');
+
+/** /user/Appdata/Roaming/rapid/logs */
+export const logsStorageService = new AppDirStorageService('logs');
 

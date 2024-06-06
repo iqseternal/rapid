@@ -12,7 +12,7 @@ export enum CONFIG_ENV_MODE {
 export enum CONFIG_ENV_COMMAND {
   SERVE = 'serve',
   BUILD = 'build'
-};
+}
 
 export function defineVars({ mode }: ConfigEnv) {
   const vars = {

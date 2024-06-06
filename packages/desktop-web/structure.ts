@@ -49,7 +49,8 @@ export default defineElectronRendererConfig(({ mode }) => ({
       input: {
         index: join(__dirname, './index.html'),
         setting: join(__dirname, '/setting.html'),
-        dialog: join(__dirname, './dialog.html')
+        dialog: join(__dirname, './dialog.html'),
+        reportBugs: join(__dirname, './reportBugs.html')
       }
     },
   },

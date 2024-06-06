@@ -34,6 +34,7 @@ import { useMousetrap } from '@/hooks';
 import { useAutoAnimate, vAutoAnimate } from '@formkit/auto-animate/vue';
 import { DropdownMenu, ComboBoxMenu, SingleMenu, MenuDriver } from '@components/DropdownMenu';
 import type { SloganInstance } from './declare';
+
 import Widget from '@components/Widget';
 import Indicator from './Indicator.vue';
 import Subfield from '@components/Subfield';

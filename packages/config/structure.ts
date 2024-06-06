@@ -27,6 +27,7 @@ export function defineElectronRendererConfig(configFn: (env: ConfigEnv) => Rende
 
 /**
  * 解析 tsconfig paths 为vite的路径别名，实现自动化
+ * @param basePath
  * @param aliasPath
  * @returns
  */
