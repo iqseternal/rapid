@@ -1,5 +1,5 @@
 import { WindowService } from '@/service/WindowService';
-import { FrameworkIpcHandlerServer, FrameworkLoggerServer, IPC_EMITTER_TYPE, NoteInfo } from '@rapid/framework';
+import { FrameworkIpcHandlerServer, FrameworkLoggerServer, IPC_EMITTER_TYPE } from '@rapid/framework';
 import { PrinterService } from '@/service/PrinterService';
 
 export class LoggerServer extends FrameworkLoggerServer {

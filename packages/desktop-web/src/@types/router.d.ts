@@ -1,4 +1,4 @@
-import "vue-router";
+import 'vue-router';
 import type * as icons from '@ant-design/icons-vue/lib/icons';
 import type * as assrtUrls from '@renderer/assets';
 

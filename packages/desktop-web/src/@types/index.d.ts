@@ -6,6 +6,7 @@ import type { Meta2d } from '@meta2d/core';
 import type { ExposeApi } from 'node_modules/@rapid/desktop-node/preload';
 import type { ObjKeyToArr, CustomColumn } from '@rapid/libs/types';
 
+/** Vue JSX 声明  */
 declare global {
   namespace JSX {
     // export interface Element extends DefineComponent<{}, {}, any> {}
@@ -16,18 +17,28 @@ declare global {
   }
 }
 
+/** meta2d 声明  */
 declare global {
-  interface Window extends ExposeApi {
-
-  }
-
   declare var meta2d: Meta2d & {
     store: {
       patchFlagsBackground: boolean;
     }
   };
   declare const C2S: any;
+}
 
+/** electron 扩展 Api 声明  */
+declare global {
+  interface Window extends ExposeApi {
+
+  }
+
+
+}
+
+
+declare global {
+  /**  */
   declare type ModalEvtCallBack = EvtCallback;
 
   declare type PropType<T> = VuePropType<T>;

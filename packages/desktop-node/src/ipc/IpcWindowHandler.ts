@@ -6,7 +6,7 @@ import { TypeException } from '@/core';
 import { isNumber } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
-import { setupSettingWindow } from '@/setupService';
+import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
 
 /**
  * Ipc 关于窗口操作的 句柄
@@ -182,15 +182,16 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
    */
   @IpcMain.Handler()
   async openWindow(_: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
-    if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) {
-      const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
-      if (!settingWindowService) {
-        await setupSettingWindow();
-        return;
-      }
+    const windowService = WindowStateMachine.findWindowService(type);
 
-      settingWindowService.window.show();
+    if (!windowService) {
+      if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) await setupSettingWindow();
+      else if (type === WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW) await setupReportBugsWindow();
+
+      return;
     }
+
+    windowService.show();
   }
 
   /**
