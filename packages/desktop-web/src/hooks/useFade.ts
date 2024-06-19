@@ -1,7 +1,7 @@
 import type { Ref } from 'vue';
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, WindowPopup } from '@/actions';
-import { CONFIG } from '@rapid/config/constants';
+import { CONFIG, IS_WEB } from '@rapid/config/constants';
 
 export type FadeCallback = () => void | Promise<void>;
 
@@ -34,6 +34,8 @@ export async function useFadeIn(callback: FadeCallback = () => {}, options?: Fad
     });
   });
   onMounted(async () => {
+    if (IS_WEB) return;
+
     setTimeout(async () => {
       await windowShow({ show: true }).catch(windowRelaunch);
       isFaded.value = true;

@@ -14,7 +14,7 @@ export const setWindowCross = (window: BrowserWindow): BrowserWindow => {
   });
   window.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     callback({
-      responseHeaders: { 'Access-Control-Allow-Origin': ['*'], ...details.responseHeaders }
+      responseHeaders: { ...details.responseHeaders, 'Access-Control-Allow-Origin': '*' }
     });
   });
   return window;

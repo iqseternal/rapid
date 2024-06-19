@@ -13,6 +13,7 @@
 export const CONFIG = {
   API: {
     URL: 'https://www.oupro.cn:3000/api/v1.0.0/',
+    // URL: 'http://localhost:3000/api/v1.0.0/',
     TIMEOUT: 5000,
   },
   PROJECT: 'Rapid',

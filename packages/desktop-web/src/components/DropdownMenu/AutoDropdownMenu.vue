@@ -4,6 +4,7 @@ import { defineComponent, computed } from 'vue';
 import type { DropdownDataType } from './declare';
 import { isComboBoxMenuData, isMenuDriverData, isSingleMenuData } from './declare';
 import type { DropdownProps, Dropdown as DropdownMenuVue } from 'ant-design-vue';
+import { isBoolean, isNumber } from '@suey/pkg-utils';
 
 import Dropdown from './DropdownMenu.vue';
 import MenuDriver from './MenuDriver.vue';
@@ -11,7 +12,9 @@ import ComboBoxMenu from './ComboBoxMenu.vue';
 import SingleMenu from './SingleMenu.vue';
 
 const renderMenu = (menus: DropdownDataType) => {
-  return menus.map((item) => {
+  return menus.filter(item => !isBoolean(item)).map((item) => {
+    if (isBoolean(item)) return <></>;
+
     if (isMenuDriverData(item)) return <MenuDriver />;
     if (isSingleMenuData(item)) return <SingleMenu {...item}>{item.title}</SingleMenu>;
     if (isComboBoxMenuData(item)) {

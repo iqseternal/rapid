@@ -4,12 +4,15 @@
   "description": "Monorepo for Electron Program",
   "private": true,
   "main": "./out/main/index.js",
+  "packageManager": "pnpm@8.9.0",
   "scripts": {
     "useUtf8": "chcp 65001",
     "typecheck": "pnpm -r --filter=./packages/* run typecheck",
     "start": "pnpm useUtf8 && electron-vite preview",
-    "dev": "pnpm useUtf8 && electron-vite dev",
+    "dev": "concurrently \"pnpm dev:web\" \"pnpm dev:desktop\"",
     "dev:app": "pnpm useUtf8 && electron-vite dev --watch",
+    "dev:desktop": "pnpm useUtf8 && electron-vite dev",
+    "dev:web": "pnpm useUtf8 && pnpm -C ./packages/desktop-web run dev",
     "website:dev": "pnpm -C ./packages/website run dev",
     "website:build": "pnpm -C ./packages/website run build",
     "scripts:dev": "pnpm -C scripts dev",
@@ -26,9 +29,28 @@
     "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "vue",
+    "electron",
+    "vite",
+    "meta2d",
+    "monorepo",
+    "workspace",
+    "electron-store",
+    "pinia",
+    "axios"
+  ],
+  "author": {
+    "name": "suey",
+    "email": "sueyeternal@163.com",
+    "url": "https://oupro.cn"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iqseternal/rapid.git",
+    "directory": ""
+  },
   "devDependencies": {
     "@babel/plugin-transform-arrow-functions": "^7.24.1",
     "@commitlint/cli": "^19.1.0",
@@ -39,6 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@vitejs/plugin-vue": "^4.6.2",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "concurrently": "^8.2.2",
     "electron": "^24.8.8",
     "electron-builder": "^23.6.0",
     "electron-vite": "^1.0.25",

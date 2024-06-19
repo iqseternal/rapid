@@ -54,7 +54,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { onMounted, nextTick, onBeforeMount, ref, onErrorCaptured, computed, reactive, onDeactivated, onBeforeUpdate, onActivated } from 'vue';
 import type { Ref } from 'vue';
 import type { DropdownDataType, ComboBoxMenuDataType } from '@components/DropdownMenu';
@@ -74,6 +74,7 @@ import { loginRoute } from '@pages/index/router/modules';
 import { StringFilters } from '@rapid/libs/filters';
 import { Loading1 } from '@components/Loading';
 import { useGlobalStatusState } from '@/state/modules';
+import { IS_WEB } from '@rapid/config/constants';
 
 import Sidebar from './sidebar/index.vue';
 import IconFont from '@components/IconFont';
@@ -91,7 +92,7 @@ const sloganInstance = ref<SloganInstance>();
 
 const { preStack: navMenus, nextStack: navMenusStack, pushStack, popStack } = useStorageStack({
   preStack: [...headerMenus],
-  otherStack: [80, 110, 150, 160, 170],
+  otherStack: [80, 110, 150, 200, 220],
   nextStack: []
 });
 

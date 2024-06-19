@@ -25,7 +25,7 @@ export type SetupAppArgs = [ImportDefault<CreateAppArgs[0]>, CreateAppArgs[1], S
  * @param args
  */
 export async function setupApp(...args: Partial<SetupAppArgs>) {
-  const { windowClose } = await import('../actions');
+  const { windowClose, openReportBugsPage } = await import('../actions');
 
   const App = args[0];
   const appArg = args[1];
@@ -49,9 +49,22 @@ export async function setupApp(...args: Partial<SetupAppArgs>) {
 
     app.use(pl as Plugin);
     return pl;
-  }).catch((e) => {
+  }).catch(async (e) => {
     // 构建 Web App出现了异常
-    if (IS_DEV) printError(`运行异常`, e);
-    if (IS_PROD) windowClose();
+    if (IS_DEV) {
+
+
+      // printError(`运行异常`, e);
+
+      // await windowClose();
+
+      window.close();
+      await openReportBugsPage();
+
+      return;
+    }
+    else if (IS_PROD) {
+      windowClose();
+    }
   });
 }

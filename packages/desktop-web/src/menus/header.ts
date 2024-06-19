@@ -1,10 +1,12 @@
 import { computed, ref } from 'vue';
 import type { Ref } from 'vue';
 import { onRedo, onUndo, getMeta2dData } from '@/meta';
+
 import type { DropdownDataType } from '@components/DropdownMenu';
+import { MenuDriverEnum } from '@components/DropdownMenu';
 import { hotKeys, docImport, docExport, windowReload } from '@/actions';
 import { useDocStoreHook } from '@/store/modules/doc';
-import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
+import { EXPORTS_EXTENSIONS, IS_WEB } from '@rapid/config/constants';
 import { useGenericStoreHook } from '@/store/modules';
 
 const docStore = useDocStoreHook();
@@ -18,14 +20,14 @@ export type AppNavigationMenu = {
   menuList: DropdownDataType | Ref<DropdownDataType>;
 }
 
+
 export const fileMenu: Ref<AppNavigationMenu> = ref({
   title: '文件',
   mark: 'FileOutlined',
   menuList: [
-    {
+    IS_WEB || {
       title: '新建窗口',
       mark: 'WindowsOutlined', shortcut: hotKeys.createFile.key,
-
     },
     {
       title: '新建文档',
@@ -42,28 +44,27 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
         }
       ]
     },
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '打开',
       mark: 'FolderOpenOutlined', shortcut: hotKeys.openFile.key,
       onClick: () => docStore.openDoc()
 
     },
-
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '保存',
       mark: 'SaveOutlined', shortcut: hotKeys.saveFile.key,
       disabled: computed(() => !docStore.isWork),
       onClick: () => docStore.saveDoc()
     },
-    {
+    IS_WEB || {
       title: '另存为',
       shortcut: hotKeys.saveFileTo.key,
       disabled: computed(() => !docStore.isWork),
       onClick: () => docStore.saveAsDoc()
     },
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '导入',
       mark: 'ImportOutlined',
@@ -88,7 +89,7 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
             options: meta2d.getOptions()
           })
         },
-        true,
+        MenuDriverEnum.SOLID,
         {
           title: 'PNG',
           mark: 'FileImageOutlined',
@@ -96,7 +97,7 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
         }
       ]
     },
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '发布',
       disabled: computed(() => !docStore.isWork),
@@ -110,7 +111,7 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
         }
       ]
     },
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '打印',
       mark: 'PrinterOutlined', shortcut: hotKeys.printFile.key,
@@ -138,7 +139,7 @@ export const editMenu: Ref<AppNavigationMenu> = ref({
       disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.undo.evt
     },
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '剪切',
       mark: 'ScissorOutlined', shortcut: hotKeys.scissor.key,
@@ -157,7 +158,7 @@ export const editMenu: Ref<AppNavigationMenu> = ref({
       disabled: computed(() => !docStore.isWork),
       onClick: hotKeys.snippets.evt
     },
-    true,
+    MenuDriverEnum.SOLID,
     {
       title: '全选',
       mark: 'SelectOutlined', shortcut: hotKeys.allSelect.key,
@@ -176,7 +177,7 @@ export const editMenu: Ref<AppNavigationMenu> = ref({
 export const appearanceMenu: Ref<AppNavigationMenu> = ref({
   title: '外观',
   menuList: [
-    {
+    IS_WEB || {
       title: '侧边栏',
       children: [
         {
@@ -186,6 +187,22 @@ export const appearanceMenu: Ref<AppNavigationMenu> = ref({
         {
           title: '收缩',
           onClick: () => genericStore.appearanceSetter.setLeftSideBarShow(false)
+        }
+      ]
+    },
+    {
+      title: '工作区',
+      mark: 'MediumWorkmarkOutlined',
+      children: [
+        {
+          title: '显示工具栏',
+          mark: 'ToolOutlined'
+        },
+        {
+          title: '显示图形栏'
+        },
+        {
+          title: '显示属性栏'
         }
       ]
     }

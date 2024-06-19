@@ -3,9 +3,9 @@
    <Toolbar />
 
     <div class="w-full flex-between overflow-hidden viewContainer">
-      <Graphics v-resize-width="graphicsBindings" />
+      <Graphics v-if="appearance.workbenches.showGraphicsBar" v-resize-width="graphicsBindings" />
       <View :width="viewWidth" />
-      <PropertyBar v-resize-width="propertyBindings" />
+      <PropertyBar v-if="appearance.workbenches.showAttributesBar" v-resize-width="propertyBindings" />
     </div>
   </div>
 </template>
@@ -17,9 +17,10 @@ import { vResizeWidth } from '@rapid/libs/directives';
 
 import type { VResizeWidthBindings } from '@rapid/libs/directives';
 import { useSurvivalCycle, usePickColorsAttrs } from '@/hooks';
+import { useGenericStore } from '@/store/modules';
 
+const { appearance, appearanceSetter } = useGenericStore();
 const { setPopupContainer } = usePickColorsAttrs();
-
 
 const graphicsBindings: VResizeWidthBindings = reactive({
   minWidth: 190,

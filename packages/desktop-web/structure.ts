@@ -47,10 +47,10 @@ export default defineElectronRendererConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       input: {
-        index: join(__dirname, './index.html'),
-        setting: join(__dirname, '/setting.html'),
-        dialog: join(__dirname, './dialog.html'),
-        reportBugs: join(__dirname, './reportBugs.html')
+        index: join(__dirname, './src/pages/', 'index/index.html'),
+        setting: join(__dirname, './src/pages/', 'setting/setting.html'),
+        dialog: join(__dirname, './src/pages/', 'dialog/dialog.html'),
+        reportBugs: join(__dirname, './src/pages/', 'reportBugs/reportBugs.html')
       }
     },
   },

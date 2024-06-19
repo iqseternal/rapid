@@ -182,13 +182,14 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
    */
   @IpcMain.Handler()
   async openWindow(_: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
-    const windowService = WindowStateMachine.findWindowService(type);
+    let windowService = WindowStateMachine.findWindowService(type);
 
     if (!windowService) {
-      if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) await setupSettingWindow();
-      else if (type === WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW) await setupReportBugsWindow();
-
-      return;
+      if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) windowService = await setupSettingWindow();
+      else if (type === WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW) windowService = await setupReportBugsWindow();
+      else throw new TypeException('错误的窗口KEY', {
+        label: `${this.id}:openWindow`
+      })
     }
 
     windowService.show();

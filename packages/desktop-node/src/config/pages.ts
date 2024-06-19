@@ -8,6 +8,8 @@ import { is } from '@electron-toolkit/utils';
 import { join } from 'path';
 import { IS_DEV } from '@rapid/config/constants';
 
+const devPagesPrefixUrl = '/src/pages/';
+
 /** Config , 并不存储在 JSON 中, 不希望用户更改 */
 /**
  * 根据当前的环境获取URL
@@ -18,24 +20,25 @@ import { IS_DEV } from '@rapid/config/constants';
  * @param url
  * @returns
  */
-const makeStartUrl = (url: string) => {
+const makeStartUrl = (url: string, prefix = '', extension = 'html') => {
   if (is.dev && process.env['ELECTRON_RENDERER_URL'])
-    return `${process.env['ELECTRON_RENDERER_URL']}/${url}`;
+    return `${process.env['ELECTRON_RENDERER_URL']}${devPagesPrefixUrl}${url}/${prefix}.${extension}`;
 
-  return join(__dirname, `../renderer/${url}`);
+  return join(__dirname, `../renderer/${prefix}.${extension}`);
 }
 
-// const PAGE_WINDOW_LOGIN_NAME = 'login.html';
-// export const PAGES_WINDOW_LOGIN = makeStartUrl(PAGE_WINDOW_LOGIN_NAME);
+/** 主窗口 */
+const PAGES_WINDOW_MAIN_NAME = 'index';
+export const PAGES_WINDOW_MAIN = makeStartUrl(PAGES_WINDOW_MAIN_NAME, PAGES_WINDOW_MAIN_NAME);
 
-const PAGES_WINDOW_MAIN_NAME = 'index.html';
-export const PAGES_WINDOW_MAIN = makeStartUrl(PAGES_WINDOW_MAIN_NAME);
+/** 设置窗口 */
+const PAGES_WINDOW_SETTING_NAME = 'setting';
+export const PAGES_WINDOW_SETTING = makeStartUrl(PAGES_WINDOW_SETTING_NAME, PAGES_WINDOW_SETTING_NAME);
 
-const PAGES_WINDOW_SETTING_NAME = 'setting.html';
-export const PAGES_WINDOW_SETTING = makeStartUrl(PAGES_WINDOW_SETTING_NAME);
+/** 弹窗窗口 */
+const PAGES_WINDOW_DIALOG_NAME = 'dialog';
+export const PAGES_WINDOW_DIALOG = makeStartUrl(PAGES_WINDOW_DIALOG_NAME, PAGES_WINDOW_DIALOG_NAME);
 
-const PAGES_WINDOW_DIALOG_NAME = 'dialog.html';
-export const PAGES_WINDOW_DIALOG = makeStartUrl(PAGES_WINDOW_DIALOG_NAME);
-
-const PAGES_WINDOW_REPORT_BUGS_NAME = 'reportBugs.html';
-export const PAGES_WINDOW_REPORT_BUGS = makeStartUrl(PAGES_WINDOW_REPORT_BUGS_NAME);
+/** 汇报 BUG 窗口 */
+const PAGES_WINDOW_REPORT_BUGS_NAME = 'reportBugs';
+export const PAGES_WINDOW_REPORT_BUGS = makeStartUrl(PAGES_WINDOW_REPORT_BUGS_NAME, PAGES_WINDOW_REPORT_BUGS_NAME);

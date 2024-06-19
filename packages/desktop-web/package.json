@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },
   "keywords": [],

@@ -26,5 +26,6 @@ export type {
   MenuDriverDataType,
   DropdownDataType
 } from './declare';
+export { MenuDriverEnum } from './declare';
 
 export { isSingleMenuData, isComboBoxMenuData, isMenuDriverData, DROPDOWN_STATUS, setupDropdownOpenModel } from './declare';

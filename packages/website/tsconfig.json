@@ -3,6 +3,7 @@
     "moduleResolution": "Node",
     "module": "ESNext",
     "target": "ESNext",
+    "skipDefaultLibCheck": true,
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly": false,
     "composite": false,
@@ -14,7 +15,7 @@
     "baseUrl": ".",
     "jsx": "react-jsx",
     "lib": ["DOM", "ESNext", "WebWorker"],
-    "types": ["./src/@types", "../config/@types"],
+    "types": ["./src/@types"],
     "paths": {
       "@scss/*": ["src/scss/*"],
       "@components/*": ["src/components/*"],
@@ -33,7 +34,7 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", "../config/@types"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": ["node_modules", "dist", ".git", ".ignore"]
 }
 

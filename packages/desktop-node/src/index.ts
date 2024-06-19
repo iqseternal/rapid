@@ -1,4 +1,8 @@
-import { RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter, RuntimeExceptionFilter, AsyncExceptionFilter } from './core';
+import {
+  RequestExceptionFilter, TypeExceptionFilter,
+  PermissionExceptionFilter, RuntimeExceptionFilter,
+  AsyncExceptionFilter, RuntimeException
+} from './core';
 import { IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler, IpcGraphicHandler, IpcDocHandler } from './ipc';
 import { LoggerServer, IpcHandlerServer } from './server';
 import { setupContext, setupSingleApplication } from '@rapid/framework';

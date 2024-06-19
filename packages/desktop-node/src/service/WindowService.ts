@@ -52,7 +52,7 @@ export class WindowService {
       },
     });
 
-    setWindowCross(this.window);
+    // setWindowCross(this.window);
     setWindowMaxSize(this.window);
     setWindowCaption(this.window, iconUrl, CONFIG.PROJECT);
     setWindowOpenHandler(this.window);

@@ -1,3 +1,5 @@
+/// <reference types="../../../config/@types/index" />
+
 import type { FC, ReactElement, CSSProperties } from 'react';
 import type { RouteProps, PathRouteProps } from 'react-router-dom';
 import type { LangTextKey, LangTextMap } from '@/i18';

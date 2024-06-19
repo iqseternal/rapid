@@ -8,8 +8,8 @@ import { workbenchesRoute } from '@pages/index/router/modules';
 
 import { useDataStateHook } from '@meta/useProps';
 import { useGlobalStatusStateHook } from '@/state/modules';
-import store from '@/store';
 import { useMetaStateHook } from '@meta/useMetaState';
+import store from '@/store';
 
 const { metaState } = useMetaStateHook();
 const { dataState } = useDataStateHook();

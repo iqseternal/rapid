@@ -7,6 +7,7 @@
 <script lang="ts" setup>
 import SidebarItem from '@components/SidebarItem';
 import Logo from '@components/Logo/Logo.vue';
+
 </script>
 
 <style lang="scss" scoped>

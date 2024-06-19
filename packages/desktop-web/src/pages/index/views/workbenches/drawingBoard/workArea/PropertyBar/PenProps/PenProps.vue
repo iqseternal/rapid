@@ -55,12 +55,10 @@ import { isUndefined } from '@suey/pkg-utils';
 import { SelectionMode } from '@meta/useSelections';
 import { ShowTypeMode, penPropsTabs } from '@meta/preset';
 import { useSurvivalCycle } from '@/hooks';
-import type { JSX } from 'vue/jsx-runtime';
 import { NumberFilters } from '@rapid/libs/filters';
 
+import RenderJsx from '@rapid/libs/components/RenderJsx';
 import PickColors from 'vue-pick-colors';
-
-
 import AnimateProps from './Animate.vue';
 import EventsProps from './Events.vue';
 
@@ -74,9 +72,6 @@ const { selections } = useSelections();
 const pen = ref();
 
 const rect = ref();
-
-/** 渲染 JSX 元素 */
-const RenderJsx = ({ jsx }: { jsx: JSX.Element }) => <>{jsx}</>;
 
 const getPen = () => {
   if (selections.mode !== SelectionMode.Pen) return;

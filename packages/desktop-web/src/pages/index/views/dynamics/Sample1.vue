@@ -2,7 +2,7 @@
   <ACard>
     <Subfield>
       <div>
-        <AButton @click="handleCreate">新建</AButton>
+        <AButton @click="handleCreate">新建1</AButton>
       </div>
       <div>
         <AInputSearch />
@@ -28,9 +28,13 @@ import { ref } from 'vue';
 import { useTableAttrs, useColumns } from '@/hooks';
 import type { Response } from './api';
 import { getListApi } from './api';
+import { useRouter } from 'vue-router';
+import { loginRoute } from '@pages/index/router/modules';
 
 import Subfield from '@components/Subfield';
 import NewLi from './NewLi.vue';
+
+const router = useRouter();
 
 const dataList = ref<Response[]>([]);
 const { columns } = useColumns<Response>([

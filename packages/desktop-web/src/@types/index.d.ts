@@ -6,17 +6,6 @@ import type { Meta2d } from '@meta2d/core';
 import type { ExposeApi } from 'node_modules/@rapid/desktop-node/preload';
 import type { ObjKeyToArr, CustomColumn } from '@rapid/libs/types';
 
-/** Vue JSX 声明  */
-declare global {
-  namespace JSX {
-    // export interface Element extends DefineComponent<{}, {}, any> {}
-    // export interface ElementClass extends DefineComponent<{}, {}, any> {}
-    interface IntrinsicElements extends DefineComponent<{}, {}, any> {
-
-    }
-  }
-}
-
 /** meta2d 声明  */
 declare global {
   declare var meta2d: Meta2d & {
@@ -32,8 +21,6 @@ declare global {
   interface Window extends ExposeApi {
 
   }
-
-
 }
 
 

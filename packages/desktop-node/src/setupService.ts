@@ -111,7 +111,9 @@ export async function setupReportBugsWindow() {
     width: 550,
     height: 400,
     frame: false,
-    autoHideMenuBar: false
+    autoHideMenuBar: false,
+    resizable: false,
+    fullscreenable: false
   }, {
     url: PAGES_WINDOW_REPORT_BUGS,
     autoLoad: true,

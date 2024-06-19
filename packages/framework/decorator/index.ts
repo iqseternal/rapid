@@ -2,8 +2,12 @@ import { isUnDef } from '@suey/pkg-utils';
 import { Printer } from '../core';
 import { IS_PROD } from '@rapid/config/constants';
 
+import { getLoggerRuntimeContext } from '../logger';
+
 export { IpcMain, IPC_EMITTER_TYPE } from '../ipc';
 export { NoteInfo } from '../logger';
+
+const loggerRuntimeContext = getLoggerRuntimeContext();
 
 /**
  * 标记一个弃用的类或者一个弃用的方法
@@ -17,7 +21,10 @@ export function Deprecated() {
 
     // ClassDecorator
     if (isUnDef(propertyKey) && isUnDef(descriptor)) {
-      Printer.printWarn(`Deprecated`, new Error().stack);
+
+      loggerRuntimeContext.server.warn(`Deprecated`, new Error().stack);
+
+      // Printer.printWarn(`Deprecated`, new Error().stack);
       return;
     }
 

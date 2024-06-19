@@ -12,9 +12,15 @@ export const useGenericStore = defineStore(GENERIC_STORE_NAME, () => {
 
   /** 外观配置 */
   const appearance = reactive({
-    showLeftSideBar: true
+    showLeftSideBar: true,
 
+    workbenches: {
+      showToolBar: true,
 
+      showGraphicsBar: true,
+
+      showAttributesBar: true
+    }
   })
 
   /** 对外观变量进行设置 */
