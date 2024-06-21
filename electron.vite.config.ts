@@ -4,7 +4,7 @@ import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from 
 import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
-import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR } from './packages/config/dirs';
+import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR, DEV_DESKTOP_WEB_DIR } from './packages/config/dirs';
 import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/sturcture';
 
 import eslintPlugin from 'vite-plugin-eslint';
@@ -56,7 +56,7 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
 }));
 
 const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<RendererConfig, RendererConfig>(rendererConfigFn(configEnv), {
-  root: join(__dirname, './packages/desktop-web'),
+  root: DEV_DESKTOP_WEB_DIR,
   define: defineVars(configEnv),
   plugins: [...loadLintPlugins(configEnv)],
   server: {

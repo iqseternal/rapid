@@ -5,4 +5,4 @@
 /**/out
 
 /scripts/build
-/packages/desktop-web/components.d.ts
+/packages/**/components.d.ts

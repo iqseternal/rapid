@@ -23,7 +23,12 @@ export const NumberFilters = {
 
 /** 字符串类的 Filter */
 export const StringFilters = {
-  /** 转换为有效字符串 */
+  /**
+   * 转换为有效字符串
+   * @param value 需要转换的值
+   * @param fillStr 如果是非有效字符串,那么填充什么字符串
+   * @returns
+   */
   toValidStr: (value: Ref<string | undefined> | string | undefined, fillStr: string) => {
     const realValue = unref(value);
 

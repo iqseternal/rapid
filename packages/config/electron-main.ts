@@ -1,4 +1,5 @@
 import type { BrowserWindowConstructorOptions } from 'electron';
+import { CONFIG } from './constants/config';
 
 export { default as iconUrl } from '../../resources/icon.png?asset';
 
@@ -7,7 +8,7 @@ function makeBrowserWindowOptions<T extends Record<string, BrowserWindowConstruc
 }
 
 export const APP_CONFIG = {
-  appName: 'space',
+  appName: CONFIG.PROJECT,
   appVersion: 'v1.0.0',
   author: 'suey',
   email: 'sueyeternal@163.com',

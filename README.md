@@ -18,9 +18,9 @@
 
 🌱`/package/config` 为两个项目的配置(包含构建配置以及运行时配置，以及一些构建常量，例如当前环境，IS_DEV，当前构建平台，IS_WINDOWS等等)，看过代码之后，就可以随意的编写你想要的配置常量，添加想要的构建平台和一些选项。这些常量选项，IS_XXX，通常会在编译时确定，因此，通过 Vite 做到树摇，可以利用此方案可以构建 Web `OEM` 方案。
 
-🌱`/package/electron-node`则是对应 `Electron` 程序的主进程。
+🌱`/package/desktop-node`则是对应 `Electron` 程序的主进程。
 
-🌱`/package/electron-web`则是对应 `Electron` 程序的渲染进程。基于 `Vue` 编写，具有多入口。
+🌱`/package/desktop-web`则是对应 `Electron` 程序的渲染进程。基于 `Vue` 编写，具有多入口。
 
 🌱`/package/website`则是基于 `React`编写的下载网站，使用了 `styled-components`，`scss module`，行内样式，虽然都采用了但是为其分了使用类别，`styled-components`建立基本元素容器，`scss module`编写页面组件级样式，行内样式则是为了覆盖元素容器原有样式，又或者样式简短。由于受到 `Vue`开发的影响，`useState` 的 手动`set`已经不能满足于我，于是编写了一个类似 `Vue`开发的自动 `set` 的 `hook`，具体阐述自行查看 `hooks`文件夹。
 

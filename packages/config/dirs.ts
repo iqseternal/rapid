@@ -19,6 +19,8 @@ export const DIST_DIR = path.join(ROOT_DIR, './dist');
 
 /** 打包 website 的输出目录 */
 export const DIST_WEBSITE_DIR = path.join(DIST_DIR, './website');
+/** 打包 Web 平台的输出目录 */
+export const DIST_WEB_DIR = path.join(DIST_DIR, './web');
 /** 打包 desktop 的输出目录 */
 export const DIST_DESKTOP_DIR = path.join(DIST_DIR, './desktop');
 
