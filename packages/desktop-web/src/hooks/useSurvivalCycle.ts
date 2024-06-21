@@ -4,7 +4,9 @@ import { onMounted, onBeforeUnmount, onActivated, onDeactivated, ref } from 'vue
 export interface SurvivalCycleOptions {
   allowMoreTimes?: boolean;
 
+  /** 组件挂载或者活跃 */
   survival?: () => void | Promise<void>;
+  /** 组件卸载或者失活 */
   extinction?: () => void | Promise<void>;
 }
 
@@ -15,18 +17,23 @@ export interface SurvivalCycleOptions {
 export function useSurvivalCycle(options?: SurvivalCycleOptions) {
   const { allowMoreTimes = false, survival = () => {}, extinction = () => {} } = options?? {};
 
-  const isExecuted = ref(false);
+  const isExecuted = ref({
+    enter: true,
+    leave: true
+  });
 
   const survivalCycle = async () => {
-    if (!allowMoreTimes && isExecuted.value) return;
+    if (!isExecuted.value.enter && !allowMoreTimes) return;
 
-    isExecuted.value = true;
+    isExecuted.value.enter = false;
+    isExecuted.value.leave = true;
     survival();
   }
   const extinctionCycle = async () => {
-    if (!allowMoreTimes && !isExecuted.value) return;
+    if (!isExecuted.value.leave && !allowMoreTimes) return;
 
-    isExecuted.value = false;
+    isExecuted.value.leave = false;
+    isExecuted.value.enter = true;
     extinction();
   }
 

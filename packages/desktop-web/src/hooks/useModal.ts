@@ -60,7 +60,7 @@ export function useModalAttrs<
     modalAttrs, // modal 的基本传值
     sourceData, // 表格新建类 modal 弹窗有时候需要传递一些字段值以供初始化
     modalMode, // modal 的模式
-    ok, // modal 点击确认后的回调函数, 如果返回值为 false 或者 Promise<false> 那么可以中断 modal 的关闭
+    ok, // modal 点击确认后的回调函数
     cancel, // 同 ok
     open: (title: string, mode: ModalMode, sourceDataInit: Partial<R>) => {
       if (title) modalAttrs.title = title;
@@ -98,7 +98,7 @@ export interface ModalEvt<SourceDataType> {
  * @param evts
  * @returns
  */
-export function useModalEvt<R>(evts: Partial<ModalEvt<Partial<R>>>) {
+export function useModalEvts<R>(evts: Partial<ModalEvt<Partial<R>>>) {
   const instance = getCurrentInstance();
 
   if (!instance) return;

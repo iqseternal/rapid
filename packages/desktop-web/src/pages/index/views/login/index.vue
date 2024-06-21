@@ -10,7 +10,7 @@
           <div />
           <ASpace>
             <Logo style="display: inline-block;width: 40px;height: 40px;" />
-            <BlendedText text="SPACE FOR YOUR PLATFORM" :distSpacing="4" style="display: inline-block;font-size: 40px;line-height: 40px;" />
+            <BlendedText text="RAPID FOR YOUR PLATFORM" :distSpacing="4" style="display: inline-block;font-size: 40px;line-height: 40px;" />
           </ASpace>
           <div />
         </Subfield>

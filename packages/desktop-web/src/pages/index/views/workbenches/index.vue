@@ -1,12 +1,10 @@
 <template>
-  <DrawingBoard />
-
-  <!-- <template v-if="docStore.isWork">
+  <template v-if="docStore.isWork">
     <DrawingBoard />
   </template>
   <template v-else>
     <BulletinBoard />
-  </template> -->
+  </template>
 </template>
 
 <script lang="tsx" setup>

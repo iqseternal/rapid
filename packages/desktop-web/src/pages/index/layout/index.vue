@@ -44,7 +44,7 @@
 
         <main class="container full">
           <RouterView v-slot="{ Component }">
-            <KeepAlive>
+            <KeepAlive :max="10">
               <component :is="Component" />
             </KeepAlive>
           </RouterView>

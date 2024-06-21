@@ -35,7 +35,7 @@ export const fileMenu: Ref<AppNavigationMenu> = ref({
         {
           title: '空白文档',
           mark: 'FileAddOutlined',
-          disabled: computed(() => !docStore.isWork),
+          // disabled: computed(() => !docStore.isWork),
           onClick: () => docStore.createDoc(),
         },
         {

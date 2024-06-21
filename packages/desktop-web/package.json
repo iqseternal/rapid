@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+    "build": "vite build",
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false && vue-tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -14,11 +15,9 @@
   "devDependencies": {
     "@meta2d/le5le-charts": "^1.0.4",
     "@rapid/config": "workspace:^",
-    "@rapid/desktop-node": "workspace:^",
-    "@types/mousetrap": "^1.6.15"
+    "@rapid/desktop-node": "workspace:^"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1",
     "@formkit/auto-animate": "^0.8.1",
     "@meta2d/activity-diagram": "^1.0.0",
     "@meta2d/chart-diagram": "^1.0.7",
@@ -33,13 +32,6 @@
     "@meta2d/svg": "^1.0.4",
     "@rapid/libs": "workspace:^",
     "@rapid/validates": "workspace:^",
-    "animate.css": "^4.1.1",
-    "ant-design-vue": "^4.1.2",
-    "dayjs": "^1.11.10",
-    "fake-progress": "^1.0.4",
-    "mousetrap": "^1.6.5",
-    "pinia": "^2.1.7",
-    "pinia-plugin-persistedstate": "^3.2.1",
-    "vue-pick-colors": "^1.6.3"
+    "fake-progress": "^1.0.4"
   }
 }

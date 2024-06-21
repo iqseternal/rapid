@@ -16,7 +16,7 @@
 import { reactive, watch, ref } from 'vue';
 import type { FormInstance, FormProps } from 'ant-design-vue';
 import type { Response } from './api';
-import { useModalEvt, useRules, useModalProps, not, or, and, is } from '@/hooks';
+import { useModalEvts, useRules, useModalProps, not, or, and, is } from '@/hooks';
 import { message } from 'ant-design-vue';
 import { validateChinaPhone, validateEmail, validateIsSpaceStr, validateRealName, validateValidStr } from '@rapid/validates';
 import { isString } from '@suey/pkg-utils';
@@ -53,7 +53,7 @@ const handleOk: ModalEvtCallBack = (next) => { // 点击了确认按钮，调用
   })
 }
 
-useModalEvt<Response>({ // Modal 框的事件处理，例如初始化事件和重置事件
+useModalEvts<Response>({ // Modal 框的事件处理，例如初始化事件和重置事件
   init: ({ sourceData, mode }) => {
 
 

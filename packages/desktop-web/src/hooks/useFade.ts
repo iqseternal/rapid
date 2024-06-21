@@ -53,14 +53,17 @@ export async function useFadeOut(callback: FadeCallback, options?: FadeOptions) 
 
   isFaded.value = false;
 
-  await windowShow({ show: false }).catch(windowRelaunch);
+  if (!IS_WEB) await windowShow({ show: false }).catch(windowRelaunch);
+
   setTimeout(async () => {
     await callback();
     setTimeout(() => {
       if (isFaded.value === false) {
-        windowShow({ show: true }).then(() => {
-          WindowPopup.warn('跳转出现错误');
-        }).catch(windowRelaunch);
+        if (!IS_WEB) {
+          windowShow({ show: true }).then(() => {
+            WindowPopup.warn('跳转出现错误');
+          }).catch(windowRelaunch);
+        }
       }
     }, 2000);
   }, options.timer);

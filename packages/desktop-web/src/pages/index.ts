@@ -25,7 +25,7 @@ export type SetupAppArgs = [ImportDefault<CreateAppArgs[0]>, CreateAppArgs[1], S
  * @param args
  */
 export async function setupApp(...args: Partial<SetupAppArgs>) {
-  const { windowClose, openReportBugsPage } = await import('../actions');
+  const { windowClose, openReportBugsPage, windowShow } = await import('../actions');
 
   const App = args[0];
   const appArg = args[1];
@@ -59,6 +59,7 @@ export async function setupApp(...args: Partial<SetupAppArgs>) {
       // await windowClose();
 
       window.close();
+      // await windowShow({ show: false });
       await openReportBugsPage();
 
       return;

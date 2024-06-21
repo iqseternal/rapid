@@ -23,15 +23,18 @@ declare global {
   }
 }
 
-
 declare global {
-  /**  */
+  /** Modal 模态框组件的事件回调函数  */
   declare type ModalEvtCallBack = EvtCallback;
 
+  /** Vue 设置属性类型的类型推导 */
   declare type PropType<T> = VuePropType<T>;
 
+  /** Antd Icon 名称 */
   declare type IconRealKey = VueIconRealKey;
+  /** icon-xxx 类似的自定义 icon 处理 */
   declare type IconLikeKey = VueIconLikeKey;
+  /** icon 类型 */
   declare type IconKey = IconRealKey | IconLikeKey;
 
   declare namespace TableType {

@@ -9,7 +9,7 @@
       </div>
     </Subfield>
 
-    <ATable v-bind="tableAttrs" :dataSource="dataList" :columns="columns">
+    <ATable v-bind="tableAttrs" :columns="columns">
       <template #bodyCell="{ record, column }">
 
         <template v-if="column.dataIndex === 'operator'">
@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useTableAttrs, useColumns } from '@/hooks';
+import { useTableAttrs, useColumns, useModalAttrs } from '@/hooks';
 import type { Response } from './api';
 import { getListApi } from './api';
 import { useRouter } from 'vue-router';
@@ -36,11 +36,26 @@ import NewLi from './NewLi.vue';
 
 const router = useRouter();
 
-const dataList = ref<Response[]>([]);
 const { columns } = useColumns<Response>([
   { title: '名称', dataIndex: 'name' },
   { title: '年龄', dataIndex: 'age' },
-  { title: '源地址', dataIndex: ['data', 's_addr'] },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
+  { title: '源地址', dataIndex: ['data', 's_addr'], width: 100 },
   { title: '目的地址', dataIndex: ['data', 'd_addr'] },
   { title: '操作', dataIndex: 'operator' }
 ]);
@@ -52,8 +67,8 @@ const { tableAttrs, modalAllAttrs, open } = useTableAttrs<Response>({
 }, next => { // 表格请求有时还需要一些其他参数，可以从第二个参数中解构
   // 调用 next 进行下一步
   getListApi().then(res => {
-    dataList.value = res;
-    next();
+
+    next(res);
   })
 });
 

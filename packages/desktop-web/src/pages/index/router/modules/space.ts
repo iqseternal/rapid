@@ -3,8 +3,8 @@ import { terminalSvg, dashboardSvg, settingSvg } from '@/assets';
 import { View, makeRoute } from '@libs/router';
 
 export const spaceRoutes = makeRoute({
-  name: 'Space',
-  path: '/space',
+  name: 'Rapid',
+  path: '/rapid',
   component: () => import('@pages/index/layout/index.vue'),
   redirect: 'workbenches',
   children: [

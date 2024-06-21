@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useMousetrap, useFadeIn } from '@/hooks';
+import { useMousetrap, useFadeIn, useEnableDragText } from '@/hooks';
 import { hotKeys, windowReload } from '@/actions';
 import { useRoute } from 'vue-router';
 

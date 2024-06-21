@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref, watch, getCurrentInstance, onDeactivated, onActivated } from 'vue';
-import { useDebounce } from '@/hooks'
+import { useDebounce, useSurvivalCycle } from '@/hooks'
 import { setupMeta2dView, useMetaState, destroyMeta2dView, useDataState } from '@/meta';
 import { useDocStore } from '@/store/modules/doc';
 
@@ -29,17 +29,19 @@ const setupMeta2dLife = async () => {
 
 const destroyMeta2dLife = destroyMeta2dView;
 
-onMounted(setupMeta2dLife);
-onActivated(setupMeta2dLife);
 
-onDeactivated(destroyMeta2dLife);
-onBeforeUnmount(destroyMeta2dLife);
+useSurvivalCycle({
+  survival: setupMeta2dLife,
+  extinction: destroyMeta2dLife
+})
 
 watch(() => props.width, useDebounce(() => {
-  if (instance?.isDeactivated) return;
+  if (!instance) return;
+
+  if (!instance.isMounted || instance.isDeactivated) return;
   if (!view.value) return;
-  if (!view.value.clientWidth || !view.value.clientHeight) return;
-  if (instance?.isMounted && !instance.isDeactivated) meta2d.resize();
+
+  if (metaState.isSetup) meta2d.resize();
 }, 30));
 </script>
 

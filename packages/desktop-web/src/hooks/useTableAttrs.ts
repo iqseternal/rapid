@@ -5,9 +5,10 @@ import type { TableProps } from 'ant-design-vue';
 
 import { usePagination } from './usePaginationAttrs';
 import { useModalAttrs } from './useModal';
+import { isUndefined } from '@suey/pkg-utils';
 
 export type InitTableFn<R> = (
-  next: () => Promise<void>,
+  next: (dataSource?: R[], callback?: () => void) => Promise<void>,
   refent: {
     params: ReturnType<typeof usePagination>['paginParams'],
     pagination: ReturnType<typeof usePagination>,
@@ -36,6 +37,12 @@ export function useTableAttrs<
 
   const tableAttrs = reactive({
     pagination: pagination.paginAttrs,
+    dataSource: [],
+    // sticky: true,
+    tableLayout: 'fixed',
+    scroll: {
+      x: true
+    },
     loading: false,
     ...props
   }) as unknown as (
@@ -47,7 +54,14 @@ export function useTableAttrs<
 
   async function loadData() {
     tableAttrs.loading = true;
-    const next = async () => { tableAttrs.loading = false; }
+    const next = async (dataSource?: R[], callback?: () => void) => {
+      if (!isUndefined(dataSource)) tableAttrs.dataSource = dataSource;
+      tableAttrs.loading = false;
+
+      if (callback) callback();
+    }
+
+
     const res = await loadDataFn(next, {
       params: pagination.paginParams,
       pagination,

@@ -10,7 +10,7 @@
     <template v-if="$slots.center">
       <div ref="centerContainer" class="flex-start w-full overflow-x-hidden"><slot name="center" /></div>
     </template>
-    <template v-else><span class="slogan animate__animated animate__slideInLeft">{{ 'SPACE' }}</span></template>
+    <template v-else><span class="slogan animate__animated animate__slideInLeft">{{ CONFIG.PROJECT.toUpperCase() }}</span></template>
 
     <Subfield gap="2px" style="width: unset;flex: unset;flex-shrink: 0;">
       <!-- <Widget title="后退 Alt+LeftArrow" @click="() => router.back()">
@@ -34,6 +34,7 @@ import { useMousetrap } from '@/hooks';
 import { useAutoAnimate, vAutoAnimate } from '@formkit/auto-animate/vue';
 import { DropdownMenu, ComboBoxMenu, SingleMenu, MenuDriver } from '@components/DropdownMenu';
 import type { SloganInstance } from './declare';
+
 
 import Widget from '@components/Widget';
 import Indicator from './Indicator.vue';

@@ -50,7 +50,7 @@ export default defineComponent<RInputProps>({
     return () => (
       <div class="rInput">
         <div ref={topic} class="topic">{slots.topic && slots.topic()}</div>
-        <Input ref={input} { ...attrs }>{slots}</Input>
+        <Input ref={input as any} { ...attrs }>{slots}</Input>
       </div>
     );
   }

@@ -17,7 +17,7 @@ export type { ValidateRef, ValidateRefResult, Result } from './useValidate';
 export { useValidate, useValidateRef } from './useValidate';
 
 export type { ModalMode, ModalHookEmits, ModalEvt, ModalAllAttrs } from './useModal';
-export { useModalAttrs, useModalProps, useModalEvt } from './useModal';
+export { useModalAttrs, useModalProps, useModalEvts } from './useModal';
 
 export { usePagination } from './usePaginationAttrs';
 
@@ -39,7 +39,7 @@ export { useStorageStack } from './useStorageStack';
 
 export { useDisableRouterBack, useDisableRouterBackHook } from './useRouterJump';
 
-export { useDisableDragText } from './useDisableDragText';
+export { useDisableDragText, useEnableDragText } from './useDisableDragText';
 
 export { usePickColorsAttrs, usePickColorsAttrsHook, useScopedPickColorsAttrs, useScopedPickColorsAttrsHook } from './usePickColors';
 export type { PickColorsProps } from './usePickColors';

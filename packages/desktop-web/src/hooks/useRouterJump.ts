@@ -2,6 +2,7 @@ import { isString } from '@suey/pkg-utils';
 import { onActivated, onBeforeMount, onBeforeUnmount, onDeactivated, ref } from 'vue';
 import type { RouteLocationNormalized, NavigationGuardNext, Router } from 'vue-router';
 import { useRoute } from 'vue-router';
+import { useSurvivalCycle } from './useSurvivalCycle';
 
 const backBlackList = new Set<string>();
 
@@ -28,11 +29,10 @@ export const useDisableRouterBack = () => {
     isEnabled.value = false;
   }
 
-  onBeforeMount(enable);
-  onActivated(enable);
-
-  onBeforeUnmount(disable);
-  onDeactivated(disable);
+  useSurvivalCycle({
+    survival: enable,
+    extinction: disable
+  });
 }
 
 /**

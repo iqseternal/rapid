@@ -141,6 +141,7 @@ export async function setupMeta2dView(target: HTMLElement) {
 
 export async function destroyMeta2dView() {
   if (!metaState.isSetup) return;
+
   meta2d.destroy();
   metaState.isSetup = false;
 }

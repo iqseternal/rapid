@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { docOpen, docSaveAs, docSave, WindowPopup, docImport } from '@/actions';
-import { EXPORTS_EXTENSIONS } from '@rapid/config/constants';
+import { EXPORTS_EXTENSIONS, IS_WEB } from '@rapid/config/constants';
 import { getMeta2dData } from '@meta/actions';
 import { useRoute } from 'vue-router';
 import { workbenchesRoute } from '@pages/index/router/modules';
@@ -24,7 +24,10 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
 
   /** 当文件名存在,那么就表示当前正在工作区绘图 */
   const isWork = computed(() => {
-    return metaState.isSetup && route.path === workbenchesRoute.meta.fullpath;
+
+
+    return true;
+    // return metaState.isSetup && route.path === workbenchesRoute.meta.fullpath;
   });
 
   const loadDoc = async () => {
@@ -44,7 +47,6 @@ export const useDocStore = defineStore(DOC_STORE_NAME, () => {
     }
 
     const message = await docImport(EXPORTS_EXTENSIONS.JSON);
-
 
     filePath.value = '导入文档';
     filePath.value = void 0;
