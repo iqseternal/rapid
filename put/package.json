@@ -1,0 +1,12 @@
+{
+  "name": "put",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "put:website": "ts-node ./putWebsite.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
