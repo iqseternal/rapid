@@ -5,7 +5,8 @@
     "skipDefaultLibCheck": true,
     "esModuleInterop": true,
     "types": ["../config/@types"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "resolveJsonModule": true
   },
   "include": [
     "./**/*.ts",

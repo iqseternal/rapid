@@ -1,7 +1,5 @@
-
 import { app } from 'electron';
 import { join } from 'path';
-
 import { execShell } from './execShell';
 
 const appPath = app.getAppPath();

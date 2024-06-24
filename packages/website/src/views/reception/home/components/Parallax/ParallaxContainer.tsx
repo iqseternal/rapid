@@ -23,7 +23,7 @@ export interface ParallaxContainerProps extends BaseProps {
 export function ParallaxContainer(props: ParallaxContainerProps) {
   // 写js的原因是因为内容默认放到了上面，为了不影响后续的元素，所以最上面的元素需要写一个margintop，并且要根据传递的内容来确定大小
 
-  const state = useReactive({
+  const [state] = useReactive({
     firstMarginTop: 0
   });
   const contentContainer = useRef<HTMLDivElement>(null);

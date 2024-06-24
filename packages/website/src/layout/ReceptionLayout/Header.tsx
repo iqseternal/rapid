@@ -73,6 +73,7 @@ function Menu(props: { route: RequiredRouteConfig }) {
   if (!isDef(props.route.children) || props.route.children.length === 0) return content;
 
   return <Popover
+    mouseEnterDelay={CONFIG.VIEW.TOOLTIP_ENTER_TIME}
     overlayClassName={styles.receptionHeaderPopover}
     content={<MenuPane route={props.route} />}
   >
@@ -88,7 +89,7 @@ function Control() {
 }
 
 
-export default function Nav(props: BaseProps) {
+export default function Header(props: BaseProps) {
   const navigate = useNavigate();
 
   return <NavContainer className={combinationCName(props.className, styles.receptionHeaderContainer)}>

@@ -61,7 +61,7 @@ const { columns } = useColumns<Response>([
 ]);
 
 // 创建表格需要的 attrs，并且其中定义了一些动作行为回调
-const { tableAttrs, modalAllAttrs, open } = useTableAttrs<Response>({
+const { tableAttrs, modalAllAttrs, open, loadData } = useTableAttrs<Response>({
   // 创建每一行的 Key
   rowKey: row => row.name
 }, next => { // 表格请求有时还需要一些其他参数，可以从第二个参数中解构

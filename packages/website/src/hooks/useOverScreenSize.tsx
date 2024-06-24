@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useDebounceHook } from './useDebounce';
 import { useWindowSize } from './useWindowSize';
@@ -10,7 +9,8 @@ import { useWindowSize } from './useWindowSize';
 export function useOverScreenSize() {
   const [overWidth, setOverWidth] = useState(false);
   const [overHeight, setOverHeight] = useState(false);
-  const [windowSize] = useWindowSize();
+
+  const windowSize = useWindowSize();
 
   useEffect(() => {
     const judgeStatus = useDebounceHook(() => {

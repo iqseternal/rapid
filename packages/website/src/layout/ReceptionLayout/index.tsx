@@ -1,5 +1,3 @@
-
-
 import { isDef, isUnDef } from '@suey/pkg-utils';
 import type { FC } from 'react';
 import { useEffect, useLayoutEffect, useRef, useState, useCallback, useContext, useMemo, forwardRef } from 'react';
@@ -11,9 +9,9 @@ import { FloatButton } from 'antd';
 import { ReceptionScrollContainerContext, ReceptionHasPreposeContext, ReceptionHasPerposeHeaderClassNameContext } from '@/context';
 import { combinationCName } from '@libs/common';
 import { Provider } from 'react-redux';
-import { useEventListener, useDebounceHook, useReactive, useRefresh, useOverScreenSize } from '@/hooks';
+import { useEventListener, useDebounceHook, useReactive, useRefresh, useOverScreenSize, useShallowReactive } from '@/hooks';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
-import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth } from '@/styled';;
+import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth } from '@/styled';
 
 import styles from './index.module.scss';
 import headerStyles from './header.module.scss';
@@ -33,7 +31,7 @@ export default function ReceptionLayout() {
   const hasPerpose = useState(false);
   const hasPerposeHeaderClassName = useState<string | undefined>(void 0);
 
-  const state = useReactive({
+  const [state] = useShallowReactive({
     scrollTop: 0,
     showNav: true,
     hasTransition: false,

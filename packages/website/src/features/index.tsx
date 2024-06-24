@@ -5,12 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import reduxThunk from 'redux-thunk';
 
-import userReducer from './modules/user';
+import userSlice from './modules/user';
+
 export * from './modules/user';
 
 const rootStore = configureStore({
   reducer: {
-    user: userReducer
+    user: userSlice.reducer
   },
   middleware: [
     reduxThunk

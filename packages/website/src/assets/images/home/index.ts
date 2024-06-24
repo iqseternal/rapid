@@ -1,10 +1,11 @@
 
 
-import { default as premised } from './home-premised.jpg?url';
-import { default as premisedPreview } from './home-premised-preview.jpg?url';
+import { default as premisedUrl } from './home-premised.jpg?url';
+import { default as premisedPreviewUrl } from './home-premised-preview.jpg?url';
 
 
 export const homeImages = {
-  premised, premisedPreview
+  premisedUrl,
+  premisedPreviewUrl
 
 };

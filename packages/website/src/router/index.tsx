@@ -4,7 +4,7 @@ import type { PathRouteProps } from 'react-router-dom';
 import { Route, RouteProps, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { routes } from './routes';
-import Loading from '@/components/Loading';
+import LoadingContent from '@components/LoadingContent';
 
 const createRouteArr = (routeArr: RouteConfig[]) => {
   return routeArr.map((route, index) => {
@@ -25,7 +25,7 @@ const createRouteArr = (routeArr: RouteConfig[]) => {
 export * from './modules';
 
 export default function RouterContext() {
-  return <Suspense fallback={<Loading />}>
+  return <Suspense fallback={<LoadingContent loading={true} />}>
     <Routes>{createRouteArr(routes)}</Routes>
   </Suspense>;
 }

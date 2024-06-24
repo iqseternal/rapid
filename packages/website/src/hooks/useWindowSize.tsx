@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useDebounceHook } from './useDebounce';
+import { useShallowReactive } from './useReactive';
 
-interface WindowScreenSize {
+export interface WindowScreenSize {
   screenWidth: number;
   screenHeight: number;
 }
@@ -23,5 +24,8 @@ export function useWindowSizeHook(): WindowScreenSize {
 }
 
 export function useWindowSize() {
-  return useState(useWindowSizeHook);
+  const [windowSize] = useShallowReactive(useWindowSizeHook);
+
+  return windowSize;
 }
+

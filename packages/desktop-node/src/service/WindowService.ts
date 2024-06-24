@@ -262,6 +262,13 @@ export class WindowStateMachine {
     }
     windowService.destroy();
   }
+
+  /**
+   * 返回所有的窗口对象
+   */
+  public static getAllWindowService() {
+
+  }
 }
 
 /**

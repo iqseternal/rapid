@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
     "noEmit": true,
 
     "baseUrl": "./",

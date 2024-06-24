@@ -9,7 +9,7 @@ const CSS_VARS_MAP = {
 
 const windowSize = useWindowSizeHook();
 const valueMap = new Map();
-const makeVar = <K extends T[keyof T], T = keyof typeof CSS_VARS_MAP>(variable: K) => `var(${variable})`;
+const makeCssVar = <K extends T[keyof T], T = keyof typeof CSS_VARS_MAP>(variable: K) => `var(${variable})`;
 
 const init = () => {
   if (
@@ -30,8 +30,8 @@ init();
 
 window.addEventListener('resize', useDebounceHook(init, 60));
 
-export const maxScreenWidthStyle = css`max-width: ${makeVar(CSS_VARS_MAP.MAX_SCREEN_WIDTH)};`;
-export const maxScreenHeightStyle = css`max-height: ${makeVar(CSS_VARS_MAP.MAS_SCREEN_HEIGHT)}px;`;
+export const maxScreenWidthStyle = css`max-width: ${makeCssVar(CSS_VARS_MAP.MAX_SCREEN_WIDTH)};`;
+export const maxScreenHeightStyle = css`max-height: ${makeCssVar(CSS_VARS_MAP.MAS_SCREEN_HEIGHT)}px;`;
 
 export const maxViewWidthStyle = css`max-width: 100vw;`;
 export const maxViewHeightStyle = css`max-height: 100vh;`;

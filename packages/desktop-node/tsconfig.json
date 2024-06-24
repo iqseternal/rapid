@@ -5,6 +5,7 @@
     "types": ["../config/@types"],
     "experimentalDecorators": true,
     "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"]

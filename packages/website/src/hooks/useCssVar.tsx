@@ -25,7 +25,7 @@ const isValidStr = (str: string | undefined | null) => {
 }
 
 export function useCssVar<Key extends CSSTypes.CSSVarName, Dom extends HTMLElement, V>(dom: RefObject<Dom>, cssVar: Key, options: USE_CSS_VAR_OPTIONS<V> = DEFAULT_CSS_VAR_OPTIONS) {
-  const state = useReactive({
+  const [state] = useReactive({
     value: options.defaultValue ?? ''
   });
 

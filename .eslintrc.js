@@ -93,7 +93,7 @@ module.exports = {
     'no-confim': 'off',
 
     'sort-imports': [
-      'warn',
+      'error',
       {
         ignoreCase: false,
         ignoreDeclarationSort: true,

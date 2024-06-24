@@ -19,6 +19,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
     "types": ["./src/@types", "../config/@types"],

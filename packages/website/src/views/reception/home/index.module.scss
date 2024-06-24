@@ -2,7 +2,10 @@
 @import '@scss/var.scss';
 
 .receptionHeader {
-  color: black;
+
+  color: white;
+
+  // color: black;
   // position: relative;
 }
 
@@ -86,6 +89,15 @@
       @include forPad { font-size: 70px; }
       @include forMobile { font-size: 30px; }
     }
+  }
+
+  .productionPreview {
+    position: absolute;
+    top: 9%;
+    right: -8%;
+    width: 42%;
+    will-change: transform;
+    transform: perspective(1000px) rotateX(11deg) rotateY(18deg) rotateZ(-22deg) scale3d(1, 1, 1);
   }
 
   .logoAnimation {

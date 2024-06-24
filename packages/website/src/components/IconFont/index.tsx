@@ -1,11 +1,10 @@
-
 import { combinationCName } from '@libs/common';
-
-import * as icons from '@ant-design/icons';
+import type { FC } from 'react';
 import styles from './index.module.scss';
+import * as icons from '@ant-design/icons';
 
 export default function IconFont(props: BaseProps & { type: IconRealKey;size?: number; }) {
-  const Icon = icons[props.type];
+  const Icon = icons[props.type] as (typeof icons)['AccountBookFilled'];
 
   return <Icon
     {...props}

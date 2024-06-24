@@ -2,33 +2,31 @@ import type { FC, Ref, RefObject, DependencyList } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 export { useRefresh } from './useRefresh';
+
 export { useEventListener } from './useEventListener';
-export { useReactive } from './useReactive';
+
+export { useReactive, useShallowReactive } from './useReactive';
+export type { ReactiveOptions } from './useReactive';
+
 export { useCssVar } from './useCssVar';
+
 export { useDebounceHook } from './useDebounce';
+
 export { useOverScreenSize } from './useOverScreenSize';
+
 export { useWindowSize, useWindowSizeHook } from './useWindowSize';
+export type { WindowScreenSize } from './useWindowSize';
 
-export function useCollectRef<T>(autoFlush = false) {
-  const [sets, setSets] = useState<RefObject<T>[]>([]);
+export { useAutoState } from './useAutoState';
 
-  let idx = 0;
-  const collect = (): RefObject<T> => {
-    const domRef = useRef<T>(null);
-    sets[idx ++] = domRef;
+export { useColumns } from './useColumns';
 
-    return domRef;
-  }
+export { useModalAttrs, useModalEvents, MODAL_MODE } from './useModalAttrs';
+export type { ModalEvents, ModalAttrs } from './useModalAttrs';
 
-  const flush = () => {
-    setSets([...sets]);
-  }
+export { usePagination } from './usePagination';
 
-  useEffect(() => {
-    if (autoFlush) flush();
-  }, []);
-
-  return { sets, collect, flush };
-}
+export { useLoadDataFn, useTableAttrs } from './useTableAttrs';
+export type { TableEvents } from './useTableAttrs';
 
 

@@ -1,11 +1,9 @@
-
 import { isUnDef } from '@suey/pkg-utils';
 import { Image, ImageProps } from 'antd';
 import { useEffect, useState, forwardRef } from 'react';
 import { MaxScreenWidth, MaxScreenHeight } from '@/styled';
-
-import styles from './index.module.scss';
 import { combinationCName } from '@libs/common';
+import styles from './index.module.scss';
 
 export interface GradualImgProps extends ImageProps {
 

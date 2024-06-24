@@ -1,4 +1,6 @@
-import { Flex } from '@/styled';
+import { Flex, combinationStyled } from '@/styled';
+
+import { logoUrl } from '@/assets';
 import styled from 'styled-components';
 
 const Image = styled.img`
@@ -10,7 +12,7 @@ const Image = styled.img`
 export default function Logo(props: BaseProps & { size?: number;src?: string;onClick?: () => void; }) {
 
   const size = props.size ?? 20;
-  const src = props.src ?? '/logo.png';
+  const src = props.src ?? logoUrl;
 
 
   return <Flex {...props} style={{ width: size + 'px', height: size + 'px' }} onClick={props.onClick}>
