@@ -32,6 +32,8 @@ export const setupApp = (startApp: () => void | Promise<void>, ops?: Partial<App
     })
   }
 
+  // app.disableHardwareAcceleration();
+
   app.whenReady().then(() => {
     electronApp.setAppUserModelId(options.modelId);
 

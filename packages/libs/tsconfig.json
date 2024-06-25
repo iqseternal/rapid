@@ -15,7 +15,8 @@
     "types": [
       "vite/client"
     ],
-
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "noEmitOnError": true
   },
   "exclude": ["node_modules"]

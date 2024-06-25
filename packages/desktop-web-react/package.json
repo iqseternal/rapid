@@ -1,0 +1,21 @@
+{
+  "name": "desktop-web-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^",
+    "@rapid/desktop-node": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/libs": "workspace:^",
+    "current-device": "^0.10.2"
+  }
+}

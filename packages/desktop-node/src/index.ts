@@ -36,9 +36,9 @@ setupContext({
 })
 
 setupApp(async () => {
-  throw new RuntimeException('', {
-    label: 'sss'
-  })
+  // throw new RuntimeException('', {
+  //   label: 'sss'
+  // })
 
   setupMainWindow();
   setupTrayMenu();

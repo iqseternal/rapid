@@ -1,0 +1,23 @@
+
+{
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.d.ts",
+    "./**/*.vue"
+  ],
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": ".",
+    "lib": ["DOM", "ESNext"],
+    "jsx": "preserve",
+    "types": [
+      "vite/client"
+    ],
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "noEmitOnError": true
+  },
+  "exclude": ["node_modules"]
+}

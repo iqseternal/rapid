@@ -139,3 +139,12 @@ export const setCssVars = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(n
     })
   });
 }
+
+export const cssRoot = (globalThis.document && document.querySelector(':root')) as HTMLElement;
+
+export const setCssVarForRoot = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(cssVar: Key, value: CSSTypes.CSSStyleVarsDeclaration[Key]) => setCssVar<Key>(cssRoot, cssVar, value);
+
+export const getCssVarForRoot = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(cssVar: Key) => getCssVar<Key>(cssRoot, cssVar);
+
+export const setCssVarsForRoot = (properties: CSSTypes.CSSStyleVarsDeclaration) => setCssVars(cssRoot, properties);
+

@@ -8,7 +8,7 @@ import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR
 import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/sturcture';
 
 import eslintPlugin from 'vite-plugin-eslint';
-import rendererConfigFn from './packages/desktop-web/structure';
+import rendererConfigFn from './packages/desktop-web-react/structure';
 
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
@@ -58,7 +58,7 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
 const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<RendererConfig, RendererConfig>(rendererConfigFn(configEnv), {
   root: DEV_DESKTOP_WEB_DIR,
   define: defineVars(configEnv),
-  plugins: [...loadLintPlugins(configEnv)],
+  plugins: [],
   server: {
     port: 8888,
     hmr: true,

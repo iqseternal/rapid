@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "typecheck": "tsc --noEmit -p tsconfig.json --composite false && vue-tsc --noEmit"
+    "build": "vite build"
   },
   "keywords": [],
   "author": "",

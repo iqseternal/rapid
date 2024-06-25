@@ -26,32 +26,6 @@ export type ObjKeyToArr<
 > = [K, ...(S extends object ? ObjKeyToArr<S, keyof S> : [])];
 
 /**
- * 获取 vue 组件的 props 作为一个类型
- * 例如:
- * xx.vue:
- *
- * <script lang="ts" setup>
- *
- * const props = defineProps({
- *  list: { type: Array as PropType<string[]>, default: [] }
- * })
- *
- * </script>
- *
- *
- * xx.ts:
- *
- * import Cmp from 'xx.vue';
- *
- * const props: ComponentsProps<typeof Cmp> = {
- *  list: [] // 这个类型就会被推断为 string[]
- * }
- *
- */
-// @ts-ignore
-export type ComponentsProps<T extends unknown> = Exclude<Required<T['__defaults']>, undefined>;
-
-/**
  * 创建 table columns 的时候的类型转换, T 是原本的类型, K 则是 Response 对象
  * 通过联合类型让原本的类型拥有类型检测和提示
  *
