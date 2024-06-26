@@ -6,14 +6,15 @@ import { Outlet, useOutlet, useLocation } from 'react-router-dom';
 import { FloatButton } from 'antd';
 import { Provider } from 'react-redux';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
-import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth } from '@/styled';
+import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth, FullSize } from '@/styled';
 import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, WindowPopup } from '@/actions';
 import { IS_WEB, CONFIG } from '@rapid/config/constants';
 import { useFadeIn } from '@hooks/index';
-import Header from '@components/Header';
 
-const ReceptionMainContainer = combinationStyled('section', FullSizeWidth);
-const ReceptionSubMainContainer = combinationStyled('main', FullSizeWidth);
+import Header from '@components/Header';
+import styles from './index.module.scss';
+
+const MainContainer = combinationStyled('main', FullSize);
 
 export default function Layout() {
   useFadeIn(async () => {
@@ -21,14 +22,11 @@ export default function Layout() {
     await windowResetCustomSize({ type: 'mainWindow' });
   });
 
-  return <FullSizeWidth>
+  return <FullSize className={styles.layout}>
     <Header />
 
-
-    <ReceptionMainContainer>
-
+    <MainContainer className={styles.mainContainer}>
       <Outlet />
-
-    </ReceptionMainContainer>
-  </FullSizeWidth>
+    </MainContainer>
+  </FullSize>
 }

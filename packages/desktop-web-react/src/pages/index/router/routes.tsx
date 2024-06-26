@@ -1,16 +1,44 @@
 import type { ComponentType, FC } from 'react';
 import { useEffect, useReducer, lazy } from 'react';
 import { Outlet, Navigate, useLocation, Route } from 'react-router-dom';
-import { rootRoute } from './modules';
+import { rapidRoute } from './modules';
+import { makeRoute } from './utils';
 
-import Redirect from '@/components/Redirect';
+export * from './modules';
 
-const notFound: RouteConfig = { path: '*', name: 'NotFound', component: lazy(() => import('@components/NotFound')) };
+export const notFoundRoute = makeRoute({
+  name: 'NotFound',
+  path: '*',
+  component: lazy(() => import('@components/NotFound'))
+});
 
-const notRole: RouteConfig = { path: '/403', name: 'NotRole', component: lazy(() => import('@components/NotRole')) };
+export const notRoleRoute = makeRoute({
+  name: 'NotRole',
+  path: '/403',
+  component: lazy(() => import('@components/NotRole'))
+});
 
-export const routes: RouteConfig[] = [
-  // { path: '/', name: 'Root', component: <Navigate to={rootRoute.path} /> },
+export const loginRoute = makeRoute({
+  name: 'LoginRoute',
+  path: '/login',
+  component: lazy(() => import('@pages/index/views/Login'))
+})
+
+export const registerRoute = makeRoute({
+  name: 'Register',
+  path: '/register',
+  component: lazy(() => import('@pages/index/views/Register'))
+})
+
+export const rootRoute = makeRoute({
+  name: 'Root',
+  path: '/', redirect: loginRoute.meta.fullpath
+});
+
+export const routes = [
   rootRoute,
-  notFound, notRole
+
+  rapidRoute, loginRoute, registerRoute,
+
+  notFoundRoute, notRoleRoute
 ];
