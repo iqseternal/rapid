@@ -45,10 +45,7 @@ export class WindowService {
         sandbox: false,
         devTools: true,
         webSecurity: true,
-        nodeIntegration: true,
-        contextIsolation: true,
-        nodeIntegrationInSubFrames: true,
-        nodeIntegrationInWorker: true
+        nodeIntegration: true
       },
     });
 

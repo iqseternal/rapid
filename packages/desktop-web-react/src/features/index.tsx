@@ -9,7 +9,7 @@ import userSlice from './modules/user';
 
 export * from './modules/user';
 
-const rootStore = configureStore({
+const appStore = configureStore({
   reducer: {
     user: userSlice.reducer
   },
@@ -18,10 +18,10 @@ const rootStore = configureStore({
   ]
 });
 
-export type RootStoreType = ReturnType<typeof rootStore.getState>;
-export type RootStoreDispath = typeof rootStore.dispatch;
+export type AppStoreType = ReturnType<typeof appStore.getState>;
+export type AppStoreDispath = typeof appStore.dispatch;
 
-export const useAppSelector: TypedUseSelectorHook<RootStoreType> = useSelector;
-export const useAppDispath: typeof useDispatch<RootStoreDispath> = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<AppStoreType> = useSelector;
+export const useAppDispath: typeof useDispatch<AppStoreDispath> = useDispatch;
 
-export default rootStore;
+export default appStore;

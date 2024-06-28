@@ -1,16 +1,29 @@
-
+import { useAppSelector } from '@/features';
 import { FullSize } from '@/styled';
-import { workbenchesRoute } from '@pages/index/router';
-import { useLocation, useNavigate, useNavigation } from 'react-router-dom';
-import { useFadeIn } from '@hooks/index';
-import { windowEnableFullScreen, windowResizeAble, windowSetSize } from '@/actions';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useAsyncEffect, useFadeIn } from '@hooks/index';
+import { useNavigate } from 'react-router-dom';
+import { windowResizeAble, windowSetSize } from '@/actions';
+import { rApiGet, rApiPost } from '@/api';
 
 import Header from '@components/Header';
 
-
 export default function Login() {
-  // const navigate = useNavigate();
-  // const navigation = useNavigation();
+  const userStore = useAppSelector(store => store.user);
+
+  useEffect(() => {
+    console.log('userStore', userStore);
+  });
+
+  useAsyncEffect(async () => {
+    const { data } = await rApiGet('/t', {
+      data: { username: 'zms', password: '123' }
+    })
+
+
+    console.log(data);
+  }, []);
 
   useFadeIn(async () => {
 
@@ -23,7 +36,5 @@ export default function Login() {
   return <FullSize>
     <Header />
 
-
-    1
   </FullSize>
 }

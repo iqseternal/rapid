@@ -44,14 +44,9 @@ export async function useFadeOut(callback?: () => void | Promise<void>, options?
 
   if (!IS_WEB) await windowShow({ show: false }).catch(windowRelaunch);
 
-  useAsyncEffect(async () => {
+  setTimeout(async () => {
+    callback && await callback();
 
-    if (!IS_WEB) await windowShow({ show: false }).catch(onError);
-
-    setTimeout(async () => {
-      callback && await callback();
-
-      if (!IS_WEB) await windowShow({ show: true }).catch(onError);
-    }, waitTimer);
-  }, []);
+    if (!IS_WEB) await windowShow({ show: true }).catch(onError);
+  }, waitTimer);
 }
