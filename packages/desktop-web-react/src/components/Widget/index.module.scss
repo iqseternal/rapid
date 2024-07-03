@@ -1,21 +1,18 @@
-
 @import '@scss/mixin/index.scss';
 
-
 .widgetHasHover {
-
   &:hover {
-    background-color: rgba(0, 0, 0, .1);
+    background-color: var(--rapid-widget-hover-background-color, rgba(0, 0, 0, .1));
   }
 }
 
 .widget {
-  width: 20px;
-  height: 20px;
   max-width: 100%;
   max-height: 100%;
+  width: var(--rapid-widget-width, 20px);
+  height: var(--rapid-widget-height, 20px);
+  color: var(--rapid-widget-color, #212529);
 
-  // font-size: 16px;
   font-size: 85%;
   padding: 2px;
 
@@ -24,7 +21,4 @@
   user-select: none;
   flex: 0 0 auto;
   border-radius: 2px;
-
-  @include FlexRowCenter;
-  @include AppRegionNo;
 }

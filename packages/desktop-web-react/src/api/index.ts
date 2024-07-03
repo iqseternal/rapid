@@ -6,7 +6,10 @@ export { REQ_METHODS, createApiRequest, createRequest } from '@suey/pkg-utils';
 
 /** 请求 hconfig 配置 */
 export interface RApiHConfig {
-  /** 默认都需要认证 */
+  /**
+   * 默认都需要认证
+   * @default true
+   */
   needAuth?: boolean;
 }
 
@@ -21,28 +24,19 @@ export interface RApiBasicResponse {
 }
 
 export const rApi = createApiRequest<RApiHConfig, RApiBasicResponse>(CONFIG.API.URL, {
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
-  },
-  timeout: CONFIG.API.TIMEOUT,
-  // withCredentials: true
+  timeout: CONFIG.API.TIMEOUT
 }, {
   onFulfilled(config) {
     if (!config.hConfig) config.hConfig = { needAuth: true };
     if (isUndefined(config.hConfig.needAuth)) config.hConfig.needAuth = true;
-
-
     if (config.hConfig.needAuth) {
       // TODO:
     }
   },
 }, {
   onFulfilled(response) {
-    if (response.data.more?.pako) {
-      // TODO:
-    }
-
+    // nestjs server response.
+    if (response.data && response.data.flag && response.data.status) return response.data;
     return response;
   }
 })

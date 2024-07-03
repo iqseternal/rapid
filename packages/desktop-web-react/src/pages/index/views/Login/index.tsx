@@ -1,40 +1,70 @@
 import { useAppSelector } from '@/features';
-import { FullSize } from '@/styled';
+import { FullSize, FlexRowCenter } from '@/styled';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { useAsyncEffect, useFadeIn } from '@hooks/index';
-import { useNavigate } from 'react-router-dom';
-import { windowResizeAble, windowSetSize } from '@/actions';
-import { rApiGet, rApiPost } from '@/api';
+import { useFadeIn, useFadeOut } from '@/hooks';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
+import { rApiGet, rApiPost, rApi, rApiDelete, rApiPut, rCreateApi } from '@/api';
+import { useReactive } from '@rapid/libs/hooks';
+import { rapidRoute } from '@pages/index/router';
+import { Button } from 'antd';
+import { Transition, CSSTransition } from 'react-transition-group';
 
+import lockUrl from '@/assets/images/login__lock.png?url';
 import Header from '@components/Header';
+import Subfield from '@rapid/libs/components/Subfield';
+import Logo from '@components/Logo';
+import styles from './index.module.scss';
+
+enum Step {
+  Login, Register
+}
 
 export default function Login() {
+  useFadeIn(async () => {
+    await windowSetSize({ width: 850, height: 550 });
+    await windowResizeAble({ able: false });
+    // await windowSetPosition({ x: 'center', y: 'center' });
+  });
+
+  const navigate = useNavigate();
   const userStore = useAppSelector(store => store.user);
 
-  useEffect(() => {
-    console.log('userStore', userStore);
-  });
+  const [state] = useReactive({
+    step: Step.Login
+  })
 
-  useAsyncEffect(async () => {
-    const { data } = await rApiGet('/t', {
-      data: { username: 'zms', password: '123' }
-    })
+  return <FullSize className={styles.login}>
+    <Header isPane />
 
+    <Subfield className={styles.didContent}>
+      {state.step === Step.Login
+        ?
+          <>
+            <FlexRowCenter>
+              <CSSTransition classNames={'fade'} in={true} timeout={150}>
+                <Logo src={lockUrl} />
+              </CSSTransition>
+            </FlexRowCenter>
 
-    console.log(data);
-  }, []);
+            <FlexRowCenter>
+              1
 
-  useFadeIn(async () => {
+              <Button onClick={() => useFadeOut(() => navigate(rapidRoute.meta.fullpath, { replace: true }))}>登录</Button>
+            </FlexRowCenter>
+          </>
+        :
+          <>
+            <FlexRowCenter>
+              <Logo src={lockUrl} />
+            </FlexRowCenter>
 
-    await windowSetSize({ width: 800, height: 500 });
-
-    await windowResizeAble({ able: false });
-  });
-
-
-  return <FullSize>
-    <Header />
-
+            <FlexRowCenter>
+              2
+            </FlexRowCenter>
+          </>
+      }
+    </Subfield>
   </FullSize>
 }

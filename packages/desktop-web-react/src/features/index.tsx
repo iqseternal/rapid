@@ -5,12 +5,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import reduxThunk from 'redux-thunk';
 
+import themeSlice from './modules/theme';
 import userSlice from './modules/user';
 
+export * from './modules/theme';
 export * from './modules/user';
 
 const appStore = configureStore({
   reducer: {
+    theme: themeSlice.reducer,
     user: userSlice.reducer
   },
   middleware: [

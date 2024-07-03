@@ -46,13 +46,13 @@ function ParallaxContainer(props: ParallaxContainerProps) {
 
   useEffect(() => {
     if (!props.isFirst) return;
-    if (!isDef(contentContainer.current)) return;
+    if (!contentContainer.current) return;
     state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
   }, []);
 
   useEventListener(window, 'resize', useDebounceHook(() => {
     if (!props.isFirst) return;
-    if (!isDef(contentContainer.current)) return;
+    if (!contentContainer.current) return;
     state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
   }));
 

@@ -1,11 +1,13 @@
-
 import { combinationCName } from '@rapid/libs/common';
-import { Tooltip } from 'antd';
+import { theme, Tooltip } from 'antd';
 import type { IconRealKey } from '@components/IconFont';
 import type { HTMLAttributes } from 'react';
 import { CONFIG } from '@rapid/config/constants';
+import { makeVar, themeCssVarsSheet, ThemeCssVarsSheet } from '@/themes';
 
 import IconFont from '@components/IconFont';
+
+import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
 export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
@@ -23,10 +25,11 @@ export default function Widget(props: WidgetProps) {
     autoAdjustOverflow
   >
     <div
-      className={combinationCName(styles.widget, className, {
-        [styles.widgetHasHover]: hover
-      })}
-
+      className={
+        combinationCName(styles.widget, commonStyles.appRegionNo, commonStyles.flexCenter, className, {
+          [styles.widgetHasHover]: hover
+        })
+      }
       {...realProps}
     >
       {

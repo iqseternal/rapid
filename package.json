@@ -63,6 +63,7 @@
     "@types/node": "^20.11.26",
     "@types/react": "^18.2.13",
     "@types/react-dom": "^18.2.6",
+    "@types/react-transition-group": "^4.4.10",
     "@types/redux-logger": "^3.0.13",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -92,7 +93,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@reduxjs/toolkit": "^1.9.7",
-    "@suey/pkg-utils": "^0.0.12",
+    "@suey/pkg-utils": "^0.0.13",
     "@suey/pkg-web": "^0.0.3",
     "@suey/printer": "^1.1.5",
     "@types/pako": "^2.0.3",

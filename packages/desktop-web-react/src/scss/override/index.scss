@@ -3,3 +3,15 @@
  * 对库进行样式全局覆盖
  * ==========================================
  */
+
+
+.fade-enter, .fade-appear {
+  opacity: 0;
+  transform: scale(0.6)
+}
+
+.fade-enter-active, .fade-appear-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 1000ms;
+}

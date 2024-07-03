@@ -13,7 +13,7 @@ export namespace CSSTypes {
   export type CSSVarName = `--${string}`;
 
   /** 带有 变量的 CSS Style 声明映射表 */
-  export type CSSStyleVarsDeclaration = CSSStyleProperttDeclaration & Record<`--${string}`, string>;
+  export type CSSStyleVarsDeclaration = Partial<CSSStyleProperttDeclaration> & Record<`--${string}`, any>;
 }
 
 /** Css 值设置时得各种转换 */

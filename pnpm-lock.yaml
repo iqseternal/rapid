@@ -15,8 +15,8 @@ importers:
         specifier: ^1.9.7
         version: 1.9.7(react-redux@8.1.3)(react@18.2.0)
       '@suey/pkg-utils':
-        specifier: ^0.0.12
-        version: 0.0.12(@angular/common@17.3.0)(@angular/core@17.3.0)
+        specifier: ^0.0.13
+        version: 0.0.13(@angular/common@17.3.0)(@angular/core@17.3.0)
       '@suey/pkg-web':
         specifier: ^0.0.3
         version: 0.0.3(typescript@5.3.3)
@@ -138,6 +138,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.6
         version: 18.2.21
+      '@types/react-transition-group':
+        specifier: ^4.4.10
+        version: 4.4.10
       '@types/redux-logger':
         specifier: ^3.0.13
         version: 3.0.13
@@ -2901,8 +2904,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /@suey/pkg-utils@0.0.12(@angular/common@17.3.0)(@angular/core@17.3.0):
-    resolution: {integrity: sha512-OW5xUW53Nfi45czZDzf5VaCQU8UQ9iC7ZUWEyhcCgkeICSx1TTxBjNx9wVI9lXeOuNmQjCGCp2tHMD8VThKACQ==}
+  /@suey/pkg-utils@0.0.13(@angular/common@17.3.0)(@angular/core@17.3.0):
+    resolution: {integrity: sha512-eLeEvX/hLur3XQn2zht9TBuKfdG0YLPj8HpzTEhexsg+klk7a/UKfwmT9H9i55A3Udys40Z5/5dDRSpjLNhYcQ==}
     dependencies:
       '@types/js-cookie': 3.0.6
       axios: 1.6.7

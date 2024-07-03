@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { routes } from './routes';
 import type { RequiredRouteConfig } from './utils';
 
+import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
+
 import type { RedirectProps } from '@rapid/libs/components/Redirect';
 import Redirect from '@rapid/libs/components/Redirect';
 
@@ -39,10 +41,13 @@ const createRouteArr = (routeArr: RequiredRouteConfig[]) => {
     </Route>;
   });
 }
+
 export * from './routes';
 
 export default function RouterContext() {
   return <Suspense fallback={<></>}>
-    <Routes>{createRouteArr(routes)}</Routes>
+    <Routes>
+      {createRouteArr(routes)}
+    </Routes>
   </Suspense>;
 }

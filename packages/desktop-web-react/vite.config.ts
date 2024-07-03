@@ -27,7 +27,7 @@ export default defineConfig((configEnv) => {
   return mergeConfig<UserConfig, UserConfig>(rendererConfig(configEnv), {
     define: vars,
     server: {
-      port: 8000
+      port: 8200
     },
     root: IS_BUILD ? void 0 : devPageRootDir,
     publicDir: IS_BUILD ? void 0 :  path.join(devDir, 'public'),

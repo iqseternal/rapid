@@ -32,7 +32,6 @@ export const userSlice = createSlice<UserStore, SliceCaseReducers<UserStore>>({
   reducers: {
     setUserInfo: (state, { payload }: PayloadAction<UserStore>) => {
       (Object.keys(payload) as (keyof typeof payload)[]).forEach((key) => {
-
         state[key] = payload[key] as any;
       })
     }

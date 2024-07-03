@@ -58,4 +58,3 @@ export const justifyAroundStyle = css`justify-content: space-around;`;
 export const alignItemStartStyle = css`align-items: flex-start;`;
 export const alignItenEndStyle = css`align-items: flex-end;`;
 export const alignItemCenterStyle = css`align-items: center;`;
-

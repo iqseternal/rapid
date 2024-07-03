@@ -33,7 +33,7 @@ export const Flex = combinationStyled('div', css`
   display: flex;
   flex-wrap: wrap;
   flex-flow: wrap;
-  flex-shrink: 1;
+  flex: 1;
 `);
 
 export const FlexRow = combinationStyled(Flex, flexDirectionRowStyle, alignItemCenterStyle);
