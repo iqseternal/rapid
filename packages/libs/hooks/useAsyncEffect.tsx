@@ -9,6 +9,8 @@ export function useAsyncEffect(asyncEffect: () => void | Promise<void>, deps?: D
   useEffect(() => {
     ;(async () => {
       asyncEffect();
-    })();
+    })().catch(err => {
+      console.error('含有未捕捉的错误', err);
+    });
   }, deps);
 }

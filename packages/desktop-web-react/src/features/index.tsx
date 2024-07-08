@@ -24,7 +24,13 @@ const appStore = configureStore({
 export type AppStoreType = ReturnType<typeof appStore.getState>;
 export type AppStoreDispath = typeof appStore.dispatch;
 
+/**
+ * 附带泛型的 useSelector
+ */
 export const useAppSelector: TypedUseSelectorHook<AppStoreType> = useSelector;
+/**
+ * 附带泛型的 useDispatch
+ */
 export const useAppDispath: typeof useDispatch<AppStoreDispath> = useDispatch;
 
 export default appStore;

@@ -21,7 +21,6 @@ export default function Redirect(props: RedirectProps) {
   const Element = element;
   const location = useLocation();
 
-
   if (location.pathname === from) return <Navigate to={to}></Navigate>;
 
   return <Element />;

@@ -15,7 +15,7 @@ import styles from './app.module.scss';
 
 export default function App() {
 
-  useAsyncEffect(() => {
+  useAsyncEffect(async () => {
 
   }, []);
 
@@ -33,3 +33,4 @@ export default function App() {
     </FullSize>
   )
 }
+

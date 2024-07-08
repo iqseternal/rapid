@@ -10,7 +10,6 @@ import '@scss/index.scss';
 
 app.use(themePlugins);
 
-
 app.installAll();
 
 document.title = CONFIG.PROJECT.toLocaleLowerCase();

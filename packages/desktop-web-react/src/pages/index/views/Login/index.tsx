@@ -4,12 +4,13 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useFadeIn, useFadeOut } from '@/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
+import { windowDevtool, windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { rApiGet, rApiPost, rApi, rApiDelete, rApiPut, rCreateApi } from '@/api';
-import { useReactive } from '@rapid/libs/hooks';
+import { useAsyncEffect, useReactive } from '@rapid/libs/hooks';
 import { rapidRoute } from '@pages/index/router';
 import { Button } from 'antd';
 import { Transition, CSSTransition } from 'react-transition-group';
+import { toPicket } from '@rapid/libs/common';
 
 import lockUrl from '@/assets/images/login__lock.png?url';
 import Header from '@components/Header';
@@ -35,6 +36,11 @@ export default function Login() {
     step: Step.Login
   })
 
+  useAsyncEffect(async () => {
+    console.log('?');
+
+  }, []);
+
   return <FullSize className={styles.login}>
     <Header isPane />
 
@@ -49,8 +55,7 @@ export default function Login() {
             </FlexRowCenter>
 
             <FlexRowCenter>
-              1
-
+              3
               <Button onClick={() => useFadeOut(() => navigate(rapidRoute.meta.fullpath, { replace: true }))}>登录</Button>
             </FlexRowCenter>
           </>

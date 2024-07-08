@@ -26,11 +26,20 @@ export default function Layout() {
   return <FullSize
     className={styles.layout}
 
+
   >
     <Header />
 
     <MainContainer className={styles.mainContainer}>
-      <Outlet />
+      <SwitchTransition>
+        <CSSTransition
+          key={'G'}
+          addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
+          classNames={'fade'}
+        >
+          <Outlet />
+        </CSSTransition>
+      </SwitchTransition>
     </MainContainer>
   </FullSize>
 }

@@ -7,6 +7,7 @@ export const themePlugins: Plugin<PluginUnit<ThemeCssVarsDeclaration>> = {
   plugins: [],
   use(plugin) {
     this.plugins.push(plugin);
+    return this;
   },
   install(plugin) {
     let declaration = makeVarsDeclaration();

@@ -10,7 +10,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "baseUrl": ".",
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "ESNext", "ES2015.Promise"],
     "jsx": "preserve",
     "types": [
       "vite/client"

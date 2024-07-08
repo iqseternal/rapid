@@ -12,8 +12,8 @@ const runtimeContext = {
   styleTag: void 0 as (undefined | HTMLStyleElement)
 }
 
-export const makeVar = <R extends keyof ThemeCssVarsSheet, CssVar extends (ThemeCssVarsSheet)[R]>(r: CssVar) => {
-  return `var(${r.varName}, ${r.value})` as const;
+export const makeVar = <R extends keyof ThemeCssVarsSheet, CssVar extends (ThemeCssVarsSheet)[R]>(r: CssVar): `var(${CssVar['varName']}, ${CssVar['value']})` => {
+  return `var(${r.varName}, ${r.value})` as `var(${CssVar['varName']}, ${CssVar['value']})`;
 }
 
 export const makeVarsDeclaration = () => {
