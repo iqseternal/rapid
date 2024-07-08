@@ -1,11 +1,12 @@
 import { lazy } from 'react';
 import { makeRoute } from '../utils';
 import type { RequiredRouteConfig } from '../utils';
+import { RapidLayout } from '@pages/index/layout';
 
 export const rapidRoute = makeRoute({
   name: `Rapid`,
   path: `/rapid`, redirect: 'workbenches',
-  component: lazy(() => import('@pages/index/layout')),
+  component: RapidLayout,
   children: [
     {
       name:  'Work',

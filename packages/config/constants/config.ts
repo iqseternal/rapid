@@ -31,7 +31,7 @@ export const CONFIG = {
       TIMER: 50
     },
     FADE_OUT: {
-      TIMER: 200
+      TIMER: 50
     }
   },
   DIALOG: {

@@ -6,6 +6,12 @@ import { makeFeatureAction, sliceCallBudilers } from '@rapid/libs/feature';
 
 const initState = {
 
+
+  workbenches: {
+
+
+    
+  }
 }
 
 export type Theme = typeof initState;

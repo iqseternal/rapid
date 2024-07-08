@@ -1,10 +1,13 @@
-import type { ComponentType, FC } from 'react';
-import { useEffect, useReducer, lazy, useState, useRef } from 'react';
+import type { ComponentType, FC, RefObject } from 'react';
+import { useEffect, useReducer, lazy, useState, useRef, createRef } from 'react';
 import { Outlet, Navigate, useLocation, Route, useOutlet } from 'react-router-dom';
 import { rapidRoute } from './modules';
 import { makeRoute } from './utils';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useFadeIn } from '@/hooks';
+import { FullSize } from '@/styled';
+import { useReactive } from '@rapid/libs/hooks';
+import { RootLayout } from '../layout';
 
 export * from './modules';
 
@@ -32,35 +35,10 @@ export const registerRoute = makeRoute({
   component: lazy(() => import('@pages/index/views/Register'))
 })
 
-
-const L = () => {
-
-
-  const location = useLocation();
-
-  const currentOutlet = useOutlet();
-
-  return <>
-    <SwitchTransition mode='out-in'>
-      <CSSTransition
-        key={location.pathname}
-        appear
-        addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
-        classNames={'fade'}
-
-      >
-        {/* <div className='container'> */}
-          {currentOutlet}
-        {/* </div> */}
-      </CSSTransition>
-    </SwitchTransition>
-  </>
-}
-
 export const rootRoute = makeRoute({
   name: 'Root',
   path: '/', redirect: 'login',
-  component: L,
+  component: RootLayout,
   children: [
     rapidRoute, loginRoute, registerRoute,
 
@@ -68,10 +46,4 @@ export const rootRoute = makeRoute({
   ]
 });
 
-export const routes = [
-  rootRoute,
-
-  // rapidRoute, loginRoute, registerRoute,
-
-  // notFoundRoute, notRoleRoute
-];
+export const routes = [rootRoute];

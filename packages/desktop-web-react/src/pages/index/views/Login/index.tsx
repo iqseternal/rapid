@@ -3,7 +3,7 @@ import { FullSize, FlexRowCenter } from '@/styled';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useFadeIn, useFadeOut } from '@/hooks';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { windowDevtool, windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { rApiGet, rApiPost, rApi, rApiDelete, rApiPut, rCreateApi } from '@/api';
 import { useAsyncEffect, useReactive } from '@rapid/libs/hooks';
@@ -35,11 +35,6 @@ export default function Login() {
   const [state] = useReactive({
     step: Step.Login
   })
-
-  useAsyncEffect(async () => {
-    console.log('?');
-
-  }, []);
 
   return <FullSize className={styles.login}>
     <Header isPane />

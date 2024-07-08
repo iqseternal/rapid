@@ -44,15 +44,8 @@ const createRouteArr = (routeArr: RequiredRouteConfig[]) => {
 
 export * from './routes';
 
-
-const G = () => {
-
-  console.log('empty????');
-  return <></>;
-}
-
 export default function RouterContext() {
-  return <Suspense fallback={<G></G>}>
+  return <Suspense fallback={<></>}>
     <Routes>
       {createRouteArr(routes)}
     </Routes>

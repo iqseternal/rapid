@@ -18,15 +18,12 @@ export async function useFadeIn(beforeCallback?: () => void | Promise<void>, opt
   const { waitTimer = CONFIG.FADE.FADE_IN.TIMER, onError = () => {} } = options ?? {};
 
   useAsyncEffect(async () => {
-    console.log('fade in');
 
     beforeCallback && await beforeCallback();
     if (IS_WEB) return;
 
     setTimeout(async () => {
-      // setTimeout(() => {
-        windowShow({ show: true }).catch(onError);
-      // }, waitTimer);
+      windowShow({ show: true }).catch(onError);
     }, waitTimer);
   }, []);
 }
@@ -37,15 +34,6 @@ export async function useFadeIn(beforeCallback?: () => void | Promise<void>, opt
 export async function useFadeOut(callback?: () => void | Promise<void>, options?: FadeOptions) {
   const { waitTimer = CONFIG.FADE.FADE_OUT.TIMER, onError = () => {} } = options ?? {};
 
-
-
   callback && await callback();
   if (!IS_WEB) await windowShow({ show: false }).catch(windowRelaunch);
-
-  setTimeout(async () => {
-    console.log('当前设置了隐藏, 但是没有那个');
-
-
-    if (!IS_WEB) await windowShow({ show: true }).catch(onError);
-  }, waitTimer);
 }
