@@ -93,7 +93,6 @@ export function useReactive<T extends object>(initValue: T | (() => T), options 
     }
 
     const value = (typeof initValue === 'function') ? initValue() : initValue;
-
     return toAutoRefresh(value) as T;
   });
 

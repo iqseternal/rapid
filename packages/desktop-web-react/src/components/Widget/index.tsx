@@ -25,12 +25,18 @@ export default function Widget(props: WidgetProps) {
     autoAdjustOverflow
   >
     <div
-      className={
-        combinationCName(styles.widget, commonStyles.appRegionNo, commonStyles.flexCenter, className, {
-          [styles.widgetHasHover]: hover
-        })
-      }
       {...realProps}
+      className={
+        combinationCName(
+          styles.widget,
+          commonStyles.appRegionNo,
+          commonStyles.flexCenter,
+          className,
+          {
+            [styles.widgetHasHover]: hover
+          }
+        )
+      }
     >
       {
         icon && <IconFont icon={icon}></IconFont>

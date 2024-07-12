@@ -1,7 +1,12 @@
 
 
 
-
+/**
+ * 可以在 组件外部使用
+ * @param cb
+ * @param time
+ * @returns
+ */
 export function useDebounceHook<T extends (...args: any[]) => void>(cb: T, time: number = 50) {
   let timer: number | undefined = void 0;
 

@@ -2,7 +2,7 @@
  * @example
  * const p = new Promise(....);
  *
- * const [err, data] = await toNil(p);
+ * const [err, data] = await toPicket(p);
  * if (err) return; // 处理错误
  *
  * const { list } = data; // 正常执行
@@ -44,9 +44,10 @@ export async function toPicket<Resp, ErrorExt extends object = {}>(
   return promise
     .then(data => [void 0, data] as [undefined, Resp])
     .catch(err => {
-      if (errorExt) {
-        Object.assign(err, errorExt);
-      }
-      return [err as Error & ErrorExt, void 0] as [Error & ErrorExt, undefined];
+      if (!err) err = new Error('');
+
+      if (errorExt) Object.assign(err, errorExt);
+
+      return [err, void 0] as [Error & ErrorExt, undefined];
     });
 }

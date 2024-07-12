@@ -3,6 +3,6 @@
 .header {
   width: calc(100% - 6px);
   height: var(--rapid-navbar-height, 26px);
-  background-color: var(--rapid-navbar-background-color, #343a40);
+  background-color: var(--rapid-navbar-background-color);
   padding: 0 3px;
 }

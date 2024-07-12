@@ -1,38 +1,83 @@
-import { isUnDef, isUndefined } from '@suey/pkg-utils';
-import { validateIsSpaceStr } from '@rapid/validates';
+import { isDef } from '@suey/pkg-utils';
 
-/** 数字类的 Filter */
-export const NumberFilters = {
-  /** 对小数点进行 Filter */
-  toFixed: (value: number | undefined, position = 2) => {
-    if (isUndefined(value)) return 0;
-    return Number(value.toFixed(position));
-  },
-  toString: (value: number) => value.toString()
-}
-
-/** 字符串类的 Filter */
+/**
+ * 字符串转换
+ */
 export const StringFilters = {
   /**
    * 转换为有效字符串
-   * @param value 需要转换的值
-   * @param fillStr 如果是非有效字符串,那么填充什么字符串
+   *
+   * @example
+   *
+   * const str: (null | string) = '';
+   *
+   * <>{StringFilters.toValidStr(str, '-')}</> // 展示 -
+   *
+   * @param value
+   * @param fillStr
    * @returns
    */
-  toValidStr: (value: string | undefined, fillStr: string) => {
-    if (isUndefined(value)) return fillStr;
-    if (validateIsSpaceStr(value)) return fillStr;
+  toValidStr(value: string | undefined | null, fillStr: string) {
+    if (!isDef(value)) return fillStr;
     return value;
   }
 }
 
-/** 时间类的 Filter */
-export const DateFilters = {
+/**
+ * 数字转换
+ */
+export const NumberFilters = {
+  /**
+   * 将数字按照指定小数点格式输出
+   *
+   * @example
+   *
+   * const n = 3.1415926;
+   * <>{NumberFilters.toFixed(n, 2)}</> // 展示 3.14
+   *
+   * const nr: (undefined | number) = void 0;
+   * <>{NumberFilters.toFixed(nr, 2)}</> // 展示 0.00
+   *
+   * @param value
+   * @param position
+   * @returns
+   */
+  toFixed(value: number | undefined | null, position = 2) {
+    if (!isDef(value)) value = 0;
 
+    return Number(value.toFixed(position));
+  },
+  /**
+   * 将数字转换为百分率
+   *
+   * @example
+   *
+   * const a = 0.111111;
+   * NumberFilters.toPercentage(a, 2); // 11.11%
+   *
+   * const c = void 0;
+   * NumberFilters.toPercentage(a, 2, '0%'); // c不是一个数字, 0%
+   *
+   */
+  toPercentage(value: number | undefined | null, position = 2, fillStr = '0%' as `${number}%`): `${number}%` {
+    if (!isDef(value)) return fillStr; // 如果不是合格的数字, 直接返回填充字符, 因为填充字符可能不是数字字符
 
+    const dist = NumberFilters.toFixed(value * 100, position);
 
-
-  toFullDate: () => {
-    // TODO
+    return `${dist.toFixed(position) as `${number}`}%` as const;
+  },
+  /**
+   * 将数字转换为字符串输出
+   *
+   * @example
+   *
+   * const a = void 0;
+   * NumberFilters.toString(a); // ''
+   *
+   * @returns
+   */
+  toString(value: number | undefined | null, defaultStr = '') {
+    if (!isDef(value)) return defaultStr;
+    return value.toString();
   }
 }

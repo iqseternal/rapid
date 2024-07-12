@@ -4,8 +4,8 @@ import type { CSSTypes } from '@rapid/libs/common';
 import { useDebounceHook, useWindowSizeHook } from '@rapid/libs/hooks';
 
 const CSS_VARS_MAP = {
-  MAX_SCREEN_WIDTH: '--o-styled-max-screen-width',
-  MAS_SCREEN_HEIGHT: '--o-styled-max-screen-height',
+  MAX_SCREEN_WIDTH: '--rapid-styled-max-screen-width',
+  MAS_SCREEN_HEIGHT: '--rapid-styled-max-screen-height',
 };
 
 const windowSize = useWindowSizeHook();
@@ -56,5 +56,5 @@ export const justifyBetweenStyle = css`justify-content: space-between;`;
 export const justifyAroundStyle = css`justify-content: space-around;`;
 
 export const alignItemStartStyle = css`align-items: flex-start;`;
-export const alignItenEndStyle = css`align-items: flex-end;`;
+export const alignItemEndStyle = css`align-items: flex-end;`;
 export const alignItemCenterStyle = css`align-items: center;`;

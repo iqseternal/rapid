@@ -1,5 +1,28 @@
 import { mRapidC } from './make';
 
+const colorVarsSheet = {
+  /* 主要背景色 */
+  primaryBackgroundColor: mRapidC('--rapid-primary-background-color', '#ffffff', '主要背景色'),
+  /* 二级次背景色 */
+  secondaryBackgroundColor: mRapidC('--rapid-secondary-background-color', '#f7f7f7', '二级次背景色'),
+  /* 三级次要背景色 */
+  thirdBackgroundColor: mRapidC('--rapid-third-background-color', '#eeeeee', '三级次要背景色'),
+  /* 四级次要背景色 */
+  fourthBackgroundColor: mRapidC('--rapid-fourth-background-color', '#e5e5e5', '四级次要背景色'),
+
+  /* 主题色 */
+  primaryColor: mRapidC('--rapid-primary-color', '#007bff', '主题色'),
+
+
+  primaryTextColor: mRapidC('--rapid-primary-text-color', '#333333', '主要文本颜色'),
+  secondaryTextColor: mRapidC('--rapid-secondary-text-color', '#666666', '次要文本颜色'),
+  placeholderTextColor: mRapidC('--rapid-placeholder-text-color', '#999999', '提示文本颜色'),
+
+
+  linkTextColor: mRapidC('--rapid-link-text-color', '#1a73e8', '链接文本颜色'),
+} as const;
+
+
 const widgetVarsSheet = {
   /** 控件宽度 */
   widgetWidth: mRapidC('--rapid-widget-width', '20px', '控件宽度'),
@@ -9,23 +32,66 @@ const widgetVarsSheet = {
   widgetColor: mRapidC('--rapid-widget-color', '#212529', '控件颜色'),
   /** 控件Hover */
   widgetHoverBackgroundColor: mRapidC('--rapid-widget-hover-background-color', 'rgba(0, 0, 0, .1)', '控件悬浮背景色'),
+  /** 控件圆角 */
+  widgetBorderRadius: mRapidC('--rapid-widget-border-radius', '4px', '控件圆角')
 } as const;
 
 const navbarVarsSheet = {
   /* 导航栏高度 */
-  navbarHeight: mRapidC('--rapid-navbar-height', '26px', '导航栏高度'),
+  navbarHeight: mRapidC('--rapid-navbar-height', '28px', '导航栏高度'),
   /* 导航栏背景色 */
-  navbarBackgroundColor: mRapidC('--rapid-navbar-background-color', '#ffffff', '导航栏背景色'),
+  navbarBackgroundColor: mRapidC('--rapid-navbar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '导航栏背景色'),
 } as const;
+
+const buttonVarsSheet = {
+  /** 所有按钮 */
+  buttonBackgroundColor: mRapidC('--rapid-button-background-color', colorVarsSheet.primaryBackgroundColor.value, ''),
+  buttonTextColor: mRapidC('--rapid-button-text-color', colorVarsSheet.primaryTextColor.value, '按钮文字颜色'),
+  buttonBorderRadius: mRapidC('--rapid-button-border-radius', '10px', '按钮的圆角尺寸'),
+
+  /** 主按钮 */
+  primaryButtonBackgroundColor: mRapidC('--rapid-primary-button-background-color', '#1677ff', '主要按钮颜色'),
+  primaryButtonTextColor: mRapidC('--rapid-primary-button-text-color', '#FFF', '主要按钮文字颜色'),
+
+  /** 带边线的按钮 */
+  dashedButtonBackgroundColor: mRapidC('--rapid-dashed-button-background-color', colorVarsSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  dashedButtonTextColor: mRapidC('--rapid-dashed-button-text-color', colorVarsSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+
+  /** 默认的按钮 */
+  defaultButtonBackgroundColor: mRapidC('--rapid-default-button-background-color', colorVarsSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  defaultButtonTextColor: mRapidC('--rapid-default-button-text-color', colorVarsSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+
+  /** 链接按钮 */
+  linkButtonBackgroundColor: mRapidC('--rapid-link-button-background-color', 'unset', '带边框按钮背景色'),
+  linkButtonTextColor: mRapidC('--rapid-link-button-text-color', colorVarsSheet.linkTextColor.value, '带边框按钮文字颜色'),
+
+  /** 文本按钮 */
+  textButtonBackgroundColor: mRapidC('--rapid-text-button-background-color', colorVarsSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  textButtonTextColor: mRapidC('--rapid-text-button-text-color', colorVarsSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+} as const;
+
+const messageVarsSheet = {
+  messageBorderRadius: mRapidC('--rapid-message-border-radius', '8px', 'message圆角'),
+
+  /* 成功按钮颜色 */
+  successMessageColor: mRapidC('--rapid-success-message-color', '#28a745', '成功按钮颜色'),
+  /* 警告按钮颜色 */
+  warningMessageColor: mRapidC('--rapid-warning-message-color', '#ffc107', '警告按钮颜色'),
+  /* 错误按钮颜色 */
+  errorMessageColor: mRapidC('--rapid-error-message-color', '#dc3545', '错误按钮颜色'),
+} as const;
+
+const cardVarsSheet = {
+  cardBorderRadius: mRapidC('--rapid-card-border-radius', '12px', '卡片圆角'),
+  cardPadding: mRapidC('--rapid-card-padding', '16px', '卡片内边距')
+
+} as const;
+
 
 
 
 
 const sizeVarsSheet = {
-  /* 按钮圆角 */
-  buttonBorderRadius: mRapidC('--rapid-button-border-radius', '4px', '按钮圆角'),
-  /* 卡片圆角 */
-  cardBorderRadius: mRapidC('--rapid-card-border-radius', '8px', '卡片圆角'),
 
   /* 正文字体大小 */
   bodyFontSize: mRapidC('--rapid-body-font-size', '16px', '正文字体大小'),
@@ -45,8 +111,7 @@ const sizeVarsSheet = {
 
   /* 页脚高度 */
   footerHeight: mRapidC('--rapid-footer-height', '80px', '页脚高度'),
-  /* 面板内边距 */
-  panelPadding: mRapidC('--rapid-panel-padding', '16px', '面板内边距'),
+
   /* 卡片内边距 */
   cardPadding: mRapidC('--rapid-card-padding', '20px', '卡片内边距'),
   /* 按钮内边距 */
@@ -57,21 +122,12 @@ const sizeVarsSheet = {
   tooltipPadding: mRapidC('--rapid-tooltip-padding', '8px 12px', '工具提示内边距')
 } as const;
 
-const colorVarsSheet = {
-  /* 主要背景色 */
-  mainBackgroundColor: mRapidC('--rapid-main-background-color', '#ffffff', '主要背景色'),
-  /* 次背景色 */
-  secondaryBackgroundColor: mRapidC('--rapid-secondary-background-color', '#f7f7f7', '次背景色'),
-  /* 主题色 */
-  primaryColor: mRapidC('--rapid-primary-color', '#007bff', '主题色'),
+const colorsVarsSheet = {
+
+
   /* 辅助色 */
   secondaryColor: mRapidC('--rapid-secondary-color', '#6c757d', '辅助色'),
-  /* 成功按钮颜色 */
-  successButtonColor: mRapidC('--rapid-success-button-color', '#28a745', '成功按钮颜色'),
-  /* 警告按钮颜色 */
-  warningButtonColor: mRapidC('--rapid-warning-button-color', '#ffc107', '警告按钮颜色'),
-  /* 错误按钮颜色 */
-  errorButtonColor: mRapidC('--rapid-error-button-color', '#dc3545', '错误按钮颜色'),
+
   /* 链接颜色 */
   linkColor: mRapidC('--rapid-link-color', '#007bff', '链接颜色'),
   /* 正文文本颜色 */
@@ -129,5 +185,10 @@ export const themeCssVarsSheet = {
   ...widgetVarsSheet,
   ...navbarVarsSheet,
   ...colorVarsSheet,
+  ...buttonVarsSheet,
+  ...messageVarsSheet,
+  ...cardVarsSheet,
+
+  ...colorsVarsSheet,
   ...sizeVarsSheet
 } as const;

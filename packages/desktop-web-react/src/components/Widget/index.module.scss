@@ -2,7 +2,7 @@
 
 .widgetHasHover {
   &:hover {
-    background-color: var(--rapid-widget-hover-background-color, rgba(0, 0, 0, .1));
+    background-color: var(--rapid-widget-hover-background-color);
   }
 }
 
@@ -11,14 +11,16 @@
   max-height: 100%;
   width: var(--rapid-widget-width, 20px);
   height: var(--rapid-widget-height, 20px);
-  color: var(--rapid-widget-color, #212529);
+  color: var(--rapid-widget-color);
 
-  font-size: 85%;
-  padding: 2px;
+  border-radius: var(--rapid-widget-border-radius);
+  overflow: hidden;
+
+  font-size: 80%;
+  padding: 3px;
 
   aspect-ratio: 1 / 1;
   cursor: default;
   user-select: none;
   flex: 0 0 auto;
-  border-radius: 2px;
 }

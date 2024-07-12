@@ -5,7 +5,7 @@ import {
   overflowXHiddenStyle, overflowYHiddenStyle,
   flexDirectionColReverseStyle, flexDirectionColStyle, flexDirectionRowReverseStyle, flexDirectionRowStyle,
   justifyAroundStyle, justifyBetweenStyle, justifyCenterStyle, justifyEndStyle, justifyStartStyle,
-  alignItemCenterStyle, alignItemStartStyle, alignItenEndStyle
+  alignItemCenterStyle, alignItemStartStyle, alignItemEndStyle
 } from './css';
 import styled, { css } from 'styled-components';
 
@@ -40,16 +40,16 @@ export const FlexRow = combinationStyled(Flex, flexDirectionRowStyle, alignItemC
 export const FlexColumn = combinationStyled(Flex, flexDirectionColStyle, alignItemCenterStyle);
 
 export const FlexRowBetween = combinationStyled(FlexRow, justifyBetweenStyle);
-export const FlexCloumnBetween = combinationStyled(FlexColumn, justifyBetweenStyle);
+export const FlexColumnBetween = combinationStyled(FlexColumn, justifyBetweenStyle);
 
 export const FlexRowAround = combinationStyled(FlexRow, justifyAroundStyle);
-export const FlexCloumnAround = combinationStyled(FlexColumn, justifyAroundStyle);
+export const FlexColumnAround = combinationStyled(FlexColumn, justifyAroundStyle);
 
 export const FlexRowStart = combinationStyled(FlexRow, justifyStartStyle);
-export const FlexCloumnStart = combinationStyled(FlexColumn, justifyStartStyle);
+export const FlexColumnStart = combinationStyled(FlexColumn, justifyStartStyle);
 
 export const FlexRowEnd = combinationStyled(FlexRow, justifyEndStyle);
-export const FlexCloumnEnd = combinationStyled(FlexColumn, justifyEndStyle);
+export const FlexColumnEnd = combinationStyled(FlexColumn, justifyEndStyle);
 
 export const FlexRowCenter = combinationStyled(FlexRow, justifyCenterStyle);
 export const FlexColumnCenter = combinationStyled(FlexColumn, justifyCenterStyle);
