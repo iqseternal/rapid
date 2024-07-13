@@ -7,7 +7,7 @@ import { print } from '@suey/printer';
 export class Exception<D extends any = any> extends Error {
   constructor(
     message: string,
-    public readonly errMsgData: D
+    public readonly errMsgData?: D
   ) {
     super(message);
   }

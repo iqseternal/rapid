@@ -1,13 +1,41 @@
 import {
   RequestExceptionFilter, TypeExceptionFilter,
   PermissionExceptionFilter, RuntimeExceptionFilter,
-  AsyncExceptionFilter, RuntimeException
+  AsyncExceptionFilter
 } from './core';
-import { IpcDevToolHandler, IpcStoreHandler, IpcWindowHandler, IpcGraphicHandler, IpcDocHandler } from './ipc';
-import { LoggerServer, IpcHandlerServer } from './server';
+import { LoggerServer } from './server';
 import { setupContext, setupSingleApplication } from '@rapid/framework';
-import { setupMainWindow, setupTrayMenu, setupReportBugsWindow } from './setupService';
+import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
+import {
+  ipcOpenWindow, ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
+  ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize,
+  ipcWindowShow
+} from './ipc/IpcWindowHandler';
+import {
+  ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
+  ipcStoreSet
+} from './ipc/IpcStoreHandler';
+import {
+  ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs
+} from './ipc/IpcDocHandler';
+import { ipcOpenDevTool } from './ipc/IpcDevToolHandler';
+import { registerIpcHandle } from '@rapid/framework';
+
+registerIpcHandle([
+  ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
+  ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize,
+  ipcWindowShow
+]);
+registerIpcHandle([ipcOpenWindow]);
+registerIpcHandle([
+  ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
+  ipcStoreSet
+]);
+registerIpcHandle([ipcOpenDevTool]);
+registerIpcHandle([
+  ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs
+]);
 
 setupSingleApplication().catch(() => {
 
@@ -24,13 +52,13 @@ setupContext({
       PermissionExceptionFilter
     ]
   },
-  ipcMain: {
-    use: IpcHandlerServer,
-    modules: [
-      IpcWindowHandler, IpcStoreHandler, IpcDevToolHandler,
-      IpcGraphicHandler, IpcDocHandler
-    ]
-  }
+  // ipcMain: {
+  //   use: IpcHandlerServer,
+  //   modules: [
+  //     IpcWindowHandler, IpcStoreHandler, IpcDevToolHandler,
+  //     IpcGraphicHandler, IpcDocHandler
+  //   ]
+  // }
 }).catch(() => {
 
 })
@@ -45,8 +73,8 @@ setupApp(async () => {
 
 }, {
   onFailed: async (err) => {
-    const reportBugsWindowService = await setupReportBugsWindow();
+    // const reportBugsWindowService = await setupReportBugsWindow();
 
-    reportBugsWindowService.show();
+    // reportBugsWindowService.show();
   }
 });

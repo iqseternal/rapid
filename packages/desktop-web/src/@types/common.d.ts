@@ -1,21 +1,16 @@
+import type { ReactNode } from 'react';
+
+declare global {
 
 
-/**
- * 快捷键定义表中的类型
- *
- */
-declare interface ShortcutKey {
-  key: string;
+  declare interface BaseProps {
+    children?: ReactNode;
 
-  moreKey?: string[];
-
-  allKey?: string[];
-
-  tip: string;
-
-  changeAble: boolean;
-
-  description?: string;
-
-  evt?: () => void;
+    className?: string;
+  }
 }
+
+
+
+
+export {};

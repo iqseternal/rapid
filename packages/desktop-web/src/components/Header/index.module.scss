@@ -1,0 +1,8 @@
+@import '@scss/mixin/index.scss';
+
+.header {
+  width: calc(100% - 6px);
+  height: var(--rapid-navbar-height);
+  background-color: var(--rapid-navbar-background-color);
+  padding: 0 3px;
+}

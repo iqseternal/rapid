@@ -13,6 +13,7 @@
     "reflect-metadata": "^0.2.1"
   },
   "devDependencies": {
-    "@rapid/config": "workspace:^"
+    "@rapid/config": "workspace:^",
+    "@rapid/libs": "workspace:^"
   }
 }

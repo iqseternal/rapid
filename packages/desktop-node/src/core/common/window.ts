@@ -1,7 +1,8 @@
 import type { IpcMainInvokeEvent, IpcMainEvent } from 'electron';
 import { BrowserWindow, app, screen, shell } from 'electron';
 import { isNumber } from '@suey/pkg-utils';
-import { IS_DEV } from '@rapid/config/constants';
+import { CONFIG, IS_DEV } from '@rapid/config/constants';
+import { iconUrl } from '@rapid/config/electron-main';
 
 /**
  * 设置浏览器窗口允许跨域的设置
@@ -56,7 +57,23 @@ export const setWindowMinSize = (window: BrowserWindow, wMin: number, hMin: numb
  */
 export const setWindowOpenHandler = (window: BrowserWindow): void => {
   window.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url);
+    if (details.url) {
+      return {
+        action: 'allow',
+
+        overrideBrowserWindowOptions: {
+          title: CONFIG.PROJECT,
+          width: 500,
+          height: 500,
+          icon: iconUrl,
+          webPreferences: {
+
+          }
+        }
+      }
+    }
+
+    // shell.openExternal(details.url);
     return { action: 'deny' };
   });
 }

@@ -45,14 +45,14 @@ export class WindowService {
         sandbox: false,
         devTools: true,
         webSecurity: true,
-        nodeIntegration: true
+        nodeIntegration: true,
       },
     });
 
     // setWindowCross(this.window);
-    setWindowMaxSize(this.window);
+    // setWindowMaxSize(this.window);
     setWindowCaption(this.window, iconUrl, CONFIG.PROJECT);
-    setWindowOpenHandler(this.window);
+
 
     if (this.options.windowKey) WindowStateMachine.addKey(this.options.windowKey, this);
     else WindowStateMachine.addId(this);

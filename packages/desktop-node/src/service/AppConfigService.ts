@@ -8,11 +8,11 @@ import { APP_CONFIG } from '@rapid/config/electron-main';
 export class AppConfigService extends SingleInstanceService<AppConfigService> {
   public readonly config = APP_CONFIG;
 
-  static getInstance<T = AppConfigService>() {
+  static override getInstance<T = AppConfigService>() {
     return super.getInstance<T>();
   }
 
-  destory(): void {
+  override destory(): void {
     if (this.config.miscellaneous.appJson.overwrite) {
 
       PrinterService.printError(`当前还未编写覆写过程`);

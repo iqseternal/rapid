@@ -1,4 +1,4 @@
-import { copySelectionText, copySpecifiedText, pasteSpecifiedText, pasteSelectionText } from '@rapid/libs/common';
+import { copySelectionText, copySpecifiedText, pasteSpecifiedText, pasteSelectionText } from '@rapid/libs-web/common';
 
 /**
  * 复制文字, 指定参数则复制指定文本, 否则复制当前选中的文本

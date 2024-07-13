@@ -1,6 +1,4 @@
-
 import { useRef, useEffect, useState } from 'react';
-import { useCssVar } from '@/hooks';
 import { setCssVar, getCssVar } from '@libs/dom';
 import { combinationCName } from '@libs/common';
 import styles from './index.module.scss';

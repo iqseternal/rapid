@@ -33,7 +33,7 @@ export class SingleInstanceService<T extends SingleInstanceService<T>> extends C
    * 采用单实例做法, 这样可以保持应用程序数据的统一, 保持数据的一致性
    * @returns
    */
-  static getInstance<T>(): T {
+  static override getInstance<T>(): T {
     const className = this.name;
 
     if (!SingleInstanceService.instanceMap[className]) {
@@ -48,7 +48,7 @@ export class SingleInstanceService<T extends SingleInstanceService<T>> extends C
   /**
    * 单一实例才应用程序即将退出时做的事情
    */
-  destory(): void {
+  override destory(): void {
 
   }
 }

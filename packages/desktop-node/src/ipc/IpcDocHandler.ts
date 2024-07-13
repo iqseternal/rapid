@@ -1,15 +1,21 @@
-import { IpcMain, FrameworkIpcHandler } from '@rapid/framework';
+import { toMakeIpcAction } from '@rapid/framework';
 import { WindowService } from '@/service/WindowService';
 import { app, dialog } from 'electron';
 import { FileService } from '@/service/FileService';
 import { ConvertService } from '@/service/ConvertService';
 import { EXTENSIONS, EXPORTS_EXTENSIONS } from '@rapid/config/constants';
 import { AppFileStorageService } from '@/service/AppStorageService';
+// @ts-ignore
 import type { Meta2dData, Options } from '@/../../desktop-web/node_modules/@meta2d/core';
 import { RuntimeException, TypeException } from '@/core';
 import { PrinterService } from '@/service/PrinterService';
+import { convertWindowService } from './middlewares';
 
 import * as path from 'path';
+
+const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
+  handleMiddlewares: [convertWindowService]
+});
 
 type DocData = {
   data: Meta2dData;
@@ -22,16 +28,14 @@ type ExportFileTypeToData = {
   [EXPORTS_EXTENSIONS.SVG]: string;
 }
 
-@IpcMain.IpcController()
-export class IpcDocHandler extends FrameworkIpcHandler {
-  public readonly id = 'IpcDoc';
-
-  /**
-   * 保存一个文档到本地
-   * @returns
-   */
-  @IpcMain.Handler()
-  async save(_: WindowService, filePath: string, data: DocData) {
+/**
+ * 保存一个文档到本地
+ * @returns
+ */
+export const ipcRdDocSave = makeIpcHandleAction(
+  'IpcDoc/save',
+  [],
+  async (_, filePath: string, data: DocData) => {
     const ext = path.extname(filePath).substring(1);
 
     PrinterService.printWarn(filePath, ext);
@@ -42,13 +46,17 @@ export class IpcDocHandler extends FrameworkIpcHandler {
 
     return new AppFileStorageService(filePath).save(data);
   }
+);
 
-  /**
-   * 另存为一个文档到本地
-   * @returns
-   */
-  @IpcMain.Handler()
-  async saveAs(windowService: WindowService, data: DocData) {
+
+/**
+ * 另存为一个文档到本地
+ * @returns
+ */
+export const ipcRdDocSaveAs = makeIpcHandleAction(
+  'IpcDoc/saveAs',
+  [],
+  async (windowService, data: DocData) => {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
       filters: [{ extensions: EXTENSIONS.DOCS.EXTENSIONS, name: EXTENSIONS.DOCS.NAME }]
     });
@@ -57,17 +65,18 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       level: 'warning'
     })
 
-    return this.save(windowService, filePath, data);
+    return ipcRdDocSave.action(windowService, filePath, data);
   }
+);
 
-  /**
-   * 从本地打开一个文档
-   * @param windowService
-   * @param docPath
-   * @returns
-   */
-  @IpcMain.Handler()
-  async openDoc(windowService: WindowService, docPath?: string) {
+/**
+ * 从本地打开一个文档
+ * @returns
+ */
+export const ipcRdDocOpen = makeIpcHandleAction(
+  'IpcDoc/openDoc',
+  [],
+  async (windowService, docPath?: string) => {
     const filePath = docPath ? [docPath] : dialog.showOpenDialogSync(windowService.window, {
       filters: [{ extensions: EXTENSIONS.DOCS.EXTENSIONS, name: EXTENSIONS.DOCS.NAME }]
     });
@@ -85,16 +94,16 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       data
     };
   }
+);
 
-  /**
-   * 导出一个文档数据到本地
-   * @param windowService
-   * @param filetype
-   * @param data
-   * @returns
-   */
-  @IpcMain.Handler()
-  async exportsDoc<FileType extends EXPORTS_EXTENSIONS>(windowService: WindowService, filetype: FileType, data: ExportFileTypeToData[FileType]) {
+/**
+ * 导出一个文档数据到本地
+ * @returns
+ */
+export const ipcRdDocExpose = makeIpcHandleAction(
+  'IpcDoc/exportsDoc',
+  [],
+  async <FileType extends EXPORTS_EXTENSIONS>(windowService: WindowService, filetype: FileType, data: ExportFileTypeToData[FileType]) => {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
       filters: [{ extensions: [filetype], name: filetype }]
     });
@@ -119,15 +128,17 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       level: 'error'
     })
   }
+);
 
-  /**
-   * 从本地导入一个文档数据
-   * @param windowService
-   * @param filetype
-   * @returns
-   */
-  @IpcMain.Handler()
-  async importDoc<FileType extends EXPORTS_EXTENSIONS.JSON>(windowService: WindowService, filetype: FileType) {
+
+/**
+ * 从本地导入一个文档数据
+ * @returns
+ */
+export const ipcRdDocImport = makeIpcHandleAction(
+  'IpcDoc/importDoc',
+  [],
+  async <FileType extends EXPORTS_EXTENSIONS.JSON>(windowService: WindowService, filetype: FileType) => {
     if (filetype === EXPORTS_EXTENSIONS.JSON) {
       const filePath = dialog.showOpenDialogSync(windowService.window, {
         filters: [{ extensions: [filetype], name: EXTENSIONS.DOCS.NAME }]
@@ -143,4 +154,4 @@ export class IpcDocHandler extends FrameworkIpcHandler {
       label: 'IpcDocHandler:importDoc'
     })
   }
-}
+);

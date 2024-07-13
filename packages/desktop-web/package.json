@@ -1,9 +1,8 @@
 {
-  "name": "electron-web",
+  "name": "desktop-web-react",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
@@ -12,25 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@meta2d/le5le-charts": "^1.0.4",
     "@rapid/config": "workspace:^",
     "@rapid/desktop-node": "workspace:^"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^0.8.1",
-    "@meta2d/activity-diagram": "^1.0.0",
-    "@meta2d/chart-diagram": "^1.0.7",
-    "@meta2d/class-diagram": "^1.0.1",
-    "@meta2d/core": "^1.0.41",
-    "@meta2d/flow-diagram": "^1.0.0",
-    "@meta2d/form-diagram": "^1.0.14",
-    "@meta2d/fta-diagram": "^1.0.0",
-    "@meta2d/plugin-mind-collapse": "^1.0.0",
-    "@meta2d/plugin-mind-core": "^1.0.3",
-    "@meta2d/sequence-diagram": "^1.0.0",
-    "@meta2d/svg": "^1.0.4",
     "@rapid/libs": "workspace:^",
-    "@rapid/validates": "workspace:^",
-    "fake-progress": "^1.0.4"
+    "@rapid/libs-web": "workspace:^",
+    "current-device": "^0.10.2"
   }
 }

@@ -77,6 +77,8 @@ module.exports = {
     'no-async-promise-executor': 'off',
     'no-useless-escape': 'off',
 
+    'no-ignore': 'off',
+
     // best-practice
     'array-callback-return': 'error',
     'block-scoped-var': 'error',
@@ -108,7 +110,7 @@ module.exports = {
 
     // import
     'import/first': 'off',
-    'import/no-duplicates': 'error',
+    'import/no-duplicates': 'warn',
     'import/no-unresolved': 'off',
     'import/namespace': 'off',
     'import/default': 'off',

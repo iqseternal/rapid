@@ -1,6 +1,10 @@
-@import './init.scss';
-@import './animation.scss';
-@import './common.scss';
-@import './defined.scss';
-@import './custom.scss';
 @import './var.scss';
+
+@import './preset/index.scss';
+
+@import './override/index.scss';
+
+#root {
+  width: 100%;
+  height: 100vh;
+}

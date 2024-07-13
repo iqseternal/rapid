@@ -1,0 +1,26 @@
+
+@import '@scss/mixin/index.scss';
+
+.rootLayout {
+
+}
+
+
+.rapidLayout {
+
+
+
+
+  .mainContainer {
+
+
+    max-height: calc(100% - var(--rapid-navbar-height));
+
+
+    @include Overflow(scroll);
+    @include BeautifulBar;
+
+    // background-color: cadetblue;
+  }
+}
+

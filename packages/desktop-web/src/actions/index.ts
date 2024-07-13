@@ -7,8 +7,6 @@
  */
 
 
-export * from './hotKeys';
-
 export * from './window';
 
 export * from './page';

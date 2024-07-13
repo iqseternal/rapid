@@ -313,6 +313,9 @@ importers:
       '@rapid/libs':
         specifier: workspace:^
         version: link:../libs
+      '@rapid/libs-web':
+        specifier: workspace:^
+        version: link:../libs-web
       current-device:
         specifier: ^0.10.2
         version: 0.10.2
@@ -349,6 +352,9 @@ importers:
       '@rapid/config':
         specifier: workspace:^
         version: link:../config
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../libs
 
   packages/libs:
     dependencies:
@@ -358,6 +364,15 @@ importers:
 
   packages/libs copy:
     dependencies:
+      '@rapid/validates':
+        specifier: workspace:^
+        version: link:../validates
+
+  packages/libs-web:
+    dependencies:
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../libs
       '@rapid/validates':
         specifier: workspace:^
         version: link:../validates

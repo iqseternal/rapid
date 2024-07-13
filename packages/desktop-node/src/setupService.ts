@@ -3,8 +3,8 @@ import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
-import { Menu, Tray, app, nativeImage } from 'electron';
-import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach } from '@/core/common/window';
+import { BrowserView, Menu, Tray, app, nativeImage } from 'electron';
+import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach, setWindowOpenHandler } from '@/core/common/window';
 import { iconUrl } from '@rapid/config/electron-main';
 
 /**
@@ -27,6 +27,33 @@ export async function setupMainWindow() {
   windowService.window.setMenu(null);
   setWindowCloseCaptionContextmenu(windowService.window);
   setWindowDevtoolsDetach(windowService.window);
+  setWindowOpenHandler(windowService.window);
+
+  // windowService.window.webContents.setFrameRate(144);
+  windowService.window.webContents.setWindowOpenHandler((details) => {
+    if (details.url) {
+      return {
+        action: 'allow',
+
+        overrideBrowserWindowOptions: {
+          title: CONFIG.PROJECT,
+          width: 500,
+          height: 500,
+          icon: iconUrl,
+          webPreferences: {
+
+
+          },
+          parent: windowService.window,
+          modal: true
+        }
+      }
+    }
+
+    // shell.openExternal(details.url);
+    return { action: 'deny' };
+  });
+
 
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
   return windowService;
@@ -51,6 +78,8 @@ export async function setupSettingWindow() {
 
   windowService.window.setResizable(false);
   windowService.window.setMenu(null);
+  setWindowOpenHandler(windowService.window);
+
   return windowService;
 }
 
@@ -80,6 +109,7 @@ export async function setupDialogWindow(options: DialogWindowOptions) {
   windowService.window.setMenu(null);
 
   setWindowCloseCaptionContextmenu(windowService.window);
+  setWindowOpenHandler(windowService.window);
   // setWindowDevtoolsDetach(windowService.window);
 
   windowService.addOpenThenCb(() => {
@@ -123,6 +153,7 @@ export async function setupReportBugsWindow() {
   // windowService.window.setMenu(null);
   // setWindowCloseCaptionContextmenu(windowService.window);
   setWindowDevtoolsDetach(windowService.window);
+  setWindowOpenHandler(windowService.window);
 
   return windowService;
 }
@@ -149,33 +180,33 @@ export async function setupTrayMenu() {
   tray.setToolTip(CONFIG.PROJECT);
 
   const contextMenu = Menu.buildFromTemplate([
-    // {
-    //   label: '没什么用的选项1',
-    //   type: 'radio',
-    //   click: () => {
+    {
+      label: '没什么用的选项1',
+      type: 'radio',
+      click: () => {
 
-    //     console.log('click');
-    //   }
-    // },
-    // { label: '没用的选项2', type: 'radio' },
-    // { label: '没用的选项3', type: 'radio', checked: true },
-    // { label: '没用的选项4', type: 'radio' },
-    // { type: 'separator' },
-    // { label: '????', type: 'normal' },
-    // {
-    //   label: '设置',
-    //   type: 'normal',
-    //   click: async () => {
-    //     const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
-    //     if (!settingWindowService) {
-    //       await setupSettingWindow();
-    //       return;
-    //     }
+        console.log('click');
+      }
+    },
+    { label: '没用的选项2', type: 'radio' },
+    { label: '没用的选项3', type: 'radio', checked: true },
+    { label: '没用的选项4', type: 'radio' },
+    { type: 'separator' },
+    { label: '????', type: 'normal' },
+    {
+      label: '设置',
+      type: 'normal',
+      click: async () => {
+        const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+        if (!settingWindowService) {
+          await setupSettingWindow();
+          return;
+        }
 
-    //     if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
-    //     else settingWindowService.window.focus();
-    //   }
-    // },
+        if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
+        else settingWindowService.window.focus();
+      }
+    },
     { type: 'separator' },
     {
       label: '退出',

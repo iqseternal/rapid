@@ -1,5 +1,5 @@
-import { app , screen } from 'electron';
-import { IpcMain, FrameworkIpcHandler } from '@rapid/framework';
+import { app , ipcMain, screen } from 'electron';
+import { Exception, IpcActionMiddleware, EventActionType } from '@rapid/framework';
 import { WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
 import { TypeException } from '@/core';
@@ -7,38 +7,35 @@ import { isNumber } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
 import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
+import type { IpcMainInvokeEvent, IpcMainEvent } from 'electron';
+import { toPicket } from '@rapid/libs/common';
+import { toMakeIpcAction } from '@rapid/framework';
+import { convertWindowService } from './middlewares';
 
-/**
- * Ipc 关于窗口操作的 句柄
- */
-@IpcMain.IpcController()
-export class IpcWindowHandler extends FrameworkIpcHandler {
-  public readonly id = 'IpcWindow';
+const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
+  handleMiddlewares: [convertWindowService]
+});
 
-  /**
-   * 最大化窗口
-   */
-  @IpcMain.Handler()
-  maxSize(windowService: WindowService, _?: number) {
-    windowService.window.maximize();
+export const ipcWindowMaxSize = makeIpcHandleAction(
+  'IpcWindow/maxSize',
+  [],
+  async (windowService, options?: { id: number }) => {
+    if (windowService.window.maximizable) windowService.window.maximize();
   }
+);
 
-  /**
-   * 最小化窗口
-   */
-  @IpcMain.Handler()
-  minSize(windowService: WindowService, _?: number) {
-
-    windowService.window.minimize();
+export const ipcWindowMinSize = makeIpcHandleAction(
+  'IpcWindow/minSize',
+  [],
+  async (windowService, options?: { id: number }) => {
+    if (windowService.window.minimizable) windowService.window.minimize();
   }
+);
 
-  /**
-   * 重置窗口
-   * @returns
-   */
-  @IpcMain.Handler()
-  reduction(windowService: WindowService, _?: number) {
-
+export const ipcWindowReductionSize = makeIpcHandleAction(
+  'IpcWindow/reduction',
+  [],
+  async (windowService, options?: { id: number }) => {
     if (windowService.window.isMaximized()) {
       windowService.window.restore();
       return true;
@@ -46,54 +43,51 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     windowService.window.maximize();
     return true;
   }
+);
 
-  /**
-   * 调整窗口是否可以托拽改变大小
-   */
-  @IpcMain.Handler()
-  resizeAble(windowService: WindowService, options: {
+export const ipcWindowResizeAble = makeIpcHandleAction(
+  'IpcWindow/resizeAble',
+  [],
+  async (windowService, options?: {
     id?: number,
     able: boolean
-  }) {
+  }) => {
+
     windowService.window.setResizable(options.able);
   }
+);
 
-  /**
-   * 重启
-   */
-  @IpcMain.Handler()
-  relaunch() {
+export const ipcWindowRelaunch = makeIpcHandleAction(
+  'IpcWindow/relaunch',
+  [],
+  async (windowService) => {
     app.relaunch();
   }
+);
 
-  /**
-   * 设置窗口大小
-   * @param windowService
-   * @param options
-   */
-  @IpcMain.Handler()
-  setSize(windowService: WindowService, options: {
+export const ipcWindowSetSize = makeIpcHandleAction(
+  'IpcWindow/setSize',
+  [],
+  async (windowService, options: {
     id?: number
     width: number,
     height: number
-  }) {
+  }) => {
     if (windowService.window.isMaximized()) windowService.window.restore();
 
     windowService.window.setMinimumSize(0, 0);
     windowService.window.setSize(options.width, options.height);
   }
+);
 
-  /**
-   * 设置窗口为用户的自定义大小
-   * @param windowService
-   * @param options
-   * @returns
-   */
-  @IpcMain.Handler()
-  resetCustomSize(windowService: WindowService, options: {
+
+export const ipcWindowResetCustomSize = makeIpcHandleAction(
+  'IpcWindow/resetCustomSize',
+  [],
+  async (windowService, options: {
     id?: number,
     type: 'mainWindow'
-  }) {
+  }) => {
     const appConfigService = AppConfigService.getInstance();
     const userConfigService = UserConfigService.getInstance();
 
@@ -136,21 +130,20 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
     }
 
     throw new TypeException('传入了未指定类型 type', {
-      label: `${this.id}:resetCustomSize`
+      label: `resetCustomSize`
     })
   }
+);
 
-  /**
-   * 设置窗口的位置
-   * @param windowService
-   * @param options
-   */
-  @IpcMain.Handler()
-  setPosition(windowService: WindowService, options: {
+
+export const ipcWindowSetPosition = makeIpcHandleAction(
+  'IpcWindow/setPosition',
+  [],
+  async (windowService, options: {
     id?: number,
     x: 'center' | 'left' | 'right' | number
     y: 'center' | 'top' | 'bottom' | number
-  }) {
+  }) => {
     const { x, y } = options;
 
     const [currentPx, currentPy] = windowService.window.getPosition();
@@ -175,53 +168,48 @@ export class IpcWindowHandler extends FrameworkIpcHandler {
 
     windowService.window.setPosition(targetPx, targetPy);
   }
+);
 
-  /**
-   * 打开一个内置定义窗口对象
-   * @returns
-   */
-  @IpcMain.Handler()
-  async openWindow(_: WindowService, type: WINDOW_STATE_MACHINE_KEYS) {
+
+
+export const ipcOpenWindow = makeIpcHandleAction(
+  'IpcWindow/openWindow',
+  [],
+  async (_, type: WINDOW_STATE_MACHINE_KEYS) => {
     let windowService = WindowStateMachine.findWindowService(type);
 
     if (!windowService) {
       if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) windowService = await setupSettingWindow();
       else if (type === WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW) windowService = await setupReportBugsWindow();
       else throw new TypeException('错误的窗口KEY', {
-        label: `${this.id}:openWindow`
+        label: `$openWindow`
       })
     }
 
     windowService.show();
   }
+);
 
-  /**
-   * 关闭窗口
-   * @returns
-   */
-  @IpcMain.Handler()
-  closeWindow(windowService: WindowService, _?: number) {
+export const ipcWindowClose = makeIpcHandleAction(
+  'IpcWindow/closeWindow',
+  [],
+  async (windowService) => {
     const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
 
     if (isSameWindowService(mainWindowService, windowService)) return windowService.window.hide();
 
     windowService.destroy();
   }
+);
 
-  /**
-   * 管理窗口是否可以显示
-   */
-  @IpcMain.Handler()
-  showWindow(windowService: WindowService, options: {
+export const ipcWindowShow = makeIpcHandleAction(
+  'IpcWindow/showWindow',
+  [],
+  async (windowService: WindowService, options: {
     id?: number
     show: boolean
-  }) {
+  }) => {
     if (options.show) windowService.window.show();
     else windowService.window.hide();
   }
-}
-
-
-
-
-
+);

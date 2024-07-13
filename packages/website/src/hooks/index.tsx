@@ -8,8 +8,6 @@ export { useEventListener } from './useEventListener';
 export { useReactive, useShallowReactive } from './useReactive';
 export type { ReactiveOptions } from './useReactive';
 
-export { useCssVar } from './useCssVar';
-
 export { useDebounceHook } from './useDebounce';
 
 export { useOverScreenSize } from './useOverScreenSize';

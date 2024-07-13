@@ -32,7 +32,7 @@ export class AppStore extends CustomSingleInstanceService {
   private static readonly storeMap = new Map<APP_STORE_KEYS, ElectronStore<any>>;
 
   /** 获取一个存储服务实例, 该实例映射到各个 electron-store */
-  static getInstance<StoreKey extends APP_STORE_KEYS>(storeKey: StoreKey): ElectronStore<StoreKeyToMap[StoreKey]> {
+  static override getInstance<StoreKey extends APP_STORE_KEYS>(storeKey: StoreKey): ElectronStore<StoreKeyToMap[StoreKey]> {
     if (AppStore.storeMap.has(storeKey)) return AppStore.storeMap.get(storeKey) as unknown as ElectronStore<StoreKeyToMap[StoreKey]>;
 
     const store = new ElectronStore<StoreKeyToMap[StoreKey]>({

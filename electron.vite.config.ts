@@ -5,10 +5,10 @@ import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
 import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR, DEV_DESKTOP_WEB_DIR } from './packages/config/dirs';
-import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/sturcture';
+import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/structure';
 
 import eslintPlugin from 'vite-plugin-eslint';
-import rendererConfigFn from './packages/desktop-web-react/structure';
+import rendererConfigFn from './packages/desktop-web/structure';
 
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
@@ -27,7 +27,7 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        // drop_console: true,
         drop_debugger: true
       }
     },
