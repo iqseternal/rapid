@@ -1,5 +1,5 @@
 import { WindowService, WindowStateMachine } from '@/service/WindowService';
-import { CONFIG, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { CONFIG, IS_DEV, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { AppConfigService } from '@/service/AppConfigService';
 import { PrinterService } from '@/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
@@ -24,24 +24,20 @@ export async function setupMainWindow() {
     windowKey: WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW
   });
 
-  windowService.window.setMenu(null);
-  setWindowCloseCaptionContextmenu(windowService.window);
-  setWindowDevtoolsDetach(windowService.window);
-  setWindowOpenHandler(windowService.window);
-
   // windowService.window.webContents.setFrameRate(144);
+  windowService.window.setMenu(null);
   windowService.window.webContents.setWindowOpenHandler((details) => {
+    PrinterService.printInfo(`打开地址为： ${details.url}`);
+
     if (details.url) {
       return {
         action: 'allow',
-
         overrideBrowserWindowOptions: {
           title: CONFIG.PROJECT,
           width: 500,
           height: 500,
           icon: iconUrl,
           webPreferences: {
-
 
           },
           parent: windowService.window,
@@ -53,7 +49,7 @@ export async function setupMainWindow() {
     // shell.openExternal(details.url);
     return { action: 'deny' };
   });
-
+  if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
 
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
   return windowService;

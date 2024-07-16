@@ -45,9 +45,9 @@ export function useEventListener<T extends HTMLElement | Window, Key extends key
 ) {
   useEffect(() => {
     if (targetRef === null) return;
-    const targetDom = (targetRef instanceof HTMLElement) ? targetRef : targetRef.current;
+    const targetDom = (targetRef.current) ? targetRef.current : targetRef;
 
-    if (!(targetDom instanceof HTMLElement)) return;
+    if (!(targetDom instanceof HTMLElement) && !(targetDom instanceof Window)) return;
 
     if (typeof type === 'object') {
       (Object.keys(type) as Key[]).forEach((key) => {

@@ -15,6 +15,7 @@ import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
 import axios from 'axios';
+import { DropdownMenu, DropdownMenuItem, DropdownSubMenu } from '@components/DropdownMenu';
 
 interface StyleBlockProps extends BaseProps {
   title?: string;
@@ -232,42 +233,51 @@ export default function Workbenches() {
     </StyleBlock>
 
     <StyleBlock title='下拉菜单'>
-      <Dropdown
-        arrow={true}
-        // open={true}
-        autoAdjustOverflow
-        getPopupContainer={() => document.body}
-        menu={{
-          items: [
-            {
-              key: '0',
-              label: '111111111111',
-            },
-            {
-              type: 'divider',
-            },
-            {
-              key: '1',
-              label: '111111111111',
-              children: [
-                {
-                  key: '3-1',
-                  label: '5d menu item',
-                },
-                {
-                  key: '3-2',
-                  label: '6th menu item',
-                },
-              ],
-            },
-          ]
-        }}
-      >
-        <span>
-          下拉菜单
-        </span>
-      </Dropdown>
+      <Space>
+        <Dropdown
+          arrow={true}
+          // open={true}
+          autoAdjustOverflow
+          getPopupContainer={() => document.body}
+          menu={{
+            items: [
+              {
+                key: '0',
+                label: '111111111111',
+              },
+              {
+                type: 'divider',
+              },
+              {
+                key: '1',
+                label: '111111111111',
+                children: [
+                  {
+                    key: '3-1',
+                    label: '5d menu item',
+                  },
+                  {
+                    key: '3-2',
+                    label: '6th menu item',
+                  },
+                ],
+              },
+            ]
+          }}
+        >
+          <span>
+            下拉菜单
+          </span>
+        </Dropdown>
 
+        <DropdownMenu
+
+        >
+          <span>
+            文件菜单
+          </span>
+        </DropdownMenu>
+      </Space>
     </StyleBlock>
   </FullSize>
 }

@@ -172,3 +172,29 @@ input.ant-input::placeholder {
 
   }
 }
+
+// =====================================================================================================
+.ant-dropdown {
+  min-width: unset;
+
+  .ant-dropdown-arrow {
+
+  }
+
+
+  ul.ant-dropdown-menu {
+    width: fit-content;
+
+    .ant-dropdown-menu-item {
+
+
+      width: fit-content;
+
+      .ant-dropdown-menu-title-content {
+
+      }
+
+    }
+
+  }
+}

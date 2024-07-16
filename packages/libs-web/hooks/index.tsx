@@ -8,7 +8,7 @@ export type { ReactiveOptions } from './useReactive';
 
 export { useCssVar } from './useCssVar';
 
-export { useDebounceHook } from './useDebounce';
+export { useDebounceHook, useThrottleHook } from './useDebounce';
 
 export { useOverScreenSize } from './useOverScreenSize';
 

@@ -18,3 +18,18 @@ export function useDebounceHook<T extends (...args: any[]) => void>(cb: T, time:
     }, time) as unknown as number;
   }) as unknown as T;
 }
+
+
+export function useThrottleHook<T extends (...args: unknown[]) => void>(this: any, callback: T, time = 10) {
+  let timer: number | undefined = void 0;
+
+  return (...args: unknown[]) => {
+    if (timer) return;
+
+    callback.call(this, ...args);
+
+    timer = setTimeout(() => {
+      timer = void 0;
+    }, time)
+  }
+}

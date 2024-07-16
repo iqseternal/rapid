@@ -18,6 +18,7 @@ export type IpcActionType<
   action: Action;
   actionType: EvtActionType;
   middlewares: IpcActionMiddleware<EvtActionType>[];
+  listener: (e: IpcMainInvokeEvent | IpcMainInvokeEvent, ...args: unknown[]) => any;
 }
 
 export type IpcActionMiddleware<EvtActionType extends EventActionType> = {
@@ -127,12 +128,23 @@ export function toMakeIpcAction<
       fn: Fn
     ) => {
 
-      return {
+      const action = <IpcActionType<EvtActionType>>{
         channel,
         action: fn,
         actionType: evtActionType,
-        middlewares: [...(evtActionType === EventActionType.Handle ? handleMiddlewares : onMiddlewares), ...middlewares] as IpcActionMiddleware<EvtActionType>[]
+        middlewares: [...(evtActionType === EventActionType.Handle ? handleMiddlewares : onMiddlewares), ...middlewares] as IpcActionMiddleware<EvtActionType>[],
+        listener: async (e: IpcMainEvent | IpcMainInvokeEvent, ...args: unknown[]) => {
+          const globalMiddlewares = (
+            evtActionType === EventActionType.Handle
+              ? runtimeContext.globalMiddlewares.handle
+              : runtimeContext.globalMiddlewares.on
+          );
+
+          return execMiddleware(globalMiddlewares, action, e, ...args);
+        }
       };
+
+      return action;
     }
   }
 
@@ -180,7 +192,7 @@ export function registerGlobalMiddleware(actionType: EventActionType, middleware
 }
 
 
-const execMiddleware = async (globalMiddlewares: IpcRegisterMiddleware[], handle: IpcActionType<EventActionType>, ...ipcArgs: unknown[]) => {
+async function execMiddleware(globalMiddlewares: IpcRegisterMiddleware[], handle: IpcActionType<EventActionType>, ...ipcArgs: unknown[]) {
   const [e, ...args] = ipcArgs as [IpcMainInvokeEvent | IpcMainEvent, ...unknown[]];
 
   let convertArgs: unknown[] = [e, ...args];
@@ -231,7 +243,8 @@ const execMiddleware = async (globalMiddlewares: IpcRegisterMiddleware[], handle
         channel: handle.channel,
         actionType: handle.actionType as any,
         action: handle.action,
-        event: e as any
+        event: e as any,
+        listener: handle.listener
       })
 
       err = error as Error;
@@ -247,7 +260,8 @@ const execMiddleware = async (globalMiddlewares: IpcRegisterMiddleware[], handle
           channel: handle.channel,
           actionType: handle.actionType as any,
           action: handle.action,
-          event: e
+          event: e,
+          listener: handle.listener
         })
 
         err = error as Error;
@@ -262,7 +276,8 @@ const execMiddleware = async (globalMiddlewares: IpcRegisterMiddleware[], handle
       channel: handle.channel,
       actionType: handle.actionType as any,
       action: handle.action,
-      event: e as any
+      event: e as any,
+      listener: handle.listener
     });
   })
   globalMiddlewares.forEach(middleware => {
@@ -271,7 +286,8 @@ const execMiddleware = async (globalMiddlewares: IpcRegisterMiddleware[], handle
       channel: handle.channel,
       actionType: handle.actionType,
       action: handle.action,
-      event: e
+      event: e,
+      listener: handle.listener
     })
   })
 
@@ -293,24 +309,16 @@ const execMiddleware = async (globalMiddlewares: IpcRegisterMiddleware[], handle
  */
 export const registerIpcHandle = (handles: IpcActionType<EventActionType.Handle>[]) => {
   handles.forEach(handle => {
-    ipcMain.handle(handle.channel, async (e: IpcMainInvokeEvent, ...args: unknown[]) => {
-      const globalMiddlewares = runtimeContext.globalMiddlewares.handle;
-      return execMiddleware(globalMiddlewares, handle, e, ...args);
-    })
+    ipcMain.handle(handle.channel, handle.listener);
   })
 }
 export const registerIpcHandleOnce = (handles: IpcActionType<EventActionType.Handle>[]) => {
   handles.forEach(handle => {
-    ipcMain.handleOnce(handle.channel, async (e: IpcMainInvokeEvent, ...args: unknown[]) => {
-      const globalMiddlewares = runtimeContext.globalMiddlewares.handle;
-      return execMiddleware(globalMiddlewares, handle, e, ...args);
-    })
+    ipcMain.handleOnce(handle.channel, handle.listener)
   })
 }
-
-
-export const removeIpcHandle = (channel: string) => {
-  ipcMain.removeHandler(channel);
+export const removeIpcHandle = (handle: IpcActionType<EventActionType.Handle>) => {
+  ipcMain.removeHandler(handle.channel);
 }
 
 /**
@@ -320,17 +328,14 @@ export const removeIpcHandle = (channel: string) => {
  */
 export const registerIpcOn = (handles: IpcActionType<EventActionType.On>[]) => {
   handles.forEach(handle => {
-    ipcMain.on(handle.channel, async (e: IpcMainInvokeEvent, ...args: unknown[]) => {
-      const globalMiddlewares = runtimeContext.globalMiddlewares.on;
-      return execMiddleware(globalMiddlewares, handle, e, ...args);
-    })
+    ipcMain.on(handle.channel, handle.listener)
   })
 }
 export const registerIpcOnce = (handles: IpcActionType<EventActionType.On>[]) => {
   handles.forEach(handle => {
-    ipcMain.once(handle.channel, async (e: IpcMainInvokeEvent, ...args: unknown[]) => {
-      const globalMiddlewares = runtimeContext.globalMiddlewares.on;
-      return execMiddleware(globalMiddlewares, handle, e, ...args);
-    })
+    ipcMain.once(handle.channel, handle.listener)
   })
+}
+export const offIpcOnce = (handle: IpcActionType<EventActionType.Handle>) => {
+  ipcMain.off(handle.channel, handle.listener);
 }
