@@ -61,10 +61,39 @@ export const NumberFilters = {
    */
   toPercentage(value: number | undefined | null, position = 2, fillStr = '0%' as `${number}%`): `${number}%` {
     if (!isDef(value)) return fillStr; // 如果不是合格的数字, 直接返回填充字符, 因为填充字符可能不是数字字符
-
     const dist = NumberFilters.toFixed(value * 100, position);
-
     return `${dist.toFixed(position) as `${number}`}%` as const;
+  },
+  /**
+   * 转换为科学技术法
+   *
+   * @example
+   * const a = 1234567.89;
+   * NumberFilters.toScientificCount(a); // 1.235E6
+   *
+   */
+  toScientificCount(value: number | undefined | null) {
+    if (!isDef(value)) value = 0;
+    const formatter = new Intl.NumberFormat('zh-CN', {
+      style: 'decimal',
+      notation: 'scientific'
+    });
+    return formatter.format(value);
+  },
+
+  /**
+   * 将数字转换为货币进行展示
+   * @example
+   * const a = 1000.12;
+   * NumberFilters.toCurrency(a, 'CNY'); // ￥1,000.12
+   */
+  toCurrency(value: number | undefined | null, currency = 'CNY' as ('CNY' | 'USD')) {
+    if (!isDef(value)) value = 0;
+    const formatter = new Intl.NumberFormat('zh-CN', {
+      style: 'currency',
+      currency
+    });
+    return formatter.format(value);
   },
   /**
    * 将数字转换为字符串输出

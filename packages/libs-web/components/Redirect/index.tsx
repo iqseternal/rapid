@@ -1,9 +1,10 @@
+import {isString} from '@suey/pkg-utils';
 import type { FC, ReactNode, ReactPropTypes } from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
 
 export interface RedirectProps {
 
-  from: string;
+  from: string | RegExp;
 
   to: string;
 
@@ -12,8 +13,20 @@ export interface RedirectProps {
 
 /**
  * 重定向组件, 重定向之后, 还能使用 element 作为布局组件
- * @param param0
- * @returns
+ *
+ * @example
+ *
+ * const Layout: FC<any> = () => {
+ *   return <Outlet />
+ * }
+ * <Redirect from={'/'} to={'/404'} element={Layout}>
+ *
+ * @example
+ *
+ * const Layout: FC<any> = () => {
+ *   return <Outlet />
+ * }
+ * <Redirect from={/^\/$/} to={'/404'} element={Layout}>
  */
 export default function Redirect(props: RedirectProps) {
   const { from, to, element = Outlet } = props;
@@ -21,7 +34,12 @@ export default function Redirect(props: RedirectProps) {
   const Element = element;
   const location = useLocation();
 
-  if (location.pathname === from) return <Navigate to={to}></Navigate>;
+  let isMatched = false;
+
+  if (from instanceof RegExp) isMatched = from.test(location.pathname);
+  else if (isString(from)) isMatched = location.pathname === from;
+
+  if (isMatched) return <Navigate to={to} />;
 
   return <Element />;
 }

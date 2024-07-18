@@ -14,8 +14,6 @@
 
     "allowUnusedLabels": true,
     "allowSyntheticDefaultImports": true,
-    
-
     "paths": {
       "@/*": ["./src/*"]
     }

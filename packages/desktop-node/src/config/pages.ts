@@ -18,6 +18,8 @@ const devPagesPrefixUrl = '/src/pages/';
  * pro: 获取路径
  *
  * @param url
+ * @param prefix
+ * @param extension
  * @returns
  */
 const makeStartUrl = (url: string, prefix = '', extension = 'html') => {

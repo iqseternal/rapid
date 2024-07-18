@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useRefresh } from './useRefresh';
 
-export interface ReactiveOptions {
-  autoRefresh: boolean;
-};
-
-const DEFAULT_OPTIONS: ReactiveOptions = {
+const DEFAULT_OPTIONS = {
   autoRefresh: true
 };
+
+export type ReactiveOptions = typeof  DEFAULT_OPTIONS;
 
 /**
  * 修改 state 自动刷新组件 (浅层)

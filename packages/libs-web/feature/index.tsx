@@ -16,7 +16,7 @@ export const makeFeatureAction = <
   return createAction();
 }
 
-export const sliceCallBudilers = <Store extends {}>(
+export const sliceCallBuilders = <Store extends {}>(
   builder: ActionReducerMapBuilder<Store>,
   builderFns: (SliceBuilderSetup<Store> | undefined)[]
 ) => {

@@ -5,3 +5,5 @@
  */
 
 export * from './to';
+
+export * from './random';

@@ -1,5 +1,6 @@
-import type { RefObject, DependencyList } from 'react';
-import { useEffect } from 'react';
+import {isDef} from '@suey/pkg-utils';
+import type {RefObject, DependencyList} from 'react';
+import { useEffect, useMemo } from 'react';
 
 /**
  * 为 Ref 添加某个事件的监听
@@ -38,15 +39,43 @@ export function useEventListener<T extends HTMLElement | Window, Key extends key
 export function useEventListener<T extends HTMLElement | Window, Key extends keyof HTMLElementEventMap>(target: RefObject<T> | T | null, evtMap: Record<Key, EventListenerOrEventListenerObject>, dep?: DependencyList): void;
 
 export function useEventListener<T extends HTMLElement | Window, Key extends keyof HTMLElementEventMap>(
-  targetRef: RefObject<T>,
+  targetRef: RefObject<T> | T | null,
   type: Key | Record<Key, EventListenerOrEventListenerObject>,
   callback?: EventListenerOrEventListenerObject | DependencyList,
   deps?: DependencyList
 ) {
-  useEffect(() => {
-    if (targetRef === null) return;
-    const targetDom = (targetRef.current) ? targetRef.current : targetRef;
+  // 判断第一个参数是否是一个 Ref 对象
+  const isRef = useMemo(() => {
+    return (
+      targetRef !== null &&
+      (!(targetRef instanceof HTMLElement) && !(targetRef instanceof Window)) &&
+      Reflect.has(targetRef, 'current')
+    );
+  }, [targetRef]);
 
+  // 依赖项
+  const dependencies = useMemo(() => {
+    const dependencies: any[] = [targetRef];
+
+    // 第一个重载
+    if (!Array.isArray(callback)) {
+      dependencies.push(...(deps ?? []));
+    }
+
+    // 第二个重载
+    if (typeof type === 'object' && Array.isArray(callback)) {
+      dependencies.push(...callback);
+    }
+    return dependencies;
+  }, [targetRef, callback, deps]);
+
+  useEffect(() => {
+    if (!isDef(targetRef)) return;
+
+    // 获取 targetDom, 目标 Dom
+    const targetDom = isRef ? targetRef.current : targetRef;
+
+    // 如果 targetDom 不是一个 Dom, 那么不满足添加事件的条件
     if (!(targetDom instanceof HTMLElement) && !(targetDom instanceof Window)) return;
 
     if (typeof type === 'object') {
@@ -62,9 +91,9 @@ export function useEventListener<T extends HTMLElement | Window, Key extends key
     }
 
     targetDom.addEventListener(type, callback as EventListenerOrEventListenerObject);
-
     return () => {
       targetDom.removeEventListener(type, callback as EventListenerOrEventListenerObject);
     }
-  }, (Array.isArray(callback) ? [targetRef, ...callback] : [targetRef, ...(deps ?? [])]));
+
+  }, dependencies);
 }

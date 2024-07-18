@@ -81,7 +81,6 @@ export class AsyncExceptionFilter extends FrameworkFilter {
 @Catch(RequestException)
 export class RequestExceptionFilter extends FrameworkFilter {
 
-
   catch(err: RequestException): void {
 
     if (err.errMsgData.level) {

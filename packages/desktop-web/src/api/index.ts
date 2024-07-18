@@ -41,7 +41,12 @@ export const rApi = createApiRequest<RApiHConfig, RApiBasicResponse>(CONFIG.API.
   }
 })
 
-export const { apiGet: rApiGet, apiPost: rApiPost, request: rRequest, createApi: rCreateApi } = rApi;
+export const {
+  apiGet: rApiGet,
+  apiPost: rApiPost,
+  request: rRequest,
+  createApi: rCreateApi
+} = rApi;
 
 export const rApiPut = rCreateApi(REQ_METHODS.PUT);
 

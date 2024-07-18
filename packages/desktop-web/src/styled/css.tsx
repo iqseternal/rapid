@@ -1,14 +1,14 @@
 import { css } from 'styled-components';
 import { setCssVars, cssRoot } from '@rapid/libs-web/common';
 import type { CSSTypes } from '@rapid/libs-web/common';
-import { useDebounceHook, useWindowSizeHook } from '@rapid/libs-web/hooks';
+import { useDebounceHook, useWindowScreenSizeHook } from '@rapid/libs-web/hooks';
 
 const CSS_VARS_MAP = {
   MAX_SCREEN_WIDTH: '--rapid-styled-max-screen-width',
   MAS_SCREEN_HEIGHT: '--rapid-styled-max-screen-height',
 };
 
-const windowSize = useWindowSizeHook();
+const windowSize = useWindowScreenSizeHook();
 const valueMap = new Map();
 const makeCssVar = <K extends T[keyof T], T = keyof typeof CSS_VARS_MAP>(variable: K) => `var(${variable})`;
 

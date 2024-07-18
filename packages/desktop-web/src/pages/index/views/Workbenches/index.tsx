@@ -1,21 +1,27 @@
 import { FlexRowCenter, FullSize, FullSizeWidth, combinationStyled } from '@/styled';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useShallowReactive, useReactive, useAutoState } from '@rapid/libs-web/hooks';
+import {
+  useShallowReactive,
+  useReactive,
+  useAutoState,
+  useWindowScreenSize,
+  useWindowInnerSize, useWindowOverScreenSize
+} from '@rapid/libs-web/hooks';
+import {randomHexColor} from '@rapid/libs/common';
 import { Button, Collapse, Input, theme, Space, Card, Dropdown } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { loginRoute } from '@pages/index/router';
 import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
-import type { FC } from 'react';
+import { DropdownMenu } from '@components/DropdownMenu';
+import {FC, useEffect} from 'react';
+import { ContextMenu, contextMenu, useContextMenu, Menu, Item } from 'react-contexify';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 import Subfield from '@rapid/libs-web/components/Subfield';
 import animationStyles from '@scss/common/animation.module.scss';
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
-
-import axios from 'axios';
-import { DropdownMenu, DropdownMenuItem, DropdownSubMenu } from '@components/DropdownMenu';
 
 interface StyleBlockProps extends BaseProps {
   title?: string;
@@ -59,8 +65,6 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
 }
 
 export default function Workbenches() {
-
-
   const navigate = useNavigate();
 
   const [state] = useShallowReactive({
@@ -68,7 +72,7 @@ export default function Workbenches() {
   })
 
   const logout = () => useFadeOut(() => {
-    navigate(loginRoute.meta.fullpath)
+    navigate(loginRoute.meta.fullPath)
   })
 
   return <FullSize
@@ -78,20 +82,13 @@ export default function Workbenches() {
       height: 'max-content'
     }}
   >
-
     <div
       onClick={() => {
-
-        window.open('https://www.baidu.com', '_blank', 'top=500,left=200,frame=true,nodeIntegration=no')
-
-
+        window.open('https://www.baidu.com', '_blank', 'top=500,left=200,frame=true,nodeIntegration=no');
       }}
     >
-
-
       open
     </div>
-
 
     <StyleBlock title='背景色色阶' subTitle='块'>
       <div
@@ -269,14 +266,6 @@ export default function Workbenches() {
             下拉菜单
           </span>
         </Dropdown>
-
-        <DropdownMenu
-
-        >
-          <span>
-            文件菜单
-          </span>
-        </DropdownMenu>
       </Space>
     </StyleBlock>
   </FullSize>

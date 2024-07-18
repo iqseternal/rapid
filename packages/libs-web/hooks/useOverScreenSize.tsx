@@ -1,33 +1,46 @@
-import { useState, useEffect } from 'react';
-import { useDebounceHook } from './useDebounce';
-import { useWindowSize } from './useWindowSize';
+import {useAutoState} from './useAutoState';
+import {useDebounceHook, useDebounce} from './useDebounce';
+import {useEventListener} from './useEventListener';
+import { useWindowScreenSizeHook, useWindowInnerSizeHook } from './useWindowSize';
+
+export interface WindowOverScreenSize {
+  overflowWidth: boolean;
+  overflowHeight: boolean;
+}
 
 /**
- * 得到视图与显示尺寸之间的关系, 如果窗口被缩放, 超出了屏幕的大小, 那么 overWidth 就是 ture (拥有附属显示器)
+ * 得到视图与显示尺寸之间的关系, 如果窗口被缩放, 超出了屏幕的大小, 那么 overflowWidth 就是 ture (拥有附属显示器)
+ * @example
+ *
+ * const [overScreen] = useOverScreenSize();
+ * if (overScreen.overflowWidth) {
+ *   console.log('超出了屏幕的宽度尺寸');
+ * }
+ *
  * @return
  */
-export function useOverScreenSize() {
-  const [overWidth, setOverWidth] = useState(false);
-  const [overHeight, setOverHeight] = useState(false);
+export function useWindowOverScreenSize() {
+  const windowScreenSize = useWindowScreenSizeHook();
+  const windowInnerSize = useWindowInnerSizeHook();
 
-  const windowSize = useWindowSize();
+  const [state, setState] = useAutoState({
+    overflowWidth: windowInnerSize.innerWidth > windowScreenSize.screenWidth,
+    overflowHeight: windowInnerSize.innerHeight > windowScreenSize.screenHeight
+  });
 
-  useEffect(() => {
-    const judgeStatus = useDebounceHook(() => {
-      if (window.innerWidth > windowSize.screenWidth) setOverWidth(true);
-      else setOverWidth(false);
+  const judgeStatus = useDebounce(() => {
+    const overflowWidth = windowInnerSize.innerWidth > windowScreenSize.screenWidth;
+    const overflowHeight = windowInnerSize.innerHeight > windowScreenSize.screenHeight;
 
-      if (window.innerHeight > windowSize.screenHeight) setOverHeight(true);
-      else setOverHeight(false);
-    }, 20);
-
-    window.addEventListener('resize', judgeStatus);
-
-    return () => {
-      window.removeEventListener('resize', judgeStatus);
+    if (overflowWidth !== state.overflowWidth || overflowHeight !== state.overflowHeight) {
+      setState(() => {
+        state.overflowWidth = overflowWidth;
+        state.overflowHeight = overflowHeight;
+      })
     }
-  }, []);
+  }, 20, []);
 
-  return { overWidth, overHeight };
+  useEventListener(window, 'resize', judgeStatus, []);
+  return [state as Readonly<WindowOverScreenSize>];
 }
 

@@ -1,4 +1,4 @@
-import type { UserConfig, UserConfigFn, UserConfigSchema } from 'electron-vite';
+import type { UserConfig, ElectronViteConfigFnObject } from 'electron-vite';
 import type { AliasOptions, Alias } from 'vite';
 import { mergeConfig } from 'vite';
 
@@ -6,8 +6,8 @@ import * as path from 'path';
 
 export { defineVars } from '../../target.config';
 
-export type ConfigEnv = Parameters<UserConfigFn>[0];
-export type ConfigFn = (env: ConfigEnv) => UserConfigSchema;
+export type ConfigEnv = Parameters<ElectronViteConfigFnObject>[0];
+export type ConfigFn = ElectronViteConfigFnObject;
 
 export type MainConfig = Required<UserConfig>['main'];
 export type PreloadConfig = Required<UserConfig>['preload'];

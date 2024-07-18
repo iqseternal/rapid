@@ -1,5 +1,5 @@
-import { app , ipcMain, screen } from 'electron';
-import { Exception, IpcActionMiddleware, EventActionType } from '@rapid/framework';
+import {is} from '@electron-toolkit/utils';
+import { screen } from 'electron';
 import { WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
 import { TypeException } from '@/core';
@@ -7,12 +7,10 @@ import { isNumber } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
 import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
-import type { IpcMainInvokeEvent, IpcMainEvent } from 'electron';
-import { toPicket } from '@rapid/libs/common';
 import { toMakeIpcAction } from '@rapid/framework';
 import { convertWindowService } from './middlewares';
 
-const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
+const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowService]
 });
 
@@ -20,6 +18,10 @@ export const ipcWindowMaxSize = makeIpcHandleAction(
   'IpcWindow/maxSize',
   [],
   async (windowService, options?: { id: number }) => {
+    if (options?.id) {
+      windowService = WindowService.findWindowService(options.id);
+    }
+
     if (windowService.window.maximizable) windowService.window.maximize();
   }
 );
@@ -28,6 +30,9 @@ export const ipcWindowMinSize = makeIpcHandleAction(
   'IpcWindow/minSize',
   [],
   async (windowService, options?: { id: number }) => {
+    if (options?.id) {
+      windowService = WindowService.findWindowService(options.id);
+    }
     if (windowService.window.minimizable) windowService.window.minimize();
   }
 );
@@ -36,6 +41,9 @@ export const ipcWindowReductionSize = makeIpcHandleAction(
   'IpcWindow/reduction',
   [],
   async (windowService, options?: { id: number }) => {
+    if (options?.id) {
+      windowService = WindowService.findWindowService(options.id);
+    }
     if (windowService.window.isMaximized()) {
       windowService.window.restore();
       return true;
@@ -61,7 +69,8 @@ export const ipcWindowRelaunch = makeIpcHandleAction(
   'IpcWindow/relaunch',
   [],
   async (windowService) => {
-    app.relaunch();
+    windowService.window.reload();
+    // app.relaunch();
   }
 );
 
@@ -186,7 +195,7 @@ export const ipcOpenWindow = makeIpcHandleAction(
       })
     }
 
-    windowService.show();
+    return windowService.show();
   }
 );
 
@@ -209,7 +218,15 @@ export const ipcWindowShow = makeIpcHandleAction(
     id?: number
     show: boolean
   }) => {
-    if (options.show) windowService.window.show();
-    else windowService.window.hide();
+
+    const isVisible = windowService.window.isVisible();
+
+
+    if (options.show) {
+      if (!isVisible) windowService.window.show();
+    }
+    else {
+      if (isVisible) windowService.window.hide();
+    }
   }
 );

@@ -13,11 +13,9 @@ const colorVarsSheet = {
   /* 主题色 */
   primaryColor: mRapidC('--rapid-primary-color', '#007bff', '主题色'),
 
-
   primaryTextColor: mRapidC('--rapid-primary-text-color', '#333333', '主要文本颜色'),
   secondaryTextColor: mRapidC('--rapid-secondary-text-color', '#666666', '次要文本颜色'),
   placeholderTextColor: mRapidC('--rapid-placeholder-text-color', '#999999', '提示文本颜色'),
-
 
   linkTextColor: mRapidC('--rapid-link-text-color', '#1a73e8', '链接文本颜色'),
 } as const;
@@ -87,7 +85,15 @@ const cardVarsSheet = {
 
 } as const;
 
+const dropdownVarsSheet = {
+  dropdownBackgroundColor: mRapidC('--rapid-dropdown-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉菜单的背景颜色'),
+  dropdownTextColor: mRapidC('--rapid-dropdown-text-color', colorVarsSheet.primaryTextColor.value, '下拉菜单的文字颜色'),
+  dropdownBorderRadius: mRapidC('--rapid-dropdown-border-radius', '10px', '下拉菜单圆角大小'),
 
+  dropdownMenuBackgroundColor: mRapidC('--rapid-dropdown-menu-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
+  dropdownMenuTextColor: mRapidC('--rapid-dropdown-menu-text-color', colorVarsSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
+
+} as const;
 
 
 
@@ -188,6 +194,7 @@ export const themeCssVarsSheet = {
   ...buttonVarsSheet,
   ...messageVarsSheet,
   ...cardVarsSheet,
+  ...dropdownVarsSheet,
 
   ...colorsVarsSheet,
   ...sizeVarsSheet

@@ -1,5 +1,4 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin } from 'electron-vite';
-import path, { join } from 'path';
 import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from './target.config';
 import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
@@ -33,6 +32,9 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
     },
     sourcemap: false,
     outDir: OUT_DESKTOP_MAIN_DIR
+  },
+  server: {
+    open: false
   }
 });
 
@@ -63,6 +65,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
     port: 8888,
     hmr: true,
     host: '0.0.0.0',
+    open: false,
     sourcemapIgnoreList: (sourcePath: string, sourcemapPath: string) => false
   },
   build: {

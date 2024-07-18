@@ -4,7 +4,7 @@ import {
   AsyncExceptionFilter
 } from './core';
 import { LoggerServer } from './server';
-import { setupContext, setupSingleApplication } from '@rapid/framework';
+import { setupContext, setupSingleApplication, registerIpcHandle } from '@rapid/framework';
 import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
 import {
@@ -20,7 +20,6 @@ import {
   ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs
 } from './ipc/IpcDocHandler';
 import { ipcOpenDevTool } from './ipc/IpcDevToolHandler';
-import { registerIpcHandle } from '@rapid/framework';
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
@@ -52,13 +51,6 @@ setupContext({
       PermissionExceptionFilter
     ]
   },
-  // ipcMain: {
-  //   use: IpcHandlerServer,
-  //   modules: [
-  //     IpcWindowHandler, IpcStoreHandler, IpcDevToolHandler,
-  //     IpcGraphicHandler, IpcDocHandler
-  //   ]
-  // }
 }).catch(() => {
 
 })

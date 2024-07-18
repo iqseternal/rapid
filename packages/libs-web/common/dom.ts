@@ -20,9 +20,20 @@ export namespace CSSTypes {
 export class CssValueConverts {
   /**
    * 将一个数字值转换为一个像素值
+   * @example
+   * let size = 200;
+   * const width = CssValueConverts. toPixel(size); // 200px
+   *
    * @param value
    */
   static toPixel(value: number): CSSTypes.PixelValue;
+  /**
+   * @example
+   * let size = '200';
+   * const width = CssValueConverts.toPixel(size); // 200px
+   *
+   * @param value
+   */
   static toPixel(value: string): CSSTypes.PixelValue;
   static toPixel(value: number | string): CSSTypes.PixelValue {
     if (isString(value)) {
@@ -30,7 +41,6 @@ export class CssValueConverts {
       if (isNaN(value)) value = 0;
     }
     const pixcel = value + 'px' as CSSTypes.PixelValue;
-
     return pixcel;
   }
 }
@@ -46,35 +56,39 @@ export type CSSValueGetterOptions<T> = {
 }
 /** 为 dom 设置样式属性值的选项 */
 export type CssValueSetterOptions = {
-  isImportant?: boolean;
   convert?: CssValueSetterCovertFn | CssValueSetterCovertFn[];
 }
 
 /**
  * 获取一个 dom 的 style 属性值
- * @param node
- * @param propertyName
+ * @example
+ * const background = getStyleProperty(document.body, 'background'); // string 类型
+ * const width = getStyleProperty(document.body, 'width', {
+ *   convert: (value) => { // 转换格式, value: string => number
+ *     return Number(value);
+ *   }
+ * })
+ *
  * @returns
  */
 export const getStyleProperty = <T extends any = string, Key extends keyof CSSTypes.CSSStyleProperttDeclaration = keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, propertyName: Key, options: CSSValueGetterOptions<T> = {}) => {
-  const str = node.style.getPropertyValue(propertyName as string);
-
+  const str = node.style[(propertyName as string)];
   if (options.convert) return options.convert(str);
-
   return str;
 }
 
 /**
  * 设置一个 dom 的 style 属性值
- * @param node
- * @param propertyName
- * @param value
- * @param isImportant
+ * @example
+ * setStyleProperty(document.body, 'background', '#f00');
+ * setStyleProperty(document.body, 'width', '200', { // 会把 200 变成像素
+ *   convert: CssValueConverts.toPixel
+ * })
+ *
  * @returns
  */
 export const setStyleProperty = <Key extends keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, propertyName: Key, value: CSSTypes.CSSStyleProperttDeclaration[Key], options: CssValueSetterOptions = {}) => {
   let valueStr = value as string;
-
   if (Array.isArray(options.convert)) {
     options.convert.forEach(convertFn => {
       valueStr = convertFn(valueStr) as string;
@@ -82,16 +96,20 @@ export const setStyleProperty = <Key extends keyof CSSTypes.CSSStyleProperttDecl
   }
   else if (isFunction(options.convert)) valueStr = options.convert(valueStr);
 
-  return node.style.setProperty(propertyName as string, valueStr, options.isImportant ? 'important' : '');
+  return node.style[propertyName as string] = valueStr;
 }
 
 /**
  * 设置多个 dom 的 style 属性值
- * @param node
- * @param properties
+ * @example
+ * setStyleProperties(document.body, {
+ *   color: '#F00',
+ *   backgroundColor: '#00F'
+ * });
+ *
  * @returns
  */
-export const setStyleProperties = <Key extends keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, properties: Partial<CSSTypes.CSSStyleProperttDeclaration>, options: Omit<CssValueSetterOptions, 'isImportant'>) => {
+export const setStyleProperties = <Key extends keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, properties: Partial<CSSTypes.CSSStyleProperttDeclaration>, options: CssValueSetterOptions = {}) => {
   return Object.keys(properties).forEach((propertyName) => {
     const value = properties[propertyName as Key];
     if (!value) return;
@@ -104,8 +122,13 @@ export const setStyleProperties = <Key extends keyof CSSTypes.CSSStyleProperttDe
 
 /**
  * 获得一个 dom 的 css 变量值
- * @param node
- * @param cssVarName
+ * @example
+ * const background = getCssVar(document.body, 'background'); // string 类型
+ * const width = getCssVar(document.body, 'width', {
+ *   convert: (value) => { // 转换格式, value: string => number
+ *     return Number(value);
+ *   }
+ * })
  * @returns
  */
 export const getCssVar = <T extends any = string, Key extends keyof CSSTypes.CSSStyleVarsDeclaration = keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVarName: Key, options: CSSValueGetterOptions<T> = {}) => {
@@ -114,9 +137,12 @@ export const getCssVar = <T extends any = string, Key extends keyof CSSTypes.CSS
 
 /**
  * 设置一个 dom 的 css 变量值
- * @param node
- * @param cssVarName
- * @param value
+ * @example
+ * setCssVar(document.body, 'background', '#f00');
+ * setCssVar(document.body, '--x', '20');
+ * setCssVar(document.body, 'width', '200', { // 会把 200 变成像素
+ *   convert: CssValueConverts.toPixel
+ * })
  * @returns
  */
 export const setCssVar = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVarName: Key, value: CSSTypes.CSSStyleVarsDeclaration[Key], options: CssValueSetterOptions = {}) => {
@@ -125,11 +151,15 @@ export const setCssVar = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(no
 
 /**
  * 设置多个 dom 的 css 变量值
- * @param node
- * @param cssVars
+ * @example
+ * setCssVars(document.body, {
+ *   color: '#F00',
+ *   backgroundColor: '#00F',
+ *   '--x': 20
+ * });
  * @returns
  */
-export const setCssVars = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVars: Partial<CSSTypes.CSSStyleVarsDeclaration>, options: Omit<CssValueSetterOptions, 'isImportant'> = {}) => {
+export const setCssVars = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVars: Partial<CSSTypes.CSSStyleVarsDeclaration>, options: CssValueSetterOptions = {}) => {
   return Object.keys(cssVars).forEach((cssVarName) => {
     const value = cssVars[cssVarName as Key];
     if (!value) return;

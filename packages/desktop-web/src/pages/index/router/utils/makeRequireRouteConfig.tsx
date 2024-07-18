@@ -26,17 +26,17 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
 
   if (route.path.startsWith('/') && !isRoot) route.path = route.path.substring(1);
 
-  if (!route.meta.fullpath) route.meta.fullpath = path.join(basePath, route.path);
+  if (!route.meta.fullPath) route.meta.fullPath = path.join(basePath, route.path);
 
 
   if (route.redirect) {
-    if (!route.redirect.startsWith('/')) route.redirect = path.join(route.meta.fullpath, route.redirect);
+    if (!route.redirect.startsWith('/')) route.redirect = path.join(route.meta.fullPath, route.redirect);
   }
 
   route.children = route.children ? route.children.map(child => {
 
 
-    return makeRequireRouteConfig(child, route.meta?.fullpath, false);
+    return makeRequireRouteConfig(child, route.meta?.fullPath, false);
   }) : [];
 
   return route as RequiredRouteConfig;

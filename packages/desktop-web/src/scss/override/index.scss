@@ -133,6 +133,7 @@ input.ant-input::placeholder {
 
 }
 
+// 卡片
 // =====================================================================================================
 .ant-card {
   background-color: var(--rapid-secondary-background-color);
@@ -145,10 +146,9 @@ input.ant-input::placeholder {
   }
 }
 
-
-
+// 普通下拉菜单
 // =====================================================================================================
-.ant-dropdown {
+div.ant-dropdown-menu {
   min-width: unset;
 
   .ant-dropdown-arrow {
@@ -158,6 +158,9 @@ input.ant-input::placeholder {
 
   ul.ant-dropdown-menu {
     width: fit-content;
+    background-color: var(--rapid-dropdown-background-color);
+    color: var(--rapid-dropdown-text-color);
+    border-radius: var(--rapid-dropdown-border-radius);
 
     .ant-dropdown-menu-item {
 
@@ -173,28 +176,4 @@ input.ant-input::placeholder {
   }
 }
 
-// =====================================================================================================
-.ant-dropdown {
-  min-width: unset;
 
-  .ant-dropdown-arrow {
-
-  }
-
-
-  ul.ant-dropdown-menu {
-    width: fit-content;
-
-    .ant-dropdown-menu-item {
-
-
-      width: fit-content;
-
-      .ant-dropdown-menu-title-content {
-
-      }
-
-    }
-
-  }
-}

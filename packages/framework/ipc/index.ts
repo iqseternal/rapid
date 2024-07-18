@@ -18,7 +18,7 @@ export type IpcActionType<
   action: Action;
   actionType: EvtActionType;
   middlewares: IpcActionMiddleware<EvtActionType>[];
-  listener: (e: IpcMainInvokeEvent | IpcMainInvokeEvent, ...args: unknown[]) => any;
+  listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: unknown[]) => any;
 }
 
 export type IpcActionMiddleware<EvtActionType extends EventActionType> = {
@@ -101,6 +101,64 @@ const runtimeContext = {
 }
 export const getIpcRuntimeContext = () => runtimeContext;
 
+/**
+ * 获得制作 ipc 句柄的函数
+ * @example
+ * const { makeIpcHandleAction } = toMakeIpcAction();
+ * const ipcHandle = makeIpcHandleAction(
+ *   '句柄名称',
+ *   [],
+ *   async (e) => {
+ *     const res = '';
+ *
+ *
+ *     return res;
+ *   }
+ * )
+ * @example
+ * const middleware: IpcActionMiddleware<EventActionType.Handle> = {
+ *   name: 'middleware',
+ *   transform(e, ...args){
+ *     return [WindowService.findWindowService(e), ...args];
+ *   }
+ * }
+ *
+ * const { makeIpcHandleAction } = toMakeIpcAction();
+ * const ipcHandle = makeIpcHandleAction(
+ *   '句柄名称',
+ *   [middleware], // 为某个单独句柄设置中间件
+ *   async (e: WindowService) => {
+ *     const res = '';
+ *
+ *
+ *     return res;
+ *   }
+ * )
+ * @example
+ * const middleware: IpcActionMiddleware<EventActionType.Handle> = {
+ *   name: 'middleware',
+ *   transform(e, ...args){
+ *     return [WindowService.findWindowService(e), ...args]; // 转换事件 e 为 WindowService
+ *   }
+ * }
+ *
+ * // 为这个函数所有创建中间件
+ * const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({ // 在这里能够提供所有句柄回调头部参数的类型
+ *   handleMiddlewares: [middleware]
+ * });
+ * const ipcHandle = makeIpcHandleAction(
+ *   '句柄名称',
+ *   [],
+ *   async (e) => { // e: WindowService
+ *     const res = '';
+ *
+ *     return res;
+ *   }
+ * )
+ *
+ *
+ * @param payload
+ */
 export function toMakeIpcAction<
   HandleCutArgs extends any[] = [IpcMainInvokeEvent],
   OnCutArgs extends any[] = [IpcMainEvent],
@@ -112,6 +170,7 @@ export function toMakeIpcAction<
     handleMiddlewares = [],
     onMiddlewares = []
   } = payload ?? {};
+
 
   const makeAction = <
     EvtActionType extends EventActionType
@@ -125,12 +184,12 @@ export function toMakeIpcAction<
     >(
       channel: Channel,
       middlewares: IpcActionMiddleware<EvtActionType>[],
-      fn: Fn
+      handleCallback: Fn
     ) => {
 
       const action = <IpcActionType<EvtActionType>>{
         channel,
-        action: fn,
+        action: handleCallback,
         actionType: evtActionType,
         middlewares: [...(evtActionType === EventActionType.Handle ? handleMiddlewares : onMiddlewares), ...middlewares] as IpcActionMiddleware<EvtActionType>[],
         listener: async (e: IpcMainEvent | IpcMainInvokeEvent, ...args: unknown[]) => {
@@ -148,16 +207,68 @@ export function toMakeIpcAction<
     }
   }
 
-  const makeIpcHandleAction = makeAction(EventActionType.Handle);
-  const makeIpcOnAction = makeAction(EventActionType.On);
-
-  return { makeAction, makeIpcHandleAction, makeIpcOnAction };
+  return {
+    /**
+     * 制作一个 action 句柄, 无论是 handle 还是 on 句柄
+     * @example
+     * const { makeAction } = toMakeIpcAction();
+     * const handle = makeAction(
+     *  '句柄',
+     *  [],
+     *  async () => {
+     *
+     *  }
+     * );
+     *
+     * @param evtActionType
+     */
+    makeAction,
+    /**
+     * 制作一个 handle 句柄
+     * @example
+     * const { makeIpcHandleAction } = toMakeIpcAction();
+     * const handle = makeIpcHandleAction(
+     *  '句柄',
+     *  [],
+     *  async () => {
+     *    // TODO
+     *  }
+     * );
+     *
+     * @param evtActionType
+     */
+    makeIpcHandleAction: makeAction(EventActionType.Handle),
+    /**
+     * 制作一个 On 句柄
+     * @example
+     * const { makeIpcOnAction } = toMakeIpcAction();
+     * const handle = makeIpcOnAction(
+     *  '句柄',
+     *  [],
+     *  async () => {
+     *    // TODO
+     *  }
+     * );
+     *
+     * @param evtActionType
+     */
+    makeIpcOnAction: makeAction(EventActionType.On)
+  };
 }
 
 /**
  * 注册 ipc 全局中间件
- * @param actionType
- * @param middlewares
+ * @example
+ * const middleware: IpcActionMiddleware<EventActionType.Handle> = {
+ *   name: 'middleware',
+ *   transform(e, ...args){
+ *     return [WindowService.findWindowService(e), ...args];
+ *   }
+ * }
+ * registerGlobalMiddleware(EventActionType.Handle, [middleware]);
+ * registerGlobalMiddleware(EventActionType.On, [middleware]);
+ *
+ *
  */
 export function registerGlobalMiddleware<EventActionType extends EventActionType.Handle>(actionType: EventActionType, middlewares: IpcRegisterHandleMiddleware[]): void;
 export function registerGlobalMiddleware<EventActionType extends EventActionType.On>(actionType: EventActionType, middlewares: IpcRegisterOnMiddleware[]): void;
@@ -305,6 +416,25 @@ async function execMiddleware(globalMiddlewares: IpcRegisterMiddleware[], handle
 
 /**
  * 注册 ipc handle 句柄
+ * @example
+ * const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
+ *   handleMiddlewares: [convertWindowService] // 中间件
+ * });
+ *
+ * export const ipcWindowMaxSize = makeIpcHandleAction(
+ *   'IpcWindow/maxSize', // 句柄名称
+ *   [], // 中间件
+ *   async (windowService, options?: { id: number }) => { // action 执行
+ *     if (options?.id) {
+ *       windowService = WindowService.findWindowService(options.id);
+ *     }
+ *
+ *     if (windowService.window.maximizable) windowService.window.maximize();
+ *   }
+ * );
+ *
+ * registerIpcHandle([ipcWindowMaxSize]);
+ *
  * @param handles
  */
 export const registerIpcHandle = (handles: IpcActionType<EventActionType.Handle>[]) => {
@@ -323,8 +453,7 @@ export const removeIpcHandle = (handle: IpcActionType<EventActionType.Handle>) =
 
 /**
  * 注册 ipc on 句柄
- * @param middlewares
- * @param handles
+ *
  */
 export const registerIpcOn = (handles: IpcActionType<EventActionType.On>[]) => {
   handles.forEach(handle => {

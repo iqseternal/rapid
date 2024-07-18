@@ -148,18 +148,28 @@ export class WindowService {
   }
 
   /**
-   * 从事件或者窗口id获得一个创建时的 Service 对象
-   * @returns
+   * 从一个内置 name 获取一个指定窗口
+   * @example
+   * // 如果是通过 windowService 创建, 并且设置了 name 属性, 那么可以通过该方法找到
+   * const windowService = WindowService.findWindowService('mainWindow');
+   *
    * @param name
    */
   static findWindowService(name: string): WindowService;
-  static findWindowService(name: string, init?: () => WindowService | Promise<WindowService>): Promise<WindowService>;
+  /**
+   * 从事件或者窗口id获得一个创建时的 Service 对象
+   * @example
+   * declare const e: IpcMainEvent;
+   * const windowService = WindowService.findWindowService(e);
+   *
+   * declare const id: number;
+   * const windowService = WindowService.findWindowService(id);
+   *
+   */
   static findWindowService(...args: Parameters<typeof getWindowFrom>): WindowService;
   static findWindowService(...args: [string] | [string, (() => WindowService | Promise<WindowService>)?] | Parameters<typeof getWindowFrom>) {
     if (isString(args[0])) {
-
       const service = WindowStateMachine.findWindowService(args[0]);
-
 
       if (!service) {
         if (args[1]) return Promise.resolve(args[1]());

@@ -17,12 +17,12 @@ const createRouteArr = (routeArr: RequiredRouteConfig[]) => {
 
     // 渲染自定义组件
     let Component = component as FC<any>;
-    let componentsProps = {};
+    let componentsProps = {} as RedirectProps;
 
     // 这是一个重定向组件
     if (redirect) {
       Component = Redirect;
-      const from = meta.fullpath;
+      const from = meta.fullPath;
       const to = redirect;
       componentsProps = { from, to, element: component } as RedirectProps;
     }
@@ -36,7 +36,7 @@ const createRouteArr = (routeArr: RequiredRouteConfig[]) => {
       realRoute.element = Component;
     }
 
-    return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullpath)}>
+    return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath)}>
       {children && createRouteArr(children)}
     </Route>;
   });

@@ -4,6 +4,7 @@ import { join } from 'path';
 import reactPlugin from '@vitejs/plugin-react';
 import tsConfigJson from './tsconfig.json';
 
+
 export const inputHtmlPosition = {
   index: join(__dirname, './src/pages/', 'index/index.html'),
   setting: join(__dirname, './src/pages/', 'setting/setting.html'),

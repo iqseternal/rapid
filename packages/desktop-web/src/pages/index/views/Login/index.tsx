@@ -1,11 +1,13 @@
 import { useAppSelector } from '@/features';
 import { FullSize, FlexRowCenter } from '@/styled';
+import {combinationCName} from '@rapid/libs-web/common';
+import {useWindowScreenSize, useWindowInnerSize} from '@rapid/libs-web/hooks';
+import {NumberFilters} from '@rapid/libs/formatter';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useFadeIn, useFadeOut } from '@/hooks';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { windowDevtool, windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
-import { rApiGet, rApiPost, rApi, rApiDelete, rApiPut, rCreateApi } from '@/api';
 import { useAsyncEffect, useReactive } from '@rapid/libs-web/hooks';
 import { rapidRoute } from '@pages/index/router';
 import { Button } from 'antd';
@@ -26,7 +28,7 @@ export default function Login() {
   useFadeIn(async () => {
     await windowSetSize({ width: 850, height: 550 });
     await windowResizeAble({ able: false });
-    await windowSetPosition({ x: 'center', y: 'center' });
+    // await windowSetPosition({ x: 'center', y: 'center' });
   });
 
   const navigate = useNavigate();
@@ -51,7 +53,7 @@ export default function Login() {
 
             <FlexRowCenter>
               3
-              <Button onClick={() => useFadeOut(() => navigate(rapidRoute.meta.fullpath, { replace: true }))}>登录</Button>
+              <Button onClick={() => useFadeOut(() => navigate(rapidRoute.meta.fullPath, { replace: true }))}>登录</Button>
             </FlexRowCenter>
           </>
         :
