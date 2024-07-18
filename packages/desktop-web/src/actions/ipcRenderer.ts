@@ -10,4 +10,3 @@ export const makeInvokeActions = <InvokeKey extends keyof Handlers>(invokeKey: I
 
   return action;
 }
-

@@ -41,8 +41,7 @@
     "./src/**/*.tsx",
     "./components.d.ts",
 
-    "../config/@types",
-    "../desktop-node/src/@types"
+    "../config/@types"
   ],
   "exclude": ["node_modules/**/*"]
 }

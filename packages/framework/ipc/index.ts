@@ -178,8 +178,8 @@ export function toMakeIpcAction<
     evtActionType: EvtActionType
   ) => {
     return <
-      CutArgs extends any[] = (EvtActionType extends EventActionType.Handle ? HandleCutArgs : OnCutArgs),
       Channel extends string = string,
+      CutArgs extends any[] = (EvtActionType extends EventActionType.Handle ? HandleCutArgs : OnCutArgs),
       Fn extends (...args: [...CutArgs, ...any[]]) => any = (...args: [...CutArgs, ...any[]]) => any
     >(
       channel: Channel,
@@ -187,7 +187,7 @@ export function toMakeIpcAction<
       handleCallback: Fn
     ) => {
 
-      const action = <IpcActionType<EvtActionType>>{
+      const action = {
         channel,
         action: handleCallback,
         actionType: evtActionType,

@@ -10,16 +10,15 @@ import { setupApp } from './setupApp';
 import {
   ipcOpenWindow, ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
   ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize,
-  ipcWindowShow
-} from './ipc/IpcWindowHandler';
-import {
+  ipcWindowShow,
+
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet
-} from './ipc/IpcStoreHandler';
-import {
-  ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs
-} from './ipc/IpcDocHandler';
-import { ipcOpenDevTool } from './ipc/IpcDevToolHandler';
+  ipcStoreSet,
+
+  ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs,
+
+  ipcOpenDevTool
+} from './ipc';
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
