@@ -12,7 +12,7 @@ import { useCallback } from 'react';
  */
 export function useDebounceHook<T extends (...args: any[]) => void>(this: any, cb: T, time: number = 50) {
   let timer: number | NodeJS.Timeout | undefined = void 0;
-  let that: any = this;
+  const that: any = this;
 
   return ((...args: unknown[]) => {
     if (timer) clearTimeout(timer);
@@ -50,7 +50,7 @@ export function useDebounce<T extends (...args: unknown[]) => void>(callback: T,
  */
 export function useThrottleHook<T extends (...args: unknown[]) => void>(this: any, callback: T, time = 10) {
   let timer: number | NodeJS.Timeout | undefined = void 0;
-  let that: any = this;
+  const that: any = this;
 
   return (...args: unknown[]) => {
     if (timer) return;

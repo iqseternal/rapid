@@ -1,4 +1,4 @@
-import { useAppDispatch, setWorkStatus, useAppSelector } from '@/features';
+import { useAppDispatch, setWorkStatus, useAppSelector, setLayout, AppStoreType } from '@/features';
 import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 import { DropdownMenu } from '@components/DropdownMenu';
@@ -6,13 +6,18 @@ import { loginRoute } from '@pages/index/router';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useShallowReactive, useRefresh } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize } from '@rapid/libs-web/styled';
-import { Button, Input, Space, Card, Dropdown } from 'antd';
+import { Button, Input, Space, Card, Dropdown, theme } from 'antd';
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createSelector } from '@reduxjs/toolkit';
+import { useMenuSelectorHook, useMenuSelector } from '@/menus';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 
+import store from '@/features';
+
 import styles from './index.module.scss';
+
 
 interface StyleBlockProps extends BaseProps {
   title?: string;
@@ -56,13 +61,17 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
   </div>
 }
 
+
 export default function Workbenches() {
   const navigate = useNavigate();
   const refresh = useRefresh();
 
   const dispatch = useAppDispatch();
 
+  const headerMenu = useMenuSelector(menus => menus.headerMenu);
+
   const doc = useAppSelector(state => state.doc);
+  const theme = useAppSelector(state => state.theme);
 
   const [state] = useShallowReactive({
     name: 1
@@ -73,8 +82,12 @@ export default function Workbenches() {
   })
 
   useEffect(() => {
+    setTimeout(() => {
+      dispatch(setWorkStatus(!doc.isWork));
+      console.log('dispatched');
+    }, 3000);
 
-  });
+  }, []);
 
   return <FullSize
     className={styles.workbenches}
@@ -234,9 +247,13 @@ export default function Workbenches() {
       {
         doc.isWork.toString()
       }
+      {
+        theme.workbenches.layout
+      }
       <Button
         onClick={() => {
           dispatch(setWorkStatus(!doc.isWork));
+          dispatch(setLayout(theme.workbenches.layout + '?'))
           // refresh();
         }}
       >
@@ -245,9 +262,14 @@ export default function Workbenches() {
     </StyleBlock>
 
     <StyleBlock title='文件菜单'>
+      <div>
+        {
+          JSON.stringify(headerMenu)
+        }
+      </div>
 
       <DropdownMenu
-        trigger={['contextMenu']}
+        menus={headerMenu}
       >
         <Button
           onContextMenu={e => {
@@ -294,6 +316,7 @@ export default function Workbenches() {
         >
           <span>
             下拉菜单
+            
           </span>
         </Dropdown>
       </Space>

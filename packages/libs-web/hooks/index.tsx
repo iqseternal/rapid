@@ -21,6 +21,7 @@ export type { AsyncEffectCallback } from './useAsyncEffect';
 export { useReactive, useShallowReactive } from './useReactive';
 export type { ReactiveOptions } from './useReactive';
 
+export { useDependenciesListHook } from './useDependencies';
 
 // 以下 Hook 需要整改
 
