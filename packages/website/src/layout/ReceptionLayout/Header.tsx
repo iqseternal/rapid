@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useState, forwardRef, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Subfield, SubfieldCloumn } from '@/components/Subfield';
-import { AppAdapter, FlexRowBetween, FlexRowStart, FullSizeWidth, MaxScreenHeight, combinationStyled, MaxScreenWidth } from '@/styled';
+import { AppAdapter, FlexRowBetween, FlexRowStart, FullSizeWidth, MaxScreenHeight, combinationStyled, MaxScreenWidth } from '@rapid/libs-web/styled';
 import { receptionRoutes } from '@/router/modules/reception';
 import type { RadioChangeEvent } from 'antd';
 import type { SelectCommonPlacement } from 'antd/es/_util/motion';

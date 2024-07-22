@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { isDef } from '@suey/pkg-utils';
-import { FlexRow, combinationStyled } from '@/styled';
 import { Space } from 'antd';
 import type { CSSObject } from 'styled-components';
 import { CONFIG } from '@rapid/config/constants';

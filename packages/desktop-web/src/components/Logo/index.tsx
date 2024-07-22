@@ -11,11 +11,16 @@ export interface LogoProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Logo(props: LogoProps) {
-  const { className, src = iconUrl, alt, children, ...realProps } = props;
+  const {
+    className,
+    src = iconUrl,
+    alt,
+    children,
+    ...realProps
+  } = props;
 
   return <div
     className={combinationCName(styles.logo, className)}
-
     {...realProps}
   >
     <img src={src} alt={alt} />

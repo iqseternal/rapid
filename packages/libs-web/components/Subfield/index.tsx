@@ -1,6 +1,6 @@
 import type { FC, ReactNode, HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
-import { combinationCName } from '../../common';
+import {combinationCName, CssValueConverts} from '../../common';
 import styles from './index.module.scss';
 
 export interface SubfieldProps extends HTMLAttributes<HTMLElement> {
@@ -21,14 +21,23 @@ export interface SubfieldInstance extends HTMLDivElement {
 export const Subfield = forwardRef<SubfieldInstance, SubfieldProps>((props, ref) => {
   const { className, gap, ...realProps } = props;
 
-  return <div ref={ref} className={combinationCName(className, styles.subfield)} style={{ gap }} {...realProps} />
+  return <div
+    ref={ref}
+    className={combinationCName(className, styles.subfield)}
+    style={{ gap: CssValueConverts.toPixel(gap) }}
+    {...realProps}
+  />
 })
 
 export const SubfieldFixed = forwardRef<SubfieldInstance, SubfieldProps>((props, ref) => {
 
   const { className, ...realProps } = props;
 
-  return <Subfield ref={ref} className={combinationCName(className, styles.subfieldFixed)} {...realProps} />
+  return <Subfield
+    ref={ref}
+    className={combinationCName(className, styles.subfieldFixed)}
+    {...realProps}
+  />
 })
 
 export default Subfield;

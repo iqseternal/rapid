@@ -2,26 +2,24 @@ import type { PayloadAction, ThunkDispatch, Action, ActionReducerMapBuilder, Asy
 import { createSlice, createAsyncThunk, isPlain } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
 
-
-const initState = {
-
-
-  workbenches: {
-
-
-    
-  }
+export interface DocStore {
+  isWork: boolean;
 }
 
-export type Theme = typeof initState;
+const initState: DocStore = {
+  isWork: false
+}
 
-export const themeSlice = createSlice<Theme, SliceCaseReducers<Theme>>({
+export const docSlice = createSlice<DocStore, SliceCaseReducers<DocStore>>({
   name: 'User',
   initialState: initState,
   reducers: {
-
+    setWorkStatus(state, { payload }: PayloadAction<boolean>) {
+      state.isWork = payload;
+    }
   }
 });
 
+export const { setWorkStatus } = docSlice.actions;
 
-export default themeSlice;
+export default docSlice;

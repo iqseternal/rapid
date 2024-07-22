@@ -1,8 +1,9 @@
 import { useAppSelector } from '@/features';
-import { FullSize, FlexRowCenter } from '@/styled';
-import {combinationCName} from '@rapid/libs-web/common';
-import {useWindowScreenSize, useWindowInnerSize} from '@rapid/libs-web/hooks';
-import {NumberFilters} from '@rapid/libs/formatter';
+import { IS_PROD } from '@rapid/config/constants';
+import { FullSize, FlexRowCenter } from '@rapid/libs-web/styled';
+import { combinationCName } from '@rapid/libs-web/common';
+import { useWindowScreenSize, useWindowInnerSize } from '@rapid/libs-web/hooks';
+import { NumberFilters } from '@rapid/libs/formatter';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useFadeIn, useFadeOut } from '@/hooks';
@@ -18,6 +19,8 @@ import lockUrl from '@/assets/images/login__lock.png?url';
 import Header from '@components/Header';
 import Subfield from '@rapid/libs-web/components/Subfield';
 import Logo from '@components/Logo';
+
+import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
 enum Step {
@@ -28,7 +31,7 @@ export default function Login() {
   useFadeIn(async () => {
     await windowSetSize({ width: 850, height: 550 });
     await windowResizeAble({ able: false });
-    // await windowSetPosition({ x: 'center', y: 'center' });
+    if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
   });
 
   const navigate = useNavigate();
@@ -41,32 +44,30 @@ export default function Login() {
   return <FullSize className={styles.login}>
     <Header isPane />
 
-    <Subfield className={styles.didContent}>
-      {state.step === Step.Login
-        ?
-          <>
-            <FlexRowCenter>
-              <CSSTransition classNames={'fade'} in={true} timeout={150}>
-                <Logo src={lockUrl} />
-              </CSSTransition>
-            </FlexRowCenter>
+    <Subfield
+      className={combinationCName(styles.didContent)}
+    >
+      <FullSize
+        className={combinationCName(commonStyles.flexCenter)}
+      >
+        <Logo
+          src={lockUrl}
+        />
+      </FullSize>
 
-            <FlexRowCenter>
-              3
-              <Button onClick={() => useFadeOut(() => navigate(rapidRoute.meta.fullPath, { replace: true }))}>登录</Button>
-            </FlexRowCenter>
-          </>
-        :
-          <>
-            <FlexRowCenter>
-              <Logo src={lockUrl} />
-            </FlexRowCenter>
-
-            <FlexRowCenter>
-              2
-            </FlexRowCenter>
-          </>
-      }
+      <FullSize
+        className={combinationCName(commonStyles.flexCenter)}
+      >
+        <Button
+          onClick={async () => {
+            await useFadeOut(() => {
+              navigate(rapidRoute.meta.fullPath, { replace: true });
+            });
+          }}
+        >
+          登录
+        </Button>
+      </FullSize>
     </Subfield>
   </FullSize>
 }

@@ -39,14 +39,16 @@ export async function setupMainWindow() {
           icon: iconUrl,
           webPreferences: {
 
+
           },
           parent: windowService.window,
-          modal: true
+          modal: true,
+          autoHideMenuBar: true,
+          paintWhenInitiallyHidden: true,
+          frame: true
         }
       }
     }
-
-    // shell.openExternal(details.url);
     return { action: 'deny' };
   });
   if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });

@@ -2,7 +2,6 @@ import { useEffect, useReducer, lazy, useState, useRef, createRef } from 'react'
 import { rapidRoute } from './modules';
 import { makeRoute } from './utils';
 import { useFadeIn } from '@/hooks';
-import { FullSize } from '@/styled';
 import { RootLayout } from '../layout';
 
 export * from './modules';

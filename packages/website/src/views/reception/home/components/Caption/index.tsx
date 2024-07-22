@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 
-import { FullSizeWidth, combinationStyled, FlexRowCenter, MaxViewWidth } from '@/styled';
+import { FullSizeWidth, combinationStyled, FlexRowCenter, MaxViewWidth } from '@rapid/libs-web/styled';
 
 import styles from './index.module.scss';
 

@@ -32,8 +32,6 @@ export const OverflowHidden = combinationStyled(OverflowXHidden, OverflowYHidden
 export const Flex = combinationStyled('div', css`
   display: flex;
   flex-wrap: wrap;
-  flex-flow: wrap;
-  flex: 1;
 `);
 
 export const FlexRow = combinationStyled(Flex, flexDirectionRowStyle, alignItemCenterStyle);

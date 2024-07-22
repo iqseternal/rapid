@@ -14,7 +14,7 @@ export const copyText = (text?: string) => {
  * 粘贴文字, 指定参数则粘贴指定文本, 否则粘贴剪贴板中的文本
  * @param text
  */
-export const pasteText = (text?: string) => {
+export const pasteText = async (text?: string) => {
   if (text) pasteSpecifiedText(text);
-  else pasteSelectionText();
+  else await pasteSelectionText();
 }

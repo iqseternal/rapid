@@ -10,13 +10,14 @@ import { useCallback } from 'react';
  *
  * @returns
  */
-export function useDebounceHook<T extends (...args: any[]) => void>(cb: T, time: number = 50) {
-  let timer: number | undefined = void 0;
+export function useDebounceHook<T extends (...args: any[]) => void>(this: any, cb: T, time: number = 50) {
+  let timer: number | NodeJS.Timeout | undefined = void 0;
+  let that: any = this;
 
   return ((...args: unknown[]) => {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
-      cb(...args);
+      cb.call(that, ...args);
       timer = void 0;
     }, time) as unknown as number;
   }) as unknown as T;
@@ -47,13 +48,14 @@ export function useDebounce<T extends (...args: unknown[]) => void>(callback: T,
  *   console.log('scroll');
  * }))
  */
-export function useThrottleHook<T extends (...args: unknown[]) => void>(callback: T, time = 10) {
-  let timer: number | undefined = void 0;
+export function useThrottleHook<T extends (...args: unknown[]) => void>(this: any, callback: T, time = 10) {
+  let timer: number | NodeJS.Timeout | undefined = void 0;
+  let that: any = this;
 
   return (...args: unknown[]) => {
     if (timer) return;
 
-    callback.call(this, ...args);
+    callback.call(that, ...args);
 
     timer = setTimeout(() => {
       timer = void 0;

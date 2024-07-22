@@ -117,5 +117,13 @@ module.exports = {
     'import/no-named-as-default': 'off',
     'import/no-named-as-default-member': 'off',
     'import/named': 'off',
+
+    "@typescript-eslint/no-this-alias": [
+      "error",
+      {
+        "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
+        "allowedNames": ["self", 'that']
+      }
+    ]
   }
 }

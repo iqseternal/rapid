@@ -1,5 +1,6 @@
 import {isString} from '@suey/pkg-utils';
-import type { FC, ReactNode, ReactPropTypes } from 'react';
+import type {FC, ReactNode, ReactPropTypes, ReactElement} from 'react';
+import {isValidElement} from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
 
 export interface RedirectProps {
@@ -8,7 +9,7 @@ export interface RedirectProps {
 
   to: string;
 
-  element: FC<any>;
+  element: FC<any> | ReactElement;
 }
 
 /**
@@ -31,7 +32,7 @@ export interface RedirectProps {
 export default function Redirect(props: RedirectProps) {
   const { from, to, element = Outlet } = props;
 
-  const Element = element;
+
   const location = useLocation();
 
   let isMatched = false;
@@ -40,6 +41,10 @@ export default function Redirect(props: RedirectProps) {
   else if (isString(from)) isMatched = location.pathname === from;
 
   if (isMatched) return <Navigate to={to} />;
+
+  if (isValidElement(element)) return element;
+
+  const Element = element as FC;
 
   return <Element />;
 }

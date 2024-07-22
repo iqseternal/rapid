@@ -1,14 +1,16 @@
 import { css } from 'styled-components';
-import { setCssVars, setCssVarsForRoot, cssRoot } from '@libs/dom';
-import { useDebounceHook, useWindowSizeHook } from '@/hooks';
+import { setCssVars, cssRoot } from '../common';
+import type { CSSTypes } from '../common';
+import { useDebounceHook, useWindowScreenSizeHook } from '../hooks';
 
 const CSS_VARS_MAP = {
-  MAX_SCREEN_WIDTH: '--o-styled-max-screen-width',
-  MAS_SCREEN_HEIGHT: '--o-styled-max-screen-height',
+  MAX_SCREEN_WIDTH: '--rapid-styled-max-screen-width',
+  MAS_SCREEN_HEIGHT: '--rapid-styled-max-screen-height',
 };
 
-const windowSize = useWindowSizeHook();
-const valueMap = new Map();
+const windowSize = useWindowScreenSizeHook();
+const valueMap = new Map<keyof typeof CSS_VARS_MAP, string | number>();
+
 const makeCssVar = <K extends T[keyof T], T = keyof typeof CSS_VARS_MAP>(variable: K) => `var(${variable})`;
 
 const init = () => {
@@ -55,6 +57,5 @@ export const justifyBetweenStyle = css`justify-content: space-between;`;
 export const justifyAroundStyle = css`justify-content: space-around;`;
 
 export const alignItemStartStyle = css`align-items: flex-start;`;
-export const alignItenEndStyle = css`align-items: flex-end;`;
+export const alignItemEndStyle = css`align-items: flex-end;`;
 export const alignItemCenterStyle = css`align-items: center;`;
-

@@ -1,4 +1,3 @@
-import { FullSizeWidth } from '@/styled';
 import { combinationCName } from '@rapid/libs-web/common';
 import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';

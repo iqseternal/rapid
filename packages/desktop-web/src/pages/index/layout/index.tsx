@@ -4,7 +4,7 @@ import { Outlet, useOutlet, useLocation, useOutletContext } from 'react-router-d
 import { FloatButton } from 'antd';
 import { Provider } from 'react-redux';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
-import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth, FullSize } from '@/styled';
+import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth, FullSize } from '@rapid/libs-web/styled';
 import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, WindowPopup } from '@/actions';
 import { useFadeIn } from '@/hooks';
 import { combinationCName } from '@rapid/libs-web/common';
@@ -53,7 +53,10 @@ export const RapidLayout = () => {
   >
     <Header />
 
-    <MainContainer className={styles.mainContainer}>
+    <MainContainer
+      className={styles.mainContainer}
+      id={'mainContainer'}
+    >
       <SwitchTransition>
         <CSSTransition
           key={'G'}

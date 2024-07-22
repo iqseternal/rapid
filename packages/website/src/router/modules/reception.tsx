@@ -1,14 +1,14 @@
 import { lazy } from 'react';
 import { makeRoute } from '../utils';
 
-import Redirect from '@/components/Redirect';
+import Redirect from '@rapid/libs-web/components/Redirect';
 import ReceptionLayout from '@/layout/ReceptionLayout';
 
 import Home from '@views/reception/home';
 import Download from '@views/reception/download';
 
 export const receptionRoutes = makeRoute({
-  path: '/reception', name: 'Reception', component: <Redirect path='/reception' to='/reception/index' element={<ReceptionLayout />} />,
+  path: '/reception', name: 'Reception', component: <Redirect from='/reception' to='/reception/index' element={<ReceptionLayout />} />,
   meta: { title: '' },
   children: [
     {

@@ -178,3 +178,56 @@ export const getCssVarForRoot = <Key extends keyof CSSTypes.CSSStyleVarsDeclarat
 
 export const setCssVarsForRoot = (properties: CSSTypes.CSSStyleVarsDeclaration) => setCssVars(cssRoot, properties);
 
+export function isScrollContainer<T extends HTMLElement>(dom: T): boolean {
+  const style = window.getComputedStyle(dom);
+  const overflowY = style.overflowY;
+
+  if (
+    (overflowY.includes('auto') || overflowY.includes('scroll')) &&
+    dom.scrollHeight >= dom.clientHeight
+  ) return true;
+
+  return false;
+}
+
+/**
+ * 找到第一个垂直滚动的父级元素
+ * @param dom
+ * @return
+ */
+export function getFirstScrollContainer<T extends HTMLElement>(dom: T): T | null {
+  let currentElement: HTMLElement | null = dom;
+
+  while (currentElement) {
+    const style = window.getComputedStyle(currentElement);
+
+    if (
+      currentElement !== dom &&
+      isScrollContainer(currentElement)
+    ) {
+      return currentElement as T;
+    }
+
+    currentElement = currentElement.parentElement;
+  }
+
+  return null;
+}
+
+/**
+ * 获取元素的额外尺寸
+ * @param element
+ * @returns
+ */
+export const getElementMoreRect = (element: HTMLElement) => {
+  const elementComputedStyle = getComputedStyle(element);
+
+  const paddingTop = parseInt(elementComputedStyle.paddingTop);
+  const paddingBottom = parseInt(elementComputedStyle.paddingBottom);
+  const marginTop = parseInt(elementComputedStyle.marginTop);
+  const marginBottom = parseInt(elementComputedStyle.marginBottom);
+  const borderTop = parseInt(elementComputedStyle.borderTopWidth);
+  const borderBottom = parseInt(elementComputedStyle.borderBottomWidth);
+
+  return { paddingTop, paddingBottom, marginTop, marginBottom, borderTop, borderBottom };
+}

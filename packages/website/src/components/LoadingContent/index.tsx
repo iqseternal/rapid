@@ -2,7 +2,7 @@ import { combinationCName } from '@libs/common';
 import type { FC, ReactNode } from 'react';
 import { Space, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import { FlexRowCenter } from '@/styled';
+import { FlexRowCenter } from '@rapid/libs-web/styled';
 import styled from 'styled-components';
 import styles from './index.module.scss';
 

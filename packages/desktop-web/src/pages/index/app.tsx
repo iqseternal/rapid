@@ -1,7 +1,7 @@
 import { Route, BrowserRouter, HashRouter, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
-import { FullSize } from '@/styled';
+import { FullSize } from '@rapid/libs-web/styled';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { combinationCName } from '@rapid/libs-web/common';
 

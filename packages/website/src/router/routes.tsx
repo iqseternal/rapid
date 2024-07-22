@@ -4,7 +4,6 @@ import { Outlet, Navigate, useLocation, Route } from 'react-router-dom';
 import { dashRoutes, dashLoginRoute } from './modules/dashboard';
 import { receptionRoutes } from './modules/reception';
 
-import Redirect from '@/components/Redirect';
 import DosLayout from '@/layout/DosLayout';
 
 const notFound: RouteConfig = { path: '*', name: 'NotFound', component: lazy(() => import('@components/NotFound')) };

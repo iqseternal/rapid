@@ -2,7 +2,7 @@ import type { Dispatch, ReducerAction, SetStateAction, EffectCallback, Ref, Prop
 import { useState, useEffect, useReducer, useRef, Children } from 'react';
 import type { PathRouteProps, RouteProps} from 'react-router-dom';
 import { Route, BrowserRouter, Routes, useNavigate, Navigate, useNavigation, useLocation, Outlet } from 'react-router-dom';
-import { AppAdapter } from '@/styled';
+import { AppAdapter } from '@rapid/libs-web/styled';
 import {  } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { isUnDef } from '@suey/pkg-utils';

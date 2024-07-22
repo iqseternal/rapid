@@ -8,12 +8,13 @@ import { setupContext, setupSingleApplication, registerIpcHandle } from '@rapid/
 import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
 import {
-  ipcOpenWindow, ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
-  ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize,
-  ipcWindowShow,
+  ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
+  ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow,
+
+  ipcOpenWindow,
 
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet,
+  ipcStoreSet, ipcStoreHas,
 
   ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs,
 
@@ -22,13 +23,12 @@ import {
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
-  ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize,
-  ipcWindowShow
+  ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow
 ]);
 registerIpcHandle([ipcOpenWindow]);
 registerIpcHandle([
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet
+  ipcStoreSet, ipcStoreHas
 ]);
 registerIpcHandle([ipcOpenDevTool]);
 registerIpcHandle([

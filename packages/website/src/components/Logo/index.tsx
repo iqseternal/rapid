@@ -1,4 +1,4 @@
-import { Flex, combinationStyled } from '@/styled';
+import { Flex, combinationStyled } from '@rapid/libs-web/styled';
 
 import { logoUrl } from '@/assets';
 import styled from 'styled-components';

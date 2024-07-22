@@ -1,7 +1,7 @@
 import { isUnDef } from '@suey/pkg-utils';
 import { Image, ImageProps } from 'antd';
 import { useEffect, useState, forwardRef } from 'react';
-import { MaxScreenWidth, MaxScreenHeight } from '@/styled';
+import { MaxScreenWidth, MaxScreenHeight } from '@rapid/libs-web/styled';
 import { combinationCName } from '@libs/common';
 import styles from './index.module.scss';
 

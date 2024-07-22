@@ -7,14 +7,17 @@ import reduxThunk from 'redux-thunk';
 
 import themeSlice from './modules/theme';
 import userSlice from './modules/user';
+import docSlice from './modules/doc';
 
 export * from './modules/theme';
 export * from './modules/user';
+export * from './modules/doc';
 
 const appStore = configureStore({
   reducer: {
     theme: themeSlice.reducer,
-    user: userSlice.reducer
+    user: userSlice.reducer,
+    doc: docSlice.reducer
   },
   middleware: [
     reduxThunk

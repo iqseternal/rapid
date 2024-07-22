@@ -12,10 +12,16 @@ export interface WindowScreenSize {
 }
 
 let innerSizeCallbacks: ((windowInnerSize: WindowInnerSize, windowScreenSize: WindowScreenSize) => void)[] = [];
-let innerSize: WindowInnerSize | undefined = void 0;
+let innerSize: WindowInnerSize = {
+  innerWidth: window.innerWidth,
+  innerHeight: window.innerHeight
+};
 
 let screenSizeCallbacks: ((windowScreenSize: WindowScreenSize, windowInnerSize: WindowInnerSize) => void)[] = [];
-let screenSize: WindowScreenSize | undefined = void 0;
+let screenSize: WindowScreenSize = {
+  screenWidth: window.screen.width,
+  screenHeight: window.screen.height
+};
 
 /**
  * 初始化一次当前的 size 值
@@ -39,7 +45,7 @@ const windowResizeCallback = useDebounceHook(() => {
 
     screenSize.screenWidth = screenWidth;
     screenSize.screenHeight = screenHeight;
-    if (hasChanged) screenSizeCallbacks.forEach(callback => callback(screenSize, innerSize));
+    if (hasChanged && screenSizeCallbacks) screenSizeCallbacks.forEach(callback => callback(screenSize, innerSize));
   }
 
   if (!innerSize) innerSize = { innerHeight, innerWidth };
@@ -51,7 +57,7 @@ const windowResizeCallback = useDebounceHook(() => {
 
     innerSize.innerWidth = innerWidth;
     innerSize.innerHeight = innerHeight;
-    if (hasChanged) innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
+    if (hasChanged && innerSizeCallbacks) innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
   }
 }, 20);
 

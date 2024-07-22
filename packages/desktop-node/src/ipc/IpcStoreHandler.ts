@@ -40,6 +40,14 @@ export const ipcStoreReset = makeIpcHandleAction(
   }
 );
 
+export const ipcStoreHas = makeIpcHandleAction(
+  'IpcStore/has',
+  [],
+  async <Key extends keyof IpcStoreType>(_: WindowService, key: Key) => {
+    return appStore.has(key);
+  }
+);
+
 export const ipcStoreDelete = makeIpcHandleAction(
   'IpcStore/delete',
   [],

@@ -1,6 +1,7 @@
 /**
  * 合并多个classname类名,
  * @example
+ * ``` tsx
  * <div
  *    className={
  *      combinationCName(

@@ -326,6 +326,9 @@ importers:
       '@rapid/libs':
         specifier: workspace:^
         version: link:../libs
+      '@rapid/libs-web':
+        specifier: workspace:^
+        version: link:../libs-web
       '@reduxjs/toolkit':
         specifier: ^1.9.7
         version: 1.9.7(react-redux@8.1.3)(react@18.2.0)

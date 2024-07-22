@@ -1,32 +1,24 @@
-import { FlexRowCenter, FullSize, FullSizeWidth, combinationStyled } from '@/styled';
-import { combinationCName } from '@rapid/libs-web/common';
-import {
-  useShallowReactive,
-  useReactive,
-  useAutoState,
-  useWindowScreenSize,
-  useWindowInnerSize, useWindowOverScreenSize
-} from '@rapid/libs-web/hooks';
-import {randomHexColor} from '@rapid/libs/common';
-import { Button, Collapse, Input, theme, Space, Card, Dropdown } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { loginRoute } from '@pages/index/router';
+import { useAppDispatch, setWorkStatus, useAppSelector } from '@/features';
 import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 import { DropdownMenu } from '@components/DropdownMenu';
-import {FC, useEffect} from 'react';
-import { ContextMenu, contextMenu, useContextMenu, Menu, Item } from 'react-contexify';
+import { loginRoute } from '@pages/index/router';
+import { combinationCName } from '@rapid/libs-web/common';
+import { useShallowReactive, useRefresh } from '@rapid/libs-web/hooks';
+import { FlexRowCenter, FullSize } from '@rapid/libs-web/styled';
+import { Button, Input, Space, Card, Dropdown } from 'antd';
+import { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
-import Subfield from '@rapid/libs-web/components/Subfield';
-import animationStyles from '@scss/common/animation.module.scss';
-import commonStyles from '@scss/common/index.module.scss';
+
 import styles from './index.module.scss';
 
 interface StyleBlockProps extends BaseProps {
   title?: string;
   subTitle?: string;
 }
+
 const StyleBlock: FC<StyleBlockProps> = (props) => {
 
   return <div
@@ -66,14 +58,23 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
 
 export default function Workbenches() {
   const navigate = useNavigate();
+  const refresh = useRefresh();
+
+  const dispatch = useAppDispatch();
+
+  const doc = useAppSelector(state => state.doc);
 
   const [state] = useShallowReactive({
     name: 1
   })
 
   const logout = () => useFadeOut(() => {
-    navigate(loginRoute.meta.fullPath)
+    navigate(loginRoute.meta.fullPath);
   })
+
+  useEffect(() => {
+
+  });
 
   return <FullSize
     className={styles.workbenches}
@@ -229,6 +230,35 @@ export default function Workbenches() {
       </FlexRowCenter>
     </StyleBlock>
 
+    <StyleBlock title='reducer'>
+      {
+        doc.isWork.toString()
+      }
+      <Button
+        onClick={() => {
+          dispatch(setWorkStatus(!doc.isWork));
+          // refresh();
+        }}
+      >
+        改变他
+      </Button>
+    </StyleBlock>
+
+    <StyleBlock title='文件菜单'>
+
+      <DropdownMenu
+        trigger={['contextMenu']}
+      >
+        <Button
+          onContextMenu={e => {
+
+          }}
+        >
+          右击
+        </Button>
+      </DropdownMenu>
+
+    </StyleBlock>
     <StyleBlock title='下拉菜单'>
       <Space>
         <Dropdown
@@ -268,5 +298,6 @@ export default function Workbenches() {
         </Dropdown>
       </Space>
     </StyleBlock>
+
   </FullSize>
 }

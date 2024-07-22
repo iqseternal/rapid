@@ -23,6 +23,9 @@
 .flexColSpaceBetween { @include FlexColSpaceBetween; }
 .flexColSpaceAround { @include FlexColSpaceAround; }
 
+.flexAutoFit { flex: 1 1 auto };
+.flexFixed { flex: 0 0 auto; }
+
 .hidden { display: none !important; }
 
 .overflowXHidden { overflow-x: hidden; }
