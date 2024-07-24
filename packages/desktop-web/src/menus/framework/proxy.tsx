@@ -1,8 +1,11 @@
+import {isValidElement} from 'react';
 import type { ItemType } from '../declare';
 import { isArray, isFunction, isObject } from '@suey/pkg-utils';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
 import type { ComputedSelectorObj } from './computed';
 import { isComputedSelectorObj } from './computed';
+import type { MenuInstance } from './declare';
+import { convertMenu, convertSubMenu } from './declare';
 
 export const proxySymbol = Symbol('proxySymbol');
 
@@ -33,10 +36,10 @@ const isProxyObj = <T extends any,>(target: T): boolean => {
  *     ]
  *   }
  * ]);
- * @param fn
+ * @param menuInstance
  */
-export const makeMenu = <Item extends ItemType,>(fn: Item[]) => {
-  const target = fn;
+export const makeMenu = <Instance extends MenuInstance,>(menuInstance: Instance) => {
+  const target = convertMenu(menuInstance);
 
   // 菜单内容发生变化时, 外部可以添加依赖执行
   const {
@@ -55,11 +58,12 @@ export const makeMenu = <Item extends ItemType,>(fn: Item[]) => {
    * 制造一个 proxy 对象
    * @returns
    */
-  function makeProxy<Target extends {}>(target: Target) {
+  function makeProxy<Target extends {}>(target: Target): Target {
     if (isProxyObj(target)) return target;
 
     if (isFunction(target)) return target;
     if (!isObject(target) && !isArray(target)) return target;
+    if (isValidElement(target)) return target;
 
     for (const key in target) {
       const subTarget = Reflect.get(target, key);
@@ -109,6 +113,6 @@ export const makeMenu = <Item extends ItemType,>(fn: Item[]) => {
     removeEffectCallback,
 
     computedCallbacks,
-    target: makeProxy(target) as typeof fn
+    target: makeProxy(target)
   }
 }

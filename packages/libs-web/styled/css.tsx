@@ -35,6 +35,9 @@ window.addEventListener('resize', useDebounceHook(init, 60));
 export const maxScreenWidthStyle = css`max-width: ${makeCssVar(CSS_VARS_MAP.MAX_SCREEN_WIDTH)};`;
 export const maxScreenHeightStyle = css`max-height: ${makeCssVar(CSS_VARS_MAP.MAS_SCREEN_HEIGHT)}px;`;
 
+export const maxContentStyle = css`width: max-content;`;
+export const fitContentStyle = css`width: fit-content;`;
+
 export const maxViewWidthStyle = css`max-width: 100vw;`;
 export const maxViewHeightStyle = css`max-height: 100vh;`;
 

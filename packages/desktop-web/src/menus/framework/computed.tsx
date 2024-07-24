@@ -2,12 +2,19 @@ import store, { AppStoreType } from '@/features';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
 
 // 创建一个状态管理的副本, 并且跟随 redux 改变
-export const target = {
+export const targetStore = {
   store: store.getState()
 };
-store.subscribe(() => {
-  target.store = store.getState()
-});
+const {
+  dependenciesList: subscribes,
+  appendDep: appendSubscribe,
+  removeDep: removeSubscribe
+} = useDependenciesListHook<() => void>();
+
+store.subscribe(() => subscribes.forEach(callback => callback()));
+appendSubscribe(() => {
+  targetStore.store = store.getState();
+})
 
 // computed 对象的标志
 export const computedSelectorSymbol = Symbol('computedSymbol');
@@ -61,10 +68,8 @@ export const computedSelector = <TResult,>(getter: (state: AppStoreType) => TRes
     removeCallback: removeDep
   }
 
-  // redux 发生变化了, 那么维护当前值
-  store.subscribe(() => {
-    // 设置当前值
-    target.value = getter(store.getState());
+  appendSubscribe(() => {
+    target.value = getter(targetStore.store);
     // 执行所有的副作用, 因为这个值可能影响着另外一个值的变化
     target.effectCallbacks.forEach(callback => callback());
   });

@@ -1,6 +1,14 @@
 
+@import '@scss/mixin/index.scss';
 
+.styleBlock {
 
+  @include FlexCol;
+
+  & > div {
+    width: 100%;
+  }
+}
 
 
 

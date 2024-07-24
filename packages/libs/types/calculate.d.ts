@@ -64,13 +64,15 @@ export type ExtractObj<T> = T extends (infer U)[] ? U : T;
 /**
  * 获得数组的索引
  *
+ * @example
  * type Arr = [1, 2]
  *
  * type Keys = ArrayKeys<Arr>; // '0' | '1' 包含两项
  *
- * 请确保数据是一个常类型,readonly
+ * // 请确保数据是一个常类型,readonly
+ *
  */
-export type ArrayKeys<T extends readonly any[]> = Exclude<keyof T, Exclude<keyof T, `${number}`> | symbol>;
+export type ArrayKeys<T extends readonly any[]> = Exclude<keyof T, Exclude<keyof T, `${number}`> | symbol | string>;
 
 /**
  * 反转对象键值对

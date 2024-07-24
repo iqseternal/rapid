@@ -5,4 +5,38 @@
   height: var(--rapid-navbar-height);
   background-color: var(--rapid-navbar-background-color);
   padding: 0 3px;
+  font-size: 12px;
+  line-height: 12px;
+  z-index: 9999;
+
+  // sticky 为了让他不是 static, 因为 dropdown menu zIndex值为 1050, 会展示在 header 元素上方
+  position: sticky;
+  top: 0;
+
+  .menuContainer {
+    .logo {
+
+    }
+
+    .menu {
+      // gap: 4px;
+      cursor: default;
+
+      .menuItem {
+        padding: 4px 4px;
+        text-align: center;
+        border-radius: var(--rapid-dropdown-menu-item-border-radius);
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+  }
+
+
+
+  .operatorContainer {
+
+  }
 }

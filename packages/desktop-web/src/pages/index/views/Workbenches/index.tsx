@@ -1,22 +1,23 @@
 import { useAppDispatch, setWorkStatus, useAppSelector, setLayout, AppStoreType } from '@/features';
 import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
-import { DropdownMenu } from '@components/DropdownMenu';
 import { loginRoute } from '@pages/index/router';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useShallowReactive, useRefresh } from '@rapid/libs-web/hooks';
-import { FlexRowCenter, FullSize } from '@rapid/libs-web/styled';
+import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, theme } from 'antd';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createSelector } from '@reduxjs/toolkit';
 import { useMenuSelectorHook, useMenuSelector } from '@/menus';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
+import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
 import store from '@/features';
 
 import styles from './index.module.scss';
+import Subfield from '@rapid/libs-web/components/Subfield';
 
 
 interface StyleBlockProps extends BaseProps {
@@ -26,14 +27,13 @@ interface StyleBlockProps extends BaseProps {
 
 const StyleBlock: FC<StyleBlockProps> = (props) => {
 
-  return <div
-    className={combinationCName(props.className)}
+  return <FullSizeWidth
+    className={combinationCName(props.className, styles.styleBlock)}
     style={{
       textAlign: 'center',
-
     }}
   >
-    <div
+    <FullSizeWidth
       style={{
         color: makeVar(themeCssVarsSheet.primaryTextColor),
         margin: '10px 0'
@@ -49,16 +49,15 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
           {props.subTitle}
         </span>
       </Space>
-    </div>
+    </FullSizeWidth>
 
     {props.children}
-    <div
+    <FullSizeWidth
       style={{
-        height: '30px',
-        width: '100%'
+        height: '30px'
       }}
     />
-  </div>
+  </FullSizeWidth>
 }
 
 
@@ -68,7 +67,30 @@ export default function Workbenches() {
 
   const dispatch = useAppDispatch();
 
-  const headerMenu = useMenuSelector(menus => menus.headerMenu);
+  const headerMenu = useMenuSelector(menus => menus.headerFileMenu);
+  const editMenu = useMenuSelector(menus => menus.headerEditMenu);
+
+  const menus = useMenuSelector(
+    [
+      state => state.headerFileMenu,
+      state => state.headerEditMenu
+    ] as const,
+    (
+      headerFileMenu,
+      headerEditMenu
+    ) => {
+
+      return {
+        headerFileMenu,
+        headerEditMenu
+      }
+    }
+  );
+
+
+  const select = createSelector([(state: AppStoreType) => state.doc], (doc) => {
+
+  })
 
   const doc = useAppSelector(state => state.doc);
   const theme = useAppSelector(state => state.theme);
@@ -103,6 +125,12 @@ export default function Workbenches() {
     >
       open
     </div>
+
+    <StyleBlock title='文件菜单'>
+      <AutoDropdownMenu
+        menu={headerMenu}
+      />
+    </StyleBlock>
 
     <StyleBlock title='背景色色阶' subTitle='块'>
       <div
@@ -261,26 +289,7 @@ export default function Workbenches() {
       </Button>
     </StyleBlock>
 
-    <StyleBlock title='文件菜单'>
-      <div>
-        {
-          JSON.stringify(headerMenu)
-        }
-      </div>
 
-      <DropdownMenu
-        menus={headerMenu}
-      >
-        <Button
-          onContextMenu={e => {
-
-          }}
-        >
-          右击
-        </Button>
-      </DropdownMenu>
-
-    </StyleBlock>
     <StyleBlock title='下拉菜单'>
       <Space>
         <Dropdown
@@ -316,7 +325,7 @@ export default function Workbenches() {
         >
           <span>
             下拉菜单
-            
+
           </span>
         </Dropdown>
       </Space>

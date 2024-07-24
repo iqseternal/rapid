@@ -5,7 +5,8 @@ import {
   overflowXHiddenStyle, overflowYHiddenStyle,
   flexDirectionColReverseStyle, flexDirectionColStyle, flexDirectionRowReverseStyle, flexDirectionRowStyle,
   justifyAroundStyle, justifyBetweenStyle, justifyCenterStyle, justifyEndStyle, justifyStartStyle,
-  alignItemCenterStyle, alignItemStartStyle, alignItemEndStyle
+  alignItemCenterStyle, alignItemStartStyle, alignItemEndStyle,
+  maxContentStyle, fitContentStyle
 } from './css';
 import styled, { css } from 'styled-components';
 
@@ -20,6 +21,9 @@ export const MaxScreen = combinationStyled(MaxScreenWidth, MaxScreenHeight);
 export const MaxViewWidth = combinationStyled('div', maxViewWidthStyle);
 export const MaxViewHeight = combinationStyled('div', maxViewHeightStyle);
 export const MaxView = combinationStyled(MaxViewWidth, MaxViewHeight);
+
+export const MaxContent = combinationStyled('div', maxContentStyle);
+export const FitContent = combinationStyled('div', fitContentStyle);
 
 export const FullSizeWidth = combinationStyled('div', fullSizeWidthStyle);
 export const FullSizeHeight = combinationStyled('div', fullSizeHeightStyle);

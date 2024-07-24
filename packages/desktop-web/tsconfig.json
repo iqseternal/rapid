@@ -39,7 +39,6 @@
     "./src/**/*.ts",
     "./src/**/*.vue",
     "./src/**/*.tsx",
-    "./components.d.ts",
 
     "../config/@types"
   ],

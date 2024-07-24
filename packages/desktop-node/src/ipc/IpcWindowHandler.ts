@@ -1,6 +1,5 @@
-import {is} from '@electron-toolkit/utils';
 import { screen } from 'electron';
-import { WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { WINDOW_STATE_MACHINE_KEYS, IS_DEV } from '@rapid/config/constants';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
 import { TypeException } from '@/core';
 import { isNumber } from '@suey/pkg-utils';
@@ -219,10 +218,13 @@ export const ipcWindowShow = makeIpcHandleAction(
     show: boolean
   }) => {
 
+    const isMinimized = windowService.window.isMinimized();
     const isVisible = windowService.window.isVisible();
 
 
     if (options.show) {
+      if (IS_DEV && isMinimized) return;
+
       if (!isVisible) windowService.window.show();
     }
     else {

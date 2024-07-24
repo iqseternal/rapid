@@ -3,7 +3,7 @@
  * 对库进行样式全局覆盖
  * ==========================================
  */
-
+@import "../mixin";
 
 // =====================================================================================================
 button:not(.ant-btn) {
@@ -23,8 +23,8 @@ button:not(.ant-btn) {
 }
 button.ant-btn {
   border-radius: var(--rapid-button-border-radius);
-  // background-color: var(--rapid-button-background-color);
-  // color: var(--rapid-button-text-color);
+  background-color: var(--rapid-button-background-color);
+  color: var(--rapid-button-text-color);
   &:hover {
     filter: brightness(0.95);
   }
@@ -97,17 +97,6 @@ input.ant-input::placeholder {
       }
     }
 
-    .ant-message-notice.ant-message-notice-success {
-      .ant-message-notice-content {
-        .anticon {
-          color: var(--rapid-success-message-color);
-        }
-        .ant-message-custom-content.ant-message-success {
-          color: var(--rapid-success-message-color);
-        }
-      }
-    }
-
     .ant-message-notice.ant-message-notice-warning {
       .ant-message-notice-content {
         .anticon {
@@ -148,32 +137,27 @@ input.ant-input::placeholder {
 
 // 普通下拉菜单
 // =====================================================================================================
-div.ant-dropdown-menu {
-  min-width: unset;
-
+div.ant-dropdown {
   .ant-dropdown-arrow {
 
   }
 
-
   ul.ant-dropdown-menu {
-    width: fit-content;
     background-color: var(--rapid-dropdown-background-color);
     color: var(--rapid-dropdown-text-color);
     border-radius: var(--rapid-dropdown-border-radius);
 
     .ant-dropdown-menu-item {
 
-
-      width: fit-content;
+      border-radius: var(--rapid-dropdown-item-border-radius);
 
       .ant-dropdown-menu-title-content {
 
+
       }
-
     }
-
   }
 }
+
 
 

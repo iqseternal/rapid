@@ -1,20 +1,20 @@
-import type { IconKey } from '@components/IconFont';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useEventListener, useReactive, useRefresh, useShallowReactive, useThrottleHook } from '@rapid/libs-web/hooks';
+import { useEventListener, useShallowReactive, useThrottleHook } from '@rapid/libs-web/hooks';
 import { getFirstScrollContainer } from '@rapid/libs-web/common';
-import { Dropdown, Menu, Divider } from 'antd';
-import type { DropDownProps, SubMenuProps, MenuProps, MenuItemProps, DividerProps } from 'antd';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import type { ReactElement } from 'react';
+import { Dropdown, Menu } from 'antd';
+import type { DropDownProps } from 'antd';
+import { createContext, useContext } from 'react';
+import type { MenuInstance } from '@/menus/framework';
+import { MaxContent } from '@rapid/libs-web/styled';
 
-import Subfield from '@rapid/libs-web/components/Subfield';
-import IconFont from '@components/IconFont';
+import commonStyles from '@scss/common/index.module.scss';
+import type { AntdMenuInstance, AntdItemType } from '@/menus/framework';
 import styles from './index.module.scss';
 
 const OpenContext = createContext(false);
 
 interface PropMenu {
-  menus: any[];
+  menus: AntdItemType[];
 }
 const PropMenu = (props: PropMenu) => {
   const {
@@ -22,16 +22,20 @@ const PropMenu = (props: PropMenu) => {
   } = props;
 
   const open = useContext(OpenContext);
-  if (!open) return <></>;
 
   return <Menu
     subMenuOpenDelay={0}
     subMenuCloseDelay={0}
     selectable={false}
     triggerSubMenuAction={'click'}
-    rootClassName={combinationCName(styles.dropdownMenuRootWrapper)}
+    rootClassName={combinationCName(
+      styles.dropdownMenuRootWrapper,
+      {
+        [commonStyles.hidden]: !open
+      }
+    )}
     getPopupContainer={(triggerNode) => {
-      return getFirstScrollContainer(triggerNode) || document.body;
+      return document.body;
     }}
     defaultOpenKeys={[]}
     onOpenChange={(openKeys) => {
@@ -50,16 +54,17 @@ const PropMenu = (props: PropMenu) => {
   />
 }
 
-export interface DropdownMenuProps extends BaseProps {
-  menus: any[];
+export interface AutoDropdownMenuProps extends BaseProps {
+  menu: AntdMenuInstance;
+  attrs?: DropDownProps;
 }
-export function DropdownMenu(props: DropdownMenuProps) {
+export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
   const {
-    className,
-    children,
+    className, children,
 
-    menus,
-    ...realProps
+    menu,
+
+    attrs = {}
   } = props;
 
   const [state] = useShallowReactive({
@@ -79,29 +84,27 @@ export function DropdownMenu(props: DropdownMenuProps) {
 
   return <OpenContext.Provider value={state.open}>
     <Dropdown
-      {...realProps}
       open={state.open}
       arrow={false}
-      trigger={['click']}
-      rootClassName={combinationCName(className, styles.dropdownMenuRootWrapper)}
+      trigger={attrs.trigger ?? ['click']}
+      rootClassName={combinationCName(
+        className,
+        styles.dropdownMenuRootWrapper
+      )}
       autoAdjustOverflow
       mouseEnterDelay={0}
       mouseLeaveDelay={0}
+      destroyPopupOnHide={false}
       getPopupContainer={(triggerNode) => getFirstScrollContainer(triggerNode) || document.body}
       onOpenChange={(value, info) => {
         state.open = value;
       }}
-      dropdownRender={(originNode) => <PropMenu menus={menus} />}
+      dropdownRender={(originNode) => <PropMenu menus={menu.children} />}
     >
-      {children}
+      <MaxContent>
+        {children ? children : menu.label}
+      </MaxContent>
     </Dropdown>
   </OpenContext.Provider>
-}
-
-export interface AutoDropdownMenuProps {
-
-}
-export default function AutoDropdownMenu() {
-
 }
 

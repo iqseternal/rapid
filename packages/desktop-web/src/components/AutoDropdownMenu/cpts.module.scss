@@ -1,0 +1,20 @@
+@import "@scss/mixin";
+
+.menuItem {
+  font-size: 13px;
+  line-height: 13px;
+  gap: 7px;
+  padding: 5px 0px;
+
+  justify-content: space-between;
+  @include Flex;
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
+.icon {
+  width: 13px;
+  height: 13px;
+}

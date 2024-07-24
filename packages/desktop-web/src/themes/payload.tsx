@@ -20,7 +20,6 @@ const colorVarsSheet = {
   linkTextColor: mRapidC('--rapid-link-text-color', '#1a73e8', '链接文本颜色'),
 } as const;
 
-
 const widgetVarsSheet = {
   /** 控件宽度 */
   widgetWidth: mRapidC('--rapid-widget-width', '20px', '控件宽度'),
@@ -89,13 +88,13 @@ const dropdownVarsSheet = {
   dropdownBackgroundColor: mRapidC('--rapid-dropdown-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉菜单的背景颜色'),
   dropdownTextColor: mRapidC('--rapid-dropdown-text-color', colorVarsSheet.primaryTextColor.value, '下拉菜单的文字颜色'),
   dropdownBorderRadius: mRapidC('--rapid-dropdown-border-radius', '10px', '下拉菜单圆角大小'),
+  dropdownItemBorderRadius: mRapidC('--rapid-dropdown-item-border-radius', '5px', '下拉菜单项圆角大小'),
 
   dropdownMenuBackgroundColor: mRapidC('--rapid-dropdown-menu-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
   dropdownMenuTextColor: mRapidC('--rapid-dropdown-menu-text-color', colorVarsSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
-
+  dropdownMenuBorderRadius: mRapidC('--rapid-dropdown-menu-border-radius', '6px', '下拉文件菜单圆角大小'),
+  dropdownMenuItemBorderRadius: mRapidC('--rapid-dropdown-menu-item-border-radius', '6px', '下拉菜单项圆角大小'),
 } as const;
-
-
 
 const sizeVarsSheet = {
 
