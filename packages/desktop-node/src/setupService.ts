@@ -24,7 +24,7 @@ export async function setupMainWindow() {
     windowKey: WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW
   });
 
-  // windowService.window.webContents.setFrameRate(144);
+  windowService.window.webContents.setFrameRate(144);
   windowService.window.setMenu(null);
   windowService.window.webContents.setWindowOpenHandler((details) => {
     PrinterService.printInfo(`打开地址为： ${details.url}`);
@@ -155,6 +155,8 @@ export async function setupReportBugsWindow() {
 
   return windowService;
 }
+
+
 
 
 /**

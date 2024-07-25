@@ -3,22 +3,28 @@ import { makeRoute } from '../utils';
 import type { RequiredRouteConfig } from '../utils';
 import { RapidLayout } from '@pages/index/layout';
 
-export const rapidRoute = makeRoute({
-  name: `Rapid`,
-  path: `/rapid`, redirect: 'workbenches',
+import Home from '@pages/index/views/Home';
+import Workbenches from '@pages/index/views/Workbenches';
+
+export const workbenchesRoute = makeRoute({
+  name: `Workbenches`,
+  path: `/workbenches`, redirect: 'home',
   component: RapidLayout,
   children: [
     {
-      name:  'Work',
-      path: '/workbenches',
-      component: lazy(() => import('@pages/index/views/Workbenches'))
-    },
-    {
-      path: '/index', name: 'ReceptionHome',
-      meta: { title: '首页' },
+      name: 'WorkbenchesHome',
+      path: '/home',
+      meta: { title: '首页', icon: 'HomeOutlined' },
       component: lazy(() => import('@pages/index/views/Home'))
     },
+    {
+      name:  'WorkbenchesWorkstation',
+      path: '/workstation',
+      meta: { title: '工作区', icon: 'FileWordOutlined' },
+      component: lazy(() => import('@pages/index/views/Workbenches'))
+    },
+
   ]
 } as const);
 
-export const workbenchesRoute = (rapidRoute as Required<RequiredRouteConfig>).children[0];
+export const workbenchesHomeRoute = (workbenchesRoute as Required<RequiredRouteConfig>).children[0];

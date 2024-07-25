@@ -1,8 +1,19 @@
 @import "@scss/mixin";
 
+div.menuItem {
+  padding: 4px 5px;
+  text-align: center;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
 div.dropdownMenuRootWrapper {
   width: max-content;
   user-select: none;
+  background-color: var(--rapid-secondary-background-color);
 
   :global(ul.ant-dropdown-menu) {
     background-color: var(--rapid-dropdown-menu-background-color) !important;

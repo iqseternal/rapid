@@ -1,5 +1,5 @@
 import { useEffect, useReducer, lazy, useState, useRef, createRef } from 'react';
-import { rapidRoute } from './modules';
+import { workbenchesRoute } from './modules';
 import { makeRoute } from './utils';
 import { useFadeIn } from '@/hooks';
 import { RootLayout } from '../layout';
@@ -33,9 +33,9 @@ export const registerRoute = makeRoute({
 export const rootRoute = makeRoute({
   name: 'Root',
   path: '/', redirect: 'login',
-  component: RootLayout,
+  component: <RootLayout />,
   children: [
-    rapidRoute, loginRoute, registerRoute,
+    workbenchesRoute, loginRoute, registerRoute,
 
     notFoundRoute, notRoleRoute
   ]

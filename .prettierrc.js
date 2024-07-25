@@ -1,6 +1,5 @@
 /** @type {import("prettier").Config} */
 module.exports = {
-	trailingComma: 'none',
 	// 指定每个缩进级别的空格数
 	tabWidth: 2,
 	// 使用制表符而不是空格缩进行
@@ -15,7 +14,6 @@ module.exports = {
 	trailingComma: 'none',
 	// 在对象文字中的括号之间打印空格
 	bracketSpacing: true,
-	requirePragma: false,
 
 	htmlWhitespaceSensitivity: 'ignore',
 	// jsx 标签的反尖括号需要换行
@@ -31,8 +29,6 @@ module.exports = {
 	insertPragma: false,
 	// 使用默认的折行标准 always\never\preserve
 	proseWrap: 'preserve',
-	// 指定HTML文件的全局空格敏感度 css\strict\ignore
-	htmlWhitespaceSensitivity: 'css',
 	// Vue文件脚本和样式标签缩进
 	vueIndentScriptAndStyle: false,
 	//在 windows 操作系统中换行符通常是回车 (CR) 加换行分隔符 (LF)，也就是回车换行(CRLF)，

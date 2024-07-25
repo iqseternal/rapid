@@ -1,16 +1,16 @@
 import { mRapidC } from './make';
 
 const colorVarsSheet = {
-  /* 主要背景色 */
+  /** 主要背景色 */
   primaryBackgroundColor: mRapidC('--rapid-primary-background-color', '#ffffff', '主要背景色'),
-  /* 二级次背景色 */
+  /** 二级次背景色 */
   secondaryBackgroundColor: mRapidC('--rapid-secondary-background-color', '#f7f7f7', '二级次背景色'),
-  /* 三级次要背景色 */
+  /** 三级次要背景色 */
   thirdBackgroundColor: mRapidC('--rapid-third-background-color', '#eeeeee', '三级次要背景色'),
-  /* 四级次要背景色 */
+  /** 四级次要背景色 */
   fourthBackgroundColor: mRapidC('--rapid-fourth-background-color', '#e5e5e5', '四级次要背景色'),
 
-  /* 主题色 */
+  /** 主题色 */
   primaryColor: mRapidC('--rapid-primary-color', '#007bff', '主题色'),
 
   primaryTextColor: mRapidC('--rapid-primary-text-color', '#333333', '主要文本颜色'),
@@ -34,10 +34,13 @@ const widgetVarsSheet = {
 } as const;
 
 const navbarVarsSheet = {
-  /* 导航栏高度 */
-  navbarHeight: mRapidC('--rapid-navbar-height', '28px', '导航栏高度'),
-  /* 导航栏背景色 */
-  navbarBackgroundColor: mRapidC('--rapid-navbar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '导航栏背景色'),
+  /** 标题栏高度 */
+  captionBarHeight: mRapidC('--rapid-caption-bar-height', '28px', '标题栏高度'),
+  /** 标题栏背景色 */
+  captionBarBackgroundColor: mRapidC('--rapid-caption-bar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '标题栏背景色'),
+
+  navigationBarWidth: mRapidC('--rapid-navigation-bar-width', '32px', '纵向导航栏宽度'),
+  navigationBarBackgroundColor: mRapidC('--rapid-navigation-bar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '导航栏背景色')
 } as const;
 
 const buttonVarsSheet = {
@@ -70,16 +73,18 @@ const buttonVarsSheet = {
 const messageVarsSheet = {
   messageBorderRadius: mRapidC('--rapid-message-border-radius', '8px', 'message圆角'),
 
-  /* 成功按钮颜色 */
+  /** 成功按钮颜色 */
   successMessageColor: mRapidC('--rapid-success-message-color', '#28a745', '成功按钮颜色'),
-  /* 警告按钮颜色 */
+  /** 警告按钮颜色 */
   warningMessageColor: mRapidC('--rapid-warning-message-color', '#ffc107', '警告按钮颜色'),
-  /* 错误按钮颜色 */
+  /** 错误按钮颜色 */
   errorMessageColor: mRapidC('--rapid-error-message-color', '#dc3545', '错误按钮颜色'),
 } as const;
 
 const cardVarsSheet = {
   cardBorderRadius: mRapidC('--rapid-card-border-radius', '12px', '卡片圆角'),
+
+  /* 卡片内边距 */
   cardPadding: mRapidC('--rapid-card-padding', '16px', '卡片内边距')
 
 } as const;
@@ -95,6 +100,17 @@ const dropdownVarsSheet = {
   dropdownMenuBorderRadius: mRapidC('--rapid-dropdown-menu-border-radius', '6px', '下拉文件菜单圆角大小'),
   dropdownMenuItemBorderRadius: mRapidC('--rapid-dropdown-menu-item-border-radius', '6px', '下拉菜单项圆角大小'),
 } as const;
+
+
+
+
+
+
+
+
+
+
+
 
 const sizeVarsSheet = {
 
@@ -117,8 +133,8 @@ const sizeVarsSheet = {
   /* 页脚高度 */
   footerHeight: mRapidC('--rapid-footer-height', '80px', '页脚高度'),
 
-  /* 卡片内边距 */
-  cardPadding: mRapidC('--rapid-card-padding', '20px', '卡片内边距'),
+
+
   /* 按钮内边距 */
   buttonPadding: mRapidC('--rapid-button-padding', '10px 20px', '按钮内边距'),
   /* 输入框内边距 */

@@ -4,8 +4,8 @@ import type { CSSTypes } from '../common';
 import { useDebounceHook, useWindowScreenSizeHook } from '../hooks';
 
 const CSS_VARS_MAP = {
-  MAX_SCREEN_WIDTH: '--rapid-styled-max-screen-width',
-  MAS_SCREEN_HEIGHT: '--rapid-styled-max-screen-height',
+  MAX_SCREEN_WIDTH: '--rapid-o-styled-max-screen-width',
+  MAS_SCREEN_HEIGHT: '--rapid-o-styled-max-screen-height',
 };
 
 const windowSize = useWindowScreenSizeHook();

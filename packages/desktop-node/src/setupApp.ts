@@ -4,6 +4,7 @@ import { PrinterService } from '@/service/PrinterService';
 import { print, printError } from '@suey/printer';
 import { WindowService, WindowServiceOptions } from '@/service/WindowService';
 import { isString, isNumber } from '@suey/pkg-utils';
+import { setupTrayMenu } from './setupService';
 
 export interface AppOptions {
   modelId: string;
@@ -49,11 +50,12 @@ export const setupApp = (startApp: () => void | Promise<void>, ops?: Partial<App
     });
   });
 
-  // app.on('window-all-closed', () => {
-  //   if (process.platform !== 'darwin') {
-  //     PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
-  //     app.quit();
-  //   }
-  // });
+  app.on('window-all-closed', async () => {
+    if (process.platform !== 'darwin') {
+      PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
+
+      app.quit();
+    }
+  });
 }
 

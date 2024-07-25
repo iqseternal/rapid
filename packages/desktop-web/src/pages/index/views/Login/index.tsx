@@ -10,7 +10,7 @@ import { useFadeIn, useFadeOut } from '@/hooks';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { windowDevtool, windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useAsyncEffect, useReactive } from '@rapid/libs-web/hooks';
-import { rapidRoute } from '@pages/index/router';
+import { workbenchesRoute } from '@pages/index/router';
 import { Button } from 'antd';
 import { Transition, CSSTransition } from 'react-transition-group';
 import { toPicket } from '@rapid/libs/common';
@@ -61,7 +61,7 @@ export default function Login() {
         <Button
           onClick={async () => {
             await useFadeOut(() => {
-              navigate(rapidRoute.meta.fullPath, { replace: true });
+              navigate(workbenchesRoute.meta.fullPath, { replace: true });
             });
           }}
         >

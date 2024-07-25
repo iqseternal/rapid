@@ -4,6 +4,9 @@
   align-items: center;
   @content;
 }
+@mixin FlexFixed {
+  flex: 0 0 auto;
+}
 @mixin FlexRowCenter {
   @include Flex {
     justify-content: center;
@@ -30,7 +33,7 @@
 }
 @mixin FlexColSpaceBetween {
   @include FlexCol {
-    justify-content: space-around;
+    justify-content: space-between;
   }
   @content;
 }

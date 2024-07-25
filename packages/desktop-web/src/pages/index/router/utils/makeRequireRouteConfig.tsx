@@ -30,7 +30,10 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
 
 
   if (route.redirect) {
-    if (!route.redirect.startsWith('/')) route.redirect = path.join(route.meta.fullPath, route.redirect);
+    if (
+      typeof route.redirect === 'string' &&
+      !route.redirect.startsWith('/')
+    ) route.redirect = path.join(route.meta.fullPath, route.redirect);
   }
 
   route.children = route.children ? route.children.map(child => {

@@ -22,10 +22,6 @@ export const CONFIG = {
     URL: rootPackageJson.repository.url
   },
   PROJECT: 'Rapid',
-  VIEW: {
-    TOOLTIP_ENTER_TIME: 1, // tooltip 进入x s后显示
-    WIDGET_TOOLTIP_ENTER_TIME: 1,
-  },
   FADE: {
     FADE_IN: {
       TIMER: 50

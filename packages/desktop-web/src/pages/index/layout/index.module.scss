@@ -1,5 +1,5 @@
 
-@import '@scss/mixin/index.scss';
+@import '@scss/mixin';
 
 .rootLayout {
 
@@ -7,16 +7,17 @@
 
 
 .rapidLayout {
+  .mainRootContainer {
+    height: calc(100% - var(--rapid-caption-bar-height));
+    gap: 4px;
+    @include Flex;
 
+    .mainContainer {
+      padding-top: 10px;
 
-
-
-  .mainContainer {
-    max-height: calc(100% - var(--rapid-navbar-height));
-
-
-    @include Overflow(scroll);
-    @include BeautifulBar;
+      @include Overflow(scroll);
+      @include BeautifulBar;
+    }
   }
 }
 

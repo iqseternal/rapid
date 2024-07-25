@@ -9,14 +9,14 @@
 .widget {
   max-width: 100%;
   max-height: 100%;
-  width: var(--rapid-widget-width, 20px);
-  height: var(--rapid-widget-height, 20px);
+  width: var(--rapid-widget-width);
+  height: var(--rapid-widget-height);
   color: var(--rapid-widget-color);
 
   border-radius: var(--rapid-widget-border-radius);
   overflow: hidden;
 
-  font-size: 80%;
+  font-size: 90%;
   padding: 3px;
 
   aspect-ratio: 1 / 1;

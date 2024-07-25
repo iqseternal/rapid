@@ -78,6 +78,8 @@ input.ant-input::placeholder {
 
 // =====================================================================================================
 .ant-message {
+  z-index: 10000;
+
   .ant-message-notice-wrapper {
     .ant-message-notice {
       .ant-message-notice-content {
@@ -160,4 +162,31 @@ div.ant-dropdown {
 }
 
 
+// =====================================================================================================
 
+/* styles.css */
+
+.fade-appear {
+  transform: translateX(30px);
+}
+.fade-appear-active {
+  transition: all 1s ease-out;
+}
+
+.fade-enter {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.fade-enter-active {
+  transition: all 1s ease-out;
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: all 1s ease-out;
+  transition: opacity 300ms;
+}

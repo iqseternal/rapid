@@ -1,9 +1,8 @@
 import { combinationCName } from '@rapid/libs-web/common';
-import { theme, Tooltip } from 'antd';
-import type { IconRealKey } from '@components/IconFont';
+import {theme, Tooltip, TooltipProps} from 'antd';
+import type { IconKey } from '@components/IconFont';
 import type { HTMLAttributes } from 'react';
 import { CONFIG } from '@rapid/config/constants';
-import { makeVar, themeCssVarsSheet, ThemeCssVarsSheet } from '@/themes';
 
 import IconFont from '@components/IconFont';
 
@@ -12,17 +11,26 @@ import styles from './index.module.scss';
 
 export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean;
-  icon?: IconRealKey;
+  icon?: IconKey;
   tipText?: string;
+  tipAttrs?: TooltipProps;
 }
 
 export default function Widget(props: WidgetProps) {
-  const { hover = true, icon, tipText, className, ...realProps } = props;
+  const {
+    hover = true,
+    icon,
+    tipText,
+    className,
+    tipAttrs,
+    ...realProps
+  } = props;
 
   return <Tooltip
     title={tipText}
-    mouseEnterDelay={CONFIG.VIEW.TOOLTIP_ENTER_TIME}
+    mouseEnterDelay={1}
     autoAdjustOverflow
+    {...tipAttrs}
   >
     <div
       {...realProps}

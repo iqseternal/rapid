@@ -73,7 +73,7 @@ function Menu(props: { route: RequiredRouteConfig }) {
   if (!isDef(props.route.children) || props.route.children.length === 0) return content;
 
   return <Popover
-    mouseEnterDelay={CONFIG.VIEW.TOOLTIP_ENTER_TIME}
+    mouseEnterDelay={1}
     overlayClassName={styles.receptionHeaderPopover}
     content={<MenuPane route={props.route} />}
   >

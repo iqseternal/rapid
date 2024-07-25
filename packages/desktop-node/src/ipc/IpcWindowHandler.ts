@@ -9,7 +9,7 @@ import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
 import { toMakeIpcAction } from '@rapid/framework';
 import { convertWindowService } from './middlewares';
 
-const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
+const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowService]
 });
 

@@ -1,12 +1,13 @@
 import type { FC, ReactElement, LazyExoticComponent } from 'react';
 import type { PathRouteProps } from 'react-router-dom';
 import type { RedirectProps } from '@rapid/libs-web/components/Redirect';
+import type { IconKey } from '@components/IconFont';
 
 declare global {
   interface RouteMeta {
     title: string;
     windowTitle?: string;
-    icon?: IconRealKey;
+    icon?: IconKey;
     fullPath?: string;
   }
 

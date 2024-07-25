@@ -261,7 +261,7 @@ export class WindowStateMachine {
     return windowService;
   }
 
-  public static destoryWindowService(windowService: WindowService) {
+  public static destroyWindowService(windowService: WindowService) {
     if (!WindowStateMachine.hasWindowService(windowService)) {
       throw new RuntimeException('WindowStateMachine: does not have a window object that is about to be destroyed', {
         label: 'WindowStateMachine'

@@ -3,7 +3,7 @@ import { useEventListener, useShallowReactive, useThrottleHook } from '@rapid/li
 import { getFirstScrollContainer } from '@rapid/libs-web/common';
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps } from 'antd';
-import { createContext, useContext } from 'react';
+import {createContext, useContext, ReactNode} from 'react';
 import type { MenuInstance } from '@/menus/framework';
 import { MaxContent } from '@rapid/libs-web/styled';
 
@@ -54,15 +54,18 @@ const PropMenu = (props: PropMenu) => {
   />
 }
 
-export interface AutoDropdownMenuProps extends BaseProps {
+export interface AutoDropdownMenuProps  {
   menu: AntdMenuInstance;
   attrs?: DropDownProps;
+
+  slots?: {
+    menu?: ReactNode;
+  }
 }
 export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
   const {
-    className, children,
-
     menu,
+    slots = {},
 
     attrs = {}
   } = props;
@@ -88,7 +91,6 @@ export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
       arrow={false}
       trigger={attrs.trigger ?? ['click']}
       rootClassName={combinationCName(
-        className,
         styles.dropdownMenuRootWrapper
       )}
       autoAdjustOverflow
@@ -100,10 +102,16 @@ export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
         state.open = value;
       }}
       dropdownRender={(originNode) => <PropMenu menus={menu.children} />}
+      {...attrs}
     >
-      <MaxContent>
-        {children ? children : menu.label}
-      </MaxContent>
+      {slots.menu
+        ? slots.menu
+        : <MaxContent
+            className={combinationCName(styles.menuItem)}
+          >
+            {menu.label}
+          </MaxContent>
+      }
     </Dropdown>
   </OpenContext.Provider>
 }

@@ -3,7 +3,7 @@ import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch 
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
 import { makeVar, themeCssVarsSheet } from '@/themes';
-import { useMemo } from 'react';
+import {useMemo, ReactNode} from 'react';
 import { useMenuSelector } from '@/menus';
 import { MaxContent } from '@rapid/libs-web/styled';
 
@@ -21,12 +21,16 @@ export interface HeaderProps extends BaseProps {
   isDialog?: boolean;
 
   slots?: {
-
+    menu?: ReactNode;
   }
 }
 
 export default function Header(props: HeaderProps) {
-  const { isDialog = false, isPane = false, slots } = props;
+  const {
+    isDialog = false,
+    isPane = false,
+    slots = {}
+  } = props;
 
   const headerFileMenu = useMenuSelector(menus => menus.headerFileMenu);
   const headerEditMenu = useMenuSelector(menus => menus.headerEditMenu);
@@ -51,22 +55,11 @@ export default function Header(props: HeaderProps) {
       <Subfield
         className={combinationCName(styles.menu, commonStyles.userSelectNone)}
       >
-        {
-          menus.map(menu => {
-            return <AutoDropdownMenu
-              key={menu.key}
-              menu={menu}
-              attrs={{
-                trigger: ['click']
-              }}
-            >
-              <MaxContent
-                className={combinationCName(styles.menuItem)}
-              >
-                {menu.label}
-              </MaxContent>
-            </AutoDropdownMenu>
-          })
+        {slots.menu
+          ? slots.menu
+          : (
+            !isDialog && !isPane && menus.map(menu => <AutoDropdownMenu key={menu.key} menu={menu} />)
+          )
         }
       </Subfield>
       <Subfield>

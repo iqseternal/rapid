@@ -150,8 +150,5 @@ export function convertMenu<Menu extends MenuInstance>(menu: Menu): AntdMenuInst
   const targetMenu = menu as AntdMenuInstance;
 
   targetMenu.children = children;
-
-  console.log(targetMenu);
-
   return targetMenu;
 }
