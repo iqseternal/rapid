@@ -12,11 +12,11 @@ import { USER_CONFIG } from '@rapid/config/electron-main';
 export class UserConfigService extends SingleInstanceService<UserConfigService> {
   public config = USER_CONFIG;
 
-  static getInstance<T = UserConfigService>() {
+  static override getInstance<T = UserConfigService>() {
     return super.getInstance<T>();
   }
 
-  destory(): void {
+  override destory(): void {
     if (!AppConfigService.getInstance().config.miscellaneous.userJson.overwrite) {
       PrinterService.printWarn(`当前关闭了 UserConfigJson 的覆写, 用户窗口配置参数将会失效, 建议开启`);
 

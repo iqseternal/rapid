@@ -26,32 +26,6 @@ export type ObjKeyToArr<
 > = [K, ...(S extends object ? ObjKeyToArr<S, keyof S> : [])];
 
 /**
- * 获取 vue 组件的 props 作为一个类型
- * 例如:
- * xx.vue:
- *
- * <script lang="ts" setup>
- *
- * const props = defineProps({
- *  list: { type: Array as PropType<string[]>, default: [] }
- * })
- *
- * </script>
- *
- *
- * xx.ts:
- *
- * import Cmp from 'xx.vue';
- *
- * const props: ComponentsProps<typeof Cmp> = {
- *  list: [] // 这个类型就会被推断为 string[]
- * }
- *
- */
-// @ts-ignore
-export type ComponentsProps<T extends unknown> = Exclude<Required<T['__defaults']>, undefined>;
-
-/**
  * 创建 table columns 的时候的类型转换, T 是原本的类型, K 则是 Response 对象
  * 通过联合类型让原本的类型拥有类型检测和提示
  *
@@ -90,13 +64,15 @@ export type ExtractObj<T> = T extends (infer U)[] ? U : T;
 /**
  * 获得数组的索引
  *
+ * @example
  * type Arr = [1, 2]
  *
  * type Keys = ArrayKeys<Arr>; // '0' | '1' 包含两项
  *
- * 请确保数据是一个常类型,readonly
+ * // 请确保数据是一个常类型,readonly
+ *
  */
-export type ArrayKeys<T extends readonly any[]> = Exclude<keyof T, Exclude<keyof T, `${number}`> | symbol>;
+export type ArrayKeys<T extends readonly any[]> = Exclude<keyof T, Exclude<keyof T, `${number}`> | symbol | string>;
 
 /**
  * 反转对象键值对

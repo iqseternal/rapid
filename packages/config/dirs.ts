@@ -11,7 +11,6 @@ export const DEV_DESKTOP_NODE_DIR = path.join(ROOT_DIR, './packages/desktop-node
 /** 项目开发 Web 目录 */
 export const DEV_DESKTOP_WEB_DIR = path.join(ROOT_DIR, './packages/desktop-web');
 
-
 // =================================================================
 
 /** 打包根目录 */

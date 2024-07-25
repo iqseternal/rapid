@@ -18,13 +18,15 @@ const devPagesPrefixUrl = '/src/pages/';
  * pro: 获取路径
  *
  * @param url
+ * @param prefix
+ * @param extension
  * @returns
  */
 const makeStartUrl = (url: string, prefix = '', extension = 'html') => {
   if (is.dev && process.env['ELECTRON_RENDERER_URL'])
     return `${process.env['ELECTRON_RENDERER_URL']}${devPagesPrefixUrl}${url}/${prefix}.${extension}`;
 
-  return join(__dirname, `../renderer/${prefix}.${extension}`);
+  return join(__dirname, `../renderer/${devPagesPrefixUrl}${url}/${prefix}.${extension}`);
 }
 
 /** 主窗口 */

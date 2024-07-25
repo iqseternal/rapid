@@ -11,7 +11,7 @@ import { combinationCName } from '@libs/common';
 import { Provider } from 'react-redux';
 import { useEventListener, useDebounceHook, useReactive, useRefresh, useOverScreenSize, useShallowReactive } from '@/hooks';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
-import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth } from '@/styled';
+import { MaxScreen, MaxScreenWidth, AppAdapter, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth } from '@rapid/libs-web/styled';
 
 import styles from './index.module.scss';
 import headerStyles from './header.module.scss';

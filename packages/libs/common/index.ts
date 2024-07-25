@@ -4,10 +4,8 @@
  * ==========================================
  */
 
-export * from './clipboard';
+export * from './common';
 
-export * from './dom';
+export * from './to';
 
 export * from './random';
-
-export * from './common';

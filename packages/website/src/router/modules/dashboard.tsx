@@ -1,6 +1,6 @@
 import { makeRoute } from '../utils';
 
-import Redirect from '@/components/Redirect';
+import Redirect from '@rapid/libs-web/components/Redirect';
 import DashLayout from '@/layout/DosLayout';
 
 import Home from '@views/dashboard/home';
@@ -11,7 +11,7 @@ export const dashLoginRoute = makeRoute({
 })
 
 export const dashRoutes = makeRoute({
-  path: '/dashboard', name: 'Dashboard', component: <Redirect path='/dashboard' to='/dashboard/home' element={DashLayout} />,
+  path: '/dashboard', name: 'Dashboard', component: <Redirect from='/dashboard' to='/dashboard/home' element={DashLayout} />,
   meta: { title: '' },
   children: [
     {

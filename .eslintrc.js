@@ -7,16 +7,13 @@ module.exports = {
     browser: true,
     node: true,
   },
-  parser: 'vue-eslint-parser',
   plugins: [
-    'vue',
     '@typescript-eslint',
     'prettier'
   ],
   extends: [
     'eslint:recommended',
     'plugin:import/recommended',
-    'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'prettier',
@@ -67,14 +64,11 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
 
     'no-undef': 'off',
-    'vue/attribute-hyphenation': ['error', 'never'],
     'multiline-ternary': 'off',
     '@typescript-eslint/no-unnecessary-type-constraint': 'off',
     'no-void': 'off',
     'no-undefined': 'error',
-    'vue/no-ref-as-operand': 'off',
     'prefer-template': 'off',
-    'vue/v-on-event-hyphenation': 'off',
     'no-constant-condition': 'off',
     'non-nullis': 'off',
     '@typescript-eslint/ban-types': 'off',
@@ -82,6 +76,8 @@ module.exports = {
     '@typescript-eslint/consistent-type-imports': 'off',
     'no-async-promise-executor': 'off',
     'no-useless-escape': 'off',
+
+    'no-ignore': 'off',
 
     // best-practice
     'array-callback-return': 'error',
@@ -109,37 +105,25 @@ module.exports = {
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
     '@typescript-eslint/ban-ts-comment': ['off', { 'ts-ignore': false }],
 
-    // vue
-    'vue/no-v-html': 'off',
-    'vue/require-default-prop': 'off',
-    'vue/require-explicit-emits': 'off',
-    'vue/multi-word-component-names': 'off',
-    'vue/prefer-import-from-vue': 'off',
-    'vue/no-v-text-v-html-on-component': 'off',
-    'vue/html-self-closing': [
-      'error',
-      {
-        html: {
-          void: 'always',
-          normal: 'always',
-          component: 'always',
-        },
-        svg: 'always',
-        math: 'always',
-      },
-    ],
-
     // prettier
     'prettier/prettier': 'off',
 
     // import
     'import/first': 'off',
-    'import/no-duplicates': 'error',
+    'import/no-duplicates': 'warn',
     'import/no-unresolved': 'off',
     'import/namespace': 'off',
     'import/default': 'off',
     'import/no-named-as-default': 'off',
     'import/no-named-as-default-member': 'off',
     'import/named': 'off',
+
+    "@typescript-eslint/no-this-alias": [
+      "error",
+      {
+        "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
+        "allowedNames": ["self", 'that']
+      }
+    ]
   }
 }

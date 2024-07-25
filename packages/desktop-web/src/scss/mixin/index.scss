@@ -1,0 +1,74 @@
+@import '../var.scss';
+
+@import './flex.scss';
+
+@mixin ForMobile {
+  @media screen and (max-width: ($mobileSize - 1px)) { @content; }
+}
+
+@mixin ForPad {
+  @media screen and (min-width: $mobileSize) and (max-width: ($padSize - 1)) { @content; }
+}
+
+@mixin ForPc {
+  @media screen and (min-width: $pcSize) { @content; }
+}
+
+@mixin Overflow($scroll: scroll) {
+  overflow-x: hidden;
+  overflow-y: $scroll !important;
+}
+
+@mixin BeautifulBar() {
+  // overflow-y: $status;
+
+  @media screen and (orientation:portrait) and (max-device-width:768px) and (max-device-height:1024px),
+  screen and (orientation:landscape) and (max-device-width:1024px) and (max-device-height:768px) {
+    &::-webkit-scrollbar {
+      width: 4px !important;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 9px;
+    // background-color: rgba(200, 200, 200, 0);
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    border: 2px solid transparent;
+    //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+    background-clip: content-box;
+    background-color: #2225;
+    //滚动条的颜色
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -ms-border-radius: 100px;
+    -o-border-radius: 100px;
+  }
+}
+
+@mixin MiniBar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
+@mixin NoneBar {
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+@mixin AppRegion {
+  -webkit-app-region: drag;
+}
+
+@mixin AppRegionNo {
+  -webkit-app-region: no-drag;
+}

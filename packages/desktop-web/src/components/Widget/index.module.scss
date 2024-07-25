@@ -1,0 +1,26 @@
+@import '@scss/mixin/index.scss';
+
+.widgetHasHover {
+  &:hover {
+    background-color: var(--rapid-widget-hover-background-color);
+  }
+}
+
+.widget {
+  max-width: 100%;
+  max-height: 100%;
+  width: var(--rapid-widget-width);
+  height: var(--rapid-widget-height);
+  color: var(--rapid-widget-color);
+
+  border-radius: var(--rapid-widget-border-radius);
+  overflow: hidden;
+
+  font-size: 90%;
+  padding: 3px;
+
+  aspect-ratio: 1 / 1;
+  cursor: default;
+  user-select: none;
+  flex: 0 0 auto;
+}

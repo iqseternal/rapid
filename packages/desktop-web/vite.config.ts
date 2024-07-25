@@ -27,7 +27,7 @@ export default defineConfig((configEnv) => {
   return mergeConfig<UserConfig, UserConfig>(rendererConfig(configEnv), {
     define: vars,
     server: {
-      port: 8000
+      port: 8200
     },
     root: IS_BUILD ? void 0 : devPageRootDir,
     publicDir: IS_BUILD ? void 0 :  path.join(devDir, 'public'),
@@ -35,6 +35,7 @@ export default defineConfig((configEnv) => {
     build: {
       emptyOutDir: true,
       rollupOptions: {
+        input: inputHtmlPosition,
         output: {
           dir: DIST_WEB_DIR
         }
@@ -55,6 +56,8 @@ export default defineConfig((configEnv) => {
       {
         name: 'move-html-to-root',
         closeBundle() {
+          return;
+
           // 遍历 src/pages 目录，将 HTML 文件移动到 dist 目录的根目录
           function moveHtmlFiles(dir: string) {
             if (!fs.statSync(dir).isDirectory()) return;
@@ -74,8 +77,15 @@ export default defineConfig((configEnv) => {
 
           moveHtmlFiles(distSrcPageDir);
 
+          const srcDir = path.join(DIST_WEB_DIR, 'src');
+
           // 删除空的 src/pages 目录
-          fs.rmSync(path.join(DIST_WEB_DIR, 'src'), { recursive: true });
+          if (fs.existsSync(srcDir) && fs.statSync(srcDir).isDirectory()) {
+
+            fs.rmSync(path.join(DIST_WEB_DIR, 'src'), { recursive: true });
+          }
+
+
         }
       }
     ]

@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useState, forwardRef, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Subfield, SubfieldCloumn } from '@/components/Subfield';
-import { AppAdapter, FlexRowBetween, FlexRowStart, FullSizeWidth, MaxScreenHeight, combinationStyled, MaxScreenWidth } from '@/styled';
+import { AppAdapter, FlexRowBetween, FlexRowStart, FullSizeWidth, MaxScreenHeight, combinationStyled, MaxScreenWidth } from '@rapid/libs-web/styled';
 import { receptionRoutes } from '@/router/modules/reception';
 import type { RadioChangeEvent } from 'antd';
 import type { SelectCommonPlacement } from 'antd/es/_util/motion';
@@ -73,7 +73,7 @@ function Menu(props: { route: RequiredRouteConfig }) {
   if (!isDef(props.route.children) || props.route.children.length === 0) return content;
 
   return <Popover
-    mouseEnterDelay={CONFIG.VIEW.TOOLTIP_ENTER_TIME}
+    mouseEnterDelay={1}
     overlayClassName={styles.receptionHeaderPopover}
     content={<MenuPane route={props.route} />}
   >

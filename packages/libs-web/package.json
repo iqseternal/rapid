@@ -1,0 +1,16 @@
+{
+  "name": "@rapid/libs-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rapid/libs": "workspace:^",
+    "@rapid/validates": "workspace:^"
+  }
+}

@@ -1,3 +1,4 @@
+import {ipcWindowMaxSize} from '@/ipc';
 import type { Handlers } from 'node_modules/@rapid/desktop-node/preload';
 import { makeInvokeActions } from './ipcRenderer';
 

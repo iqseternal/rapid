@@ -2,7 +2,7 @@ import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ReceptionHasPerposeHeaderClassNameContext, ReceptionHasPreposeContext } from '@/context';
 import { combinationCName } from '@libs/common';
 import { CSSObject, CSSProperties } from 'styled-components';
-import { MaxScreenWidth, MaxViewWidth, FullSizeWidth } from '@/styled';
+import { MaxScreenWidth, MaxViewWidth, FullSizeWidth } from '@rapid/libs-web/styled';
 import GradualImg from '@components/GradualImg';
 import styles from './perpose.module.scss';
 

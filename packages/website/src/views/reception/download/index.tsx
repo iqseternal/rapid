@@ -1,7 +1,7 @@
 import { Select, Button, Space, Card, Divider } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { Subfield, SubfieldCloumn, SubfieldSpace } from '@components/Subfield';
-import { FlexRowStart, FlexCloumnStart } from '@/styled';
+import { FlexRowStart } from '@rapid/libs-web/styled';
 import { Link } from 'react-router-dom';
 import { isNotSpaceStr } from '@libs/judge';
 import { useReactive } from '@/hooks';

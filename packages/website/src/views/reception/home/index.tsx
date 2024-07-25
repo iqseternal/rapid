@@ -3,7 +3,7 @@ import { SubfieldCloumn, Subfield, SubfieldSpace } from '@components/Subfield';
 import { Parallax } from 'react-parallax';
 import { productionPreviewUrl, homeImages } from '@/assets';
 import { isDef } from '@suey/pkg-utils';
-import { FlexRow, combinationStyled } from '@/styled';
+import { FlexRow, combinationStyled, FlexRowCenter } from '@rapid/libs-web/styled';
 import { Space } from 'antd';
 import { ScrollParallax } from 'react-just-parallax';
 import type { CSSObject } from 'styled-components';
@@ -46,13 +46,13 @@ function ParallaxContainer(props: ParallaxContainerProps) {
 
   useEffect(() => {
     if (!props.isFirst) return;
-    if (!isDef(contentContainer.current)) return;
+    if (!contentContainer.current) return;
     state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
   }, []);
 
   useEventListener(window, 'resize', useDebounceHook(() => {
     if (!props.isFirst) return;
-    if (!isDef(contentContainer.current)) return;
+    if (!contentContainer.current) return;
     state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
   }));
 
@@ -90,10 +90,10 @@ export default function Home() {
 
     <Caption
       title={
-        <FlexRow style={{ gap: '20px' }}>
+        <FlexRowCenter style={{ gap: '20px' }}>
           <div>Welcome to {CONFIG.PROJECT}</div>
           <Logo size={30} className={styles.logoAnimation} />
-        </FlexRow>
+        </FlexRowCenter>
       }
     >
       个人学习生活记录

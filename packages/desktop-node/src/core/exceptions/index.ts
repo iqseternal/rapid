@@ -6,7 +6,7 @@ import { Exception } from '@rapid/framework';
  */
 export interface ExceptionErrorMsgData {
 
-  label: string;
+  label?: string;
 
   level?: 'error' | 'warning' | 'info';
 

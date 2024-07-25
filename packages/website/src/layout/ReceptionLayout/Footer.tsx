@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { PhoneFilled } from '@ant-design/icons';
 import { Subfield, SubfieldCloumn } from '@/components/Subfield';
 import {
-  FlexRowAround, FlexRowStart, FlexCloumnStart, FlexRowBetween,
+  FlexRowAround, FlexRowStart, FlexColumn, FlexRowBetween,
   combinationStyled, AppAdapter,
   MaxScreenWidth,
   FullSizeWidth
-} from '@/styled';
+} from '@rapid/libs-web/styled';
 import { useTranslation } from 'react-i18next';
 
 import styles from './footer.module.scss';

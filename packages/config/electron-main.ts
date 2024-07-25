@@ -115,8 +115,8 @@ export const USER_CONFIG = {
   },
   windows: {
     mainWindow: {
-      width: null,
-      height: null,
+      width: 1650,
+      height: 780,
       descriptor: '记录用户调整主视窗的大小, 能够在二次启动时记忆大小'
     }
   }

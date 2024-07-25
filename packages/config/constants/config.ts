@@ -13,8 +13,8 @@ import * as rootPackageJson from '../../../package.json';
 
 export const CONFIG = {
   API: {
-    URL: 'https://www.oupro.cn:3000/api/v1.0.0/',
-    // URL: 'http://localhost:3000/api/v1.0.0/',
+    // URL: 'https://www.oupro.cn:3000/api/v1.0.0/',
+    URL: 'http://localhost:3000/api/v1.0.0/',
     TIMEOUT: 5000,
   },
   REPOSITORY: {
@@ -22,16 +22,12 @@ export const CONFIG = {
     URL: rootPackageJson.repository.url
   },
   PROJECT: 'Rapid',
-  VIEW: {
-    TOOLTIP_ENTER_TIME: 1, // tooltip 进入x s后显示
-    WIDGET_TOOLTIP_ENTER_TIME: 1,
-  },
   FADE: {
     FADE_IN: {
-      TIMER: 20
+      TIMER: 50
     },
     FADE_OUT: {
-      TIMER: 30
+      TIMER: 50
     }
   },
   DIALOG: {
@@ -53,10 +49,10 @@ export const CONFIG = {
 // don't modify it!
 export const RSA_PUBLIC_KEY = `
 -----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCS56315ZowpncDwXZhXb4j6BHK
-Gor8OZe+06s73C4H5b/Iyy/vbAzFFWsfL1y04AnNDkZ9swoFWnmYjon1XGUTvN3Z
-BuLWKW9UjDCcTcno4MEhP1qrk3X0iiBeu09aJdiWogjbN4kaBq/KcKRQ5kvXdcTP
-hvcDZhJI/YiPgbRW9wIDAQAB
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIh/EEwXyKA67uoWZj23NnAuxI
+j+g8Kr8WeDVQ9sQJ/gZ9IxyyGPNPRQhy6ecxOY1dzi74qFyADboOOvGakfDWGuFN
+rBEWNfFPubsm1J1LD5qXx1/VePI0wdERXM8u0Hn/Ow48b9iVnEBuYtF7FuSRrzcy
+kt8mv5biNp18x8QaDwIDAQAB
 -----END PUBLIC KEY-----
 ` as const;
 

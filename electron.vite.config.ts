@@ -1,11 +1,10 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin } from 'electron-vite';
-import path, { join } from 'path';
 import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from './target.config';
 import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
 import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR, DEV_DESKTOP_WEB_DIR } from './packages/config/dirs';
-import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/sturcture';
+import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/structure';
 
 import eslintPlugin from 'vite-plugin-eslint';
 import rendererConfigFn from './packages/desktop-web/structure';
@@ -27,12 +26,15 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        // drop_console: true,
         drop_debugger: true
       }
     },
     sourcemap: false,
     outDir: OUT_DESKTOP_MAIN_DIR
+  },
+  server: {
+    open: false
   }
 });
 
@@ -58,11 +60,12 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
 const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<RendererConfig, RendererConfig>(rendererConfigFn(configEnv), {
   root: DEV_DESKTOP_WEB_DIR,
   define: defineVars(configEnv),
-  plugins: [...loadLintPlugins(configEnv)],
+  plugins: [],
   server: {
     port: 8888,
     hmr: true,
     host: '0.0.0.0',
+    open: false,
     sourcemapIgnoreList: (sourcePath: string, sourcemapPath: string) => false
   },
   build: {

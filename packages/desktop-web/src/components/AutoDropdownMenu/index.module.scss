@@ -1,0 +1,48 @@
+@import "@scss/mixin";
+
+div.menuItem {
+  padding: 4px 5px;
+  text-align: center;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+div.dropdownMenuRootWrapper {
+  width: max-content;
+  user-select: none;
+  background-color: var(--rapid-secondary-background-color);
+
+  :global(ul.ant-dropdown-menu) {
+    background-color: var(--rapid-dropdown-menu-background-color) !important;
+    color: var(--rapid-dropdown-menu-text-color) !important;
+    border-radius: var(--rapid-dropdown-menu-border-radius) !important;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+
+
+    @include BeautifulBar;
+    @include MiniBar;
+  }
+
+  :global(ul.ant-dropdown-menu li.ant-dropdown-menu-item) {
+    padding: 4px 18px 4px 12px;
+    border-radius: var(--rapid-dropdown-menu-item-border-radius) !important;
+  }
+  :global(ul.ant-dropdown-menu-item-group-list li.ant-dropdown-menu-item) {
+    padding-right: 12px;
+  }
+  :global(ul.ant-dropdown-menu li.ant-dropdown-menu-item-divider) {
+    margin: 1px 0;
+  }
+  :global(ul.ant-dropdown-menu span.ant-dropdown-menu-title-content) {
+    display: inline-block;
+    padding: unset;
+    width: 100%;
+  }
+}
+

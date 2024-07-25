@@ -7,6 +7,13 @@
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noImplicitThis": true,
+
+    "allowUnusedLabels": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": ["./src/*"]
     }

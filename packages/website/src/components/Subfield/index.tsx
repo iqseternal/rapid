@@ -1,6 +1,6 @@
 import type { CSSObject } from 'styled-components';
 import type { CSSProperties } from 'react';
-import { FlexRowBetween, FlexCloumnBetween } from '@/styled';
+import { FlexRowBetween, FlexColumnBetween } from '@rapid/libs-web/styled';
 import { isString } from '@suey/pkg-utils';
 
 interface SubfieldProps extends BaseProps {
@@ -68,13 +68,13 @@ export function SubfieldCloumn({ children, slots, style, className, size, gap = 
     else styles.gap = gap + 'px';
   }
 
-  if (children) return <FlexCloumnBetween className={className} style={styles}>{children}</FlexCloumnBetween>
+  if (children) return <FlexColumnBetween className={className} style={styles}>{children}</FlexColumnBetween>
 
-  return <FlexCloumnBetween className={className} style={styles}>
-    {slots?.start && <FlexCloumnBetween>{slots.start}</FlexCloumnBetween>}
-    {slots?.center && <FlexCloumnBetween>{slots.center}</FlexCloumnBetween>}
-    {slots?.end && <FlexCloumnBetween>{slots.end}</FlexCloumnBetween>}
-  </FlexCloumnBetween>
+  return <FlexColumnBetween className={className} style={styles}>
+    {slots?.start && <FlexColumnBetween>{slots.start}</FlexColumnBetween>}
+    {slots?.center && <FlexColumnBetween>{slots.center}</FlexColumnBetween>}
+    {slots?.end && <FlexColumnBetween>{slots.end}</FlexColumnBetween>}
+  </FlexColumnBetween>
 }
 
 export const Subfield = SubfieldRow;

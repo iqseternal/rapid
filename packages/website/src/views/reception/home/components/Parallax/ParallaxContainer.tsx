@@ -3,7 +3,7 @@ import { autoGetScrollContainer } from '@libs/dom';
 import { useEventListener, useReactive, useDebounceHook } from '@/hooks';
 import { isDef } from '@suey/pkg-utils';
 import { combinationCName } from '@libs/common';
-import { combinationStyled } from '@/styled';
+import { combinationStyled } from '@rapid/libs-web/styled';
 import type { GradualImgProps } from '@components/GradualImg';
 
 import GradualImg from '@components/GradualImg';
@@ -21,7 +21,7 @@ export interface ParallaxContainerProps extends BaseProps {
  * @returns
  */
 export function ParallaxContainer(props: ParallaxContainerProps) {
-  // 写js的原因是因为内容默认放到了上面，为了不影响后续的元素，所以最上面的元素需要写一个margintop，并且要根据传递的内容来确定大小
+  // 写js的是因为内容默认放到了上面，为了不影响后续的元素，所以最上面的元素需要写一个marginTop，并且要根据传递的内容来确定大小
 
   const [state] = useReactive({
     firstMarginTop: 0
@@ -30,13 +30,15 @@ export function ParallaxContainer(props: ParallaxContainerProps) {
 
   useEffect(() => {
     if (!props.isFirst) return;
-    if (!isDef(contentContainer.current)) return;
+    if (!contentContainer.current) return;
+
     state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
   }, []);
 
   useEventListener(window, 'resize', useDebounceHook(() => {
     if (!props.isFirst) return;
-    if (!isDef(contentContainer.current)) return;
+    if (!contentContainer.current) return;
+
     state.firstMarginTop = contentContainer.current.getBoundingClientRect().height / 2;
   }));
 

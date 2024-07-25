@@ -1,0 +1,47 @@
+/**
+ * ==========================================
+ * 用于编写动画, 多用于 transition 组件
+ * ==========================================
+ */
+
+// 主窗口路由切换的动画
+// ================================================================================
+.workbenchesRouteSwitchAppear {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.workbenchesRouteSwitchAppearActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s ease-out;
+}
+.workbenchesRouteSwitchAppearDone {
+
+}
+
+.workbenchesRouteSwitchEnter {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.workbenchesRouteSwitchEnterActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s linear;
+}
+.workbenchesRouteSwitchEnterDone {
+
+}
+
+.workbenchesRouteSwitchExit {
+  transform: translateX(0);
+  opacity: 1;
+}
+.workbenchesRouteSwitchExitActive {
+  transform: translateX(30px);
+  transition: all 0.2s ease-out;
+  opacity: 0;
+}
+
+.workbenchesRouteSwitchExitDone {
+
+}

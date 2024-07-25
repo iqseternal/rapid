@@ -6,7 +6,7 @@
     "skipDefaultLibCheck": true,
     "noEmitOnError": true,
     "noUnusedParameters": false,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
@@ -18,6 +18,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+
     "isolatedModules": true,
     "resolveJsonModule": true,
     "allowArbitraryExtensions": true,
@@ -29,7 +30,6 @@
       "@libs/*": ["src/libs/*"],
       "@meta/*": ["src/meta/*"],
       "@scss/*": ["src/scss/*"],
-      "@hooks/*": ["src/hooks/*"],
       "#constants/*": ["src/constants/*"],
       "@indexedDB/*": ["src/indexedDB/*"],
       "@/*": ["src/*", "../desktop-node/src/*"]
@@ -39,10 +39,8 @@
     "./src/**/*.ts",
     "./src/**/*.vue",
     "./src/**/*.tsx",
-    "./components.d.ts",
 
-    "../config/@types",
-    "../desktop-node/src/@types"
+    "../config/@types"
   ],
   "exclude": ["node_modules/**/*"]
 }

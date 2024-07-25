@@ -5,3 +5,7 @@
 /**/public
 /**/build
 *.log*
+
+
+/packages/desktop-web
+/packages/libs copy
