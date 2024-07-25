@@ -4,7 +4,7 @@ import { PhoneFilled } from '@ant-design/icons';
 import { Subfield, SubfieldCloumn } from '@/components/Subfield';
 import {
   FlexRowAround, FlexRowStart, FlexColumn, FlexRowBetween,
-  combinationStyled, AppAdapter,
+  combinationStyled, Flex,
   MaxScreenWidth,
   FullSizeWidth
 } from '@rapid/libs-web/styled';
@@ -15,7 +15,7 @@ import styles from './footer.module.scss';
 import Logo from '@components/Logo';
 import IconFont from '@components/IconFont';
 
-const FooterContainer = combinationStyled('footer', FullSizeWidth, AppAdapter);
+const FooterContainer = combinationStyled('footer', FullSizeWidth, Flex);
 const FooterSubContainer = combinationStyled('div', FullSizeWidth, MaxScreenWidth);
 
 export default function Footer() {

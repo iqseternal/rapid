@@ -23,23 +23,33 @@ declare global {
   interface RouteMeta {
     title: string;
     windowTitle?: string;
-    icon?: IconRealKey;
-    fullpath?: string;
+    icon?: IconKey;
+    fullPath?: string;
   }
 
-  interface RouteConfig extends PathRouteProps {
+  interface RouteBaseConfig extends PathRouteProps {
     path: string;
     name: string;
     meta?: RouteMeta;
-    component?: FC | React.ReactElement | React.LazyExoticComponent<() => JSX.Element>;
+    component?: FC | ReactElement | LazyExoticComponent<() => JSX.Element>;
+    redirect?: RedirectProps['from'];
     children?: RouteConfig[];
   }
+
+  declare type RouteConfig =
+    RouteBaseConfig;
 
   interface BaseProps {
     children?: React.ReactNode;
     style?: CSSProperties;
     className?: string;
   };
+
+
+
+
+
+
 }
 
 export { };

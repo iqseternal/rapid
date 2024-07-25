@@ -1,6 +1,6 @@
-import {useRefresh} from '@rapid/libs-web/hooks';
-import {useEffect} from 'react';
-import type {menus} from '../index';
+import { useRefresh } from '@rapid/libs-web/hooks';
+import { useEffect } from 'react';
+import type { menus } from '../index';
 
 export type AppMenuType = typeof menus;
 export type AppMenuSelectKey = keyof AppMenuType;

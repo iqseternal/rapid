@@ -12,7 +12,7 @@ export const receptionRoutes = makeRoute({
   meta: { title: '' },
   children: [
     {
-      path: 'index', name: 'ReceptionHome', component: lazy(() => import('@views/reception/home')),
+      path: '/index', name: 'ReceptionHome', component: lazy(() => import('@views/reception/home')),
       meta: { title: '首页' },
       children: [
         {
@@ -26,7 +26,7 @@ export const receptionRoutes = makeRoute({
       ]
     },
     {
-      path: 'download', name: 'ReceptionDownload', component: lazy(() => import('@views/reception/download')),
+      path: '/download', name: 'ReceptionDownload', component: lazy(() => import('@views/reception/download')),
       meta: { title: '下载', windowTitle: 'OUPRO - 下载 SPACE' }
     }
   ]

@@ -10,10 +10,6 @@ import {
 } from './css';
 import styled, { css } from 'styled-components';
 
-export const AppAdapter = combinationStyled('div', fullSizeWidthStyle, justifyCenterStyle, css`
-  display: flex;
-`);
-
 export const MaxScreenWidth = combinationStyled('div', maxScreenWidthStyle);
 export const MaxScreenHeight = combinationStyled('div', maxScreenHeightStyle);
 export const MaxScreen = combinationStyled(MaxScreenWidth, MaxScreenHeight);

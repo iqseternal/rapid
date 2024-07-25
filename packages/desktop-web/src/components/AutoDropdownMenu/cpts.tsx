@@ -47,7 +47,7 @@ export interface SubMenuProps extends BaseProps {
   iconKey: SubMenuType['iconKey'];
   label: SubMenuType['label'];
 }
-export const SubMenu: FC<SubMenuType> = (props) => {
+export const SubMenu: FC<SubMenuProps> = (props) => {
   const {
     iconKey,
     label
