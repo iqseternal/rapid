@@ -2,7 +2,9 @@
 
 基于 `Electron`, `Electron-Vite`, `pnpm` `monorepo` 建立的桌面端应用程序。
 
-🌟🌟🌟主进程采用了 `Typescript` 实验性语法装饰器，建立 `Ipc` 通道以及打造日志系统，建立了异常自动捕捉处理机制。渲染进程采用了 `vue`作为开发框架，编写页面展示 Web。
+🌟🌟🌟当前还在开发, 如果需要一个示例版本, 可切换分支到 `pre-main-vue`.
+
+🌟🌟🌟主进程采用了 `Typescript` 建立 `Ipc` 通道以及打造日志系统，建立了异常自动捕捉处理机制。渲染进程采用了 `react`作为开发框架，编写页面展示 Web。
 
 本项目开发是为编写一套快速迭代桌面应用程序的示例，编写项目快速启动编写的框架。但因为对开发实际情况的多样性的欠缺，所以开发了一款流程图绘制(2D)程序作为开发过程思路的提供。
 
@@ -20,9 +22,9 @@
 
 🌱`/package/desktop-node`则是对应 `Electron` 程序的主进程。
 
-🌱`/package/desktop-web`则是对应 `Electron` 程序的渲染进程。基于 `Vue` 编写，具有多入口。
+🌱`/package/desktop-web`则是对应 `Electron` 程序的渲染进程。基于 `react` 编写，具有多入口(正在考虑是否保留)。
 
-🌱`/package/website`则是基于 `React`编写的下载网站，使用了 `styled-components`，`scss module`，行内样式，虽然都采用了但是为其分了使用类别，`styled-components`建立基本元素容器，`scss module`编写页面组件级样式，行内样式则是为了覆盖元素容器原有样式，又或者样式简短。由于受到 `Vue`开发的影响，`useState` 的 手动`set`已经不能满足于我，于是编写了一个类似 `Vue`开发的自动 `set` 的 `hook`，具体阐述自行查看 `hooks`文件夹。
+🌱`/package/website`则是基于 `react`编写的下载网站，使用了 `styled-components`，`scss module`，行内样式，虽然都采用了但是为其分了使用类别，`styled-components`建立基本元素容器，`scss module`编写页面组件级样式，行内样式则是为了覆盖元素容器原有样式，又或者样式简短。由于受到 `Vue`开发的影响，`useState` 的 手动`set`已经不能满足于我，于是编写了一个类似 `Vue`开发的自动 `set` 的 `hook`，具体阐述自行查看 `hooks`文件夹。
 
 👋👋关于更多详细，后续完善开发之后会建立 `Vitepress`介绍文档对其进行详细介绍，以让开发者能够快速了解开发基本。
 
@@ -46,7 +48,7 @@
 
 - 装饰器集成以及 Reflect-metadata 基本概念
 
-- Vue.js Vite 构建 Web / React 也行， 以及 Vite 树摇的形成，变量注入
+- React Vite 构建 Web， 以及 Vite 树摇的形成，变量注入
 
 ## Project Setup
 
@@ -62,7 +64,7 @@ $ pnpm install
 
 那么你可能需要如下软件地址。
 
-[Clash](https://www.clash.la/releases/)
+[Clash](https://clashvergerev.com/)
 
 [Proxifier - The Most Advanced Proxy Client](https://www.proxifier.com/)
 
@@ -140,88 +142,4 @@ else xxx;
 // 避免使用 @ts-ignore 等忽略错误
 // 当然，这是一个不应该存在的错误示例
 const a: number = '1' as unknown as number;
-```
-
-Vue 组件遵循编写规范：
-
-组件文件名大驼峰标识，除非是 index.vue
-
-```vue
-<template>
-  <!-- 类名可能会出现短横线或者驼峰命名，1短横线为全局的类名，2驼峰为局部的类名 -->
-  <ASpace class="test-title testTitle">
-    <span>组件名大驼峰</span>
-    <span style="color: red;">属性名小驼峰，避免使用短横线方式</span>
-  </ASpace>
-</template>
-
-<script lang="ts" setup>
-// 先导入，参照 typescript
-import { ref } from 'vue';
-import Vue from 'vue';
-import * xxx from 'xxx';
-
-// 编写 props， emits 等
-const props = defineProps({
-  mode: { type: String, default: '' },
-  list: { type: Array as PropType<string[]>, default: () => ([]) }
-});
-const emits = defineEmits(['click']);
-
-// 调用拥有返回值并且需要提前定义的 hooks
-const router = useRouter();
-const route = useRoute();
-const store = useStore();
-
-// 定义常量，变量
-const list = ref([]);
-
-// 某些 hook 的调用
-const { modalAllAttrs } = useModal({});
-const { tableAttrs } = useTable({});
-const { validateMessage, validateStatus, validateFn } = useValidate((value: string) => {
-
-});
-
-// 定义复用型函数
-const xxx = () => {
-
-}
-
-// 定义页面函数动作, 例如需要被绑定到页面上的函数
-const add = () => {
-
-};
-
-// 某些 hook 的调用
-useFadeIn(() => { // 页面转场
-
-})
-useEventListener(document.body, () => { // 添加事件
-
-})
-
-// 按顺序调用生命周期
-onBeforeMounted(() => {
-
-})
-
-onMounted(() => {
-
-})
-
-
-// 跟页面关系比较大的监听，如果监听仅针对某个变量，并且副作用较低，则直接书写在变量的后方
-watch(() => , {
-
-});
-
-// 页面定义的快捷键
-useMousetrap();
-
-// 定义组件的导出工作
-defineExpose({
-
-})
-</script>
 ```
