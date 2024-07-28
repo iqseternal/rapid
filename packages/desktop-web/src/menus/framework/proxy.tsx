@@ -1,5 +1,5 @@
 import {isValidElement} from 'react';
-import type { ItemType } from '../declare';
+import type { ItemType } from './declare';
 import { isArray, isFunction, isObject } from '@suey/pkg-utils';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
 import type { ComputedSelectorObj } from './computed';

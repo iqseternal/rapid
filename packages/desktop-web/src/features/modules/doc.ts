@@ -2,15 +2,13 @@ import type { PayloadAction, ThunkDispatch, Action, ActionReducerMapBuilder, Asy
 import { createSlice, createAsyncThunk, isPlain } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
 
-export interface DocStore {
-  isWork: boolean;
-}
-
-const initState: DocStore = {
+const initState = {
   isWork: false
 }
 
-export const docSlice = createSlice<DocStore, SliceCaseReducers<DocStore>>({
+export type DocStore = typeof initState;
+
+export const docSlice = createSlice({
   name: 'User',
   initialState: initState,
   reducers: {

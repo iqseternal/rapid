@@ -40,7 +40,6 @@ export default function Header(props: HeaderProps) {
 
   return <Subfield
     className={combinationCName(styles.header, commonStyles.appRegion, props.className)}
-    onDoubleClick={() => windowRelaunch()}
   >
 
     <Subfield

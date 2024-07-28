@@ -1,3 +1,5 @@
+import type { JudgeAnyType, PromiseCatchReason, PromiseThenRes } from '../types';
+
 /**
  * @example
  * const p = new Promise(....);
@@ -37,17 +39,27 @@
  * 于是采用了 Go 的哨兵处理机制
  * @returns
  */
-export async function toPicket<Resp, ErrorExt extends object = {}>(
-  promise: Promise<Resp>,
-  errorExt?: ErrorExt
-): Promise<[undefined, Resp] | [Error & ErrorExt, undefined]> {
+export async function toPicket<
+  Pr extends Promise<unknown>,
+  ErrExt,
+  SuccessResponse extends PromiseThenRes<Pr> = PromiseThenRes<Pr>,
+  ErrorResponseSample extends PromiseCatchReason<Pr> = PromiseCatchReason<Pr>,
+  ErrorResponse = JudgeAnyType<ErrorResponseSample, Error, ErrorResponseSample>
+>(
+  promise: Pr,
+  errorExt?: ErrExt
+): Promise<[undefined, SuccessResponse] | [ErrorResponse & ErrExt, undefined]> {
+
   return promise
-    .then(data => [void 0, data] as [undefined, Resp])
+    // 如果成功, 第一个参数 err 返回 undefined
+    .then(data => [void 0, data] as [undefined, SuccessResponse])
+    // 如果失败, 第二个参数将不存在, 失败结果将作为第一个参数返回
+    // 如果失败结果也不存在, 那么会自动产生一个 Error 返回
     .catch(err => {
       if (!err) err = new Error('');
 
       if (errorExt) Object.assign(err, errorExt);
 
-      return [err, void 0] as [Error & ErrorExt, undefined];
+      return [err, void 0] as [ErrorResponse & ErrExt, undefined];
     });
 }

@@ -162,3 +162,46 @@ export type ObjAutoObtainComplete<T extends Record<string | number | symbol, any
  * 切除一个数组的头部，将剩余部分返回结果
  */
 export type CutHead<Tuple extends any[]> = ((...args: Tuple) => any) extends (first: any, ...rest: infer Result) => any ? Result : never;
+
+/**
+ * 获取一个 Promise then函数的类型
+ */
+export type PromiseThenFn<Pr extends Promise<unknown>> = Parameters<Pr['then']>[0];
+
+/**
+ * 获取一个 Promise then函数回调参数 res 的类型
+ */
+export type PromiseThenRes<Pr extends Promise<unknown>> = Parameters<PromiseThenFn<Pr>>[0];
+
+/**
+ * 获取一个 Promise catch函数回调参数 res 的类型
+ */
+export type PromiseCatchFn<Pr extends Promise<unknown>> = Parameters<Pr['catch']>[0];
+
+/**
+ * 获取一个 Promise catch函数回调参数 reason 的类型
+ */
+export type PromiseCatchReason<Pr extends Promise<unknown>> = Parameters<PromiseCatchFn<Pr>>[0];
+
+/**
+ * 判断这个类型是否是一个 never 类型, 如果是返回第一个泛型参数, 否则返回第二个
+ * @example
+ *
+ * type C = never;
+ *
+ * type TResult = JudgeNeverType<C, true, false>; // true
+ *
+ */
+export type JudgeNeverType<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
+
+/**
+ * 判断这个类型是否是一个 any 类型, 如果是返回第一个泛型参数, 否则返回第二个
+ *
+ * @example
+ * type c = any;
+ * type TResult = JudgeAnyType<C, true, false>; // true
+ *
+ * type d = true;
+ * type TResult2 = JudgeAnyType<d, true, false>; // false
+ */
+export type JudgeAnyType<T, SuccessReturnType, FailReturnType> = JudgeNeverType<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;

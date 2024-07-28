@@ -276,12 +276,12 @@ export default function Workbenches() {
         doc.isWork.toString()
       }
       {
-        theme.workbenches.layout
+        theme.workbenches.layout.shoNavigation
       }
       <Button
         onClick={() => {
           dispatch(setWorkStatus(!doc.isWork));
-          dispatch(setLayout(theme.workbenches.layout + '?'))
+          dispatch(setLayout(!theme.workbenches.layout.shoNavigation))
           // refresh();
         }}
       >

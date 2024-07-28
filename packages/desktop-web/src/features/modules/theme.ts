@@ -8,20 +8,23 @@ const initState = {
 
   workbenches: {
 
+    layout: {
 
-    layout: 'fixed'
+      shoNavigation: true
+
+    }
   }
 }
 
 export type Theme = typeof initState;
 
-export const themeSlice = createSlice<Theme, SliceCaseReducers<Theme>>({
+export const themeSlice = createSlice({
   name: 'User',
   initialState: initState,
   reducers: {
-    setLayout(state, { payload }) {
+    setLayout(state, { payload }: PayloadAction<boolean>) {
 
-      state.workbenches.layout = payload;
+      state.workbenches.layout.shoNavigation = payload;
 
     }
   }

@@ -80,6 +80,12 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
     <FullSizeWidth
       className={styles.bottomContainer}
     >
+
+      <SideBarItem
+        icon='ProfileOutlined'
+        tipText='个人信息'
+      />
+
       <SideBarItem
         icon='SettingOutlined'
         tipText='设置'

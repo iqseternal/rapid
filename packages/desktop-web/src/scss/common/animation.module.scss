@@ -26,7 +26,7 @@
 .workbenchesRouteSwitchEnterActive {
   transform: translateX(0);
   opacity: 1;
-  transition: all 0.3s linear;
+  transition: all 0.2s ease-out;
 }
 .workbenchesRouteSwitchEnterDone {
 
@@ -38,7 +38,7 @@
 }
 .workbenchesRouteSwitchExitActive {
   transform: translateX(30px);
-  transition: all 0.2s ease-out;
+  transition: all 0.1s ease-out;
   opacity: 0;
 }
 

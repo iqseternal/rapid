@@ -44,6 +44,12 @@ const PropMenu = (props: PropMenu) => {
     onClick={(info) => {
 
     }}
+    onDoubleClick={(e) => {
+      e.preventDefault();
+    }}
+    onDoubleClickCapture={(e) => {
+      e.preventDefault();
+    }}
     onBlurCapture={() => {
 
     }}

@@ -93,7 +93,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@reduxjs/toolkit": "^1.9.7",
-    "@suey/pkg-utils": "^0.0.13",
+    "@suey/pkg-utils": "^0.0.19",
     "@suey/pkg-web": "^0.0.3",
     "@suey/printer": "^1.1.5",
     "@types/pako": "^2.0.3",

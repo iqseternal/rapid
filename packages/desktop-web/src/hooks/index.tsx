@@ -1,5 +1,3 @@
-import type { FC, Ref, RefObject, DependencyList } from 'react';
-import { useEffect, useRef, useState } from 'react';
 import { CONFIG, IS_WEB } from '@rapid/config/constants';
 import { windowShow, windowReload, windowRelaunch } from '@/actions';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';

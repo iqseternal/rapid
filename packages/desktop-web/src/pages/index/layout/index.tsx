@@ -71,7 +71,7 @@ export const RapidLayout = () => {
           <CSSTransition
             key={location.pathname}
             nodeRef={nodeRef}
-            timeout={500}
+            timeout={300}
             classNames={switchAnimation}
             appear={true}
             unmountOnExit={false}

@@ -6,6 +6,8 @@
 import { PLATFORMS, ENV } from '../../../target.config';
 import { CONFIG } from './config';
 
+export { SystemInformation } from './systemInfo';
+
 export * from './config';
 
 export * from './store';

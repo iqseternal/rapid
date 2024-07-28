@@ -8,7 +8,7 @@ export {
   commonStyles
 }
 
-const makeTransitionAnimation = <ClassNames extends CSSTransitionClassNames>(classnames: ClassNames) => classnames;
+export const makeTransitionAnimation = <ClassNames extends CSSTransitionClassNames>(classnames: ClassNames) => classnames;
 
 const animationClassNames = {
   workbenchesRouteSwitch: makeTransitionAnimation({
