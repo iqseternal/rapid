@@ -1,4 +1,15 @@
-import type { JudgeAnyType, PromiseCatchReason, PromiseThenRes } from '../types';
+import type { JudgeAnyType, PromiseCatchReason, PromiseThenRes, RPromiseLike } from '../types';
+
+/**
+ * 创建一个 RPromiseLike
+ *
+ *
+ *
+ *
+ * @param fn
+ * @returns
+ */
+export const asynced = <Fn extends (...args: any[]) => RPromiseLike<any>>(fn: (...args: Parameters<Fn>) => any): (...args: Parameters<Fn>) => ReturnType<Fn> => fn;
 
 /**
  * @example
@@ -41,14 +52,12 @@ import type { JudgeAnyType, PromiseCatchReason, PromiseThenRes } from '../types'
  */
 export async function toPicket<
   Pr extends Promise<unknown>,
-  ErrExt,
   SuccessResponse extends PromiseThenRes<Pr> = PromiseThenRes<Pr>,
   ErrorResponseSample extends PromiseCatchReason<Pr> = PromiseCatchReason<Pr>,
   ErrorResponse = JudgeAnyType<ErrorResponseSample, Error, ErrorResponseSample>
 >(
-  promise: Pr,
-  errorExt?: ErrExt
-): Promise<[undefined, SuccessResponse] | [ErrorResponse & ErrExt, undefined]> {
+  promise: Pr
+): Promise<[undefined, SuccessResponse] | [ErrorResponse, undefined]> {
 
   return promise
     // 如果成功, 第一个参数 err 返回 undefined
@@ -58,8 +67,6 @@ export async function toPicket<
     .catch(err => {
       if (!err) err = new Error('');
 
-      if (errorExt) Object.assign(err, errorExt);
-
-      return [err, void 0] as [ErrorResponse & ErrExt, undefined];
+      return [err, void 0] as [ErrorResponse, undefined];
     });
 }

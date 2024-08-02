@@ -6,14 +6,14 @@ export namespace CSSTypes {
   export type PixelValue = `${number}px`;
 
   /** CSS Style 声明映射表 */
-  export type CSSStyleProperttDeclaration = Omit<CSSStyleDeclaration, symbol | number>;
+  export type CSSStylePropertyDeclaration = Omit<CSSStyleDeclaration, symbol | number>;
 
 
   /** CSS 属性的 key 值类型 */
   export type CSSVarName = `--${string}`;
 
   /** 带有 变量的 CSS Style 声明映射表 */
-  export type CSSStyleVarsDeclaration = Partial<CSSStyleProperttDeclaration> & Record<`--${string}`, any>;
+  export type CSSStyleVarsDeclaration = Partial<CSSStylePropertyDeclaration> & Record<`--${string}`, any>;
 }
 
 /** Css 值设置时得各种转换 */
@@ -71,8 +71,8 @@ export type CssValueSetterOptions = {
  *
  * @returns
  */
-export const getStyleProperty = <T extends any = string, Key extends keyof CSSTypes.CSSStyleProperttDeclaration = keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, propertyName: Key, options: CSSValueGetterOptions<T> = {}) => {
-  const str = node.style[(propertyName as string)];
+export const getStyleProperty = <T extends any = string, Key extends keyof CSSTypes.CSSStylePropertyDeclaration = keyof CSSTypes.CSSStylePropertyDeclaration>(node: HTMLElement, propertyName: Key, options: CSSValueGetterOptions<T> = {}) => {
+  const str = node.style[(propertyName as keyof CSSStyleDeclaration)] as string;
   if (options.convert) return options.convert(str);
   return str;
 }
@@ -87,7 +87,7 @@ export const getStyleProperty = <T extends any = string, Key extends keyof CSSTy
  *
  * @returns
  */
-export const setStyleProperty = <Key extends keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, propertyName: Key, value: CSSTypes.CSSStyleProperttDeclaration[Key], options: CssValueSetterOptions = {}) => {
+export const setStyleProperty = <Key extends keyof CSSTypes.CSSStylePropertyDeclaration>(node: HTMLElement, propertyName: Key, value: CSSTypes.CSSStylePropertyDeclaration[Key], options: CssValueSetterOptions = {}) => {
   let valueStr = value as string;
   if (Array.isArray(options.convert)) {
     options.convert.forEach(convertFn => {
@@ -96,7 +96,7 @@ export const setStyleProperty = <Key extends keyof CSSTypes.CSSStyleProperttDecl
   }
   else if (isFunction(options.convert)) valueStr = options.convert(valueStr);
 
-  return node.style[propertyName as string] = valueStr;
+  return node.style[propertyName as any] = valueStr as any;
 }
 
 /**
@@ -109,12 +109,12 @@ export const setStyleProperty = <Key extends keyof CSSTypes.CSSStyleProperttDecl
  *
  * @returns
  */
-export const setStyleProperties = <Key extends keyof CSSTypes.CSSStyleProperttDeclaration>(node: HTMLElement, properties: Partial<CSSTypes.CSSStyleProperttDeclaration>, options: CssValueSetterOptions = {}) => {
+export const setStyleProperties = <Key extends keyof CSSTypes.CSSStylePropertyDeclaration>(node: HTMLElement, properties: Partial<CSSTypes.CSSStylePropertyDeclaration>, options: CssValueSetterOptions = {}) => {
   return Object.keys(properties).forEach((propertyName) => {
     const value = properties[propertyName as Key];
     if (!value) return;
 
-    setStyleProperty(node, propertyName as keyof CSSTypes.CSSStyleProperttDeclaration, value, {
+    setStyleProperty(node, propertyName as keyof CSSTypes.CSSStylePropertyDeclaration, value, {
       convert: options.convert
     })
   });
@@ -132,7 +132,7 @@ export const setStyleProperties = <Key extends keyof CSSTypes.CSSStyleProperttDe
  * @returns
  */
 export const getCssVar = <T extends any = string, Key extends keyof CSSTypes.CSSStyleVarsDeclaration = keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVarName: Key, options: CSSValueGetterOptions<T> = {}) => {
-  return getStyleProperty(node, cssVarName as keyof CSSTypes.CSSStyleProperttDeclaration, options);
+  return getStyleProperty(node, cssVarName as keyof CSSTypes.CSSStylePropertyDeclaration, options);
 }
 
 /**
@@ -146,7 +146,7 @@ export const getCssVar = <T extends any = string, Key extends keyof CSSTypes.CSS
  * @returns
  */
 export const setCssVar = <Key extends keyof CSSTypes.CSSStyleVarsDeclaration>(node: HTMLElement, cssVarName: Key, value: CSSTypes.CSSStyleVarsDeclaration[Key], options: CssValueSetterOptions = {}) => {
-  return setStyleProperty(node, cssVarName as keyof CSSTypes.CSSStyleProperttDeclaration, value, options);
+  return setStyleProperty(node, cssVarName as keyof CSSTypes.CSSStylePropertyDeclaration, value, options);
 }
 
 /**

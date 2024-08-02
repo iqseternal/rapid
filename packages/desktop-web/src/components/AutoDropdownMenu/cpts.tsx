@@ -1,6 +1,6 @@
 import type { IconKey } from '@components/IconFont';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useEventListener, useReactive, useShallowReactive, useThrottleHook } from '@rapid/libs-web/hooks';
+import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/hooks';
 import type { DropDownProps, DividerProps, MenuProps } from 'antd';
 import {createContext, useContext, useEffect, useRef, useState, FC} from 'react';
 import type { ReactElement, Key, ReactNode } from 'react';

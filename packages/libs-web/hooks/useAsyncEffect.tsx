@@ -6,7 +6,7 @@ import { toPicket } from '@rapid/libs/common';
 export type AsyncEffectCallback = () => (
   void |
   EffectCallback |
-  Promise<void | EffectCallback>
+  Promise<void | boolean | undefined | number | string | EffectCallback>
 );
 
 /**
@@ -38,7 +38,7 @@ export function useAsyncEffect(asyncEffect: AsyncEffectCallback, deps?: Dependen
       // 未处理的错误, 那么 hook 也不处理
       if (err) throw err;
 
-      if (unMountFn) state.fns.push(unMountFn);
+      if (unMountFn && typeof unMountFn === 'function') state.fns.push(unMountFn);
     })();
 
     // 异步函数可能具有返回值, 为一个函数，和 useEffect 一样，希望再被卸载的时候调用一次

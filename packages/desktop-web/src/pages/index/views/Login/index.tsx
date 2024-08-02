@@ -2,7 +2,7 @@ import { useAppSelector } from '@/features';
 import { IS_PROD } from '@rapid/config/constants';
 import { FullSize, FlexRowCenter } from '@rapid/libs-web/styled';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useWindowScreenSize, useWindowInnerSize, useRefresh, useAutoState } from '@rapid/libs-web/hooks';
+import { useWindowScreenSize, useWindowInnerSize, useRefresh } from '@rapid/libs-web/hooks';
 import { NumberFilters } from '@rapid/libs/formatter';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import { Transition, CSSTransition } from 'react-transition-group';
 import { toPicket } from '@rapid/libs/common';
 import { loginReq } from '@/api';
 import { useMenuSelector } from '@/menus';
+import { userLogin } from '@/features/zustand';
 
 import lockUrl from '@/assets/images/login__lock.png?url';
 import Header from '@components/Header';
@@ -45,14 +46,16 @@ export default function Login() {
     step: Step.Login
   })
 
+
+
   const login = async () => {
-    const [loginErr, loginRes] = await toPicket(loginReq({
-      username: 'zms',
-      password: '123'
+    const [loginErr, loginRes] = await toPicket(userLogin({
+      username: 'admin',
+      password: '12345678'
     }));
     if (loginErr) {
       IMessage.error(loginErr.descriptor);
-      // return;
+      return;
     }
 
     await useFadeOut(() => {

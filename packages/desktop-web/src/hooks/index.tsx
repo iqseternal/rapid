@@ -23,14 +23,19 @@ export interface FadeOptions {
  * }
  *
  */
-export function useFadeIn(beforeCallback?: () => void | Promise<void>, options?: FadeOptions) {
-  const { waitTimer = CONFIG.FADE.FADE_IN.TIMER, onError = () => {} } = options ?? {};
+export function useFadeIn(beforeCallback?: () => void | Promise<any>, options?: FadeOptions) {
+  const {
+    waitTimer = CONFIG.FADE.FADE_IN.TIMER,
+    onError = () => {}
+  } = options ?? {};
 
   useAsyncEffect(async () => {
-
-    beforeCallback && await beforeCallback()?.catch(() => {
-
-    });
+    if (beforeCallback) {
+      await beforeCallback()?.catch((err) => {
+        onError(err);
+        windowShow({ show: true }).catch(onError);
+      });
+    }
     if (IS_WEB) return;
 
     setTimeout(async () => {
@@ -42,9 +47,9 @@ export function useFadeIn(beforeCallback?: () => void | Promise<void>, options?:
 /**
  * 页面转出的转场
  */
-export async function useFadeOut(callback?: () => void | Promise<void>, options?: FadeOptions) {
+export async function useFadeOut(callback?: () => void | Promise<any>, options?: FadeOptions) {
   const { waitTimer = CONFIG.FADE.FADE_OUT.TIMER, onError = () => {} } = options ?? {};
 
-  callback && await callback();
-  if (!IS_WEB) await windowShow({ show: false }).catch(windowRelaunch);
+  if (!IS_WEB) await windowShow({ show: false }).catch(onError);
+  callback && await callback()?.catch(onError);
 }

@@ -10,42 +10,24 @@ import { commonStyles, useAnimationClassSelector } from '@scss/common';
 
 import Header from '@components/Header';
 import styles from './index.module.scss';
+import { useAppSelector } from '@/features';
 
 const MainRootContainer = combinationStyled('div', FullSize);
 const MainContainer = combinationStyled('main', FullSize);
 
 export const RootLayout = () => {
-  const location = useLocation();
 
-  const nodeRef = useRef<HTMLDivElement>(null);
-
-  const currentOutlet = useOutlet();
-
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    setShow(true);
-    return () => setShow(false);
-  });
 
   return <FullSize className={styles.rootLayout}>
-    <CSSTransition
-      nodeRef={nodeRef}
-      in={show}
-      timeout={500}
-      appear={true}
-      unmountOnExit={false}
-    >
-      <FullSize ref={nodeRef}>{currentOutlet}</FullSize>
-    </CSSTransition>
+    <Outlet />
   </FullSize>
 }
 
 export const RapidLayout = () => {
-  useFadeIn(async () => {
-    await windowResizeAble({ able: true });
-    await windowResetCustomSize({ type: 'mainWindow' });
-  });
+  useFadeIn(async () => Promise.allSettled([
+    windowResizeAble({ able: true }),
+    windowResetCustomSize({ type: 'mainWindow' })
+  ]));
 
   const location = useLocation();
   const currentOutlet = useOutlet();
@@ -53,6 +35,18 @@ export const RapidLayout = () => {
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch, []);
+
+  const them = useAppSelector(state => {
+
+    console.log(state.theme.workbenches);
+    return state.theme.workbenches;
+  });
+
+
+  useEffect(() => {
+    console.log('render');
+
+  });
 
   return <FullSize
     className={styles.rapidLayout}

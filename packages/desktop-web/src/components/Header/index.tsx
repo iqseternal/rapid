@@ -3,7 +3,7 @@ import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch 
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
 import { makeVar, themeCssVarsSheet } from '@/themes';
-import {useMemo, ReactNode} from 'react';
+import {useMemo, ReactNode, useEffect} from 'react';
 import { useMenuSelector } from '@/menus';
 import { MaxContent } from '@rapid/libs-web/styled';
 
@@ -13,6 +13,7 @@ import AutoDropdownMenu from '@components/AutoDropdownMenu';
 import Logo from '@components/Logo';
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
+import { useAppSelector } from '@/features';
 
 export interface HeaderProps extends BaseProps {
   // 是否是一个面板

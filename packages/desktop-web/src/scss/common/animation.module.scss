@@ -6,6 +6,43 @@
 
 // 主窗口路由切换的动画
 // ================================================================================
+.rootRouteSwitchAppear {
+  opacity: 0;
+}
+.rootRouteSwitchAppearActive {
+  opacity: 1;
+  transition: all 0.3s ease-out;
+}
+.rootRouteSwitchAppearDone {
+
+}
+
+.rootRouteSwitchEnter {
+  opacity: 0;
+}
+.rootRouteSwitchEnterActive {
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+.rootRouteSwitchEnterDone {
+
+}
+
+.rootRouteSwitchExit {
+  opacity: 1;
+}
+.rootRouteSwitchExitActive {
+  transition: all 0.1s ease-out;
+  opacity: 0;
+}
+
+.rootRouteSwitchExitDone {
+
+}
+
+
+// 工作区路由切换的动画
+// ================================================================================
 .workbenchesRouteSwitchAppear {
   transform: translateX(30px);
   opacity: 0;

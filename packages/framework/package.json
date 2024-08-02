@@ -9,9 +9,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "reflect-metadata": "^0.2.1"
-  },
   "devDependencies": {
     "@rapid/config": "workspace:^",
     "@rapid/libs": "workspace:^"

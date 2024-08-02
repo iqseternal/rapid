@@ -70,13 +70,13 @@ export function useEventListener<T extends HTMLElement | Window, Key extends key
   }, [targetRef, callback, deps]);
 
   useEffect(() => {
-    if (!isDef(targetRef)) return;
+    if (!isDef(targetRef)) return () => {};
 
     // 获取 targetDom, 目标 Dom
     const targetDom = isRef ? targetRef?.current as T : targetRef as T;
 
     // 如果 targetDom 不是一个 Dom, 那么不满足添加事件的条件
-    if (!(targetDom instanceof HTMLElement) && !(targetDom instanceof Window)) return;
+    if (!(targetDom instanceof HTMLElement) && !(targetDom instanceof Window)) return () => {};
 
     if (typeof type === 'object') {
       (Object.keys(type) as Key[]).forEach((key) => {
@@ -91,6 +91,7 @@ export function useEventListener<T extends HTMLElement | Window, Key extends key
     }
 
     targetDom.addEventListener(type, callback as EventListenerOrEventListenerObject);
+
     return () => {
       targetDom.removeEventListener(type, callback as EventListenerOrEventListenerObject);
     }

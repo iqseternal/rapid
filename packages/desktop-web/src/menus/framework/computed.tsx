@@ -1,5 +1,6 @@
 import store, { AppStoreType } from '@/features';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
+import type { AppendDepFn, RemoveDepFn } from '@rapid/libs-web/hooks';
 
 // 创建一个状态管理的副本, 并且跟随 redux 改变
 export const targetStore = {
@@ -31,9 +32,9 @@ export type ComputedSelectorObj<Value extends any = any> = {
   // 副作用数组
   effectCallbacks: (() => void)[];
   // 添加一个副作用到数组中
-  appendCallback: (fn: () => void) => void;
+  appendCallback: AppendDepFn<() => void>;
   // 从副作用数组中删除一个副作用
-  removeCallback: (fn: () => void) => void;
+  removeCallback: RemoveDepFn<() => void>;
 }
 
 /**

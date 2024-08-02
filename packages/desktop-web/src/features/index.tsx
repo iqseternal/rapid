@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux';
 
-import reduxThunk from 'redux-thunk';
+// import reduxThunk from 'redux-thunk';
 
 import themeSlice from './modules/theme';
 import userSlice from './modules/user';
@@ -20,8 +20,9 @@ const appStore = configureStore({
     doc: docSlice.reducer
   },
   middleware: [
-    reduxThunk
-  ]
+    // reduxThunk
+  ],
+  devTools: true
 });
 
 export type AppStoreType = ReturnType<typeof appStore.getState>;

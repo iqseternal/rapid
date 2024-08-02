@@ -8,9 +8,20 @@ export {
   commonStyles
 }
 
-export const makeTransitionAnimation = <ClassNames extends CSSTransitionClassNames>(classnames: ClassNames) => classnames;
+export const makeTransitionAnimation = <ClassNames extends Required<CSSTransitionClassNames>>(classnames: ClassNames) => classnames;
 
 const animationClassNames = {
+  rootRouteSwitch: makeTransitionAnimation({
+    appear: animationStyles.rootRouteSwitchAppear,
+    appearActive: animationStyles.rootRouteSwitchAppearActive,
+    appearDone: animationStyles.rootRouteSwitchAppearDone,
+    enter: animationStyles.rootRouteSwitchEnter,
+    enterActive: animationStyles.rootRouteSwitchEnterActive,
+    enterDone: animationStyles.rootRouteSwitchEnterDone,
+    exit: animationStyles.rootRouteSwitchExit,
+    exitActive: animationStyles.rootRouteSwitchExitActive,
+    exitDone: animationStyles.rootRouteSwitchExitDone
+  }),
   workbenchesRouteSwitch: makeTransitionAnimation({
     appear: animationStyles.workbenchesRouteSwitchAppear,
     appearActive: animationStyles.workbenchesRouteSwitchAppearActive,
@@ -21,7 +32,7 @@ const animationClassNames = {
     exit: animationStyles.workbenchesRouteSwitchExit,
     exitActive: animationStyles.workbenchesRouteSwitchExitActive,
     exitDone: animationStyles.workbenchesRouteSwitchExitDone
-  })
+  }),
 } as const;
 
 export type AnimationClassNamesType = typeof animationClassNames;

@@ -1,5 +1,5 @@
 import { combinationCName } from '@rapid/libs-web/common';
-import { useEventListener, useShallowReactive, useThrottleHook } from '@rapid/libs-web/hooks';
+import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/hooks';
 import { getFirstScrollContainer } from '@rapid/libs-web/common';
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps } from 'antd';
@@ -76,7 +76,7 @@ export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
     attrs = {}
   } = props;
 
-  const [state] = useShallowReactive({
+  const [state] = useReactive({
     open: false
   });
 

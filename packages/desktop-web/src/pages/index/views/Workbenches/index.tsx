@@ -3,22 +3,23 @@ import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 import { loginRoute } from '@pages/index/router';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useShallowReactive, useRefresh } from '@rapid/libs-web/hooks';
+import { useRefresh, useReactive, useAsyncEffect, useMount, useUnmount } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
-import { Button, Input, Space, Card, Dropdown, theme } from 'antd';
+import { Button, Input, Space, Card, Dropdown, theme, message } from 'antd';
 import { FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createSelector } from '@reduxjs/toolkit';
 import { useMenuSelectorHook, useMenuSelector } from '@/menus';
+import { toPicket } from '@rapid/libs/common';
+import { rApiPost } from '@/api';
+import { useStoreSelector, dispatchUpdate } from '@/features/test';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
-import store from '@/features';
-
-import styles from './index.module.scss';
 import Subfield from '@rapid/libs-web/components/Subfield';
-
+import store from '@/features';
+import styles from './index.module.scss';
 
 interface StyleBlockProps extends BaseProps {
   title?: string;
@@ -75,11 +76,7 @@ export default function Workbenches() {
       state => state.headerFileMenu,
       state => state.headerEditMenu
     ] as const,
-    (
-      headerFileMenu,
-      headerEditMenu
-    ) => {
-
+    (headerFileMenu, headerEditMenu) => {
       return {
         headerFileMenu,
         headerEditMenu
@@ -87,29 +84,42 @@ export default function Workbenches() {
     }
   );
 
-
   const select = createSelector([(state: AppStoreType) => state.doc], (doc) => {
 
   })
 
-  const doc = useAppSelector(state => state.doc);
-  const theme = useAppSelector(state => state.theme);
+  const doc = useAppSelector(state => {
+    // console.log(state.doc);
+    return state.doc;
+  });
 
-  const [state] = useShallowReactive({
+  const [state] = useReactive({
     name: 1
   })
 
-  const logout = () => useFadeOut(() => {
-    navigate(loginRoute.meta.fullPath);
-  })
+  const logout = async () => {
+    const [logoutErr, logoutRes] = await toPicket(rApiPost('/user/logout'));
+    if (logoutErr) {
+      message.error(`连接失败`);
+      return;
+    }
+    useFadeOut(() => navigate(loginRoute.meta.fullPath));
+  }
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(setWorkStatus(!doc.isWork));
+      // dispatch(setWorkStatus(!doc.isWork));
       console.log('dispatched');
     }, 3000);
-
   }, []);
+  useEffect(() => {
+    console.log('setWorkStatus');
+
+  });
+
+  const name = useStoreSelector(store => {
+    return store.user.userinfo.name;
+  });
 
   return <FullSize
     className={styles.workbenches}
@@ -125,6 +135,53 @@ export default function Workbenches() {
     >
       open
     </div>
+
+    <StyleBlock>
+      <span>{name}</span>
+
+      <Button
+        onClick={() => {
+          dispatchUpdate(store => {
+            store.user.userinfo.name += 'b';
+          })
+          dispatchUpdate(store => {
+            store.user.userinfo.name += 'b';
+          })
+          dispatchUpdate(store => {
+            store.user.userinfo.name += 'b';
+          })
+        }}
+      >
+        append
+      </Button>
+    </StyleBlock>
+    <StyleBlock title='reducer'>
+      {
+        doc.isWork.toString()
+      }
+
+      <Button
+        onClick={() => {
+          dispatch(setWorkStatus(!doc.isWork));
+          // refresh();
+        }}
+      >
+        改变他
+      </Button>
+    </StyleBlock>
+
+
+
+
+    <StyleBlock>
+      <span>{state.name}</span>
+
+      <Button
+        onClick={() => (state.name ++)}
+      >
+        加
+      </Button>
+    </StyleBlock>
 
     <StyleBlock title='文件菜单'>
       <AutoDropdownMenu
@@ -275,13 +332,10 @@ export default function Workbenches() {
       {
         doc.isWork.toString()
       }
-      {
-        theme.workbenches.layout.shoNavigation
-      }
+
       <Button
         onClick={() => {
           dispatch(setWorkStatus(!doc.isWork));
-          dispatch(setLayout(!theme.workbenches.layout.shoNavigation))
           // refresh();
         }}
       >

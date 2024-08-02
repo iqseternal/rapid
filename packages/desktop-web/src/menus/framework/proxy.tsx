@@ -1,4 +1,4 @@
-import {isValidElement} from 'react';
+import { isValidElement } from 'react';
 import type { ItemType } from './declare';
 import { isArray, isFunction, isObject } from '@suey/pkg-utils';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
@@ -86,8 +86,10 @@ export const makeMenu = <Instance extends MenuInstance,>(menuInstance: Instance)
       Reflect.set(target, key, makeProxy(subTarget as Target));
     }
 
-    return new Proxy(target, {
+    const distTarget = new Proxy(target, {
       get(target, p, receiver) {
+        if (p === '__TAG__') return proxySymbol;
+
         return Reflect.get(target, p, receiver);
       },
       set(target, p, newValue, receiver) {
@@ -104,7 +106,9 @@ export const makeMenu = <Instance extends MenuInstance,>(menuInstance: Instance)
 
         return Reflect.deleteProperty(target, p);
       },
-    })
+    });
+
+    return distTarget;
   }
 
   return {

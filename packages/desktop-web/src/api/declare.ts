@@ -1,7 +1,11 @@
-import { CONFIG } from '@rapid/config/constants';
-import { REQ_METHODS, createApiRequest, isUndefined } from '@suey/pkg-utils';
-
+import { APP_STORE_KEYS, CONFIG, StoreKeyMap } from '@rapid/config/constants';
+import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@suey/pkg-utils';
+import { StringFilters } from '@rapid/libs/formatter';
+import { rsaEncryptAlgorithm } from '@suey/pkg-utils';
+import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
 import type { Axios, AxiosError } from 'axios';
+import { AppStore } from '@/actions';
+
 export type { RequestConfig, Interceptors } from '@suey/pkg-utils';
 export { REQ_METHODS, createApiRequest, createRequest } from '@suey/pkg-utils';
 
@@ -37,18 +41,25 @@ export interface RApiFailResponse extends RApiBasicResponse {
     config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];
     request: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['request'];
     response: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['response'];
-
   }
 }
+
+export type RApiPromise<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
 export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(CONFIG.API.URL, {
   timeout: CONFIG.API.TIMEOUT
 }, {
-  onFulfilled(config) {
+  async onFulfilled(config) {
     if (!config.hConfig) config.hConfig = { needAuth: true };
     if (isUndefined(config.hConfig.needAuth)) config.hConfig.needAuth = true;
+
+    if (!config.headers) config.headers = {};
+
     if (config.hConfig.needAuth) {
       // TODO:
+      const token = localStorage.getItem(APP_STORE_KEYS.USER_TOKEN);
+      if (token)  config.headers.authorization = `Bearer ${token}`;
+      // config.headers['_t'] = `${+new Date()}`;
     }
   },
 }, {
@@ -56,28 +67,29 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
     // nestjs server response.
     if (response.data && response.data.flag && response.data.status) {
       if (response.data.flag === 'ApiResponseOk') return Promise.resolve(response.data);
-      if (response.data.flag === 'ApiResponseFal') return Promise.reject(response.data);
+      if (response.data.flag === 'ApiResponseFal') {
+        console.error(response.data);
+
+        return Promise.reject(response.data);
+      }
 
       return response;
     }
     return response;
   },
   onRejected(err) {
-
     return Promise.reject<RApiFailResponse>({
-      status: +(err.code ?? '0'),
+      status: +(err.response?.status ?? 0),
       flag: 'ApiResponseFal',
-      data: err.toJSON(),
-      descriptor: err.message,
+      data: err.response?.data,
+      descriptor: StringFilters.toValidStr(err.message, '未知错误'),
       _t: +new Date(),
       INNER: {
         stack: err.stack,
         config: err.config,
-
         request: err.request,
         response: err.response,
         name: err.name
-
       }
     } as RApiFailResponse);
   }

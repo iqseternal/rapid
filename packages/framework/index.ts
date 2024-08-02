@@ -8,7 +8,6 @@
  * 装饰器驾驶自动化
  * =================================================================
  */
-
 import 'reflect-metadata';
 import './process';
 import { app } from 'electron';
