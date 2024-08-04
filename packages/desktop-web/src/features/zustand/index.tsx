@@ -1,54 +1,47 @@
-import { useStore, create, createStore, StateCreator } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
-import { produce } from 'immer';
-import { toPicket, asynced } from '@rapid/libs/common';
-import { loginReq, LoginReqPayload, getUserinfoReq, UserinfoResponse, LoginReqPromise, GetUserinfoReqPromise } from '@/api';
-import { AppStore } from '@/actions';
-import { APP_STORE_KEYS } from '@rapid/config/constants';
-import { message } from 'antd';
-
-import IMessage from '@rapid/libs-web/components/IMessage';
+import {AppStore} from '@/actions';
+import {loginReq, getUserinfoReq, UserinfoResponse} from '@/api';
+import {APP_STORE_KEYS} from '@rapid/config/constants';
+import {toPicket, asynced} from '@rapid/libs/common';
+import {create} from 'zustand';
+import {immer} from 'zustand/middleware/immer';
 
 export interface UserStore {
   userinfo?: UserinfoResponse;
   token: string;
-
-  getToken: () => Promise<string>;
-  setToken: (token: string) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(immer((set, get, store) => ({
   // store
-  userinfo: { },
-  token: '',
-
-  getToken: async () => {
-
-    return get().token;
-  },
-  setToken: async (token: string) => {
-    set(state => {
-      state.token = token;
-    });
-
-    return AppStore.set(APP_STORE_KEYS.USER_TOKEN, token);
-  }
+  userinfo: {},
+  token: ''
 })));
 
+export const getToken = async () => {
+  // return useUserStore.getState().token;
 
-export const userLogin = asynced<(payload: LoginReqPayload) => LoginReqPromise>(async (loginPayload) => {
+  return await AppStore.get(APP_STORE_KEYS.USER_TOKEN);
+}
 
+export const setToken = async (token: string) => {
+  const [err, res] = await toPicket(AppStore.set(APP_STORE_KEYS.USER_TOKEN, token));
+  if (err) return Promise.reject(err);
+
+  useUserStore.setState(state => {
+    state.token = token;
+  })
+  return res;
+}
+
+export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
   const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
-
   if (loginErr) return Promise.reject(loginErr);
 
-  localStorage.setItem(APP_STORE_KEYS.USER_TOKEN, loginRes.data.userinfo.token);
-
+  await setToken(loginRes.data.userinfo.token);
   return loginRes;
 });
 
 
-export const userUpdateInfo = asynced<() => GetUserinfoReqPromise>(async () => {
+export const userUpdateInfo = asynced<typeof getUserinfoReq>(async () => {
   const [infoErr, infoRes] = await toPicket(getUserinfoReq());
 
   if (infoErr) return Promise.reject(infoErr);

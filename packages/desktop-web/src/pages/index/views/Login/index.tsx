@@ -1,22 +1,17 @@
 import { useAppSelector } from '@/features';
 import { IS_PROD } from '@rapid/config/constants';
-import { FullSize, FlexRowCenter } from '@rapid/libs-web/styled';
+import { FullSize } from '@rapid/libs-web/styled';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useWindowScreenSize, useWindowInnerSize, useRefresh } from '@rapid/libs-web/hooks';
-import { NumberFilters } from '@rapid/libs/formatter';
-import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
 import { useFadeIn, useFadeOut } from '@/hooks';
-import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
-import { windowDevtool, windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
-import { useAsyncEffect, useReactive } from '@rapid/libs-web/hooks';
+import { useNavigate } from 'react-router-dom';
+import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
+import { useReactive } from '@rapid/libs-web/hooks';
 import { workbenchesRoute } from '@pages/index/router';
 import { Button } from 'antd';
-import { Transition, CSSTransition } from 'react-transition-group';
 import { toPicket } from '@rapid/libs/common';
-import { loginReq } from '@/api';
 import { useMenuSelector } from '@/menus';
 import { userLogin } from '@/features/zustand';
+import { registerReq } from '@/api';
 
 import lockUrl from '@/assets/images/login__lock.png?url';
 import Header from '@components/Header';
@@ -46,10 +41,8 @@ export default function Login() {
     step: Step.Login
   })
 
-
-
   const login = async () => {
-    const [loginErr, loginRes] = await toPicket(userLogin({
+    const [loginErr] = await toPicket(userLogin({
       username: 'admin',
       password: '12345678'
     }));
@@ -61,6 +54,14 @@ export default function Login() {
     await useFadeOut(() => {
       navigate(workbenchesRoute.meta.fullPath, { replace: true });
     });
+  }
+
+  const register = async () => {
+    const [registerErr] = await toPicket(registerReq());
+    if (registerErr) {
+      IMessage.error(registerErr.descriptor);
+      return;
+    }
   }
 
   return <FullSize className={styles.login}>
@@ -84,6 +85,11 @@ export default function Login() {
           onClick={login}
         >
           登录
+        </Button>
+        <Button
+          onClick={register}
+        >
+          注册
         </Button>
       </FullSize>
     </Subfield>

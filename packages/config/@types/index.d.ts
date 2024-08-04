@@ -1,6 +1,4 @@
 import type { PLATFORMS, ENV } from '../constants';
-import type { PropType as VuePropType, DefineComponent } from 'vue';
-import { namespace } from './../../libs-web/common/dom';
 
 declare global {
   /** 构建的平台, 具体请查看根目录 */

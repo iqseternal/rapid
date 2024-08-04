@@ -5,6 +5,7 @@ import { rsaEncryptAlgorithm } from '@suey/pkg-utils';
 import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
 import type { Axios, AxiosError } from 'axios';
 import { AppStore } from '@/actions';
+import { getToken } from '../features/zustand';
 
 export type { RequestConfig, Interceptors } from '@suey/pkg-utils';
 export { REQ_METHODS, createApiRequest, createRequest } from '@suey/pkg-utils';
@@ -52,13 +53,10 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
   async onFulfilled(config) {
     if (!config.hConfig) config.hConfig = { needAuth: true };
     if (isUndefined(config.hConfig.needAuth)) config.hConfig.needAuth = true;
-
-    if (!config.headers) config.headers = {};
-
-    if (config.hConfig.needAuth) {
+    if (config.hConfig.needAuth && config.headers) {
       // TODO:
-      const token = localStorage.getItem(APP_STORE_KEYS.USER_TOKEN);
-      if (token)  config.headers.authorization = `Bearer ${token}`;
+      const token = await getToken();
+      if (token) config.headers.authorization = `Bearer ${token}`;
       // config.headers['_t'] = `${+new Date()}`;
     }
   },

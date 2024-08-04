@@ -1,15 +1,15 @@
-import { useAppDispatch, setWorkStatus, useAppSelector, setLayout, AppStoreType } from '@/features';
+import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '@/features';
 import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 import { loginRoute } from '@pages/index/router';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useRefresh, useReactive, useAsyncEffect, useMount, useUnmount } from '@rapid/libs-web/hooks';
+import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
-import { Button, Input, Space, Card, Dropdown, theme, message } from 'antd';
-import { FC, useEffect, useMemo } from 'react';
+import { Button, Input, Space, Card, Dropdown, message } from 'antd';
+import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createSelector } from '@reduxjs/toolkit';
-import { useMenuSelectorHook, useMenuSelector } from '@/menus';
+import { useMenuSelector } from '@/menus';
 import { toPicket } from '@rapid/libs/common';
 import { rApiPost } from '@/api';
 import { useStoreSelector, dispatchUpdate } from '@/features/test';
@@ -97,29 +97,18 @@ export default function Workbenches() {
     name: 1
   })
 
+  const name = useStoreSelector(store => {
+    return store.user.userinfo.name;
+  });
+
   const logout = async () => {
     const [logoutErr, logoutRes] = await toPicket(rApiPost('/user/logout'));
     if (logoutErr) {
       message.error(`连接失败`);
       return;
     }
-    useFadeOut(() => navigate(loginRoute.meta.fullPath));
+    await useFadeOut(() => navigate(loginRoute.meta.fullPath));
   }
-
-  useEffect(() => {
-    setTimeout(() => {
-      // dispatch(setWorkStatus(!doc.isWork));
-      console.log('dispatched');
-    }, 3000);
-  }, []);
-  useEffect(() => {
-    console.log('setWorkStatus');
-
-  });
-
-  const name = useStoreSelector(store => {
-    return store.user.userinfo.name;
-  });
 
   return <FullSize
     className={styles.workbenches}

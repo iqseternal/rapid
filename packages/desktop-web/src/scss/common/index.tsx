@@ -3,10 +3,7 @@ import { DependencyList, useMemo } from 'react';
 import animationStyles from './animation.module.scss';
 import commonStyles from './index.module.scss';
 
-export {
-  animationStyles,
-  commonStyles
-}
+export { animationStyles, commonStyles };
 
 export const makeTransitionAnimation = <ClassNames extends Required<CSSTransitionClassNames>>(classnames: ClassNames) => classnames;
 

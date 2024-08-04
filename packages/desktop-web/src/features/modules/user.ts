@@ -16,7 +16,7 @@ export interface UserStore {
 
   age?: number;
   qq?: string | number;
-  emial?: string;
+  email?: string;
   phone?: string;
   address?: string;
 }

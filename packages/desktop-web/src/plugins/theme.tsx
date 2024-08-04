@@ -25,5 +25,5 @@ export const themePlugins: Plugin<PluginUnit<ThemeCssVarsDeclaration>> = {
 
     installThemeCssVars(declaration);
   }
-}
 
+}

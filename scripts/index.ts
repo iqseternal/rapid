@@ -17,25 +17,22 @@ async function example() {
     a: number;
   }, number>((resolve, reject) => {
 
-
-
   });
 
 
-  p.then(res => {
+  p
+  .then(res => {
 
     console.log(res.a);
 
-    return Promise.reject({});
+    return Promise.reject(2);
   }, err => {
 
-    return '1';
+    return 2;
   })
-
-
   .catch(err => {
 
-    err.toFixed;
+    err.toFixed(2);
 
   })
 

@@ -1,4 +1,3 @@
-
 import { toPicket } from '@rapid/libs/common';
 import { RApiPromise, rApiGet, rApiPost } from './declare';
 import { APP_STORE_KEYS, RSA_PUBLIC_KEY } from '@rapid/config/constants';
@@ -22,18 +21,20 @@ export interface LoginReqPayload {
 export type LoginReqPromise = RApiPromise<LoginResponse, {}>;
 export const loginReq = (payload: LoginReqPayload) => {
   return rApiPost<LoginResponse, {}>('/user/login', {
+    hConfig: {
+      needAuth: false
+    },
     data: {
       username: payload.username,
-      // password: rsaEncryptAlgorithm(payload.password, RSA_PUBLIC_KEY)
+      password: rsaEncryptAlgorithm(payload.password, RSA_PUBLIC_KEY)
     }
   });
 }
 
-
 export type UserinfoResponse = Partial<{
   id: number;
   username: string;
-  nikename: string;
+  nickname: string;
   roles: string[];
   isVip: number;
   vipTime: number;
@@ -47,7 +48,9 @@ export type UserinfoResponse = Partial<{
 }>;
 export type GetUserinfoReqPromise = RApiPromise<UserinfoResponse>;
 export const getUserinfoReq = () => {
-  return rApiPost<UserinfoResponse>('/user/getUserinfo');
+  return rApiPost<UserinfoResponse>('/user/getUserinfo', {
+
+  });
 }
 
 export type RegisterSuccessResponse = {

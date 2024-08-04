@@ -1,4 +1,4 @@
-import { isArray, isFunction, isString } from '@suey/pkg-utils';
+import {isFunction, isString} from '@suey/pkg-utils';
 
 /** 有关样式的类型声明 */
 export namespace CSSTypes {
@@ -40,8 +40,7 @@ export class CssValueConverts {
       value = parseInt(value);
       if (isNaN(value)) value = 0;
     }
-    const pixcel = value + 'px' as CSSTypes.PixelValue;
-    return pixcel;
+    return value + 'px' as CSSTypes.PixelValue;
   }
 }
 

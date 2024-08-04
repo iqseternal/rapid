@@ -39,7 +39,7 @@ export type RgbColorStr = `rgb(${number}, ${number}, ${number})`;
  * @example
  * const rgbColor = randomRgbColor(); // 随机 rgb 颜色
  */
-export const randomRgbColor = (): RgbColorStr => `rgb(${randomRegionForInt(0, 0xFF)}, ${randomRegionForInt(0, 0xFF)}, ${randomRegionForInt(0, 0xFF)})`;
+export const randomRgbColor = (): RgbColorStr => `rgb(${randomRegionForInt(0, 0xFFFFFF)}, ${randomRegionForInt(0, 0xFFFFFF)}, ${randomRegionForInt(0, 0xFFFFFF)})`;
 
 
 /** RGBA 颜色的类型 */
@@ -51,7 +51,7 @@ export type RgbaColorStr = `rgba(${number}, ${number}, ${number}, ${number})`;
  * const rgbaColor = randomRgbaColor(); // 随机 rgba 颜色
  */
 export const randomRgbaColor = (): RgbaColorStr =>
-  `rgba(${randomRegionForInt(0, 0xFF)}, ${randomRegionForInt(0, 0xFF)}, ${randomRegionForInt(0, 0xFF)}, ${randomRegionForInt(0, 0xFF)})`;
+  `rgba(${randomRegionForInt(0, 0xFFFFFF)}, ${randomRegionForInt(0, 0xFFFFFF)}, ${randomRegionForInt(0, 0xFFFFFF)}, ${randomRegionForInt(0, 0xFFFFFF)})`;
 
 /** 颜色枚举 */
 export enum ColorType {

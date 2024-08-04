@@ -59,8 +59,8 @@ setupApp(async () => {
   //   label: 'sss'
   // })
 
-  setupMainWindow();
-  setupTrayMenu();
+  await setupMainWindow();
+  await setupTrayMenu();
 
 }, {
   onFailed: async (err) => {

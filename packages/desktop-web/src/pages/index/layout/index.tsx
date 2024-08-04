@@ -36,17 +36,7 @@ export const RapidLayout = () => {
 
   const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch, []);
 
-  const them = useAppSelector(state => {
-
-    console.log(state.theme.workbenches);
-    return state.theme.workbenches;
-  });
-
-
-  useEffect(() => {
-    console.log('render');
-
-  });
+  const them = useAppSelector(state => state.theme.workbenches);
 
   return <FullSize
     className={styles.rapidLayout}
