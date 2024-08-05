@@ -15,8 +15,8 @@ importers:
         specifier: ^1.9.7
         version: 1.9.7(react-redux@8.1.3)(react@18.2.0)
       '@suey/pkg-utils':
-        specifier: ^0.1.1
-        version: 0.1.1(@angular/common@18.1.1)(@angular/core@18.1.1)
+        specifier: ^0.1.2
+        version: 0.1.2(@angular/common@18.1.1)(@angular/core@18.1.1)
       '@suey/pkg-web':
         specifier: ^0.0.3
         version: 0.0.3(typescript@5.3.3)
@@ -2681,8 +2681,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /@suey/pkg-utils@0.1.1(@angular/common@18.1.1)(@angular/core@18.1.1):
-    resolution: {integrity: sha512-+5o8YwvY6G9LjzOtj9djLfNlDkidNWUSLRhvrFgo1PIUQXXOJv433FTaNVSgKEb9wBAwlH592OJ7WITo1XJURQ==}
+  /@suey/pkg-utils@0.1.2(@angular/common@18.1.1)(@angular/core@18.1.1):
+    resolution: {integrity: sha512-/4yNXfI1A8d4BYZ1NgcHoKmV+GdwVqj7pBr1ZIXjQP018Wp6aWEf4i712WXQsPE/28n/DopeVkJPXmpb6HZcHw==}
     dependencies:
       '@types/js-cookie': 3.0.6
       axios: 1.6.7
@@ -6287,6 +6287,7 @@ packages:
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
+    requiresBuild: true
     dev: true
 
   /ignore@5.3.1:

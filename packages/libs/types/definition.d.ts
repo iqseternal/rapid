@@ -7,7 +7,7 @@ export interface RPromiseLike<Success, Failure extends any = any> extends Promis
    * @param onrejected The callback to execute when the Promise is rejected.
    * @returns A Promise for the completion of which ever callback is executed.
    */
-  then<TResult1, TResult2 = Failure>(onfulfilled?: ((value: Success) => any) | undefined | null, onrejected?: ((reason: any) => TResult2 | RPromiseLike<TResult1, TResult2>) | undefined | null): RPromiseLike<TResult1, TResult2>;
+  then<TResult1, TResult2 = Failure>(onfulfilled?: ((value: Success) => any) | undefined | null, onrejected?: ((reason: Failure) => TResult2 | RPromiseLike<TResult1, TResult2>) | undefined | null): RPromiseLike<TResult1, TResult2>;
   /**
    * Attaches a callback for only the rejection of the Promise.
    * @param onrejected The callback to execute when the Promise is rejected.

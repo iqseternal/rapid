@@ -104,3 +104,4 @@ export const rApiPut = rCreateApi(REQ_METHODS.PUT);
 
 export const rApiDelete = rCreateApi(REQ_METHODS.DELETE);
 
+export const rApiPatch = rCreateApi('PATCH');

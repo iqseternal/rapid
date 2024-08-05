@@ -81,7 +81,8 @@ export function useWindowInnerSize(options?: UseWindowInnerSizeOptions) {
     appendInnerSizeCallback(refresh, ...effects);
 
     return () => removeInnerSizeCallback(refresh, ...effects);
-  });
+  }, [effects.length]);
+
   return [windowInnerSize];
 }
 
@@ -122,7 +123,7 @@ export function useWindowScreenSize(options?: UseWindowScreenSizeOptions) {
   useEffect(() => {
     appendScreenSizeCallback(refresh, ...effects);
 
-    return removeScreenSizeCallback(refresh, ...effects);
+    return () => removeScreenSizeCallback(refresh, ...effects);
   }, [effects.length]);
 
   return [windowScreenSize];

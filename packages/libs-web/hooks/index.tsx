@@ -12,12 +12,12 @@ export { useEventListener } from './useEventListener';
 // Exports
 export {
   useMount,
-  useUnmount
+  useUnmount,
 } from 'ahooks';
 
 
 // 以下 Hook 需要优化
-export { useAsyncEffect } from './useAsyncEffect';
+export { useAsyncEffect, useAsyncLayoutEffect } from './useAsyncEffect';
 export type { AsyncEffectCallback } from './useAsyncEffect';
 
 // 以下 Hook 需要整改

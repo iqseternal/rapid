@@ -1,4 +1,4 @@
-import {useEffect, useLayoutEffect, useRef, useState, useCallback, useContext, useMemo, forwardRef, FC} from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useCallback, useContext, useMemo, forwardRef, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useOutlet, useLocation, useOutletContext } from 'react-router-dom';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
@@ -7,23 +7,22 @@ import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, Wi
 import { useFadeIn } from '@/hooks';
 import { NavigationBar } from './cpts';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
+import { Guards } from '../router/guards';
+import { useAppSelector } from '@/features';
 
 import Header from '@components/Header';
 import styles from './index.module.scss';
-import { useAppSelector } from '@/features';
 
 const MainRootContainer = combinationStyled('div', FullSize);
 const MainContainer = combinationStyled('main', FullSize);
 
 export const RootLayout = () => {
-
-
   return <FullSize className={styles.rootLayout}>
     <Outlet />
   </FullSize>
 }
 
-export const RapidLayout = () => {
+export const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
   useFadeIn(async () => Promise.allSettled([
     windowResizeAble({ able: true }),
     windowResetCustomSize({ type: 'mainWindow' })
@@ -34,12 +33,12 @@ export const RapidLayout = () => {
 
   const nodeRef = useRef<HTMLDivElement>(null);
 
-  const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch, []);
+  const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch);
 
   const them = useAppSelector(state => state.theme.workbenches);
 
   return <FullSize
-    className={styles.rapidLayout}
+    className={styles.workbenchesLayout}
   >
     <Header />
 
@@ -68,4 +67,4 @@ export const RapidLayout = () => {
       </MainContainer>
     </MainRootContainer>
   </FullSize>
-}
+});

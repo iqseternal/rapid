@@ -1,15 +1,12 @@
 import { lazy } from 'react';
 import { makeRoute } from '../utils';
 import type { RequiredRouteConfig } from '../utils';
-import { RapidLayout } from '@pages/index/layout';
-
-import Home from '@pages/index/views/Home';
-import Workbenches from '@pages/index/views/Workbenches';
+import { WorkbenchesLayout } from '@pages/index/layout';
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
   path: `/workbenches`, redirect: 'home',
-  component: RapidLayout,
+  component: WorkbenchesLayout,
   children: [
     {
       name: 'WorkbenchesHome',
@@ -23,8 +20,17 @@ export const workbenchesRoute = makeRoute({
       meta: { title: '工作区', icon: 'FileWordOutlined' },
       component: lazy(() => import('@pages/index/views/Workbenches'))
     },
+    {
+      name: 'Skin',
+      path: '/skin',
+      meta: { title: '皮肤', icon: 'SkinOutlined' },
+      component: lazy(() => import('@pages/index/views/Skin'))
+    }
 
   ]
 } as const);
 
-export const workbenchesHomeRoute = (workbenchesRoute as Required<RequiredRouteConfig>).children[0];
+export const [
+  workbenchesHomeRoute,
+  workbenchesWorkstation
+] = (workbenchesRoute as Required<RequiredRouteConfig>).children;

@@ -39,8 +39,8 @@ export type AnimationClassNameSelector = <
   animations: AnimationClassNamesType
 ) => AnimationClassNamesType[AnimationClassName];
 
-export const useAnimationClassSelector = (selector: AnimationClassNameSelector, deps: DependencyList) => {
+export const useAnimationClassSelector = (selector: AnimationClassNameSelector) => {
   return useMemo(() => {
     return selector(animationClassNames);
-  }, deps);
+  }, []);
 }

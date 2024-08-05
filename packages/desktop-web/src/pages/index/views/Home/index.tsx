@@ -2,10 +2,11 @@ import { Space, Card, Button, message, Input } from 'antd';
 import { useUserStore, userUpdateInfo, userLogin } from '@/features/zustand';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toPicket } from '@rapid/libs/common';
+import { Guards } from '@pages/index/router/guards';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 
-function A() {
+const PersonalInfo = Guards.AuthRole(() => {
   const bears = useUserStore(store => store.userinfo);
 
   useAsyncEffect(async () => {
@@ -34,7 +35,7 @@ function A() {
       </Button>
     </Card>
   </div>
-}
+});
 
 
 export default function Home() {
@@ -44,7 +45,7 @@ export default function Home() {
 
     </Card>
 
-    <A />
+    <PersonalInfo />
   </div>
 }
 

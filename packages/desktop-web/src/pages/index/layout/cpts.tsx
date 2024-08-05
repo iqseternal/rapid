@@ -1,16 +1,18 @@
-
 import { combinationCName } from '@rapid/libs-web/common';
-import {FullSizeWidth} from '@rapid/libs-web/styled';
+import { FullSizeWidth } from '@rapid/libs-web/styled';
+import { toPicket } from '@rapid/libs/common';
 import { FC } from 'react';
 import { useAppSelector } from '@/features';
 import { useFadeOut } from '@/hooks';
+import { logoutReq } from '../../../api';
 import { loginRoute, workbenchesRoute } from '../router';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { commonStyles } from '@scss/common';
 
+import IMessage from '@rapid/libs-web/components/IMessage';
 import Subfield from '@rapid/libs-web/components/Subfield';
 import Widget, { type WidgetProps } from '@components/Widget';
 
-import commonStyles from '@scss/common/index.module.scss';
 import styles from './cpts.module.scss';
 
 interface SideBarItemProps extends WidgetProps {
@@ -41,6 +43,17 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
 
   // if (!shouldShowNavBar) return <div className={styles.mainNavigationContainerPlaceholder} />;
 
+  const logout = async () => {
+    const [logoutErr, logoutRes] = await toPicket(logoutReq());
+    if (logoutErr) {
+      IMessage.error(logoutErr.descriptor);
+      return;
+    }
+    await useFadeOut(() => {
+      navigate(loginRoute.meta.fullPath);
+    })
+  }
+
   return <div
     className={combinationCName(
       styles.mainNavigationContainer,
@@ -53,9 +66,7 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
       <SideBarItem
         icon='LogoutOutlined'
         tipText='退出登录'
-        onClick={() => useFadeOut(() => {
-          navigate(loginRoute.meta.fullPath);
-        })}
+        onClick={logout}
       />
     </FullSizeWidth>
 
