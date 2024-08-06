@@ -1,5 +1,5 @@
 import { toPicket } from '@rapid/libs/common';
-import { RApiPromise, rApiGet, rApiPost } from './declare';
+import { RApiPromiseLike, rApiGet, rApiPost } from './declare';
 import { APP_STORE_KEYS, RSA_PUBLIC_KEY } from '@rapid/config/constants';
 import { rsaEncryptAlgorithm, rsaDecryptAlgorithm, ApiPromiseLike } from '@suey/pkg-utils';
 import { AppStore } from '@/actions';
@@ -18,7 +18,7 @@ export interface LoginReqPayload {
   username: string;
   password: string;
 }
-export type LoginReqPromise = RApiPromise<LoginResponse, {}>;
+export type LoginReqPromise = RApiPromiseLike<LoginResponse, null>;
 export const loginReq = (payload: LoginReqPayload) => {
   return rApiPost<LoginResponse, {}>('/user/login', {
     hConfig: {
@@ -46,7 +46,7 @@ export type UserinfoResponse = Partial<{
   phone: string;
   address: string;
 }>;
-export type GetUserinfoReqPromise = RApiPromise<UserinfoResponse>;
+export type GetUserinfoReqPromise = RApiPromiseLike<UserinfoResponse>;
 export const getUserinfoReq = () => {
   return rApiPost<UserinfoResponse>('/user/getUserinfo', {
 

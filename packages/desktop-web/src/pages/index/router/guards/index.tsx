@@ -1,13 +1,14 @@
-import { useLayoutEffect, type FC, ReactNode, createContext, useState, Dispatch, SetStateAction, useCallback, useMemo, forwardRef, ReactElement } from 'react';
+import type { FC, Dispatch, SetStateAction, ReactElement, ReactNode, FunctionComponent, ForwardRefExoticComponent } from 'react';
+import { useLayoutEffect, createContext, useState, useCallback, useMemo, forwardRef } from 'react';
 import { useAsyncLayoutEffect, useReactive, useUnmount } from '@rapid/libs-web/hooks';
-import { Skeleton } from 'antd';
-
+import { Input, Skeleton } from 'antd';
 import { getToken, useUserStore } from '@/features/zustand';
 import { toPicket } from '@rapid/libs/common';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
-import { loginRoute } from '../routes';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
+
+export type ReactFCComponent = ForwardRefExoticComponent<any> | FC<any>;
 
 export type GuardsAuthorizedContext = {
   authFinished: boolean;
@@ -22,6 +23,50 @@ export const GuardsContext = {
     auth: async () => {}
   })
 }
+
+
+/**
+ * 验证权限/角色是否符合规范
+ * @returns
+ */
+function AuthRole<GFC extends ReactFCComponent>(Component: GFC): GFC;
+function AuthRole<GProps extends { children?: ReactNode }>(props: GProps): ReactNode;
+function AuthRole<GFC extends ReactFCComponent>(args: GFC | { children: ReactNode }): GFC | ReactNode {
+
+  // 验证用户的权限等级
+  const authHasRole = () => {
+    const token = useUserStore(store => store.token);
+    const roles = useUserStore(store => store.userinfo?.roles ?? []);
+    if (roles.includes('admin')) return true;
+    return false;
+  }
+
+  // 包裹 FC, 返回一个新的组件
+  if (
+    typeof args === 'function' ||
+    (args as unknown as ForwardRefExoticComponent<any>).$$typeof
+  ) {
+    const Component = args as ReactFCComponent;
+
+    return forwardRef<any, any>((props, ref) => {
+      const hasRole = authHasRole();
+
+      if (!hasRole) return <></>;
+
+      return <Component {...props} ref={ref} />;
+    }) as unknown as GFC;
+  }
+
+  // 本身作为了一个组件使用
+  const { children } = args;
+
+  const hasRole = authHasRole();
+
+  if (!hasRole) return <></>;
+
+  return children;
+}
+
 
 export const Guards = {
   /**
@@ -54,8 +99,10 @@ export const Guards = {
     }), [state.authFinished, state.authorized, auth]);
 
     useAsyncLayoutEffect(auth, []);
-    useLayoutEffect(() => {
+    useAsyncLayoutEffect(async () => {
       if (!state.authFinished) return;
+
+      const { loginRoute } = await import('@pages/index/router/modules');
 
       // 未获得授权
       if (!state.authorized) navigate(loginRoute.meta.fullPath);
@@ -71,23 +118,7 @@ export const Guards = {
     </GuardsContext.Authorized.Provider>
 
   }) as unknown as GFC,
-
-  /**
-   * 验证权限/角色是否符合规范
-   * @returns
-   */
-  AuthRole: <GFC extends FC<any>>(Component: GFC): GFC => forwardRef<any, Parameters<GFC>[0]>((props, ref) => {
-
-    const token = useUserStore(store => store.token);
-    const roles = useUserStore(store => store.userinfo?.roles ?? []);
-
-    if (!roles.includes('admin')) return <></>;
-
-    return <Component {...props} ref={ref} />;
-
-  }) as unknown as GFC,
-
-
+  AuthRole
 }
 
 

@@ -3,7 +3,7 @@ import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder
 import { StringFilters } from '@rapid/libs/formatter';
 import { rsaEncryptAlgorithm } from '@suey/pkg-utils';
 import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
-import type { Axios, AxiosError } from 'axios';
+import type { Axios, AxiosError, AxiosResponse } from 'axios';
 import { AppStore } from '@/actions';
 import { getToken } from '../features/zustand';
 
@@ -45,7 +45,7 @@ export interface RApiFailResponse extends RApiBasicResponse {
   }
 }
 
-export type RApiPromise<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
+export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
 export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(CONFIG.API.URL, {
   timeout: CONFIG.API.TIMEOUT

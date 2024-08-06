@@ -1,12 +1,15 @@
 import { lazy } from 'react';
 import { makeRoute } from '../utils';
 import type { RequiredRouteConfig } from '../utils';
-import { WorkbenchesLayout } from '@pages/index/layout';
+
+import WorkbenchesLayout from '@pages/index/layout/WorkbenchesLayout';
+
+export * from './basic';
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
   path: `/workbenches`, redirect: 'home',
-  component: WorkbenchesLayout,
+  component: <WorkbenchesLayout />,
   children: [
     {
       name: 'WorkbenchesHome',

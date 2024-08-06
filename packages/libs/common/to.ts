@@ -1,7 +1,7 @@
 import type { JudgeAnyType, PromiseCatchReason, PromiseThenRes, RPromiseLike } from '../types';
 
 /**
- * 创建一个 RPromiseLike
+ * 创建一个 RPromiseLike 函数
  *
  *
  *

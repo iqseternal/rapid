@@ -4,8 +4,7 @@ import { toPicket } from '@rapid/libs/common';
 
 // NOTE: callbacks are _only_ allowed to return either void, or a destructor.
 export type AsyncEffectCallback = () => (
-  void |
-  EffectCallback |
+  void | boolean | undefined | number | string | EffectCallback |
   Promise<void | boolean | undefined | number | string | EffectCallback>
 );
 

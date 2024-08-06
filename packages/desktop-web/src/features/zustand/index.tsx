@@ -41,6 +41,7 @@ export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
   return loginRes;
 });
 
+
 export const userUpdateInfo = asynced<typeof getUserinfoReq>(async () => {
   const [infoErr, infoRes] = await toPicket(getUserinfoReq());
 

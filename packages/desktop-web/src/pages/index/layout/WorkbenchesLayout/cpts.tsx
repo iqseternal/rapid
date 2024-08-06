@@ -4,8 +4,8 @@ import { toPicket } from '@rapid/libs/common';
 import { FC } from 'react';
 import { useAppSelector } from '@/features';
 import { useFadeOut } from '@/hooks';
-import { logoutReq } from '../../../api';
-import { loginRoute, workbenchesRoute } from '../router';
+import { logoutReq } from '../../../../api';
+import { loginRoute, workbenchesRoute } from '../../router';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { commonStyles } from '@scss/common';
 

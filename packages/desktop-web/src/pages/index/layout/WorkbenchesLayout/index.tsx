@@ -7,7 +7,7 @@ import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, Wi
 import { useFadeIn } from '@/hooks';
 import { NavigationBar } from './cpts';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
-import { Guards } from '../router/guards';
+import { Guards } from '../../router/guards';
 import { useAppSelector } from '@/features';
 
 import Header from '@components/Header';
@@ -16,13 +16,7 @@ import styles from './index.module.scss';
 const MainRootContainer = combinationStyled('div', FullSize);
 const MainContainer = combinationStyled('main', FullSize);
 
-export const RootLayout = () => {
-  return <FullSize className={styles.rootLayout}>
-    <Outlet />
-  </FullSize>
-}
-
-export const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
+const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
   useFadeIn(async () => Promise.allSettled([
     windowResizeAble({ able: true }),
     windowResetCustomSize({ type: 'mainWindow' })
@@ -68,3 +62,6 @@ export const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
     </MainRootContainer>
   </FullSize>
 });
+
+
+export default WorkbenchesLayout;
