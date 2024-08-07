@@ -1,6 +1,6 @@
 import { toPicket } from '@rapid/libs/common';
 import { RApiPromiseLike, rApiGet, rApiPost } from './declare';
-import { APP_STORE_KEYS, RSA_PUBLIC_KEY } from '@rapid/config/constants';
+import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
 import { rsaEncryptAlgorithm, rsaDecryptAlgorithm, ApiPromiseLike } from '@suey/pkg-utils';
 import { AppStore } from '@/actions';
 

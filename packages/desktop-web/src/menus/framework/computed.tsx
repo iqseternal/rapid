@@ -82,7 +82,7 @@ export const computedSelector = <TResult,>(getter: (state: AppStoreType) => TRes
  * @param target
  * @private
  */
-export const isComputedSelectorObj = <T extends ComputedSelectorObj<any>,>(target: any): target is T => {
+export const isComputedSelectorObj = <T extends ComputedSelectorObj,>(target: any): target is T => {
   if (!target) return false;
   if (typeof target !== 'object') return false;
   return target.__TAG__ === computedSelectorSymbol;

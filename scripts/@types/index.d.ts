@@ -68,12 +68,12 @@ declare global {
   }
 
 
-  declare interface Promise<T> extends RapidPromise<T, any> { }
+  declare interface Promise<T> extends RapidPromise<T> { }
 
   // 扩展 PromiseConstructor，使其支持新的 Promise 类型
   interface PromiseConstructor {
 
-    readonly prototype: RapidPromise<any, any>;
+    readonly prototype: RapidPromise<any>;
 
     new <TRes, TErr = any>(executor: (resolve: (value: TRes | PromiseLike<TRes, TErr>) => void, reject: (reason?: TErr) => void) => void): RapidPromise<TRes, TErr>;
 

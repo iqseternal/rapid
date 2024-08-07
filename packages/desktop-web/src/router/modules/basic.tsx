@@ -1,6 +1,5 @@
 import { lazy } from 'react';
-import { makeRoute } from '../utils';
-import type { RequiredRouteConfig } from '../utils';
+import { makeRoute } from '../utils'
 
 export const notFoundRoute = makeRoute({
   name: 'NotFound',

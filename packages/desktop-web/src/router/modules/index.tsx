@@ -15,19 +15,19 @@ export const workbenchesRoute = makeRoute({
       name: 'WorkbenchesHome',
       path: '/home',
       meta: { title: '首页', icon: 'HomeOutlined' },
-      component: lazy(() => import('@views/Home'))
+      component: lazy(() => import('@pages/Workspace/Home'))
     },
     {
       name:  'WorkbenchesWorkstation',
       path: '/workstation',
       meta: { title: '工作区', icon: 'FileWordOutlined' },
-      component: lazy(() => import('@views/Workbenches'))
+      component: lazy(() => import('@pages/Workspace/Workbenches'))
     },
     {
       name: 'Skin',
       path: '/skin',
       meta: { title: '皮肤', icon: 'SkinOutlined' },
-      component: lazy(() => import('@views/Skin'))
+      component: lazy(() => import('@pages/Workspace/Skin'))
     }
   ]
 } as const);

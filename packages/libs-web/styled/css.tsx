@@ -1,6 +1,5 @@
 import { css } from 'styled-components';
 import { setCssVars, cssRoot } from '../common';
-import type { CSSTypes } from '../common';
 import { useDebounceHook, useWindowScreenSizeHook } from '../hooks';
 
 const CSS_VARS_MAP = {

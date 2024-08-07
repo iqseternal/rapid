@@ -1,4 +1,3 @@
-import { FullSizeWidth } from '@rapid/libs-web/styled';
 import type {
   MenuItemType as AntdMenuItemType,
   SubMenuType as AntdSubMenuType,
@@ -7,10 +6,9 @@ import type {
   ItemType as AntdItemType
 } from 'antd/lib/menu/interface';
 import type { Key, ReactNode } from 'react';
-import { ComputedSelectorObj, computedSelector } from '@/menus/framework/computed';
+import { ComputedSelectorObj } from '@/menus/framework/computed';
 import { MenuItem, SubMenu } from '@components/AutoDropdownMenu/cpts';
-import IconFont, { IconKey, IconRealKey } from '@components/IconFont';
-import Subfield from '@rapid/libs-web/components/Subfield';
+import { IconKey, IconRealKey } from '@components/IconFont';
 
 export type MenuItemType = Omit<AntdMenuItemType, 'disabled'> & {
   hidden?: boolean | ComputedSelectorObj<boolean>;

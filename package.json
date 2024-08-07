@@ -42,10 +42,10 @@
     "zustand",
     "axios"
   ],
+  "homepage": "https://www.oupro.cn",
   "author": {
     "name": "suey",
-    "email": "sueyeternal@163.com",
-    "url": "https://www.oupro.cn"
+    "email": "sueyeternal@163.com"
   },
   "license": "MIT",
   "repository": {

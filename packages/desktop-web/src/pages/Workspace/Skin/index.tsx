@@ -1,6 +1,5 @@
-import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '../../features';
-import { useFadeOut } from '../../hooks';
-import { makeVar, themeCssVarsSheet } from '../../themes';
+import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '@/features';
+import { makeVar, themeCssVarsSheet } from '@/themes';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
@@ -8,16 +7,15 @@ import { Button, Input, Space, Card, Dropdown, message } from 'antd';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createSelector } from '@reduxjs/toolkit';
-import { useMenuSelector } from '../../menus';
+import { useMenuSelector } from '../../../menus';
 import { toPicket } from '@rapid/libs/common';
-import { rApiPost } from '../../api';
-import { useStoreSelector, dispatchUpdate } from '../../features/test';
+import { useStoreSelector, dispatchUpdate } from '@/features/test';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
 import Subfield from '@rapid/libs-web/components/Subfield';
-import store from '../../features';
+import store from '@/features';
 import styles from './index.module.scss';
 
 interface StyleBlockProps extends BaseProps {

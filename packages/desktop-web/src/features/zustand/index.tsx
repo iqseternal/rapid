@@ -1,6 +1,5 @@
 import { AppStore } from '@/actions';
 import { loginReq, getUserinfoReq, UserinfoResponse } from '@/api';
-import { APP_STORE_KEYS } from '@rapid/config/constants';
 import { toPicket, asynced } from '@rapid/libs/common';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -20,13 +19,16 @@ export const useUserStore = create<UserStore>()(persist(immer((set, get, store) 
   storage: createJSONStorage(() => window.sessionStorage)
 }));
 
-export const getToken = async () => {
-  // return useUserStore.getState().token;
-  return await AppStore.get(APP_STORE_KEYS.USER_TOKEN);
+export const getAccessToken = async () => {
+  const accessToken = await AppStore.get('accessToken');
+  //
+  if (accessToken !== useUserStore.getState().token) return Promise.reject('');
+
+  return accessToken;
 }
 
 export const setToken = async (token: string) => {
-  const [err, res] = await toPicket(AppStore.set(APP_STORE_KEYS.USER_TOKEN, token));
+  const [err, res] = await toPicket(AppStore.set('accessToken', token));
   if (err) return Promise.reject(err);
 
   useUserStore.setState({ token });

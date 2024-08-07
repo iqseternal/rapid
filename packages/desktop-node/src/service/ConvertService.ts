@@ -1,7 +1,5 @@
-import { isNull, isNumber, isObject, isString } from '@suey/pkg-utils';
+import { isNumber, isString } from '@suey/pkg-utils';
 import { PakoService } from './PakoService';
-import { Printer } from '@suey/printer';
-import * as fs from 'fs';
 
 export type ConvertDataType = string | number | Uint8Array | Buffer | object | Blob;
 

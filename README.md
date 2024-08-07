@@ -123,12 +123,12 @@ interface Name {
 // 函数书写采用小驼峰
 // 尽可能地利用 TS 类型推导，而不是直接书写类型注释(如果有这种切实需求)
 const fn = () => {};
-function fn<T>(arg: T) {}
+function fns<T>(arg: T) {}
 
-if () {
+if (fn) {
   xxx;
 }
-else if () {
+else if (fn) {
   xxx;
 }
 else {

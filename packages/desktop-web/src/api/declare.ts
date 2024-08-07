@@ -1,11 +1,8 @@
-import { APP_STORE_KEYS, CONFIG, StoreKeyMap } from '@rapid/config/constants';
+import { CONFIG } from '@rapid/config/constants';
 import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@suey/pkg-utils';
 import { StringFilters } from '@rapid/libs/formatter';
-import { rsaEncryptAlgorithm } from '@suey/pkg-utils';
-import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
-import type { Axios, AxiosError, AxiosResponse } from 'axios';
-import { AppStore } from '@/actions';
-import { getToken } from '../features/zustand';
+import type { AxiosError } from 'axios';
+import { getAccessToken } from '@/features/zustand';
 
 export type { RequestConfig, Interceptors } from '@suey/pkg-utils';
 export { REQ_METHODS, createApiRequest, createRequest } from '@suey/pkg-utils';
@@ -55,8 +52,8 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
     if (isUndefined(config.hConfig.needAuth)) config.hConfig.needAuth = true;
     if (config.hConfig.needAuth && config.headers) {
       // TODO:
-      const token = await getToken();
-      if (token) config.headers.authorization = `Bearer ${token}`;
+      const accessToken = await getAccessToken();
+      if (accessToken) config.headers.authorization = `Bearer ${accessToken}`;
       // config.headers['_t'] = `${+new Date()}`;
     }
   },

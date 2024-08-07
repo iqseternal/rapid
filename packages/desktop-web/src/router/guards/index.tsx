@@ -2,7 +2,7 @@ import type { FC, Dispatch, SetStateAction, ReactElement, ReactNode, FunctionCom
 import { useLayoutEffect, createContext, useState, useCallback, useMemo, forwardRef } from 'react';
 import { useAsyncLayoutEffect, useReactive, useUnmount } from '@rapid/libs-web/hooks';
 import { Input, Skeleton } from 'antd';
-import { getToken, useUserStore } from '../../features/zustand';
+import { getAccessToken, useUserStore } from '../../features/zustand';
 import { toPicket } from '@rapid/libs/common';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 
@@ -86,7 +86,7 @@ export const Guards = {
     const auth = useCallback(async (): Promise<void> => {
       console.log('检查授权信息');
       // 获得授权信息
-      const [err, token] = await toPicket(getToken());
+      const [err, token] = await toPicket(getAccessToken());
 
       if (err || !token || token === '') IMessage.warning(`未获得授权许可`);
       else state.authorized = true;

@@ -10,7 +10,8 @@
     @include Flex;
 
     .mainContainer {
-      padding-top: 10px;
+      height: calc(100% - 8px);
+      border-radius: 4px;
 
       @include Overflow(scroll);
       @include BeautifulBar;

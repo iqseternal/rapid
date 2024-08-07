@@ -1,7 +1,7 @@
 import { combinationCName } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toPicket } from '@rapid/libs/common';
-import { FC, useLayoutEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAppSelector } from '../../features';
 import { useFadeOut } from '../../hooks';
 import { logoutReq } from '../../api';
