@@ -39,7 +39,7 @@
     "monorepo",
     "workspace",
     "electron-store",
-    "pinia",
+    "zustand",
     "axios"
   ],
   "author": {

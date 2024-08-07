@@ -20,8 +20,7 @@ declare global {
     children?: RouteConfig[];
   }
 
-  declare type RouteConfig =
-    RouteBaseConfig;
+  declare type RouteConfig = RouteBaseConfig;
 }
 
 export {};

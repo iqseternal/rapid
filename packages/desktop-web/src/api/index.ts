@@ -3,7 +3,6 @@ import { RApiPromiseLike, rApiGet, rApiPost } from './declare';
 import { APP_STORE_KEYS, RSA_PUBLIC_KEY } from '@rapid/config/constants';
 import { rsaEncryptAlgorithm, rsaDecryptAlgorithm, ApiPromiseLike } from '@suey/pkg-utils';
 import { AppStore } from '@/actions';
-import { PromiseThenRes, PromiseCatchReason } from '@rapid/libs/types';
 
 export * from './declare';
 

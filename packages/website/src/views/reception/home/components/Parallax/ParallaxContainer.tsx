@@ -1,7 +1,6 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { autoGetScrollContainer } from '@libs/dom';
 import { useEventListener, useReactive, useDebounceHook } from '@/hooks';
-import { isDef } from '@suey/pkg-utils';
 import { combinationCName } from '@libs/common';
 import { combinationStyled } from '@rapid/libs-web/styled';
 import type { GradualImgProps } from '@components/GradualImg';

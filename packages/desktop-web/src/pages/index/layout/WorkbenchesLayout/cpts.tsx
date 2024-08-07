@@ -1,16 +1,14 @@
 import { combinationCName } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toPicket } from '@rapid/libs/common';
-import { FC } from 'react';
+import { FC, useLayoutEffect, useState } from 'react';
 import { useAppSelector } from '@/features';
 import { useFadeOut } from '@/hooks';
-import { logoutReq } from '../../../../api';
-import { loginRoute, workbenchesRoute } from '../../router';
+import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { commonStyles } from '@scss/common';
+import { retrieveRoutes } from '@pages/index/router/retrieve';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
-import Subfield from '@rapid/libs-web/components/Subfield';
 import Widget, { type WidgetProps } from '@components/Widget';
 
 import styles from './cpts.module.scss';
@@ -41,6 +39,8 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
 
   const shouldShowNavBar = useAppSelector(state => state.doc.isWork);
 
+  const [workbenchesRoute] = useState(retrieveRoutes().workbenchesRoute);
+
   // if (!shouldShowNavBar) return <div className={styles.mainNavigationContainerPlaceholder} />;
 
   const logout = async () => {
@@ -49,7 +49,9 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
       IMessage.error(logoutErr.descriptor);
       return;
     }
-    await useFadeOut(() => {
+    await useFadeOut(async () => {
+      const { loginRoute } = retrieveRoutes();
+
       navigate(loginRoute.meta.fullPath);
     })
   }

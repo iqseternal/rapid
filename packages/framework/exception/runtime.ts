@@ -1,5 +1,3 @@
-import { isPromise } from '@suey/pkg-utils';
-import { print } from '@suey/printer';
 
 /**
  * 异常的基类

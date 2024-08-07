@@ -1,6 +1,6 @@
 import { Space, Card, Button, message, Input } from 'antd';
 import { useUserStore, userUpdateInfo, userLogin } from '@/features/zustand';
-import { useAsyncEffect } from '@rapid/libs-web/hooks';
+import {useAsyncEffect, useReactive} from '@rapid/libs-web/hooks';
 import { toPicket } from '@rapid/libs/common';
 import { Guards } from '@pages/index/router/guards';
 import { forwardRef, useEffect, useRef } from 'react';

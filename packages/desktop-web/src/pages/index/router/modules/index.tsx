@@ -29,7 +29,6 @@ export const workbenchesRoute = makeRoute({
       meta: { title: '皮肤', icon: 'SkinOutlined' },
       component: lazy(() => import('@pages/index/views/Skin'))
     }
-
   ]
 } as const);
 

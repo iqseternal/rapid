@@ -6,12 +6,12 @@ import { useFadeIn, useFadeOut } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useReactive } from '@rapid/libs-web/hooks';
-import { workbenchesRoute } from '@pages/index/router';
 import { Button } from 'antd';
 import { toPicket } from '@rapid/libs/common';
 import { useMenuSelector } from '@/menus';
 import { userLogin } from '@/features/zustand';
 import { registerReq } from '@/api';
+import { reserveRoutes, retrieveRoutes } from '@pages/index/router/retrieve';
 
 import lockUrl from '@/assets/images/login__lock.png?url';
 import Header from '@components/Header';
@@ -51,7 +51,9 @@ export default function Login() {
       return;
     }
 
-    await useFadeOut(() => {
+    await useFadeOut(async () => {
+      const { workbenchesRoute } = retrieveRoutes();
+
       navigate(workbenchesRoute.meta.fullPath, { replace: true });
     });
   }

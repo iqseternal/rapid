@@ -1,7 +1,6 @@
 import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '@/features';
 import { useFadeOut } from '@/hooks';
 import { makeVar, themeCssVarsSheet } from '@/themes';
-import { loginRoute } from '@pages/index/router';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';

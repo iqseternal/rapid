@@ -24,6 +24,10 @@
 
 🌱`/package/desktop-web`则是对应 `Electron` 程序的渲染进程。基于 `react` 编写，具有多入口(正在考虑是否保留)。
 
+🌱`/package/libs` 通用的函数调用。
+
+🌱`/package/libs-web` web专用的函数调用, 通常也为 React 提供调度函数。
+
 🌱`/package/website`则是基于 `react`编写的下载网站，使用了 `styled-components`，`scss module`，行内样式，虽然都采用了但是为其分了使用类别，`styled-components`建立基本元素容器，`scss module`编写页面组件级样式，行内样式则是为了覆盖元素容器原有样式，又或者样式简短。由于受到 `Vue`开发的影响，`useState` 的 手动`set`已经不能满足于我，于是编写了一个类似 `Vue`开发的自动 `set` 的 `hook`，具体阐述自行查看 `hooks`文件夹。
 
 👋👋关于更多详细，后续完善开发之后会建立 `Vitepress`介绍文档对其进行详细介绍，以让开发者能够快速了解开发基本。
@@ -40,11 +44,9 @@
 
 - Pako 的基本认知
 
-- Javascript 类编程
-
 - Electron 基本知识概念
 
-- Typescript 类型运算基本能力
+- Typescript 类型运算基本能力(推导能力)
 
 - 装饰器集成以及 Reflect-metadata 基本概念
 
@@ -74,6 +76,7 @@ $ pnpm install
 
 ```bash
 $ pnpm dev
+$ pnpm dev:desktop
 $ pnpm website:dev
 $ pnpm scripts:dev
 ```
@@ -142,4 +145,31 @@ else xxx;
 // 避免使用 @ts-ignore 等忽略错误
 // 当然，这是一个不应该存在的错误示例
 const a: number = '1' as unknown as number;
+
+// 禁止使用 any 编程(但并非是不能使用 any)
+// 如下被禁止
+const f = (a: any, b: any, c: any): any => {
+  const res = a + b + c;
+
+  return res;
+}
+
+
+// 禁止出现 try catch 不处理错误
+try {
+  throw new Error(`错误`);
+} catch(e) {
+  // 必须处理错误
+}
+
+// Promise: 除非在逻辑上一定成功或者不影响业务, 否则也需要处理异常。
+
+
+
+// 不允许使用 compilerOptions types 选项加载以根为首的类型目录
+
 ```
+
+Scss 编写规范
+
+组件中严格使用 scss module 方式引入方式, 不允许使用显式字符串作为 class 类名
