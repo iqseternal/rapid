@@ -7,9 +7,8 @@ import { combinationCName } from '@rapid/libs-web/common';
 import { toPicket } from '@rapid/libs/common';
 
 import RouterContext from './router';
-import store from '@/features';
+import store from './features';
 
-import commonStyles from '@scss/common/index.module.scss';
 import styles from './app.module.scss';
 
 export default function App() {

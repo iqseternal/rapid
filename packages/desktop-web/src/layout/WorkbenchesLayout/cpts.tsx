@@ -2,11 +2,11 @@ import { combinationCName } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toPicket } from '@rapid/libs/common';
 import { FC, useLayoutEffect, useState } from 'react';
-import { useAppSelector } from '@/features';
-import { useFadeOut } from '@/hooks';
-import { logoutReq } from '@/api';
+import { useAppSelector } from '../../features';
+import { useFadeOut } from '../../hooks';
+import { logoutReq } from '../../api';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { retrieveRoutes } from '@pages/index/router/retrieve';
+import { retrieveRoutes } from '@router/retrieve';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 import Widget, { type WidgetProps } from '@components/Widget';

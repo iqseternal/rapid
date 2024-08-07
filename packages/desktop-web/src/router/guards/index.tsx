@@ -2,7 +2,7 @@ import type { FC, Dispatch, SetStateAction, ReactElement, ReactNode, FunctionCom
 import { useLayoutEffect, createContext, useState, useCallback, useMemo, forwardRef } from 'react';
 import { useAsyncLayoutEffect, useReactive, useUnmount } from '@rapid/libs-web/hooks';
 import { Input, Skeleton } from 'antd';
-import { getToken, useUserStore } from '@/features/zustand';
+import { getToken, useUserStore } from '../../features/zustand';
 import { toPicket } from '@rapid/libs/common';
 import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 
@@ -102,7 +102,7 @@ export const Guards = {
     useAsyncLayoutEffect(async () => {
       if (!state.authFinished) return;
 
-      const { loginRoute } = await import('@pages/index/router/modules');
+      const { loginRoute } = await import('../modules');
 
       // 未获得授权
       if (!state.authorized) navigate(loginRoute.meta.fullPath);

@@ -5,9 +5,9 @@ import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 're
 import { MaxScreen, MaxScreenWidth, Flex, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth, FullSize } from '@rapid/libs-web/styled';
 import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, WindowPopup } from '@/actions';
 import { useFadeIn } from '@/hooks';
-import { NavigationBar } from './cpts';
+import { NavigationBar } from './cpts.tsx';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
-import { Guards } from '../../router/guards';
+import { Guards } from '@router/guards';
 import { useAppSelector } from '@/features';
 
 import Header from '@components/Header';

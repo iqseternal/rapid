@@ -2,9 +2,9 @@ import { lazy } from 'react';
 import { makeRoute } from '../utils';
 import type { RequiredRouteConfig } from '../utils';
 
-import WorkbenchesLayout from '@pages/index/layout/WorkbenchesLayout';
+import WorkbenchesLayout from '@/layout/WorkbenchesLayout';
 
-export * from './basic';
+export * from './basic.tsx';
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
@@ -15,19 +15,19 @@ export const workbenchesRoute = makeRoute({
       name: 'WorkbenchesHome',
       path: '/home',
       meta: { title: '首页', icon: 'HomeOutlined' },
-      component: lazy(() => import('@pages/index/views/Home'))
+      component: lazy(() => import('@views/Home'))
     },
     {
       name:  'WorkbenchesWorkstation',
       path: '/workstation',
       meta: { title: '工作区', icon: 'FileWordOutlined' },
-      component: lazy(() => import('@pages/index/views/Workbenches'))
+      component: lazy(() => import('@views/Workbenches'))
     },
     {
       name: 'Skin',
       path: '/skin',
       meta: { title: '皮肤', icon: 'SkinOutlined' },
-      component: lazy(() => import('@pages/index/views/Skin'))
+      component: lazy(() => import('@views/Skin'))
     }
   ]
 } as const);

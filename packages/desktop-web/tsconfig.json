@@ -26,12 +26,12 @@
     "types": ["./src/@types", "../config/@types"],
     "paths": {
       "@components/*": ["src/components/*"],
+      "@router/*": ["src/router/*"],
+      "@views/*": ["src/views/*"],
       "@pages/*": ["src/pages/*"],
       "@libs/*": ["src/libs/*"],
       "@meta/*": ["src/meta/*"],
       "@scss/*": ["src/scss/*"],
-      "#constants/*": ["src/constants/*"],
-      "@indexedDB/*": ["src/indexedDB/*"],
       "@/*": ["src/*", "../desktop-node/src/*"]
     }
   },

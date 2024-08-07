@@ -1,5 +1,5 @@
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
-import { userUpdateInfo } from '@/features/zustand';
+import { userUpdateInfo } from '../../features/zustand';
 import { toPicket } from '@rapid/libs/common';
 
 import IMessage from '@rapid/libs-web/components/IMessage';

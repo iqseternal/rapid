@@ -10,7 +10,6 @@
     "skipDefaultLibCheck": true,
     // "noImplicitAny": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "NodeNext"
+    "experimentalDecorators": true
   }
 }

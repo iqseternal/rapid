@@ -1,19 +1,19 @@
-import { useAppSelector } from '@/features';
+import { useAppSelector } from '../../features';
 import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { combinationCName } from '@rapid/libs-web/common';
-import { useFadeIn, useFadeOut } from '@/hooks';
+import { useFadeIn, useFadeOut } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
-import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
+import { windowResizeAble, windowSetPosition, windowSetSize } from '../../actions';
 import { useReactive } from '@rapid/libs-web/hooks';
 import { Button } from 'antd';
 import { toPicket } from '@rapid/libs/common';
-import { useMenuSelector } from '@/menus';
-import { userLogin } from '@/features/zustand';
-import { registerReq } from '@/api';
-import { reserveRoutes, retrieveRoutes } from '@pages/index/router/retrieve';
+import { useMenuSelector } from '../../menus';
+import { userLogin } from '../../features/zustand';
+import { registerReq } from '../../api';
+import { reserveRoutes, retrieveRoutes } from '../../router/retrieve';
 
-import lockUrl from '@/assets/images/login__lock.png?url';
+import lockUrl from '../../assets/images/login__lock.png?url';
 import Header from '@components/Header';
 import IMessage from '@rapid/libs-web/components/IMessage';
 import Subfield from '@rapid/libs-web/components/Subfield';

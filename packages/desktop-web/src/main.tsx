@@ -1,10 +1,11 @@
 
-import { app, themePlugins } from '@/plugins';
+import { app, themePlugins } from './plugins';
 import { IS_DEV, IS_PROD, CONFIG } from '@rapid/config/constants';
 import { StrictMode } from 'react';
+import { windowDevtool } from './actions';
 
 import ReactDOM from 'react-dom/client';
-import App from './app';
+import App from './app.tsx';
 
 import '@scss/index.scss';
 
