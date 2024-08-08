@@ -1,8 +1,9 @@
 import { CONFIG } from '@rapid/config/constants';
+import {toPicket} from '@rapid/libs/common';
 import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@suey/pkg-utils';
 import { StringFilters } from '@rapid/libs/formatter';
 import type { AxiosError } from 'axios';
-import { getAccessToken } from '@/features/zustand';
+import { getAccessToken } from '@/features';
 
 export type { RequestConfig, Interceptors } from '@suey/pkg-utils';
 export { REQ_METHODS, createApiRequest, createRequest } from '@suey/pkg-utils';
@@ -32,7 +33,8 @@ export interface RApiSuccessResponse extends RApiBasicResponse {
 }
 export interface RApiFailResponse extends RApiBasicResponse {
   flag: 'ApiResponseFal';
-
+  
+  /** 更多的错误信息 */
   INNER: {
     stack: string;
     name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
@@ -42,10 +44,26 @@ export interface RApiFailResponse extends RApiBasicResponse {
   }
 }
 
+/**
+ * RApiPromiseLike, 可以通过 then, catch 获得不同的相应数据类型提示
+ * 也可以通过 toPicket 获取类型
+ *
+ * ```ts
+ * declare const pr: RApiPromiseLike<number,  string>;
+ * const [err, res] = await toPicket(pr);
+ * if (err) {
+ *   console.log(err.descriptor);
+ *   return;
+ * }
+ * res;
+ * //
+ * ```
+ */
 export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
+
 export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(CONFIG.API.URL, {
-  timeout: CONFIG.API.TIMEOUT
+  timeout: 5000
 }, {
   async onFulfilled(config) {
     if (!config.hConfig) config.hConfig = { needAuth: true };

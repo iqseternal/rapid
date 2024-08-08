@@ -16,6 +16,9 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   tipAttrs?: TooltipProps;
 }
 
+/**
+ * 展示一个控件, 控件: 图标, 附带功能提示信息和事件
+ */
 export default function Widget(props: WidgetProps) {
   const {
     hover = true,

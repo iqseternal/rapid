@@ -3,17 +3,16 @@ import { Suspense, useLayoutEffect, useTransition } from 'react';
 import type { PathRouteProps } from 'react-router-dom';
 import { Route, RouteProps, Routes, HashRouter, useRoutes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { loginRoute, registerRoute, notFoundRoute, notRoleRoute, workbenchesRoute } from './modules';
-import type { RequiredRouteConfig } from './utils';
-import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
+import { loginRoute, registerRoute, notFoundRoute, notRoleRoute, workspaceRoute } from './modules';
+import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 import type { RedirectProps } from '@rapid/libs-web/components/Redirect';
 import { Skeleton } from 'antd';
 import { FullSize } from '@rapid/libs-web/styled';
-import { makeRoute } from './utils';
+import { makeRoute } from '@rapid/libs-web/router';
 import { reserveRoutes } from './retrieve';
 import * as presetRoutes from './modules';
 
-import RootLayout from '../layout/RootLayout';
+import RootLayout from '@/layout/RootLayout';
 import Redirect from '@rapid/libs-web/components/Redirect';
 
 const rootRoute = makeRoute({
@@ -23,7 +22,7 @@ const rootRoute = makeRoute({
   children: [
     loginRoute, registerRoute,
     notFoundRoute, notRoleRoute,
-    workbenchesRoute
+    workspaceRoute
   ]
 });
 

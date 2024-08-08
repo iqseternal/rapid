@@ -5,11 +5,11 @@ export type IconInstance = typeof iconInstance;
 export type IconProps = Parameters<IconInstance>[0];
 
 export type IconRealKey = Exclude<keyof typeof icons, 'createFromIconfontCN' | 'default' | 'IconProvider' | 'setTwoToneColor' | 'getTwoToneColor'>;
-export type IconKey = IconRealKey;
+export type IconKey = IconRealKey | `icon-${string}`;
 
 export interface IconFontProps extends IconProps {
 
-  icon: IconRealKey;
+  icon: IconKey;
 }
 
 /**

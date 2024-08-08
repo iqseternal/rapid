@@ -1,12 +1,12 @@
 import { defineElectronRendererConfig, resolveAlias } from '../config/structure';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 import reactPlugin from '@vitejs/plugin-react';
 import tsConfigJson from './tsconfig.json';
 
 
 export const inputHtmlPosition = {
-  index: join(__dirname, './src/index.html')
+  index: resolve(__dirname, './index.html')
 }
 
 export default defineElectronRendererConfig(({ mode }) => ({

@@ -1,15 +1,15 @@
 import { lazy } from 'react';
-import { makeRoute } from '../utils';
-import type { RequiredRouteConfig } from '../utils';
+import { makeRoute } from '@rapid/libs-web/router';
+import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 
-import WorkbenchesLayout from '@/layout/WorkbenchesLayout';
+import WorkspaceLayout from '@/layout/WorkspaceLayout';
 
 export * from './basic.tsx';
 
-export const workbenchesRoute = makeRoute({
+export const workspaceRoute = makeRoute({
   name: `Workbenches`,
   path: `/workbenches`, redirect: 'home',
-  component: <WorkbenchesLayout />,
+  component: <WorkspaceLayout />,
   children: [
     {
       name: 'WorkbenchesHome',
@@ -35,4 +35,4 @@ export const workbenchesRoute = makeRoute({
 export const [
   workbenchesHomeRoute,
   workbenchesWorkstation
-] = (workbenchesRoute as Required<RequiredRouteConfig>).children;
+] = (workspaceRoute as Required<RequiredRouteConfig>).children;

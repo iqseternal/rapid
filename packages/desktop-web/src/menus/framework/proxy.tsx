@@ -1,10 +1,10 @@
-import {useDependenciesListHook} from '@rapid/libs-web/hooks';
-import {isArray, isFunction, isObject} from '@suey/pkg-utils';
-import {isValidElement} from 'react';
-import type {ComputedSelectorObj} from './computed';
-import {isComputedSelectorObj} from './computed';
-import type {MenuInstance} from './declare';
-import {convertMenu} from './declare';
+import { useDependenciesListHook } from '@rapid/libs-web/hooks';
+import { isArray, isFunction, isObject } from '@suey/pkg-utils';
+import { isValidElement } from 'react';
+import type { ComputedSelectorObj } from './computed';
+import { isComputedSelectorObj } from './computed';
+import type { MenuInstance } from './declare';
+import { convertMenu } from './declare';
 
 export const proxySymbol = Symbol('proxySymbol');
 

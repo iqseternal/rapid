@@ -1,11 +1,11 @@
 
 type NotHasChildrenRouteConfig = Omit<RouteConfig, 'children'>;
 
-export type RequiredRouteConfig = Required<NotHasChildrenRouteConfig>
+export type RequiredRouteConfig = Omit<Required<NotHasChildrenRouteConfig>, 'meta'>
   & { meta: Required<RouteMeta> }
   & { children?: RequiredRouteConfig[]; };
 
-export const path = {
+const path = {
   joinTwo(path1: string, path2: string) {
     if (path1.endsWith('/')) path1 = path1.replaceAll(/\/+$/g, '');
     if (path2.startsWith('/')) path2 = path2.replaceAll(/^\/+/g, '');

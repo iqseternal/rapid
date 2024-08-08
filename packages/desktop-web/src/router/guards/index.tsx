@@ -2,9 +2,10 @@ import type { FC, Dispatch, SetStateAction, ReactElement, ReactNode, FunctionCom
 import { useLayoutEffect, createContext, useState, useCallback, useMemo, forwardRef } from 'react';
 import { useAsyncLayoutEffect, useReactive, useUnmount } from '@rapid/libs-web/hooks';
 import { Input, Skeleton } from 'antd';
-import { getAccessToken, useUserStore } from '../../features/zustand';
+import { getAccessToken, useUserStore } from '@/features';
 import { toPicket } from '@rapid/libs/common';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData, useMatch } from 'react-router-dom';
+import { retrieveRoutes } from '@router/retrieve';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 
@@ -35,7 +36,7 @@ function AuthRole<GFC extends ReactFCComponent>(args: GFC | { children: ReactNod
 
   // 验证用户的权限等级
   const authHasRole = () => {
-    const token = useUserStore(store => store.token);
+    const accessToken = useUserStore(store => store.accessToken);
     const roles = useUserStore(store => store.userinfo?.roles ?? []);
     if (roles.includes('admin')) return true;
     return false;
@@ -86,9 +87,9 @@ export const Guards = {
     const auth = useCallback(async (): Promise<void> => {
       console.log('检查授权信息');
       // 获得授权信息
-      const [err, token] = await toPicket(getAccessToken());
+      const [err, accessToken] = await toPicket(getAccessToken());
 
-      if (err || !token || token === '') IMessage.warning(`未获得授权许可`);
+      if (err || !accessToken || accessToken === '') IMessage.warning(`未获得授权许可`);
       else state.authorized = true;
 
       state.authFinished = true;
@@ -102,7 +103,7 @@ export const Guards = {
     useAsyncLayoutEffect(async () => {
       if (!state.authFinished) return;
 
-      const { loginRoute } = await import('../modules');
+      const { loginRoute } = retrieveRoutes();
 
       // 未获得授权
       if (!state.authorized) navigate(loginRoute.meta.fullPath);

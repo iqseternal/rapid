@@ -1,4 +1,4 @@
-import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '@/features';
+// import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '@/features/index1';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
@@ -6,16 +6,15 @@ import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createSelector } from '@reduxjs/toolkit';
-import { useMenuSelector } from '../../../menus';
+// import { createSelector } from '@reduxjs/toolkit';
+import { useMenuSelector } from '@/menus';
 import { toPicket } from '@rapid/libs/common';
-import { useStoreSelector, dispatchUpdate } from '@/features/test';
+// import { useStoreSelector, dispatchUpdate } from '@/features/test';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
 import Subfield from '@rapid/libs-web/components/Subfield';
-import store from '@/features';
 import styles from './index.module.scss';
 
 interface StyleBlockProps extends BaseProps {
@@ -61,11 +60,8 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
 
 
 export default function Skin() {
-
   const navigate = useNavigate();
   const refresh = useRefresh();
-
-  const dispatch = useAppDispatch();
 
   const headerMenu = useMenuSelector(menus => menus.headerFileMenu);
   const editMenu = useMenuSelector(menus => menus.headerEditMenu);
@@ -83,23 +79,9 @@ export default function Skin() {
     }
   );
 
-  const select = createSelector([(state: AppStoreType) => state.doc], (doc) => {
-
-  })
-
-  const doc = useAppSelector(state => {
-    // console.log(state.doc);
-    return state.doc;
-  });
-
   const [state] = useReactive({
     name: 1
   })
-
-  const name = useStoreSelector(store => {
-    return store.user.userinfo.name;
-  });
-
 
   return <FullSize
     className={styles.workbenches}
@@ -117,32 +99,20 @@ export default function Skin() {
     </div>
 
     <StyleBlock>
-      <span>{name}</span>
 
       <Button
         onClick={() => {
-          dispatchUpdate(store => {
-            store.user.userinfo.name += 'b';
-          })
-          dispatchUpdate(store => {
-            store.user.userinfo.name += 'b';
-          })
-          dispatchUpdate(store => {
-            store.user.userinfo.name += 'b';
-          })
+
         }}
       >
         append
       </Button>
     </StyleBlock>
     <StyleBlock title='reducer'>
-      {
-        doc.isWork.toString()
-      }
 
       <Button
         onClick={() => {
-          dispatch(setWorkStatus(!doc.isWork));
+
           // refresh();
         }}
       >
@@ -309,14 +279,9 @@ export default function Skin() {
     </StyleBlock>
 
     <StyleBlock title='reducer'>
-      {
-        doc.isWork.toString()
-      }
-
       <Button
         onClick={() => {
-          dispatch(setWorkStatus(!doc.isWork));
-          // refresh();
+
         }}
       >
         改变他

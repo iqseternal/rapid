@@ -23,7 +23,7 @@
     "resolveJsonModule": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
-    "types": ["./src/@types", "../config/@types"],
+    "types": ["./src/@types"],
     "paths": {
       "@components/*": ["src/components/*"],
       "@router/*": ["src/router/*"],
@@ -40,6 +40,7 @@
     "./src/**/*.vue",
     "./src/**/*.tsx",
 
+    "../libs-web/@types",
     "../config/@types"
   ],
   "exclude": ["node_modules/**/*"]

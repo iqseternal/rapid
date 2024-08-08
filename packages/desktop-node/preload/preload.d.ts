@@ -3,12 +3,14 @@
  * preload 需要的类型声明
  * ==========================================
  */
-import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener, IpcRendererEvent } from '@electron-toolkit/preload';
+import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererEvent } from '@electron-toolkit/preload';
 import type { CutHead } from '@rapid/libs/types';
 import type * as actions from '@/ipc';
 
+// 引入所有的 Action, 这就是为什么不许 ipc/index.ts 到处多余的变量
 export type AllAction = typeof actions;
 
+// 创建句柄类型, 例如: { 'IpcStore/get': (key: string) => Promise<string> }
 export type Handlers = {
   [Key in keyof AllAction as AllAction[Key]['channel']]:
   (...args: CutHead<Parameters<AllAction[Key]['action']>>)
@@ -17,10 +19,9 @@ export type Handlers = {
     : Promise<ReturnType<AllAction[Key]['action']>>;
 }
 
-export type HandlerMethodTyped<Handler, HandlerMethod extends keyof Handler> = Handler[HandlerMethod];
-
 /**
  * 原本的 IcpRenderer 返回类型为 Promise<any>, 所需需要自己重新修改一下返回值
+ * 需要先 Omit 排除, 然后再编写自己的类型, 否则会覆盖失败
  */
 export type IpcRenderer =
 Omit<
@@ -36,6 +37,9 @@ Omit<
   once<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): void;
 }
 
+/**
+ * 重新创建 ElectronAPI, 来覆盖 window.electron 的类型
+ */
 export interface ElectronAPI {
   ipcRenderer: IpcRenderer;
   webFrame: WebFrame;

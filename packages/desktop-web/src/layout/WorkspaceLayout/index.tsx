@@ -8,7 +8,6 @@ import { useFadeIn } from '@/hooks';
 import { NavigationBar } from './cpts.tsx';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
 import { Guards } from '@router/guards';
-import { useAppSelector } from '@/features';
 
 import Header from '@components/Header';
 import styles from './index.module.scss';
@@ -16,7 +15,11 @@ import styles from './index.module.scss';
 const MainRootContainer = combinationStyled('div', FullSize);
 const MainContainer = combinationStyled('main', FullSize);
 
-const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
+/**
+ * 工作区的布局组件, 该组件提供了整个 App 最核心的布局容器, 拥有 react-transition-group 为工作区提供切换动画的显示
+ * 该工作区需要用户登录后才可以正常使用, 因此使用 Guards.AuthAuthorized 来校验用户是否已经获得了授权
+ */
+const WorkspaceLayout = Guards.AuthAuthorized(() => {
   useFadeIn(async () => Promise.allSettled([
     windowResizeAble({ able: true }),
     windowResetCustomSize({ type: 'mainWindow' })
@@ -28,8 +31,6 @@ const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch);
-
-  const them = useAppSelector(state => state.theme.workbenches);
 
   return <FullSize
     className={styles.workbenchesLayout}
@@ -64,4 +65,4 @@ const WorkbenchesLayout = Guards.AuthAuthorized((props: BaseProps) => {
 });
 
 
-export default WorkbenchesLayout;
+export default WorkspaceLayout;

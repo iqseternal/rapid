@@ -1,6 +1,6 @@
-import {isString} from '@suey/pkg-utils';
-import type {FC, ReactNode, ReactPropTypes, ReactElement} from 'react';
-import {isValidElement, useLayoutEffect} from 'react';
+import { isString } from '@suey/pkg-utils';
+import type { FC, ReactNode, ReactPropTypes, ReactElement } from 'react';
+import { isValidElement, useLayoutEffect } from 'react';
 import { Outlet, useLocation, Navigate, useNavigate } from 'react-router-dom';
 
 export interface RedirectProps {

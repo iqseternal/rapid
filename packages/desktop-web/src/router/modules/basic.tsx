@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { makeRoute } from '../utils'
+import { makeRoute } from '@rapid/libs-web/router';
 
 export const notFoundRoute = makeRoute({
   name: 'NotFound',

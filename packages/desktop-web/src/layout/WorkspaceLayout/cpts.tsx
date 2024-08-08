@@ -2,9 +2,8 @@ import { combinationCName } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toPicket } from '@rapid/libs/common';
 import { FC, useState } from 'react';
-import { useAppSelector } from '../../features';
-import { useFadeOut } from '../../hooks';
-import { logoutReq } from '../../api';
+import { useFadeOut } from '@/hooks';
+import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes } from '@router/retrieve';
 
@@ -16,6 +15,11 @@ import styles from './cpts.module.scss';
 interface SideBarItemProps extends WidgetProps {
 
 }
+
+
+/**
+ * 该组件为 NavigationBar 提供服务, 作用为创建工作区的左侧导航条中某个导航项内容的展示
+ */
 const SideBarItem: FC<SideBarItemProps> = (props) => {
   const {
     className,
@@ -33,13 +37,14 @@ const SideBarItem: FC<SideBarItemProps> = (props) => {
   />;
 }
 
+/**
+ * 该组件为 WorkspaceLayout 提供服务, 作用为创建工作区的左侧导航条
+ */
 export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const shouldShowNavBar = useAppSelector(state => state.doc.isWork);
-
-  const [workbenchesRoute] = useState(retrieveRoutes().workbenchesRoute);
+  const [workspaceRoute] = useState(retrieveRoutes().workspaceRoute);
 
   // if (!shouldShowNavBar) return <div className={styles.mainNavigationContainerPlaceholder} />;
 
@@ -76,7 +81,7 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
       className={styles.middleContainer}
     >
       {
-        workbenchesRoute.children?.map(routeItem => {
+        workspaceRoute.children?.map(routeItem => {
           return <SideBarItem
             key={routeItem.meta.fullPath}
             icon={routeItem.meta.icon}

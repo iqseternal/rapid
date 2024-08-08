@@ -1,15 +1,15 @@
-import { useAppSelector } from '@/features';
 import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/hooks';
+import {workspaceRoute} from '@router/modules';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useReactive } from '@rapid/libs-web/hooks';
 import { Button } from 'antd';
 import { toPicket } from '@rapid/libs/common';
 import { useMenuSelector } from '@/menus';
-import { userLogin } from '@/features/zustand';
+import { userLogin } from '@/features';
 import { registerReq } from '@/api';
 import { reserveRoutes, retrieveRoutes } from '@/router/retrieve';
 
@@ -34,7 +34,6 @@ export default function Login() {
   });
 
   const navigate = useNavigate();
-  const userStore = useAppSelector(store => store.user);
   const headerFileMenu = useMenuSelector(menus => menus.headerFileMenu);
 
   const [state] = useReactive({
@@ -52,9 +51,9 @@ export default function Login() {
     }
 
     await useFadeOut(async () => {
-      const { workbenchesRoute } = retrieveRoutes();
+      const { workspaceRoute } = retrieveRoutes();
 
-      navigate(workbenchesRoute.meta.fullPath, { replace: true });
+      navigate(workspaceRoute.meta.fullPath, { replace: true });
     });
   }
 
