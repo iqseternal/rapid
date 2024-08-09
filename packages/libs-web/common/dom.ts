@@ -95,6 +95,9 @@ export const setStyleProperty = <Key extends keyof CSSTypes.CSSStylePropertyDecl
   }
   else if (isFunction(options.convert)) valueStr = options.convert(valueStr);
 
+  if (!node) return;
+  if (!node.style) return;
+
   return node.style[propertyName as any] = valueStr as any;
 }
 

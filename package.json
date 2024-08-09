@@ -16,6 +16,10 @@
     "dev:web:build": "pnpm useUtf8 && pnpm -C ./packages/desktop-web run build",
     "website:dev": "pnpm -C ./packages/website run dev",
     "website:build": "pnpm -C ./packages/website run build",
+    "docs:dev": "pnpm -C ./packages/docs run dev",
+    "docs:build": "pnpm -C ./packages/docs run build",
+    "docs:preview": "pnpm -C ./packages/docs run preview",
+
     "scripts:dev": "pnpm -C scripts dev",
     "scripts:build": "pnpm -C scripts build",
     "packages:build": "pnpm -r --filter=./packages/* run build",
@@ -27,6 +31,7 @@
     "build:linux": "pnpm build && electron-builder --linux --config",
     "build:all": "pnpm build && electron-builder --win --config && electron-builder --mac --config && electron-builder --linux --config",
     "put:website": "pnpm website:build && pnpm -C ./put run put:website",
+    "put:docs": "pnpm docs:build && pnpm -C ./put run put:docs",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue",
     "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"

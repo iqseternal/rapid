@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "put:website": "ts-node ./putWebsite.ts"
+    "put:website": "ts-node ./putWebsite.ts",
+    "put:docs": "ts-node ./putDocs.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "introduce",
+    "label": "介绍"
+  },
+  {
+    "type": "file",
+    "name": "quickStart",
+    "label": "快速开始"
+  }
+]

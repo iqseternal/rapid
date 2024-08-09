@@ -1,0 +1,25 @@
+[
+  {
+    "type": "section-header",
+    "label": "Get Started"
+  },
+  {
+    "type": "dir",
+    "name": "start",
+    "label": "开始"
+  },
+
+  {
+    "type": "dir",
+    "name": "installation",
+    "label": "安装"
+  },
+  {
+    "type": "divider",
+    "dashed": false
+  },
+  {
+    "type": "section-middle",
+    "label": "Learn Rapid"
+  }
+]

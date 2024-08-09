@@ -37,11 +37,15 @@ export default function Header(props: HeaderProps) {
   }, [headerFileMenu, headerEditMenu]);
 
   return <Subfield
-    className={combinationCName(styles.header, commonStyles.appRegion, props.className)}
+    className={combinationCName(
+      styles.header,
+      commonStyles.appRegion,
+      props.className
+    )}
   >
 
     <Subfield
-      className={combinationCName(styles.menuContainer, commonStyles.appRegionNo)}
+      className={combinationCName(styles.menuContainer)}
     >
       <SubfieldFixed
         className={styles.logo}
@@ -50,7 +54,11 @@ export default function Header(props: HeaderProps) {
       </SubfieldFixed>
 
       <Subfield
-        className={combinationCName(styles.menu, commonStyles.userSelectNone)}
+        className={combinationCName(
+          styles.menu,
+          commonStyles.userSelectNone,
+          commonStyles.appRegionNo
+        )}
       >
         {slots.menu
           ? slots.menu
@@ -65,7 +73,9 @@ export default function Header(props: HeaderProps) {
     </Subfield>
 
     <Subfield
-      className={combinationCName(commonStyles.appRegionNo)}
+      className={combinationCName(
+
+      )}
     >
 
     </Subfield>
@@ -74,7 +84,10 @@ export default function Header(props: HeaderProps) {
       <div />
       <div />
 
-      <SubfieldFixed className={commonStyles.appRegionNo} gap={1}>
+      <SubfieldFixed
+        className={commonStyles.appRegionNo}
+        gap={1}
+      >
         {!IS_WEB &&
           <>
             {IS_DEV && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true)} />}

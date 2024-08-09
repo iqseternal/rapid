@@ -12,14 +12,14 @@ export interface WindowScreenSize {
   screenHeight: number;
 }
 
-const innerSize: WindowInnerSize = { innerWidth: window.innerWidth, innerHeight: window.innerHeight };
+const innerSize: WindowInnerSize = { innerWidth: globalThis.window?.innerWidth ?? 0, innerHeight: globalThis.window?.innerHeight ?? 0 };
 const {
   dependenciesList: innerSizeCallbacks,
   appendDep: appendInnerSizeCallback,
   removeDep: removeInnerSizeCallback
 } = useDependenciesListHook<(innerSize: WindowInnerSize, screenSize: WindowScreenSize) => void>();
 
-const screenSize: WindowScreenSize = { screenWidth: window.screen.width, screenHeight: window.screen.height };
+const screenSize: WindowScreenSize = { screenWidth: globalThis.window?.screen?.width ?? 0, screenHeight: globalThis.window?.screen?.height ?? 0 };
 const {
   dependenciesList: screenSizeCallbacks,
   appendDep: appendScreenSizeCallback,
@@ -40,7 +40,7 @@ const windowResizeCallback = useDebounceHook(() => {
   );
   if (innerHasChanged) innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
 }, 20);
-window.addEventListener('resize', windowResizeCallback);
+if (globalThis.window) window.addEventListener('resize', windowResizeCallback);
 
 /**
  * @example
