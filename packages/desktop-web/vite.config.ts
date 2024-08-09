@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const devDir = DEV_DESKTOP_WEB_DIR;
-const devPageRootDir = path.join(DEV_DESKTOP_WEB_DIR, '/src/pages/index');
+const devPageRootDir = DEV_DESKTOP_WEB_DIR;
 
 const distDir = DIST_WEB_DIR;
 const distSrcPageDir = path.join(distDir, './src');
