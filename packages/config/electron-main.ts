@@ -1,5 +1,5 @@
 import type { BrowserWindowConstructorOptions } from 'electron';
-import { CONFIG } from './constants/config';
+import { CONFIG } from './constants';
 
 export { default as iconUrl } from '../../resources/icon.png?asset';
 

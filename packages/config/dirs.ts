@@ -23,6 +23,7 @@ export const DIST_WEB_DIR = path.join(DIST_DIR, './web');
 /** 打包 desktop 的输出目录 */
 export const DIST_DESKTOP_DIR = path.join(DIST_DIR, './desktop');
 
+export const DIST_DOC_DIR = path.join(DIST_DIR, './rapid-doc');
 
 // =================================================================
 

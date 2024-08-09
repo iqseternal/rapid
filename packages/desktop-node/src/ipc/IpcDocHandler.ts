@@ -3,7 +3,7 @@ import { WindowService } from '@/service/WindowService';
 import { app, dialog } from 'electron';
 import { FileService } from '@/service/FileService';
 import { ConvertService } from '@/service/ConvertService';
-import { EXTENSIONS, EXPORTS_EXTENSIONS } from '@rapid/config/constants';
+import {EXTENSIONS, EXPORTS_EXTENSIONS, ExtensionType} from '@rapid/config/constants';
 import { AppFileStorageService } from '@/service/AppStorageService';
 // @ts-ignore
 import type { Meta2dData, Options } from '@/../../desktop-web/node_modules/@meta2d/core';
@@ -28,6 +28,8 @@ type ExportFileTypeToData = {
   [EXPORTS_EXTENSIONS.SVG]: string;
 }
 
+const DOC_EXTENSIONS: string[] = [EXTENSIONS.DOC];
+
 /**
  * 保存一个文档到本地
  * @returns
@@ -36,10 +38,10 @@ export const ipcRdDocSave = makeIpcHandleAction(
   'IpcDoc/save',
   [],
   async (_, filePath: string, data: DocData) => {
-    const ext = path.extname(filePath).substring(1);
+    const ext = path.extname(filePath).substring(1) as ExtensionType;
 
     PrinterService.printWarn(filePath, ext);
-    if (!EXTENSIONS.DOCS.EXTENSIONS.includes(ext)) throw new RuntimeException('保存的图纸文件路径扩展名不符合要求', {
+    if (!DOC_EXTENSIONS.includes(ext)) throw new RuntimeException('保存的图纸文件路径扩展名不符合要求', {
       label: 'IpcDocHandler:save',
       level: 'warning'
     })
@@ -58,7 +60,12 @@ export const ipcRdDocSaveAs = makeIpcHandleAction(
   [],
   async (windowService, data: DocData) => {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
-      filters: [{ extensions: EXTENSIONS.DOCS.EXTENSIONS, name: EXTENSIONS.DOCS.NAME }]
+      filters: [
+        {
+          extensions: [EXTENSIONS.DOC],
+          name: 'rapid图纸文档'
+        }
+      ]
     });
     if (!filePath) throw new RuntimeException('选择另存为文件路径失败', {
       label: 'IpcDocHandler:saveAs',
@@ -78,7 +85,12 @@ export const ipcRdDocOpen = makeIpcHandleAction(
   [],
   async (windowService, docPath?: string) => {
     const filePath = docPath ? [docPath] : dialog.showOpenDialogSync(windowService.window, {
-      filters: [{ extensions: EXTENSIONS.DOCS.EXTENSIONS, name: EXTENSIONS.DOCS.NAME }]
+      filters: [
+        {
+          extensions: [EXTENSIONS.DOC],
+          name: 'rapid图纸文档'
+        }
+      ]
     });
 
     if (!filePath || filePath.length === 0) throw new RuntimeException('打开文件时未选择任何文件', {
@@ -141,7 +153,12 @@ export const ipcRdDocImport = makeIpcHandleAction(
   async <FileType extends EXPORTS_EXTENSIONS.JSON>(windowService: WindowService, filetype: FileType) => {
     if (filetype === EXPORTS_EXTENSIONS.JSON) {
       const filePath = dialog.showOpenDialogSync(windowService.window, {
-        filters: [{ extensions: [filetype], name: EXTENSIONS.DOCS.NAME }]
+        filters: [
+          {
+            extensions: [filetype],
+            name: 'rapid图纸数据文档'
+          }
+        ]
       });
       if (!filePath || filePath.length === 0) throw new RuntimeException('选择导入文件路径失败', {
         label: 'IpcDocHandler:importDoc',

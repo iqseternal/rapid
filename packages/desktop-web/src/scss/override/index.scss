@@ -5,6 +5,7 @@
  */
 @import "../mixin";
 
+// 按钮
 // =====================================================================================================
 button:not(.ant-btn) {
   border-radius: var(--rapid-button-border-radius);
@@ -67,6 +68,7 @@ button.ant-btn.ant-btn-text:not(:disabled) {
   // color: var(--rapid-text-button-text-color);
 }
 
+// 输入框
 // =====================================================================================================
 input::placeholder {
   color: var(--rapid-placeholder-text-color);
@@ -75,7 +77,7 @@ input.ant-input::placeholder {
   color: var(--rapid-placeholder-text-color);
 }
 
-
+// 弹出的提示信息框
 // =====================================================================================================
 .ant-message {
   z-index: 10000;
@@ -150,11 +152,9 @@ div.ant-dropdown {
     border-radius: var(--rapid-dropdown-border-radius);
 
     .ant-dropdown-menu-item {
-
       border-radius: var(--rapid-dropdown-item-border-radius);
 
       .ant-dropdown-menu-title-content {
-
 
       }
     }
@@ -162,31 +162,3 @@ div.ant-dropdown {
 }
 
 
-// =====================================================================================================
-
-/* styles.css */
-
-.fade-appear {
-  transform: translateX(30px);
-}
-.fade-appear-active {
-  transition: all 1s ease-out;
-}
-
-.fade-enter {
-  transform: translateX(30px);
-  opacity: 0;
-}
-.fade-enter-active {
-  transition: all 1s ease-out;
-  opacity: 1;
-  transition: opacity 300ms;
-}
-.fade-exit {
-  opacity: 1;
-}
-.fade-exit-active {
-  opacity: 0;
-  transition: all 1s ease-out;
-  transition: opacity 300ms;
-}

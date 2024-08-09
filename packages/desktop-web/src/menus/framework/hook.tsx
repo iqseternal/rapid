@@ -1,6 +1,6 @@
-import {useRefresh} from '@rapid/libs-web/hooks';
-import {useEffect} from 'react';
-import type {menus} from '../index';
+import { useRefresh } from '@rapid/libs-web/hooks';
+import { useEffect, useCallback } from 'react';
+import type { menus } from '../index';
 
 export type AppMenuType = typeof menus;
 export type AppMenuSelectKey = keyof AppMenuType;
@@ -97,10 +97,7 @@ export const useMenuSelector: AppSelectorHook = <
   const refresh = useRefresh();
 
   // 统一参数
-  const getCollection = (): {
-    selectors: Selectors,
-    callback: (...args: any[]) => any
-  } => {
+  const getCollection = useCallback((): { selectors: Selectors, callback: (...args: any[]) => any } => {
     if (Array.isArray(selectorsArr) && tResultCallback) {
       return {
         selectors: selectorsArr as Selectors,
@@ -119,13 +116,10 @@ export const useMenuSelector: AppSelectorHook = <
       selectors: [] as unknown as Selectors,
       callback: (...args: unknown[]) => (void 0 as TResult)
     }
-  }
+  }, []);
 
   // 获得 selector 与 callback
-  const {
-    selectors,
-    callback
-  } = getCollection();
+  const { selectors, callback } = getCollection();
 
   const menus = selectors.map(selector => selector(runtimeContext.menus));
 
@@ -134,20 +128,15 @@ export const useMenuSelector: AppSelectorHook = <
     menus.forEach(menu => {
       menu.appendEffectCallback(refresh);
       menu.computedCallbacks.forEach(computedObj => {
-        computedObj.effectCallbacks.forEach(callback => {
-          computedObj.target.appendCallback(callback);
-        })
+        computedObj.target.appendCallback(...computedObj.effectCallbacks);
       })
     });
 
     return () => {
-
       menus.forEach(menu => {
         menu.removeEffectCallback(refresh);
         menu.computedCallbacks.forEach(computedObj => {
-          computedObj.effectCallbacks.forEach(callback => {
-            computedObj.target.removeCallback(callback);
-          })
+          computedObj.target.removeCallback(...computedObj.effectCallbacks);
         })
       })
     }

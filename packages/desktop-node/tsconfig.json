@@ -5,13 +5,12 @@
     "types": ["../config/@types"],
     "experimentalDecorators": true,
     "skipDefaultLibCheck": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,
-
+    "resolveJsonModule": true,
     "allowUnusedLabels": true,
     "allowSyntheticDefaultImports": true,
     "paths": {

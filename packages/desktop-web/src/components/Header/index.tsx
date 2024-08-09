@@ -2,15 +2,13 @@ import { combinationCName } from '@rapid/libs-web/common';
 import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
-import { makeVar, themeCssVarsSheet } from '@/themes';
-import {useMemo, ReactNode} from 'react';
+import {useMemo, ReactNode, useEffect} from 'react';
 import { useMenuSelector } from '@/menus';
-import { MaxContent } from '@rapid/libs-web/styled';
 
 import Widget from '@components/Widget';
-
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 import Logo from '@components/Logo';
+
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
@@ -39,12 +37,15 @@ export default function Header(props: HeaderProps) {
   }, [headerFileMenu, headerEditMenu]);
 
   return <Subfield
-    className={combinationCName(styles.header, commonStyles.appRegion, props.className)}
-    onDoubleClick={() => windowRelaunch()}
+    className={combinationCName(
+      styles.header,
+      commonStyles.appRegion,
+      props.className
+    )}
   >
 
     <Subfield
-      className={combinationCName(styles.menuContainer, commonStyles.appRegionNo)}
+      className={combinationCName(styles.menuContainer)}
     >
       <SubfieldFixed
         className={styles.logo}
@@ -53,7 +54,11 @@ export default function Header(props: HeaderProps) {
       </SubfieldFixed>
 
       <Subfield
-        className={combinationCName(styles.menu, commonStyles.userSelectNone)}
+        className={combinationCName(
+          styles.menu,
+          commonStyles.userSelectNone,
+          commonStyles.appRegionNo
+        )}
       >
         {slots.menu
           ? slots.menu
@@ -68,7 +73,9 @@ export default function Header(props: HeaderProps) {
     </Subfield>
 
     <Subfield
-      className={combinationCName(commonStyles.appRegionNo)}
+      className={combinationCName(
+
+      )}
     >
 
     </Subfield>
@@ -77,7 +84,10 @@ export default function Header(props: HeaderProps) {
       <div />
       <div />
 
-      <SubfieldFixed className={commonStyles.appRegionNo} gap={1}>
+      <SubfieldFixed
+        className={commonStyles.appRegionNo}
+        gap={1}
+      >
         {!IS_WEB &&
           <>
             {IS_DEV && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true)} />}

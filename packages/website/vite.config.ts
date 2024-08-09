@@ -7,6 +7,7 @@ import { defineVars } from '../config/structure';
 
 import postcssPresetEnv from 'postcss-preset-env';
 import autoprefixer from 'autoprefixer';
+import reactPlugin from '@vitejs/plugin-react';
 
 import * as path from 'path';
 
@@ -27,7 +28,7 @@ export default defineConfig((configEnv): UserConfig => ({
     }
   },
   plugins: [
-
+    reactPlugin()
   ],
   build: {
     chunkSizeWarningLimit: 2000,

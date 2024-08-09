@@ -10,10 +10,6 @@ import {
 } from './css';
 import styled, { css } from 'styled-components';
 
-export const AppAdapter = combinationStyled('div', fullSizeWidthStyle, justifyCenterStyle, css`
-  display: flex;
-`);
-
 export const MaxScreenWidth = combinationStyled('div', maxScreenWidthStyle);
 export const MaxScreenHeight = combinationStyled('div', maxScreenHeightStyle);
 export const MaxScreen = combinationStyled(MaxScreenWidth, MaxScreenHeight);
@@ -38,7 +34,7 @@ export const Flex = combinationStyled('div', css`
   flex-wrap: wrap;
 `);
 
-export const FlexRow = combinationStyled(Flex, flexDirectionRowStyle, alignItemCenterStyle);
+export const FlexRow = combinationStyled(Flex, fullSizeWidthStyle, flexDirectionRowStyle, alignItemCenterStyle);
 export const FlexColumn = combinationStyled(Flex, flexDirectionColStyle, alignItemCenterStyle);
 
 export const FlexRowBetween = combinationStyled(FlexRow, justifyBetweenStyle);

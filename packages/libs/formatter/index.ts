@@ -1,4 +1,4 @@
-import { isDef } from '@suey/pkg-utils';
+import { isDef, isNull } from '@suey/pkg-utils';
 
 /**
  * 字符串转换
@@ -88,7 +88,7 @@ export const NumberFilters = {
    * NumberFilters.toCurrency(a, 'CNY'); // ￥1,000.12
    */
   toCurrency(value: number | undefined | null, currency = 'CNY' as ('CNY' | 'USD')) {
-    if (!isDef(value)) value = 0;
+    if (!isDef(value) || isNull(value)) value = 0;
     const formatter = new Intl.NumberFormat('zh-CN', {
       style: 'currency',
       currency
@@ -107,6 +107,7 @@ export const NumberFilters = {
    */
   toString(value: number | undefined | null, defaultStr = '') {
     if (!isDef(value)) return defaultStr;
+    if (isNull(value)) return defaultStr;
     return value.toString();
   }
 }

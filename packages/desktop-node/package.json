@@ -18,8 +18,6 @@
     "@rapid/framework": "workspace:^",
     "@rapid/libs": "workspace:^",
     "@rapid/validates": "workspace:^",
-    "electron-store": "^8.2.0",
-    "reflect": "^0.1.3",
-    "reflect-metadata": "^0.2.1"
+    "electron-store": "^8.2.0"
   }
 }

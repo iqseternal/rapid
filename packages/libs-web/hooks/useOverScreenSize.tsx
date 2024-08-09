@@ -1,7 +1,7 @@
-import {useAutoState} from './useAutoState';
-import {useDebounceHook, useDebounce} from './useDebounce';
-import {useEventListener} from './useEventListener';
+import { useDebounceHook, useDebounce } from './useDebounce';
+import { useEventListener } from './useEventListener';
 import { useWindowScreenSizeHook, useWindowInnerSizeHook } from './useWindowSize';
+import { useReactive } from './useReactive';
 
 export interface WindowOverScreenSize {
   overflowWidth: boolean;
@@ -23,7 +23,7 @@ export function useWindowOverScreenSize() {
   const windowScreenSize = useWindowScreenSizeHook();
   const windowInnerSize = useWindowInnerSizeHook();
 
-  const [state, setState] = useAutoState({
+  const [state] = useReactive({
     overflowWidth: windowInnerSize.innerWidth > windowScreenSize.screenWidth,
     overflowHeight: windowInnerSize.innerHeight > windowScreenSize.screenHeight
   });
@@ -33,10 +33,8 @@ export function useWindowOverScreenSize() {
     const overflowHeight = windowInnerSize.innerHeight > windowScreenSize.screenHeight;
 
     if (overflowWidth !== state.overflowWidth || overflowHeight !== state.overflowHeight) {
-      setState(() => {
-        state.overflowWidth = overflowWidth;
-        state.overflowHeight = overflowHeight;
-      })
+      state.overflowWidth = overflowWidth;
+      state.overflowHeight = overflowHeight;
     }
   }, 20, []);
 

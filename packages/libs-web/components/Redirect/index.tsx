@@ -1,7 +1,7 @@
-import {isString} from '@suey/pkg-utils';
-import type {FC, ReactNode, ReactPropTypes, ReactElement} from 'react';
-import {isValidElement} from 'react';
-import { Outlet, useLocation, Navigate } from 'react-router-dom';
+import { isString } from '@suey/pkg-utils';
+import type { FC, ReactNode, ReactPropTypes, ReactElement } from 'react';
+import { isValidElement, useLayoutEffect } from 'react';
+import { Outlet, useLocation, Navigate, useNavigate } from 'react-router-dom';
 
 export interface RedirectProps {
 
@@ -34,13 +34,18 @@ export default function Redirect(props: RedirectProps) {
 
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   let isMatched = false;
 
   if (from instanceof RegExp) isMatched = from.test(location.pathname);
   else if (isString(from)) isMatched = location.pathname === from;
 
-  if (isMatched) return <Navigate to={to} />;
+  // useLayoutEffect(() => {
+  //   if (isMatched) navigate(to);
+  // }, []);
+
+  if (isMatched) return <Navigate to={to} />
 
   if (isValidElement(element)) return element;
 

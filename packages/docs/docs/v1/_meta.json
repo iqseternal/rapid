@@ -1,0 +1,17 @@
+[
+  {
+    "text": "Learn",
+    "link": "/learn/start/introduce",
+    "activeMatch": "^/learn/"
+  },
+  {
+    "text": "规范",
+    "link": "/specification/typescript",
+    "activeMatch": "^/specification/"
+  },
+  {
+    "text": "文档",
+    "link": "/document/index",
+    "activeMatch": "^/document/"
+  }
+]

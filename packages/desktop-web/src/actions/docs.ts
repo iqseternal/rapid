@@ -1,4 +1,3 @@
-import type { Handlers, HandlerMethodTyped } from 'node_modules/@rapid/desktop-node/preload';
 import { makeInvokeActions } from './ipcRenderer';
 
 /** 打开文档数据 */

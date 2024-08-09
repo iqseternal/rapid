@@ -5,7 +5,6 @@ import { FlexRowStart } from '@rapid/libs-web/styled';
 import { Link } from 'react-router-dom';
 import { isNotSpaceStr } from '@libs/judge';
 import { useReactive } from '@/hooks';
-import { printInfo, print, toColor } from '@suey/printer';
 import { apiGet } from '@libs/request/request';
 import { CONFIG } from '@rapid/config/constants';
 

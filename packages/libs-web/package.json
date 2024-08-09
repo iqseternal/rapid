@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@rapid/libs": "workspace:^",
-    "@rapid/validates": "workspace:^"
+    "@rapid/validates": "workspace:^",
+    "ahooks": "^3.8.0"
   }
 }

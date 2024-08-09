@@ -1,0 +1,10 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "../desktop-node/src/ipc/index.ts",
+    "../desktop-node/src/core/index.ts",
+    "../desktop-node/src/store/index.ts"
+  ],
+  "out": "./dist/apiDoc",
+  "tsconfig": "../desktop-node/tsconfig.json"
+}

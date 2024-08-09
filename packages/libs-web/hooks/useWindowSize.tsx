@@ -1,6 +1,7 @@
-import {useEffect, useState, useCallback} from 'react';
-import {useDebounceHook} from './useDebounce';
-import {useRefresh} from './useRefresh';
+import { useEffect, useState, useCallback } from 'react';
+import { useDebounceHook } from './useDebounce';
+import { useRefresh } from './useRefresh';
+import { useDependenciesListHook } from './useDependencies';
 
 export interface WindowInnerSize {
   innerWidth: number;
@@ -11,55 +12,35 @@ export interface WindowScreenSize {
   screenHeight: number;
 }
 
-let innerSizeCallbacks: ((windowInnerSize: WindowInnerSize, windowScreenSize: WindowScreenSize) => void)[] = [];
-let innerSize: WindowInnerSize = {
-  innerWidth: window.innerWidth,
-  innerHeight: window.innerHeight
-};
+const innerSize: WindowInnerSize = { innerWidth: globalThis.window?.innerWidth ?? 0, innerHeight: globalThis.window?.innerHeight ?? 0 };
+const {
+  dependenciesList: innerSizeCallbacks,
+  appendDep: appendInnerSizeCallback,
+  removeDep: removeInnerSizeCallback
+} = useDependenciesListHook<(innerSize: WindowInnerSize, screenSize: WindowScreenSize) => void>();
 
-let screenSizeCallbacks: ((windowScreenSize: WindowScreenSize, windowInnerSize: WindowInnerSize) => void)[] = [];
-let screenSize: WindowScreenSize = {
-  screenWidth: window.screen.width,
-  screenHeight: window.screen.height
-};
+const screenSize: WindowScreenSize = { screenWidth: globalThis.window?.screen?.width ?? 0, screenHeight: globalThis.window?.screen?.height ?? 0 };
+const {
+  dependenciesList: screenSizeCallbacks,
+  appendDep: appendScreenSizeCallback,
+  removeDep: removeScreenSizeCallback
+} = useDependenciesListHook<(screenSize: WindowScreenSize, innerSize: WindowInnerSize) => void>();
 
-/**
- * 初始化一次当前的 size 值
- */
-const initSize = () => {
-  const { innerWidth, innerHeight } = window;
-  const { width: screenWidth, height: screenHeight } = window.screen;
-  innerSize = { innerHeight, innerWidth };
-  screenSize = { screenWidth, screenHeight };
-}
 const windowResizeCallback = useDebounceHook(() => {
   const { width: screenWidth, height: screenHeight } = window.screen;
   const { innerWidth, innerHeight } = window;
-
-  if (!screenSize) screenSize = { screenWidth, screenHeight };
-  else {
-    const hasChanged = (
-      screenSize.screenWidth !== screenWidth ||
-      screenSize.screenHeight !== screenHeight
-    );
-
-    screenSize.screenWidth = screenWidth;
-    screenSize.screenHeight = screenHeight;
-    if (hasChanged && screenSizeCallbacks) screenSizeCallbacks.forEach(callback => callback(screenSize, innerSize));
-  }
-
-  if (!innerSize) innerSize = { innerHeight, innerWidth };
-  else {
-    const hasChanged = (
-      innerSize.innerWidth !== innerWidth ||
-      innerSize.innerHeight !== innerHeight
-    );
-
-    innerSize.innerWidth = innerWidth;
-    innerSize.innerHeight = innerHeight;
-    if (hasChanged && innerSizeCallbacks) innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
-  }
+  const screenHasChanged = (
+    screenSize.screenWidth !== screenWidth ||
+    screenSize.screenHeight !== screenHeight
+  );
+  if (screenHasChanged) screenSizeCallbacks.forEach(callback => callback(screenSize, innerSize));
+  const innerHasChanged = (
+    innerSize.innerWidth !== innerWidth ||
+    innerSize.innerHeight !== innerHeight
+  );
+  if (innerHasChanged) innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
 }, 20);
+if (globalThis.window) window.addEventListener('resize', windowResizeCallback);
 
 /**
  * @example
@@ -69,12 +50,6 @@ const windowResizeCallback = useDebounceHook(() => {
  *
  */
 export function useWindowInnerSizeHook(): Readonly<WindowInnerSize> {
-  if (!innerSize) {
-    initSize();
-
-    window.addEventListener('resize', windowResizeCallback);
-  }
-
   return innerSize;
 }
 
@@ -99,34 +74,18 @@ export function useWindowInnerSize(options?: UseWindowInnerSizeOptions) {
 
   const refresh = useRefresh();
 
-  const handleRefresh = useCallback(() => {
-    refresh();
-  }, []);
-
-  const [windowInnerSize] = useState(() => {
-    return useWindowInnerSizeHook();
-  });
+  const [windowInnerSize] = useState(useWindowInnerSizeHook);
 
   // 依赖回调
   useEffect(() => {
-    innerSizeCallbacks.push(...effects);
+    appendInnerSizeCallback(refresh, ...effects);
 
-    return () => {
-      innerSizeCallbacks = innerSizeCallbacks.filter(fn => {
-        return effects.some(effect => effect === fn);
-      });
-    }
+    return () => removeInnerSizeCallback(refresh, ...effects);
   }, [effects.length]);
-  useEffect(() => {
-    innerSizeCallbacks.push(handleRefresh);
-
-    return () => {
-      innerSizeCallbacks = innerSizeCallbacks.filter(fn => fn === handleRefresh);
-    }
-  }, []);
 
   return [windowInnerSize];
 }
+
 /**
  * @example
  * const windowScreenSize = useWindowScreenSizeHook();
@@ -134,10 +93,6 @@ export function useWindowInnerSize(options?: UseWindowInnerSizeOptions) {
  * console.log(windowScreenSize.screenWidth); // 会打印当前最新的屏幕尺寸(与分辨率有一定关系)
  */
 export function useWindowScreenSizeHook(): Readonly<WindowScreenSize> {
-  if (!screenSize) {
-    initSize();
-    window.addEventListener('resize', windowResizeCallback);
-  }
   return screenSize;
 }
 
@@ -162,31 +117,14 @@ export function useWindowScreenSize(options?: UseWindowScreenSizeOptions) {
 
   const refresh = useRefresh();
 
-  const handleRefresh = useCallback(() => {
-    refresh();
-  }, []);
-
-  const [windowScreenSize] = useState(() => {
-    return useWindowScreenSizeHook();
-  });
+  const [windowScreenSize] = useState(useWindowScreenSizeHook);
 
   // 依赖回调
   useEffect(() => {
-    screenSizeCallbacks.push(...effects);
+    appendScreenSizeCallback(refresh, ...effects);
 
-    return () => {
-      screenSizeCallbacks = screenSizeCallbacks.filter(fn => {
-        return effects.some(effect => effect === fn);
-      });
-    }
+    return () => removeScreenSizeCallback(refresh, ...effects);
   }, [effects.length]);
-  useEffect(() => {
-    screenSizeCallbacks.push(handleRefresh);
-
-    return () => {
-      screenSizeCallbacks = screenSizeCallbacks.filter(fn => fn === handleRefresh);
-    }
-  }, []);
 
   return [windowScreenSize];
 }

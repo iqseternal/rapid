@@ -14,12 +14,15 @@
   top: 0;
 
   .menuContainer {
+    max-width: 100%;
+
     .logo {
 
     }
 
     .menu {
       cursor: default;
+      width: max-content;
 
     }
   }

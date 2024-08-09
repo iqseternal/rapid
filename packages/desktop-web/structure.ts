@@ -1,15 +1,12 @@
 import { defineElectronRendererConfig, resolveAlias } from '../config/structure';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 import reactPlugin from '@vitejs/plugin-react';
 import tsConfigJson from './tsconfig.json';
 
 
 export const inputHtmlPosition = {
-  index: join(__dirname, './src/pages/', 'index/index.html'),
-  setting: join(__dirname, './src/pages/', 'setting/setting.html'),
-  // dialog: join(__dirname, './src/pages/', 'dialog/dialog.html'),
-  reportBugs: join(__dirname, './src/pages/', 'reportBugs/reportBugs.html')
+  index: resolve(__dirname, './index.html')
 }
 
 export default defineElectronRendererConfig(({ mode }) => ({

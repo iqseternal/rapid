@@ -25,10 +25,6 @@ export const headerFileMenu = makeMenu({
           label: '空白文档',
         },
         {
-          key: 'asaaa',
-          type: 'divider'
-        },
-        {
           key: '1-2-2',
           type: 'item',
           label: '模板文档',

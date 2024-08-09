@@ -168,7 +168,7 @@ export async function setupTrayMenu() {
   tray.on('click', async () => {
     const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
     if (!mainWindowService) {
-      setupMainWindow();
+      await setupMainWindow();
       return;
     }
 

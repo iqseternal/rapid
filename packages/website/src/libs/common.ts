@@ -1,5 +1,4 @@
-
-import type { CurrentDeviceInterface, DeviceType } from 'current-device';
+import type { DeviceType } from 'current-device';
 import device from 'current-device';
 
 /**

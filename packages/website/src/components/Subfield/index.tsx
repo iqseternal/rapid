@@ -2,12 +2,13 @@ import type { CSSObject } from 'styled-components';
 import type { CSSProperties } from 'react';
 import { FlexRowBetween, FlexColumnBetween } from '@rapid/libs-web/styled';
 import { isString } from '@suey/pkg-utils';
+import { ReactNode } from 'react';
 
 interface SubfieldProps extends BaseProps {
   slots?: {
-    start?: React.ReactNode;
-    center?: React.ReactNode;
-    end?: React.ReactNode;
+    start?: ReactNode;
+    center?: ReactNode;
+    end?: ReactNode;
   }
   size?: number;
   gap?: string | number;
@@ -18,7 +19,7 @@ interface SubfieldProps extends BaseProps {
  * @param param0
  * @returns
  */
-export function SubfieldSpace({ size = 1, children = '' as React.ReactNode, style = {} as CSSObject, className = '' }) {
+export function SubfieldSpace({ size = 1, children = '' as ReactNode, style = {} as CSSObject, className = '' }) {
   return <div className={className} style={{ flex: size, ...style }}>{children}</div>;
 }
 

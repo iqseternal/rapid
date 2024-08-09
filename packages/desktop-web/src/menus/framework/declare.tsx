@@ -1,6 +1,3 @@
-import IconFont, {IconKey, IconRealKey} from '@components/IconFont';
-import Subfield from '@rapid/libs-web/components/Subfield';
-import {FullSizeWidth} from '@rapid/libs-web/styled';
 import type {
   MenuItemType as AntdMenuItemType,
   SubMenuType as AntdSubMenuType,
@@ -9,8 +6,9 @@ import type {
   ItemType as AntdItemType
 } from 'antd/lib/menu/interface';
 import type { Key, ReactNode } from 'react';
-import { ComputedSelectorObj, computedSelector } from '@/menus/framework/computed';
+import { ComputedSelectorObj } from '@/menus/framework/computed';
 import { MenuItem, SubMenu } from '@components/AutoDropdownMenu/cpts';
+import { IconKey, IconRealKey } from '@components/IconFont';
 
 export type MenuItemType = Omit<AntdMenuItemType, 'disabled'> & {
   hidden?: boolean | ComputedSelectorObj<boolean>;
@@ -21,6 +19,7 @@ export type MenuItemType = Omit<AntdMenuItemType, 'disabled'> & {
   content?: ReactNode;
 
   shortcut?: string | string[];
+  type: 'item';
 };
 export { AntdMenuItemType };
 export function convertMenuItem<Item extends MenuItemType>(item: Item): AntdMenuItemType {
@@ -47,6 +46,7 @@ export function convertMenuItem<Item extends MenuItemType>(item: Item): AntdMenu
 
 export type SubMenuType<T extends ItemType = ItemType> = Omit<AntdSubMenuType, 'children'> & {
   key: string;
+  type: 'submenu';
   iconKey?: IconRealKey;
   children?: T[];
 };
@@ -60,11 +60,7 @@ export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): A
     if (item.type === 'submenu') return convertSubMenu(item as SubMenuType);
     if (item.type === 'group') return convertMenuItemGroupType(item as MenuItemGroupType);
 
-    if (!item.type) {
-      console.warn(`菜单项中含有未定义type的项, 该项会被忽略`);
-      return;
-    }
-
+    console.warn(`菜单项中含有未定义type的项, 该项会被忽略`);
     return;
   }).filter(e => e) as AntdItemType[];
 
@@ -75,25 +71,29 @@ export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): A
   const {
     iconKey,
     label,
+    type,
     ...realSubMenu
   } = subMenu;
 
   return {
     ...realSubMenu,
     children,
-    label: <SubMenu key={realSubMenu.key} icon={iconKey} label={label} />
+    type,
+    label: <SubMenu key={realSubMenu.key} iconKey={iconKey} label={label} />
   };
 }
 
-export type MenuDividerType = AntdMenuDividerType;
+export type MenuDividerType = AntdMenuDividerType & {
+  type: 'divider';
+};
 export { AntdMenuDividerType };
 export function convertMenuDivider<MenuDivider extends MenuDividerType>(divider: MenuDivider): AntdMenuDividerType {
   return divider;
 }
 
 export type MenuItemGroupType<T extends ItemType = ItemType> = Omit<AntdMenuItemGroupType, 'children'> & {
-
   children?: T[];
+  type: 'group';
 };
 export { AntdMenuItemGroupType };
 export function convertMenuItemGroupType<MenuItemGroup extends MenuItemGroupType>(group: MenuItemGroup) {
@@ -105,10 +105,7 @@ export function convertMenuItemGroupType<MenuItemGroup extends MenuItemGroupType
     if (item.type === 'submenu') return convertSubMenu(item as SubMenuType);
     if (item.type === 'group') return convertMenuItemGroupType(item as MenuItemGroupType);
 
-    if (!item.type) {
-      console.warn(`菜单项中含有未定义type的项, 该项会被忽略`);
-      return;
-    }
+    console.warn(`菜单项中含有未定义type的项, 该项会被忽略`);
     return;
   }).filter(e => e) as AntdItemType[];
 
@@ -119,6 +116,7 @@ export function convertMenuItemGroupType<MenuItemGroup extends MenuItemGroupType
 }
 
 export type ItemType<T extends MenuItemType = MenuItemType> = T | SubMenuType<T> | MenuDividerType | MenuItemGroupType<T> | null;
+
 export { AntdItemType };
 
 export type MenuInstance = {
@@ -139,10 +137,7 @@ export function convertMenu<Menu extends MenuInstance>(menu: Menu): AntdMenuInst
     if (item.type === 'submenu') return convertSubMenu(item as SubMenuType);
     if (item.type === 'group') return convertMenuItemGroupType(item as MenuItemGroupType);
 
-    if (!item.type) {
-      console.warn(`菜单项中含有未定义type的项, 该项会被忽略`);
-      return;
-    }
+    console.warn(`菜单项中含有未定义type的项, 该项会被忽略`);
 
     return;
   }).filter(e => e) as AntdItemType[];

@@ -14,7 +14,7 @@ import {
   ipcOpenWindow,
 
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet, ipcStoreHas,
+  ipcStoreSet, ipcStoreHas, ipcStoreGetStore,
 
   ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs,
 
@@ -28,7 +28,7 @@ registerIpcHandle([
 registerIpcHandle([ipcOpenWindow]);
 registerIpcHandle([
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet, ipcStoreHas
+  ipcStoreSet, ipcStoreHas, ipcStoreGetStore
 ]);
 registerIpcHandle([ipcOpenDevTool]);
 registerIpcHandle([
@@ -59,8 +59,8 @@ setupApp(async () => {
   //   label: 'sss'
   // })
 
-  setupMainWindow();
-  setupTrayMenu();
+  await setupMainWindow();
+  await setupTrayMenu();
 
 }, {
   onFailed: async (err) => {

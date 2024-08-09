@@ -69,7 +69,7 @@ export function useTableAttrs<RecordType extends Record<string, unknown>>(props:
   useEffect(() => {
     // 第一次进入页面时自动加载表格数据
     ;(async () => {
-      loadData();
+      await loadData();
     })();
   }, []);
 

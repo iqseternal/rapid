@@ -3,9 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "NodeNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "noImplicitAny": true,
+    // "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   }

@@ -1,11 +1,10 @@
-import {isValidElement} from 'react';
-import type { ItemType } from '../declare';
-import { isArray, isFunction, isObject } from '@suey/pkg-utils';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
+import { isArray, isFunction, isObject } from '@suey/pkg-utils';
+import { isValidElement } from 'react';
 import type { ComputedSelectorObj } from './computed';
 import { isComputedSelectorObj } from './computed';
 import type { MenuInstance } from './declare';
-import { convertMenu, convertSubMenu } from './declare';
+import { convertMenu } from './declare';
 
 export const proxySymbol = Symbol('proxySymbol');
 
@@ -88,6 +87,8 @@ export const makeMenu = <Instance extends MenuInstance,>(menuInstance: Instance)
 
     return new Proxy(target, {
       get(target, p, receiver) {
+        if (p === '__TAG__') return proxySymbol;
+
         return Reflect.get(target, p, receiver);
       },
       set(target, p, newValue, receiver) {
@@ -104,7 +105,7 @@ export const makeMenu = <Instance extends MenuInstance,>(menuInstance: Instance)
 
         return Reflect.deleteProperty(target, p);
       },
-    })
+    });
   }
 
   return {

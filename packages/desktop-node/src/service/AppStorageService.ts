@@ -1,13 +1,10 @@
 import { app } from 'electron';
-import { join, relative, isAbsolute } from 'path';
+import { join } from 'path';
 import { FileService } from './FileService';
-import { RuntimeException, TypeException } from '@/core';
-import { statSync, createReadStream, createWriteStream } from 'fs';
+import { TypeException } from '@/core';
+import { statSync } from 'fs';
 import { ConvertDataType, ConvertService } from './ConvertService';
 import { validateLocalPathHasDriveLetter } from '@rapid/validates';
-import { EXTENSIONS } from '@rapid/config/constants';
-import { Printer } from '@suey/printer';
-import * as fs from 'fs';
 
 /** 内置目录的名称 */
 export type AppDirectoryName = Parameters<typeof app.getPath>[0];

@@ -23,15 +23,15 @@
     "resolveJsonModule": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
-    "types": ["./src/@types", "../config/@types"],
+    "types": ["./src/@types"],
     "paths": {
       "@components/*": ["src/components/*"],
+      "@router/*": ["src/router/*"],
+      "@views/*": ["src/views/*"],
       "@pages/*": ["src/pages/*"],
       "@libs/*": ["src/libs/*"],
       "@meta/*": ["src/meta/*"],
       "@scss/*": ["src/scss/*"],
-      "#constants/*": ["src/constants/*"],
-      "@indexedDB/*": ["src/indexedDB/*"],
       "@/*": ["src/*", "../desktop-node/src/*"]
     }
   },
@@ -40,6 +40,7 @@
     "./src/**/*.vue",
     "./src/**/*.tsx",
 
+    "../libs-web/@types",
     "../config/@types"
   ],
   "exclude": ["node_modules/**/*"]
