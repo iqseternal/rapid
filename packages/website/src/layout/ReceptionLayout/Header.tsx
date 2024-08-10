@@ -13,7 +13,7 @@ import type { LangMap, LangType } from '@/i18';
 import { ConfigProviderProps } from 'antd/es/config-provider';
 import { combinationCName } from '@libs/common';
 import { receptionMenuRoutes } from '@/router';
-import type { RequiredRouteConfig } from '@/router/utils';
+import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 import { useReactive } from '@/hooks';
 import { isArray, isDef, isUnDef } from '@suey/pkg-utils';
 import { CONFIG } from '@rapid/config/constants';

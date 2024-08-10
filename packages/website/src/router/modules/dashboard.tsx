@@ -1,4 +1,4 @@
-import { makeRoute } from '../utils';
+import { makeRoute } from '@rapid/libs-web/router';
 
 import Redirect from '@rapid/libs-web/components/Redirect';
 import DashLayout from '@/layout/DosLayout';

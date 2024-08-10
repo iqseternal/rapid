@@ -1,58 +1,24 @@
 import type { FC } from 'react';
-import { Suspense, useLayoutEffect, useTransition } from 'react';
-import type { PathRouteProps } from 'react-router-dom';
-import { Route, RouteProps, Routes, HashRouter, useRoutes } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { routes } from './routes';
-import type { RequiredRouteConfig } from './utils';
-import { TransitionGroup, CSSTransition, Transition } from 'react-transition-group';
-import type { RedirectProps } from '@rapid/libs-web/components/Redirect';
-import { Skeleton } from 'antd';
-import { FullSize } from '@rapid/libs-web/styled';
+import { Suspense, lazy, useLayoutEffect, useTransition } from 'react';
+import { Route, RouteProps, Routes, Navigate } from 'react-router-dom';
+import { createRoutesChildren, makeRoute } from '@rapid/libs-web/router';
+import { receptionRoutes, dashLoginRoute, dashRoutes } from './modules';
 
 import Redirect from '@rapid/libs-web/components/Redirect';
+import DosLayout from '@/layout/DosLayout';
 
-const Fallback = ({ children }) => {
-  return <Suspense fallback={
-    <Skeleton />
-  }>
-    {children}
-  </Suspense>
-}
+const notFound = makeRoute({ path: '*', name: 'NotFound', component: lazy(() => import('@components/NotFound')) });
 
-const createRouteArr = (routeArr: RequiredRouteConfig[]) => {
-  return routeArr.map((route, index) => {
-    const { redirect, name, meta, children = [], component, ...realRoute } = route;
+const notRole = makeRoute({ path: '/403', name: 'NotRole', component: lazy(() => import('@components/NotRole')) });
 
-    // 渲染自定义组件
-    let Component = component as FC<any>;
-    let componentsProps = {} as RedirectProps;
+export const routes = [
+  makeRoute({ path: '/', name: 'Root', component: <Navigate to={receptionRoutes.path} /> }),
+  receptionRoutes,
+  dashLoginRoute, dashRoutes,
+  notFound, notRole
+];
 
-    // 这是一个重定向组件
-    if (redirect) {
-      Component = Redirect;
-      const from = meta.fullPath;
-      const to = redirect;
-      componentsProps = { from, to, element: component } as RedirectProps;
-    }
-
-    // 放入的是一个 lazy
-    if (Object.hasOwn(Component, '_init') && Object.hasOwn(Component, '_payload')) realRoute.element = <Fallback><Component {...componentsProps} /></Fallback>;
-    // 放入的是一个 FC
-    else if (typeof Component === 'function') realRoute.element = <Component {...componentsProps} />;
-    // 放入的 JSX Element
-    else if (Object.hasOwn(Component, 'type') && Object.hasOwn(Component, 'props') && Object.hasOwn(Component, 'key')) {
-      realRoute.element = Component;
-    }
-
-    return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath ?? index)}>
-      {children && createRouteArr(children)}
-    </Route>
-
-  });
-}
-
-export * from './routes';
+export * from './modules';
 
 export default function RouterContext() {
   return <Suspense
@@ -62,7 +28,7 @@ export default function RouterContext() {
     </>}
   >
     <Routes>
-      {createRouteArr(routes)}
+      {createRoutesChildren(routes)}
     </Routes>
   </Suspense>
 }

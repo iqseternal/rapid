@@ -2,7 +2,7 @@ import { DIST_WEBSITE_DIR } from '../packages/config/dirs';
 import { putContent, type PutArgs } from './libs';
 import * as path from 'path';
 
-const putWebsite: PutArgs = [
+export const putWebsite: PutArgs = [
   'scp',
   [
     '-r',
