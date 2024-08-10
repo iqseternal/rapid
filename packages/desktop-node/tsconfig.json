@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "allowUnusedLabels": true,
     "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
     "paths": {
       "@/*": ["./src/*"]
     }
