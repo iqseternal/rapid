@@ -1,8 +1,9 @@
 
 div.rspress-nav {
 
-  backdrop-filter: blur(1px);
-  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: opacity(.99) blur(1px);
+  background: unset;
+  /* background: rgba(255, 255, 255, 0.8); */
   /* box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 16px 32px -16px rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.1); */
 
 }
@@ -10,4 +11,9 @@ div.rspress-nav {
 /* 搜索框横向铺满剩余空间 */
 div.rspress-nav div:has(div > div.rspress-nav-search-button) {
   flex: 1 1 auto;
+}
+
+
+aside.rspress-sidebar > div:first-child {
+  opacity: 0;
 }
