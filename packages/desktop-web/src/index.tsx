@@ -1,8 +1,8 @@
 
-import { app, themePlugins } from './plugins';
+import { app, themePlugins } from './plugins/index.tsx';
 import { IS_DEV, IS_PROD, CONFIG } from '@rapid/config/constants';
 import { StrictMode } from 'react';
-import { windowDevtool } from './actions';
+import { windowDevtool } from './actions/index.ts';
 
 import ReactDOM from 'react-dom/client';
 import App from './app.tsx';
