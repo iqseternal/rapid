@@ -1,4 +1,5 @@
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
+import type { DefinePluginOptions } from '@rspack/core';
 
 export enum PLATFORMS { WINDOWS, LINUX, MAC, WEB }
 
@@ -10,11 +11,11 @@ export enum CONFIG_ENV_MODE {
 }
 
 export enum CONFIG_ENV_COMMAND {
-  SERVE = 'serve',
+  DEV = 'dev',
   BUILD = 'build'
 }
 
-export function defineVars({ mode }: ConfigEnv) {
+export function defineVars({ mode }: { mode: string;command: string; }) {
   const vars = {
     CURRENT_PLATFORM: PLATFORMS.WINDOWS,
     CURRENT_ENV: ENV.DEV

@@ -18,6 +18,9 @@ export async function setupMainWindow() {
   PrinterService.printInfo('窗口开始构建');
   const appConfigService = AppConfigService.getInstance();
 
+
+  console.log(PAGES_WINDOW_MAIN);
+
   const windowService = new WindowService(appConfigService.config.windows.mainWindow, {
     url: PAGES_WINDOW_MAIN,
     autoLoad: true,

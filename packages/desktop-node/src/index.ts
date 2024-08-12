@@ -20,6 +20,7 @@ import {
 
   ipcOpenDevTool
 } from './ipc';
+import { PrinterService } from './service/PrinterService';
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
@@ -59,11 +60,15 @@ setupApp(async () => {
   //   label: 'sss'
   // })
 
-  await setupMainWindow();
+  const mainWindow = await setupMainWindow();
+
   await setupTrayMenu();
 
 }, {
   onFailed: async (err) => {
+
+    PrinterService.printWarn(err);
+
     // const reportBugsWindowService = await setupReportBugsWindow();
 
     // reportBugsWindowService.show();

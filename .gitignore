@@ -6,3 +6,4 @@
 
 /scripts/build
 /packages/**/components.d.ts
+/packages/**/*.module.scss.d.ts

@@ -1,4 +1,3 @@
-
 {
   "include": [
     "./**/*.ts",
@@ -7,14 +6,13 @@
     "./**/*.vue"
   ],
   "compilerOptions": {
+    "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "baseUrl": ".",
     "lib": ["DOM", "ESNext", "ES2015.Promise"],
-    "jsx": "preserve",
-    "types": [
-      "vite/client"
-    ],
+    "jsx": "react-jsx",
+    "types": [],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "noEmitOnError": true,

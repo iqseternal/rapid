@@ -1,9 +1,8 @@
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { CONFIG } from './constants';
+import { join } from 'path';
 
-import iconUrl from '../../resources/icon.png?raw';
-
-export { iconUrl }
+export const iconUrl = join(__dirname, '../../resources/icon.png');
 
 function makeBrowserWindowOptions<T extends Record<string, BrowserWindowConstructorOptions>>(options: T) {
   return options;

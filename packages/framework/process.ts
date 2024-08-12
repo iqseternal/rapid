@@ -6,6 +6,8 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 // 处理没有捕捉的异常
 process.on('uncaughtException', (reason: Error, origin: string) => {
+  console.log(reason);
+
   filterCatch(reason).catch(err => {
 
 

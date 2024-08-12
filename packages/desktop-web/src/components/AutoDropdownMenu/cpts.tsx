@@ -1,11 +1,13 @@
 import type { IconKey } from '@components/IconFont';
 import { combinationCName } from '@rapid/libs-web/common';
-import type { FC} from 'react';
+import type { FC } from 'react';
 import IconFont from '@components/IconFont';
 import type { MenuItemType, SubMenuType } from '@/menus/framework';
+import { useMemo } from 'react';
 
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './cpts.module.scss';
+
 
 export interface MenuItemProps extends BaseProps {
   /** 该菜单项的 icon name */
@@ -26,9 +28,9 @@ export const MenuItem: FC<MenuItemProps> = (props) => {
     shortcut
   } = props;
 
-  const shortcutKeys = Array.isArray(shortcut) ? shortcut : (
+  const shortcutKeys = useMemo(() => Array.isArray(shortcut) ? shortcut : (
     shortcut ? [shortcut] : []
-  );
+  ), [shortcut]);
 
   return <div
     className={combinationCName(
