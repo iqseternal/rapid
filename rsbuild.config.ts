@@ -1,22 +1,34 @@
+import { defineConfig } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
+import { pluginSass } from '@rsbuild/plugin-sass';
+import { pluginSourceBuild, getMonorepoSubProjects } from '@rsbuild/plugin-source-build';
+import { resolve } from 'path';
 
-import { spawn } from 'child_process';
+const rootPath = __dirname;
+const packagesDir = resolve(__dirname, './packages');
 
-import concurrently from 'concurrently';
+const rsbuildConfig = defineConfig({
+  source: {
+    include: [
+      { and: [rootPath, { not: /[\\/]node_modules[\\/]/ }] },
+      { and: [packagesDir] },
 
-const buildMain = () => {
+      /\.(ts|tsx|jsx|mts|cts)$/
+    ],
+    entry: {
+      index: './apps/desktop-web/src/index.tsx'
+    }
+  },
+  plugins: [
+    pluginSass(),
+    pluginSourceBuild(),
+    pluginReact()
+  ],
+  tools: {
+    rspack: {
+      cache: false
+    }
+  }
+})
 
-  return spawn(`pnpm -C ./packages/desktop-node run dev`);
-}
-
-const buildRenderer =  () => {
-
-  return spawn(`pnpm -C ./packages/desktop-web run dev`);
-}
-
-
-
-const { result } = concurrently([
-  `pnpm -C ./packages/desktop-node run dev`,
-  `pnpm -C ./packages/desktop-web run dev`,
-  `pnpm rs`
-])
+export default rsbuildConfig;

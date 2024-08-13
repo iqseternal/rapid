@@ -85,16 +85,16 @@ $ pnpm scripts:dev
 
 ```bash
 # For windows
-$ pnpm build:win
-$ pnpm build:win:only # 如果不需要执行类型检查和一些额外的命令，那么直接构建
+$ pnpm builda:win
+$ pnpm builda:win:only # 如果不需要执行类型检查和一些额外的命令，那么直接构建
 
 # For macOS
 # 未适配
-$ pnpm build:mac
+$ pnpm builda:mac
 
 # For Linux
 # 未适配
-$ pnpm build:linux
+$ pnpm builda:linux
 ```
 
 # More

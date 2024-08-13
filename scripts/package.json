@@ -1,5 +1,6 @@
 {
   "bin": "./dist/index.js",
+  "type": "module",
   "pkg": {
     "scripts": [],
     "assets": [

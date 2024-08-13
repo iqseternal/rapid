@@ -2,7 +2,8 @@
   "name": "@rapid/libs-web",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "source": "./index.ts",
+  "main": "./index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },
@@ -12,6 +13,6 @@
   "dependencies": {
     "@rapid/libs": "workspace:^",
     "@rapid/validates": "workspace:^",
-    "ahooks": "^3.8.0"
+    "ahooks": "^3.8.1"
   }
 }

@@ -1,7 +1,7 @@
 appId: com.electron.app
 productName: rapid
 directories:
-  buildResources: build
+  buildResources: builda
 files:
   - '**/*'
   - '!**/.vscode/*'
@@ -30,7 +30,7 @@ files:
 asarUnpack:
   - resources/**
   - scripts/**
-afterSign: build/notarize.js
+afterSign: builda/notarize.js
 win:
   executableName: rapid
 nsis:
@@ -39,8 +39,8 @@ nsis:
   allowElevation: true # 允许请求提升。
   allowToChangeInstallationDirectory: true # 允许修改安装目录
   removeDefaultUninstallWelcomePage: false # 删除默认的“卸载欢迎”页面。
-  installerIcon: 'build/icon.ico' # 安装图标
-  uninstallerIcon: 'build/icon.ico' # 卸载图标
+  installerIcon: 'builda/icon.ico' # 安装图标
+  uninstallerIcon: 'builda/icon.ico' # 卸载图标
   createDesktopShortcut: true # 创建桌面快捷方式
   createStartMenuShortcut: true # 创建开始菜单图标
   runAfterFinish: true # 安装完后是否运行项目
@@ -49,7 +49,7 @@ nsis:
   uninstallDisplayName: ${productName}
   packElevateHelper: true # 是否打包 elevate 可执行文件（如果使用或将来可以使用每台计算机安装程序，则 electron-updater 需要）
 mac:
-  entitlementsInherit: build/entitlements.mac.plist
+  entitlementsInherit: builda/entitlements.mac.plist
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.

@@ -11,7 +11,7 @@ import rendererConfigFn from './packages/desktop-web/structure';
 
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
-  LINT_ON_BUILD: true, // build 模式下启用 lint
+  LINT_ON_BUILD: true, // builda 模式下启用 lint
 } as const;
 
 const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig, MainConfig>(mainConfigFn(configEnv), {

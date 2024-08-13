@@ -1,11 +1,23 @@
 {
   "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-    "./**/*.d.ts",
-    "./**/*.vue"
+    "./@types/**/*.ts",
+    "./@types/**/*.tsx",
+
+    "./common/**/*.ts",
+    "./common/**/*.tsx",
+    "./components/**/*.ts",
+    "./components/**/*.tsx",
+    "./hooks/**/*.ts",
+    "./hooks/**/*.tsx",
+    "./router/**/*.ts",
+    "./router/**/*.tsx",
+    "./styled/**/*.ts",
+    "./styled/**/*.tsx",
+
+    "./index.ts"
   ],
   "compilerOptions": {
+    "composite": true,
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -15,8 +27,11 @@
     "types": [],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "isolatedModules": true,
     "noEmitOnError": true,
     "noImplicitReturns": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

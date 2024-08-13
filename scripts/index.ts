@@ -1,45 +1,15 @@
+import axios from "axios";
 
-import {} from 'typescript';
+const shopifyUrl = "https://international.victoriabeckham.com";
+const dataUrl = `${shopifyUrl}/products.json`;
 
-
-// 使用示例
-async function example() {
-  const promise = new Promise<string, number>((resolve, reject) => {
-    // 模拟异步操作
-    setTimeout(() => {
-      resolve("Success");
-      // 或者 reject(new Error("Failure"));
-    }, 1000);
-  });
-
-
-  const p = new Promise<{
-    a: number;
-  }, number>((resolve, reject) => {
-
-  });
-
-
-  p
-  .then(res => {
-
-    console.log(res.a);
-
-    return Promise.reject(2);
-  }, err => {
-
-    return 2;
+const getShopDatas = async () => {
+  const data = await axios.get('https://international.victoriabeckham.com/products.json', {
+    headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36' },
+  }).catch((error)=>{
+    console.log(error);
   })
-  .catch(err => {
+  console.log(data.data);
+};
 
-    err.toFixed(2);
-
-  })
-
-
-
-
-  return promise;
-}
-
-example();
+getShopDatas()
