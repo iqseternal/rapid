@@ -387,7 +387,7 @@
   "editor.suggest.showDeprecated": false,
   "files.trimTrailingWhitespace": true,
   "workbench.startupEditor": "none",
-  "editor.fontSize": 17,
+  "editor.fontSize": 14,
   "workbench.hover.delay": 250,
   "files.maxMemoryForLargeFilesMB": 8192,
   "typescript.tsserver.maxTsServerMemory": 8192,
@@ -421,7 +421,7 @@
   "volar.format.initialIndent": {
     "html": true
   },
-  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontSize": 15,
   "workbench.colorTheme": "GitHub Dark",
   "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "git.openRepositoryInParentFolders": "never",
@@ -440,5 +440,6 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
     "rspack"
-  ]
+  ],
+  "notebook.markup.fontSize": 0
 }

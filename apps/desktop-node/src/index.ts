@@ -57,11 +57,8 @@ setupContext({
 
 })
 
-
 setupApp(async () => {
   const mainWindow = await setupMainWindow();
-
-  // console.log(mainWindow);
 
   await setupTrayMenu();
 }, {

@@ -1,4 +1,4 @@
-import { defineElectronMainConfig, resolveAlias, defineElectronPreloadConfig } from '../config/structure';
+import { defineElectronMainConfig, resolveAlias, defineElectronPreloadConfig } from '../../packages/config/structure';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.json';

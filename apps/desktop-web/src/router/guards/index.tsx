@@ -115,7 +115,7 @@ export const Guards = {
         state.authFinished = false;
         state.authorized = false;
       }
-    });
+    }, []);
 
     return <GuardsContext.Authorized.Provider value={authorizedContext}>
       {!state.authorized ? <Skeleton /> : <Component {...props} ref={ref} />}

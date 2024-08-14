@@ -213,7 +213,6 @@ export function toMakeIpcAction<
      *  '句柄',
      *  [],
      *  async () => {
-     *
      *  }
      * );
      *

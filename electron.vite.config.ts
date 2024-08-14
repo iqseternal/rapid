@@ -4,10 +4,10 @@ import type { Plugin } from 'vite';
 import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
 import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR, DEV_DESKTOP_WEB_DIR } from './packages/config/dirs';
-import { mainConfigFn, preloadConfigFn } from './packages/desktop-node/structure';
+import { mainConfigFn, preloadConfigFn } from './apps/desktop-node/structure';
 
 import eslintPlugin from 'vite-plugin-eslint';
-import rendererConfigFn from './packages/desktop-web/structure';
+import rendererConfigFn from './apps/desktop-web/structure';
 
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
@@ -62,7 +62,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
   define: defineVars(configEnv),
   plugins: [],
   server: {
-    port: 8888,
+    port: 8790,
     hmr: true,
     host: '0.0.0.0',
     open: false,
@@ -89,7 +89,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
  * @returns
  */
 function loadLintPlugins({ command }: ConfigEnv): Plugin[] {
-  if (command === CONFIG_ENV_COMMAND.SERVE) {
+  if (command === 'serve') {
     if (!START_OPTIONS.LINT_ON_DEV) return [];
   }
   else if (command === CONFIG_ENV_COMMAND.BUILD) {

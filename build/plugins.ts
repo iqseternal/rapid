@@ -6,13 +6,18 @@ import { exec } from 'child_process';
 import { resolve } from 'path';
 import { existsSync, statSync } from 'fs';
 import { startElectron, closeElectron, restartElectron } from './bin';
+
 import chokidar from 'chokidar';
 
 export class PluginWidthStartElectron {
   apply(compiler: Compiler) {
     if (IS_PROD) return;
 
-    const watcher = chokidar.watch(compiler.outputPath);
+    const watcher = chokidar.watch(compiler.outputPath, {
+      awaitWriteFinish: true,
+      ignored: /(^|[\/\\])\../, // 忽略隐藏文件
+      persistent: true,
+    });
 
     watcher.on('change', () => restartElectron(compiler.outputPath));
     watcher.on('ready', () => startElectron(compiler.outputPath));

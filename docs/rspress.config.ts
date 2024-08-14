@@ -12,6 +12,8 @@ export default defineConfig({
   logo: '/icon.png',
   logoText: 'Rapid',
 
+
+
   search: {
     versioned: true,
   },
@@ -66,6 +68,10 @@ export default defineConfig({
 
   outDir: DIST_DOC_DIR,
   builderConfig: {
+    server: {
+      port: 8900
+    },
+
     output: {
       cleanDistPath: true
     }

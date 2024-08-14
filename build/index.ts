@@ -1,6 +1,5 @@
 import { resolve, join } from 'path';
 import { OUT_DESKTOP_MAIN_DIR, DEV_DESKTOP_WEB_DIR, DEV_DESKTOP_NODE_DIR } from '../packages/config/dirs';
-import { PLATFORMS, ENV, CONFIG_ENV_MODE } from '../target.config';
 import { mode, command, IS_DEV, IS_PROD } from './env';
 
 import type { RspackOptions } from '@rspack/core';

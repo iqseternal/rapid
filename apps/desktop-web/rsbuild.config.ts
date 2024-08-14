@@ -24,8 +24,13 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginTypedCSSModules(),
       pluginReact()
     ],
+
+    server: {
+      port: 3002
+    },
     output: {
       polyfill: 'off',
+      assetPrefix: '.',
       distPath: {
         root: OUT_DESKTOP_RENDERER_DIR,
       },

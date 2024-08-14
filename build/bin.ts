@@ -39,6 +39,8 @@ export const restartElectron = (entryPath: string = '') => {
     Printer.printError(`没有kill成功子进程, Electron重启失败`);
     return;
   }
+  if (electronProcess.killed) return;
+
   treeKill(electronProcess.pid, 'SIGTERM', err => {
     if (err) Printer.printError(err);
     electronProcess = exec(`${bin} ${entryPath}`);

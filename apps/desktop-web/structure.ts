@@ -1,4 +1,4 @@
-import { defineElectronRendererConfig, resolveAlias } from '../config/structure';
+import { defineElectronRendererConfig, resolveAlias } from '../../packages/config/structure';
 import { join, resolve } from 'path';
 
 import reactPlugin from '@vitejs/plugin-react';
