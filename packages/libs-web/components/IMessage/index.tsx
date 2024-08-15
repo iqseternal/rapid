@@ -1,12 +1,11 @@
+import { message } from 'antd';
 
-import { message as antdMessage } from 'antd';
-
-antdMessage.config({
+message.config({
 
   duration: 1,
   maxCount: 2
 })
 
-export const IMessage = antdMessage;
+export const IMessage: typeof message = message;
 
 export default IMessage;

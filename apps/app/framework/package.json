@@ -1,0 +1,15 @@
+{
+  "name": "@rapid/framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^"
+  }
+}

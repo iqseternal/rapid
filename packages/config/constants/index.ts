@@ -17,15 +17,15 @@ export * from './others';
 export { PLATFORMS, ENV };
 
 // 运行的操做系统环境
-export const IS_WINDOWS = CURRENT_PLATFORM === PLATFORMS.WINDOWS;
-export const IS_MAC = CURRENT_PLATFORM === PLATFORMS.MAC;
-export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS.LINUX;
+export const IS_WINDOWS = globalThis.CURRENT_PLATFORM === PLATFORMS.WINDOWS;
+export const IS_MAC = globalThis.CURRENT_PLATFORM === PLATFORMS.MAC;
+export const IS_LINUX = globalThis.CURRENT_PLATFORM === PLATFORMS.LINUX;
 // 是否构建 Web 平台代码
-export const IS_WEB = CURRENT_PLATFORM === PLATFORMS.WEB;
+export const IS_WEB = globalThis.CURRENT_PLATFORM === PLATFORMS.WEB;
 
 // 当前的开发环境
-export const IS_DEV = CURRENT_ENV === ENV.DEV;
-export const IS_PROD = CURRENT_ENV === ENV.PROD;
+export const IS_DEV = globalThis.CURRENT_ENV === ENV.DEV;
+export const IS_PROD = globalThis.CURRENT_ENV === ENV.PROD;
 
 /** 自定义文件的扩展名 */
 export const EXTENSIONS = {

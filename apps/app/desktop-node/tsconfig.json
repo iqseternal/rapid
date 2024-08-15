@@ -1,0 +1,40 @@
+{
+  "extends": "@rapid/config/tsconfig.node.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": [],
+    "lib": ["ESNext"],
+    "composite": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "allowUnusedLabels": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./preload/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./src/**/*.test.ts",
+    "./preload/**/*.test.ts",
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

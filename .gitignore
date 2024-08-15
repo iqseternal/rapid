@@ -1,9 +1,16 @@
 /**/node_modules
-/**/test
 /**/dist
 /**/cache
 /**/out
 
 /scripts/build
-/packages/**/components.d.ts
-/packages/**/*.module.scss.d.ts
+
+# 测试文件
+# /**/test/
+# /**/*.test.js
+# /**/*.test.jsx
+# /**/*.test.ts
+# /**/*.test.tsx
+
+# Scss 声明文件
+/**/*.module.scss.d.ts

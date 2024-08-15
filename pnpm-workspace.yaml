@@ -3,5 +3,7 @@ packages:
   - 'packages/*'
   # 排除所有包含 test 的包
   - '!**/test/**'
-  - libs-web
-  - 'app/*'
+  - 'apps/app/*'
+  - 'apps/*'
+  - 'rapid-apps/*'
+  - 'rapid-apps/app/*'

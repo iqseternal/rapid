@@ -1,0 +1,18 @@
+{
+  "bin": "@rapid/scripts",
+  "type": "module",
+  "pkg": {
+    "scripts": [],
+    "assets": [
+
+    ]
+  },
+  "name": "scripts",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false",
+    "dev": "tsnd -r tsconfig-paths/register --respawn ./index.ts",
+    "build": "pnpm typecheck && pnpm build:commonjs && pnpm build:node",
+    "build:commonjs": "tsc --rootDir . --outDir ./dist --module CommonJS --declaration false --removeComments true && tsc-alias",
+    "build:node": "pkg . -t win --out-path=./build --debug"
+  }
+}

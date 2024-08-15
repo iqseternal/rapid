@@ -1,0 +1,21 @@
+{
+  "name": "@rapid/desktop-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^",
+    "@rapid/desktop-node": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/libs-web": "workspace:^",
+    "current-device": "^0.10.2"
+  }
+}

@@ -7,9 +7,9 @@ export const ROOT_DIR = path.join(__dirname, '../../');
 
 
 /** 项目开发 node 目录 */
-export const DEV_DESKTOP_NODE_DIR = path.join(ROOT_DIR, './apps/desktop-node');
+export const DEV_DESKTOP_NODE_DIR = path.join(ROOT_DIR, './rapid-apps/app/desktop-node');
 /** 项目开发 Web 目录 */
-export const DEV_DESKTOP_WEB_DIR = path.join(ROOT_DIR, './apps/desktop-web');
+export const DEV_DESKTOP_WEB_DIR = path.join(ROOT_DIR, './rapid-apps/app/desktop-web');
 
 // =================================================================
 
@@ -27,7 +27,7 @@ export const DIST_DOC_DIR = path.join(DIST_DIR, './rapid-doc');
 
 // =================================================================
 
-export const OUT_DESKTOP_ROOT_DIR = path.join(ROOT_DIR, './out');
+export const OUT_DESKTOP_ROOT_DIR = path.join(ROOT_DIR, './apps/app/out');
 
 /** desktop out main 的输出目录 */
 export const OUT_DESKTOP_MAIN_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './main');

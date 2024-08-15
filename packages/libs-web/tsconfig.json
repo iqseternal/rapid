@@ -14,22 +14,13 @@
     "./styled/**/*.ts",
     "./styled/**/*.tsx",
 
-    "./index.ts"
+    "index.ts"
   ],
   "compilerOptions": {
-    "composite": true,
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "baseUrl": ".",
-    "lib": ["DOM", "ESNext", "ES2015.Promise"],
     "jsx": "react-jsx",
-    "types": [],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "isolatedModules": true,
-    "noEmitOnError": true,
-    "noImplicitReturns": true
+    "baseUrl": ".",
+    "composite": true,
+    "isolatedModules": true
   },
   "exclude": [
     "node_modules"

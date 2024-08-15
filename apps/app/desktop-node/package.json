@@ -1,0 +1,21 @@
+{
+  "name": "@rapid/desktop-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rspack dev",
+    "build": "rspack build",
+    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/framework": "workspace:^",
+    "@rapid/validates": "workspace:^"
+  }
+}

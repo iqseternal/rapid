@@ -2,6 +2,7 @@
   "name": "@rapid/config",
   "version": "1.0.0",
   "description": "",
+  "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },

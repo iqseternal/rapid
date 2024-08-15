@@ -1,2 +1,2 @@
 
-export { default as iconUrl } from '../../resources/icon.png?asset';
+export { default as iconUrl } from '../../apps/app/resources/icon.png?asset';

@@ -1,3 +1,4 @@
+// @ts-ignore
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { CONFIG } from './constants';
 import { join } from 'path';

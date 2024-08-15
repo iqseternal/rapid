@@ -1,0 +1,21 @@
+{
+  "include": [
+    "rspack.config.ts",
+    "tsconfig.json",
+    "../../../build/**/*.ts",
+    "../../../packages/config/**/*.ts"
+  ],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": ".",
+    "composite": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "noEmitOnError": true,
+    "rootDir": "../../../"
+  },
+  "exclude": ["node_modules"]
+}
