@@ -10,7 +10,7 @@
   },
   "include": [
     "./**/*.ts",
-    "../config/@types"
+    "../../../packages/config/@types"
   ],
   "exclude": ["node_modules"]
 }

@@ -23,16 +23,9 @@ export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS.LINUX;
 // 是否构建 Web 平台代码
 export const IS_WEB = CURRENT_PLATFORM === PLATFORMS.WEB;
 
-
-
 // 当前的开发环境
 export const IS_DEV = CURRENT_ENV === ENV.DEV;
 export const IS_PROD = CURRENT_ENV === ENV.PROD;
-
-console.log(CURRENT_ENV, CURRENT_PLATFORM);
-console.log(ENV.DEV, PLATFORMS.WINDOWS);
-console.log(IS_DEV, IS_PROD);
-
 
 /** 自定义文件的扩展名 */
 export const EXTENSIONS = {

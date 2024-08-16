@@ -4,8 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "rspack dev",
-    "build": "rspack build",
     "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
   },
   "keywords": [],

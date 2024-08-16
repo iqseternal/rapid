@@ -6,6 +6,7 @@
   "main": "out/main/index.js",
   "scripts": {
     "dev": "cross-env COMMAND=dev ts-node ./rsbuild.config.ts",
+    "dev:app": "cross-env COMMAND=dev DEV_SERVER_MODE=all ts-node ./rsbuild.config.ts",
     "build": "cross-env COMMAND=build ts-node ./rsbuild.config.ts",
     "preview": "cross-env COMMAND=preview ts-node ./rsbuild.config.ts",
     "build:win": "pnpm build && electron-builder --win --config",

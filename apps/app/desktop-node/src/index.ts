@@ -57,7 +57,6 @@ setupContext({
 })
 
 setupApp(async () => {
-  // console.log('创建窗口了');
   const mainWindow = await setupMainWindow();
 
   await setupTrayMenu();

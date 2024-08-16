@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "依赖介绍说明"
+  },
+  {
+    "type": "file",
+    "name": "devDependencies",
+    "label": "开发时依赖"
+  },
+  {
+    "type": "file",
+    "name": "dependencies",
+    "label": "生产时依赖"
+  }
+]

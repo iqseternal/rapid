@@ -2,9 +2,12 @@
 # pnpm run test
 
 . "$(dirname -- "$0")/_/husky.sh"
-# pnpm typecheck
+
 
 pnpm test
+
+pnpm typecheck
+
 
 pnpm exec lint-staged
 pnpm lint

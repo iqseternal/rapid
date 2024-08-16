@@ -23,8 +23,6 @@ export async function setupMainWindow() {
     windowKey: WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW
   });
 
-  console.log(PAGES_WINDOW_MAIN);
-
   windowService.window.webContents.setFrameRate(144);
   windowService.window.setMenu(null);
   windowService.window.webContents.setWindowOpenHandler((details) => {

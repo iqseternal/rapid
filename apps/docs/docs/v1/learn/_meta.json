@@ -8,7 +8,6 @@
     "name": "start",
     "label": "开始"
   },
-
   {
     "type": "dir",
     "name": "installation",
@@ -19,7 +18,17 @@
     "dashed": false
   },
   {
-    "type": "section-middle",
+    "type": "section-header",
     "label": "Learn Rapid"
+  },
+  {
+    "type": "dir",
+    "name": "menus",
+    "label": "项目目录"
+  },
+  {
+    "type": "dir",
+    "name": "dependencies",
+    "label": "依赖介绍"
   }
 ]
