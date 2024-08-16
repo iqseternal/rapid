@@ -2,9 +2,6 @@
 import { resolve, join } from 'path';
 import { OUT_DESKTOP_MAIN_DIR } from '../packages/config/dirs';
 import { PLATFORMS, ENV, CONFIG_ENV_MODE } from '../target.config';
-import { mode, command, IS_DEV, IS_PROD } from './env';
-
-
 
 export const resolveAlias = (basePath: string, aliasPath: Record<string, string[]>) => {
   const alias: Record<string, string> = {};
@@ -16,7 +13,7 @@ export const resolveAlias = (basePath: string, aliasPath: Record<string, string[
   return alias;
 }
 
-export const defineVars = () => {
+export const defineVars = ({ mode }: { mode: 'development' | 'production' }) => {
   const vars = {
     CURRENT_PLATFORM: PLATFORMS.WINDOWS,
     CURRENT_ENV: ENV.DEV

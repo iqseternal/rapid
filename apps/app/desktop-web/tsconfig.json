@@ -42,7 +42,7 @@
     "./src/**/*.tsx",
 
     "../packages/libs-web/@types",
-    "../../packages/config/@types"
+    "../../../packages/config/@types"
   ],
   "exclude": ["node_modules/**/*"]
 }

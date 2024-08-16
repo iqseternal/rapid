@@ -29,12 +29,9 @@
   ],
   "exclude": [
     "node_modules",
-    "./src/**/*.test.ts",
-    "./preload/**/*.test.ts",
+    "*.test.ts"
   ],
   "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    { "path": "./tsconfig.node.json" }
   ]
 }

@@ -1,6 +1,5 @@
-/// <reference types="vite/client" />
 
-declare module "*?asset" {
+declare module "*?raw" {
   const data: string;
   export default data;
 }

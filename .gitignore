@@ -6,6 +6,7 @@
 /scripts/build
 
 # 测试文件
+/coverage/
 # /**/test/
 # /**/*.test.js
 # /**/*.test.jsx

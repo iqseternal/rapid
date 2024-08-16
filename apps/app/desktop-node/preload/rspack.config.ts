@@ -3,7 +3,7 @@ import { defineConfig } from '@rspack/cli';
 import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR } from '@rapid/config/dirs';
 import { node, DefinePlugin, DefinePluginOptions, HotModuleReplacementPlugin, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import type { RspackOptions, RspackPluginInstance } from '@rspack/core';
-import { resolveAlias, PluginWidthStartElectron, rules, defineVars, IS_DEV, IS_PROD } from '../../../../build';
+import { resolveAlias, rules, defineVars, IS_DEV, IS_PROD } from '../../../../build';
 import { join } from 'path';
 
 const rspackConfig: RspackOptions = defineConfig({
@@ -23,7 +23,6 @@ const rspackConfig: RspackOptions = defineConfig({
     },
   },
   plugins: [
-    new DefinePlugin(defineVars() as unknown as DefinePluginOptions),
     new node.NodeTargetPlugin(),
     new node.NodeTemplatePlugin(),
   ],

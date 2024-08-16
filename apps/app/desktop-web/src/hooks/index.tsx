@@ -36,7 +36,12 @@ export function useFadeIn(beforeCallback?: () => void | Promise<any>, options?: 
         windowShow({ show: true }).catch(onError);
       });
     }
+
+    console.log('检查当前是否是 Web');
     if (IS_WEB) return;
+
+    console.log('展示窗口');
+
 
     setTimeout(async () => {
       windowShow({ show: true }).catch(onError);

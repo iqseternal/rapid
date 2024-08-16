@@ -10,10 +10,6 @@ import rsbuild from '@rsbuild/core';
 
 export { mode, command, IS_DEV, IS_PROD };
 
-export { bin, startElectron, closeElectron, restartElectron } from './bin';
-
-export { PluginWidthStartElectron } from './plugins';
-
 export { rules } from './rules';
 
 export { resolveAlias, defineVars } from './utils';

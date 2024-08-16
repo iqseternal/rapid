@@ -6,10 +6,10 @@
   "main": "./out/main/index.js",
   "packageManager": "pnpm@8.9.0",
   "scripts": {
-    "bt": "tsup",
-    "pr": "cross-env NODE_ENV=development ts-node ./rsbuild.config.ts",
-    "pr:build": "cross-env NODE_ENV=production ts-node ./rsbuild.config.ts && electron-builder --win --config",
-    "rs": "electron ./packages/desktop-node/src/index.ts",
+    "app:dev": "pnpm -C ./apps/app run dev",
+    "app:build": "pnpm -C ./apps/app run build",
+    "app:preview": "pnpm -C ./apps/app run preview",
+
     "useUtf8": "chcp 65001",
     "typecheck": "pnpm -r --filter=./packages/* run typecheck",
     "start": "pnpm useUtf8 && electron-vite preview",
