@@ -1,4 +1,4 @@
-import type { Handlers } from 'node_modules/@rapid/desktop-node/preload';
+import type { Handlers } from 'node_modules/@rapid/desktop-preload';
 import { IS_WEB, PLATFORMS } from '@rapid/config/constants';
 
 export const makeInvokeActions = <InvokeKey extends keyof Handlers>(invokeKey: InvokeKey): Handlers[InvokeKey] => {

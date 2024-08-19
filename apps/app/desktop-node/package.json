@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.main.json\"  \"tsc --noEmit -p tsconfig.node.json\""
   },
   "keywords": [],
   "author": "",

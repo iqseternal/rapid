@@ -1,8 +1,8 @@
-import { defineElectronRendererConfig, resolveAlias } from '../../packages/config/structure';
+import { defineElectronRendererConfig, resolveAlias } from '../../../packages/config/structure';
 import { join, resolve } from 'path';
 
 import reactPlugin from '@vitejs/plugin-react';
-import tsConfigJson from './tsconfig.json';
+import tsConfigJson from './tsconfig.web.json';
 
 
 export const inputHtmlPosition = {

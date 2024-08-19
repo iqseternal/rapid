@@ -3,9 +3,11 @@
  * preload 需要的类型声明
  * ==========================================
  */
-import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererEvent } from '@electron-toolkit/preload';
-import type { CutHead } from '@rapid/libs';
-import type * as actions from '@/ipc';
+import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener } from '@electron-toolkit/preload';
+import type { CutHead } from '@suey/pkg-utils';
+import type * as actions from '../desktop-node/src/ipc';
+
+export type IpcRendererEvent = Parameters<IpcRendererListener>[0];
 
 // 引入所有的 Action, 这就是为什么不许 ipc/index.ts 到处多余的变量
 export type AllAction = typeof actions;

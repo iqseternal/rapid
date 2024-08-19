@@ -5,10 +5,10 @@
   "private": true,
   "main": "out/main/index.js",
   "scripts": {
-    "dev": "cross-env COMMAND=dev ts-node ./rsbuild.config.ts",
-    "dev:app": "cross-env COMMAND=dev DEV_SERVER_MODE=all ts-node ./rsbuild.config.ts",
-    "build": "cross-env COMMAND=build ts-node ./rsbuild.config.ts",
-    "preview": "cross-env COMMAND=preview ts-node ./rsbuild.config.ts",
+    "dev": "cross-env COMMAND=dev \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "dev:app": "cross-env COMMAND=dev DEV_SERVER_MODE=all \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "build": "cross-env COMMAND=build \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "preview": "cross-env COMMAND=preview \"ts-node --project tsconfig.node.json ./rspack.ts\"",
     "build:win": "pnpm build && electron-builder --win --config",
     "postinstall": "electron-builder install-app-deps"
   },

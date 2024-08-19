@@ -1,13 +1,13 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin } from 'electron-vite';
-import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from '../../target.config';
+import { ENV, PLATFORMS, CONFIG_ENV_MODE, CONFIG_ENV_COMMAND, defineVars } from './target.config';
 import type { Plugin } from 'vite';
-import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from '../../packages/config/structure';
+import type { ConfigEnv, MainConfig, PreloadConfig, RendererConfig } from './packages/config/structure';
 import { mergeConfig } from 'vite';
-import { mainConfigFn, preloadConfigFn } from './desktop-node/structure';
-import { DIRS } from '../../config';
+import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_RENDERER_DIR, DEV_DESKTOP_WEB_DIR } from './packages/config/dirs';
+import { mainConfigFn, preloadConfigFn } from './apps/app/desktop-node/structure';
 
 import eslintPlugin from 'vite-plugin-eslint';
-import rendererConfigFn from './desktop-web/structure';
+import rendererConfigFn from './apps/app/desktop-web/structure';
 
 const START_OPTIONS = {
   LINT_ON_DEV: false, // dev 模式下启用 lint
@@ -31,7 +31,7 @@ const mainConfig = (configEnv: ConfigEnv): MainConfig => mergeConfig<MainConfig,
       }
     },
     sourcemap: false,
-    outDir: DIRS.OUT_DESKTOP_MAIN_DIR
+    outDir: OUT_DESKTOP_MAIN_DIR
   },
   server: {
     open: false
@@ -53,12 +53,12 @@ const preloadConfig = (configEnv: ConfigEnv): PreloadConfig => mergeConfig<Prelo
         drop_debugger: true
       }
     },
-    outDir: DIRS.OUT_DESKTOP_PRELOAD_DIR
+    outDir: OUT_DESKTOP_PRELOAD_DIR
   }
 }));
 
 const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<RendererConfig, RendererConfig>(rendererConfigFn(configEnv), {
-  root: DIRS.DEV_DESKTOP_WEB_DIR,
+  root: DEV_DESKTOP_WEB_DIR,
   define: defineVars(configEnv),
   plugins: [],
   server: {
@@ -80,7 +80,7 @@ const rendererConfig = (configEnv: ConfigEnv): RendererConfig => mergeConfig<Ren
       }
     },
     sourcemap: false,
-    outDir: DIRS.OUT_DESKTOP_RENDERER_DIR
+    outDir: OUT_DESKTOP_RENDERER_DIR
   }
 });
 

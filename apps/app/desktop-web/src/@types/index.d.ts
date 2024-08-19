@@ -1,4 +1,4 @@
-import type { ExposeApi } from 'node_modules/@rapid/desktop-node/preload';
+import type { ExposeApi } from '@rapid/desktop-preload';
 
 declare global {
   /**

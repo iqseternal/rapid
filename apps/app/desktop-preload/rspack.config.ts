@@ -1,16 +1,15 @@
-// @ts-nocheck
 import { defineConfig } from '@rspack/cli';
-import { OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_PRELOAD_DIR } from '@rapid/config/dirs';
-import { node, DefinePlugin, DefinePluginOptions, HotModuleReplacementPlugin, SwcJsMinimizerRspackPlugin } from '@rspack/core';
-import type { RspackOptions, RspackPluginInstance } from '@rspack/core';
-import { resolveAlias, rules, defineVars, IS_DEV, IS_PROD } from '../../../../build';
+import { node } from '@rspack/core';
+import type { RspackOptions } from '@rspack/core';
 import { join } from 'path';
+
+import { rules, DIRS } from '../../../config';
 
 const rspackConfig: RspackOptions = defineConfig({
   target: 'electron-main',
   entry: join(__dirname, './index.ts'),
   output: {
-    path: OUT_DESKTOP_PRELOAD_DIR,
+    path: DIRS.OUT_DESKTOP_PRELOAD_DIR,
     filename: 'index.js',
     clean: true,
   },

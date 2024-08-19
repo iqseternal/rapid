@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Monorepo for Electron Program",
   "private": true,
-  "main": "./out/main/index.js",
+  "main": "./apps/app/out/main/index.js",
   "packageManager": "pnpm@8.9.0",
   "scripts": {
     "app:dev": "pnpm -C ./apps/app run dev",
@@ -13,7 +13,7 @@
     "docs:build": "pnpm -C ./apps/docs run build",
     "docs:preview": "pnpm -C ./apps/docs run preview",
     "useUtf8": "chcp 65001",
-    "typecheck": "pnpm -r --filter=./packages/* run typecheck",
+    "typecheck": "pnpm -r run typecheck",
     "start": "pnpm useUtf8 && electron-vite preview",
     "dev": "concurrently \"pnpm dev:web\" \"pnpm dev:desktop\"",
     "dev:app": "pnpm useUtf8 && electron-vite dev --watch",
@@ -26,12 +26,12 @@
     "scripts:build": "pnpm -C scripts builda",
     "packages:build": "pnpm -r --filter=./packages/* run builda",
     "build": "pnpm typecheck && pnpm scripts:build && pnpm packages:build && pnpm build:only",
-    "build:only": "electron-vite builda",
-    "build:win": "pnpm builda && electron-builder --win --config",
+    "build:only": "electron-vite build",
+    "build:win": "pnpm build && electron-builder --win --config",
     "build:win:only": "pnpm build:only && electron-builder --win --config",
-    "build:mac": "pnpm builda && electron-builder --mac --config",
-    "build:linux": "pnpm builda && electron-builder --linux --config",
-    "build:all": "pnpm builda && electron-builder --win --config && electron-builder --mac --config && electron-builder --linux --config",
+    "build:mac": "pnpm build && electron-builder --mac --config",
+    "build:linux": "pnpm build && electron-builder --linux --config",
+    "build:all": "pnpm build && electron-builder --win --config && electron-builder --mac --config && electron-builder --linux --config",
     "put:website": "pnpm website:build && pnpm -C ./put run put:website",
     "put:docs": "pnpm docs:build && pnpm -C ./put run put:docs",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue",
@@ -147,7 +147,7 @@
     "zustand": "^4.5.4"
   },
   "lint-staged": {
-    "*.{ts,jsx,tsx,json}": "eslint --no-ignore",
+    "*.{ts,jsx,tsx,json}": "eslint --no-ignore --cache",
     "*.md": [
       "prettier --write"
     ]

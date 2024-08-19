@@ -1,17 +1,17 @@
 import { defineConfig } from '@rspack/cli';
-import { OUT_DESKTOP_MAIN_DIR } from '@rapid/config/dirs';
 import { node, DefinePlugin, DefinePluginOptions, HotModuleReplacementPlugin, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import type { RspackOptions, RspackPluginInstance } from '@rspack/core';
-import { resolveAlias, rules, defineVars, IS_DEV, IS_PROD } from '../../../build';
+import { resolveAlias, DIRS, rules } from '../../../config';
 import { join } from 'path';
+import type { RuleSetRule } from '@rspack/core';
 
-import tsConfigJson from './tsconfig.json';
+import tsConfigJson from './tsconfig.main.json';
 
 const rspackConfig: RspackOptions = defineConfig({
   target: 'electron-main',
   entry: join(__dirname, './src/index.ts'),
   output: {
-    path: OUT_DESKTOP_MAIN_DIR,
+    path: DIRS.OUT_DESKTOP_MAIN_DIR,
     filename: 'index.js',
     clean: true,
   },
@@ -26,7 +26,7 @@ const rspackConfig: RspackOptions = defineConfig({
   ],
   module: {
     rules: [rules.supportImportRaw, rules.supportTypescript],
-  }
+  },
 })
 
 export default rspackConfig;

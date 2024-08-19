@@ -90,7 +90,7 @@ export default function Header(props: HeaderProps) {
       >
         {!IS_WEB &&
           <>
-            {IS_DEV && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true)} />}
+            {IS_DEV && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
             <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
             {!isDialog && !isPane && <Widget icon='BorderOutlined' tipText='还原' onClick={() => windowReduction()} />}
             <Widget icon='CloseOutlined' tipText='关闭' onClick={() => windowClose()} />

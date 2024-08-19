@@ -1,25 +1,42 @@
 {
   "compilerOptions": {
-    "lib": ["ESNEXT", "DOM"],
+    "composite": true,
+    "lib": ["ESNEXT"],
     "target": "ESNEXT",
+
+    "esModuleInterop": true,
+    "isolatedModules": true,
 
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
 
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "types": ["vite/client"],
     "allowUnusedLabels": true,
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "allowArbitraryExtensions": true,
     "allowUnreachableCode": true,
+
     "noUnusedLocals": false,
     "noUnusedParameters": false,
 
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noImplicitThis": false,
-    "strict": true
-  }
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "resolveJsonModule": true,
+
+    "baseUrl": ".",
+    "rootDir": "../../../"
+  },
+  "include": [
+    "./constants/",
+    "./resources/",
+    "../../config/enums.ts",
+    "../../apps/app/resources/",
+    "./electron-web.ts",
+    "./@types"
+  ],
+  "exclude": ["node_modules"]
 }

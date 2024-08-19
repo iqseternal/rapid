@@ -5,7 +5,10 @@
 
 /scripts/build
 
-# 测试文件
+# ts 编译增量文件
+/**/*.tsbuildinfo
+
+# 测试输出文件
 /coverage/
 # /**/test/
 # /**/*.test.js

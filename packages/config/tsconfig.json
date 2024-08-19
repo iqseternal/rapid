@@ -1,16 +1,11 @@
 {
-  "extends": "./tsconfig.node.json",
   "compilerOptions": {
-
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "noEmit": true,
-
-    "baseUrl": "./",
-    "types": ["./@types"]
+    "composite": true,
+    "skipLibCheck": true
   },
-  "include": ["./**/*.ts"]
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.web.json" }
+  ],
+  "exclude": ["node_modules"]
 }

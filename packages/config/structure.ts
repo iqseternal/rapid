@@ -4,8 +4,6 @@ import { mergeConfig } from 'vite';
 
 import * as path from 'path';
 
-export { defineVars } from '../../target.config';
-
 export type ConfigEnv = Parameters<ElectronViteConfigFnObject>[0];
 export type ConfigFn = ElectronViteConfigFnObject;
 

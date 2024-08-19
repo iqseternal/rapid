@@ -2,12 +2,13 @@
   "compilerOptions": {
     "incremental": true,
     "baseUrl": ".",
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "isolatedModules": true
+    "rootDir": "./",
+    "target": "ESNext",
+    "module": "NodeNext",
+    "types": ["./@types", "node"]
   },
   "include": [
-    "./**/*.ts", "./**/*.tsx"
+    "./**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

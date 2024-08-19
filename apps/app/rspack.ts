@@ -5,24 +5,19 @@ import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/cor
 import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-import { defineVars } from '../../build';
+
+import { defineVars, CONFIG_ENV_COMMAND, DIRS } from '../../config';
 
 import treeKill from 'tree-kill';
 
 // =====================================================================================
 // 环境变量定义
 
-type NODE_ENV = 'development' | 'production';
-type COMMAND = 'dev' | 'build' | 'preview';
 type DEV_SERVER_MODE = 'all' | 'dev:web:only';
 
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: NODE_ENV;
-
-      COMMAND: COMMAND;
-
       DEV_SERVER_MODE: DEV_SERVER_MODE;
     }
   }
@@ -31,30 +26,9 @@ declare global {
 // =====================================================================================
 // 环境变量设置
 
-if (!process.env.COMMAND) {
-  Printer.printError(`运行脚本前请先设置 COMMAND 环境变量, (dev | build | preview)`);
-  process.exit(1);
-}
-
-const IS_DEV = process.env.COMMAND === 'dev';
-const IS_PROD = process.env.COMMAND === 'build' || process.env.COMMAND === 'preview';
-const IS_PREVIEW = process.env.COMMAND === 'preview';
-
-if (!process.env.NODE_ENV) {
-  if (IS_DEV) process.env.NODE_ENV = 'development';
-  else if (IS_PROD || IS_PREVIEW) process.env.NODE_ENV = 'production';
-}
-else {
-  if (IS_DEV && process.env.NODE_ENV === 'production') {
-    Printer.printError(`错误的环境变量设置, 当前为 dev 环境, 那么 NODE_ENV 不能为 production`);
-    process.exit(1);
-  }
-
-  if ((IS_PROD || IS_PREVIEW) && process.env.NODE_ENV !== 'production') {
-    Printer.printError(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 只能是 production`);
-    process.exit(1);
-  }
-}
+const IS_DEV = process.env.COMMAND === CONFIG_ENV_COMMAND.DEV;
+const IS_PROD = process.env.COMMAND === CONFIG_ENV_COMMAND.BUILD || process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW;
+const IS_PREVIEW = process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW;
 
 if (!process.env.DEV_SERVER_MODE) process.env.DEV_SERVER_MODE = 'dev:web:only';
 const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
@@ -121,7 +95,7 @@ const startElectron = (envArgs: readonly `${string}=${string | number}`[], start
 // 配置加载
 
 const transformMainRspackConfig = async () => {
-  const mainRspackConfig = (await import(join(__dirname, './desktop-node/rspack.config.ts'))).default as RspackOptions;
+  const mainRspackConfig = (await import(join(DIRS.DEV_DESKTOP_MAIN_DIR, './rspack.config.ts'))).default as RspackOptions;
 
   if (!mainRspackConfig.plugins) mainRspackConfig.plugins = [];
   if (!mainRspackConfig.devServer) mainRspackConfig.devServer = {};
@@ -130,7 +104,7 @@ const transformMainRspackConfig = async () => {
   // 将结果写入到磁盘
   mainRspackConfig.devServer.devMiddleware.writeToDisk = true;
 
-  const vars = defineVars({ mode: process.env.NODE_ENV });
+  const vars = defineVars();
   mainRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
   // mainRspackConfig.plugins?.push(new DefinePlugin({
@@ -151,7 +125,7 @@ const transformMainRspackConfig = async () => {
 }
 
 const transformPreloadRspackConfig = async () => {
-  const preloadRspackConfig = (await import(join(__dirname, './desktop-node/preload/rspack.config.ts'))).default as RspackOptions;
+  const preloadRspackConfig = (await import(join(DIRS.DEV_DESKTOP_PRELOAD_DIR, './rspack.config.ts'))).default as RspackOptions;
 
   if (!preloadRspackConfig.devServer) preloadRspackConfig.devServer = {};
   if (!preloadRspackConfig.devServer.devMiddleware) preloadRspackConfig.devServer.devMiddleware = {};
@@ -159,7 +133,7 @@ const transformPreloadRspackConfig = async () => {
   // 将结果写入到磁盘
   preloadRspackConfig.devServer.devMiddleware.writeToDisk = true;
 
-  const vars = defineVars({ mode: process.env.NODE_ENV });
+  const vars = defineVars();
   preloadRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
   if (IS_PROD) {
@@ -175,15 +149,15 @@ const transformPreloadRspackConfig = async () => {
 
 const transformRendererRsbuilder = async () => {
   const { content } = await loadConfig({
-    cwd: join(__dirname, './desktop-web/'),
+    cwd: DIRS.DEV_DESKTOP_WEB_DIR,
     envMode: 'production',
-    path: join(__dirname, './desktop-web/rsbuild.config.ts'),
+    path: join(DIRS.DEV_DESKTOP_WEB_DIR, './rsbuild.config.ts'),
   });
 
-  const vars = defineVars({ mode: process.env.NODE_ENV });
+  const vars = defineVars();
 
   const rendererRsbuilder = await createRsbuild({
-    cwd: join(__dirname, './desktop-web/'),
+    cwd: DIRS.DEV_DESKTOP_WEB_DIR,
     rsbuildConfig: mergeRsbuildConfig(content, ({
       source: {
         define: {
@@ -239,9 +213,6 @@ const transformRendererRsbuilder = async () => {
 
   // 开发模式, 配置热更新
   if (IS_DEV) {
-
-
-    console.log(IS_DEV);
     // renderer 热更新服务启动
     const rendererServer = await rendererRsbuilder.startDevServer();
     // 服务启动地址

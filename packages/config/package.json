@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json"
   },
   "keywords": [],
   "author": "",

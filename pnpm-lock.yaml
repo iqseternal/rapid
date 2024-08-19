@@ -300,6 +300,12 @@ importers:
         specifier: workspace:^
         version: link:../../../packages/config
 
+  apps/app/desktop-preload:
+    devDependencies:
+      '@rapid/config':
+        specifier: workspace:^
+        version: link:../../../packages/config
+
   apps/app/desktop-web:
     dependencies:
       '@rapid/libs-web':
@@ -315,6 +321,9 @@ importers:
       '@rapid/desktop-node':
         specifier: workspace:^
         version: link:../desktop-node
+      '@rapid/desktop-preload':
+        specifier: workspace:^
+        version: link:../desktop-preload
 
   apps/app/framework:
     devDependencies:
@@ -337,8 +346,6 @@ importers:
       rspress:
         specifier: ^1.27.1
         version: 1.28.0(webpack@5.93.0)
-
-  apps/scripts: {}
 
   packages/config: {}
 

@@ -31,7 +31,7 @@ export function useFadeIn(beforeCallback?: () => void | Promise<any>, options?: 
 
   useAsyncEffect(async () => {
     if (beforeCallback) {
-      await beforeCallback()?.catch((err) => {
+      (await beforeCallback())?.catch((err) => {
         onError(err);
         windowShow({ show: true }).catch(onError);
       });
@@ -56,5 +56,5 @@ export async function useFadeOut(callback?: () => void | Promise<any>, options?:
   const { waitTimer = CONFIG.FADE.FADE_OUT.TIMER, onError = () => {} } = options ?? {};
 
   if (!IS_WEB) await windowShow({ show: false }).catch(onError);
-  callback && await callback()?.catch(onError);
+  callback && (await callback())?.catch(onError);
 }

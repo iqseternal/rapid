@@ -5,7 +5,7 @@
   "source": "./index.ts",
   "main": "./index.ts",
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.json --composite false"
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "baseUrl": ".",
+
+    "lib": ["ESNext"],
+    "composite": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "allowUnusedLabels": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "types": [
+      "@rapid/config/@types"
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "./**/*.test.ts"
+  ]
+}

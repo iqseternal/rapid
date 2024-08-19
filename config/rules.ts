@@ -1,4 +1,4 @@
-import type { RuleSetRule } from '@rspack/core'
+import type { RspackOptions, RspackPluginInstance, RuleSetRule } from '@rspack/core';
 
 export const supportImportRaw: RuleSetRule = {
   resourceQuery: /(raw$)|(\.(png|jpe?g|gif|ico)$)/,
@@ -24,9 +24,4 @@ export const supportTypescript: RuleSetRule = {
     },
   },
   type: 'javascript/auto',
-}
-
-export const rules = {
-  supportImportRaw,
-  supportTypescript
 }

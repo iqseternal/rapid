@@ -11,7 +11,7 @@ declare global {
   /**
    * RouteMeta 用户表示一个路由对象的元数据
    */
-  declare interface RouteMeta {
+  interface RouteMeta {
     title: string;
     windowTitle?: string;
     icon?: IconKey;
@@ -21,13 +21,15 @@ declare global {
   /**
    * 表示路由对象的配置
    */
-  declare interface RouteConfig extends PathRouteProps {
+  interface RouteConfig extends Omit<PathRouteProps, 'children'> {
     path: string;
     name: string;
     meta?: RouteMeta;
+
     /** 让 component 支持多种配置方式 */
     component?: FC | ReactElement | LazyExoticComponent<() => JSX.Element>;
     redirect?: RedirectProps['from'];
+
     children?: RouteConfig[];
   }
 }

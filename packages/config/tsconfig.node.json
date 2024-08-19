@@ -1,11 +1,33 @@
 {
   "compilerOptions": {
+    "composite": true,
+
+    "lib": ["ESNext"],
+
     "esModuleInterop": true,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+
     "baseUrl": ".",
-    "paths": {
-      "#/*": ["../../*"]
-    }
-  }
+    "rootDir": "../../../",
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "resolveJsonModule": true,
+
+    "types": [
+      "./@types",
+      "node"
+    ]
+  },
+  "include": [
+    "./constants/",
+    "./resources/",
+    "../../config/enums.ts",
+    "../../apps/app/resources/",
+    "./electron-main.ts"
+  ],
+  "exclude": ["node_modules"]
 }

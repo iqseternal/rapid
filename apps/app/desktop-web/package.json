@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-
+    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.web.json\"  \"tsc --noEmit -p tsconfig.node.json\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@rapid/config": "workspace:^",
-    "@rapid/desktop-node": "workspace:^"
+    "@rapid/desktop-node": "workspace:^",
+    "@rapid/desktop-preload": "workspace:^"
   },
   "dependencies": {
     "@rapid/libs-web": "workspace:^",

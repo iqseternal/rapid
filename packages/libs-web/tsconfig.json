@@ -1,26 +1,17 @@
 {
   "include": [
-    "./@types/**/*.ts",
-    "./@types/**/*.tsx",
-
-    "./common/**/*.ts",
-    "./common/**/*.tsx",
-    "./components/**/*.ts",
-    "./components/**/*.tsx",
-    "./hooks/**/*.ts",
-    "./hooks/**/*.tsx",
-    "./router/**/*.ts",
-    "./router/**/*.tsx",
-    "./styled/**/*.ts",
-    "./styled/**/*.tsx",
-
-    "index.ts"
+    "./**/*.ts",
+    "./**/*.tsx"
   ],
   "compilerOptions": {
+    "incremental": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "composite": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
   },
   "exclude": [
     "node_modules"

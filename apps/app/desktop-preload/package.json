@@ -1,0 +1,16 @@
+{
+  "name": "@rapid/desktop-preload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.preload.json\"  \"tsc --noEmit -p tsconfig.node.json\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^"
+  }
+}
