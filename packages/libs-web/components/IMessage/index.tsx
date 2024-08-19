@@ -1,4 +1,3 @@
-
 import { message } from 'antd';
 
 message.config({
@@ -7,6 +6,6 @@ message.config({
   maxCount: 2
 })
 
-const IMessage = message;
+export const IMessage: typeof message = message;
 
 export default IMessage;

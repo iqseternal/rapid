@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+
+  },
+  "references": [
+    { "path": "./tsconfig.main.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}

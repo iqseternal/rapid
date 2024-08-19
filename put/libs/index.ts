@@ -1,5 +1,4 @@
 import { spawn } from 'child_process';
-import { DIST_DIR, DIST_WEBSITE_DIR } from '../../packages/config/dirs';
 import { Printer } from '@suey/printer';
 
 export type PutArgs = Parameters<typeof spawn> extends [...infer Rest, infer U] ? Rest : never;

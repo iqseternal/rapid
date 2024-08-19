@@ -1,7 +1,9 @@
+// @ts-nocheck
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { CONFIG } from './constants';
+import { join } from 'path';
 
-export { default as iconUrl } from '../../resources/icon.png?asset';
+export const iconUrl = join(__dirname, '../../resources/icon.png');
 
 function makeBrowserWindowOptions<T extends Record<string, BrowserWindowConstructorOptions>>(options: T) {
   return options;

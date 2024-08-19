@@ -1,0 +1,35 @@
+@import '@scss/mixin/index.scss';
+
+.header {
+  width: calc(100% - 6px);
+  height: var(--rapid-caption-bar-height);
+  background-color: var(--rapid-caption-bar-background-color);
+  padding: 0 3px;
+  font-size: 12px;
+  line-height: 12px;
+  z-index: 9999;
+
+  // sticky 为了让他不是 static, 因为 dropdown menu zIndex值为 1050, 会展示在 header 元素上方
+  position: sticky;
+  top: 0;
+
+  .menuContainer {
+    max-width: 100%;
+
+    .logo {
+      height: 100%;
+    }
+
+    .menu {
+      cursor: default;
+      width: max-content;
+
+    }
+  }
+
+
+
+  .operatorContainer {
+
+  }
+}

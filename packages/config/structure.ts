@@ -4,8 +4,6 @@ import { mergeConfig } from 'vite';
 
 import * as path from 'path';
 
-export { defineVars } from '../../target.config';
-
 export type ConfigEnv = Parameters<ElectronViteConfigFnObject>[0];
 export type ConfigFn = ElectronViteConfigFnObject;
 
@@ -31,11 +29,20 @@ export function defineElectronRendererConfig(configFn: (env: ConfigEnv) => Rende
  * @param aliasPath
  * @returns
  */
-export function resolveAlias(basePath: string, aliasPath: Record<string, string[]>): AliasOptions {
-  if (!aliasPath) return [];
-  const alias: Alias[] = [];
-  for (const key in aliasPath)
-    alias.push({ find: key.replace('/*', ''), replacement: path.resolve(basePath, aliasPath[key][0].replace('/*', '')) });
+export function resolveAlias(basePath: string, aliasPath: Record<string, string[]>) {
+  const alias: Record<string, string> = {};
+
+  for (const key in aliasPath) {
+    alias[key.replace('/*', '')] = path.resolve(basePath, aliasPath[key][0].replace('/*', ''));
+  }
+
   return alias;
+
+
+  // if (!aliasPath) return [];
+  // const alias: Alias[] = [];
+  // for (const key in aliasPath)
+  //   alias.push({ find: key.replace('/*', ''), replacement: path.resolve(basePath, aliasPath[key][0].replace('/*', '')) });
+  // return alias;
 }
 

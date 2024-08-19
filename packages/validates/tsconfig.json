@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "baseUrl": ".",
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "isolatedModules": true
   },
-  "include": ["./**/*.ts"]
+  "include": [
+    "./**/*.ts", "./**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
 }

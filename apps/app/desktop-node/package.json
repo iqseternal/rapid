@@ -1,0 +1,19 @@
+{
+  "name": "@rapid/desktop-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.main.json\"  \"tsc --noEmit -p tsconfig.node.json\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/framework": "workspace:^",
+    "@rapid/validates": "workspace:^"
+  }
+}

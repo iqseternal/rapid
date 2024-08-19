@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "/**/*.test.ts",
+    "./config/@types"
+  ]
+}

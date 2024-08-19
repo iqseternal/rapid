@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "baseUrl": ".",
+    "rootDir": "./",
+    "target": "ESNext",
+    "module": "NodeNext",
+    "types": ["./@types", "node"]
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

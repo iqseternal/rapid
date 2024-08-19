@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "rootDir": "../../",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "types": ["../../config/@types"]
+  },
+  "include": [
+    "./rspack.ts",
+    "../../config",
+    "electron.vite.config.ts",
+    "./desktop-node/tsconfig.main.json"
+  ],
+  "exclude": ["node_modules"]
+}

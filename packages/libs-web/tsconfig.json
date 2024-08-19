@@ -1,24 +1,19 @@
-
 {
   "include": [
     "./**/*.ts",
-    "./**/*.tsx",
-    "./**/*.d.ts",
-    "./**/*.vue"
+    "./**/*.tsx"
   ],
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "incremental": true,
+    "jsx": "react-jsx",
     "baseUrl": ".",
-    "lib": ["DOM", "ESNext", "ES2015.Promise"],
-    "jsx": "preserve",
-    "types": [
-      "vite/client"
-    ],
+    "composite": true,
+    "isolatedModules": true,
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "noEmitOnError": true,
-    "noImplicitReturns": true
+    "skipDefaultLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

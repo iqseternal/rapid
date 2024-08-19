@@ -1,0 +1,37 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "cross-env COMMAND=dev \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "dev-vite": "electron-vite dev",
+    "dev:app": "cross-env COMMAND=dev DEV_SERVER_MODE=all \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "dev-vite:app": "electron-vite dev --watch",
+    "build": "cross-env COMMAND=build \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "build-vite": "electron-vite build",
+    "preview": "cross-env COMMAND=preview \"ts-node --project tsconfig.node.json ./rspack.ts\"",
+    "preview-vite": "electron-vite preview",
+    "build:win": "pnpm build && electron-builder --win --config",
+    "build-vite:win": "pnpm build-vite && electron-builder --win --config",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^24.8.8",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "combined-stream": "^1.0.8",
+    "crypto-ts": "^1.0.2",
+    "delayed-stream": "^1.0.0",
+    "follow-redirects": "^1.15.6",
+    "form-data": "^4.0.0",
+    "mime-db": "^1.53.0",
+    "mime-types": "^2.1.35",
+    "proxy-from-env": "^1.1.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "baseUrl": ".",
+    "rootDir": "../"
+  },
+  "include": [
+    "./**/*",
+    "../config"
+  ],
+  "exclude": ["node_modules"]
+}

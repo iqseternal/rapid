@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "rootDir": "../../../",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
+  },
+  "include": [
+    "tsconfig.web.json",
+    "rsbuild.config.ts",
+    "../../../config",
+    "../../../packages/config/structure.ts"
+  ],
+  "exclude": ["node_modules"]
+}
