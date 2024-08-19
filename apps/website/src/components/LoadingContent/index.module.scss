@@ -1,0 +1,11 @@
+
+@import '@scss/var.scss';
+
+.loading {
+
+  width: 100vw;
+  height: 100vh;
+
+  transition: all 1s ease-out;
+  // background-color: $receptionBgColor;
+}

@@ -1,5 +1,5 @@
 import { defineConfig } from 'rspress/config';
-import { DIST_DOC_DIR } from '@rapid/config/dirs';
+import { DIST_DOC_DIR } from '../../config/dirs';
 
 import { join } from 'path';
 

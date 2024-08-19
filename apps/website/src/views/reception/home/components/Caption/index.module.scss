@@ -1,0 +1,20 @@
+
+
+@import '@scss/mixin.scss';
+@import '@scss/var.scss';
+
+.caption {
+  width: calc(100% - 20px * 2);
+  padding: 40px 20px;
+
+  .title {
+    padding: 10px 0;
+    font-size: 40px;
+
+  }
+
+  .content {
+    padding: 20px 0;
+
+  }
+}

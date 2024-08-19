@@ -1,0 +1,24 @@
+@import '@scss/mixin.scss';
+@import '@scss/var.scss';
+
+.reception {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+
+  --h-tb-padding: 5px;
+
+    // 主体
+  .receptionBody {
+    height: max-content;
+    position: relative;
+  }
+
+  .receptionBodyHasPerpose {
+    // transform: translateY(calc(-1 * (var(--h-tb-padding) * 2 + $receptionHeaderHeight)));
+    // margin-bottom: calc(-1 * (var(--h-tb-padding) * 2 + $receptionHeaderHeight));
+    margin-top: calc(-1 * (var(--h-tb-padding) * 2 + $receptionHeaderHeight));
+  }
+}
