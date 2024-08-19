@@ -78,7 +78,6 @@ export function defineVars(): InjectionVariables {
 
   if (process.env.COMMAND === CONFIG_ENV_COMMAND.DEV) {
     vars.CURRENT_ENV = ENV.DEV;
-
   }
   else if (
     process.env.COMMAND === CONFIG_ENV_COMMAND.BUILD ||

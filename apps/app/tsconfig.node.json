@@ -12,7 +12,9 @@
   },
   "include": [
     "./rspack.ts",
-    "../../config"
+    "../../config",
+    "electron.vite.config.ts",
+    "./desktop-node/tsconfig.main.json"
   ],
   "exclude": ["node_modules"]
 }

@@ -12,7 +12,6 @@
   "include": [
     "tsconfig.web.json",
     "rsbuild.config.ts",
-    "structure.ts",
     "../../../config",
     "../../../packages/config/structure.ts"
   ],

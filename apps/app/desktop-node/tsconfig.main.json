@@ -9,7 +9,6 @@
     "esModuleInterop": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "noEmit": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,

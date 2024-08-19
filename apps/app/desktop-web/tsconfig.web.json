@@ -10,7 +10,6 @@
     "noEmitOnError": true,
     "noUnusedParameters": false,
     "jsx": "react-jsx",
-    "noEmit": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
     "module": "ESNext",
@@ -50,7 +49,7 @@
     "../../../packages/config/@types",
     "../../../packages/config",
     "../../../packages/libs-web/@types",
-    "../../../packages/libs-web",
+    "../../../packages/libs-web"
   ],
   "exclude": [
     "node_modules",
