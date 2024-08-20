@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": "true",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "rspress dev",
     "build": "rspress build",
@@ -10,7 +12,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "dependencies": {
     "@rapid/libs-web": "workspace:^",
     "@rapid/validates": "workspace:^"

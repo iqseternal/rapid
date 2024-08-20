@@ -4,7 +4,7 @@ import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 
 import WorkspaceLayout from '@/layout/WorkspaceLayout';
 
-export * from './basic.tsx';
+export * from './basic';
 
 export const workspaceRoute = makeRoute({
   name: `Workbenches`,

@@ -9,8 +9,8 @@ import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import { ECMAVersion } from '@rsdoctor/utils/ruleUtils';
 import { join } from 'path';
 
-import { defineVars } from '../../config';
-import { CONFIG_ENV_COMMAND } from '../../config';
+import { defineVars , CONFIG_ENV_COMMAND } from '../../config';
+
 import { DIST_WEB_DIR, DEV_DESKTOP_WEB_DIR } from '../../config/dirs';
 
 export default defineConfig(({ env, command }) => ({

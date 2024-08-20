@@ -1,6 +1,6 @@
-import { loadConfig } from '@rsbuild/core';
+import { loadConfig , createRsbuild, mergeRsbuildConfig } from '@rsbuild/core';
 import { join } from 'path';
-import { createRsbuild, mergeRsbuildConfig } from '@rsbuild/core';
+
 import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/core';
 import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';

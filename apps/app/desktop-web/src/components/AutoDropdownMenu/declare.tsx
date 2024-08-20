@@ -7,8 +7,8 @@ import type {
 } from 'antd/lib/menu/interface';
 import type { Key, ReactNode } from 'react';
 import { ComputedSelectorObj } from '@/menus/framework/computed';
-import { MenuItem, SubMenu } from '@components/AutoDropdownMenu/cpts';
-import { IconKey, IconRealKey } from '@components/IconFont';
+import { MenuItem, SubMenu } from './cpts';
+import { IconKey, IconRealKey } from '../IconFont';
 
 export type MenuItemType = Omit<AntdMenuItemType, 'disabled'> & {
   hidden?: boolean | ComputedSelectorObj<boolean>;

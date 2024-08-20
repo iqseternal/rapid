@@ -1,6 +1,7 @@
 import { useUserStore, UserStore, useDocStore } from '@/features';
 import { useDependenciesListHook } from '@rapid/libs-web/hooks';
 import type { AppendDepFn, RemoveDepFn } from '@rapid/libs-web/hooks';
+import type { UseBoundStore, useStore, StoreApi } from 'zustand';
 
 // 创建一个状态管理的副本, 并且跟随 redux 改变
 export const targetStore = {
@@ -8,21 +9,16 @@ export const targetStore = {
   doc: useDocStore.getState()
 };
 
+const runtimeContext: Record<string, {
+  store: UseBoundStore<StoreApi<any>>
+  effectCallbacks: (() => void)[];
+  appendCallback: (callback: () => void) => void;
+  removeCallback: (callback: () => void) => void;
+}> = {
+
+}
+
 export type AppStoreType = typeof targetStore;
-
-const {
-  dependenciesList: subscribes,
-  appendDep: appendSubscribe,
-  removeDep: removeSubscribe
-} = useDependenciesListHook<() => void>();
-
-const userCallback = () => { targetStore.user = useUserStore.getState() };
-useUserStore.subscribe(() => subscribes.forEach(callback => callback()));
-appendSubscribe(userCallback);
-
-const docCallback = () => { targetStore.doc = useDocStore.getState() };
-useDocStore.subscribe(() => subscribes.forEach(callback => callback()));
-appendSubscribe(docCallback);
 
 // computed 对象的标志
 export const computedSelectorSymbol = Symbol('computedSymbol');
@@ -65,20 +61,40 @@ export type ComputedSelectorObj<Value extends any = any> = {
  *
  * @param getter
  */
-export const computedSelector = <TResult,>(getter: (state: AppStoreType) => TResult): ComputedSelectorObj<TResult> => {
+export const computedSelector = <TStore extends UseBoundStore<StoreApi<any>>, TResult,>(store: TStore, getter: (state: ReturnType<TStore['getState']>) => TResult) => {
+  if (!runtimeContext[store.name]) {
+    const {
+      dependenciesList: subscribes,
+      appendDep: appendSubscribe,
+      removeDep: removeSubscribe
+    } = useDependenciesListHook<() => void>();
+
+    runtimeContext[store.name] = {
+      store,
+      effectCallbacks: subscribes,
+      appendCallback: appendSubscribe,
+      removeCallback: removeSubscribe
+    }
+
+    runtimeContext[store.name].store.subscribe(() => {
+      runtimeContext[store.name].effectCallbacks.forEach(callback => callback());
+    })
+  }
+
   const { dependenciesList, appendDep, removeDep } = useDependenciesListHook<() => void>();
+
+  const instance = runtimeContext[store.name]!;
 
   const target: ComputedSelectorObj<TResult> = {
     __TAG__: computedSelectorSymbol,
-    value: getter(targetStore),
+    value: getter(instance.store.getState()),
     effectCallbacks: dependenciesList,
     appendCallback: appendDep,
     removeCallback: removeDep
   }
 
-  appendSubscribe(() => {
-    target.value = getter(targetStore);
-    // 执行所有的副作用, 因为这个值可能影响着另外一个值的变化
+  instance.appendCallback(() => {
+    target.value = getter(instance.store.getState());
     target.effectCallbacks.forEach(callback => callback());
   });
 

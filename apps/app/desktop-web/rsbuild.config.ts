@@ -3,8 +3,7 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
-import { resolveAlias } from '../../../config';
-import { DIRS } from '../../../config';
+import { resolveAlias, DIRS } from '../../../config';
 import { DefinePlugin } from '@rspack/core';
 
 import tsConfigJson from './tsconfig.web.json';

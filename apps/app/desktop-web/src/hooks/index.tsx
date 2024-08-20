@@ -1,6 +1,7 @@
 import { CONFIG, IS_WEB } from '@rapid/config/constants';
 import { windowShow, windowReload, windowRelaunch } from '@/actions';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
+import { toPicket } from '@suey/pkg-utils';
 
 export interface FadeOptions {
   waitTimer?: number;
@@ -23,7 +24,7 @@ export interface FadeOptions {
  * }
  *
  */
-export function useFadeIn(beforeCallback?: () => void | Promise<any>, options?: FadeOptions) {
+export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?: FadeOptions) {
   const {
     waitTimer = CONFIG.FADE.FADE_IN.TIMER,
     onError = () => {}
@@ -31,17 +32,14 @@ export function useFadeIn(beforeCallback?: () => void | Promise<any>, options?: 
 
   useAsyncEffect(async () => {
     if (beforeCallback) {
-      (await beforeCallback())?.catch((err) => {
+      const [err] = await toPicket(Promise.resolve(beforeCallback()));
+
+      if (err) {
         onError(err);
-        windowShow({ show: true }).catch(onError);
-      });
+        return windowShow({ show: true }).catch(onError);
+      }
     }
-
-    console.log('检查当前是否是 Web');
     if (IS_WEB) return;
-
-    console.log('展示窗口');
-
 
     setTimeout(async () => {
       windowShow({ show: true }).catch(onError);
@@ -52,9 +50,9 @@ export function useFadeIn(beforeCallback?: () => void | Promise<any>, options?: 
 /**
  * 页面转出的转场
  */
-export async function useFadeOut(callback?: () => void | Promise<any>, options?: FadeOptions) {
+export async function useFadeOut(callback?: () => (void | Promise<any>), options?: FadeOptions) {
   const { waitTimer = CONFIG.FADE.FADE_OUT.TIMER, onError = () => {} } = options ?? {};
 
   if (!IS_WEB) await windowShow({ show: false }).catch(onError);
-  callback && (await callback())?.catch(onError);
+  callback && Promise.resolve(callback())?.catch(onError);
 }

@@ -16,7 +16,6 @@
     "target": "ESNext",
     "lib": ["DOM", "ESNext"],
     "allowUmdGlobalAccess": true,
-    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,

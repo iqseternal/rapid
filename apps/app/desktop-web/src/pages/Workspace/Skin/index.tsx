@@ -1,4 +1,3 @@
-// import { useAppDispatch, setWorkStatus, useAppSelector, AppStoreType } from '@/features/index1';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 import { combinationCName } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
@@ -6,16 +5,17 @@ import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
 import type { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { createSelector } from '@reduxjs/toolkit';
 import { useMenuSelector } from '@/menus';
 import { toPicket } from '@suey/pkg-utils';
-// import { useStoreSelector, dispatchUpdate } from '@/features/test';
+import { useDocStore } from '@/features';
+import { produce } from 'immer';
 
 import IMessage from '@rapid/libs-web/components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
 import Subfield from '@rapid/libs-web/components/Subfield';
 import styles from './index.module.scss';
+
 
 interface StyleBlockProps extends BaseProps {
   title?: string;
@@ -79,6 +79,8 @@ export default function Skin() {
     }
   );
 
+  const isWork = useDocStore(store => store.isWork);
+
   const [state] = useReactive({
     name: 1
   })
@@ -113,10 +115,11 @@ export default function Skin() {
       <Button
         onClick={() => {
 
+          useDocStore.setState({ isWork: !isWork });
           // refresh();
         }}
       >
-        改变他
+        切换工作台状态 {JSON.stringify(isWork)}
       </Button>
     </StyleBlock>
 
@@ -127,7 +130,7 @@ export default function Skin() {
       <span>{state.name}</span>
 
       <Button
-        onClick={() => (state.name ++)}
+        onClick={() => (state.name++)}
       >
         加
       </Button>

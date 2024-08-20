@@ -2,7 +2,7 @@ import type { IconKey } from '@components/IconFont';
 import { combinationCName } from '@rapid/libs-web/common';
 import type { FC } from 'react';
 import IconFont from '@components/IconFont';
-import type { MenuItemType, SubMenuType } from '@/menus/framework';
+import type { MenuItemType, SubMenuType } from './declare';
 import { useMemo } from 'react';
 
 import commonStyles from '@scss/common/index.module.scss';
@@ -52,6 +52,8 @@ export interface SubMenuProps extends BaseProps {
   iconKey: SubMenuType['iconKey'];
   label: SubMenuType['label'];
 }
+
+
 /**
  * SubMenu 组件, 为 AutoDropdownMenu 服务, 作用为渲染自定义的 SubMenu 配置, 因为 SubMenu 中包含了某些额外的自定义属性
  */

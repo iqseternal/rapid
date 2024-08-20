@@ -68,6 +68,10 @@ export const useMenuSelectorHook: AppSelectorHook = <
  *
  * const headerMenu = useMenuSelector(menus => menus.headerMenu);
  *
+ * const menus = useMenuSelector([menus => menus.headerMenu, menus => menus.editMenus] as const, (headerMenu, editMenu) => {
+ *
+ * })
+ *
  * // 以下使用为旧方式
  * <DropdownMenu
  *   menus={headerMenu}
@@ -125,9 +129,17 @@ export const useMenuSelector: AppSelectorHook = <
 
   // 添加副作用
   useEffect(() => {
+    // menu 可能包含多个
+
     menus.forEach(menu => {
+
+      // menu 发生变化需要 refresh
       menu.appendEffectCallback(refresh);
+
+      // menu 可能包含多个 computedObj, computedObj 发生变化需要添加副作用
       menu.computedCallbacks.forEach(computedObj => {
+
+        // 当 computedObj 发生变化时候的回调
         computedObj.target.appendCallback(...computedObj.effectCallbacks);
       })
     });

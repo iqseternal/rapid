@@ -38,6 +38,7 @@ const animationClassNames = {
 
 /** 动画类名集合的类型 */
 export type AnimationClassNamesType = typeof animationClassNames;
+
 /** 动画类名的选择函数 */
 export type AnimationClassNameSelector = <
   AnimationClassName extends keyof AnimationClassNamesType

@@ -2,7 +2,7 @@ import { combinationCName } from '@rapid/libs-web/common';
 import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
-import {useMemo, ReactNode, useEffect} from 'react';
+import { useMemo, ReactNode, useEffect } from 'react';
 import { useMenuSelector } from '@/menus';
 
 import Widget from '@components/Widget';

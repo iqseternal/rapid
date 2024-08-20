@@ -1,19 +1,19 @@
-import { combinationCName } from '@rapid/libs-web/common';
+import { combinationCName , getFirstScrollContainer } from '@rapid/libs-web/common';
 import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/hooks';
-import { getFirstScrollContainer } from '@rapid/libs-web/common';
+
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps } from 'antd';
 import { createContext, useContext, ReactNode } from 'react';
-import type { MenuInstance } from '@/menus/framework';
 import { MaxContent } from '@rapid/libs-web/styled';
+import type { MenuInstance, AntdMenuInstance, AntdItemType } from './declare';
 
 import commonStyles from '@scss/common/index.module.scss';
-import type { AntdMenuInstance, AntdItemType } from '@/menus/framework';
 import styles from './index.module.scss';
 
-const OpenContext = createContext(false);
-
 export * from './cpts';
+export * from './declare';
+
+const OpenContext = createContext(false);
 
 interface PropMenuProps {
   menus: AntdItemType[];

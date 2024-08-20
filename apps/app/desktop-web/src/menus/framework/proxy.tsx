@@ -3,8 +3,8 @@ import { isArray, isFunction, isObject } from '@suey/pkg-utils';
 import { isValidElement } from 'react';
 import type { ComputedSelectorObj } from './computed';
 import { isComputedSelectorObj } from './computed';
-import type { MenuInstance } from './declare';
-import { convertMenu } from './declare';
+import type { MenuInstance } from '@components/AutoDropdownMenu/declare';
+import { convertMenu } from '@components/AutoDropdownMenu/declare';
 
 export const proxySymbol = Symbol('proxySymbol');
 
@@ -72,7 +72,7 @@ export const makeMenu = <Instance extends MenuInstance,>(menuInstance: Instance)
         const sync = () => {
           Reflect.set(target, key, makeProxy(subTarget.value));
           // 菜单内容发生改变, 执行副作用 :: Reflect.set 不会触发后面的 proxy set
-          effectCallbacks.forEach(callback => callback());
+          // effectCallbacks.forEach(callback => callback());
         }
         sync();
         computedCallbacks.push({
