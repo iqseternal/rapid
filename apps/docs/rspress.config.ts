@@ -1,6 +1,5 @@
 import { defineConfig } from 'rspress/config';
 import { DIST_DOC_DIR } from '../../config/dirs';
-
 import { join } from 'path';
 
 export default defineConfig({
@@ -40,23 +39,7 @@ export default defineConfig({
       {
         icon: 'github',
         mode: 'link',
-        content: 'https://github.com/sanyuan0704/island.js',
-      },
-      {
-        icon: 'wechat',
-        mode: 'text',
-        content: '微信号 foo',
-      },
-      {
-        icon: 'qq',
-        mode: 'img',
-        content: '/qrcode.png',
-      },
-      {
-        icon: 'github',
-        mode: 'dom',
-        content:
-          '<img src="https://lf3-static.bytednsdoc.com/obj/eden-cn/rjhwzy/ljhwZthlaukjlkulzlp/rspress/rspress-navbar-logo-0904.png" alt="logo" id="logo" class="mr-4 rspress-logo dark:hidden">',
+        content: 'https://github.com/iqseternal/rapid',
       },
     ],
     footer: {

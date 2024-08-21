@@ -17,3 +17,7 @@ div.rspress-nav div:has(div > div.rspress-nav-search-button) {
 aside.rspress-sidebar > div:first-child {
   opacity: 0;
 }
+
+aside.rspress-sidebar {
+  padding-bottom: 60px;
+}

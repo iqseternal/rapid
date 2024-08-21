@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "app",
+    "label": "桌面程序构建"
+  },
+  {
+    "type": "file",
+    "name": "typescript",
+    "label": "TypeScript构建"
+  },
+  {
+    "type": "file",
+    "name": "git",
+    "label": "GitCommit构建"
+  }
+]

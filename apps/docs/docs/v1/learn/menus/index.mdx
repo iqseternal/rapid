@@ -1,0 +1,442 @@
+
+## Monorepo 的项目设计
+
+
+```md
+C:\USERS\SUEY\DESKTOP\RAPID
+|   .eslintignore
+|   .eslintrc.js
+|   .gitignore
+|   .npmrc
+|   .prettierignore
+|   .prettierrc.js
+|   commitlint.config.js
+|   jest.config.ts
+|   package.json
+|   pnpm-lock.yaml
+|   pnpm-workspace.yaml
+|   README.md
+|   tsconfig.json
+|
++---.husky
++---.idea
++---.vscode
++---apps
+|   +---app
+|   |   |   dev-app-update.yml
+|   |   |   electron-builder.yml
+|   |   |   electron.vite.config.ts
+|   |   |   package.json
+|   |   |   rspack.ts
+|   |   |   tsconfig.json
+|   |   |   tsconfig.node.json
+|   |   |
+|   |   +---builder
+|   |   +---desktop-node
+|   |   |   |   package.json
+|   |   |   |   rspack.config.ts
+|   |   |   |   tsconfig.json
+|   |   |   |   tsconfig.main.json
+|   |   |   |   tsconfig.main.tsbuildinfo
+|   |   |   |   tsconfig.node.json
+|   |   |   |   tsconfig.node.tsbuildinfo
+|   |   |   |   tsconfig.tsbuildinfo
+|   |   |   |
+|   |   |   \---src
+|   |   |       |   index.ts
+|   |   |       |   setupApp.ts
+|   |   |       |   setupService.ts
+|   |   |       |
+|   |   |       +---business
+|   |   |       |
+|   |   |       +---config
+|   |   |       |
+|   |   |       +---core
+|   |   |       |   |
+|   |   |       |   +---common
+|   |   |       |   |
+|   |   |       |   +---exceptions
+|   |   |       |   |
+|   |   |       |   +---filters
+|   |   |       |   |
+|   |   |       |   +---request
+|   |   |       |   |
+|   |   |       |   \---shell
+|   |   |       |
+|   |   |       +---ipc
+|   |   |       |
+|   |   |       +---server
+|   |   |       |
+|   |   |       +---service
+|   |   |       |
+|   |   |       \---store
+|   |   |
+|   |   +---desktop-preload
+|   |   |   |   autoExpose.ts
+|   |   |   |   index.ts
+|   |   |   |   package.json
+|   |   |   |   preload.d.ts
+|   |   |   |   rspack.config.ts
+|   |   |   |   tsconfig.json
+|   |   |   |   tsconfig.node.json
+|   |   |   |   tsconfig.node.tsbuildinfo
+|   |   |   |   tsconfig.preload.json
+|   |   |   |   tsconfig.preload.tsbuildinfo
+|   |   |   |   tsconfig.tsbuildinfo
+|   |   |   |
+|   |   |   \
+|   |   |
+|   |   +---desktop-web
+|   |   |   |   index.html
+|   |   |   |   package.json
+|   |   |   |   rsbuild.config.ts
+|   |   |   |   tsconfig.json
+|   |   |   |   tsconfig.node.json
+|   |   |   |   tsconfig.node.tsbuildinfo
+|   |   |   |   tsconfig.web.json
+|   |   |   |   tsconfig.web.tsbuildinfo
+|   |   |   |   vite.config.ts
+|   |   |   |
+|   |   |   +---public
+|   |   |   |
+|   |   |   \---src
+|   |   |       |   app.module.scss
+|   |   |       |   app.module.scss.d.ts
+|   |   |       |   app.tsx
+|   |   |       |   index.tsx
+|   |   |       |
+|   |   |       +---@types
+|   |   |       |
+|   |   |       +---actions
+|   |   |       |
+|   |   |       +---api
+|   |   |       |
+|   |   |       +---assets
+|   |   |       |
+|   |   |       +---components
+|   |   |       |
+|   |   |       +---features
+|   |   |       |
+|   |   |       +---hooks
+|   |   |       |
+|   |   |       +---layout
+|   |   |       |
+|   |   |       +---menus
+|   |   |       |
+|   |   |       +---pages
+|   |   |       |
+|   |   |       +---plugins
+|   |   |       |
+|   |   |       +---router
+|   |   |       |
+|   |   |       +---scss
+|   |   |       |
+|   |   |       \---themes
+|   |   |
+|   |   +---framework
+|   |   |   |   index.ts
+|   |   |   |   package.json
+|   |   |   |   process.ts
+|   |   |   |   tsconfig.json
+|   |   |   |   tsconfig.tsbuildinfo
+|   |   |   |
+|   |   |   +---core
+|   |   |   |
+|   |   |   +---exception
+|   |   |   |
+|   |   |   +---filter
+|   |   |   |
+|   |   |   +---ipc
+|   |   |   |
+|   |   |   +---logger
+|   |   |   |
+|   |   |   \
+|   |   |
+|   |   +---out
+|   |   |   +---main
+|   |   |   |
+|   |   |   +---preload
+|   |   |   |
+|   |   |   \---renderer
+|   |   |
+|   |   +---resources
+|   |   |
+|   |   \---scripts
+|   +---docs
+|   |   |   .npmrc
+|   |   |   env.d.ts
+|   |   |   index.css
+|   |   |   package.json
+|   |   |   rspress.config.ts
+|   |   |   tsconfig.json
+|   |   |   typedoc.json
+|   |   |   vite.config.ts
+|   |   |
+|   |   +---docs
+|   |   |   +---public
+|   |   |   |       icon.ico
+|   |   |   |       icon.png
+|   |   |   |
+|   |   |   \---v1
+|   |   |       |   index.mdx
+|   |   |       |   _meta.json
+|   |   |       |
+|   |   |       +---document
+|   |   |       |       index.mdx
+|   |   |       |
+|   |   |       +---learn
+|   |   |       |   |   _meta.json
+|   |   |       |   |
+|   |   |       |   +---dependencies
+|   |   |       |   |       dependencies.mdx
+|   |   |       |   |       devDependencies.mdx
+|   |   |       |   |       index.mdx
+|   |   |       |   |       _meta.json
+|   |   |       |   |
+|   |   |       |   +---installation
+|   |   |       |   |       install.md
+|   |   |       |   |       _meta.json
+|   |   |       |   |
+|   |   |       |   +---menus
+|   |   |       |   |       index.mdx
+|   |   |       |   |       _meta.json
+|   |   |       |   |
+|   |   |       |   +---start
+|   |   |       |   |       introduce.mdx
+|   |   |       |   |       quickStart.mdx
+|   |   |       |   |       _meta.json
+|   |   |       |   |
+|   |   |       |   +---structure
+|   |   |       |   |       app.md
+|   |   |       |   |       git.md
+|   |   |       |   |       typescript.md
+|   |   |       |   |       _meta.json
+|   |   |       |   |
+|   |   |       |   \---technology
+|   |   |       |           core.md
+|   |   |       |           manage.md
+|   |   |       |           structure.md
+|   |   |       |           test.md
+|   |   |       |           typescript.md
+|   |   |       |           web-ui.md
+|   |   |       |           _meta.json
+|   |   |       |
+|   |   |       \---specification
+|   |   |               typescript.mdx
+|   |   |               _meta.json
+|   |   |
+|   |   +---node_modules
+|   |   |   +---.bin
+|   |   |   |       acorn
+|   |   |   |       acorn.CMD
+|   |   |   |       acorn.ps1
+|   |   |   |       browserslist
+|   |   |   |       browserslist.CMD
+|   |   |   |       browserslist.ps1
+|   |   |   |       rsbuild
+|   |   |   |       rsbuild.CMD
+|   |   |   |       rsbuild.ps1
+|   |   |   |       rspress
+|   |   |   |       rspress.CMD
+|   |   |   |       rspress.ps1
+|   |   |   |       webpack
+|   |   |   |       webpack.CMD
+|   |   |   |       webpack.ps1
+|   |   |   |
+|   |   |   +---.rspress
+|   |   |   |   \---runtime
+|   |   |   |           virtual-global-components.js
+|   |   |   |           virtual-global-styles.js
+|   |   |   |           virtual-i18n-text.js
+|   |   |   |           virtual-prism-languages.js
+|   |   |   |           virtual-routes.js
+|   |   |   |           virtual-search-hooks.js
+|   |   |   |           virtual-search-index-hash.js
+|   |   |   |           virtual-site-data.mjs
+|   |   |   |
+|   |   |   +---@rapid
+|   |   |   |   +---config
+|   |   |   |   |   |   electron-main.ts
+|   |   |   |   |   |   electron-web.ts
+|   |   |   |   |   |   package.json
+|   |   |   |   |   |   structure.ts
+|   |   |   |   |   |   tsconfig.json
+|   |   |   |   |   |   tsconfig.node.json
+|   |   |   |   |   |   tsconfig.node.tsbuildinfo
+|   |   |   |   |   |   tsconfig.tsbuildinfo
+|   |   |   |   |   |   tsconfig.web.json
+|   |   |   |   |   |   tsconfig.web.tsbuildinfo
+|   |   |   |   |   |
+|   |   |   |   |   +---@types
+|   |   |   |   |   |       index.d.ts
+|   |   |   |   |   |       module.d.ts
+|   |   |   |   |   |
+|   |   |   |   |   +---constants
+|   |   |   |   |   |       config.ts
+|   |   |   |   |   |       index.ts
+|   |   |   |   |   |       others.ts
+|   |   |   |   |   |       store.ts
+|   |   |   |   |   |       systemInfo.ts
+|   |   |   |   |   |
+|   |   |   |   |   \---resources
+|   |   |   |   |           index.ts
+|   |   |   |   |
+|   |   |   |   +---libs
+|   |   |   |   +---libs-web
+|   |   |   |   |   |   index.ts
+|   |   |   |   |   |   package.json
+|   |   |   |   |   |   tsconfig.json
+|   |   |   |   |   |   tsconfig.tsbuildinfo
+|   |   |   |   |   |
+|   |   |   |   |   +---@types
+|   |   |   |   |   |       index.d.ts
+|   |   |   |   |   |       router.d.ts
+|   |   |   |   |   |
+|   |   |   |   |   +---common
+|   |   |   |   |   |       clipboard.ts
+|   |   |   |   |   |       common.test.ts
+|   |   |   |   |   |       common.ts
+|   |   |   |   |   |       dom.ts
+|   |   |   |   |   |       index.ts
+|   |   |   |   |   |
+|   |   |   |   |   +---components
+|   |   |   |   |   |   +---IMessage
+|   |   |   |   |   |   |       index.tsx
+|   |   |   |   |   |   |
+|   |   |   |   |   |   +---Redirect
+|   |   |   |   |   |   |       index.tsx
+|   |   |   |   |   |   |
+|   |   |   |   |   |   \---Subfield
+|   |   |   |   |   |           index.module.scss
+|   |   |   |   |   |           index.module.scss.d.ts
+|   |   |   |   |   |           index.tsx
+|   |   |   |   |   |
+|   |   |   |   |   +---hooks
+|   |   |   |   |   |       index.tsx
+|   |   |   |   |   |       useAsyncEffect.tsx
+|   |   |   |   |   |       useColumns.tsx
+|   |   |   |   |   |       useDebounce.tsx
+|   |   |   |   |   |       useDependencies.tsx
+|   |   |   |   |   |       useEventListener.tsx
+|   |   |   |   |   |       useModalAttrs.tsx
+|   |   |   |   |   |       useOverScreenSize.tsx
+|   |   |   |   |   |       usePagination.tsx
+|   |   |   |   |   |       useReactive.tsx
+|   |   |   |   |   |       useRefresh.tsx
+|   |   |   |   |   |       useTableAttrs.tsx
+|   |   |   |   |   |       useWindowSize.tsx
+|   |   |   |   |   |
+|   |   |   |   |   +---router
+|   |   |   |   |   |
+|   |   |   |   |   \---styled
+|   |   |   |   |
+|   |   |   |   \---validates
+|   |   |   |       |   index.ts
+|   |   |   |       |   package.json
+|   |   |   |       |   tsconfig.json
+|   |   |   |       |   tsconfig.tsbuildinfo
+|   |   |   |       |
+|   |   |   |       \---node_modules
+|   |   |   |
+|   |   |   \---rspress
+|   |   |       |   config.ts
+|   |   |       |   LICENSE
+|   |   |       |   package.json
+|   |   |       |   README.md
+|   |   |       |   runtime.ts
+|   |   |       |   theme.ts
+|   |   |       |
+|   |   |       +---bin
+|   |   |       |       rspress.js
+|   |   |       |
+|   |   |       +---dist
+|   |   |       |       index.d.ts
+|   |   |       |       index.js
+|   |   |       |
+|   |   |       \
+|   |   |
+|   |   +---src
+|   |   |   \---components
+|   |   |       +---Footer
+|   |   |       |       index.module.scss
+|   |   |       |       index.tsx
+|   |   |       |
+|   |   |       \---Home
+|   |   |               index.tsx
+|   |   |
+|   |   \---theme
+|   |           global.css
+|   |           index.tsx
+|   |
+|   \---website
+|       |   .env.dev
+|       |   .env.prod
+|       |   .gitignore
+|       |   auto.ps1
+|       |   components.d.ts
+|       |   index.html
+|       |   package.json
+|       |   pnpm-lock.yaml
+|       |   rsbuild.config.ts
+|       |   tsconfig.json
+|       |   vite.config.ts
+|       |   vite.config.util.ts
+|       |
+|
++---packages
+|   +---config
+|   |   |   electron-main.ts
+|   |   |   electron-web.ts
+|   |   |   package.json
+|   |   |   structure.ts
+|   |   |   tsconfig.json
+|   |   |   tsconfig.node.json
+|   |   |   tsconfig.node.tsbuildinfo
+|   |   |   tsconfig.tsbuildinfo
+|   |   |   tsconfig.web.json
+|   |   |   tsconfig.web.tsbuildinfo
+|   |   |
+|   |   +---@types
+|   |   |
+|   |   +---constants
+|   |   |
+|   |   \---resources
+|   |
+|   +---libs-web
+|   |   |
+|   |   +---@types
+|   |   |
+|   |   +---common
+|   |   |
+|   |   +---components
+|   |   |   +---IMessage
+|   |   |   |
+|   |   |   +---Redirect
+|   |   |   |
+|   |   |   \---Subfield
+|   |   |
+|   |   +---hooks
+|   |   |
+|   |   +---router
+|   |   |
+|   |   \---styled
+|   |
+|   \---validates
+|       |   index.ts
+|       |   package.json
+|       |   tsconfig.json
+|       |   tsconfig.tsbuildinfo
+|       |
+|       \
+\---put
+    |   package.json
+    |   putAll.ts
+    |   putDocs.ts
+    |   putWebsite.ts
+    |   tsconfig.json
+    |
+    \---libs
+
+
+
+```

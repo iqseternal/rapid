@@ -19,7 +19,7 @@
   },
   {
     "type": "section-header",
-    "label": "Learn Rapid"
+    "label": "Rapid 构成"
   },
   {
     "type": "dir",
@@ -30,5 +30,19 @@
     "type": "dir",
     "name": "dependencies",
     "label": "依赖介绍"
+  },
+  {
+    "type": "dir",
+    "name": "technology",
+    "label": "技术链"
+  },
+  {
+    "type": "section-header",
+    "label": "工作流"
+  },
+  {
+    "type": "dir",
+    "name": "structure",
+    "label": "构建流"
   }
 ]

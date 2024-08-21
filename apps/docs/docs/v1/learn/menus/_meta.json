@@ -3,5 +3,20 @@
     "type": "file",
     "name": "index",
     "label": "整体目录结构"
+  },
+  {
+    "type": "file",
+    "name": "app",
+    "label": "app"
+  },
+  {
+    "type": "file",
+    "name": "doc",
+    "label": "doc"
+  },
+  {
+    "type": "file",
+    "name": "website",
+    "label": "website"
   }
 ]

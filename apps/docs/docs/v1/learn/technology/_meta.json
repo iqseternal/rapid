@@ -1,0 +1,33 @@
+
+[
+  {
+    "type": "file",
+    "name": "manage",
+    "label": "环境及包管理"
+  },
+  {
+    "type": "file",
+    "name": "typescript",
+    "label": "TypeScript"
+  },
+  {
+    "type": "file",
+    "name": "structure",
+    "label": "构建工具"
+  },
+  {
+    "type": "file",
+    "name": "core",
+    "label": "核心技术"
+  },
+  {
+    "type": "file",
+    "name": "web-ui",
+    "label": "web-UI"
+  },
+  {
+    "type": "file",
+    "name": "test",
+    "label": "测试工具"
+  }
+]
