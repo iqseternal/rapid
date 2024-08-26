@@ -2,6 +2,7 @@ import { useDebounceHook, useDebounce } from './useDebounce';
 import { useEventListener } from './useEventListener';
 import { useWindowScreenSizeHook, useWindowInnerSizeHook } from './useWindowSize';
 import { useReactive } from './useReactive';
+import { useState } from 'react';
 
 export interface WindowOverScreenSize {
   overflowWidth: boolean;
@@ -20,8 +21,8 @@ export interface WindowOverScreenSize {
  * @return
  */
 export function useWindowOverScreenSize() {
-  const windowScreenSize = useWindowScreenSizeHook();
-  const windowInnerSize = useWindowInnerSizeHook();
+  const [windowScreenSize] = useState(useWindowScreenSizeHook);
+  const [windowInnerSize] = useState(useWindowInnerSizeHook);
 
   const [state] = useReactive({
     overflowWidth: windowInnerSize.innerWidth > windowScreenSize.screenWidth,

@@ -3,17 +3,20 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
+import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { resolveAlias, DIRS } from '../../../config';
 import { DefinePlugin } from '@rspack/core';
+import { join } from 'path';
 
 import tsConfigJson from './tsconfig.web.json';
+
 
 const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
 
   return {
     source: {
       entry: {
-        index: './src/index.tsx'
+        index: join(DIRS.DEV_DESKTOP_WEB_DIR, './src/index.tsx')
       },
       alias: resolveAlias(__dirname, tsConfigJson.compilerOptions.paths)
     },
@@ -22,6 +25,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginStyledComponents(),
       pluginTypedCSSModules(),
       pluginReact(),
+      pluginSourceBuild(),
     ],
 
     server: {
@@ -33,7 +37,26 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       distPath: {
         root: DIRS.OUT_DESKTOP_RENDERER_DIR,
       },
-      cleanDistPath: true
+      cleanDistPath: true,
+      minify: {
+        js: true,
+        jsOptions: {
+          minimizerOptions: {
+
+            format: {
+
+              comments: false,
+
+
+              ecma: 2015
+            }
+
+          }
+        },
+
+
+        css: true,
+      }
     }
   }
 })

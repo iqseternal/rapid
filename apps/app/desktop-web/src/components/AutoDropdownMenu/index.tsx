@@ -3,7 +3,7 @@ import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/
 
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps } from 'antd';
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, forwardRef } from 'react';
 import { MaxContent } from '@rapid/libs-web/styled';
 import type { MenuInstance, AntdMenuInstance, AntdItemType } from './declare';
 
@@ -80,7 +80,7 @@ export interface AutoDropdownMenuProps extends BaseProps {
  * 自动渲染菜单的组件, 该菜单为 contextMenu 或者文件菜单
  *
  */
-export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
+export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) => {
   const {
     menu,
     attrs = {},
@@ -125,15 +125,14 @@ export default function AutoDropdownMenu(props: AutoDropdownMenuProps) {
       dropdownRender={(originNode) => <PropMenu menus={menu.children} />}
       {...attrs}
     >
-      {children
-        ? children
-        : <MaxContent
-            className={styles.menuItem}
-          >
-            {menu.label}
-          </MaxContent>
-      }
+      <MaxContent
+        className={styles.menuItem}
+      >
+        {children ? children : menu.label}
+      </MaxContent>
     </Dropdown>
   </OpenContext.Provider>
-}
+});
 
+
+export default AutoDropdownMenu;

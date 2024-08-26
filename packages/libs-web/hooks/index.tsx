@@ -1,13 +1,27 @@
-export { useReactive } from './useReactive';
+export { useReactive, useShallowReactive } from './useReactive';
+
 export { useRefresh } from './useRefresh';
+
 export { useDebounceHook, useThrottleHook, useDebounce, useThrottle } from './useDebounce';
+
 export { useDependenciesListHook } from './useDependencies';
 export type { AppendDepFn, RemoveDepFn } from './useDependencies';
+
 export { useWindowScreenSizeHook, useWindowScreenSize, useWindowInnerSize, useWindowInnerSizeHook } from './useWindowSize';
 export type { WindowScreenSize, WindowInnerSize } from './useWindowSize';
+
 export { useWindowOverScreenSize } from './useOverScreenSize';
 export type { WindowOverScreenSize } from './useOverScreenSize';
-export { useEventListener } from './useEventListener';
+
+export { useResizeObserver } from './useResizeObserver';
+
+export { useMaintenanceStack } from './useMaintenanceStack';
+export type { MaintenanceStackOptions, JudgeIsCanBeControlStack } from './useMaintenanceStack';
+
+
+
+
+
 
 // Exports
 export {
@@ -16,6 +30,9 @@ export {
 } from 'ahooks';
 
 
+
+
+export { useEventListener } from './useEventListener';
 // 以下 Hook 需要优化
 export { useAsyncEffect, useAsyncLayoutEffect } from './useAsyncEffect';
 export type { AsyncEffectCallback } from './useAsyncEffect';

@@ -18,9 +18,48 @@ import { useReactive as useAHookReactive } from 'ahooks';
 export function useReactive<S extends object>(initValue: S | (() => S)) {
   const initialState = useMemo(() => {
     return (typeof initValue === 'function') ? initValue() : initValue;
-  }, [initValue]);
+  }, []);
 
   const state = useAHookReactive(initialState);
+
+  return [state];
+}
+
+export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
+  const refresh = useRefresh();
+
+  const initialState = useMemo(() => {
+    return (typeof initValue === 'function') ? initValue() : initValue;
+  }, []);
+
+  const [state] = useState(() => {
+    return new Proxy(initialState, {
+      get(target, p, receiver) {
+
+        return Reflect.get(target, p, receiver);
+      },
+      set(target, p, newValue, receiver) {
+        const oldValue = Reflect.get(target, p, receiver);
+        if (oldValue === newValue) return true;
+
+        const setResult = Reflect.set(target, p, newValue, receiver);
+        if (setResult) {
+          refresh();
+          return true;
+        }
+        return false;
+      },
+
+      defineProperty(target, property, attributes) {
+        refresh();
+        return Reflect.defineProperty(target, property, attributes);
+      },
+      deleteProperty(target, p) {
+        refresh();
+        return Reflect.deleteProperty(target, p);
+      },
+    })
+  });
 
   return [state];
 }
