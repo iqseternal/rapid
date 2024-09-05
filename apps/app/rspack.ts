@@ -6,7 +6,7 @@ import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
 
-import { defineVars, CONFIG_ENV_COMMAND, DIRS } from '../../config';
+import { defineVars, CONFIG_ENV_COMMAND, DIRS } from '../../config/node/builder';
 
 import treeKill from 'tree-kill';
 
@@ -46,6 +46,10 @@ const bin = join(__dirname, './node_modules/.bin/electron');
 let electronProcess: ChildProcess;
 let isKillDone = true;
 
+const exitElectron = () => {
+  process.exit(0);
+}
+
 const initStartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
   const envs = `cross-env ${envArgs.join(' ')}`;
 
@@ -57,6 +61,7 @@ const initStartElectron = (envArgs: readonly `${string}=${string | number}`[], s
 
   electronProcess.on('error', console.error);
   electronProcess.on('message', console.log);
+  electronProcess.addListener('exit', exitElectron);
 }
 
 const startElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
@@ -75,6 +80,8 @@ const startElectron = (envArgs: readonly `${string}=${string | number}`[], start
 
   // 开始 kill
   isKillDone = false;
+
+  electronProcess.removeListener('exit', exitElectron);
 
   // kill 上一次的 electron 进程
   treeKill(electronProcess.pid, 'SIGTERM', err => {

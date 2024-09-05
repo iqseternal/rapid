@@ -1,17 +1,23 @@
 {
   "compilerOptions": {
+    "composite": true,
     "incremental": true,
+
     "baseUrl": ".",
+
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+
     "esModuleInterop": true,
-    "types": ["../../config/@types"],
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "module": "NodeNext",
+
     "experimentalDecorators": true,
-    "resolveJsonModule": true
+
+
+    "types": ["@rapid/config/@types"]
   },
-  "include": [
-    "./**/*.ts",
-    "../../../packages/config/@types"
-  ],
-  "exclude": ["node_modules"]
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules"],
 }

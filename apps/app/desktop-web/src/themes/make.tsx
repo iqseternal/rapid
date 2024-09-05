@@ -1,4 +1,4 @@
-import { CONFIG } from '@rapid/config/constants';
+import type { CONFIG } from '@rapid/config/constants';
 
 /**
  * 创建一个预设的 Css 样式

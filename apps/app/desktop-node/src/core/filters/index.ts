@@ -5,7 +5,7 @@ import { PrinterService } from '@/service/PrinterService';
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter extends FrameworkFilter {
   catch(err: RuntimeException): void {
-    if (err.errMsgData.level) {
+    if (err?.errMsgData?.level) {
       switch (err.errMsgData.level) {
         case 'info':
           PrinterService.printInfo('RuntimeException ==>', err.errMsgData.label, err.stack);
@@ -31,7 +31,7 @@ export class TypeExceptionFilter extends FrameworkFilter {
 
 
   catch(err: TypeException): void {
-    if (err.errMsgData.level) {
+    if (err?.errMsgData?.level) {
       switch (err.errMsgData.level) {
         case 'info':
           PrinterService.printInfo('TypeException ==>', err.errMsgData.label, err.stack);
@@ -57,7 +57,7 @@ export class AsyncExceptionFilter extends FrameworkFilter {
 
 
   catch(err: AsyncException): void {
-    if (err.errMsgData.level) {
+    if (err?.errMsgData?.level) {
       switch (err.errMsgData.level) {
         case 'info':
           PrinterService.printInfo('AsyncException ==>', err.errMsgData.label, err.stack);
@@ -83,7 +83,7 @@ export class RequestExceptionFilter extends FrameworkFilter {
 
   catch(err: RequestException): void {
 
-    if (err.errMsgData.level) {
+    if (err?.errMsgData?.level) {
       switch (err.errMsgData.level) {
         case 'info':
           PrinterService.printInfo('RequestException ==>', err.errMsgData.label, err.stack);
@@ -109,7 +109,7 @@ export class PermissionExceptionFilter extends FrameworkFilter {
 
 
   catch(err: PermissionException): void {
-    if (err.errMsgData.level) {
+    if (err?.errMsgData?.level) {
       switch (err.errMsgData.level) {
         case 'info':
           PrinterService.printInfo('PermissionException ==>', err.errMsgData.label, err.stack);

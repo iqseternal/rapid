@@ -1,3 +1,4 @@
+
 import type { ExposeApi } from '@rapid/desktop-preload';
 
 declare global {
@@ -8,8 +9,7 @@ declare global {
    * window.electron.ipcRenderer.invoke('xxx');
    * ```
    */
-  declare interface Window extends ExposeApi {}
-
+  declare interface Window extends ExposeApi { }
 }
 
 export {};

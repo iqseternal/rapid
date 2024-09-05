@@ -1,6 +1,4 @@
-import {ipcWindowMaxSize} from '@/ipc';
 import { makeInvokeActions } from './ipcRenderer';
-
 
 export class WindowPopup {
   /**

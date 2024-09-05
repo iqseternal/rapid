@@ -3,11 +3,15 @@
  * 异常的基类
  */
 export class Exception<D extends any = any> extends Error {
+  errMsgData: D;
+
   constructor(
     message: string,
-    public readonly errMsgData?: D
+    errMsgData: D
   ) {
     super(message);
+
+    this.errMsgData = errMsgData;
   }
 }
 

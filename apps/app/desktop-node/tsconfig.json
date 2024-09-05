@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-
+    "composite": true,
+    "baseUrl": "."
   },
   "references": [
     { "path": "./tsconfig.main.json" },

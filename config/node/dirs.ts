@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 /** 项目根目录 */
-export const ROOT_DIR = path.join(__dirname, '../');
+export const ROOT_DIR = path.join(__dirname, '../../');
 
 // =================================================================
 
@@ -51,3 +51,6 @@ export const DIRS = {
   OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_RENDERER_DIR
 }
 export default DIRS;
+
+
+

@@ -1,7 +1,8 @@
-
 import { AppStore } from '@/actions';
-import { loginReq, getUserinfoReq, UserinfoResponse } from '@/api';
-import { toPicket, asynced } from '@suey/pkg-utils';
+import { loginReq, getUserinfoReq, UserinfoResponse, logoutReq } from '@/api';
+import { useShallowReactive } from '@rapid/libs-web';
+import { toPicket, asynced, RPromiseLike } from '@suey/pkg-utils';
+import { useEffect, useLayoutEffect } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -39,6 +40,72 @@ export const setAccessToken = async (accessToken: string) => {
   return res;
 }
 
+
+/**
+ * 校验用户是否获取了凭证, 即是否登录了
+ * @returns
+ */
+export const authHasAuthorizedSync = () => {
+  const { accessToken, userinfo } = useUserStore.getState();
+  return (accessToken && accessToken.trim() !== '');
+}
+export const authHasAuthorized = async () => {
+  const [err, accessToken] = await toPicket(getAccessToken());
+  if (err || !accessToken || accessToken.trim() === '') return false;
+  return true;
+}
+export const useAuthHasAuthorized = () => {
+  const accessToken = useUserStore((store) => store.accessToken);
+
+  const [state] = useShallowReactive({
+    hasAuthorize: (accessToken && accessToken.trim() !== '')
+  });
+
+  useLayoutEffect(() => {
+    state.hasAuthorize = (accessToken && accessToken.trim() !== '');
+  }, [accessToken]);
+  return state;
+}
+
+export interface AuthHasRoleOptions {
+
+}
+
+/**
+ * 验证用户的权限等级
+ * @returns
+ */
+export const authHasRoleSync = (roleOptions: AuthHasRoleOptions) => {
+  const { accessToken, userinfo } = useUserStore.getState();
+
+  const roles = userinfo?.roles ?? [];
+  if (roles.includes('admin')) return true;
+  return false;
+}
+export const authHasRole = async (roleOptions: AuthHasRoleOptions) => {
+
+  return authHasRoleSync(roleOptions);
+}
+export const useAuthRole = (roleOptions: AuthHasRoleOptions) => {
+  const [state] = useShallowReactive({
+    hasRole: false
+  });
+  const accessToken = useUserStore((store) => store.accessToken);
+  const roles = useUserStore(store => store.userinfo?.roles ?? []);
+
+  useLayoutEffect(() => {
+    if (roles.includes('admin')) {
+      state.hasRole = true;
+    }
+  }, [accessToken, roles]);
+
+  return state;
+}
+
+
+
+
+
 export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
   const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
   if (loginErr) return Promise.reject(loginErr);
@@ -57,3 +124,12 @@ export const userUpdateInfo = asynced<typeof getUserinfoReq>(async () => {
   return infoRes;
 });
 
+export const useLogout = asynced<() => RPromiseLike<void>>(async () => {
+  const [err, res] = await toPicket(logoutReq());
+
+  if (err) {
+    return Promise.reject();
+  }
+
+  return Promise.resolve();
+})

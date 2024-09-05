@@ -15,7 +15,8 @@
     "preview-vite": "electron-vite preview",
     "build:win": "pnpm build && electron-builder --win --config",
     "build-vite:win": "pnpm build-vite && electron-builder --win --config",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json"
   },
   "keywords": [],
   "author": "",

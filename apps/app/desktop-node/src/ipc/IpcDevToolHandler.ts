@@ -14,7 +14,7 @@ export const ipcOpenDevTool = makeIpcHandleAction(
 
     if (status) {
       if (IS_DEV) windowService.window.webContents.openDevTools(options);
-      else throw new PermissionException('生产模式, 不允许打开开发者工具');
+      else throw new PermissionException('生产模式, 不允许打开开发者工具', { });
     }
     else windowService.window.webContents.closeDevTools();
   }

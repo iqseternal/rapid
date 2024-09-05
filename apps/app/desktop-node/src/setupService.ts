@@ -5,7 +5,10 @@ import { PrinterService } from '@/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
 import { BrowserView, Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach, setWindowOpenHandler } from '@/core/common/window';
-import { iconUrl } from '@rapid/config/electron-main';
+import { join } from 'path';
+
+const iconUrl = join(__dirname, '../../resources/icon.ico');
+
 
 /**
  * 创建主窗口的函数

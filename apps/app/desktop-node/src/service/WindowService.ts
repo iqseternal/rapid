@@ -3,8 +3,9 @@ import { BrowserWindow, type BrowserWindowConstructorOptions } from 'electron';
 import { setWindowCross, setWindowMaxSize, setWindowOpenHandler, setWindowCaption, getWindowFrom } from '@/core/common/window';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber, isNull } from '@suey/pkg-utils';
-import { iconUrl } from '@rapid/config/electron-main';
 import { RuntimeException } from '@/core';
+
+const iconUrl = join(__dirname, '../../../resources/icon.png');
 
 const DEFAULT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
   show: false,
@@ -39,7 +40,7 @@ export class WindowService {
       height: 780,
       ...DEFAULT_OPTIONS,
       ...windowOptions,
-      ...(IS_LINUX ? { icon: iconUrl } : {}),
+      ...(IS_LINUX ? { } : {}),
       webPreferences: {
         preload: join(__dirname, '../preload/index.js'),
         sandbox: false,
@@ -51,7 +52,7 @@ export class WindowService {
 
     // setWindowCross(this.window);
     // setWindowMaxSize(this.window);
-    setWindowCaption(this.window, iconUrl, CONFIG.PROJECT);
+    // setWindowCaption(this.window, iconUrl, CONFIG.PROJECT);
 
 
     if (this.options.windowKey) WindowStateMachine.addKey(this.options.windowKey, this);

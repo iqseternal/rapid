@@ -1,4 +1,4 @@
-import * as rootPackageJson from '../../../package.json';
+import * as rootPackageJson from '../../package.json';
 
 export const SystemInformation = {
   // 系统名称

@@ -1,4 +1,4 @@
-import type { AppStoreType } from '@/store';
+import type { AppStoreType } from 'node_modules/@rapid/desktop-node/src/store';
 
 export class AppStore {
   static getStore() {

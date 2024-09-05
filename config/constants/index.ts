@@ -3,7 +3,7 @@
  * 项目常量的编写, 不要通过路径别名或者导入包的方式创建这个常量
  * ==========================================
  */
-import { PLATFORMS, ENV } from '../../../config/enums';
+import { PLATFORMS, ENV } from '../enums';
 import { CONFIG } from './config';
 
 export { SystemInformation } from './systemInfo';

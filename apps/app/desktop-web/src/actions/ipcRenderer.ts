@@ -2,8 +2,6 @@ import type { Handlers } from 'node_modules/@rapid/desktop-preload';
 import { IS_WEB, PLATFORMS } from '@rapid/config/constants';
 
 export const makeInvokeActions = <InvokeKey extends keyof Handlers>(invokeKey: InvokeKey): Handlers[InvokeKey] => {
-  console.log(IS_WEB, window.electron);
-
   if (IS_WEB || !window.electron) return ((...args: unknown[]) => Promise.resolve()) as unknown as Handlers[InvokeKey];
 
   const action: Handlers[InvokeKey] = ((...args: Parameters<Handlers[InvokeKey]>) => {

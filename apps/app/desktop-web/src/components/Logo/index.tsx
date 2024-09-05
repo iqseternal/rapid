@@ -1,6 +1,7 @@
-import { iconUrl } from '@rapid/config/electron-web';
 import type { HTMLAttributes } from 'react';
 import { combinationCName } from '@rapid/libs-web/common';
+
+import { default as iconUrl } from '../../../../resources/icon.png?raw';
 
 import styles from './index.module.scss';
 

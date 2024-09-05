@@ -59,8 +59,9 @@ export const ipcWindowResizeAble = makeIpcHandleAction(
     id?: number,
     able: boolean
   }) => {
+    const { able = true } = options ?? {};
 
-    windowService.window.setResizable(options.able);
+    windowService.window.setResizable(able);
   }
 );
 

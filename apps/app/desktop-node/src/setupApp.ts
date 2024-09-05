@@ -29,7 +29,7 @@ export const setupApp = (startApp: () => void | Promise<void>, ops?: Partial<App
 
   const safeStartApp = () => {
     Promise.resolve(startApp()).catch(err => {
-      ops.onFailed(err);
+      ops?.onFailed?.(err);
     })
   }
 

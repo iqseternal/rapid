@@ -1,0 +1,26 @@
+{
+  "extends": "../tsconfig.build.json",
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+
+    "baseUrl": ".",
+    "noImplicitAny": false,
+
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"],
+
+    "types": [
+      "./@types-web"
+    ]
+  },
+  "include": [
+    "./web",
+    "enums.ts",
+    "./constants"
+  ],
+  "exclude": [
+    "node_modules",
+    "./web/*.test.ts"
+  ]
+}

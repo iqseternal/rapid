@@ -1,3 +1,5 @@
+/// <reference types="./module.d.ts" />
+
 import type { PLATFORMS, ENV } from '../enums';
 
 declare global {

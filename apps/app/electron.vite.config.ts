@@ -1,7 +1,7 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin, swcPlugin  } from 'electron-vite';
 import type { Alias, ConfigEnv, Plugin } from 'vite';
 import { mergeConfig } from 'vite';
-import { DIRS } from '../../config/dirs';
+import { DIRS } from '../../config/node';
 import { join } from 'path';
 
 import reactPlugin from '@vitejs/plugin-react';

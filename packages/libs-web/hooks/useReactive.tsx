@@ -25,6 +25,19 @@ export function useReactive<S extends object>(initValue: S | (() => S)) {
   return [state];
 }
 
+/**
+ * 修改 state 自动刷新组件
+ * @example
+ * const [state] = useShallowReactive({
+ *   a: 1,
+ *   b: {
+ *     c: 1
+ *   }
+ * });
+ *
+ * state.a = 2; // 自动刷新组件
+ * state.b.c = 2; // 不会自动刷新组件
+ */
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
 

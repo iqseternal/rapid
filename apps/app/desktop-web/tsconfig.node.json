@@ -7,13 +7,15 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "types": [
+      "../../../config/@types"
+    ]
   },
   "include": [
     "tsconfig.web.json",
     "rsbuild.config.ts",
-    "../../../config",
-    "../../../packages/config/structure.ts"
+    "../../../config"
   ],
   "exclude": ["node_modules"]
 }

@@ -9,7 +9,7 @@
  * 通过抽离这个以达到快速修改项目配置额需求
  * ==========================================
  */
-import * as rootPackageJson from '../../../package.json';
+import * as rootPackageJson from '../../package.json';
 
 export const CONFIG = {
   API: {

@@ -1,7 +1,7 @@
 import type { RspackOptions, RspackPluginInstance, RuleSetRule } from '@rspack/core';
 
 export const supportImportRaw: RuleSetRule = {
-  resourceQuery: /(raw$)|(\.(png|jpe?g|gif|ico)$)/,
+  resourceQuery: /(\?raw$)|(\.(png|jpe?g|gif|ico)$)/,
   exclude: [/node_modules/],
   type: 'asset/resource'
 }

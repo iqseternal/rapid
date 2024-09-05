@@ -1,12 +1,9 @@
-import { PLATFORMS, ENV, CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV } from './enums';
+import { PLATFORMS, ENV, CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV } from '../enums';
 import { Printer } from '@suey/printer';
 import { join } from 'path';
 import { DIRS } from './dirs';
 
-export { default as DIRS } from './dirs';
-export { PLATFORMS, ENV, CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV };
-
-export * as rules from './rules';
+export * from './index';
 
 declare global {
   namespace NodeJS {
@@ -58,16 +55,6 @@ else {
     Printer.printError(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 只能是 production`);
     process.exit(1);
   }
-}
-
-export const resolveAlias = (basePath: string, aliasPath: Record<string, string[]>) => {
-  const alias: Record<string, string> = {};
-
-  for (const key in aliasPath) {
-    alias[key.replace('/*', '')] = join(basePath, aliasPath[key][0].replace('/*', ''));
-  }
-
-  return alias;
 }
 
 export function defineVars(): InjectionVariables {

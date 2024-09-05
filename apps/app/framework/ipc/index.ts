@@ -14,7 +14,7 @@ export enum EventActionType {
 export type IpcActionType<
   EvtActionType extends EventActionType,
   Channel extends string = string,
-  Action extends (...args: unknown[]) => any = (...args: unknown[]) => any
+  Action extends (...args: any[]) => any = (...args: any[]) => any
 > = {
   channel: Channel;
   action: Action;
@@ -26,7 +26,7 @@ export type IpcActionType<
    * @param args
    * @returns
    */
-  listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: unknown[]) => any;
+  listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => any;
 }
 
 /** 在中间件中 onSuccess 或者 onError 中获取当前的 action 信息的类型 */
@@ -169,15 +169,15 @@ export function toMakeIpcAction<
    * 初始化创建 action 对象的函数
    * @returns
    */
-  const intMakeAction = <
+  const initMakeAction = <
     EvtActionType extends EventActionType
   >(
     evtActionType: EvtActionType
   ) => {
     return <
-      Channel extends string = string,
-      CutArgs extends any[] = (EvtActionType extends EventActionType.Handle ? HandleCutArgs : OnCutArgs),
-      Fn extends (...args: [...CutArgs, ...any[]]) => any = (...args: [...CutArgs, ...any[]]) => any
+      Channel extends string,
+      CutArgs extends (EvtActionType extends EventActionType.Handle ? HandleCutArgs : OnCutArgs),
+      Fn extends (...args: [...CutArgs, ...any[]]) => any
     >(
       channel: Channel,
       middlewares: IpcActionMiddleware<EvtActionType>[],
@@ -218,7 +218,7 @@ export function toMakeIpcAction<
      *
      * @param evtActionType
      */
-    intMakeAction,
+    initMakeAction,
     /**
      * 制作一个 handle 句柄
      * @example
@@ -233,7 +233,7 @@ export function toMakeIpcAction<
      *
      * @param evtActionType
      */
-    makeIpcHandleAction: intMakeAction(EventActionType.Handle),
+    makeIpcHandleAction: initMakeAction(EventActionType.Handle),
     /**
      * 制作一个 On 句柄
      * @example
@@ -248,7 +248,7 @@ export function toMakeIpcAction<
      *
      * @param evtActionType
      */
-    makeIpcOnAction: intMakeAction(EventActionType.On)
+    makeIpcOnAction: initMakeAction(EventActionType.On)
   };
 }
 

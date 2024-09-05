@@ -4,9 +4,10 @@ import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, useCallback } from 'react';
 import { useMenuSelector } from '@/menus';
-import { FlexRowStart, MaxContent, useMaintenanceStack, useResizeObserver, useShallowReactive } from '@rapid/libs-web';
+import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive } from '@rapid/libs-web';
 import { randomRegionForInt } from '@suey/pkg-utils';
-import { Menu } from 'antd';
+import { Menu, Input } from 'antd';
+import type { AntdItemType, AntdMenuInstance, AntdSubMenuType } from '@components/AutoDropdownMenu';
 
 import Widget from '@components/Widget';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
@@ -16,7 +17,105 @@ import Logo from '@components/Logo';
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
-export interface HeaderProps extends BaseProps {
+
+export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) {
+  const { isDialog = false, isPane = false } = props;
+
+  const headerFileMenu = useMenuSelector(menus => menus.headerFileMenu);
+  const headerEditMenu = useMenuSelector(menus => menus.headerEditMenu);
+
+  // 菜单
+  const { maintenanceStack, storageStack, otherStack, pushMaintenanceStack, popMaintenanceStack } = useMaintenanceStack({
+    maintenanceStack: [
+      headerFileMenu, headerEditMenu
+    ],
+    otherStack: [] as { sourceWidth: number;calcWidth: number; }[],
+  });
+  // 菜单容器
+  const menusContainerRef = useRef<HTMLDivElement>(null);
+
+  //
+  const [statusState] = useShallowReactive({
+    isCalcDone: false
+  })
+
+  // resizeObserver
+  const [resizeObserver] = useResizeObserver(menusContainerRef, () => {
+    if (isDialog || isPane) return;
+
+    const menusContainer = menusContainerRef.current;
+    if (!menusContainer) return;
+
+    // 什么条件添加到展示栈中
+    pushMaintenanceStack((menu, other, index) => {
+      if (!other) return false;
+      return menusContainer.clientWidth >= other.calcWidth;
+    });
+
+    popMaintenanceStack((menu, other, index) => {
+      if (!other) return false;
+      return menusContainer.clientWidth < other.calcWidth;
+    });
+  });
+
+  // 计算元素宽度 以及 它距离最作放的距离
+  useEffect(() => {
+    if (!menusContainerRef.current) return;
+
+    let columnGap = parseInt(getComputedStyle(menusContainerRef.current).columnGap);
+    if (isNaN(columnGap)) columnGap = 0;
+
+    for (let i = 0;i < maintenanceStack.length && i < menusContainerRef.current.children.length;i ++) {
+      const child = menusContainerRef.current.children[i];
+      if (!(child instanceof HTMLElement)) continue;
+      if (!otherStack[i]) otherStack[i] = { sourceWidth: child.clientWidth, calcWidth: 0 };
+    }
+    if (otherStack.length) otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
+
+    for (let i = 1;i < maintenanceStack.length && i < menusContainerRef.current.children.length;i ++) {
+      otherStack[i].calcWidth = otherStack[i - 1].calcWidth + columnGap + otherStack[i].sourceWidth;
+    }
+
+    statusState.isCalcDone = true;
+
+    return () => {
+      otherStack.fill(void 0);
+      statusState.isCalcDone = false;
+    }
+  }, [isDialog, isPane]);
+
+  // 如果变成弹窗直接关闭所有监听
+  useEffect(() => {
+    if (isDialog || isPane) resizeObserver.disconnect();
+  }, [isDialog, isPane]);
+
+  return <FlexRowStart
+    ref={menusContainerRef}
+    className={combinationCName(
+      {
+        [commonStyles.transparent]: !statusState.isCalcDone
+      }
+    )}
+  >
+    {!isDialog && !isPane && maintenanceStack.map(menu => {
+      return <AutoDropdownMenu
+        key={`menu.key ${randomRegionForInt(0, 1112023)}`}
+        menu={menu}
+        className={commonStyles.appRegionNo}
+      />
+    })}
+    {storageStack.length > 0 &&
+      <AutoDropdownMenu
+        menu={{ label: 'header-storage-stack', key: 'header-storage-stack', children: storageStack }}
+        className={commonStyles.appRegionNo}
+      >
+        <IconFont icon='MenuOutlined' />
+      </AutoDropdownMenu>
+    }
+  </FlexRowStart>
+}
+
+export interface HeaderProps extends Omit<BaseProps, 'children'> {
   // 是否是一个面板
   isPane?: boolean;
   // 是否是一个弹窗
@@ -31,85 +130,17 @@ export default function Header(props: HeaderProps) {
   const {
     isDialog = false,
     isPane = false,
-    slots = {}
+
+    slots = {},
+
+    className
   } = props;
-
-  const headerFileMenu = useMenuSelector(menus => menus.headerFileMenu);
-  const headerEditMenu = useMenuSelector(menus => menus.headerEditMenu);
-
-  const { maintenanceStack, storageStack, otherStack, pushMaintenanceStack, popMaintenanceStack } = useMaintenanceStack({
-    maintenanceStack: [
-      headerFileMenu, headerEditMenu,
-
-
-    ],
-    otherStack: [] as { sourceWidth: number;calcWidth: number; }[],
-
-
-    storageStack: [
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu,
-      headerFileMenu, headerEditMenu
-    ]
-  });
-
-  const menusContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!menusContainerRef.current) return;
-
-    for (let i = 0;i < maintenanceStack.length;i ++) {
-      if (!otherStack[i]) {
-        otherStack[i] = {
-          sourceWidth: 24,
-          calcWidth: 0
-        }
-      }
-    }
-    for (let i = 0;i < storageStack.length;i ++) {
-      if (!otherStack[maintenanceStack.length + i]) {
-        otherStack[maintenanceStack.length + i] = {
-          sourceWidth: 24,
-          calcWidth: 0
-        }
-      }
-    }
-
-    otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
-
-    for (let i = 1;i < otherStack.length;i ++) {
-      otherStack[i].calcWidth = otherStack[i - 1].calcWidth + 10 + otherStack[i].sourceWidth;
-    }
-
-    return () => {
-      otherStack.fill(void 0);
-    }
-  }, []);
-
-  // useResizeObserver(menusContainerRef, () => {
-  //   const menusContainer = menusContainerRef.current;
-  //   if (!menusContainer) return;
-
-  //   pushMaintenanceStack((menu, other, index) => {
-  //     if (!other) return false;
-  //     return menusContainer.clientWidth >= other.calcWidth;
-  //   });
-
-  //   popMaintenanceStack((menu, other, index) => {
-  //     if (!other) return false;
-  //     return menusContainer.clientWidth < other.calcWidth;
-  //   });
-  // });
 
   return <Subfield
     className={combinationCName(
       styles.header,
       commonStyles.appRegion,
+      className,
       props.className
     )}
   >
@@ -123,44 +154,35 @@ export default function Header(props: HeaderProps) {
         <Logo />
       </SubfieldFixed>
 
-      <FlexRowStart
-        ref={menusContainerRef}
+      <MaxContent
         className={combinationCName(
           styles.menu,
-          commonStyles.userSelectNone,
+          commonStyles.userSelectNone
+        )}
+      >
+        {!(isDialog && isDialog) ? <MaintenanceMenus isDialog={isDialog} isPane={isPane} /> : <></>}
+      </MaxContent>
+
+      <SubfieldFixed
+        className={combinationCName(
+          styles.history,
           commonStyles.appRegionNo
         )}
       >
-        <Menu mode='horizontal' items={maintenanceStack.concat(storageStack).map((item, index) => {
-          item.key = `headerMenu${index}`;
-
-          return item;
-        })} />
-
-        {/* {slots.menu
-          ? slots.menu
-          : (
-            !isDialog && !isPane && maintenanceStack.map(menu => <AutoDropdownMenu key={`menu.key ${randomRegionForInt(0, 1112023)}`} menu={menu} />)
-          )
-        }
-
-        {storageStack.length > 0 && <AutoDropdownMenu menu={{ label: 'header-storage-stack', key: 'header-storage-stack', children: storageStack }}>
-
-          <IconFont icon='MenuOutlined' />
-
-        </AutoDropdownMenu>} */}
-
-      </FlexRowStart>
-
-      <SubfieldFixed>
-        1111
+        {!(isDialog || isPane) && <Widget icon='HistoryOutlined' />}
       </SubfieldFixed>
     </Subfield>
 
     <Subfield
-      className={styles.functionContainer}
+      className={combinationCName(
+        styles.functionContainer,
+        commonStyles.appRegionNo
+      )}
     >
-      22222
+      <Input
+        className={styles.searchInput}
+        placeholder='Ctrl+K'
+      />
     </Subfield>
 
     <Subfield

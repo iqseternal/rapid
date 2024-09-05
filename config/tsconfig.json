@@ -1,14 +1,10 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "baseUrl": ".",
-    "rootDir": "./",
-    "target": "ESNext",
-    "module": "NodeNext",
-    "types": ["./@types", "node"]
+    "composite": true,
+    "baseUrl": "."
   },
-  "include": [
-    "./**/*.ts"
-  ],
-  "exclude": ["node_modules"]
+  "references": [
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.web.json" }
+  ]
 }

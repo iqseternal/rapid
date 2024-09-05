@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.build.json",
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "types": [
+      "./@types-node"
+    ],
+    "isolatedModules": true
+  },
+  "include": [
+    "./node/**/*.ts",
+    "./enums.ts",
+    "./constants"
+  ],
+  "exclude": ["node_modules"]
+}

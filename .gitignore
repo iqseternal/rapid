@@ -1,14 +1,22 @@
+# 依赖产物
 /**/node_modules
+
+# 构建产物输出文件夹
 /**/dist
+
+# 缓存文件
 /**/cache
+
+# 输出文件,
 /**/out
 
-/scripts/build
+# lint 缓存文件, lint 自动生成
+/.eslintcache
 
-# ts 编译增量文件
+# ts 编译增量文件, tsc 自动生成
 /**/*.tsbuildinfo
 
-# 测试输出文件
+# 测试输出文件, jest 生成
 /coverage/
 # /**/test/
 # /**/*.test.js
@@ -16,5 +24,5 @@
 # /**/*.test.ts
 # /**/*.test.tsx
 
-# Scss 声明文件
+# Scss 声明文件, 会在运行时由 rsbuild 插件自动生成
 /**/*.module.scss.d.ts

@@ -1,0 +1,22 @@
+@import "@scss/mixin";
+
+.workbenches {
+
+  @include FlexRowStart;
+
+  .graphics {
+
+    max-width: 400px;
+  }
+
+  .meta2dViewContainer {
+
+  }
+
+
+  .propertyBar {
+
+
+  }
+}
+

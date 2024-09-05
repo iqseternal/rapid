@@ -10,13 +10,13 @@ import IMessage from '@rapid/libs-web/components/IMessage';
 const PersonalInfo = Guards.AuthRole(forwardRef<HTMLDivElement>((props, ref) => {
   const bears = useUserStore(store => store.userinfo);
 
-  useAsyncEffect(async () => {
-    const [err, res] = await toPicket(userUpdateInfo());
-    if (err) {
-      IMessage.error(err.descriptor);
-      return;
-    }
-  }, []);
+  // useAsyncEffect(async () => {
+  //   const [err, res] = await toPicket(userUpdateInfo());
+  //   if (err) {
+  //     IMessage.error(err.descriptor);
+  //     return;
+  //   }
+  // }, []);
 
   return <div ref={ref}>
     <Card>

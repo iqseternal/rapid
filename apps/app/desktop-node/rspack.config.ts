@@ -1,7 +1,7 @@
 import { defineConfig } from '@rspack/cli';
 import { node, DefinePlugin, DefinePluginOptions, HotModuleReplacementPlugin, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import type { RspackOptions, RspackPluginInstance, RuleSetRule } from '@rspack/core';
-import { resolveAlias, DIRS, rules } from '../../../config';
+import { resolveAlias, DIRS, rules } from '../../../config/node';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.main.json';

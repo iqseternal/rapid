@@ -32,6 +32,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(() => {
 
   const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch);
 
+
   return <FullSize
     className={styles.workbenchesLayout}
   >

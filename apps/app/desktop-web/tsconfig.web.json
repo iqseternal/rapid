@@ -1,32 +1,43 @@
 {
+  "extends": "../../../tsconfig.build.json",
   "compilerOptions": {
     "composite": true,
     "incremental": true,
     "baseUrl": ".",
-    "rootDir": "../../../",
 
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    "esModuleInterop": true,
+    "isolatedModules": true,
+
+    "strict": false,
+    "strictNullChecks": true,
+
+    "experimentalDecorators": true,
+
     "noEmitOnError": true,
     "noUnusedParameters": false,
-    "jsx": "react-jsx",
     "noImplicitAny": false,
-    "moduleResolution": "node",
-    "module": "ESNext",
-    "target": "ESNext",
-    "lib": ["DOM", "ESNext"],
-    "allowUmdGlobalAccess": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
 
-    "isolatedModules": true,
-    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
+
     "types": [
+      "@rapid/config/@types-web",
+      "@rapid/libs-web/@types",
       "./src/@types"
     ],
+
     "paths": {
       "@components/*": ["src/components/*"],
       "@router/*": ["src/router/*"],
@@ -35,24 +46,13 @@
       "@libs/*": ["src/libs/*"],
       "@meta/*": ["src/meta/*"],
       "@scss/*": ["src/scss/*"],
-      "@/*": ["src/*", "node_modules/@rapid/desktop-node/src/*"]
+      "@/*": ["src/*", "../desktop-node/src/*"]
     }
   },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.vue",
-    "./src/**/*.tsx",
-
-    "../../../config",
-
-    "../../../packages/config/@types",
-    "../../../packages/config",
-    "../../../packages/libs-web/@types",
-    "../../../packages/libs-web"
-  ],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": [
     "node_modules",
-    "../../../packages/config/**/*.test.ts",
-    "../../../packages/libs-web/**/*.test.ts"
+    "**/node_modules/*",
+    "node_modules/@meta2d/core"
   ]
 }

@@ -5,8 +5,6 @@ import { FileService } from '@/service/FileService';
 import { ConvertService } from '@/service/ConvertService';
 import {EXTENSIONS, EXPORTS_EXTENSIONS, ExtensionType} from '@rapid/config/constants';
 import { AppFileStorageService } from '@/service/AppStorageService';
-// @ts-ignore
-import type { Meta2dData, Options } from '@/../../desktop-web/node_modules/@meta2d/core';
 import { RuntimeException, TypeException } from '@/core';
 import { PrinterService } from '@/service/PrinterService';
 import { convertWindowService } from './middlewares';
@@ -17,9 +15,15 @@ const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]
   handleMiddlewares: [convertWindowService]
 });
 
+namespace Meta2d {
+  export type Meta2dData = Record<string, any>;
+
+  export type Options = Record<string, any>;
+}
+
 type DocData = {
-  data: Meta2dData;
-  options: Options;
+  data: Meta2d.Meta2dData;
+  options: Meta2d.Options;
 }
 
 type ExportFileTypeToData = {

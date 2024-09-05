@@ -1,27 +1,41 @@
 {
   "compilerOptions": {
     "incremental": true,
+    "composite": true,
     "baseUrl": ".",
     "rootDir": "../../",
-    "types": [
-      "@rapid/config/@types"
-    ],
     "paths": {
       "@/*": ["../desktop-node/src/*"]
     },
-    "noEmit": true,
+    "target": "ES2020",
+    "noEmitOnError": true,
+    "module": "ES2020",
     "lib": ["ESNext", "DOM"],
     "experimentalDecorators": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
+
+    "strictNullChecks": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleResolution": "Node",
+    "types": [
+      "@rapid/config/@types"
+    ]
   },
   "include": [
     "./autoExpose.ts",
     "./index.ts",
     "./preload.d.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+
+    "../**/*.test.ts"
+  ],
+  "references": [
+    { "path": "../desktop-node/tsconfig.main.json" }
+  ]
 }
 

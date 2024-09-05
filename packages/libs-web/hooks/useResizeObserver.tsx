@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Ref, RefObject } from 'react';
 
-
-
-
-
+/**
+ * resizeObserver, 利用 Hook 的方式创建该对象, 传递 Ref, 自动添加 callback 注册
+ * @returns
+ */
 export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement> | TElement, callback: ResizeObserverCallback) {
   const [resizeObserver] = useState(() => {
     return new ResizeObserver(callback);
@@ -30,8 +30,9 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
     resizeObserver.observe(tDom.current);
 
     return () => {
+      if (!tDom.current) return;
 
-      resizeObserver.observe(tDom.current);
+      resizeObserver.unobserve(tDom.current);
     }
   }, [tDom.current]);
 

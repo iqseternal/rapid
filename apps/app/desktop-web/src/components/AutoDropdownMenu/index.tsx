@@ -7,6 +7,8 @@ import { createContext, useContext, ReactNode, forwardRef } from 'react';
 import { MaxContent } from '@rapid/libs-web/styled';
 import type { MenuInstance, AntdMenuInstance, AntdItemType } from './declare';
 
+import IconFont from '@components/IconFont';
+
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
@@ -74,6 +76,8 @@ export interface AutoDropdownMenuProps extends BaseProps {
   menu: AntdMenuInstance;
   /** 给 dropdown 附加的属性参数 */
   attrs?: DropDownProps;
+
+  rootClassName?: string;
 }
 
 /**
@@ -85,6 +89,7 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
     menu,
     attrs = {},
 
+    rootClassName,
     className,
     children
   } = props;
@@ -112,7 +117,7 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
       trigger={attrs.trigger ?? ['click']}
       rootClassName={combinationCName(
         styles.dropdownMenuRootWrapper,
-        className
+        rootClassName
       )}
       autoAdjustOverflow
       mouseEnterDelay={0}
@@ -126,7 +131,10 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
       {...attrs}
     >
       <MaxContent
-        className={styles.menuItem}
+        className={combinationCName(
+          styles.menuItem,
+          className
+        )}
       >
         {children ? children : menu.label}
       </MaxContent>

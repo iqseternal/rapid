@@ -6,11 +6,11 @@ import { Exception } from '@rapid/framework';
  */
 export interface ExceptionErrorMsgData {
 
-  label?: string;
+  label: string;
 
-  level?: 'error' | 'warning' | 'info';
+  level: 'error' | 'warning' | 'info';
 
-  time?: number;
+  time: number;
 }
 
 /**
@@ -18,20 +18,20 @@ export interface ExceptionErrorMsgData {
  * 例如：
  * 运行时数据不符合预期
  */
-export class RuntimeException extends Exception<ExceptionErrorMsgData> {}
+export class RuntimeException extends Exception<Partial<ExceptionErrorMsgData>> {}
 
 /**
  * 类型异常
  * 例如：
  * 传递参数不符合当前函数的预期
  */
-export class TypeException extends Exception<ExceptionErrorMsgData> {}
+export class TypeException extends Exception<Partial<ExceptionErrorMsgData>> {}
 
 /** 异步异常 */
-export class AsyncException extends Exception<ExceptionErrorMsgData> {}
+export class AsyncException extends Exception<Partial<ExceptionErrorMsgData>> {}
 
 /** 请求异常 */
-export class RequestException extends Exception<ExceptionErrorMsgData> {}
+export class RequestException extends Exception<Partial<ExceptionErrorMsgData>> {}
 
 /**
  * 权限异常
@@ -40,4 +40,5 @@ export class RequestException extends Exception<ExceptionErrorMsgData> {}
  * 访问了没有权限的资源
  * 等等。
  */
-export class PermissionException extends Exception<ExceptionErrorMsgData> {}
+export class PermissionException extends Exception<Partial<ExceptionErrorMsgData>> {}
+
