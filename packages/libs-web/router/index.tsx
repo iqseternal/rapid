@@ -1,13 +1,12 @@
 import type { RequiredRouteConfig } from './makeRequireRouteConfig';
 import {  } from './makeRequireRouteConfig';
-import type { FC, ReactElement, ReactNode } from 'react';
+import type { FC, ReactElement, ReactNode, LazyExoticComponent } from 'react';
 import { Suspense, isValidElement } from 'react';
 import { Skeleton } from 'antd';
 import type { PathRouteProps } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import type { RedirectProps } from '../components/Redirect';
 import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC } from '../common';
-import type { LazyExoticComponent } from 'react';
 import { printWarn } from '@suey/printer';
 
 import Redirect from '../components/Redirect';
