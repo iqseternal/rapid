@@ -1,6 +1,4 @@
 import { print, toColor, printClear, type PrintTargetType, toPrintClear } from '@suey/printer';
-import { getCurFullDate } from '@/core/common/common';
-import {  } from '@suey/pkg-utils';
 import { CONFIG } from '@rapid/config/constants';
 
 type PrintColor = ReturnType<typeof toColor>;
@@ -18,6 +16,8 @@ const judgeExec = <T>(fn: (...args: T[]) => void) => {
     fn(...args);
   }
 }
+
+const getCurFullDate = () => new Date().toLocaleDateString();
 
 export enum THREAD {
   MAIN = 'MAIN',

@@ -1,12 +1,10 @@
 {
-  "extends": "../../../tsconfig.build.json",
   "compilerOptions": {
     "composite": true,
     "incremental": true,
     "baseUrl": ".",
 
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
 
     "jsx": "react-jsx",
     "lib": ["DOM", "ESNext"],

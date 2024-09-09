@@ -3,18 +3,19 @@ import { combinationCName } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMenuSelector } from '@/menus';
 import { toPicket } from '@suey/pkg-utils';
 import { useDocStore } from '@/features';
 import { produce } from 'immer';
+import { toMakeZustandHijack, useZustandHijack } from '@rapid/libs-web';
 
-import IMessage from '@rapid/libs-web/components/IMessage';
+import IMessage from '@components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
 import Subfield from '@rapid/libs-web/components/Subfield';
 import styles from './index.module.scss';
+
 
 
 interface StyleBlockProps extends BaseProps {
@@ -57,29 +58,13 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
   </FullSizeWidth>
 }
 
-
-
 export default function Skin() {
   const navigate = useNavigate();
   const refresh = useRefresh();
 
-  const headerMenu = useMenuSelector(menus => menus.headerFileMenu);
-  const editMenu = useMenuSelector(menus => menus.headerEditMenu);
 
-  const menus = useMenuSelector(
-    [
-      state => state.headerFileMenu,
-      state => state.headerEditMenu
-    ] as const,
-    (headerFileMenu, headerEditMenu) => {
-      return {
-        headerFileMenu,
-        headerEditMenu
-      }
-    }
-  );
 
-  const isWork = useDocStore(store => store.isWork);
+
 
   const [state] = useReactive({
     name: 1
@@ -110,21 +95,6 @@ export default function Skin() {
         append
       </Button>
     </StyleBlock>
-    <StyleBlock title='reducer'>
-
-      <Button
-        onClick={() => {
-
-          useDocStore.setState({ isWork: !isWork });
-          // refresh();
-        }}
-      >
-        切换工作台状态 {JSON.stringify(isWork)}
-      </Button>
-    </StyleBlock>
-
-
-
 
     <StyleBlock>
       <span>{state.name}</span>
@@ -134,12 +104,6 @@ export default function Skin() {
       >
         加
       </Button>
-    </StyleBlock>
-
-    <StyleBlock title='文件菜单'>
-      <AutoDropdownMenu
-        menu={headerMenu}
-      />
     </StyleBlock>
 
     <StyleBlock title='背景色色阶' subTitle='块'>

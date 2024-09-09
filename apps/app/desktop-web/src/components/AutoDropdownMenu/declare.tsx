@@ -9,10 +9,11 @@ import type { Key, ReactNode } from 'react';
 import { ComputedSelectorObj } from '@/menus/framework/computed';
 import { MenuItem, SubMenu } from './cpts';
 import { IconKey, IconRealKey } from '../IconFont';
+import type { ZustandHijack } from '@rapid/libs-web';
 
 export type MenuItemType = Omit<AntdMenuItemType, 'disabled'> & {
-  hidden?: boolean | ComputedSelectorObj<boolean>;
-  disabled?: boolean | ComputedSelectorObj<boolean>;
+  hidden?: boolean | ZustandHijack.ZustandSelectorTarget<boolean>;
+  disabled?: boolean | ZustandHijack.ZustandSelectorTarget<boolean>;
 
   iconKey?: IconKey;
 

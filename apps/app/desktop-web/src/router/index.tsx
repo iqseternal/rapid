@@ -1,25 +1,14 @@
 import { Suspense } from 'react';
+import type { ReactElement } from 'react';
 import { Routes } from 'react-router-dom';
 import { loginRoute, registerRoute, notFoundRoute, notRoleRoute, workspaceRoute } from './modules';
-import { makeRoute, createRoutesChildren } from '@rapid/libs-web/router';
-import { reserveRoutes } from './retrieve';
-
-import * as presetRoutes from './modules';
+import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/router';
+import { Skeleton } from 'antd';
 
 import RootLayout from '@/layout/RootLayout';
+import * as presetRoutes from './modules';
 
-const rootRoute = makeRoute({
-  name: 'Root',
-  path: '/', redirect: 'login',
-  component: <RootLayout />,
-  children: [
-    loginRoute, registerRoute,
-    notFoundRoute, notRoleRoute,
-    workspaceRoute
-  ]
-});
-
-reserveRoutes(presetRoutes);
+export const { retrieveRoutes } = reserveRoutes(presetRoutes);
 
 export default function RouterContext() {
   return <Suspense
@@ -29,7 +18,21 @@ export default function RouterContext() {
     </>}
   >
     <Routes>
-      {createRoutesChildren([rootRoute])}
+      {createRoutesChildren([presetRoutes.rootRoute], {
+        /**
+         * 异步 lazy 组件展示
+         * @returns {ReactElement}
+         */
+        onLazyComponent: ({ children }): ReactElement => {
+
+
+          return <Suspense fallback={
+            <Skeleton />
+          }>
+            {children}
+          </Suspense>
+        }
+      })}
     </Routes>
   </Suspense>
 }

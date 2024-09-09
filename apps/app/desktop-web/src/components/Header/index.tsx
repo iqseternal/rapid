@@ -3,9 +3,9 @@ import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch 
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, useCallback } from 'react';
-import { useMenuSelector } from '@/menus';
-import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive } from '@rapid/libs-web';
-import { randomRegionForInt } from '@suey/pkg-utils';
+import { menus } from '@/menus';
+import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
+import { isDef, isUnDef, isUndefined, randomRegionForInt } from '@suey/pkg-utils';
 import { Menu, Input } from 'antd';
 import type { AntdItemType, AntdMenuInstance, AntdSubMenuType } from '@components/AutoDropdownMenu';
 
@@ -21,15 +21,15 @@ import styles from './index.module.scss';
 export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) {
   const { isDialog = false, isPane = false } = props;
 
-  const headerFileMenu = useMenuSelector(menus => menus.headerFileMenu);
-  const headerEditMenu = useMenuSelector(menus => menus.headerEditMenu);
+  const headerFileMenu = useZustandHijack(menus.headerFileMenu);
+  const headerEditMenu = useZustandHijack(menus.headerEditMenu);
 
   // 菜单
   const { maintenanceStack, storageStack, otherStack, pushMaintenanceStack, popMaintenanceStack } = useMaintenanceStack({
     maintenanceStack: [
       headerFileMenu, headerEditMenu
     ],
-    otherStack: [] as { sourceWidth: number;calcWidth: number; }[],
+    otherStack: [] as ({ sourceWidth: number;calcWidth: number; } | undefined)[],
   });
   // 菜单容器
   const menusContainerRef = useRef<HTMLDivElement>(null);
@@ -70,10 +70,18 @@ export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) 
       if (!(child instanceof HTMLElement)) continue;
       if (!otherStack[i]) otherStack[i] = { sourceWidth: child.clientWidth, calcWidth: 0 };
     }
-    if (otherStack.length) otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
+    if (otherStack.length) {
+      if (otherStack[0]) otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
+    }
 
     for (let i = 1;i < maintenanceStack.length && i < menusContainerRef.current.children.length;i ++) {
-      otherStack[i].calcWidth = otherStack[i - 1].calcWidth + columnGap + otherStack[i].sourceWidth;
+      if (otherStack.length === 0) continue;
+
+      if (isUndefined(otherStack)) continue;
+      if (isUndefined(otherStack?.[i])) continue;
+      if (isUndefined(otherStack?.[i - 1])) continue;
+
+      otherStack[i]!.calcWidth = otherStack[i - 1]!.calcWidth + columnGap + otherStack[i]!.sourceWidth;
     }
 
     statusState.isCalcDone = true;

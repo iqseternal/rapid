@@ -3,19 +3,16 @@ import { useLayoutEffect, createContext, useState, useCallback, useMemo, forward
 import { useAsyncLayoutEffect, useReactive, useShallowReactive, useUnmount } from '@rapid/libs-web/hooks';
 import { Input, Skeleton } from 'antd';
 import { authHasAuthorized, authHasRoleSync, getAccessToken, useAuthRole, useUserStore, useAuthHasAuthorized } from '@/features';
-import { toPicket, isObject } from '@suey/pkg-utils';
+import { toPicket, isObject, isFunction, isClass } from '@suey/pkg-utils';
 import { useNavigate, useRouteLoaderData, useMatch } from 'react-router-dom';
-import { retrieveRoutes } from '@router/retrieve';
+import { retrieveRoutes } from '@/router';
 
-import IMessage from '@rapid/libs-web/components/IMessage';
+import { isReactFC, isReactForwardFC, isReactComponent } from '@rapid/libs-web';
 
-export type ReactFCComponent = ForwardRefExoticComponent<any> | FC<any>;
+import IMessage from '@components/IMessage';
 
-export type GuardsAuthorizedContext = {
-  authFinished: boolean;
-  authorized: boolean;
-  auth: () => Promise<void>;
-}
+
+export type ReactComponent = ForwardRefExoticComponent<any> | FC<any>;
 
 export const GuardsContext = {
   Authorized: createContext<ReturnType<typeof useAuthHasAuthorized>>({
@@ -27,15 +24,12 @@ export const GuardsContext = {
  * 验证权限/角色是否符合规范
  * @returns
  */
-function AuthRole<GFC extends ReactFCComponent>(Component: GFC): GFC;
-function AuthRole<GProps extends { children: ReactNode }>(props: GProps): ReactNode;
-function AuthRole<GFC extends ReactFCComponent>(args: GFC | { children: ReactNode }): GFC | ReactNode {
+export function AuthRole<GFC extends ReactComponent>(Component: GFC): GFC;
+export function AuthRole<GProps extends { children: ReactNode }>(props: GProps): ReactNode;
+export function AuthRole<GFC extends ReactComponent>(args: GFC | { children: ReactNode }): GFC | ReactNode {
   // 包裹 FC, 返回一个新的组件
-  if (
-    typeof args === 'function' ||
-    (args as unknown as ForwardRefExoticComponent<any>).$$typeof
-  ) {
-    const Component = args as ReactFCComponent;
+  if (isReactComponent(args)) {
+    const Component = args;
 
     return forwardRef<any, any>((props, ref) => {
       const hasRoleState = useAuthRole({});
@@ -47,13 +41,17 @@ function AuthRole<GFC extends ReactFCComponent>(args: GFC | { children: ReactNod
   }
 
   // 本身作为了一个组件使用
-  const { children } = args;
+  if (isObject(args) && isValidElement(args.children)) {
+    const { children } = args;
 
-  const hasRoleState = useAuthRole({});
+    const hasRoleState = useAuthRole({});
 
-  if (!hasRoleState.hasRole) return <></>;
+    if (!hasRoleState.hasRole) return <></>;
 
-  return children;
+    return children;
+  }
+
+  throw new Error(`AuthRole: 参数错误`);
 }
 
 
@@ -61,10 +59,10 @@ function AuthRole<GFC extends ReactFCComponent>(args: GFC | { children: ReactNod
  * 授权守卫, 检测当前用户是否获得了授权凭证
  * @returns
  */
-function AuthAuthorized<GFC extends ReactFCComponent>(Component: GFC): GFC;
-function AuthAuthorized<GProps extends { children: ReactNode }>(props: GProps): ReactNode;
-function AuthAuthorized<GFC extends ReactFCComponent>(args: GFC | { children: ReactNode }): GFC | ReactNode {
-  if (typeof args === 'function') {
+export function AuthAuthorized<GFC extends ReactComponent>(Component: GFC): GFC;
+export function AuthAuthorized<GProps extends { children: ReactNode }>(props: GProps): ReactNode;
+export function AuthAuthorized<GFC extends ReactComponent>(args: GFC | { children: ReactNode }): GFC | ReactNode {
+  if (isReactComponent(args)) {
     const Component = args as GFC;
 
     return forwardRef<any, Parameters<GFC>[0]>((props, ref) => {
@@ -86,7 +84,7 @@ function AuthAuthorized<GFC extends ReactFCComponent>(args: GFC | { children: Re
     }) as unknown as GFC;
   }
 
-  // 自身是一个组件
+  // 自身是一个组件, 那么必须含有 children
   if (isObject(args) && isValidElement(args.children)) {
     const { children } = args;
 
@@ -106,6 +104,8 @@ function AuthAuthorized<GFC extends ReactFCComponent>(args: GFC | { children: Re
 
     return children;
   }
+
+  throw new Error(`AuthAuthorized: 参数错误`);
 }
 
 

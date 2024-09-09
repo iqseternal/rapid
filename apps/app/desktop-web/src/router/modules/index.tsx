@@ -1,8 +1,11 @@
 import { lazy } from 'react';
 import { makeRoute } from '@rapid/libs-web/router';
 import type { RequiredRouteConfig } from '@rapid/libs-web/router';
+import { loginRoute, registerRoute, notFoundRoute, notRoleRoute } from './basic';
 
+import RootLayout from '@/layout/RootLayout';
 import WorkspaceLayout from '@/layout/WorkspaceLayout';
+
 
 export * from './basic';
 
@@ -34,5 +37,17 @@ export const workspaceRoute = makeRoute({
 
 export const [
   workbenchesHomeRoute,
-  workbenchesWorkstation
+  workbenchesWorkstationRoute,
+  WorkbenchesSkinRoute
 ] = (workspaceRoute as Required<RequiredRouteConfig>).children;
+
+export const rootRoute = makeRoute({
+  name: 'Root',
+  path: '/', redirect: 'login',
+  component: <RootLayout />,
+  children: [
+    loginRoute, registerRoute,
+    notFoundRoute, notRoleRoute,
+    workspaceRoute
+  ]
+});

@@ -5,9 +5,9 @@ import { FC, useState } from 'react';
 import { useFadeOut } from '@/hooks';
 import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { retrieveRoutes } from '@router/retrieve';
+import { retrieveRoutes } from '@/router';
 
-import IMessage from '@rapid/libs-web/components/IMessage';
+import IMessage from '@components/IMessage';
 import Widget, { type WidgetProps } from '@components/Widget';
 
 import styles from './cpts.module.scss';

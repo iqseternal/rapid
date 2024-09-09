@@ -1,13 +1,13 @@
 import { Space, Card, Button, message, Input } from 'antd';
-import { useUserStore, userUpdateInfo, userLogin } from '@/features';
+import { useUserStore, userUpdateInfo, userLogin, useDocStore } from '@/features';
 import { useAsyncEffect, useReactive } from '@rapid/libs-web/hooks';
 import { toPicket } from '@suey/pkg-utils';
 import { Guards } from '@router/guards';
 import { forwardRef, useEffect, useRef } from 'react';
 
-import IMessage from '@rapid/libs-web/components/IMessage';
+import IMessage from '@components/IMessage';
 
-const PersonalInfo = Guards.AuthRole(forwardRef<HTMLDivElement>((props, ref) => {
+const PersonalInfo = Guards.AuthAuthorized(forwardRef<HTMLDivElement>((props, ref) => {
   const bears = useUserStore(store => store.userinfo);
 
   // useAsyncEffect(async () => {
@@ -18,14 +18,15 @@ const PersonalInfo = Guards.AuthRole(forwardRef<HTMLDivElement>((props, ref) => 
   //   }
   // }, []);
 
+
   return <div ref={ref}>
     <Card>
-      <Input.TextArea
-        value={JSON.stringify(bears, null, 2)}
-        rows={20}
-      >
-
-      </Input.TextArea>
+      <Guards.AuthRole>
+        <Input.TextArea
+          value={JSON.stringify(bears, null, 2)}
+          rows={20}
+        />
+      </Guards.AuthRole>
 
       <Button
         onClick={() => {

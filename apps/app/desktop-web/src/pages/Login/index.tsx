@@ -5,21 +5,21 @@ import { useFadeIn, useFadeOut } from '@/hooks';
 import { workspaceRoute } from '@router/modules';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
-import { useMount, useReactive } from '@rapid/libs-web';
+import { useMount, useReactive, useZustandHijack } from '@rapid/libs-web';
 import { Button } from 'antd';
 import { toPicket } from '@suey/pkg-utils';
-import { useMenuSelector } from '@/menus';
 import { userLogin } from '@/features';
 import { registerReq } from '@/api';
-import { reserveRoutes, retrieveRoutes } from '@/router/retrieve';
+import { retrieveRoutes } from '@/router';
+import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/common';
+import { menus } from '@/menus';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
-import IMessage from '@rapid/libs-web/components/IMessage';
+import IMessage from '@components/IMessage';
 import Subfield from '@rapid/libs-web/components/Subfield';
 import Logo from '@components/Logo';
 
-import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
 enum Step {
@@ -34,7 +34,7 @@ export default function Login() {
   });
 
   const navigate = useNavigate();
-  const headerFileMenu = useMenuSelector(menus => menus.headerFileMenu);
+  const headerFileMenu = useZustandHijack(menus.headerFileMenu);
 
   const [state] = useReactive({
     step: Step.Login

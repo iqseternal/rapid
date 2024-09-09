@@ -11,8 +11,12 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext"
   },
   "exclude": [
     "node_modules"

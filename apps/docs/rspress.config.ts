@@ -1,5 +1,5 @@
 import { defineConfig } from 'rspress/config';
-import { DIST_DOC_DIR } from '../../config/dirs';
+import { DIST_DOC_DIR } from '../../config/node/dirs';
 import { join } from 'path';
 
 export default defineConfig({
@@ -15,6 +15,7 @@ export default defineConfig({
 
   search: {
     versioned: true,
+    
   },
   multiVersion: {
     default: 'v1',

@@ -22,9 +22,11 @@ export type RemoveDepFn<DepType> = (...deps: DepType[]) => void;
  * }, []);
  *
  */
-export function useDependenciesListHook<DepType extends unknown>() {
+export function useDependenciesListHook<DepType extends any>() {
+  /** 依赖列表 */
   const dependenciesList: DepType[] = [];
 
+  /** 添加依赖 */
   const appendDep: AppendDepFn<DepType> = (...deps) => {
     const filterDeps = deps.filter(dep => {
       return dependenciesList.findIndex(dependence => dependence === dep) === -1;
@@ -32,6 +34,7 @@ export function useDependenciesListHook<DepType extends unknown>() {
     dependenciesList.push(...filterDeps);
   }
 
+  /** 移除依赖 */
   const removeDep: RemoveDepFn<DepType> = (...deps) => {
     deps.forEach(dep => {
       const index = dependenciesList.findIndex((dependence) => dependence === dep);

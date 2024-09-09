@@ -5,8 +5,7 @@ import { Card } from 'antd';
 import { useEffect, useRef } from 'react';
 import { FullSize, FullSizeHeight } from '@rapid/libs-web';
 
-import IMessage from '@rapid/libs-web/components/IMessage';
-
+import IMessage from '@components/IMessage';
 import styles from './index.module.scss';
 
 function Graphics() {
@@ -20,31 +19,20 @@ function Graphics() {
   </FullSizeHeight>
 }
 
-function Meta2dViewContainer() {
-  const meta2dContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!meta2dContainerRef.current) return;
-
-  }, [meta2dContainerRef.current]);
-
-
-  return <FullSize id='gpr' ref={meta2dContainerRef}>
-
-  </FullSize>
-}
-
-
-function PropertyBar() {
-
-
-  return <>
-
-
-  </>
-}
 
 export default function Workbenches() {
+
+  useAsyncEffect(async () => {
+
+    const [err, res] = await toPicket(userUpdateInfo());
+
+    if (err) {
+      IMessage.error(err.descriptor);
+      return;
+    }
+  }, []);
+
+
 
   return <FullSize
     className={styles.workbenches}
@@ -52,8 +40,5 @@ export default function Workbenches() {
 
     <Graphics />
 
-    <Meta2dViewContainer />
-
-    <PropertyBar />
   </FullSize>
 }

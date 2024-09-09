@@ -10,7 +10,7 @@ export interface MaintenanceStackOptions<T, Other> {
   otherStack?: Other[];
 }
 
-export type JudgeIsCanBeControlStack<T, Other> = (item: T, other: Other, index: number) => boolean;
+export type JudgeIsCanBeControlStack<T, Other> = (item: T, other: Other | undefined, index: number) => boolean;
 
 
 

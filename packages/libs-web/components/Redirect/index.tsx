@@ -1,6 +1,7 @@
 import { isString } from '@suey/pkg-utils';
+import { useShallowReactive } from '../../hooks';
 import type { FC, ReactNode, ReactPropTypes, ReactElement } from 'react';
-import { isValidElement, useLayoutEffect } from 'react';
+import { isValidElement, useLayoutEffect, useMemo } from 'react';
 import { Outlet, useLocation, Navigate, useNavigate } from 'react-router-dom';
 
 export interface RedirectProps {
@@ -32,25 +33,28 @@ export interface RedirectProps {
 export default function Redirect(props: RedirectProps) {
   const { from, to, element = Outlet } = props;
 
-
   const location = useLocation();
   const navigate = useNavigate();
 
-  let isMatched = false;
+  const [state] = useShallowReactive({
+    isMatched: false
+  })
 
-  if (from instanceof RegExp) isMatched = from.test(location.pathname);
-  else if (isString(from)) isMatched = location.pathname === from;
+  useLayoutEffect(() => {
+    if (from instanceof RegExp) state.isMatched = from.test(location.pathname);
+    else if (isString(from)) state.isMatched = location.pathname === from;
+  }, [location.pathname, from, to]);
 
-  // useLayoutEffect(() => {
-  //   if (isMatched) navigate(to);
-  // }, []);
+  const targetElement = useMemo(() => {
+    if (state.isMatched) return <Navigate to={to} />
 
-  if (isMatched) return <Navigate to={to} />
+    if (isValidElement(element)) return element;
 
-  if (isValidElement(element)) return element;
+    const Element = element as FC;
 
-  const Element = element as FC;
+    return <Element />;
+  }, [state.isMatched, element]);
 
-  return <Element />;
+  return targetElement;
 }
 

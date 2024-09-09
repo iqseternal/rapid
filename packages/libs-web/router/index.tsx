@@ -1,28 +1,33 @@
 import type { RequiredRouteConfig } from './makeRequireRouteConfig';
 import {  } from './makeRequireRouteConfig';
-
-import type { FC } from 'react';
-import { Suspense } from 'react';
-
+import type { FC, ReactElement, ReactNode } from 'react';
+import { Suspense, isValidElement } from 'react';
 import { Skeleton } from 'antd';
-
 import type { PathRouteProps } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-
 import type { RedirectProps } from '../components/Redirect';
+import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC } from '../common';
+import type { LazyExoticComponent } from 'react';
+import { printWarn } from '@suey/printer';
+
 import Redirect from '../components/Redirect';
 
 export * from './makeRequireRouteConfig';
 
-const Fallback = ({ children }) => {
-  return <Suspense fallback={
-    <Skeleton />
-  }>
-    {children}
-  </Suspense>
+export interface CreateRoutesChildrenOptions {
+  /**
+   * 处理异步组件的展示
+   * @returns
+   */
+  onLazyComponent: (props: { children: ReactElement<LazyExoticComponent<FC<any>>> }) => ReactElement;
 }
 
-export const createRoutesChildren = (routeArr: RequiredRouteConfig[]) => {
+/**
+ * 通过路由表创建符合要求的 ReactDomRouter 子元素
+ * @param routeArr
+ * @returns
+ */
+export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: CreateRoutesChildrenOptions) => {
   return routeArr.map((route, index) => {
     const { redirect, name, meta, children = [], component, ...realRoute } = route;
 
@@ -39,17 +44,66 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[]) => {
     }
 
     // 放入的是一个 lazy
-    if (Object.hasOwn(Component, '_init') && Object.hasOwn(Component, '_payload')) realRoute.element = <Fallback><Component {...componentsProps} /></Fallback>;
+    if (isReactLazyFC(Component)) {
+      const OnLazyComponent = options.onLazyComponent;
+
+      realRoute.element = <OnLazyComponent>
+        <Component {...componentsProps} />
+      </OnLazyComponent>;
+    }
+
     // 放入的是一个 FC
-    else if (typeof Component === 'function') realRoute.element = <Component {...componentsProps} />;
+    else if (
+      isReactFC(Component) || isReactClassComponent(Component) ||
+      isReactForwardFC(Component)
+    ) realRoute.element = <Component {...componentsProps} />;
+
     // 放入的 JSX Element
-    else if (Object.hasOwn(Component, 'type') && Object.hasOwn(Component, 'props') && Object.hasOwn(Component, 'key')) {
+    else if (isValidElement(Component)) {
       realRoute.element = Component;
     }
 
+    else {
+      printWarn(`createRoutesChildren: 传入的 component 不是一个有效的值`);
+      realRoute.element = <></>;
+    }
+
     return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath ?? index)}>
-      {children && createRoutesChildren(children)}
+      {children && createRoutesChildren(children, options)}
     </Route>
 
   });
+}
+
+
+/**
+ * 设置检索对象, 该函数在入口处调用, 在构建组件之前
+ *
+ */
+export const reserveRoutes = <Routes extends Record<string, any>,>(presetRoutes: Routes) => {
+  const runtimeContext = {
+    routes: presetRoutes
+  }
+
+  return {
+    /**
+     * 检索, 取回 route 对象, 改函数的作用是为 js 构建工具提供清晰的构建流程, 防止出现未初始化而访问的情况
+     *
+     * @example
+     * const { loginRoute } = retrieveRoutes(); // router/modules 中取出一个 route 对象
+     *
+     * @example
+     * // Error 方式
+     * import { loginRoute } from '@/router/modules'; // 这种方式是循环引用, 会让构建工具不知道先初始化谁
+     * import { retrieveRoutes } from '@router/retrieve';
+     * const Component = () => {
+     *   loginRoute.xx
+     *
+     *   return <></>;
+     * }
+     *
+     * @returns
+     */
+    retrieveRoutes: () => runtimeContext.routes
+  }
 }

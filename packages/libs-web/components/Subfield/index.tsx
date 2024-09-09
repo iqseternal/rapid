@@ -19,13 +19,12 @@ export interface SubfieldInstance extends HTMLDivElement {
  * flex: space-between
  */
 export const Subfield = forwardRef<SubfieldInstance, SubfieldProps>((props, ref) => {
-  const { className, gap, ...realProps } = props;
+  const { className, ...realProps } = props;
 
   return <div
 
     ref={ref}
     className={combinationCName(className, styles.subfield)}
-    style={{ gap: CssValueConverts.toPixel(gap) }}
     {...realProps}
   />
 })

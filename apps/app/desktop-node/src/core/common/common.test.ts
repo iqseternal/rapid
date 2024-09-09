@@ -1,5 +1,4 @@
-
-import { randomRegion, randomRegionForInt } from './common';
+import { randomRegion, randomRegionForInt } from '@suey/pkg-utils';
 
 test('随机数测试', (done) => {
   const rs = [Math.random(), Math.random()];
