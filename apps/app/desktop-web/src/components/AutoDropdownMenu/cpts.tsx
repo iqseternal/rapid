@@ -1,5 +1,5 @@
 import type { IconKey } from '@components/IconFont';
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import type { FC } from 'react';
 import IconFont from '@components/IconFont';
 import type { MenuItemType, SubMenuType } from './declare';
@@ -33,16 +33,16 @@ export const MenuItem: FC<MenuItemProps> = (props) => {
   ), [shortcut]);
 
   return <div
-    className={combinationCName(
+    className={classnames(
       styles.menuItem,
 
     )}
   >
-    {iconKey ? <IconFont icon={iconKey} /> : <span className={combinationCName(styles.icon, commonStyles.flexFixed)} />}
+    {iconKey ? <IconFont icon={iconKey} /> : <span className={classnames(styles.icon, commonStyles.flexFixed)} />}
     <div className={styles.content}>
       {label}
     </div>
-    <span className={combinationCName(commonStyles.flexFixed)}>
+    <span className={classnames(commonStyles.flexFixed)}>
       {shortcutKeys.length > 0 && shortcutKeys[0]}
     </span>
   </div>
@@ -64,11 +64,11 @@ export const SubMenu: FC<SubMenuProps> = (props) => {
   } = props;
 
   return <div
-    className={combinationCName(
+    className={classnames(
       styles.menuItem
     )}
   >
-    {iconKey ? <IconFont icon={iconKey} /> : <span className={combinationCName(styles.icon, commonStyles.flexFixed)} />}
+    {iconKey ? <IconFont icon={iconKey} /> : <span className={classnames(styles.icon, commonStyles.flexFixed)} />}
     <div className={styles.content}>
       {label}
     </div>

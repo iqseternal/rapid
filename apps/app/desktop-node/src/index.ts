@@ -1,11 +1,6 @@
-import {
-  RequestExceptionFilter, TypeExceptionFilter,
-  PermissionExceptionFilter, RuntimeExceptionFilter,
-  AsyncExceptionFilter,
-  RuntimeException
-} from './core';
+import { RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter, RuntimeExceptionFilter, AsyncExceptionFilter } from './core';
 import { LoggerServer } from './server';
-import { setupContext, setupSingleApplication, registerIpcHandle } from '@rapid/framework';
+import { setupContext, setupSingleApplication, registerIpcHandle, registerIpcHandleOnce } from '@rapid/framework';
 import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
 import {

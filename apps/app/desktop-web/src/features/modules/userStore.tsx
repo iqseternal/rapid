@@ -105,7 +105,7 @@ export const useAuthRole = (roleOptions: AuthHasRoleOptions) => {
 
 
 
-
+/** 用户登录 */
 export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
   const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
   if (loginErr) return Promise.reject(loginErr);
@@ -114,7 +114,7 @@ export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
   return loginRes;
 });
 
-
+/** 更新用户信息 */
 export const userUpdateInfo = asynced<typeof getUserinfoReq>(async () => {
   const [infoErr, infoRes] = await toPicket(getUserinfoReq());
 
@@ -124,6 +124,7 @@ export const userUpdateInfo = asynced<typeof getUserinfoReq>(async () => {
   return infoRes;
 });
 
+/** 用户退出登录 */
 export const useLogout = asynced<() => RPromiseLike<void>>(async () => {
   const [err, res] = await toPicket(logoutReq());
 

@@ -1,4 +1,4 @@
-import { combinationCName , getFirstScrollContainer } from '@rapid/libs-web/common';
+import { classnames , getFirstScrollContainer } from '@rapid/libs-web/common';
 import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/hooks';
 
 import { Dropdown, Menu } from 'antd';
@@ -38,7 +38,7 @@ const PropMenu = (props: PropMenuProps) => {
     subMenuCloseDelay={0}
     selectable={false}
     triggerSubMenuAction={'click'}
-    rootClassName={combinationCName(
+    rootClassName={classnames(
       styles.dropdownMenuRootWrapper,
       {
         // 处理菜单在某些时刻不隐藏的 BUG, 此 BUG 出自 Antd
@@ -115,7 +115,7 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
       open={state.open}
       arrow={false}
       trigger={attrs.trigger ?? ['click']}
-      rootClassName={combinationCName(
+      rootClassName={classnames(
         styles.dropdownMenuRootWrapper,
         rootClassName
       )}
@@ -131,7 +131,7 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
       {...attrs}
     >
       <MaxContent
-        className={combinationCName(
+        className={classnames(
           styles.menuItem,
           className
         )}

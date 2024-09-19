@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 
 import { default as iconUrl } from '../../../../resources/icon.png?raw';
 
@@ -21,7 +21,7 @@ export default function Logo(props: LogoProps) {
   } = props;
 
   return <div
-    className={combinationCName(styles.logo, className)}
+    className={classnames(styles.logo, className)}
     {...realProps}
   >
     <img src={src} alt={alt} />

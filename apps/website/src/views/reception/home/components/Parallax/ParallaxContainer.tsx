@@ -1,7 +1,7 @@
 import { useState, useContext, useRef, useEffect } from 'react';
 import { autoGetScrollContainer } from '@libs/dom';
 import { useEventListener, useReactive, useDebounceHook } from '@/hooks';
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import { combinationStyled } from '@rapid/libs-web/styled';
 import type { GradualImgProps } from '@components/GradualImg';
 
@@ -42,15 +42,15 @@ export function ParallaxContainer(props: ParallaxContainerProps) {
   }));
 
 
-  return <div className={combinationCName(styles.parallaxContainer, props.className)} style={props.isFirst ? { marginTop: state.firstMarginTop + 'px' } : {}}>
+  return <div className={classnames(styles.parallaxContainer, props.className)} style={props.isFirst ? { marginTop: state.firstMarginTop + 'px' } : {}}>
     <div
       style={{ backgroundImage: `url('${props.bgSrc}')` }}
-      className={combinationCName(styles.parallaxBackground)}
+      className={classnames(styles.parallaxBackground)}
     />
 
-    <div ref={contentContainer} className={combinationCName(styles.parallaxContentContainer)}>
+    <div ref={contentContainer} className={classnames(styles.parallaxContentContainer)}>
 
-      <div className={combinationCName(styles.parallaxContent)}>{props.children}</div>
+      <div className={classnames(styles.parallaxContent)}>{props.children}</div>
     </div>
   </div>;
 }

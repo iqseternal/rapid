@@ -1,11 +1,11 @@
 import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/hooks';
 import { workspaceRoute } from '@router/modules';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
-import { useMount, useReactive, useZustandHijack } from '@rapid/libs-web';
+import { useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
 import { Button } from 'antd';
 import { toPicket } from '@suey/pkg-utils';
 import { userLogin } from '@/features';
@@ -13,6 +13,8 @@ import { registerReq } from '@/api';
 import { retrieveRoutes } from '@/router';
 import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/common';
 import { menus } from '@/menus';
+import { useCallback } from 'react';
+
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
@@ -36,11 +38,13 @@ export default function Login() {
   const navigate = useNavigate();
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
 
-  const [state] = useReactive({
+  const [state] = useShallowReactive({
     step: Step.Login
   })
 
-  const login = async () => {
+
+
+  const login = useCallback(async () => {
     const [loginErr] = await toPicket(userLogin({
       username: 'admin',
       password: '12345678'
@@ -52,27 +56,25 @@ export default function Login() {
 
     await useFadeOut(async () => {
       const { workspaceRoute } = retrieveRoutes();
-
       navigate(workspaceRoute.meta.fullPath, { replace: true });
     });
-  }
-
-  const register = async () => {
+  }, []);
+  const register = useCallback(async () => {
     const [registerErr] = await toPicket(registerReq());
     if (registerErr) {
       IMessage.error(registerErr.descriptor);
       return;
     }
-  }
+  }, []);
 
   return <FullSize className={styles.login}>
     <Header isPane />
 
     <Subfield
-      className={combinationCName(styles.didContent)}
+      className={classnames(styles.didContent)}
     >
       <FullSize
-        className={combinationCName(commonStyles.flexCenter)}
+        className={classnames(commonStyles.flexCenter)}
       >
         <Logo
           src={lockUrl}
@@ -80,7 +82,7 @@ export default function Login() {
       </FullSize>
 
       <FullSize
-        className={combinationCName(commonStyles.flexCenter)}
+        className={classnames(commonStyles.flexCenter)}
       >
         <Button
           onClick={login}

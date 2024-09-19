@@ -6,7 +6,6 @@ import type {
   ItemType as AntdItemType
 } from 'antd/lib/menu/interface';
 import type { Key, ReactNode } from 'react';
-import { ComputedSelectorObj } from '@/menus/framework/computed';
 import { MenuItem, SubMenu } from './cpts';
 import { IconKey, IconRealKey } from '../IconFont';
 import type { ZustandHijack } from '@rapid/libs-web';

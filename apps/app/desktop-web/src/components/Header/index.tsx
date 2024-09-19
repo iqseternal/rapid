@@ -1,4 +1,4 @@
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
@@ -99,7 +99,7 @@ export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) 
 
   return <FlexRowStart
     ref={menusContainerRef}
-    className={combinationCName(
+    className={classnames(
       {
         [commonStyles.transparent]: !statusState.isCalcDone
       }
@@ -145,7 +145,7 @@ export default function Header(props: HeaderProps) {
   } = props;
 
   return <Subfield
-    className={combinationCName(
+    className={classnames(
       styles.header,
       commonStyles.appRegion,
       className,
@@ -154,7 +154,7 @@ export default function Header(props: HeaderProps) {
   >
 
     <Subfield
-      className={combinationCName(styles.menuContainer)}
+      className={classnames(styles.menuContainer)}
     >
       <SubfieldFixed
         className={styles.logo}
@@ -163,7 +163,7 @@ export default function Header(props: HeaderProps) {
       </SubfieldFixed>
 
       <MaxContent
-        className={combinationCName(
+        className={classnames(
           styles.menu,
           commonStyles.userSelectNone
         )}
@@ -172,7 +172,7 @@ export default function Header(props: HeaderProps) {
       </MaxContent>
 
       <SubfieldFixed
-        className={combinationCName(
+        className={classnames(
           styles.history,
           commonStyles.appRegionNo
         )}
@@ -182,7 +182,7 @@ export default function Header(props: HeaderProps) {
     </Subfield>
 
     <Subfield
-      className={combinationCName(
+      className={classnames(
         styles.functionContainer,
         commonStyles.appRegionNo
       )}

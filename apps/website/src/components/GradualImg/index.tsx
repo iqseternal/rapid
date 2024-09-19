@@ -2,7 +2,7 @@ import { isUnDef } from '@suey/pkg-utils';
 import { Image, ImageProps } from 'antd';
 import { useEffect, useState, forwardRef } from 'react';
 import { MaxScreenWidth, MaxScreenHeight } from '@rapid/libs-web/styled';
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import styles from './index.module.scss';
 
 export interface GradualImgProps extends ImageProps {
@@ -40,7 +40,7 @@ const GradualImg = forwardRef<HTMLDivElement, GradualImgProps>((props, ref) => {
   delete realProps.imgClassName;
   delete realProps.style;
 
-  return <MaxScreenWidth ref={ref} className={combinationCName(styles.gradualImg, props.className)} style={props.style}>
+  return <MaxScreenWidth ref={ref} className={classnames(styles.gradualImg, props.className)} style={props.style}>
     <Image
       width={'100%'}
       {...realProps}

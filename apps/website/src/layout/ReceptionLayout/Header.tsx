@@ -11,7 +11,7 @@ import { MenuOutlined, SearchOutlined, MenuFoldOutlined } from '@ant-design/icon
 import { useTranslation } from 'react-i18next';
 import type { LangMap, LangType } from '@/i18';
 import { ConfigProviderProps } from 'antd/es/config-provider';
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import { receptionMenuRoutes } from '@/router';
 import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 import { useReactive } from '@/hooks';
@@ -92,7 +92,7 @@ function Control() {
 export default function Header(props: BaseProps) {
   const navigate = useNavigate();
 
-  return <NavContainer className={combinationCName(props.className, styles.receptionHeaderContainer)}>
+  return <NavContainer className={classnames(props.className, styles.receptionHeaderContainer)}>
     <NavSubContianer className={styles.receptionNavContainer}>
       <Trademark
         onClick={() => {

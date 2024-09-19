@@ -7,7 +7,7 @@ import { Subfield, SubfieldSpace, SubfieldRow } from '@/components/Subfield';
 import { receptionRoutes } from '@/router/modules/reception';
 import { FloatButton } from 'antd';
 import { ReceptionScrollContainerContext, ReceptionHasPreposeContext, ReceptionHasPerposeHeaderClassNameContext } from '@/context';
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import { Provider } from 'react-redux';
 import { useEventListener, useDebounceHook, useReactive, useRefresh, useOverScreenSize, useShallowReactive } from '@/hooks';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
@@ -85,7 +85,7 @@ export default function ReceptionLayout() {
     <ReceptionScrollContainerContext.Provider value={container}>
       <Header
         className={
-          combinationCName({
+          classnames({
             [headerStyles.receptionHeaderHidden]: !state.showNav,
             [headerStyles.receptionHeaderHasShadow]: state.scrollTop >= 50,
             [headerStyles.receptionHeaderHasTransition]: state.hasTransition,
@@ -98,7 +98,7 @@ export default function ReceptionLayout() {
         <ReceptionHasPerposeHeaderClassNameContext.Provider value={hasPerposeHeaderClassName}>
           <ReceptionMainContainer>
             <ReceptionSubMainContainer ref={main} className={
-              combinationCName(styles.receptionBody, {
+              classnames(styles.receptionBody, {
                 [styles.receptionBodyHasPerpose]: state.hasPerpose
               })
             }>

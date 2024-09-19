@@ -68,3 +68,4 @@ export const useAnimationClassSelector = (selector: AnimationClassNameSelector) 
     return selector(animationClassNames);
   }, []);
 }
+

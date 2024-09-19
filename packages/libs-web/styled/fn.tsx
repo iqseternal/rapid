@@ -3,8 +3,6 @@ import styled, { css, isStyledComponent } from 'styled-components';
 
 /**
  * 合并多个 styled 的样式, 形成新的 styled 组件
- * @param componentType
- * @param args
  * @returns
  */
 export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(componentType?: K, ...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T;

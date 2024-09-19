@@ -1,5 +1,5 @@
 import { makeVar, themeCssVarsSheet } from '@/themes';
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
@@ -26,7 +26,7 @@ interface StyleBlockProps extends BaseProps {
 const StyleBlock: FC<StyleBlockProps> = (props) => {
 
   return <FullSizeWidth
-    className={combinationCName(props.className, styles.styleBlock)}
+    className={classnames(props.className, styles.styleBlock)}
     style={{
       textAlign: 'center',
     }}

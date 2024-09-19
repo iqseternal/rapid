@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { setCssVar, getCssVar } from '@libs/dom';
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import styles from './index.module.scss';
 
 interface BlendedTextProps extends BaseProps {
@@ -24,7 +24,7 @@ export default function BlendedText(props: BlendedTextProps) {
     {...props}
     ref={blended}
     className={
-      combinationCName(styles.blended, props.className, {
+      classnames(styles.blended, props.className, {
         [styles.hasAnimation]: hasAnimation
       })
     }

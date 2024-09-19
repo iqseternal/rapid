@@ -1,5 +1,5 @@
 import { CONFIG } from '@rapid/config/constants';
-import { toPicket, REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@suey/pkg-utils';
+import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@suey/pkg-utils';
 import { StringFilters } from '@rapid/libs-web';
 import type { AxiosError } from 'axios';
 import { getAccessToken } from '@/features';

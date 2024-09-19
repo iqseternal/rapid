@@ -1,4 +1,4 @@
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import type { FC, ReactNode } from 'react';
 import { Space, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -25,7 +25,7 @@ export default function LoadingContent(props: { loading: boolean;loadingText?: s
   } = props;
 
   if (loading) {
-    return <LoadingContainer className={combinationCName(styles.fullSize)}>
+    return <LoadingContainer className={classnames(styles.fullSize)}>
       <Space>
         <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
         <span>{loadingText}</span>

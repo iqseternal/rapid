@@ -1,4 +1,4 @@
-import { combinationCName } from '@libs/common';
+import { classnames } from '@libs/common';
 import type { FC } from 'react';
 import styles from './index.module.scss';
 import * as icons from '@ant-design/icons';
@@ -9,7 +9,7 @@ export default function IconFont(props: BaseProps & { type: IconRealKey;size?: n
   return <Icon
     {...props}
     style={props.size ? { width: props.size + 'px', height: props.size + 'px' } : {}}
-    className={combinationCName(props.className, styles.iconFont)}
+    className={classnames(props.className, styles.iconFont)}
   >
 
   </Icon>;

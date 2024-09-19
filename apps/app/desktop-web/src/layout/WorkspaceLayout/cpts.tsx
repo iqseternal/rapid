@@ -1,7 +1,7 @@
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toPicket } from '@suey/pkg-utils';
-import { FC, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useFadeOut } from '@/hooks';
 import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -16,7 +16,6 @@ interface SideBarItemProps extends WidgetProps {
 
 }
 
-
 /**
  * 该组件为 NavigationBar 提供服务, 作用为创建工作区的左侧导航条中某个导航项内容的展示
  */
@@ -28,7 +27,7 @@ const SideBarItem: FC<SideBarItemProps> = (props) => {
 
   return <Widget
     {...props}
-    className={combinationCName(className, styles.sideBarItem)}
+    className={classnames(className, styles.sideBarItem)}
     tipAttrs={{
       ...tipAttrs,
       placement: 'right',
@@ -41,28 +40,24 @@ const SideBarItem: FC<SideBarItemProps> = (props) => {
  * 该组件为 WorkspaceLayout 提供服务, 作用为创建工作区的左侧导航条
  */
 export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) => {
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [workspaceRoute] = useState(retrieveRoutes().workspaceRoute);
 
-  // if (!shouldShowNavBar) return <div className={styles.mainNavigationContainerPlaceholder} />;
-
-  const logout = async () => {
-    const [logoutErr, logoutRes] = await toPicket(logoutReq());
+  const logout = useCallback(async () => {
+    const [logoutErr] = await toPicket(logoutReq());
     if (logoutErr) {
       IMessage.error(logoutErr.descriptor);
       return;
     }
     await useFadeOut(async () => {
       const { loginRoute } = retrieveRoutes();
-
       navigate(loginRoute.meta.fullPath);
     })
-  }
+  }, []);
 
   return <div
-    className={combinationCName(
+    className={classnames(
       styles.mainNavigationContainer,
       className
     )}

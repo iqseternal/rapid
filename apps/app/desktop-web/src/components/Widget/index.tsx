@@ -1,4 +1,4 @@
-import { combinationCName } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import {theme, Tooltip, TooltipProps} from 'antd';
 import type { IconKey } from '@components/IconFont';
 import type { HTMLAttributes } from 'react';
@@ -38,7 +38,7 @@ export default function Widget(props: WidgetProps) {
     <div
       {...realProps}
       className={
-        combinationCName(
+        classnames(
           styles.widget,
           commonStyles.appRegionNo,
           commonStyles.flexCenter,

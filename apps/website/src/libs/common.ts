@@ -4,12 +4,12 @@ import device from 'current-device';
 /**
  * 合并多个classname类名,
  *
- * <div className={combinationCName(类名1, 类名2, { [类名3]: 布尔值, [类名4]: 布尔值 }, .....)}></div>
+ * <div className={classnames(类名1, 类名2, { [类名3]: 布尔值, [类名4]: 布尔值 }, .....)}></div>
  *
  * @param args
  * @return
  */
-export const combinationCName = (...args: (string | undefined | Record<string, boolean>)[]) => {
+export const classnames = (...args: (string | undefined | Record<string, boolean>)[]) => {
   const classNameList: string[] = [];
 
   args.forEach(arg => {
