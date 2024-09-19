@@ -40,11 +40,7 @@ const animationClassNames = {
 export type AnimationClassNamesType = typeof animationClassNames;
 
 /** 动画类名的选择函数 */
-export type AnimationClassNameSelector = <
-  AnimationClassName extends keyof AnimationClassNamesType
->(
-  animations: AnimationClassNamesType
-) => AnimationClassNamesType[AnimationClassName];
+export type AnimationClassNameSelector<AnimationClassName extends keyof AnimationClassNamesType> = (animations: AnimationClassNamesType) => AnimationClassNamesType[AnimationClassName];
 
 /**
  * 该函数仅配合 `react-transition-group` 库使用, 用于为必要得动画组件提供类名集合
@@ -63,9 +59,11 @@ export type AnimationClassNameSelector = <
  *   <FullSize ref={nodeRef} />
  * </CSSTransition>
  */
-export const useAnimationClassSelector = (selector: AnimationClassNameSelector) => {
-  return useMemo(() => {
-    return selector(animationClassNames);
+export const useAnimationClassSelector = <AnimationClassName extends keyof AnimationClassNamesType, Selector extends AnimationClassNameSelector<AnimationClassName>>(selector: Selector) => {
+  return useMemo<ReturnType<Selector>>(() => {
+    const animationClassName = selector(animationClassNames) as ReturnType<Selector>;
+
+    return animationClassName;
   }, []);
 }
 
