@@ -6,10 +6,24 @@ import { loginRoute, registerRoute, notFoundRoute, notRoleRoute } from './basic'
 import RootLayout from '@/layout/RootLayout';
 import WorkspaceLayout from '@/layout/WorkspaceLayout';
 
-
 export * from './basic';
 
-export const workspaceRoute = makeRoute({
+export const workbenchesToolRoute = makeRoute({
+  name: 'WorkbenchesTool',
+  path: '/workbenchesTool',
+  children: [
+    {
+      name: 'WorkbenchesToolbar',
+      path: '/workbenchesTool/toolbar',
+      component: lazy(() => import('@/windows/Workbenches/Toolbar'))
+    }
+  ]
+})
+export const [
+  workbenchesToolbarRoute
+] = (workbenchesToolRoute as Required<RequiredRouteConfig>).children;
+
+export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
   path: `/workbenches`, redirect: 'home',
   component: <WorkspaceLayout />,
@@ -39,7 +53,7 @@ export const [
   workbenchesHomeRoute,
   workbenchesWorkstationRoute,
   WorkbenchesSkinRoute
-] = (workspaceRoute as Required<RequiredRouteConfig>).children;
+] = (workbenchesRoute as Required<RequiredRouteConfig>).children;
 
 export const rootRoute = makeRoute({
   name: 'Root',
@@ -48,6 +62,7 @@ export const rootRoute = makeRoute({
   children: [
     loginRoute, registerRoute,
     notFoundRoute, notRoleRoute,
-    workspaceRoute
+    workbenchesRoute,
+    workbenchesToolRoute
   ]
 });

@@ -5,6 +5,7 @@ export const makeInvokeActions = <InvokeKey extends keyof Handlers>(invokeKey: I
   if (IS_WEB || !window.electron) return ((...args: unknown[]) => Promise.resolve()) as unknown as Handlers[InvokeKey];
 
   const action: Handlers[InvokeKey] = ((...args: Parameters<Handlers[InvokeKey]>) => {
+
     return window.electron.ipcRenderer.invoke(invokeKey, ...args as Parameters<Handlers[InvokeKey]>);
   }) as unknown as Handlers[InvokeKey];
 

@@ -103,6 +103,17 @@ export const windowEnableFullScreen = (el = document.body) => el.requestFullscre
 export const windowExitFullScreen = () => document.exitFullscreen();
 
 /**
+ * 打开一个子窗口
+ * @returns
+ */
+export const windowOpen = makeInvokeActions('IpcWindow/openWindow');
+
+
+
+export const windowSetDragData = makeInvokeActions('IpcWindowDrag/setDragData');
+export const windowGetDragData = makeInvokeActions('IpcWindowDrag/getDragData');
+
+/**
  * 自动全屏或者推出全屏
  * @param el
  * @returns

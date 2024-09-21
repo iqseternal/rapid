@@ -16,8 +16,6 @@ import AutoDropdownMenu from '@components/AutoDropdownMenu';
 import Subfield from '@rapid/libs-web/components/Subfield';
 import styles from './index.module.scss';
 
-
-
 interface StyleBlockProps extends BaseProps {
   title?: string;
   subTitle?: string;
@@ -50,6 +48,7 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
     </FullSizeWidth>
 
     {props.children}
+
     <FullSizeWidth
       style={{
         height: '30px'

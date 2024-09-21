@@ -51,7 +51,12 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
  * 页面转出的转场
  */
 export async function useFadeOut(callback?: () => (void | Promise<any>), options?: FadeOptions) {
-  const { waitTimer = CONFIG.FADE.FADE_OUT.TIMER, onError = () => {} } = options ?? {};
+  const {
+    waitTimer = CONFIG.FADE.FADE_OUT.TIMER,
+    onError = (err: any) => {
+      console.error(err);
+    }
+  } = options ?? {};
 
   if (!IS_WEB) await windowShow({ show: false }).catch(onError);
   callback && Promise.resolve(callback())?.catch(onError);

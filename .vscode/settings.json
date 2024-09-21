@@ -442,6 +442,8 @@
     "animejs",
     "cpts",
     "Leafer",
+    "Maximizable",
+    "Minimizable",
     "rspack",
     "typecheck"
   ],

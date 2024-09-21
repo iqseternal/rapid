@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import type { ReactElement } from 'react';
 import { Routes } from 'react-router-dom';
-import { loginRoute, registerRoute, notFoundRoute, notRoleRoute, workspaceRoute } from './modules';
+import { loginRoute, registerRoute, notFoundRoute, notRoleRoute } from './modules';
 import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/router';
 import { Skeleton } from 'antd';
 

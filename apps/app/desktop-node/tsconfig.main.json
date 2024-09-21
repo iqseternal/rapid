@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
 
     "strict": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
 
     "noEmitOnError": true,
     "noImplicitAny": false,

@@ -61,10 +61,9 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: C
     else if (isValidElement(Component)) {
       realRoute.element = Component;
     }
-
     else {
-      printWarn(`createRoutesChildren: 传入的 component 不是一个有效的值`);
-      realRoute.element = <></>;
+      // printWarn(`createRoutesChildren: 传入的 component 不是一个有效的值`);
+      // realRoute.element = <></>;
     }
 
     return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath ?? index)}>

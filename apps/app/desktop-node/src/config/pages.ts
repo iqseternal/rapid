@@ -21,9 +21,9 @@ import { IS_DEV } from '@rapid/config/constants';
  */
 const makeStartUrl = (fileName: string, extension = 'html') => {
   if (is.dev && process.env['ELECTRON_RENDERER_URL'])
-    return `${process.env['ELECTRON_RENDERER_URL']}/${fileName}.${extension}`;
+    return `${process.env['ELECTRON_RENDERER_URL']}/${fileName}.${extension}/#`;
 
-  return join(__dirname, `../renderer/${fileName}.${extension}`);
+  return join(__dirname, `../renderer/${fileName}.${extension}/#`);
 }
 
 /** 主窗口 */

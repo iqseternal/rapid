@@ -42,7 +42,7 @@ const SideBarItem: FC<SideBarItemProps> = (props) => {
 export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) => {
   const navigate = useNavigate();
 
-  const [workspaceRoute] = useState(retrieveRoutes().workspaceRoute);
+  const [workbenchesRoute] = useState(retrieveRoutes().workbenchesRoute);
 
   const logout = useCallback(async () => {
     const [logoutErr] = await toPicket(logoutReq());
@@ -76,7 +76,7 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
       className={styles.middleContainer}
     >
       {
-        workspaceRoute.children?.map(routeItem => {
+        workbenchesRoute.children?.map(routeItem => {
           return <SideBarItem
             key={routeItem.meta.fullPath}
             icon={routeItem.meta.icon}

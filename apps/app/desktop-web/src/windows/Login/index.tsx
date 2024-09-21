@@ -2,7 +2,6 @@ import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/hooks';
-import { workspaceRoute } from '@router/modules';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
@@ -55,8 +54,8 @@ export default function Login() {
     }
 
     await useFadeOut(async () => {
-      const { workspaceRoute } = retrieveRoutes();
-      navigate(workspaceRoute.meta.fullPath, { replace: true });
+      const { workbenchesRoute } = retrieveRoutes();
+      navigate(workbenchesRoute.meta.fullPath, { replace: true });
     });
   }, []);
   const register = useCallback(async () => {

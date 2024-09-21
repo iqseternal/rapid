@@ -28,15 +28,15 @@ export type Handlers = {
 export type IpcRenderer =
 Omit<
   BaseIcpRenderer,
-  'invoke' | 'send' | 'sendSync' | 'on' | 'once'
+  'invoke' | 'send' | 'sendSync'
 > & {
   // 向主进程发送事件
   invoke<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): ReturnType<Handlers[T]>;
   send<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
   sendSync<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
 
-  on<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): () => void;
-  once<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): void;
+  // on<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): () => void;
+  // once<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): void;
 }
 
 /**

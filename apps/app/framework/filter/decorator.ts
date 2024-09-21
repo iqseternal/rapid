@@ -12,13 +12,13 @@ export const FILTER_META_CATCH = Symbol(`reflect:filter:catch`);
 export const Catch = (Exception: DescendantClass<Exception>): ClassDecorator => {
 
   return (target) => {
-    // Reflect.defineMetadata(FILTER_META_CATCH, Exception, target);
+    Reflect.defineMetadata(FILTER_META_CATCH, Exception, target);
   }
 }
 
 
 export const getCatchExceptions = (target: object): DescendantClass<Exception>[] => {
-  // Reflect.getMetadata(FILTER_META_CATCH, target) ?? [];
+  Reflect.getMetadata(FILTER_META_CATCH, target) ?? [];
   return [];
 }
 

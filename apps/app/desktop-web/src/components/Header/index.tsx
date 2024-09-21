@@ -1,5 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
-import { windowClose, windowDevtool, windowMin, windowReduction, windowRelaunch } from '@/actions';
+import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_WEB, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, useCallback } from 'react';
@@ -8,6 +8,7 @@ import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenan
 import { isDef, isUnDef, isUndefined, randomRegionForInt } from '@suey/pkg-utils';
 import { Menu, Input } from 'antd';
 import type { AntdItemType, AntdMenuInstance, AntdSubMenuType } from '@components/AutoDropdownMenu';
+import { retrieveRoutes } from '@/router';
 
 import Widget from '@components/Widget';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
@@ -17,7 +18,10 @@ import Logo from '@components/Logo';
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
-
+/**
+ * 左侧收纳的文件菜单
+ * @returns
+ */
 export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) {
   const { isDialog = false, isPane = false } = props;
 
@@ -187,10 +191,12 @@ export default function Header(props: HeaderProps) {
         commonStyles.appRegionNo
       )}
     >
-      <Input
-        className={styles.searchInput}
-        placeholder='Ctrl+K'
-      />
+      {!(isDialog || isPane) && <>
+        <Input
+          className={styles.searchInput}
+          placeholder='Ctrl+K'
+        />
+      </>}
     </Subfield>
 
     <Subfield
@@ -205,6 +211,16 @@ export default function Header(props: HeaderProps) {
       >
         {!IS_WEB &&
           <>
+            {!(isDialog && isPane) && <>
+              <Widget
+                icon='SettingOutlined'
+                tipText='设置'
+                onClick={() => {
+
+                }}
+              />
+            </>}
+
             {IS_DEV && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
             <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
             {!isDialog && !isPane && <Widget icon='BorderOutlined' tipText='还原' onClick={() => windowReduction()} />}

@@ -1,13 +1,18 @@
 import { screen } from 'electron';
+import type { BrowserWindowConstructorOptions } from 'electron';
 import { WINDOW_STATE_MACHINE_KEYS, IS_DEV } from '@rapid/config/constants';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
-import { TypeException } from '@/core';
-import { isNumber } from '@suey/pkg-utils';
+import { RuntimeException, TypeException } from '@/core';
+import { isNull, isNumber, isString, isUnDef, isUndefined } from '@suey/pkg-utils';
 import { AppConfigService } from '@/service/AppConfigService';
 import { UserConfigService } from '@/service/UserConfigService';
 import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
 import { toMakeIpcAction } from '@rapid/framework';
 import { convertWindowService } from './middlewares';
+import { PAGES_WINDOW_MAIN } from '@/config';
+import { join, posix } from 'path';
+import { PrinterService } from '@/service/PrinterService';
+import { print } from '@suey/printer';
 
 const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowService]
@@ -21,7 +26,7 @@ export const ipcWindowMaxSize = makeIpcHandleAction(
       windowService = WindowService.findWindowService(options.id);
     }
 
-    if (windowService.window.maximizable) windowService.window.maximize();
+    if (windowService.window.isMaximizable()) windowService.window.maximize();
   }
 );
 
@@ -32,7 +37,7 @@ export const ipcWindowMinSize = makeIpcHandleAction(
     if (options?.id) {
       windowService = WindowService.findWindowService(options.id);
     }
-    if (windowService.window.minimizable) windowService.window.minimize();
+    if (windowService.window.isMinimizable()) windowService.window.minimize();
   }
 );
 
@@ -74,6 +79,18 @@ export const ipcWindowRelaunch = makeIpcHandleAction(
   }
 );
 
+export const ipcWindowSetMinimumSize = makeIpcHandleAction(
+  'IpcWindow/setMinimumSize',
+  [],
+  async (windowService, options: {
+    id?: number
+    width: number,
+    height: number
+  }) => {
+    windowService.window.setMinimumSize(options.width, options.height);
+  }
+);
+
 export const ipcWindowSetSize = makeIpcHandleAction(
   'IpcWindow/setSize',
   [],
@@ -84,11 +101,10 @@ export const ipcWindowSetSize = makeIpcHandleAction(
   }) => {
     if (windowService.window.isMaximized()) windowService.window.restore();
 
-    windowService.window.setMinimumSize(0, 0);
+    // windowService.window.setMinimumSize(0, 0);
     windowService.window.setSize(options.width, options.height);
   }
 );
-
 
 export const ipcWindowResetCustomSize = makeIpcHandleAction(
   'IpcWindow/resetCustomSize',
@@ -144,7 +160,6 @@ export const ipcWindowResetCustomSize = makeIpcHandleAction(
   }
 );
 
-
 export const ipcWindowSetPosition = makeIpcHandleAction(
   'IpcWindow/setPosition',
   [],
@@ -179,34 +194,50 @@ export const ipcWindowSetPosition = makeIpcHandleAction(
   }
 );
 
-
-
 export const ipcOpenWindow = makeIpcHandleAction(
   'IpcWindow/openWindow',
   [],
-  async (_, type: WINDOW_STATE_MACHINE_KEYS) => {
-    let windowService = WindowStateMachine.findWindowService(type);
+  async (windowService, options: { windowKey?: string; subUrl: string; }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => {
+    const { windowKey, subUrl } = options;
 
-    if (!windowService) {
-      if (type === WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW) windowService = await setupSettingWindow();
-      else if (type === WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW) windowService = await setupReportBugsWindow();
-      else throw new TypeException('错误的窗口KEY', {
-        label: `$openWindow`
+    let targetWindowService: WindowService | null = null;
+
+    if (isString(windowKey)) targetWindowService = WindowStateMachine.findWindowService(windowKey);
+    if (isNull(targetWindowService) || isUndefined(targetWindowService)) {
+      targetWindowService = new WindowService(browserWindowOptions, {
+        windowKey,
+        url: posix.join(PAGES_WINDOW_MAIN, subUrl),
+        autoLoad: true
       })
     }
 
-    return windowService.show();
+    if (!targetWindowService.window.isVisible()) targetWindowService.show();
   }
 );
 
 export const ipcWindowClose = makeIpcHandleAction(
   'IpcWindow/closeWindow',
   [],
-  async (windowService) => {
-    const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
+  async (windowService, options?: { windowKey?: string;fictitious?: boolean }) => {
+    const {
+      windowKey,
+      fictitious = false
+    } = options ?? {};
 
-    if (isSameWindowService(mainWindowService, windowService)) return windowService.window.hide();
+    if (isString(windowKey)) {
+      const targetWindowService = WindowService.findWindowService(windowKey);
+      if (fictitious) targetWindowService.window.hide();
 
+      return targetWindowService.destroy();
+    }
+
+    const mainWindowService = WindowService.findWindowService(PAGES_WINDOW_MAIN);
+
+    if (isSameWindowService(mainWindowService, windowService)) {
+      return windowService.window.hide();
+    }
+
+    if (fictitious) return windowService.window.hide();
     windowService.destroy();
   }
 );
@@ -218,14 +249,9 @@ export const ipcWindowShow = makeIpcHandleAction(
     id?: number
     show: boolean
   }) => {
-
-    const isMinimized = windowService.window.isMinimized();
     const isVisible = windowService.window.isVisible();
 
-
     if (options.show) {
-      if (IS_DEV && isMinimized) return;
-
       if (!isVisible) windowService.window.show();
     }
     else {
@@ -233,3 +259,29 @@ export const ipcWindowShow = makeIpcHandleAction(
     }
   }
 );
+
+declare interface WindowProperties {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+}
+export const ipcWindowProperties = makeIpcHandleAction(
+  'IpcWindow/properties',
+  [],
+  async (windowService, selectedOptions: { windowKey?: string; }, properties: Partial<WindowProperties>) => {
+    const { windowKey } = selectedOptions;
+
+    if (isString(windowKey)) {
+      const service = WindowService.findWindowService(windowKey);
+      if (service) windowService = service;
+    }
+
+    if (isNumber(properties.width)) windowService.window.setSize(properties.width, windowService.window.getSize()[1]);
+    if (isNumber(properties.height)) windowService.window.setSize(windowService.window.getSize()[0], properties.height);
+
+    if (isNumber(properties.x)) windowService.window.setPosition(properties.x, windowService.window.getPosition()[1]);
+    if (isNumber(properties.y)) windowService.window.setPosition(windowService.window.getPosition()[0], properties.y);
+  }
+)
+

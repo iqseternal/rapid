@@ -23,7 +23,7 @@ export async function setupMainWindow() {
   const windowService = new WindowService(appConfigService.config.windows.mainWindow, {
     url: PAGES_WINDOW_MAIN,
     autoLoad: true,
-    windowKey: WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW
+    windowKey: PAGES_WINDOW_MAIN
   });
 
   windowService.window.webContents.setFrameRate(144);
@@ -53,8 +53,8 @@ export async function setupMainWindow() {
     }
     return { action: 'deny' };
   });
-  if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
 
+  if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
   return windowService;
 }
@@ -168,7 +168,7 @@ export async function setupTrayMenu() {
   const tray = new Tray(nativeImage.createFromPath(iconUrl));
 
   tray.on('click', async () => {
-    const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
+    const mainWindowService = WindowStateMachine.findWindowService(PAGES_WINDOW_MAIN);
     if (!mainWindowService) {
       await setupMainWindow();
       return;

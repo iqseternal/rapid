@@ -16,11 +16,11 @@ export const notRoleRoute = makeRoute({
 export const loginRoute = makeRoute({
   name: 'LoginRoute',
   path: '/login',
-  component: lazy(() => import('@pages/Login'))
+  component: lazy(() => import('@/windows/Login'))
 })
 
 export const registerRoute = makeRoute({
   name: 'Register',
   path: '/register',
-  component: lazy(() => import('@pages/Register'))
+  component: lazy(() => import('@/windows/Register'))
 })
