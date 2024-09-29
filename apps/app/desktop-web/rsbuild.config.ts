@@ -4,12 +4,15 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
-import { resolveAlias, DIRS } from '../../../config/node';
+import { resolveAlias, DIRS, Builder } from '../../../config/node';
 import { DefinePlugin } from '@rspack/core';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.web.json';
 
+const builder = new Builder({
+  checker: false
+});
 
 const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
 
@@ -18,7 +21,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       entry: {
         index: join(DIRS.DEV_DESKTOP_WEB_DIR, './src/index.tsx')
       },
-      alias: resolveAlias(__dirname, tsConfigJson.compilerOptions.paths)
+      alias: builder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths)
     },
     plugins: [
       pluginSass(),
@@ -27,7 +30,6 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginReact(),
       pluginSourceBuild(),
     ],
-
     server: {
       port: 3002
     },
@@ -42,19 +44,13 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
         js: true,
         jsOptions: {
           minimizerOptions: {
-
             format: {
-
               comments: false,
-
-
               ecma: 2015
             }
 
           }
         },
-
-
         css: true,
       }
     }

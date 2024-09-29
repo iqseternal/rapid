@@ -21,3 +21,12 @@ aside.rspress-sidebar > div:first-child {
 aside.rspress-sidebar {
   padding-bottom: 60px;
 }
+
+
+
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 18px;
+}

@@ -6,7 +6,7 @@ import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
 
-import { defineVars, CONFIG_ENV_COMMAND, DIRS } from '../../config/node/builder';
+import { Builder, CONFIG_ENV_COMMAND, DIRS } from '../../config/node/builder';
 
 import treeKill from 'tree-kill';
 
@@ -25,10 +25,9 @@ declare global {
 
 // =====================================================================================
 // 环境变量设置
+const builder = new Builder();
 
-const IS_DEV = process.env.COMMAND === CONFIG_ENV_COMMAND.DEV;
-const IS_PROD = process.env.COMMAND === CONFIG_ENV_COMMAND.BUILD || process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW;
-const IS_PREVIEW = process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW;
+const { IS_DEV, IS_PROD, IS_BUILD, IS_PREVIEW } = builder.toEnvs();
 
 if (!process.env.DEV_SERVER_MODE) process.env.DEV_SERVER_MODE = 'dev:web:only';
 const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
@@ -111,7 +110,7 @@ const transformMainRspackConfig = async () => {
   // 将结果写入到磁盘
   mainRspackConfig.devServer.devMiddleware.writeToDisk = true;
 
-  const vars = defineVars();
+  const vars = builder.defineVars();
   mainRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
   // mainRspackConfig.plugins?.push(new DefinePlugin({
@@ -140,7 +139,7 @@ const transformPreloadRspackConfig = async () => {
   // 将结果写入到磁盘
   preloadRspackConfig.devServer.devMiddleware.writeToDisk = true;
 
-  const vars = defineVars();
+  const vars = builder.defineVars();
   preloadRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
   if (IS_PROD) {
@@ -161,7 +160,7 @@ const transformRendererRsbuilder = async () => {
     path: join(DIRS.DEV_DESKTOP_WEB_DIR, './rsbuild.config.ts'),
   });
 
-  const vars = defineVars();
+  const vars = builder.defineVars();
 
   const rendererRsbuilder = await createRsbuild({
     cwd: DIRS.DEV_DESKTOP_WEB_DIR,

@@ -1,4 +1,4 @@
-import { CONFIG, IS_WEB } from '@rapid/config/constants';
+import { CONFIG, IS_BROWSER } from '@rapid/config/constants';
 import { windowShow, windowReload, windowRelaunch } from '@/actions';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toPicket } from '@suey/pkg-utils';
@@ -39,7 +39,7 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
         return windowShow({ show: true }).catch(onError);
       }
     }
-    if (IS_WEB) return;
+    if (IS_BROWSER) return;
 
     setTimeout(async () => {
       windowShow({ show: true }).catch(onError);
@@ -58,6 +58,6 @@ export async function useFadeOut(callback?: () => (void | Promise<any>), options
     }
   } = options ?? {};
 
-  if (!IS_WEB) await windowShow({ show: false }).catch(onError);
+  if (!IS_BROWSER) await windowShow({ show: false }).catch(onError);
   callback && Promise.resolve(callback())?.catch(onError);
 }

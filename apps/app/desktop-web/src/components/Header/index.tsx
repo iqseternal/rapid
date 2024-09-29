@@ -1,7 +1,7 @@
 import { classnames } from '@rapid/libs-web/common';
 import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
-import { IS_WEB, IS_DEV } from '@rapid/config/constants';
+import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, useCallback } from 'react';
 import { menus } from '@/menus';
 import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
@@ -209,7 +209,7 @@ export default function Header(props: HeaderProps) {
         className={commonStyles.appRegionNo}
         gap={1}
       >
-        {!IS_WEB &&
+        {!IS_BROWSER &&
           <>
             {!(isDialog && isPane) && <>
               <Widget
@@ -221,7 +221,7 @@ export default function Header(props: HeaderProps) {
               />
             </>}
 
-            {IS_DEV && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
+            {IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
             <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
             {!isDialog && !isPane && <Widget icon='BorderOutlined' tipText='还原' onClick={() => windowReduction()} />}
             <Widget icon='CloseOutlined' tipText='关闭' onClick={() => windowClose()} />

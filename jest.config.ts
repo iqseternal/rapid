@@ -11,7 +11,8 @@ export default async (): Promise<Config> => {
     // 定义全局变量
     globals: {
       CURRENT_PLATFORM: 0,
-      CURRENT_ENV: 0
+      CURRENT_ENV: 0,
+      CURRENT_RUNTIME_PLATFORM: 0
     },
 
     // 自动模拟测试, 指示是否应在运行期间报告每个单独的测试

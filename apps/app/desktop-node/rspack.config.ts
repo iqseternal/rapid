@@ -1,10 +1,14 @@
 import { defineConfig } from '@rspack/cli';
 import { node, DefinePlugin, DefinePluginOptions, HotModuleReplacementPlugin, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import type { RspackOptions, RspackPluginInstance, RuleSetRule } from '@rspack/core';
-import { resolveAlias, DIRS, rules } from '../../../config/node';
+import { DIRS, rules, Builder } from '../../../config/node';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.main.json';
+
+const builder = new Builder({
+  checker: false
+})
 
 const rspackConfig: RspackOptions = defineConfig({
   target: 'electron-main',
@@ -16,7 +20,7 @@ const rspackConfig: RspackOptions = defineConfig({
   },
   resolve: {
     extensions: ['.ts', '.cts', '.js', '.cjs'],
-    alias: resolveAlias(__dirname, tsConfigJson.compilerOptions.paths),
+    alias: builder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths),
   },
   plugins: [
     new node.NodeTargetPlugin(),

@@ -3,7 +3,7 @@
  * 项目常量的编写, 不要通过路径别名或者导入包的方式创建这个常量
  * ==========================================
  */
-import { PLATFORMS, ENV } from '../enums';
+import { PLATFORMS_ON_DESKTOP, PLATFORMS_ON_BROWSER, PLATFORMS_ON_MOBILE, ENV, RUNTIME_PLATFORMS } from '../enums';
 import { CONFIG } from './config';
 
 export { SystemInformation } from './systemInfo';
@@ -14,14 +14,17 @@ export * from './config';
 
 export * from './others';
 
-export { PLATFORMS, ENV };
+export { PLATFORMS_ON_DESKTOP, ENV };
 
 // 运行的操做系统环境
-export const IS_WINDOWS = CURRENT_PLATFORM === PLATFORMS.WINDOWS;
-export const IS_MAC = CURRENT_PLATFORM === PLATFORMS.MAC;
-export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS.LINUX;
-// 是否构建 Web 平台代码
-export const IS_WEB = CURRENT_PLATFORM === PLATFORMS.WEB;
+export const IS_WINDOWS = CURRENT_PLATFORM === PLATFORMS_ON_DESKTOP.WINDOWS;
+export const IS_MAC = CURRENT_PLATFORM === PLATFORMS_ON_DESKTOP.MAC;
+export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS_ON_DESKTOP.LINUX;
+
+// 是否构建运行平台
+export const IS_DESKTOP = CURRENT_RUNTIME_PLATFORM === RUNTIME_PLATFORMS.DESKTOP;
+export const IS_MOBILE = CURRENT_RUNTIME_PLATFORM === RUNTIME_PLATFORMS.MOBILE;
+export const IS_BROWSER = CURRENT_RUNTIME_PLATFORM === RUNTIME_PLATFORMS.BROWSER;
 
 // 当前的开发环境
 export const IS_DEV = CURRENT_ENV === ENV.DEV;

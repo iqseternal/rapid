@@ -9,9 +9,11 @@ import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import { ECMAVersion } from '@rsdoctor/utils/ruleUtils';
 import { join } from 'path';
 
-import { defineVars , CONFIG_ENV_COMMAND } from '../../config';
+import { Builder, DIRS } from '../../config/node';
 
-import { DIST_WEB_DIR, DEV_DESKTOP_WEB_DIR } from '../../config/dirs';
+const builder = new Builder({
+  checker: false
+});
 
 export default defineConfig(({ env, command }) => ({
   source: {
@@ -21,7 +23,7 @@ export default defineConfig(({ env, command }) => ({
     entry: {
       index: './src/index.tsx'
     },
-    define: defineVars(),
+    define: builder.defineVars(),
   },
   plugins: [
     pluginStyledComponents(),
@@ -36,7 +38,7 @@ export default defineConfig(({ env, command }) => ({
   },
   output: {
     distPath: {
-      root: DIST_WEB_DIR,
+      root: DIRS.DIST_WEB_DIR,
     },
     cleanDistPath: true
   },
