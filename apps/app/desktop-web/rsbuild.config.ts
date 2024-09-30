@@ -4,7 +4,7 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
-import { resolveAlias, DIRS, Builder } from '../../../config/node';
+import { DIRS, Builder } from '../../../config/node';
 import { DefinePlugin } from '@rspack/core';
 import { join } from 'path';
 

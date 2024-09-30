@@ -1,4 +1,4 @@
-import { WINDOW_STATE_MACHINE_KEYS, IS_WEB } from '@rapid/config/constants';
+import { WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
 import { makeInvokeActions } from './ipcRenderer';
 
 /**
@@ -11,10 +11,10 @@ const openPage = makeInvokeActions('IpcWindow/openWindow');
  * 打开设置页面
  * @return
  */
-export const openSettingPage = () => openPage(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+export const openSettingPage = () => openPage({ windowKey: WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW, subUrl: '' }, {});
 
 /**
  * 打开Bug汇报页面
  * @return
  */
-export const openReportBugsPage = () => openPage(WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW);
+export const openReportBugsPage = () => openPage({ windowKey: WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW, subUrl: '' }, {});

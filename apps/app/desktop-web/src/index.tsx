@@ -1,7 +1,7 @@
 import React, { useState , StrictMode } from 'react';
 import { useReactive } from '@rapid/libs-web';
 import { themePlugins, app } from './plugins';
-import { ENV, IS_DEV, PLATFORMS } from '@rapid/config/constants';
+import { ENV, IS_DEV } from '@rapid/config/constants';
 
 import ReactDOM from 'react-dom/client';
 import App from './app';

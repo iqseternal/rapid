@@ -1,5 +1,5 @@
-import { WindowService } from '@/service/WindowService';
-import { PrinterService } from '@/service/PrinterService';
+import { WindowService } from '@/core/service/WindowService';
+import { PrinterService } from '@/core/service/PrinterService';
 
 export class LoggerServer {
   info(...message: unknown[]): void {

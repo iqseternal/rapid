@@ -33,7 +33,8 @@
     "types": [
       "@rapid/config/@types-web",
       "@rapid/libs-web/@types",
-      "./src/@types"
+      "./src/@types",
+      "reflect-metadata"
     ],
 
     "paths": {
