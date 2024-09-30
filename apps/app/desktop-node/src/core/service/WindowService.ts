@@ -3,7 +3,7 @@ import { BrowserWindow, type BrowserWindowConstructorOptions } from 'electron';
 import { setWindowCross, setWindowMaxSize, setWindowOpenHandler, setWindowCaption, getWindowFrom } from '@/core/common/window';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber, isNull } from '@suey/pkg-utils';
-import { RuntimeException } from '@/core';
+import { Catch, Exception, RuntimeException } from '@/core';
 
 const iconUrl = join(__dirname, '../../../resources/icon.png');
 

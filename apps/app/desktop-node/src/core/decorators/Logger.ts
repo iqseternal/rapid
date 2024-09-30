@@ -8,10 +8,9 @@ import {  } from '@suey/pkg-utils';
 
 export class Logger {
 
-
   static Info(): MethodDecorator;
-  static Info(...message: unknown[]): void;
 
+  static Info(...message: unknown[]): void;
 
   static Info(...message: unknown[]): void | MethodDecorator {
 

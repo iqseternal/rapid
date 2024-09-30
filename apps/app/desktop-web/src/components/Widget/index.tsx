@@ -24,7 +24,7 @@ export default function Widget(props: WidgetProps) {
     icon,
     tipText,
     className,
-    tipAttrs,
+    tipAttrs = {},
     ...realProps
   } = props;
 

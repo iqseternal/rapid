@@ -53,7 +53,7 @@ setupApp(async () => {
 
 
 
-  // await setupMainWindow();
+  await setupMainWindow();
   await setupTrayMenu();
 }, {
   onFailed: async (err) => {

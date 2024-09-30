@@ -26,6 +26,8 @@ export async function setupMainWindow() {
     windowKey: PAGES_WINDOW_MAIN
   });
 
+  PrinterService.printInfo(PAGES_WINDOW_MAIN);
+
   windowService.window.webContents.setFrameRate(144);
   windowService.window.setMenu(null);
   windowService.window.webContents.setWindowOpenHandler((details) => {

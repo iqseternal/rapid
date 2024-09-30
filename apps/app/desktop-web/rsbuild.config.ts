@@ -48,7 +48,6 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
               comments: false,
               ecma: 2015
             }
-
           }
         },
         css: true,
