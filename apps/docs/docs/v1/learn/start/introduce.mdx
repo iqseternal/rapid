@@ -9,8 +9,6 @@
 
 * 本程序的核心技术。
 
-* 了解如何以此为基础进行开发。
-
 :::
 
 ## 基本设计概念
@@ -45,177 +43,152 @@
 
 如果有需要快速开发桌面应用程序，可以尝试 clone 本项目，并对其代码进行修改，可以达到帮助快速开发构建的作用。
 
+::: info 下面会介绍开发技术以及具有的特点，如果想要快速了解，可从右侧缩略图快速了解并获取。
+
+:::
+
 ### 项目组织
 
 本项目当中采用了 `monorepo` 进行项目的编写. 利用 [***pnpm***](https://www.pnpm.cn/) & [***monorepo***](https://pnpm.io/zh/workspaces) 的方式组织项目
 
-<h3>***pnpm:***</h3>
+#### pnpm
 
-* node_modules 中的文件是从一个单一的可内容寻址的存储中链接过来的，代码无法访问任意包
-* 2. monorepo:
+* 快速：pnpm 通过链接共享依赖，减少安装时间和磁盘占用。
+
+* 一致性：确保项目中依赖的版本一致，避免“依赖地狱”。
+
+* 节省空间：使用硬链接和符号链接，多个项目共享相同的依赖。
+
+* 兼容性：支持 npm 和 Yarn 的大部分功能，易于迁移。
+
+* 工作区支持：方便管理多个包的单一代码库。
+
+#### monorepo
+
+* 集中管理：将多个产物（如桌面应用和网页应用）集中在一个仓库中，便于管理和协作。
+
+* 版本一致性：可以确保所有相关产物使用相同的依赖版本，减少兼容性问题。
+
+* 共享代码：不同产物之间可以方便地共享代码和组件，减少重复开发。
 
 ### 框架
 
+对于本项目的框架，采用了 [***Electron***](https://www.electronjs.org/) 作为构建项目的基石。
+采用 [***TypeScript超集***](https://www.typescriptlang.org/) 作为项目编写开发的技术语言，让项目获得严格的 TS 类型校验和提示。增强项目的可维护可迭代能力
+
+#### electron
+
+* 使用 HTML、CSS 和 JavaScript 开发应用，前端开发者易于上手。
+
+* 支持 Windows、macOS 和 Linux，允许一次编写、处处运行。
+
+* 可以访问 Node.js API，轻松处理文件系统和网络请求。
+
+* 内置自动更新功能，简化用户的更新体验。
+
+* 支持通知、系统托盘等桌面特性，提升用户体验。
+
+* Electron 常用于构建像 Visual Studio Code、Slack 等流行应用。
+
+#### typeScript
+
+* TypeScript 是一种由微软开发的开源编程语言，基于 JavaScript 的超集。
+
+* 它增加了静态类型检查，帮助开发者在编写代码时捕获潜在错误。
+
+* 支持现代 JavaScript 特性，如 async/await、模块化等。
+
+* 提供强大的工具支持，包括智能提示、重构和代码导航。
+
+* 促进大型项目的可维护性和可读性，使团队协作更加高效。
+
+* 可以与现有的 JavaScript 代码无缝集成，支持渐进式采用。
+
+* TypeScript 编译后生成标准 JavaScript，确保广泛的兼容性。
+
+* 许多流行框架（如 Angular、React）都支持 TypeScript，提升了开发体验。
+
 ### UI
+
+在处理应用程序的图形界面时，采用 [***React***](https://react.dev/) 作为开发页面的主导框架、
+以 [***Leafer***](https://www.leaferjs.com/) 为绘图引擎，同步协调工作，进而使得绘图体验以及程序界面体验都能获得良好的感受，
+
+#### react
+
+* 组件化设计，允许开发者创建可重用的 UI 组件。
+
+* 使用虚拟 DOM 提升性能，优化更新和渲染效率。
+
+* 单向数据流，便于管理和调试应用状态。
+
+* 支持声明式编程，使 UI 开发更加直观和可预测。
+
+* 拥有丰富的生态系统，提供众多库和工具以增强功能。
+
+* 易于与其他库和框架集成，灵活性强。
+
+* 广泛应用于单页应用和移动应用，提升用户体验。
+
+#### leafer、 leafer-ui
+
+* Leafer UI 是基于 Leafer 开发的一套绚丽多彩的 UI 绘图、交互框架，可结合 AI 绘图、生成界面，表现力丰富、性能强劲。
+
+* 提供了丰富的 UI 绘图元素，和开箱即用的功能，如自动布局、图形编辑、SVG 导出，方便与 Figma、Sketch 等产品进行数据交换。
+
+* 可用于高效绘图 、UI 交互（小游戏、互动应用、组态）、图形编辑。
+
+### 存储
+
+应用程序的数据存储往往需要为空间考虑，为安全性考虑。在空间上，采用 [***Pako***](https://nodeca.github.io/pako/) 作为压缩数据的工具，再利用 `@suey/pkg-utils` 封装的数据加密解密算法进行一般性加密。
+最终利用 `nodejs` 中 `fs` 模型进行读写文件、又或者利用 [***ElectronStore***](https://www.npmjs.com/package/electron-store) 作为存储媒介存储数据。
+
+#### electron-store
+
+* 提供简单的 API，方便开发者快速集成。
+
+* 支持自动数据持久化，应用重启后数据仍然可用。
+
+* 支持跨平台，适用于 Windows、macOS 和 Linux。
+
+* 具有良好的性能，适合存储用户设置和应用状态。
+
+#### pako.js
+
+* 支持多种压缩格式，如 DEFLATE、GZIP 和 ZLIB。
+
+* 提供简单的 API，易于集成到 Web 应用和 Node.js 项目中。
+
+* 在浏览器和服务器端均可运行，兼容性强。
+
+* 具有较小的体积，适合用于资源受限的环境。
+
+* 高性能，能够快速处理大数据集，提升应用效率。
+
+* 支持流式处理，适合需要实时数据压缩的场景。
+
+* 社区活跃，提供丰富的文档和示例，便于开发者使用。
 
 ### 测试
 
+#### jest
+
+* 快速：内置并行测试运行，提升测试速度。
+
+* 丰富的匹配器：提供多种匹配器，使断言更加灵活和易读。
+
+* 支持快照测试：可以快速捕捉组件输出并进行对比。
+
+* 强大的模拟功能：方便模拟函数和模块，简化依赖管理。
+
+* 易于集成：与其他工具和框架（如 Babel 和 TypeScript）兼容良好。
+
+
 ### 打包
 
+#### rsPack & rsBuild
 
+#### electron-builder
 
-🌱`/package/config` 为两个项目的配置(包含构建配置以及运行时配置，以及一些构建常量，例如当前环境，IS_DEV，当前构建平台，IS_WINDOWS等等)，看过代码之后，就可以随意的编写你想要的配置常量，添加想要的构建平台和一些选项。这些常量选项，IS_XXX，通常会在编译时确定，因此，通过 Vite 做到树摇，可以利用此方案可以构建 Web `OEM` 方案。
+## 下一步
 
-🌱`/package/desktop-node`则是对应 `Electron` 程序的主进程。
-
-🌱`/package/desktop-web`则是对应 `Electron` 程序的渲染进程。基于 `react` 编写，具有多入口(正在考虑是否保留)。
-
-🌱`/package/libs` 通用的函数调用。
-
-🌱`/package/libs-web` web专用的函数调用, 通常也为 React 提供调度函数。
-
-🌱`/package/website`则是基于 `react`编写的下载网站，使用了 `styled-components`，`scss module`，行内样式，虽然都采用了但是为其分了使用类别，`styled-components`建立基本元素容器，`scss module`编写页面组件级样式，行内样式则是为了覆盖元素容器原有样式，又或者样式简短。由于受到 `Vue`开发的影响，`useState` 的 手动`set`已经不能满足于我，于是编写了一个类似 `Vue`开发的自动 `set` 的 `hook`，具体阐述自行查看 `hooks`文件夹。
-
-👋👋关于更多详细，后续完善开发之后会建立 `Vitepress`介绍文档对其进行详细介绍，以让开发者能够快速了解开发基本。
-
-后续会部署在 https://www.oupro.cn
-
-## Preface
-
-想要了解本项目, 并具有改造和修正和扩展能力, 你应该具有如下基本概念：
-
-- pnpm monorepo 依赖安装和管理
-
-- Nodejs 对本地文件的基本操作能力
-
-- Pako 的基本认知
-
-- Electron 基本知识概念
-
-- Typescript 类型运算基本能力(推导能力)
-
-- 装饰器集成以及 Reflect-metadata 基本概念
-
-- React Vite 构建 Web， 以及 Vite 树摇的形成，变量注入
-
-## Project Setup
-
-### Install
-
-```bash
-$ pnpm install
-```
-
-如果安装过程中出现错误，请首先请检查你的源是否为官方源，不建议使用其他源。
-
-如果你存在与 npm 仓库连接不稳定的问题，例如：`pnpm will retry in 10 seconds 2 retries left`
-
-那么你可能需要如下软件地址。
-
-[Clash](https://clashvergerev.com/)
-
-[Proxifier - The Most Advanced Proxy Client](https://www.proxifier.com/)
-
-当你配置完成你的代理之后，再重试。
-
-### Development
-
-```bash
-$ pnpm dev
-$ pnpm dev:desktop
-$ pnpm website:dev
-$ pnpm scripts:dev
-```
-
-### Build
-
-```bash
-# For windows
-$ pnpm build:win
-$ pnpm build:win:only # 如果不需要执行类型检查和一些额外的命令，那么直接构建
-
-# For macOS
-# 未适配
-$ pnpm build:mac
-
-# For Linux
-# 未适配
-$ pnpm build:linux
-```
-
-# More
-
-TypeScript 遵循编写规范
-
-```typescript
-// 0,
-import './xxx';
-// 1，先引入具名导入, 如果引入类型则添加 type 引入
-import { name, Name } from 'xxx';
-import type { Name } from 'xxx';
-import { type Name } from 'xxx';
-// 2，引入默认导入，如果默认导出是一个类，那么对于大驼峰
-import name from 'xxx';
-import Name from 'xxx';
-// 3，最后引入 import * 类型
-import * as xxx from 'xxx';
-
-// 类型书写采用大驼峰
-type Name = number;
-interface Name {
-
-}
-
-// 函数书写采用小驼峰
-// 尽可能地利用 TS 类型推导，而不是直接书写类型注释(如果有这种切实需求)
-const fn = () => {};
-function fns<T>(arg: T) {}
-
-if (fn) {
-  xxx;
-}
-else if (fn) {
-  xxx;
-}
-else {
-  xxx;
-}
-
-// 如果语句简洁，那么一行书写完整，保持整体代码块简洁明了
-// 尽量避免 if () { xxx; } 这种语句(一行)地编写。
-if () xxx;
-else if () xxxx;
-else xxx;
-
-// 避免此情况地产生，如果需要就使用 as 断言
-// 避免使用 @ts-ignore 等忽略错误
-// 当然，这是一个不应该存在的错误示例
-const a: number = '1' as unknown as number;
-
-// 禁止使用 any 编程(但并非是不能使用 any)
-// 如下被禁止
-const f = (a: any, b: any, c: any): any => {
-  const res = a + b + c;
-
-  return res;
-}
-
-
-// 禁止出现 try catch 不处理错误
-try {
-  throw new Error(`错误`);
-} catch(e) {
-  // 必须处理错误
-}
-
-// Promise: 除非在逻辑上一定成功或者不影响业务, 否则也需要处理异常。
-
-
-
-// 不允许使用 compilerOptions types 选项加载以根为首的类型目录
-
-```
-
-Scss 编写规范
-
-组件中严格使用 scss module 方式引入方式, 不允许使用显式字符串作为 class 类名
+现在你已经简单了解了本项目的编写目的功能、以及所用到的大体技术、那么接下来可以安装依赖尝试启动本项目。

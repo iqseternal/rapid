@@ -1,5 +1,5 @@
-import {AppStore} from '@/service/AppStoreService';
-import {EXTENSIONS} from '@rapid/config/constants';
+import { AppStore } from '@/service/AppStoreService';
+import { EXTENSIONS } from '@rapid/config/constants';
 
 export interface AppStoreType {
   customWindowWidth: number;

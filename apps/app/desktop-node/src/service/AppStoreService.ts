@@ -1,6 +1,7 @@
 import { CustomSingleInstanceService } from './SingleInstanceService';
 import { ConvertService } from './ConvertService';
 import { EXTENSIONS } from '@rapid/config/constants';
+
 import ElectronStore from 'electron-store';
 
 /** store 存储服务 */
