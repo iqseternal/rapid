@@ -1,21 +1,19 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
-import { WINDOW_STATE_MACHINE_KEYS, IS_DEV } from '@rapid/config/constants';
-import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
+import { isSameWindowService, WindowService, WindowStateMachine } from '@/core/service/WindowService';
 import { RuntimeException, TypeException } from '@/core';
 import { isNull, isNumber, isString, isUnDef, isUndefined } from '@suey/pkg-utils';
-import { AppConfigService } from '@/service/AppConfigService';
-import { UserConfigService } from '@/service/UserConfigService';
-import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
-import { toMakeIpcAction } from '@rapid/framework';
-import { convertWindowService } from './middlewares';
+import { AppConfigService } from '@/core/service/AppConfigService';
+import { UserConfigService } from '@/core/service/UserConfigService';
+import { toMakeIpcAction } from '@/core/ipc';
+import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 import { PAGES_WINDOW_MAIN } from '@/config';
 import { join, posix } from 'path';
-import { PrinterService } from '@/service/PrinterService';
+import { PrinterService } from '@/core/service/PrinterService';
 import { print } from '@suey/printer';
 
 const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowService]
+  handleMiddlewares: [convertWindowServiceMiddleware]
 });
 
 export const ipcWindowMaxSize = makeIpcHandleAction(

@@ -2,14 +2,14 @@
  * 在这里导出 ipc 句柄, 但只导出 ipc 句柄, 不允许导出非 ipc 句柄变量
  */
 
-export * from './ipcDocHandler';
+export * from './handlers/ipcDocHandler';
 
-export * from './ipcDevToolHandler';
+export * from './handlers/ipcDevToolHandler';
 
-export * from './ipcStoreHandler';
+export * from './handlers/ipcStoreHandler';
 
-export * from './ipcWindowHandler';
+export * from './handlers/ipcWindowHandler';
 
-export * from './ipcWindowDragHandler';
+export * from './handlers/ipcWindowDragHandler';
 
 export * from './ipcBroadcast';

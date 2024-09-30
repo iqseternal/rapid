@@ -1,18 +1,11 @@
 import { Printer } from '@suey/printer';
-import { filterCatch } from './filter/runtime';
 import { IS_DEV } from '@rapid/config/constants';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 // 处理没有捕捉的异常
 process.on('uncaughtException', (reason: Error, origin: string) => {
-  console.log(reason);
-
-  filterCatch(reason).catch(err => {
-
-
-    Printer.printError(err);
-  })
+  Printer.printError(reason, origin);
 });
 
 
@@ -34,9 +27,7 @@ if (IS_DEV) {
 
   // 捕捉没有 处理 Catch 的 Promise
   process.on('unhandledRejection', (reason: Error, promise) => {
-    filterCatch(reason).catch(err => {
-      Printer.printError(`出现了未处理Promise REJECTED:: ${reason}`);
-    })
+    Printer.printError(reason, promise);
   });
 }
 

@@ -135,3 +135,14 @@ export function getWindowFrom(arg: number | IpcMainEvent | IpcMainInvokeEvent): 
   if (isNumber(arg)) return getWindowFromId(arg);
   else return getWindowFromIpcEvt(arg);
 }
+
+/**
+ * 设置单实例程序
+ */
+export const setupSingleApplication = async () => {
+  const goTheLock = app.requestSingleInstanceLock();
+
+  if (!goTheLock) {
+    return app.quit();
+  }
+}

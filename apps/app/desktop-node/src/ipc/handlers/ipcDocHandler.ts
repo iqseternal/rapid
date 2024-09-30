@@ -1,18 +1,18 @@
-import { toMakeIpcAction } from '@rapid/framework';
-import { WindowService } from '@/service/WindowService';
+import { toMakeIpcAction } from '@/core/ipc';
+import { WindowService } from '@/core/service/WindowService';
 import { app, dialog } from 'electron';
-import { FileService } from '@/service/FileService';
-import { ConvertService } from '@/service/ConvertService';
-import {EXTENSIONS, EXPORTS_EXTENSIONS, ExtensionType} from '@rapid/config/constants';
-import { AppFileStorageService } from '@/service/AppStorageService';
+import { FileService } from '@/core/service/FileService';
+import { ConvertService } from '@/core/service/ConvertService';
+import { EXTENSIONS, EXPORTS_EXTENSIONS, ExtensionType } from '@rapid/config/constants';
+import { AppFileStorageService } from '@/core/service/AppStorageService';
 import { RuntimeException, TypeException } from '@/core';
-import { PrinterService } from '@/service/PrinterService';
-import { convertWindowService } from './middlewares';
+import { PrinterService } from '@/core/service/PrinterService';
+import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 
 import * as path from 'path';
 
 const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowService]
+  handleMiddlewares: [convertWindowServiceMiddleware]
 });
 
 namespace Meta2d {
@@ -53,7 +53,6 @@ export const ipcRdDocSave = makeIpcHandleAction(
     return new AppFileStorageService(filePath).save(data);
   }
 );
-
 
 /**
  * 另存为一个文档到本地

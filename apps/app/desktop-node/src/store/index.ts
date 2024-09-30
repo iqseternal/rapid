@@ -1,4 +1,4 @@
-import { AppStore } from '@/service/AppStoreService';
+import { AppStore } from '@/core/service/AppStoreService';
 import { EXTENSIONS } from '@rapid/config/constants';
 
 export interface AppStoreType {

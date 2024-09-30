@@ -1,8 +1,11 @@
-import { RequestExceptionFilter, TypeExceptionFilter, PermissionExceptionFilter, RuntimeExceptionFilter, AsyncExceptionFilter } from './core';
-import { LoggerServer } from './server';
-import { setupContext, setupSingleApplication, registerIpcHandle, registerIpcHandleOnce, registerIpcOn } from '@rapid/framework';
+import 'reflect-metadata';
+import './process';
+
+import { PrinterService } from '@/core/service/PrinterService';
+import { registerGlobalMiddleware, registerIpcHandle, registerIpcOn, IpcActionEvent } from '@/core/ipc';
 import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
+
 import {
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
   ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow,
@@ -21,7 +24,8 @@ import {
 
   ipcOnBroadcast,
 } from './ipc';
-import { PrinterService } from './service/PrinterService';
+import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
+import { Logger } from './core';
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
@@ -42,36 +46,23 @@ registerIpcHandle([
 
 registerIpcOn([ipcOnBroadcast]);
 
-setupSingleApplication().catch(() => {
-
-});
-
-setupContext({
-  logger: { use: LoggerServer },
-  filters: {
-    modules: [
-      RequestExceptionFilter,
-      RuntimeExceptionFilter,
-      TypeExceptionFilter,
-      AsyncExceptionFilter,
-      PermissionExceptionFilter
-    ]
-  },
-}).catch(() => {
-
-})
+registerGlobalMiddleware(IpcActionEvent.Handle, [ipcExceptionFilterMiddleware]);
+registerGlobalMiddleware(IpcActionEvent.On, [ipcExceptionFilterMiddleware]);
 
 setupApp(async () => {
-  const mainWindow = await setupMainWindow();
 
+
+
+  // await setupMainWindow();
   await setupTrayMenu();
 }, {
   onFailed: async (err) => {
-
     PrinterService.printWarn(err);
-
-    // const reportBugsWindowService = await setupReportBugsWindow();
-
-    // reportBugsWindowService.show();
   }
 });
+
+
+
+
+
+

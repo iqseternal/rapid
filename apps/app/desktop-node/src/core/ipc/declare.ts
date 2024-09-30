@@ -1,5 +1,5 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { Exception } from '../exception';
+import { Exception } from '../exceptions';
 
 /** Ipc 事件类型 */
 export enum IpcActionEvent {
@@ -70,7 +70,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * @param res 错误处理时产生的异常对象
    * @param message 返回处理当前 ipc 句柄的信息
    */
-  onError?: (err: Exception, message: IpcActionMessageType<EvtActionType>) => void | Exception;
+  onError?: (err: Exception<any>, message: IpcActionMessageType<EvtActionType>) => void | Exception<any>;
 }
 
 /** 存储注册的全局中间件 */

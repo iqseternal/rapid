@@ -432,7 +432,7 @@
   "terminal.integrated.smoothScrolling": true,
   "editor.mouseWheelScrollSensitivity": 2,
   "workbench.list.mouseWheelScrollSensitivity": 2,
-  "editor.minimap.enabled": true,
+  "editor.minimap.enabled": false,
   "gitlens.views.commitDetails.files.layout": "list",
   "workbench.editor.tabActionLocation": "right",
   "javascript.inlayHints.enumMemberValues.enabled": true,

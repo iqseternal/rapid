@@ -1,10 +1,10 @@
-import { WindowService } from '@/service/WindowService';
-import { toMakeIpcAction } from '@rapid/framework';
-import { convertWindowService } from './middlewares';
+import { WindowService } from '@/core/service/WindowService';
+import { toMakeIpcAction } from '@/core/ipc';
+import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 import { appStore, appConfigStore, userConfigStore, AppStoreType } from '@/store';
 
 const { makeIpcOnAction, makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowService]
+  handleMiddlewares: [convertWindowServiceMiddleware]
 });
 
 export const ipcStoreGetStore = makeIpcHandleAction(

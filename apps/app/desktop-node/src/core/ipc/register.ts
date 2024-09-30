@@ -1,11 +1,11 @@
 
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { ipcMain } from 'electron';
-import { Exception } from '../exception';
 import { toPicket } from '@suey/pkg-utils';
 
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
+import { Printer } from '@suey/printer';
 
 /**
  * 注册 ipc 全局中间件
@@ -27,7 +27,7 @@ export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares
   const runtimeContext = getIpcRuntimeContext();
 
   // 向一个中间件集合 push 一堆中间件
-  const appendMiddlewares = (middlewareSet: IpcActionMiddleware<IpcActionEvent>[], middlewares: IpcActionMiddleware<IpcActionEvent>[]) => {
+  const appendMiddlewares = <EvtActionType extends IpcActionEvent>(middlewareSet: IpcActionMiddleware<EvtActionType>[], middlewares: IpcActionMiddleware<IpcActionEvent>[]) => {
     middlewares.forEach(middleware => {
       // 跳过已经注册的中间件
       if (middlewareSet.some(item => item.name === middleware.name)) return;

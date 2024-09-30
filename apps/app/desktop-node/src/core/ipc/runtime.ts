@@ -1,7 +1,7 @@
 
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { ipcMain } from 'electron';
-import { Exception } from '../exception';
+import { Exception } from '../exceptions';
 import { toPicket } from '@suey/pkg-utils';
 import { Printer } from '@suey/printer';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
@@ -160,7 +160,6 @@ export function toMakeIpcAction<
   };
 }
 
-
 /**
  * 处理一个 action, 来解决对应的 ipc 句柄
  * @param globalMiddlewares 全局中间件集合
@@ -171,7 +170,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
   const [e, ...args] = ipcArgs as [IpcMainInvokeEvent | IpcMainEvent, ...unknown[]];
 
   // action 回调信息
-  const actionMessage: IpcActionMessageType<IpcActionEvent.Handle | IpcActionEvent.On> = {
+  const actionMessage: IpcActionMessageType<IpcActionEvent> = {
     channel: action.channel,
     actionType: action.actionType as any,
     action: action.action,
@@ -179,7 +178,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
     listener: action.listener
   }
 
-  let convertArgs = [e, ...args] as Parameters<IpcActionMiddleware<IpcActionEvent>['transform']>;
+  let convertArgs = [e, ...args] as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
   let err: any = void 0;
 
   // 开始
@@ -201,7 +200,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
     if (!middleware.transform) return;
 
     try {
-      convertArgs = middleware.transform(...convertArgs) as Parameters<IpcActionMiddleware<IpcActionEvent>['transform']>;
+      convertArgs = middleware.transform(...convertArgs) as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
     } catch(error) {
       err = error;
     }
@@ -230,7 +229,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
     if (!middleware.transform) return;
 
     try {
-      convertArgs = middleware.transform(...convertArgs) as Parameters<IpcActionMiddleware<IpcActionEvent>['transform']>;
+      convertArgs = middleware.transform(...convertArgs) as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
     } catch(error) {
       err = error;
     }

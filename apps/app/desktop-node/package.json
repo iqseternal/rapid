@@ -13,7 +13,6 @@
     "@rapid/config": "workspace:^"
   },
   "dependencies": {
-    "@rapid/framework": "workspace:^",
     "@rapid/validates": "workspace:^"
   }
 }

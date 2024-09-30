@@ -1,8 +1,7 @@
 import { WindowService } from '@/service/WindowService';
-import { FrameworkLoggerServer } from '@rapid/framework';
 import { PrinterService } from '@/service/PrinterService';
 
-export class LoggerServer extends FrameworkLoggerServer {
+export class LoggerServer {
   info(...message: unknown[]): void {
     PrinterService.printInfo(...message);
   }

@@ -1,7 +1,7 @@
-import { WindowService, WindowStateMachine } from '@/service/WindowService';
+import { WindowService, WindowStateMachine } from '@/core/service/WindowService';
 import { CONFIG, IS_DEV, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
-import { AppConfigService } from '@/service/AppConfigService';
-import { PrinterService } from '@/service/PrinterService';
+import { AppConfigService } from '@/core/service/AppConfigService';
+import { PrinterService } from '@/core/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
 import { BrowserView, Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach, setWindowOpenHandler } from '@/core/common/window';

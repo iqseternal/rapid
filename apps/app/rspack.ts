@@ -50,16 +50,22 @@ const exitElectron = () => {
 }
 
 const initStartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
+  Printer.printInfo('启动程序');
+
   const envs = `cross-env ${envArgs.join(' ')}`;
 
   // 设置环境变量并启动 electron
   electronProcess = exec(`${envs} ${bin} ${startPath}`);
 
-  // 输出 stdout
-  electronProcess?.stdout?.on('data', console.log);
-
-  electronProcess.on('error', console.error);
-  electronProcess.on('message', console.log);
+  electronProcess?.stdout?.on('data', (data) => {
+    process.stdout.write(data.toString());
+  });
+  electronProcess.on('error', (err) => {
+    process.stderr.write(err.toString());
+  });
+  electronProcess.on('message', (message) => {
+    process.stderr.write(message.toString());
+  });
   electronProcess.addListener('exit', exitElectron);
 }
 
@@ -247,26 +253,28 @@ const transformRendererRsbuilder = async () => {
 
     // 都热更新, 发生变化就 compile 并且重新启动 app
     preloadCompiler.watch({
-      aggregateTimeout: 1000
+      aggregateTimeout: 2000
     }, (err, stats) => {
       if (err) {
         Printer.printError(err);
         process.exit(1);
       }
+      Printer.printInfo(`Compiler: preload`);
       Printer.print(stats.toString());
-      if (mainCompiler.running) return;
 
+      // if (mainCompiler.running) return;
       startElectron(envs, mainCompiler.outputPath);
     })
     mainCompiler.watch({
-      aggregateTimeout: 1000
+      aggregateTimeout: 2000
     }, (err, stats) => {
       if (err) {
         Printer.printError(err);
         process.exit(1);
       }
+      Printer.printInfo(`Compiler: main`);
       Printer.print(stats.toString());
-      if (preloadCompiler.running) return;
+      // if (preloadCompiler.running) return;
 
       startElectron(envs, mainCompiler.outputPath);
     })

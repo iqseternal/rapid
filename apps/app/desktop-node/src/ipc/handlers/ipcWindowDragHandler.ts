@@ -6,20 +6,20 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { WINDOW_STATE_MACHINE_KEYS, IS_DEV } from '@rapid/config/constants';
-import { isSameWindowService, WindowService, WindowStateMachine } from '@/service/WindowService';
+import { isSameWindowService, WindowService, WindowStateMachine } from '@/core/service/WindowService';
 import { RuntimeException, TypeException } from '@/core';
 import { isNull, isNumber, isString, isUnDef } from '@suey/pkg-utils';
-import { AppConfigService } from '@/service/AppConfigService';
-import { UserConfigService } from '@/service/UserConfigService';
+import { AppConfigService } from '@/core/service/AppConfigService';
+import { UserConfigService } from '@/core/service/UserConfigService';
 import { setupReportBugsWindow, setupSettingWindow } from '@/setupService';
-import { toMakeIpcAction } from '@rapid/framework';
-import { convertWindowService } from './middlewares';
+import { toMakeIpcAction } from '@/core/ipc';
+import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 import { PAGES_WINDOW_MAIN } from '@/config';
 import { join, posix } from 'path';
-import { PrinterService } from '@/service/PrinterService';
+import { PrinterService } from '@/core/service/PrinterService';
 
 const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowService]
+  handleMiddlewares: [convertWindowServiceMiddleware]
 });
 
 const runtimeContext = {

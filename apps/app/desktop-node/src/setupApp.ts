@@ -1,10 +1,6 @@
-import { app, BrowserView, BrowserWindow } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
-import { PrinterService } from '@/service/PrinterService';
-import { print, printError } from '@suey/printer';
-import { WindowService, WindowServiceOptions } from '@/service/WindowService';
-import { isString, isNumber } from '@suey/pkg-utils';
-import { setupTrayMenu } from './setupService';
+import { PrinterService } from '@/core/service/PrinterService';
 
 export interface AppOptions {
   modelId: string;
