@@ -1,6 +1,7 @@
 import { HashRouter } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
-import { useState } from 'react';
+import type { ProfilerOnRenderCallback } from 'react';
+import { useState, Profiler, useCallback } from 'react';
 import { FullSize } from '@rapid/libs-web';
 import { classnames } from '@rapid/libs-web/common';
 import { commonStyles } from '@scss/common';
@@ -12,48 +13,58 @@ import styles from './app.module.scss';
 
 export default function App() {
 
+  const onRender = useCallback<ProfilerOnRenderCallback>((id, phase, actualDuration, baseDuration, startTime, commitTime) => {
+
+    console.log(id, phase, actualDuration, baseDuration, startTime, commitTime);
+  }, []);
+
   return (
-    <ConfigProvider
-      componentDisabled={false}
-      componentSize='middle'
-      csp={{
-
-      }}
-      direction='ltr'
-      getPopupContainer={(triggerNode) => {
-        if (triggerNode && triggerNode.parentNode && triggerNode.parentNode instanceof HTMLElement) return triggerNode.parentNode;
-
-        return document.body;
-      }}
-      getTargetContainer={() => window}
-      iconPrefixCls={'anticon'}
-      // locale={{}}
-      popupMatchSelectWidth={true}
-      popupOverflow={'viewport'}
-      prefixCls='ant'
-      // renderEmpty={() => <></>}
-      theme={{
-        components: {
-
-        }
-      }}
-      variant='outlined'
-      // virtual
-      // warning={{
-      //   strict: false
-      // }}
+    <Profiler
+      id='app'
+      onRender={onRender}
     >
-      <FullSize
-        className={classnames(
-          styles.app
-        )}
+      <ConfigProvider
+        componentDisabled={false}
+        componentSize='middle'
+        csp={{
+
+        }}
+        direction='ltr'
+        getPopupContainer={(triggerNode) => {
+          if (triggerNode && triggerNode.parentNode && triggerNode.parentNode instanceof HTMLElement) return triggerNode.parentNode;
+
+          return document.body;
+        }}
+        getTargetContainer={() => window}
+        iconPrefixCls={'anticon'}
+        // locale={{}}
+        popupMatchSelectWidth={true}
+        popupOverflow={'viewport'}
+        prefixCls='ant'
+        // renderEmpty={() => <></>}
+        theme={{
+          components: {
+
+          }
+        }}
+        variant='outlined'
+        // virtual
+        // warning={{
+        //   strict: false
+        // }}
       >
+        <FullSize
+          className={classnames(
+            styles.app
+          )}
+        >
 
-        <HashRouter>
-          <RouterContext />
-        </HashRouter>
+          <HashRouter>
+            <RouterContext />
+          </HashRouter>
 
-      </FullSize>
-    </ConfigProvider>
+        </FullSize>
+      </ConfigProvider>
+    </Profiler>
   )
 }

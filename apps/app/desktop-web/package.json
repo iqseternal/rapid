@@ -15,21 +15,21 @@
     "@rapid/desktop-preload": "workspace:^"
   },
   "dependencies": {
-    "@leafer-in/arrow": "^1.0.2",
-    "@leafer-in/editor": "^1.0.2",
-    "@leafer-in/html": "^1.0.2",
-    "@leafer-in/scroll": "^1.0.2",
-    "@leafer-in/state": "^1.0.2",
-    "@leafer-in/text-editor": "^1.0.2",
-    "@leafer-in/view": "^1.0.2",
+    "@leafer-in/arrow": "^1.0.4",
+    "@leafer-in/editor": "^1.0.4",
+    "@leafer-in/html": "^1.0.4",
+    "@leafer-in/scroll": "^1.0.4",
+    "@leafer-in/state": "^1.0.4",
+    "@leafer-in/text-editor": "^1.0.4",
+    "@leafer-in/view": "^1.0.4",
+    "@leafer-ui/interface": "^1.0.2",
     "@rapid/libs-web": "workspace:^",
-    "animejs": "^3.2.2",
     "current-device": "^0.10.2",
-    "leafer": "^1.0.2",
-    "leafer-ui": "^1.0.2",
-    "leafer-x-connector": "^0.1.3",
+    "leafer": "^1.0.4",
+    "leafer-draw": "^1.0.4",
+    "leafer-ui": "^1.0.4",
     "leafer-x-ruler": "^1.0.12",
     "leafer-x-tooltip": "^1.2.1",
-    "leafer-x-tooltip-canvas": "^1.0.0"
+    "leafer-x-tooltip-canvas": "^1.0.1"
   }
 }

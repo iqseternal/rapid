@@ -4,13 +4,10 @@ import { PrinterService } from '@/core/service/PrinterService';
 
 export interface AppOptions {
   modelId: string;
-
-  onFailed: <Err extends any>(err: Err) => void | Promise<void>;
 }
 
 export const DEFAULT_APP_OPTIONS: Required<AppOptions> = {
-  modelId: 'com.electron',
-  onFailed: () => {}
+  modelId: 'com.electron'
 };
 
 /**
@@ -23,28 +20,25 @@ export const setupApp = (startApp: () => void | Promise<void>, ops?: Partial<App
   PrinterService.printInfo('开始构建应用程序, setupApp...');
   const options = { ...DEFAULT_APP_OPTIONS, ...ops } as Required<AppOptions>;
 
-  const safeStartApp = () => {
-    Promise.resolve(startApp()).catch(err => {
-      ops?.onFailed?.(err);
-    })
-  }
-
   // app.disableHardwareAcceleration();
-
   app.whenReady().then(() => {
     electronApp.setAppUserModelId(options.modelId);
 
     app.on('browser-window-created', (_, window) => optimizer.watchWindowShortcuts(window));
 
+    // 已经具有实例, 那么找个窗口获得焦点
     if (BrowserWindow.getAllWindows().length !== 0) {
       BrowserWindow.getAllWindows()[0].focus();
     }
-    else safeStartApp();
+    // 启动
+    else startApp();
 
     app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) safeStartApp();
+      // 活跃状态时, 如果没有窗口那么就创建
+      if (BrowserWindow.getAllWindows().length === 0) startApp();
     });
   });
+
 
   app.on('window-all-closed', async () => {
     if (process.platform !== 'darwin') {

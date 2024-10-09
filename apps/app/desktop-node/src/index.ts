@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import './process';
 
-import { PrinterService } from '@/core/service/PrinterService';
 import { registerGlobalMiddleware, registerIpcHandle, registerIpcOn, IpcActionEvent } from '@/core/ipc';
 import { setupMainWindow, setupTrayMenu } from './setupService';
 import { setupApp } from './setupApp';
@@ -25,7 +24,6 @@ import {
   ipcOnBroadcast,
 } from './ipc';
 import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
-import { Logger } from './core';
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
@@ -50,17 +48,9 @@ registerGlobalMiddleware(IpcActionEvent.Handle, [ipcExceptionFilterMiddleware]);
 registerGlobalMiddleware(IpcActionEvent.On, [ipcExceptionFilterMiddleware]);
 
 setupApp(async () => {
-
-
-
   await setupMainWindow();
   await setupTrayMenu();
-}, {
-  onFailed: async (err) => {
-    PrinterService.printWarn(err);
-  }
 });
-
 
 
 

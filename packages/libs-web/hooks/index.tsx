@@ -1,6 +1,6 @@
 export { useReactive, useShallowReactive } from './useReactive';
 
-export { useRefresh } from './useRefresh';
+export { useRefresh, useUpdate } from './useRefresh';
 
 export { useDebounceHook, useThrottleHook, useDebounce, useThrottle } from './useDebounce';
 
@@ -25,9 +25,6 @@ export type { AsyncEffectCallback } from './useAsyncEffect';
 // Exports
 export {
   useMount, useUnmount,
-
-
-
 
 } from 'ahooks';
 

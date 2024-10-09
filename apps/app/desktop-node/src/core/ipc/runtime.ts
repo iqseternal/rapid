@@ -248,7 +248,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
 
       const error = middleware.onError(err, actionMessage);
 
-      err = error as Error;
+      err = error;
       // 如果中间件没有返回异常, 那么代表这个异常被处理了
       if (!err) break;
     }
@@ -260,7 +260,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
 
         const error = middleware.onError(err, actionMessage);
 
-        err = error as Error;
+        err = error;
         // 如果中间件没有返回异常, 那么代表这个异常被处理了
         if (!err) break;
       }

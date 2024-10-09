@@ -11,6 +11,10 @@ export interface CatchDecorator extends Decorator {
     mapper: WeakMap<DescendantClass<Exception<any>>, ExceptionFilter>;
   }
 
+  /**
+   * 处理某个异常, 如果异常是 Exception 子类, 并且被成功处理了, 本函数返回 void
+   * 否则抛出异常
+   */
   parser(Exception: Exception<any>): void;
 }
 
@@ -37,7 +41,6 @@ Catch.context = {
 
 Catch.parser = (exception) => {
   const Exception = exception.constructor as unknown as DescendantClass<Exception<any>>
-
   const filter = Catch.context.mapper.get(Exception);
 
   if (filter) {

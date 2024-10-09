@@ -1,5 +1,6 @@
 import { isClass, isFunction, isObject } from '@suey/pkg-utils';
-import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticComponent } from 'react';
+import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
+
 /**
  * 合并多个classname类名,
  * @example
@@ -81,6 +82,21 @@ export const isReactForwardFC = <Target extends ForwardRefExoticComponent<any>>(
 }
 
 /**
+ * 判断一个对象是否是一个 memo FC
+ * @param target
+ * @returns
+ */
+export const isReactMemoFC = <Target extends MemoExoticComponent<any>>(target: Target | any): target is Target => {
+  if (!isObject(target)) return false;
+
+  const isSymbol = typeof (target as unknown as Target).$$typeof === 'symbol';
+  if (!isSymbol) return false;
+
+  // 常规 FC
+  return typeof (target as any).type === 'function';
+}
+
+/**
  * 判断是否是 FC
  */
 export const isReactFC = <Target extends FC<any>>(target: Target | any): target is Target => isFunction(target);
@@ -106,6 +122,7 @@ export const isReactComponent = <
 
   return (
     isReactFC(target) ||
+    isReactMemoFC(target) ||
     isReactClassComponent(target) ||
 
     isReactForwardFC(target) ||

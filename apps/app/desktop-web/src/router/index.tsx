@@ -27,7 +27,9 @@ export default function RouterContext() {
 
 
           return <Suspense fallback={
-            <Skeleton />
+            // <Skeleton />
+
+            <></>
           }>
             {children}
           </Suspense>

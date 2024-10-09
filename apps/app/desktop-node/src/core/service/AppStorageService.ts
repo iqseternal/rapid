@@ -6,6 +6,8 @@ import { statSync } from 'fs';
 import { ConvertDataType, ConvertService } from './ConvertService';
 import { validateLocalPathHasDriveLetter } from '@rapid/validates';
 
+import * as fs from 'fs';
+
 /** 内置目录的名称 */
 export type AppDirectoryName = Parameters<typeof app.getPath>[0];
 
@@ -21,7 +23,7 @@ export class AppFileStorageService {
   /** 按照指定格式保存当前想要的文件 */
   async save<T extends ConvertDataType>(content: T) {
     const data = await ConvertService.toDeflate(content);
-    return FileService.saveFile(this.filePath, data);
+    return FileService.saveFileAsStream(this.filePath, data);
   }
 
   /** 按照指定格式读取当前想要的文件 */
@@ -66,10 +68,19 @@ export class AppDirStorageService {
    * @param sub
    * @returns
    */
-  createSubService(sub: string) {
+  createDirService(sub: string) {
     const subPath = join(this.absoluteTargetUrl, sub);
     return new AppDirStorageService(this.targetName, subPath);
   }
+
+  /**
+   * 通过本 service 的 targetUrl 创建一个子文件的 service
+   * @returns
+   */
+  createFileService(subPath: string) {
+    return new AppFileStorageService(join(this.targetUrl, subPath));
+  }
+
 
   /**
    * 通过本 service 创建一个目录
@@ -110,10 +121,9 @@ export class AppDirStorageService {
 
   /**
    * 获取本 service 下的文件结构数组
-   * @param optons
    */
-  async folderList(optons: Parameters<typeof FileService.folderList>[1]) {
-    const list = await FileService.folderList(this.targetUrl, optons);
+  async folderList(options: Parameters<typeof FileService.folderList>[1]) {
+    const list = await FileService.folderList(this.targetUrl, options);
 
 
     // TODO
@@ -123,11 +133,11 @@ export class AppDirStorageService {
 }
 
 /** /user/Appdata/Roaming/rapid/docs */
-export const documentsStorageService = new AppDirStorageService('userData', 'docs');
+export const documentsDirStorageService = new AppDirStorageService('userData', 'docs');
 
 /** /user/Desktop */
-export const desktopStorageService = new AppDirStorageService('desktop');
+export const desktopDirStorageService = new AppDirStorageService('desktop');
 
 /** /user/Appdata/Roaming/rapid/logs */
-export const logsStorageService = new AppDirStorageService('logs');
+export const logsDirStorageService = new AppDirStorageService('logs');
 

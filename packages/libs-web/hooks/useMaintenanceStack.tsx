@@ -13,7 +13,22 @@ export interface MaintenanceStackOptions<T, Other> {
 export type JudgeIsCanBeControlStack<T, Other> = (item: T, other: Other | undefined, index: number) => boolean;
 
 
-
+/**
+ * 维护栈
+ * 栈1：[1, 2, 3, 4, 5, 6]
+ * 栈2：[]
+ *
+ * 根据条件, 可以 push 主栈1, 或者弹出 主栈进入栈2
+ *
+ * 会出现：
+ * 栈1：[1, 2, 3]
+ * 栈2：[4, 5, 6]
+ *
+ * 运行中, 顺序一定是固定的
+ *
+ *
+ * @returns
+ */
 export function useMaintenanceStack<T, Other>(options: MaintenanceStackOptions<T, Other>) {
   const [maintenanceStack] = useShallowReactive(options.maintenanceStack);
   const [storageStack] = useShallowReactive(options.storageStack ?? []);

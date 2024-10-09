@@ -46,7 +46,7 @@ export class WindowService {
         sandbox: false,
         devTools: true,
         webSecurity: true,
-        nodeIntegration: true,
+        nodeIntegration: false,
       },
     });
 

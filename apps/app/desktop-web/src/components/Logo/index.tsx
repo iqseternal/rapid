@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react';
+import { memo } from 'react';
 import { classnames } from '@rapid/libs-web/common';
 
 import { default as iconUrl } from '../../../../resources/icon.png?raw';
@@ -11,7 +12,7 @@ export interface LogoProps extends HTMLAttributes<HTMLDivElement> {
   alt?: string;
 }
 
-export default function Logo(props: LogoProps) {
+export const Logo = memo((props: LogoProps) => {
   const {
     className,
     src = iconUrl,
@@ -26,4 +27,6 @@ export default function Logo(props: LogoProps) {
   >
     <img src={src} alt={alt} />
   </div>;
-}
+});
+
+export default Logo;

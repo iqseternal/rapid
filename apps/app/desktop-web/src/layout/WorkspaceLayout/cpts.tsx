@@ -44,6 +44,13 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = ({ className }) =>
 
   const [workbenchesRoute] = useState(retrieveRoutes().workbenchesRoute);
 
+  useEffect(() => {
+
+    console.log('重新渲染');
+
+
+  }, []);
+
   const logout = useCallback(async () => {
     const [logoutErr] = await toPicket(logoutReq());
     if (logoutErr) {

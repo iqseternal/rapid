@@ -1,6 +1,4 @@
 
-import { join } from 'path';
-
 export { default as DIRS } from './dirs';
 
 export type { BuilderOptions } from './builder';

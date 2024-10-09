@@ -1,11 +1,35 @@
+import { isUndefined } from '@suey/pkg-utils';
+
+
+/**
+ * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等
+ */
+export interface ExceptionErrorMsgData {
+  label: string;
+
+  level: 'ERROR' | 'SUCCESS' | 'INFO' | 'WARN';
+
+  time: number;
+}
+
 
 /*
  * 异常基类
  *
  */
-export abstract class Exception<ErrorMessage> {
-  constructor(public message: string, public errMessage?: ErrorMessage) {
+export abstract class Exception<ErrMessageData extends ExceptionErrorMsgData> {
+  public readonly errMessage: ErrMessageData;
 
+  constructor(public message: string, errMessage?: Partial<ErrMessageData>) {
+    if (isUndefined(errMessage)) errMessage = {};
+    if (isUndefined(errMessage.label)) errMessage.label = '<GLOBAL>';
+    else {
+      errMessage.label = `<${errMessage.label.trim()}>`;
+    }
+
+    if (isUndefined(errMessage.level)) errMessage.level = 'ERROR';
+    if (isUndefined(errMessage.time)) errMessage.time = Date.now();
+    this.errMessage = errMessage as ErrMessageData;
   }
 }
 
@@ -27,16 +51,4 @@ export abstract class ExceptionFilter {
    * @param exp
    */
   abstract catch(exp: Exception<any>): void | Promise<void>;
-}
-
-/**
- * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等
- */
-export interface ExceptionErrorMsgData {
-
-  label: string;
-
-  level: 'error' | 'warning' | 'info';
-
-  time: number;
 }

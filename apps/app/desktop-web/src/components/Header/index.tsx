@@ -2,7 +2,7 @@ import { classnames } from '@rapid/libs-web/common';
 import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowRelaunch } from '@/actions';
 import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
 import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
-import { useMemo, ReactNode, useEffect, useRef, useCallback } from 'react';
+import { useMemo, ReactNode, useEffect, useRef, useCallback, memo } from 'react';
 import { menus } from '@/menus';
 import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
 import { isDef, isUnDef, isUndefined, randomRegionForInt } from '@suey/pkg-utils';
@@ -18,11 +18,16 @@ import Logo from '@components/Logo';
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
+export interface MaintenanceMenusProps {
+  isDialog: boolean;
+  isPane: boolean;
+}
+
 /**
  * 左侧收纳的文件菜单
  * @returns
  */
-export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) {
+export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
   const { isDialog = false, isPane = false } = props;
 
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
@@ -125,7 +130,7 @@ export function MaintenanceMenus(props: { isDialog: boolean;isPane: boolean; }) 
       </AutoDropdownMenu>
     }
   </FlexRowStart>
-}
+})
 
 export interface HeaderProps extends Omit<BaseProps, 'children'> {
   // 是否是一个面板
@@ -138,7 +143,10 @@ export interface HeaderProps extends Omit<BaseProps, 'children'> {
   }
 }
 
-export default function Header(props: HeaderProps) {
+/**
+ * 标题栏
+ */
+export const Header = memo((props: HeaderProps) => {
   const {
     isDialog = false,
     isPane = false,
@@ -147,6 +155,7 @@ export default function Header(props: HeaderProps) {
 
     className
   } = props;
+
 
   return <Subfield
     className={classnames(
@@ -237,4 +246,6 @@ export default function Header(props: HeaderProps) {
       </SubfieldFixed>
     </Subfield>
   </Subfield>
-}
+});
+
+export default Header;

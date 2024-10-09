@@ -2,6 +2,7 @@ import { CONFIG, IS_BROWSER } from '@rapid/config/constants';
 import { windowShow, windowReload, windowRelaunch } from '@/actions';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toPicket } from '@suey/pkg-utils';
+import { useTransition } from 'react';
 
 export interface FadeOptions {
   waitTimer?: number;
@@ -31,6 +32,8 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
   } = options ?? {};
 
   useAsyncEffect(async () => {
+
+
     if (beforeCallback) {
       const [err] = await toPicket(Promise.resolve(beforeCallback()));
 

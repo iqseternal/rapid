@@ -252,19 +252,20 @@ const transformRendererRsbuilder = async () => {
     }
 
     // 都热更新, 发生变化就 compile 并且重新启动 app
-    preloadCompiler.watch({
-      aggregateTimeout: 2000
-    }, (err, stats) => {
-      if (err) {
-        Printer.printError(err);
-        process.exit(1);
-      }
-      Printer.printInfo(`Compiler: preload`);
-      Printer.print(stats.toString());
+    // preloadCompiler.watch({
+    //   aggregateTimeout: 2000
+    // }, (err, stats) => {
+    //   if (err) {
+    //     Printer.printError(err);
+    //     process.exit(1);
+    //   }
+    //   Printer.printInfo(`Compiler: preload`);
+    //   Printer.print(stats.toString());
 
-      // if (mainCompiler.running) return;
-      startElectron(envs, mainCompiler.outputPath);
-    })
+    //   // if (mainCompiler.running) return;
+    //   startElectron(envs, mainCompiler.outputPath);
+    // })
+    await compilerPreload();
     mainCompiler.watch({
       aggregateTimeout: 2000
     }, (err, stats) => {

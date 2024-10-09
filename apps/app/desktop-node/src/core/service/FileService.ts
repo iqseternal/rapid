@@ -1,19 +1,32 @@
-import path, { join } from 'path';
 import { PrinterService } from './PrinterService';
 import { Printer } from '@suey/printer';
+
+import * as path from 'path';
 import * as fs from 'fs';
+
+
+export type File = { isFile: true, isDirectory: false, ext: string, path: string };
+export type Directory = { isFile: false, isDirectory: true, path: string, folderList: (File | Directory)[]; };
 
 /**
  * 文件服务, 为应用程序的文件服务
  */
 export class FileService {
+  /**
+   * 判断两个文件路径是否具有同样的扩展名
+   * @returns
+   */
   static isSameExt(file1: string, file2: string) {
     const ext1 = file1.split('.').pop() || '';
     const ext2 = file2.split('.').pop() || '';
     return ext1.toLowerCase() === ext2.toLowerCase();
   }
 
-  static saveFile(filePath: string, content: any, options?: Parameters<typeof fs.createWriteStream>[1]) {
+  /**
+   * 以流的方式写入文件
+   * @returns
+   */
+  static async saveFileAsStream(filePath: string, content: any, options?: Parameters<typeof fs.createWriteStream>[1]) {
     const writeStream = fs.createWriteStream(filePath, options);
     return new Promise<void>((resolve, reject) => {
       writeStream.write(content, (err) => {
@@ -23,12 +36,66 @@ export class FileService {
     })
   }
 
-  static readFile(filePath: string) {
+  /**
+   * 以文本的方式读取文件
+   * @returns
+   */
+  static async readFile(filePath: string) {
     return new Promise<string | Buffer>((resolve, reject) => {
       const content = fs.readFileSync(filePath);
       resolve(content);
     });
   }
+
+  /**
+   * 创建文件夹, 会递归创建, 请调用时确认文件夹地址是否符合您的要求
+   * @param {string} dir
+   * @returns
+   */
+  static async mkDir(dir: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      fs.mkdir(dir, { recursive: true }, err => {
+        if (err) {
+          reject(false);
+          return;
+        }
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * 向文件中新增数据
+   * @returns
+   */
+  static async appendToFile(filePath: string, content: string | Buffer): Promise<void> {
+    return new Promise((resolve, reject) => {
+
+      fs.appendFile(filePath, content, err => {
+        if (err) reject(err);
+        resolve();
+      });
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   static folderList(filePath: string, options?: {
     /**
@@ -57,8 +124,7 @@ export class FileService {
       ...(options ?? {})
     };
 
-    type File = { isFile: true, isDirectory: false, ext: string, path: string };
-    type Directory = { isFile: false, isDirectory: true, path: string, folderList: (File | Directory)[]; };
+
 
     return new Promise<(File | Directory)[]>((resolve, reject) => {
       if (!fs.statSync(filePath).isDirectory()) {
@@ -73,11 +139,11 @@ export class FileService {
 
         fs.readdirSync(dir).forEach(file => {
           if (!file) return;
-          if (!fs.existsSync(join(dir, file))) return;
-          const filePath = fs.realpathSync(join(dir, file));
+          if (!fs.existsSync(path.join(dir, file))) return;
+          const filePath = fs.realpathSync(path.join(dir, file));
 
           if (!fs.existsSync(filePath)) return;
-          if (!filePath.includes(join(dir))) return;
+          if (!filePath.includes(path.join(dir))) return;
           if (fs.statSync(filePath).isDirectory()) {
             const subList: (File | Directory)[] = [];
             statDirectory(filePath, subList, dep + 1);
@@ -110,21 +176,6 @@ export class FileService {
     })
   }
 
-  /**
-   * 创建文件夹, 会递归创建, 请调用时确认文件夹地址是否符合您的要求
-   * @param {string} dir
-   * @returns
-   */
-  static mkDir(dir: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      fs.mkdir(dir, { recursive: true }, err => {
-        if (err) {
-          reject(false);
-          return;
-        }
-        resolve();
-      });
-    });
-  }
+
 }
 

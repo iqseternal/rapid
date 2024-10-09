@@ -2,6 +2,7 @@ import { classnames } from '@rapid/libs-web/common';
 import {theme, Tooltip, TooltipProps} from 'antd';
 import type { IconKey } from '@components/IconFont';
 import type { HTMLAttributes } from 'react';
+import { memo } from 'react';
 import { CONFIG } from '@rapid/config/constants';
 import { commonStyles } from '@scss/common';
 
@@ -18,7 +19,7 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * 展示一个控件, 控件: 图标, 附带功能提示信息和事件
  */
-export default function Widget(props: WidgetProps) {
+export const Widget = memo((props: WidgetProps) => {
   const {
     hover = true,
     icon,
@@ -51,4 +52,6 @@ export default function Widget(props: WidgetProps) {
       }
     </div>
   </Tooltip>
-}
+})
+
+export default Widget;

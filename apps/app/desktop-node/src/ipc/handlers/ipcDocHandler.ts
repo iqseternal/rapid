@@ -47,7 +47,7 @@ export const ipcRdDocSave = makeIpcHandleAction(
     PrinterService.printWarn(filePath, ext);
     if (!DOC_EXTENSIONS.includes(ext)) throw new RuntimeException('保存的图纸文件路径扩展名不符合要求', {
       label: 'IpcDocHandler:save',
-      level: 'warning'
+      level: 'WARN'
     })
 
     return new AppFileStorageService(filePath).save(data);
@@ -72,7 +72,7 @@ export const ipcRdDocSaveAs = makeIpcHandleAction(
     });
     if (!filePath) throw new RuntimeException('选择另存为文件路径失败', {
       label: 'IpcDocHandler:saveAs',
-      level: 'warning'
+      level: 'WARN'
     })
 
     return ipcRdDocSave.action(windowService, filePath, data);
@@ -98,7 +98,7 @@ export const ipcRdDocOpen = makeIpcHandleAction(
 
     if (!filePath || filePath.length === 0) throw new RuntimeException('打开文件时未选择任何文件', {
       label: 'IpcDocHandler:openDoc',
-      level: 'warning'
+      level: 'WARN'
     })
 
     const data = (await new AppFileStorageService(filePath[0]).read()).toJson<DocData>();
@@ -125,22 +125,21 @@ export const ipcRdDocExpose = makeIpcHandleAction(
 
     if (!filePath) throw new RuntimeException('选择另存为文件路径失败', {
       label: 'IpcDocHandler:exportsDoc',
-      level: 'warning'
+      level: 'WARN'
     })
 
-    if (filetype === 'json') return FileService.saveFile(filePath, JSON.stringify(data, null, 2));
+    if (filetype === 'json') return FileService.saveFileAsStream(filePath, JSON.stringify(data, null, 2));
     else if (filetype === 'png') {
       const base64Code = (data as string).replace(/^data:image\/\w+;base64,/, '');
-      return FileService.saveFile(filePath, ConvertService.toBuffer(base64Code, 'base64'));
+      return FileService.saveFileAsStream(filePath, ConvertService.toBuffer(base64Code, 'base64'));
     }
     else if (filetype === 'svg') {
       const base64Code = (data as string).replace(/^data:image\/\w+;base64,/, '');
-      return FileService.saveFile(filePath, ConvertService.toBuffer(base64Code, 'base64'));
+      return FileService.saveFileAsStream(filePath, ConvertService.toBuffer(base64Code, 'base64'));
     }
 
     throw new TypeException('错误的导出文件类型', {
-      label: 'IpcDocHandler:exportsDoc',
-      level: 'error'
+      label: 'IpcDocHandler:exportsDoc'
     })
   }
 );
@@ -165,7 +164,7 @@ export const ipcRdDocImport = makeIpcHandleAction(
       });
       if (!filePath || filePath.length === 0) throw new RuntimeException('选择导入文件路径失败', {
         label: 'IpcDocHandler:importDoc',
-        level: 'warning'
+        level: 'WARN'
       })
       return ConvertService.toJson<DocData>(await FileService.readFile(filePath[0]));
     }

@@ -109,7 +109,6 @@ export const useAuthRole = (roleOptions: AuthHasRoleOptions) => {
 export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
   const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
   if (loginErr) return Promise.reject(loginErr);
-
   await setAccessToken(loginRes.data.userinfo.token);
   return loginRes;
 });

@@ -37,6 +37,12 @@
   }
   @content;
 }
+@mixin FlexColStart {
+  @include FlexCol() {
+    justify-content: flex-start;
+  }
+  @content;
+}
 @mixin FlexColSpaceBetween {
   @include FlexCol {
     justify-content: space-between;

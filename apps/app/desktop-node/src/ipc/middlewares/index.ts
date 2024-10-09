@@ -2,10 +2,13 @@ import { WindowService } from '@/core/service/WindowService';
 import { IpcActionMiddleware, IpcActionEvent } from '@/core/ipc';
 import { Catch, isException } from '@/core';
 
+/**
+ * ipc 全局中间件, 用于处理异常和日志行为
+ */
 export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> = {
   name: 'ipcExceptionFilterMiddleware',
-
   onError(err, { action, actionType, channel }) {
+    err.errMessage.label = channel;
 
     if (isException(err)) return Catch.parser(err);
 

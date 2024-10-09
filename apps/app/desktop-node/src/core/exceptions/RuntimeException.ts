@@ -2,7 +2,8 @@ import type { ExceptionErrorMsgData } from './declare';
 import { Exception, ExceptionFilter } from './declare';
 import { Catch } from '../decorators';
 
-import { PrinterService } from '../service/PrinterService';
+import { PRINT_TYPE, PrinterService } from '../service/PrinterService';
+import { Logger } from '../service/LoggerService';
 
 export interface RuntimeExceptionErrorMsgData extends ExceptionErrorMsgData {
 
@@ -13,31 +14,24 @@ export interface RuntimeExceptionErrorMsgData extends ExceptionErrorMsgData {
  * 例如：
  * 运行时数据不符合预期
  */
-export class RuntimeException extends Exception<Partial<RuntimeExceptionErrorMsgData>> {
+export class RuntimeException extends Exception<RuntimeExceptionErrorMsgData> {
 
 }
 
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter extends ExceptionFilter {
 
-
   override catch(err: RuntimeException): void {
-    if (err?.errMessage?.level) {
-      switch (err.errMessage.level) {
-        case 'info':
-          PrinterService.printInfo('RuntimeException ==>', err.errMessage.label);
-          break;
-        case 'warning':
-          PrinterService.printWarn('RuntimeException ==>', err.errMessage.label);
-          break;
-        case 'error':
-          PrinterService.printError('RuntimeException ==>', err.errMessage.label);
-          break;
+    switch (err.errMessage.level) {
+      case 'ERROR': {
+        Logger.error(`${err.errMessage.label}`, err.message);
+        break;
       }
 
-      return;
+      default: {
+        PrinterService.printError(`未定义\\未处理的异常level: ${err.errMessage.level}`)
+        break;
+      }
     }
-
-    PrinterService.printError('RuntimeException ==>', err.errMessage?.label);
   }
 }

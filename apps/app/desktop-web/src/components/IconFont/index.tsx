@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import type { default as iconInstance } from '@ant-design/icons';
 import * as icons from '@ant-design/icons';
 
@@ -17,11 +19,13 @@ export interface IconFontProps extends IconProps {
  * @param props
  * @returns
  */
-export default function IconFont(props: IconFontProps) {
+export const IconFont = memo((props: IconFontProps) => {
   const { icon, ...iconProps } = props;
 
   const Icon = icons[props.icon];
 
 
   return <Icon {...iconProps} />
-}
+});
+
+export default IconFont;

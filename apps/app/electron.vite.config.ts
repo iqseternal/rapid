@@ -1,8 +1,9 @@
 import { defineConfig, externalizeDepsPlugin, bytecodePlugin, swcPlugin  } from 'electron-vite';
 import type { Alias, ConfigEnv, Plugin } from 'vite';
 import { mergeConfig } from 'vite';
-import { DIRS } from '../../config/node';
+import { DIRS } from '../../config/node/dirs';
 import { join } from 'path';
+import { RUNTIME_PLATFORMS } from '../../config/enums';
 
 import reactPlugin from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
@@ -29,6 +30,7 @@ export enum CONFIG_ENV_COMMAND {
 export function defineVars({ mode }: { mode: string;command: string; }) {
   const vars = {
     CURRENT_PLATFORM: PLATFORMS.WINDOWS,
+    CURRENT_RUNTIME_PLATFORM: RUNTIME_PLATFORMS.DESKTOP,
     CURRENT_ENV: ENV.DEV
   }
 
@@ -66,8 +68,7 @@ const mainConfig = (configEnv: ConfigEnv) => mergeConfig({
   plugins: [
     externalizeDepsPlugin(),
     bytecodePlugin(),
-    swcPlugin(),
-    ...loadLintPlugins(configEnv)
+    swcPlugin()
   ],
   define: defineVars(configEnv),
   build: {
@@ -99,8 +100,7 @@ const preloadConfig = (configEnv: ConfigEnv) => mergeConfig({
 }, ({
   plugins: [
     externalizeDepsPlugin(),
-    bytecodePlugin(),
-    ...loadLintPlugins(configEnv)
+    bytecodePlugin()
   ],
   define: defineVars(configEnv),
   build: {
@@ -168,33 +168,6 @@ const rendererConfig = (configEnv: ConfigEnv) => mergeConfig({
     outDir: DIRS.OUT_DESKTOP_RENDERER_DIR
   }
 });
-
-/**
- * 加载lint插件
- * @returns
- */
-function loadLintPlugins({ command }: ConfigEnv): Plugin[] {
-  if (command === 'serve') {
-    if (!START_OPTIONS.LINT_ON_DEV) return [];
-  }
-  else if (command === CONFIG_ENV_COMMAND.BUILD) {
-    if (!START_OPTIONS.LINT_ON_BUILD) return [];
-  }
-
-  return [
-    eslintPlugin({
-      include: [
-        'src/**/*.ts',
-        'src/**/*.tsx',
-        'src/**/*.vue'
-      ],
-      overrideConfigFile: '../.eslintrc.js',
-      useEslintrc: true,
-      cache: true,
-      fix: false
-    })
-  ]
-}
 
 const defaultConfig = defineConfig((configEnv) => ({
   main: mainConfig(configEnv),

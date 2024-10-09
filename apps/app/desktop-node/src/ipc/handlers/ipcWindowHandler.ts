@@ -10,7 +10,6 @@ import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 import { PAGES_WINDOW_MAIN } from '@/config';
 import { join, posix } from 'path';
 import { PrinterService } from '@/core/service/PrinterService';
-import { print } from '@suey/printer';
 
 const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]

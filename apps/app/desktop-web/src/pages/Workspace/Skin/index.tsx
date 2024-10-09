@@ -3,7 +3,8 @@ import { classnames } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
-import { useEffect, type FC } from 'react';
+import type { FC } from 'react';
+import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toPicket } from '@suey/pkg-utils';
 import { useDocStore } from '@/features';
@@ -57,13 +58,9 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
   </FullSizeWidth>
 }
 
-export default function Skin() {
+export const Skin = memo(() => {
   const navigate = useNavigate();
   const refresh = useRefresh();
-
-
-
-
 
   const [state] = useReactive({
     name: 1
@@ -300,4 +297,7 @@ export default function Skin() {
 
 
 
-}
+})
+
+
+export default Skin;

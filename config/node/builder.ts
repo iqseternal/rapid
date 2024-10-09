@@ -1,5 +1,4 @@
 import { PLATFORMS_ON_DESKTOP, ENV, CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV, RUNTIME_PLATFORMS } from '../enums';
-import { Printer } from '@suey/printer';
 import { join } from 'path';
 import { DIRS } from './dirs';
 import { EnvChecker } from './checker';

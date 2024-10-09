@@ -1,10 +1,10 @@
 
 import type { FC, HTMLAttributes } from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 
 import Header from '@components/Header';
 
-const NotFound = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
+export const NotFound = memo(forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
 
 
 
@@ -13,6 +13,6 @@ const NotFound = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((pro
 
     NotFound
   </div>;
-})
+}))
 
 export default NotFound;

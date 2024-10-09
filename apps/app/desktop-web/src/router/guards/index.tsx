@@ -1,5 +1,5 @@
 import type { FC, Dispatch, SetStateAction, ReactElement, ReactNode, FunctionComponent, ForwardRefExoticComponent } from 'react';
-import { useLayoutEffect, createContext, useState, useCallback, useMemo, forwardRef, useEffect, isValidElement, useContext } from 'react';
+import { useLayoutEffect, createContext, useState, useCallback, useMemo, forwardRef, useEffect, isValidElement, useContext, memo } from 'react';
 import { useAsyncLayoutEffect, useReactive, useShallowReactive, useUnmount } from '@rapid/libs-web/hooks';
 import { Input, Skeleton } from 'antd';
 import { authHasAuthorized, authHasRoleSync, getAccessToken, useAuthRole, useUserStore, useAuthHasAuthorized } from '@/features';
@@ -54,7 +54,6 @@ export function AuthRole<GFC extends ReactComponent>(args: GFC | { children: Rea
   throw new Error(`AuthRole: 参数错误`);
 }
 
-
 /**
  * 授权守卫, 检测当前用户是否获得了授权凭证
  * @returns
@@ -65,7 +64,7 @@ export function AuthAuthorized<GFC extends ReactComponent>(args: GFC | { childre
   if (isReactComponent(args)) {
     const Component = args as GFC;
 
-    return forwardRef<any, Parameters<GFC>[0]>((props, ref) => {
+    return (forwardRef<any, Parameters<GFC>[0]>((props, ref) => {
       const navigate = useNavigate();
 
       const hasAuthorizedContext = useContext(GuardsContext.Authorized);
@@ -81,7 +80,7 @@ export function AuthAuthorized<GFC extends ReactComponent>(args: GFC | { childre
       if (!hasAuthorizedContext.hasAuthorize) return <></>;
 
       return <Component {...props} ref={ref} />
-    }) as unknown as GFC;
+    }) as unknown as GFC);
   }
 
   // 自身是一个组件, 那么必须含有 children
@@ -107,8 +106,6 @@ export function AuthAuthorized<GFC extends ReactComponent>(args: GFC | { childre
 
   throw new Error(`AuthAuthorized: 参数错误`);
 }
-
-
 
 export const Guards = {
   AuthAuthorized,
