@@ -6,6 +6,7 @@ import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/
 import { Skeleton } from 'antd';
 
 import RootLayout from '@/layout/RootLayout';
+
 import * as presetRoutes from './modules';
 
 export const { retrieveRoutes } = reserveRoutes(presetRoutes);

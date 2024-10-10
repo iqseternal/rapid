@@ -3,13 +3,13 @@ import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/
 
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps } from 'antd';
-import { createContext, useContext, ReactNode, forwardRef } from 'react';
+import { createContext, useContext, ReactNode, forwardRef, useMemo } from 'react';
 import { MaxContent } from '@rapid/libs-web/styled';
 import type { MenuInstance, AntdMenuInstance, AntdItemType } from './declare';
 
-import IconFont from '@components/IconFont';
+import { commonStyles } from '@scss/common';
 
-import commonStyles from '@scss/common/index.module.scss';
+import IconFont from '@components/IconFont';
 import styles from './index.module.scss';
 
 export * from './cpts';
@@ -33,42 +33,46 @@ const PropMenu = (props: PropMenuProps) => {
   // 如果希望能够自定义打开和关闭的状态, 那么就需要利用上下文的强制重新渲染特性
   const open = useContext(OpenContext);
 
-  return <Menu
-    subMenuOpenDelay={0}
-    subMenuCloseDelay={0}
-    selectable={false}
-    triggerSubMenuAction={'click'}
-    rootClassName={classnames(
-      styles.dropdownMenuRootWrapper,
-      {
-        // 处理菜单在某些时刻不隐藏的 BUG, 此 BUG 出自 Antd
-        [commonStyles.hidden]: !open
-      }
-    )}
-    getPopupContainer={(triggerNode) => {
-      return document.body;
-    }}
-    defaultOpenKeys={[]}
-    onOpenChange={(openKeys) => {
+  const menuContent = useMemo(() => {
+    return <Menu
+      subMenuOpenDelay={0}
+      subMenuCloseDelay={0}
+      selectable={false}
+      triggerSubMenuAction={'click'}
+      rootClassName={classnames(
+        styles.dropdownMenuRootWrapper,
+        {
+          // 处理菜单在某些时刻不隐藏的 BUG, 此 BUG 出自 Antd
+          [commonStyles.hidden]: !open
+        }
+      )}
+      getPopupContainer={(triggerNode) => {
+        return document.body;
+      }}
+      defaultOpenKeys={[]}
+      onOpenChange={(openKeys) => {
 
-    }}
-    onClick={(info) => {
+      }}
+      onClick={(info) => {
 
-    }}
-    onDoubleClick={(e) => {
-      e.preventDefault();
-    }}
-    onDoubleClickCapture={(e) => {
-      e.preventDefault();
-    }}
-    onBlurCapture={() => {
+      }}
+      onDoubleClick={(e) => {
+        e.preventDefault();
+      }}
+      onDoubleClickCapture={(e) => {
+        e.preventDefault();
+      }}
+      onBlurCapture={() => {
 
-    }}
-    onSelect={(info) => {
+      }}
+      onSelect={(info) => {
 
-    }}
-    items={menus.concat()}
-  />
+      }}
+      items={menus.concat()}
+    />
+  }, [menus]);
+
+  return open ? menuContent : <></>;
 }
 
 export interface AutoDropdownMenuProps extends BaseProps {
@@ -123,7 +127,7 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
       mouseEnterDelay={0}
       mouseLeaveDelay={0}
       destroyPopupOnHide={false}
-      getPopupContainer={(triggerNode) => getFirstScrollContainer(triggerNode) || document.body}
+      getPopupContainer={(triggerNode) => getFirstScrollContainer(triggerNode, { direction: 'vertical' }) || document.body}
       onOpenChange={(value, info) => {
         state.open = value;
       }}

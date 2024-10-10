@@ -1,13 +1,13 @@
-import type { Handlers } from 'node_modules/@rapid/desktop-preload';
+import type { HandleHandlers } from 'node_modules/@rapid/desktop-preload';
 import { IS_BROWSER } from '@rapid/config/constants';
 
-export const makeInvokeActions = <InvokeKey extends keyof Handlers>(invokeKey: InvokeKey): Handlers[InvokeKey] => {
-  if (IS_BROWSER || !window.electron) return ((...args: unknown[]) => Promise.resolve()) as unknown as Handlers[InvokeKey];
+export const makeInvokeActions = <InvokeKey extends keyof HandleHandlers>(invokeKey: InvokeKey): HandleHandlers[InvokeKey] => {
+  if (IS_BROWSER || !window.electron) return ((...args: unknown[]) => Promise.resolve()) as unknown as HandleHandlers[InvokeKey];
 
-  const action: Handlers[InvokeKey] = ((...args: Parameters<Handlers[InvokeKey]>) => {
+  const action: HandleHandlers[InvokeKey] = ((...args: Parameters<HandleHandlers[InvokeKey]>) => {
 
-    return window.electron.ipcRenderer.invoke(invokeKey, ...args as Parameters<Handlers[InvokeKey]>);
-  }) as unknown as Handlers[InvokeKey];
+    return window.electron.ipcRenderer.invoke(invokeKey, ...args as Parameters<HandleHandlers[InvokeKey]>);
+  }) as unknown as HandleHandlers[InvokeKey];
 
   return action;
 }

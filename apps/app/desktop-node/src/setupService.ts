@@ -38,26 +38,25 @@ export async function setupMainWindow() {
         action: 'allow',
         overrideBrowserWindowOptions: {
           title: CONFIG.PROJECT,
-          width: 500,
-          height: 500,
+          width: 1000,
+          height: 700,
           icon: iconUrl,
           webPreferences: {
 
-
           },
-          parent: windowService.window,
-          modal: true,
+          modal: false,
           autoHideMenuBar: true,
-          paintWhenInitiallyHidden: true,
           frame: true
         }
       }
     }
+
     return { action: 'deny' };
   });
 
   if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
+
   return windowService;
 }
 

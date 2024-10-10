@@ -1,4 +1,4 @@
-import { isClass, isFunction, isObject } from '@suey/pkg-utils';
+import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isString, isUnDef } from '@suey/pkg-utils';
 import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
 
 /**
@@ -26,20 +26,20 @@ export const classnames = (...args: (string | undefined | boolean | number | Rec
   const classNameList: string[] = [];
 
   args.forEach(arg => {
-    if (!arg) return;
-    if (typeof arg === 'string') {
+    if (isUnDef(arg)) return;
+    if (isBoolean(arg)) return;
+    if (isNumber(arg)) return;
+
+    if (isString(arg)) {
       classNameList.push(arg);
       return;
     }
-    if (typeof arg === 'boolean') {
-      return;
-    }
-    if (typeof arg === 'number') {
-      return;
-    }
 
-    for (const key in arg) {
-      if (arg[key]) classNameList.push(key);
+    if (isRawObject(arg)) {
+      for (const key in arg) {
+
+        if (arg[key]) classNameList.push(key);
+      }
     }
   });
 

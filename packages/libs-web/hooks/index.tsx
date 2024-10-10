@@ -29,6 +29,9 @@ export {
 } from 'ahooks';
 
 
+export { useTransition } from './useTransition';
+export type { StartTransitionFunction } from './useTransition';
+
 // 以下 Hook 需要优化
 
 export { useEventListener } from './useEventListener';

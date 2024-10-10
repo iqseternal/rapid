@@ -7,6 +7,9 @@
 
 .flex { @include Flex(); }
 
+.flexRowReverse { flex-direction: row-reverse; }
+.flexColReverse { flex-direction: column-reverse; }
+
 .flexCenter { @include Flex() { justify-content: center; } }
 .flexSpaceBetween { @include FlexRowSpaceBetween; }
 .flexSpaceAround { @include FlexRowSpaceAround; }
@@ -41,3 +44,19 @@
 
 .appRegion { @include AppRegion; }
 .appRegionNo { @include AppRegionNo; }
+
+.textOverflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cursorNotAllowed {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.disabledPointerEvents {
+  pointer-events: none;
+}
+

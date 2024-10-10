@@ -32,11 +32,13 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
 
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
   const headerEditMenu = useZustandHijack(menus.headerEditMenu);
+  const headerViewMenu = useZustandHijack(menus.headerViewMenu);
+  const headerHelpMenu = useZustandHijack(menus.headerHelpMenu);
 
   // 菜单
   const { maintenanceStack, storageStack, otherStack, pushMaintenanceStack, popMaintenanceStack } = useMaintenanceStack({
     maintenanceStack: [
-      headerFileMenu, headerEditMenu
+      headerFileMenu, headerEditMenu, headerViewMenu, headerHelpMenu
     ],
     otherStack: [] as ({ sourceWidth: number;calcWidth: number; } | undefined)[],
   });
@@ -230,7 +232,7 @@ export const Header = memo((props: HeaderProps) => {
               />
             </>}
 
-            {IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
+            {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
             <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
             {!isDialog && !isPane && <Widget icon='BorderOutlined' tipText='还原' onClick={() => windowReduction()} />}
             <Widget

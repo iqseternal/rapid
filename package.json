@@ -71,7 +71,7 @@
   "config": {},
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@suey/pkg-utils": "0.1.8",
+    "@suey/pkg-utils": "0.1.9",
     "@suey/pkg-web": "^0.0.3",
     "@suey/printer": "^1.1.9",
     "@types/pako": "^2.0.3",

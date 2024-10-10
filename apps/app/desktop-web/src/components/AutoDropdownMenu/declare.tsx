@@ -48,7 +48,7 @@ export type SubMenuType<T extends ItemType = ItemType> = Omit<AntdSubMenuType, '
   key: string;
   type: 'submenu';
   iconKey?: IconRealKey;
-  children?: T[];
+  children?: (T | SubMenuType)[];
 };
 export { AntdSubMenuType };
 export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): AntdSubMenuType {

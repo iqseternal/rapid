@@ -180,16 +180,34 @@ export const getCssVarForRoot = <Key extends keyof CSSTypes.CSSStyleVarsDeclarat
 
 export const setCssVarsForRoot = (properties: CSSTypes.CSSStyleVarsDeclaration) => setCssVars(cssRoot, properties);
 
-export function isScrollContainer<T extends HTMLElement>(dom: T): boolean {
-  const style = window.getComputedStyle(dom);
-  const overflowY = style.overflowY;
+export interface IsScrollContainerOptions {
+  direction: 'vertical' | 'horizontal';
+}
 
-  if (
-    (overflowY.includes('auto') || overflowY.includes('scroll')) &&
-    dom.scrollHeight >= dom.clientHeight
-  ) return true;
+/**
+ * 判断元素是否是一个可以滚动的容器
+ */
+export function isScrollContainer<T extends HTMLElement>(dom: T, options: IsScrollContainerOptions): boolean {
+  const { direction = 'vertical' } = options ?? {};
+
+  const style = window.getComputedStyle(dom);
+  const overflowX = style.overflowX, overflowY = style.overflowY;
+
+  if (direction === 'vertical') {
+    if ((overflowY.includes('auto') || overflowY.includes('scroll')) && dom.scrollHeight >= dom.clientHeight) return true;
+    return false;
+  }
+
+  if (direction === 'horizontal') {
+    if ((overflowX.includes('auto') || overflowX.includes('scroll')) && dom.scrollWidth >= dom.clientWidth) return true;
+    return false;
+  }
 
   return false;
+}
+
+export interface GetFirstScrollContainerOptions {
+  direction: 'vertical' | 'horizontal';
 }
 
 /**
@@ -197,16 +215,15 @@ export function isScrollContainer<T extends HTMLElement>(dom: T): boolean {
  * @param dom
  * @return
  */
-export function getFirstScrollContainer<T extends HTMLElement>(dom: T): T | null {
-  let currentElement: HTMLElement | null = dom;
+export function getFirstScrollContainer<T extends HTMLElement>(selfDom: T, options: GetFirstScrollContainerOptions): T | null {
+  const { direction = 'vertical' } = options ?? {};
+
+  let currentElement: HTMLElement | null = selfDom;
 
   while (currentElement) {
     const style = window.getComputedStyle(currentElement);
 
-    if (
-      currentElement !== dom &&
-      isScrollContainer(currentElement)
-    ) {
+    if (currentElement !== selfDom && isScrollContainer(currentElement, { direction })) {
       return currentElement as T;
     }
 
@@ -233,3 +250,4 @@ export const getElementMoreRect = (element: HTMLElement) => {
 
   return { paddingTop, paddingBottom, marginTop, marginBottom, borderTop, borderBottom };
 }
+

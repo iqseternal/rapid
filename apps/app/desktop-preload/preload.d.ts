@@ -4,7 +4,8 @@
  * ==========================================
  */
 import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener } from '@electron-toolkit/preload';
-import type { CutHead } from '@suey/pkg-utils';
+import type { CutHead, ExtractNever } from '@suey/pkg-utils';
+import type { IpcActionEvent } from '../desktop-node/src/core';
 import type * as actions from '../desktop-node/src/ipc';
 
 export type IpcRendererEvent = Parameters<IpcRendererListener>[0];
@@ -13,13 +14,18 @@ export type IpcRendererEvent = Parameters<IpcRendererListener>[0];
 export type AllAction = typeof actions;
 
 // 创建句柄类型, 例如: { 'IpcStore/get': (key: string) => Promise<string> }
-export type Handlers = {
+export type AllHandlers<IpcActionEventType extends IpcActionEvent> = {
   [Key in keyof AllAction as AllAction[Key]['channel']]:
-  (...args: CutHead<Parameters<AllAction[Key]['action']>>)
-    => ReturnType<AllAction[Key]['action']> extends Promise<any>
-    ? ReturnType<AllAction[Key]['action']>
-    : Promise<ReturnType<AllAction[Key]['action']>>;
+    AllAction[Key]['actionType'] extends IpcActionEventType
+      ? (...args: CutHead<Parameters<AllAction[Key]['action']>>)
+          => ReturnType<AllAction[Key]['action']> extends Promise<any>
+            ? ReturnType<AllAction[Key]['action']>
+            : Promise<ReturnType<AllAction[Key]['action']>>
+      : never;
 }
+
+export type HandleHandlers = ExtractNever<AllHandlers<IpcActionEvent.Handle>>;
+export type OnHandlers = ExtractNever<AllHandlers<IpcActionEvent.On>>;
 
 /**
  * 原本的 IcpRenderer 返回类型为 Promise<any>, 所需需要自己重新修改一下返回值
@@ -31,12 +37,13 @@ Omit<
   'invoke' | 'send' | 'sendSync'
 > & {
   // 向主进程发送事件
-  invoke<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): ReturnType<Handlers[T]>;
-  send<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
-  sendSync<T extends keyof Handlers>(channel: T, ...args: Parameters<Handlers[T]>): void;
+  invoke<T extends keyof HandleHandlers>(channel: T, ...args: Parameters<HandleHandlers[T]>): ReturnType<HandleHandlers[T]>;
 
-  // on<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): () => void;
-  // once<T extends keyof Handlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<Handlers[T]>) => void): void;
+  send<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
+  sendSync<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
+
+  // on<T extends keyof OnHandlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<OnHandlers[T]>) => void): () => void;
+  // once<T extends keyof OnHandlers>(channel: T, listener: (event: IpcRendererEvent, args: ReturnType<OnHandlers[T]>) => void): void;
 }
 
 /**
@@ -47,4 +54,3 @@ export interface ElectronAPI {
   webFrame: WebFrame;
   process: NodeProcess;
 }
-

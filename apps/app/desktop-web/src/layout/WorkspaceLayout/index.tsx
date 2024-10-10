@@ -9,6 +9,7 @@ import { NavigationBar } from './cpts';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
 import { Guards } from '@router/guards';
 import { classnames } from '@rapid/libs-web';
+import { useThemeStore } from '@/features';
 
 import Header from '@components/Header';
 import styles from './index.module.scss';
@@ -53,10 +54,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
     windowResetCustomSize({ type: 'mainWindow' })
   ]));
 
-  useEffect(() => {
-    console.log('1111111');
-
-  })
+  const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
   return <FullSize
     className={classnames(
@@ -67,10 +65,13 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
     <FullSize
       className={classnames(
-        styles.mainRootContainer
+        styles.mainRootContainer,
+        {
+          [commonStyles.flexRowReverse]: mainSidebarStatus === 'right'
+        }
       )}
     >
-      <NavigationBar />
+      {mainSidebarStatus !== 'none' && <NavigationBar />}
 
       <main
         className={classnames(

@@ -8,7 +8,7 @@ import {
   alignItemCenterStyle, alignItemStartStyle, alignItemEndStyle,
   maxContentStyle, fitContentStyle
 } from './css';
-import styled, { css } from 'styled-components';
+import { css } from 'styled-components';
 
 export const MaxScreenWidth = combinationStyled('div', maxScreenWidthStyle);
 export const MaxScreenHeight = combinationStyled('div', maxScreenHeightStyle);

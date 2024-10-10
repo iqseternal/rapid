@@ -7,6 +7,9 @@
 @mixin FlexFixed {
   flex: 0 0 auto;
 }
+@mixin FlexAuto {
+  flex: 1 1 auto;
+}
 @mixin FlexRowStart {
   @include Flex() {
     justify-content: flex-start;

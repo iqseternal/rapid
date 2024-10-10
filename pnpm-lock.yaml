@@ -12,8 +12,8 @@ importers:
         specifier: ^5.2.6
         version: 5.3.7(react-dom@18.3.1)(react@18.3.1)
       '@suey/pkg-utils':
-        specifier: 0.1.8
-        version: 0.1.8(@angular/common@18.1.4)(@angular/core@18.1.4)
+        specifier: 0.1.9
+        version: 0.1.9(@angular/common@18.1.4)(@angular/core@18.1.4)
       '@suey/pkg-web':
         specifier: ^0.0.3
         version: 0.0.3(typescript@5.3.3)
@@ -4695,8 +4695,8 @@ packages:
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
     dev: true
 
-  /@suey/pkg-utils@0.1.8(@angular/common@18.1.4)(@angular/core@18.1.4):
-    resolution: {integrity: sha512-EaRjnes+WJxIYA/8826+nxsJj3lMoGbh226IZyqTNAflcrByrRvhrzcXfvh79hhXmTbYr7eoKXcw4rnU7vx+iQ==}
+  /@suey/pkg-utils@0.1.9(@angular/common@18.1.4)(@angular/core@18.1.4):
+    resolution: {integrity: sha512-XfaXa04EjM5uVrbzKZR+Xuy4NK92sqxZy9M8fhsLdVL4NHAFNYuH79xRUwfKt91qN3GQQ4vAQCiPIkSKyG2K5g==}
     dependencies:
       '@types/js-cookie': 3.0.6
       axios: 1.7.3

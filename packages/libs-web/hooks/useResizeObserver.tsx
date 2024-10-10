@@ -46,5 +46,5 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
     }
   }, []);
 
-  return [resizeObserver];
+  return [resizeObserver] as const;
 }

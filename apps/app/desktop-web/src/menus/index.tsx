@@ -1,7 +1,7 @@
-import { headerFileMenu, headerEditMenu } from './modules/header';
+
+import * as headerMenus from './modules/header';
 
 export const menus = {
-  headerFileMenu,
-  headerEditMenu
+  ...headerMenus
 } as const;
 

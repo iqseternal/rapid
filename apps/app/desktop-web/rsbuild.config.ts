@@ -46,7 +46,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
           minimizerOptions: {
             format: {
               comments: false,
-              ecma: 2015
+              ecma: 2016
             }
           }
         },

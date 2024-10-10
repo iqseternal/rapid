@@ -14,6 +14,9 @@ div.dropdownMenuRootWrapper {
   width: max-content;
   user-select: none;
   background-color: var(--rapid-secondary-background-color);
+  transition: unset !important;
+  // animation: unset !important;
+  animation-duration: 0s !important;
 
   :global(ul.ant-dropdown-menu) {
     background-color: var(--rapid-dropdown-menu-background-color) !important;
@@ -22,8 +25,6 @@ div.dropdownMenuRootWrapper {
 
     max-height: 90vh;
     overflow-y: auto;
-
-
 
     @include BeautifulBar;
     @include MiniBar;

@@ -244,7 +244,7 @@
   "editor.guides.bracketPairs": "active",
   "editor.inlineSuggest.enabled": true,
   "editor.lineNumbers": "interval",
-  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.multiCursorModifier": "alt",
   "editor.renderWhitespace": "trailing",
   "editor.suggestSelection": "recentlyUsed",
   "editor.tabSize": 2,
@@ -440,13 +440,15 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
     "animejs",
+    "Antd",
     "cpts",
     "immer",
     "Leafer",
     "Maximizable",
     "Minimizable",
     "rspack",
-    "typecheck"
+    "typecheck",
+    "Zustand"
   ],
   "notebook.markup.fontSize": 0
 }

@@ -27,7 +27,7 @@
   "include": [
     "./autoExpose.ts",
     "./index.ts",
-    "./preload.d.ts"
+    "preload.ts"
   ],
   "exclude": [
     "node_modules",
