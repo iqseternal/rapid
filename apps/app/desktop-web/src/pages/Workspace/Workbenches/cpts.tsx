@@ -7,7 +7,7 @@ import { FullSize, FullSizeHeight, FullSizeWidth, classnames } from '@rapid/libs
 import { Leafer, Rect, UI } from 'leafer-ui';
 import { Leaf } from 'leafer';
 import { initLeaferApp, destroyLeaferApp, leaferApp } from '@/leafer';
-import { windowSetDragData } from '@/actions';
+import { windowForwardDataTakeIn } from '@/actions';
 
 import Widget from '@components/Widget';
 
@@ -34,7 +34,7 @@ export const Instrument = memo((props: InstrumentProps) => {
       }}
       onDragStart={async () => {
 
-        await windowSetDragData({ dragKey: 'graphic' }, UI.one({ tag: 'Rect', width: 200, height: 200, fill: '#a352', draggable: true }).toJSON());
+        await windowForwardDataTakeIn('graphic', UI.one({ tag: 'Rect', width: 200, height: 200, fill: '#a352', draggable: true, editable: true }).toJSON());
       }}
     >
 
@@ -46,7 +46,7 @@ export const Instrument = memo((props: InstrumentProps) => {
       tipText='圆形'
       onDragStart={async () => {
 
-        await windowSetDragData({ dragKey: 'graphic' }, UI.one({ tag: 'Rect', width: 200, height: 200, fill: '#a352', draggable: true, cornerRadius: [100, 100, 100, 100] }).toJSON());
+        await windowForwardDataTakeIn('graphic', UI.one({ tag: 'Rect', width: 200, height: 200, fill: '#a352', draggable: true, cornerRadius: [100, 100, 100, 100], editable: true }).toJSON());
       }}
     >
 

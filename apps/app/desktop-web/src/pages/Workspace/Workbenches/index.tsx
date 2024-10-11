@@ -8,13 +8,12 @@ import type { IUIInputData } from 'leafer-ui';
 import { Leafer, Rect, UI } from 'leafer-ui';
 import { Leaf } from 'leafer';
 
-import { windowGetDragData } from '@/actions';
+import { windowForWardDataTakeOut } from '@/actions';
 import { initLeaferApp, destroyLeaferApp, leaferApp, addGraph } from '@/leafer';
 import { Instruction, Instrument, LeaferUIAttribute } from './cpts';
 
 import IMessage from '@components/IMessage';
 import styles from './index.module.scss';
-
 
 export const LeaferView = memo((props: BaseProps) => {
   const { className } = props;
@@ -41,7 +40,7 @@ export const LeaferView = memo((props: BaseProps) => {
 
         if (!viewContainerRef.current) return;
 
-        const uiData = await windowGetDragData({ dragKey: 'graphic' });
+        const uiData = await windowForWardDataTakeOut('graphic');
 
         if (uiData) {
           if (isRawObject(uiData)) {

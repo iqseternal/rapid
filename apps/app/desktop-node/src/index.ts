@@ -12,7 +12,6 @@ import {
   ipcWindowProperties,
 
   ipcOpenWindow,
-  ipcWindowGetDragData, ipcWindowSetDragData,
 
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
   ipcStoreSet, ipcStoreHas, ipcStoreGetStore,
@@ -21,6 +20,7 @@ import {
 
   ipcOpenDevTool,
 
+  ipcForwardDataTakeIn, ipcForwardDataTakeOut,
   ipcOnBroadcast,
 } from './ipc';
 import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
@@ -32,7 +32,6 @@ registerIpcHandle([
   ipcWindowProperties
 ]);
 registerIpcHandle([ipcOpenWindow]);
-registerIpcHandle([ipcWindowGetDragData, ipcWindowSetDragData]);
 registerIpcHandle([
   ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
   ipcStoreSet, ipcStoreHas, ipcStoreGetStore
@@ -42,6 +41,7 @@ registerIpcHandle([
   ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs
 ]);
 
+registerIpcHandle([ipcForwardDataTakeIn, ipcForwardDataTakeOut]);
 registerIpcOn([ipcOnBroadcast]);
 
 registerGlobalMiddleware(IpcActionEvent.Handle, [ipcExceptionFilterMiddleware]);

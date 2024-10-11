@@ -10,6 +10,6 @@ export * from './handlers/ipcStoreHandler';
 
 export * from './handlers/ipcWindowHandler';
 
-export * from './handlers/ipcWindowDragHandler';
+export * from './handlers/ipcForwardDataHandler';
 
 export * from './ipcBroadcast';

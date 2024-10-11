@@ -108,10 +108,8 @@ export const windowExitFullScreen = () => document.exitFullscreen();
  */
 export const windowOpen = makeInvokeActions('IpcWindow/openWindow');
 
-
-
-export const windowSetDragData = makeInvokeActions('IpcWindowDrag/setDragData');
-export const windowGetDragData = makeInvokeActions('IpcWindowDrag/getDragData');
+export const windowForwardDataTakeIn = makeInvokeActions('IpcForwardData/takeIn');
+export const windowForWardDataTakeOut = makeInvokeActions('IpcForwardData/takeOut');
 
 /**
  * 自动全屏或者推出全屏

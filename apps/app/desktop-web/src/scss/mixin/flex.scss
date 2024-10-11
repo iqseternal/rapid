@@ -10,9 +10,17 @@
 @mixin FlexAuto {
   flex: 1 1 auto;
 }
+
+
 @mixin FlexRowStart {
   @include Flex() {
     justify-content: flex-start;
+  }
+  @content;
+}
+@mixin FlexRowEnd {
+  @include Flex() {
+    justify-content: flex-end;
   }
   @content;
 }
@@ -34,6 +42,8 @@
   }
   @content;
 }
+
+
 @mixin FlexCol {
   @include Flex {
     flex-direction: column;
@@ -43,6 +53,12 @@
 @mixin FlexColStart {
   @include FlexCol() {
     justify-content: flex-start;
+  }
+  @content;
+}
+@mixin FlexColEnd {
+  @include FlexCol() {
+    justify-content: flex-end;
   }
   @content;
 }

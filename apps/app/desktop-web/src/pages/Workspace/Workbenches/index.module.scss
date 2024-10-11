@@ -23,7 +23,7 @@
     .instruction {
       width: 100%;
       height: 80px;
-      background-color: aqua;
+      // background-color: aqua;
 
       @include FlexFixed;
     }
@@ -41,7 +41,7 @@
   .leaferUIAttribute {
     width: 100px;
     height: 100%;
-    background-color: bisque;
+    // background-color: bisque;
 
     @include FlexFixed;
   }

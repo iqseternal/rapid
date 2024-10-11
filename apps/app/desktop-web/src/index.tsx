@@ -4,7 +4,7 @@ import { themePlugins, app } from './plugins';
 import { ENV, IS_DEV } from '@rapid/config/constants';
 
 import ReactDOM from 'react-dom/client';
-import App from './app';
+import RapidApp from './app';
 
 import '@scss/index.scss';
 
@@ -14,9 +14,9 @@ app.installAll();
 const rootContainer = document.getElementById('root')!;
 
 ReactDOM.createRoot(rootContainer).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
 
-  // <App />
+  <StrictMode>
+    <RapidApp />
+
+  </StrictMode>
 );

@@ -5,26 +5,25 @@
  */
 @import '../mixin/index.scss';
 
-.flex { @include Flex(); }
+.flex { @include Flex; }
+.flexRow { @include Flex; }
 
 .flexRowReverse { flex-direction: row-reverse; }
 .flexColReverse { flex-direction: column-reverse; }
 
-.flexCenter { @include Flex() { justify-content: center; } }
-.flexSpaceBetween { @include FlexRowSpaceBetween; }
-.flexSpaceAround { @include FlexRowSpaceAround; }
-
-.flexStart { @include Flex() { justify-content: flex-start; } }
-.flexEnd { @include Flex() { justify-content: flex-end; } }
-
-.flexLeft { @include Flex() { justify-content: left; } }
-.flexRight { @include Flex() { justify-content: right; } }
+.flexRowCenter { @include FlexRowCenter; }
+.flexRowSpaceBetween { @include FlexRowSpaceBetween; }
+.flexRowSpaceAround { @include FlexRowSpaceAround; }
+.flexRowStart { @include FlexRowStart; }
+.flexRowEnd { @include FlexRowEnd; }
 
 .flexCol { @include FlexCol; }
 
-.flexColCenter { @include Flex() { justify-content: center; } }
+.flexColCenter { @include FlexColStart; }
 .flexColSpaceBetween { @include FlexColSpaceBetween; }
 .flexColSpaceAround { @include FlexColSpaceAround; }
+.flexColStart { @include FlexColStart; }
+.flexColEnd { @include FlexColEnd; }
 
 .flexAutoFit { flex: 1 1 auto };
 .flexFixed { flex: 0 0 auto; }

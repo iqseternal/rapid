@@ -5,7 +5,7 @@ import { useFadeIn, useFadeOut } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
-import { Button } from 'antd';
+import { App, Button } from 'antd';
 import { toPicket } from '@suey/pkg-utils';
 import { userLogin } from '@/features';
 import { registerReq } from '@/api';
@@ -14,10 +14,8 @@ import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/
 import { menus } from '@/menus';
 import { useCallback } from 'react';
 
-
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
-import IMessage from '@components/IMessage';
 import Subfield from '@rapid/libs-web/components/Subfield';
 import Logo from '@components/Logo';
 
@@ -34,6 +32,8 @@ export default function Login() {
     if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
   });
 
+  const { message } = App.useApp();
+
   const navigate = useNavigate();
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
 
@@ -41,15 +41,13 @@ export default function Login() {
     step: Step.Login
   })
 
-
-
   const login = useCallback(async () => {
     const [loginErr] = await toPicket(userLogin({
       username: 'admin',
       password: '12345678'
     }));
     if (loginErr) {
-      IMessage.error(loginErr.descriptor);
+      message.error(loginErr.descriptor);
       return;
     }
 
@@ -61,7 +59,7 @@ export default function Login() {
   const register = useCallback(async () => {
     const [registerErr] = await toPicket(registerReq());
     if (registerErr) {
-      IMessage.error(registerErr.descriptor);
+      message.error(registerErr.descriptor);
       return;
     }
   }, []);
@@ -73,7 +71,7 @@ export default function Login() {
       className={classnames(styles.didContent)}
     >
       <FullSize
-        className={classnames(commonStyles.flexCenter)}
+        className={classnames(commonStyles.flexRowCenter)}
       >
         <Logo
           src={lockUrl}
@@ -81,7 +79,7 @@ export default function Login() {
       </FullSize>
 
       <FullSize
-        className={classnames(commonStyles.flexCenter)}
+        className={classnames(commonStyles.flexRowCenter)}
       >
         <Button
           onClick={login}

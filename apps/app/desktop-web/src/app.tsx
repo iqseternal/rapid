@@ -1,5 +1,5 @@
 import { HashRouter } from 'react-router-dom';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, App, message } from 'antd';
 import type { ProfilerOnRenderCallback } from 'react';
 import { useState, Profiler, useCallback, useEffect } from 'react';
 import { FullSize } from '@rapid/libs-web';
@@ -11,7 +11,10 @@ import ReactDOM from 'react-dom/client';
 import RouterContext from './router';
 import styles from './app.module.scss';
 
-export default function App() {
+/**
+ * App component
+ */
+export default function RapidApp() {
 
   return (
     <ConfigProvider
@@ -35,8 +38,16 @@ export default function App() {
       // renderEmpty={() => <></>}
       theme={{
         components: {
+          Message: {
 
+          }
+        },
+        cssVar: {
+          prefix: 'rapid-app'
         }
+      }}
+      message={{
+
       }}
       variant='outlined'
       // virtual
@@ -44,17 +55,17 @@ export default function App() {
       //   strict: false
       // }}
     >
-      <FullSize
+      <App
         className={classnames(
-          styles.app
+          styles.app,
+          commonStyles.fullSize
         )}
       >
-
         <HashRouter>
+
           <RouterContext />
         </HashRouter>
-
-      </FullSize>
+      </App>
     </ConfigProvider>
   )
 }

@@ -1,6 +1,6 @@
 import { FullSize, FullSizeWidth, classnames, useAsyncEffect } from '@rapid/libs-web';
 import { commonStyles } from '@scss/common';
-import { windowDevtool, windowSetDragData, windowShow } from '@/actions';
+import { windowDevtool, windowShow } from '@/actions';
 
 import Header from '@components/Header';
 import styles from './index.module.scss';

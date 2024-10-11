@@ -28,9 +28,9 @@ const colorVarsSheet = {
 
 const widgetVarsSheet = {
   /** 控件宽度 */
-  widgetWidth: mRapidC('--rapid-widget-width', '20px', '控件宽度'),
+  widgetWidth: mRapidC('--rapid-widget-width', '24px', '控件宽度'),
   /** 控件高度 */
-  widgetHeight: mRapidC('--rapid-widget-height', '20px', '控件高度'),
+  widgetHeight: mRapidC('--rapid-widget-height', '24px', '控件高度'),
   /** 控件颜色 */
   widgetColor: mRapidC('--rapid-widget-color', '#212529', '控件颜色'),
   /** 控件Hover */

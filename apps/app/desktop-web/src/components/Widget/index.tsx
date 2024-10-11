@@ -70,9 +70,11 @@ export const Widget = memo((props: WidgetProps) => {
     <div
       className={classnames(
         styles.widget,
+        className,
         commonStyles.appRegionNo,
         {
-          [commonStyles.cursorNotAllowed]: disabled
+          [commonStyles.cursorNotAllowed]: disabled,
+          [styles.widgetHasHover]: hover,
         }
       )}
     >
@@ -82,10 +84,9 @@ export const Widget = memo((props: WidgetProps) => {
         onDoubleClick={withDisabledDoubleClick}
         onContextMenu={withDisabledContextMenu}
         className={classnames(
-          commonStyles.flexCenter,
-          className,
+          commonStyles.flexRowCenter,
           {
-            [styles.widgetHasHover]: hover,
+
             [commonStyles.disabledPointerEvents]: disabled
           }
         )}

@@ -9,9 +9,6 @@ import { retrieveRoutes } from '@/router';
 
 import { isReactFC, isReactForwardFC, isReactComponent } from '@rapid/libs-web';
 
-import IMessage from '@components/IMessage';
-
-
 export type ReactComponent = ForwardRefExoticComponent<any> | FC<any>;
 
 export const GuardsContext = {

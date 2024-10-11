@@ -8,7 +8,7 @@
   padding: 0 2px;
   gap: 4px;
 
-  @include FlexColStart;
+  align-items: center;
   @include FlexColSpaceBetween;
 
   .topContainer {
@@ -23,11 +23,12 @@
     margin-bottom: 30px;
   }
 
-
   .sideBarItem {
     width: calc(var(--rapid-navigation-bar-width) - 4px - 2px - 6px);
-    transform: translateX(1px);
+    margin: 4px 0 4px 50%;
+    transform: translateX(-50%);
     height: unset;
+    aspect-ratio: 1 / 1;
   }
 }
 
