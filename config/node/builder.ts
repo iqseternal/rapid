@@ -1,4 +1,4 @@
-import { PLATFORMS_ON_DESKTOP, ENV, CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV, RUNTIME_PLATFORMS } from '../enums';
+import { PlatformsOnDesktop, Env, RuntimePlatforms } from '../enums';
 import { join } from 'path';
 import { DIRS } from './dirs';
 import { EnvChecker } from './checker';
@@ -35,15 +35,15 @@ export class Builder {
 
   defineVars<Variables extends Partial<Omit<InjectionVariables, 'CURRENT_ENV'>>>(variables?: Variables): InjectionVariables {
     const vars: InjectionVariables = {
-      CURRENT_PLATFORM: PLATFORMS_ON_DESKTOP.WINDOWS,
-      CURRENT_RUNTIME_PLATFORM: RUNTIME_PLATFORMS.DESKTOP,
-      CURRENT_ENV: ENV.DEV,
+      CURRENT_PLATFORM: PlatformsOnDesktop.Windows,
+      CURRENT_RUNTIME_PLATFORM: RuntimePlatforms.Desktop,
+      CURRENT_ENV: Env.Dev,
       ...(variables ?? {})
     }
 
     const { IS_DEV, IS_PROD } = EnvChecker.toEnvs();
-    if (IS_DEV) vars.CURRENT_ENV = ENV.DEV;
-    if (IS_PROD) vars.CURRENT_ENV = ENV.PROD;
+    if (IS_DEV) vars.CURRENT_ENV = Env.Dev;
+    if (IS_PROD) vars.CURRENT_ENV = Env.Prod;
 
     return vars;
   }

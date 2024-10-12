@@ -1,17 +1,17 @@
-import { CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV, ENV } from '../enums';
+import { NodeCommand, NodeEnv, Env } from '../enums';
 import { Printer } from '@suey/printer';
 
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      readonly NODE_ENV: CONFIG_ENV_NODE_ENV;
-      readonly COMMAND: CONFIG_ENV_COMMAND;
+      readonly NODE_ENV: NodeEnv;
+      readonly COMMAND: NodeCommand;
     }
   }
 }
 
 export class EnvChecker {
-  private static COMMANDS = [CONFIG_ENV_COMMAND.DEV, CONFIG_ENV_COMMAND.BUILD, CONFIG_ENV_COMMAND.PREVIEW];
+  private static COMMANDS = [NodeCommand.Dev, NodeCommand.Build, NodeCommand.Preview];
 
   private static checkedCommand = false;
   private static checkedNodeEnv = false;
@@ -21,11 +21,11 @@ export class EnvChecker {
    * @returns
    */
   public static toEnvs() {
-    const IS_DEV = process.env.NODE_ENV === CONFIG_ENV_NODE_ENV.DEVELOPMENT;
-    const IS_PROD = process.env.NODE_ENV === CONFIG_ENV_NODE_ENV.PRODUCTION;
+    const IS_DEV = process.env.NODE_ENV === NodeEnv.Development;
+    const IS_PROD = process.env.NODE_ENV === NodeEnv.Production;
 
-    const IS_BUILD = process.env.COMMAND === CONFIG_ENV_COMMAND.BUILD;
-    const IS_PREVIEW = process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW;
+    const IS_BUILD = process.env.COMMAND === NodeCommand.Build;
+    const IS_PREVIEW = process.env.COMMAND === NodeCommand.Preview;
 
     return {
       IS_DEV,
@@ -68,24 +68,27 @@ export class EnvChecker {
     EnvChecker.checkedNodeEnv = true;
 
     if (!process.env.NODE_ENV) {
-      // @ts-ignore
-      if (process.env.COMMAND === CONFIG_ENV_COMMAND.DEV) process.env.NODE_ENV = CONFIG_ENV_NODE_ENV.DEVELOPMENT;
-      else if (process.env.COMMAND === CONFIG_ENV_COMMAND.BUILD || process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW) {
+
+      if (process.env.COMMAND === NodeCommand.Dev) {
         // @ts-ignore
-        process.env.NODE_ENV = CONFIG_ENV_NODE_ENV.PRODUCTION;
+        process.env.NODE_ENV = NodeEnv.Development;
+      }
+      else if (process.env.COMMAND === NodeCommand.Build || process.env.COMMAND === NodeCommand.Preview) {
+        // @ts-ignore
+        process.env.NODE_ENV = NodeEnv.Production;
       }
 
       return;
     }
 
-    if (process.env.COMMAND === CONFIG_ENV_COMMAND.DEV && process.env.NODE_ENV === CONFIG_ENV_NODE_ENV.PRODUCTION) {
+    if (process.env.COMMAND === NodeCommand.Dev && process.env.NODE_ENV === NodeEnv.Production) {
       Printer.printError(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 不能为 production`);
       process.exit(1);
     }
 
     if (
-      (process.env.COMMAND === CONFIG_ENV_COMMAND.BUILD || process.env.COMMAND === CONFIG_ENV_COMMAND.PREVIEW) &&
-      process.env.NODE_ENV !== CONFIG_ENV_NODE_ENV.PRODUCTION
+      (process.env.COMMAND === NodeCommand.Build || process.env.COMMAND === NodeCommand.Preview) &&
+      process.env.NODE_ENV !== NodeEnv.Production
     ) {
       Printer.printError(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 只能是 production`);
       process.exit(1);

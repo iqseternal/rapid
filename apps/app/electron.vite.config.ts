@@ -3,7 +3,7 @@ import type { Alias, ConfigEnv, Plugin } from 'vite';
 import { mergeConfig } from 'vite';
 import { DIRS } from '../../config/node/dirs';
 import { join } from 'path';
-import { RUNTIME_PLATFORMS } from '../../config/enums';
+import { RuntimePlatforms } from '../../config/enums';
 
 import reactPlugin from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
@@ -13,29 +13,29 @@ import rendererTsConfigJson from './desktop-web/tsconfig.web.json';
 
 import * as path from 'path';
 
-export enum PLATFORMS { WINDOWS, LINUX, MAC, WEB }
+export enum Platforms { Windows, Linux, Mac, Web }
 
-export enum ENV { DEV, PROD }
+export enum Env { Dev, Prod }
 
-export enum CONFIG_ENV_MODE {
-  DEVELOPMENT = 'development',
-  PRODUCTION = 'production'
+export enum ConfigEnvMode {
+  Development = 'development',
+  Production = 'production'
 }
 
-export enum CONFIG_ENV_COMMAND {
-  DEV = 'dev',
-  BUILD = 'build'
+export enum ConfigEnvCommand {
+  Dev = 'dev',
+  Build = 'build'
 }
 
 export function defineVars({ mode }: { mode: string;command: string; }) {
   const vars = {
-    CURRENT_PLATFORM: PLATFORMS.WINDOWS,
-    CURRENT_RUNTIME_PLATFORM: RUNTIME_PLATFORMS.DESKTOP,
-    CURRENT_ENV: ENV.DEV
+    CURRENT_PLATFORM: Platforms.Windows,
+    CURRENT_RUNTIME_PLATFORM: RuntimePlatforms.Desktop,
+    CURRENT_ENV: Env.Dev
   }
 
-  if (mode === CONFIG_ENV_MODE.DEVELOPMENT) vars.CURRENT_ENV = ENV.DEV;
-  else if (mode === CONFIG_ENV_MODE.PRODUCTION) vars.CURRENT_ENV = ENV.PROD;
+  if (mode === ConfigEnvMode.Development) vars.CURRENT_ENV = Env.Dev;
+  else if (mode === ConfigEnvMode.Production) vars.CURRENT_ENV = Env.Prod;
 
   return vars;
 }

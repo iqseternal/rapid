@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "eventsBus",
+    "label": "事件"
+  },
+  {
+    "type": "file",
+    "name": "extension",
+    "label": "插件"
+  }
+]

@@ -3,7 +3,7 @@
  * 项目常量的编写, 不要通过路径别名或者导入包的方式创建这个常量
  * ==========================================
  */
-import { PLATFORMS_ON_DESKTOP, PLATFORMS_ON_BROWSER, PLATFORMS_ON_MOBILE, ENV, RUNTIME_PLATFORMS } from '../enums';
+import { PlatformsOnDesktop, Env, RuntimePlatforms } from '../enums';
 import { CONFIG } from './config';
 
 export { SystemInformation } from './systemInfo';
@@ -14,21 +14,21 @@ export * from './config';
 
 export * from './others';
 
-export { PLATFORMS_ON_DESKTOP, ENV };
+export { PlatformsOnDesktop, Env };
 
 // 运行的操做系统环境
-export const IS_WINDOWS = CURRENT_PLATFORM === PLATFORMS_ON_DESKTOP.WINDOWS;
-export const IS_MAC = CURRENT_PLATFORM === PLATFORMS_ON_DESKTOP.MAC;
-export const IS_LINUX = CURRENT_PLATFORM === PLATFORMS_ON_DESKTOP.LINUX;
+export const IS_WINDOWS = CURRENT_PLATFORM === PlatformsOnDesktop.Windows;
+export const IS_MAC = CURRENT_PLATFORM === PlatformsOnDesktop.Mac;
+export const IS_LINUX = CURRENT_PLATFORM === PlatformsOnDesktop.Linux;
 
 // 是否构建运行平台
-export const IS_DESKTOP = CURRENT_RUNTIME_PLATFORM === RUNTIME_PLATFORMS.DESKTOP;
-export const IS_MOBILE = CURRENT_RUNTIME_PLATFORM === RUNTIME_PLATFORMS.MOBILE;
-export const IS_BROWSER = CURRENT_RUNTIME_PLATFORM === RUNTIME_PLATFORMS.BROWSER;
+export const IS_DESKTOP = CURRENT_RUNTIME_PLATFORM === RuntimePlatforms.Desktop;
+export const IS_MOBILE = CURRENT_RUNTIME_PLATFORM === RuntimePlatforms.Mobile;
+export const IS_BROWSER = CURRENT_RUNTIME_PLATFORM === RuntimePlatforms.Browser;
 
 // 当前的开发环境
-export const IS_DEV = CURRENT_ENV === ENV.DEV;
-export const IS_PROD = CURRENT_ENV === ENV.PROD;
+export const IS_DEV = CURRENT_ENV === Env.Dev;
+export const IS_PROD = CURRENT_ENV === Env.Prod;
 
 /** 自定义文件的扩展名 */
 export const EXTENSIONS = {
@@ -50,8 +50,8 @@ export const EXTENSIONS = {
 } as const;
 export type ExtensionType = typeof EXTENSIONS[keyof typeof EXTENSIONS];
 
-export enum EXPORTS_EXTENSIONS {
-  SVG = 'svg',
-  PNG = 'png',
-  JSON = 'json'
+export enum ExportsExtensions {
+  Svg = 'svg',
+  Png = 'png',
+  Json = 'json'
 }

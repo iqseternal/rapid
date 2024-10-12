@@ -3,7 +3,7 @@ import { print, toColor, toPrintClear, isPrintStyleMessage, isPrintStyleMessageA
 import { SingleInstanceService } from './SingleInstanceService';
 import { FileService } from './FileService';
 import { AppFileStorageService, logsDirStorageService } from './AppStorageService';
-import { PrinterService, printMessageParser, THREAD, PRINT_TYPE } from './PrinterService';
+import { PrinterService, printMessageParser, Thread, PrintType } from './PrinterService';
 
 export namespace LoggerService {
 

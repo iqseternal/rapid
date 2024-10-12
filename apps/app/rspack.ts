@@ -6,7 +6,7 @@ import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
 
-import { Builder, CONFIG_ENV_COMMAND, DIRS } from '../../config/node/builder';
+import { Builder, NodeCommand, DIRS } from '../../config/node/builder';
 
 import treeKill from 'tree-kill';
 
@@ -186,10 +186,14 @@ const transformRendererRsbuilder = async () => {
 // =====================================================================================
 // 加载启动流
 ;(async () => {
+  Printer.printInfo(`加载编译....`);
+
   const mainRspackConfig = await transformMainRspackConfig();
   const preloadRspackConfig = await transformPreloadRspackConfig();
 
   const rendererRsbuilder = await transformRendererRsbuilder();
+
+
 
   // compiler
   const mainCompiler = rspack(mainRspackConfig);
@@ -226,7 +230,12 @@ const transformRendererRsbuilder = async () => {
   // 开发模式, 配置热更新
   if (IS_DEV) {
     // renderer 热更新服务启动
+
+
     const rendererServer = await rendererRsbuilder.startDevServer();
+
+
+
     // 服务启动地址
     const rendererServerUrl = rendererServer.urls[0];
     if (!rendererServerUrl) {
@@ -241,6 +250,7 @@ const transformRendererRsbuilder = async () => {
 
     // 只有 web 热更新
     if (IS_DEV_SERVER_WEB_ONLY) {
+
       // 编译一次 main 和 preload 就启动服务
       Promise.all([
         compilerMain(),
@@ -281,6 +291,8 @@ const transformRendererRsbuilder = async () => {
     })
     return;
   }
+
+  Printer.printInfo(`加载编译....`);
 
   // 生产模式, 只需要输出产物
   if (IS_PROD) {

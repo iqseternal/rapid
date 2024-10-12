@@ -4,16 +4,16 @@ import { isString } from '@suey/pkg-utils';
 
 const AppName = CONFIG.PROJECT.toUpperCase();
 
-export enum THREAD {
-  MAIN = 'MAIN',
-  RENDER = 'RENDER'
+export enum Thread {
+  Main = 'MAIN',
+  Renderer = 'RENDER'
 }
 
-export enum PRINT_TYPE {
-  INFO = 'INFO',
-  WARN = 'WARN',
-  ERROR = 'ERROR',
-  SUCCESS = 'SUCCESS'
+export enum PrintType {
+  Info = 'INFO',
+  Warn = 'WARN',
+  Error = 'ERROR',
+  Success = 'SUCCESS'
 }
 
 /**
@@ -50,8 +50,8 @@ export class PrinterService {
     return [
       toColor(['magenta'], `[${AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${THREAD.MAIN}]`),
-      toColor(['blue', 'underline'], `[${PRINT_TYPE.INFO}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
+      toColor(['blue', 'underline'], `[${PrintType.Info}]${toPrintClear()}:`),
       ...message
     ]
   }
@@ -69,8 +69,8 @@ export class PrinterService {
     return [
       toColor(['magenta', 'bright'], `[${AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${THREAD.MAIN}]`),
-      toColor(['yellow', 'underline'], `[${PRINT_TYPE.WARN}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
+      toColor(['yellow', 'underline'], `[${PrintType.Warn}]${toPrintClear()}:`),
       toColor(['yellow']),
       ...message
     ]
@@ -89,8 +89,8 @@ export class PrinterService {
     return [
       toColor(['magenta'], `[${AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${THREAD.MAIN}]`),
-      toColor(['green', 'underline'], `[${PRINT_TYPE.SUCCESS}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
+      toColor(['green', 'underline'], `[${PrintType.Success}]${toPrintClear()}:`),
       toColor(['green']),
      ...message
     ]
@@ -108,8 +108,8 @@ export class PrinterService {
     return [
       toColor(['magenta', 'bright'], `[${AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${THREAD.MAIN}]`),
-      toColor(['red', 'underline'], `[${PRINT_TYPE.ERROR}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
+      toColor(['red', 'underline'], `[${PrintType.Error}]${toPrintClear()}:`),
       toColor(['red']),
      ...message
     ]

@@ -5,12 +5,13 @@ export type { BuilderOptions } from './builder';
 export { Builder } from './builder';
 
 export {
-  RUNTIME_PLATFORMS,
-  PLATFORMS_ON_DESKTOP, PLATFORMS_ON_BROWSER, PLATFORMS_ON_MOBILE,
+  RuntimePlatforms,
 
-  ENV,
+  PlatformsOnDesktop, PlatformsOnBrowser, PlatformsOnMobile,
 
-  CONFIG_ENV_COMMAND, CONFIG_ENV_NODE_ENV
+  Env,
+
+  NodeCommand, NodeEnv
 } from '../enums';
 
 export * as rules from './rules';

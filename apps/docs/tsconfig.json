@@ -16,7 +16,6 @@
   },
 
   "include": [
-    "docs",
     "theme",
     "./env.d.ts",
     "rspress.config.ts"

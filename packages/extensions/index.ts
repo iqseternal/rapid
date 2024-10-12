@@ -1,0 +1,12 @@
+
+
+export class ExtensionsManager {
+
+  constructor() {
+
+
+    
+  }
+
+
+}

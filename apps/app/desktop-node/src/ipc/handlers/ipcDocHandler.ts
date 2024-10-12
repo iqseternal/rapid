@@ -3,7 +3,7 @@ import { WindowService } from '@/core/service/WindowService';
 import { app, dialog } from 'electron';
 import { FileService } from '@/core/service/FileService';
 import { ConvertService } from '@/core/service/ConvertService';
-import { EXTENSIONS, EXPORTS_EXTENSIONS, ExtensionType } from '@rapid/config/constants';
+import { EXTENSIONS, ExportsExtensions, ExtensionType } from '@rapid/config/constants';
 import { AppFileStorageService } from '@/core/service/AppStorageService';
 import { RuntimeException, TypeException } from '@/core';
 import { PrinterService } from '@/core/service/PrinterService';
@@ -27,9 +27,9 @@ type DocData = {
 }
 
 type ExportFileTypeToData = {
-  [EXPORTS_EXTENSIONS.JSON]: DocData;
-  [EXPORTS_EXTENSIONS.PNG]: string;
-  [EXPORTS_EXTENSIONS.SVG]: string;
+  [ExportsExtensions.Json]: DocData;
+  [ExportsExtensions.Png]: string;
+  [ExportsExtensions.Svg]: string;
 }
 
 const DOC_EXTENSIONS: string[] = [EXTENSIONS.DOC];
@@ -118,7 +118,7 @@ export const ipcRdDocOpen = makeIpcHandleAction(
 export const ipcRdDocExpose = makeIpcHandleAction(
   'IpcDoc/exportsDoc',
   [],
-  async <FileType extends EXPORTS_EXTENSIONS>(windowService: WindowService, filetype: FileType, data: ExportFileTypeToData[FileType]) => {
+  async <FileType extends ExportsExtensions>(windowService: WindowService, filetype: FileType, data: ExportFileTypeToData[FileType]) => {
     const filePath = dialog.showSaveDialogSync(windowService.window, {
       filters: [{ extensions: [filetype], name: filetype }]
     });
@@ -152,8 +152,8 @@ export const ipcRdDocExpose = makeIpcHandleAction(
 export const ipcRdDocImport = makeIpcHandleAction(
   'IpcDoc/importDoc',
   [],
-  async <FileType extends EXPORTS_EXTENSIONS.JSON>(windowService: WindowService, filetype: FileType) => {
-    if (filetype === EXPORTS_EXTENSIONS.JSON) {
+  async <FileType extends ExportsExtensions.Json>(windowService: WindowService, filetype: FileType) => {
+    if (filetype === ExportsExtensions.Json) {
       const filePath = dialog.showOpenDialogSync(windowService.window, {
         filters: [
           {
