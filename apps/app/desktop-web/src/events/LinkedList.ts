@@ -42,6 +42,7 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 向链表中插入节点, 但是位置是不定的, 只是确保在链表当中
    */
   protected abstract insertNode(...node: Node[]): void;
+
   /**
    * 向链表中插入元素, 但是位置是不定的, 只是确保在链表当中
    */
@@ -51,6 +52,7 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 以头插法, 插入节点, 确保在链表头部
    */
   protected abstract insertNodeAtHead(...nodes: Node[]): void;
+
   /**
    * 以头插法, 插入元素, 确保在链表头部
    */
@@ -60,6 +62,7 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 以尾插法, 插入节点, 确保在链表尾部
    */
   protected abstract insertNodeAtTail(...nodes: Node[]): void;
+
   /**
    * 以尾插法, 插入元素, 确保在链表尾部
    */
@@ -78,6 +81,7 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 删除一个头部节点
    */
   protected abstract deleteNodeAtHead(): Node | null;
+
   /**
    * 删除一个头部元素
    */
@@ -87,30 +91,37 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 删除一个尾部节点
    */
   protected abstract deleteNodeAtTail(): Node | null;
+
   /**
    * 删除一个尾部元素
    */
   abstract deleteAtTail(): V | null;
+
   /**
    * 查找符合 predicate 的节点集合
    */
   protected abstract findNode(predicate: (node: Node) => boolean): Node | null;
+
   /**
    * 查找符合 predicate 的元素集合
    */
   public abstract find(predicate: (value: V) => boolean): V | null;
+
   /**
    * 从头部顺序查找符合 predicate 的节点集合
    */
   protected abstract findNodeFromHead(predicate: (value: Node) => boolean): Node | null;
+
   /**
    * 从头部顺序查找符合 predicate 的元素集合
    */
   abstract findFromHead(predicate: (value: V) => boolean): V | null;
+
   /**
    * 克隆一个新的节点
    */
   protected abstract cloneNode(node: Node): Node;
+
   /**
    * 克隆一个新的 LinkedList
    */
@@ -147,8 +158,13 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
   public abstract length(): number;
 }
 
-
+/**
+ * 单向链表的节点
+ */
 export interface SinglyLinkedNode<V> extends LinkedNode<V> {
+  /**
+   * 下一个节点的指针
+   */
   next: this | null;
 }
 
@@ -156,7 +172,8 @@ export interface SinglyLinkedNode<V> extends LinkedNode<V> {
  * 单向链表
  */
 export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
-  protected override head: SinglyLinkedNode<V> = { isHead: true, value: null as unknown as V, next: null };
+  protected override readonly head: SinglyLinkedNode<V> = { isHead: true, value: null as unknown as V, next: null };
+
   /**
    * 单向链表的最后一个节点
    */
@@ -196,6 +213,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     const nodes = values.map(value => this.initNode(value));
     this.insertNodeAtTail(...nodes);
   }
+
   protected override insertNodeAtTail(...nodes: SinglyLinkedNode<V>[]): void {
     nodes.forEach(node => {
       this.tail.next = node;
@@ -221,7 +239,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   }
 
   public override delete(predicate: (value: V) => boolean): V[] {
-    let result: SinglyLinkedNode<V>[] = [];
+    const result: SinglyLinkedNode<V>[] = [];
 
     let node: SinglyLinkedNode<V> | null = this.head;
     while (node.next) {
@@ -271,6 +289,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     let node: SinglyLinkedNode<V> | null = this.head.next;
     while (node) {
       if (predicate(node)) break;
+      node = node.next;
     }
     return node;
   }
@@ -337,8 +356,6 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return length;
   }
 }
-
-
 
 export interface DoubleLinkedNode<V> extends LinkedNode<V> {
 

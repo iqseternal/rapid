@@ -1,5 +1,3 @@
-import type { BusKey, BusListener } from './BusManager';
-import { BusManager } from './BusManager';
 
 export type { BusListenerSubscribeHeadNode, BusListenerOffCallback, BusListener, BusListenerSubscribeNode, BusKey } from './BusManager';
 export { BusManager } from './BusManager';

@@ -24,6 +24,8 @@
     "noEmitOnError": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
 
     "allowSyntheticDefaultImports": true,
     "allowUmdGlobalAccess": true,
@@ -51,6 +53,7 @@
   "include": ["./src/**/*.ts", "./src/**/*.tsx"],
   "exclude": [
     "node_modules",
+    "./**/*.test.ts",
     "**/node_modules/*",
     "node_modules/@meta2d/core"
   ]

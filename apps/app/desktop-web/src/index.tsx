@@ -24,17 +24,14 @@ ReactDOM.createRoot(rootContainer).render(
 
 import { SinglyLinkedList } from './events/LinkedList';
 
-
-const singlyLinkedList = new SinglyLinkedList<number>();
-
-singlyLinkedList.insert(1);
-singlyLinkedList.insert(2);
-
-singlyLinkedList.insertAtHead(3);
-
-const other = new SinglyLinkedList<number>();
-other.insert(1);
-
-for (const value of singlyLinkedList.merge(other)) {
-  console.log(value);
+interface Item {
+  name: string;
+  age: number;
 }
+
+const singlyLinkedList = new SinglyLinkedList<Item>();
+
+singlyLinkedList.insert({ name: 'suey', age: 18 });
+singlyLinkedList.insert({ name: 'suey', age: 20 });
+singlyLinkedList.insert({ name: 'suey', age: 19 });
+singlyLinkedList.insert({ name: 'suey', age: 1 });

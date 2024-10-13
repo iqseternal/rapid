@@ -6,7 +6,7 @@ export class Bus extends BusManager {
    * 异步发射一个事件
    */
   async send(evtName: BusKey, ...args: any[]) {
-    super.notice(evtName, ...args);
+    await super.notice(evtName, ...args);
   }
 
   /**
@@ -37,7 +37,7 @@ export class Bus extends BusManager {
   /**
    * 移除所有监听
    */
-  clear() {
+  override clear() {
     super.clear();
   }
 }
