@@ -1,4 +1,6 @@
 import { Printer } from '@suey/printer';
+import type { DoubleLinkedNode } from './DoubleLinkedList';
+import { DoubleLinkedList } from './DoubleLinkedList';
 
 export type BusKey = '*' | string | symbol | number;
 
@@ -9,145 +11,100 @@ export type BusListener = (...args: unknown[]) => Promise<any> | any;
  */
 export type BusListenerOffCallback = () => void;
 
-export type BusListenerSubscribeHeadNode = {
-  head: true;
-  previous: null | BusListenerSubscribeHeadNode | BusListenerSubscribeNode;
-  current: null;
-  next: null | BusListenerSubscribeHeadNode | BusListenerSubscribeNode;
+export type BusListenerSlice = {
+  /** 监听是否只生效一次 */
+  once?: boolean;
+
+  listener: BusListener;
 }
 
-export type BusListenerSubscribeNode = {
-  /** 标识当前是否是一个头指针 */
-  head: false;
-  /** 上一个 */
-  previous: null | BusListenerSubscribeHeadNode | BusListenerSubscribeNode;
-  current: {
-    /** 监听是否只生效一次 */
-    once?: boolean;
+export type BusListenerHybrid = {
+  // 预留：可做函数到链表节点的快速映射
+  listenerMap: WeakMap<BusListener, DoubleLinkedNode<BusListenerSlice>>;
 
-    listener: BusListener;
-
-    remove: BusListenerOffCallback;
-  };
-  /** 下一个 */
-  next: null | BusListenerSubscribeHeadNode | BusListenerSubscribeNode;
+  linkedList: DoubleLinkedList<BusListenerSlice>;
 }
 
 export abstract class BusManager {
-  private readonly listenerMap = new Map<Exclude<BusKey, '*'>, BusListenerSubscribeHeadNode>();
+  private readonly eventMap = new Map<Exclude<BusKey, '*'>, BusListenerHybrid>();
 
   /**
-   * 初始化链表访问
-   * @returns
+   * 获取一个事件监听的混合存储对象
    */
-  private initListenerLink(evtName: BusKey) {
-    if (this.listenerMap.has(evtName)) return this.listenerMap.get(evtName)!;
+  private getBusListenerHybrid(busName: BusKey): BusListenerHybrid {
+    if (this.eventMap.has(busName)) return this.eventMap.get(busName)!;
 
-    const head: BusListenerSubscribeHeadNode = { head: true, previous: null, current: null, next: null };
-    head.previous = head;
-    head.next = head;
+    const listenerMap = new WeakMap<BusListener, DoubleLinkedNode<BusListenerSlice>>();
+    const linkedList = new DoubleLinkedList<BusListenerSlice>();
 
-    this.listenerMap.set(evtName, head);
-    return head;
+    this.eventMap.set(busName, { listenerMap, linkedList });
+    return this.eventMap.get(busName)!;
   }
 
   /**
    * 订阅
    * @returns
    */
-  protected subscribe<Listener extends BusListener>(evtName: BusKey, listener: Listener, options?: { once?: boolean }) {
-    const head = this.initListenerLink(evtName);
-    const newSubscribeNode: BusListenerSubscribeNode = {
-      head: false,
-      previous: null,
-      current: {
-        once: options?.once,
-        listener,
-        remove: () => {
-          if (newSubscribeNode.previous && newSubscribeNode.next) {
-            const previous = newSubscribeNode.previous;
-            const next = newSubscribeNode.next;
+  protected subscribe<Listener extends BusListener>(busName: BusKey, listener: Listener, options?: { once?: boolean }) {
+    const busListenerHybrid = this.getBusListenerHybrid(busName);
+    const hybridLinkedList = busListenerHybrid.linkedList;
 
-            previous.next = next;
-            next.previous = previous;
-          }
-        }
-      },
-      next: null,
-    };
+    const node = hybridLinkedList.initNode({ once: options?.once, listener });
+    hybridLinkedList.insertNode(node);
 
-    const lastSubscribeNode = head.previous ?? head;
-    // 尾插
-    lastSubscribeNode.next = newSubscribeNode;
-    newSubscribeNode.previous = lastSubscribeNode;
-    newSubscribeNode.next = head;
-    head.previous = newSubscribeNode;
-    return newSubscribeNode.current.remove;
+    return () => {
+      hybridLinkedList.deleteNode(node);
+    }
   }
 
   /**
    * 取消订阅
    * @returns
    */
-  protected unsubscribe<Listener extends BusListener>(evtName: BusKey, listener: Listener) {
-    const head = this.listenerMap.get(evtName);
-    if (!head) return;
+  protected unsubscribe<Listener extends BusListener>(busName: BusKey, listener: Listener) {
+    const busListenerHybrid = this.getBusListenerHybrid(busName);
+    const hybridLinkedList = busListenerHybrid.linkedList;
 
-    let next = head.next;
-    while (next) {
-      if (next.head) return;
-
-      if (next.current.listener === listener) {
-        next.current.remove();
-      }
-
-      next = next.next;
-    }
+    hybridLinkedList.delete((slice) => slice.listener === listener);
   }
 
   /**
    * 通知处理事件
    */
-  protected async notice(evtName: Exclude<BusKey, '*'>, ...args: any[]) {
+  protected async notice(busName: Exclude<BusKey, '*'>, ...args: any[]) {
     requestIdleCallback(() => {
-      this.noticeSync(evtName, ...args);
+      this.noticeSync(busName, ...args);
     })
   }
 
   /**
    * 同步通知处理事件
    */
-  protected noticeSync(evtName: Exclude<BusKey, '*'>, ...args: any[]) {
+  protected noticeSync(busName: Exclude<BusKey, '*'>, ...args: any[]) {
     // not allowed
-    if (evtName === '*') {
-
+    if (busName === '*') {
       Printer.printError('不应该通知所有事件进行回调');
-
       return;
     }
 
-    const head = this.listenerMap.get(evtName);
-    if (!head) return;
+    const busListenerHybrid = this.getBusListenerHybrid(busName);
+    const hybridLinkedList = busListenerHybrid.linkedList;
 
-    let next = head.next;
-    while (next) {
-      if (next.head) return;
+    hybridLinkedList.forEachNode(node => {
+      const slice = node.value;
+      slice.listener(...args);
 
-      const listener = next.current.listener;
-      listener(...args);
-
-      if (next.current.once) {
-        next.current.remove();
-      }
-
-      next = next.next;
-    }
+      if (slice.once) hybridLinkedList.deleteNode(node);
+    })
   }
 
   /**
    * 删除所有事件订阅
    */
-  protected clear() {
-    this.listenerMap.clear();
+  protected clear(busName: string) {
+    const busListenerHybrid = this.getBusListenerHybrid(busName);
+    const hybridLinkedList = busListenerHybrid.linkedList;
+
+    hybridLinkedList.clear();
   }
 }

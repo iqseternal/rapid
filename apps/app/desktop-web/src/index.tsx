@@ -20,18 +20,3 @@ ReactDOM.createRoot(rootContainer).render(
 
   </StrictMode>
 );
-
-
-import { SinglyLinkedList } from './events/LinkedList';
-
-interface Item {
-  name: string;
-  age: number;
-}
-
-const singlyLinkedList = new SinglyLinkedList<Item>();
-
-singlyLinkedList.insert({ name: 'suey', age: 18 });
-singlyLinkedList.insert({ name: 'suey', age: 20 });
-singlyLinkedList.insert({ name: 'suey', age: 19 });
-singlyLinkedList.insert({ name: 'suey', age: 1 });

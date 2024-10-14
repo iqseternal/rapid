@@ -1,6 +1,6 @@
 
 
-import { SinglyLinkedList } from './LinkedList';
+import { SinglyLinkedList } from './SinglyLinkedList';
 
 test('测试单链表功能是否正常', () => {
   const linkedList = new SinglyLinkedList();

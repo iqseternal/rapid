@@ -11,12 +11,16 @@ export const Home = memo(() => {
   const refresh = useRefresh();
 
   useEffect(() => {
-    const off = bus.on('message', console.log);
+    const off1 = bus.on('message', console.log);
+    const off2 = bus.on('message', () => {
 
-    console.log('init');
+      console.log('收到了事件');
+    })
 
-
-    return off;
+    return () => {
+      off1();
+      off2();
+    }
   }, []);
 
   return (
