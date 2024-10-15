@@ -46,14 +46,13 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
   const [workbenchesRoute] = useState(retrieveRoutes().workbenchesRoute);
 
   const [logoutPending, logout] = useTransition(async () => {
-    const [logoutErr] = await toPicket(logoutReq());
-    if (logoutErr) {
-      IMessage.error(logoutErr.descriptor);
-      return;
-    }
+    // const [logoutErr] = await toPicket(logoutReq());
+    // if (logoutErr) {
+    //   IMessage.error(logoutErr.descriptor);
+    //   return;
+    // }
 
-    await toWaitPromise();
-
+    // await toWaitPromise();
     await useFadeOut(async () => {
       const { loginRoute } = retrieveRoutes();
       navigate(loginRoute.meta.fullPath);
@@ -69,16 +68,6 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
     <FullSizeWidth
       className={styles.topContainer}
     >
-      <SideBarItem
-        icon='LogoutOutlined'
-        tipText='退出登录'
-        onClick={logout}
-      />
-    </FullSizeWidth>
-
-    <FullSizeWidth
-      className={styles.middleContainer}
-    >
       {
         workbenchesRoute.children?.map(routeItem => {
           return <SideBarItem
@@ -92,6 +81,12 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
           </SideBarItem>;
         })
       }
+
+      <SideBarItem
+        icon='LogoutOutlined'
+        tipText='退出登录'
+        onClick={logout}
+      />
     </FullSizeWidth>
 
     <FullSizeWidth

@@ -1,27 +1,6 @@
 
-
-export enum RegisterPoints {
-  WorkbenchesGraphic = 'WorkbenchesGraphic',
-  WorkbenchesToolbar = 'WorkbenchesToolbar'
-}
-
-export abstract class Extension {
-  id: string;
-  version: number;
-  registerPoint: RegisterPoints;
-
-  abstract activate(): void;
-}
-
-export enum ExtensionEvents {
-  OnRegistered,
-
-  OnActivated,
-
-  OnUnregistered
-}
-
-
+import { RegisterPoints } from './RegisterPoints';
+import { Extension } from 'electron';
 
 /**
  * Extensions manager
@@ -78,11 +57,22 @@ export class ExtensionsManager {
 
   registerExtension(extension: Extension): void {
 
+
   }
 
   unregisterExtension(extension: Extension): void {
 
   }
+
+  useRegisterPointer() {
+
+
+  }
 }
+
+
+
+
+
 
 

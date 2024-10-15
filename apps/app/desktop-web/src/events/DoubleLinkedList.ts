@@ -265,9 +265,9 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
     let node = this.head.next;
 
     while (node) {
-      if (node.isHead) return;
-
       const nextNode = node.next;
+      if (nextNode?.isHead) break;
+
       node.next = null;
       node.previous = null;
 
@@ -279,7 +279,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   }
 
   public override isEmpty(): boolean {
-    return this.head.next === this.head;
+    return this.head.next === this.head && this.head.previous === this.head;
   }
 
   public override length(): number {

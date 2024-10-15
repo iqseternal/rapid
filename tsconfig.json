@@ -7,8 +7,10 @@
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
+    "target": "ESNext",
     "moduleResolution": "node",
-    "module": "ESNext"
+    "module": "ESNext",
+    "downlevelIteration": true
   },
   "exclude": ["node_modules", "**/*.test.ts", "**/*.test.js"]
 }

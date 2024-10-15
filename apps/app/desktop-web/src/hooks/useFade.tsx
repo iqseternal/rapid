@@ -33,7 +33,6 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
 
   useAsyncEffect(async () => {
 
-
     if (beforeCallback) {
       const [err] = await toPicket(Promise.resolve(beforeCallback()));
 

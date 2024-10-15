@@ -19,7 +19,7 @@ export default async (): Promise<Config> => {
     verbose: true,
 
     // 0: 运行所有测试, 1: 遇到错误时停止
-    bail: 0,
+    bail: 1,
 
     // 是否收集测试时的覆盖率信息, 测试执行速度被明显减慢
     collectCoverage: true,
@@ -28,7 +28,7 @@ export default async (): Promise<Config> => {
     coverageReporters: ['clover', 'json', 'lcov', ['text', {skipFull: true}]],
 
     // 本测试展示的项目名
-    displayName: 'rapid',
+    displayName: 'rapid-test',
 
     // 使调用已弃用的 API 会引发有用的错误消息。
     errorOnDeprecated: true,

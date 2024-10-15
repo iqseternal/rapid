@@ -1,6 +1,6 @@
-import type { FC, ReactNode, HTMLAttributes } from 'react';
+import type { ReactNode, HTMLAttributes } from 'react';
 import { forwardRef } from 'react';
-import { classnames, CssValueConverts } from '../../common';
+import { classnames } from '../../common';
 import styles from './index.module.scss';
 
 export interface SubfieldProps extends HTMLAttributes<HTMLElement> {

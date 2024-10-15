@@ -121,11 +121,12 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
 
   protected override deleteNodeAtTail(): SinglyLinkedNode<V> | null {
     const node = this.findNode(node => node.next === this.tail);
+    const nextNode = node?.next ?? null;
     if (node) {
       this.tail = node;
       node.next = null;
     }
-    return node;
+    return nextNode;
   }
 
   public override deleteAtTail(): V | null {

@@ -1,7 +1,7 @@
 import { isFunction, isRawObject } from '@suey/pkg-utils';
-import { isValidElement, useCallback, useEffect, useMemo, useSyncExternalStore } from 'react';
+import { isValidElement, useCallback, useMemo, useSyncExternalStore } from 'react';
 import type { StoreApi, UseBoundStore } from 'zustand';
-import { useDependenciesListHook, useRefresh } from '../hooks';
+import { useDependenciesListHook } from '../hooks';
 
 const ZustandSelectorTargetSymbol = Symbol(`ZustandSelectorObjSymbol`);
 

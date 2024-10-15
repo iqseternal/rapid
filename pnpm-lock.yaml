@@ -12,8 +12,8 @@ importers:
         specifier: ^5.2.6
         version: 5.3.7(react-dom@18.3.1)(react@18.3.1)
       '@suey/pkg-utils':
-        specifier: 0.1.9
-        version: 0.1.9(@angular/common@18.1.4)(@angular/core@18.1.4)
+        specifier: 0.1.12
+        version: 0.1.12(@angular/common@18.1.4)(@angular/core@18.1.4)
       '@suey/pkg-web':
         specifier: ^0.0.3
         version: 0.0.3(typescript@5.3.3)
@@ -383,6 +383,8 @@ importers:
         specifier: ^1.27.1
         version: 1.31.1(webpack@5.93.0)
 
+  apps/scripts: {}
+
   apps/website:
     dependencies:
       '@ant-design/icons':
@@ -481,6 +483,8 @@ importers:
         version: 5.1.0(ts-node@10.9.2)(typescript@5.3.3)
 
   config: {}
+
+  packages/extensions: {}
 
   packages/libs-web:
     dependencies:
@@ -4695,8 +4699,8 @@ packages:
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
     dev: true
 
-  /@suey/pkg-utils@0.1.9(@angular/common@18.1.4)(@angular/core@18.1.4):
-    resolution: {integrity: sha512-XfaXa04EjM5uVrbzKZR+Xuy4NK92sqxZy9M8fhsLdVL4NHAFNYuH79xRUwfKt91qN3GQQ4vAQCiPIkSKyG2K5g==}
+  /@suey/pkg-utils@0.1.12(@angular/common@18.1.4)(@angular/core@18.1.4):
+    resolution: {integrity: sha512-Zr76oDT80iwIqTt60P03+p82gHwTh72mEq70Nq9R9ETt1+gOFDmPVhd7hzQ06MRCOvxmvXs6xgs8fEq2OHZBJg==}
     dependencies:
       '@types/js-cookie': 3.0.6
       axios: 1.7.3

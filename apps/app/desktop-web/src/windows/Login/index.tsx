@@ -4,15 +4,15 @@ import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
-import { useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
+import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toPicket } from '@suey/pkg-utils';
-import { userLogin } from '@/features';
+import { setAccessToken, userLogin } from '@/features';
 import { registerReq } from '@/api';
 import { retrieveRoutes } from '@/router';
 import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/common';
 import { menus } from '@/menus';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
@@ -30,6 +30,13 @@ export default function Login() {
     await windowSetSize({ width: 850, height: 550 });
     await windowResizeAble({ able: false });
     if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
+    await useFadeOut(async () => {
+      setAccessToken('1111');
+      const { workbenchesRoute } = retrieveRoutes();
+      console.log('跳转出去', workbenchesRoute.meta.fullPath);
+
+      navigate(workbenchesRoute.meta.fullPath, { replace: true });
+    });
   });
 
   const { message } = App.useApp();

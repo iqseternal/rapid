@@ -26,7 +26,7 @@ export const getStorageAutoFixSize = (): boolean => JSON.parse(localStorage.getI
  */
 export const setStorageAutoFixSize = (autoFix: boolean) => localStorage.setItem('hooks__autoFixSize', JSON.stringify(autoFix));
 
-export interface AutoFixTableSizeOptions<RecordType extends Record<string, unknown>> {
+export interface AutoFixTableSizeOptions {
   autoFixSize?: boolean;
 
   /** 当前仅支持 antd */
@@ -51,7 +51,7 @@ export interface AutoFixTableSizeOptions<RecordType extends Record<string, unkno
  * 3. 计算高度，并为表格数据区域高度赋值
  *
  */
-export function useAutoFixTableSize<RecordType extends Record<string, unknown>>(tableRef: RefObject<HTMLDivElement>, autoFixTableProps: AutoFixTableSizeOptions<RecordType>) {
+export function useAutoFixTableSize(tableRef: RefObject<HTMLDivElement>, autoFixTableProps: AutoFixTableSizeOptions) {
   const {
     autoFixSize = getStorageAutoFixSize(),
 

@@ -1,17 +1,16 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/core/service/WindowService';
-import { RuntimeException, TypeException } from '@/core';
-import { isNull, isNumber, isString, isUnDef, isUndefined } from '@suey/pkg-utils';
+import { TypeException } from '@/core';
+import { isNumber, isString, isUnDef } from '@suey/pkg-utils';
 import { AppConfigService } from '@/core/service/AppConfigService';
 import { UserConfigService } from '@/core/service/UserConfigService';
 import { toMakeIpcAction } from '@/core/ipc';
 import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 import { PAGES_WINDOW_MAIN } from '@/config';
-import { join, posix } from 'path';
-import { PrinterService } from '@/core/service/PrinterService';
+import { posix } from 'path';
 
-const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
+const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]
 });
 
@@ -194,13 +193,13 @@ export const ipcWindowSetPosition = makeIpcHandleAction(
 export const ipcOpenWindow = makeIpcHandleAction(
   'IpcWindow/openWindow',
   [],
-  async (windowService, options: { windowKey?: string; subUrl: string; }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => {
+  async (_, options: { windowKey?: string; subUrl: string; }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => {
     const { windowKey, subUrl } = options;
 
     let targetWindowService: WindowService | null = null;
 
     if (isString(windowKey)) targetWindowService = WindowStateMachine.findWindowService(windowKey);
-    if (isNull(targetWindowService) || isUndefined(targetWindowService)) {
+    if (isUnDef(targetWindowService)) {
       targetWindowService = new WindowService(browserWindowOptions, {
         windowKey,
         url: posix.join(PAGES_WINDOW_MAIN, subUrl),
@@ -208,7 +207,7 @@ export const ipcOpenWindow = makeIpcHandleAction(
       })
     }
 
-    if (!targetWindowService.window.isVisible()) targetWindowService.show();
+    if (!targetWindowService!.window.isVisible()) targetWindowService!.show();
   }
 );
 
