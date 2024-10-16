@@ -9,17 +9,33 @@ export interface BuilderOptions {
   checker?: boolean;
 }
 
+/**
+ * 构建
+ */
 export class Builder {
+  /**
+   * 构造函数, 传递参数 checker 可控制是否自动判断和修正当前环境变量
+   *
+   */
   constructor(options?: BuilderOptions) {
     const { checker = true } = options || {};
 
     if (checker) EnvChecker.checkerAll();
   }
 
+  /**
+   * 获得环境的判别常量
+   */
   toEnvs() {
     return EnvChecker.toEnvs();
   }
 
+  /**
+   * 创建构建工具别名对象,
+   * {
+   *    "@": "./src"
+   * }
+   */
   defineAlias(basePath: string, paths: Record<`${string}/*`, string[]>) {
     const alias: Record<string, string> = {};
 
@@ -33,6 +49,12 @@ export class Builder {
     return alias;
   }
 
+  /**
+   * 为构建项目注入变量: 可以做到环境判别作用
+   *
+   * @example
+   * const IS_DEV = CURRENT_ENV === Env.Dev;
+   */
   defineVars<Variables extends Partial<Omit<InjectionVariables, 'CURRENT_ENV'>>>(variables?: Variables): InjectionVariables {
     const vars: InjectionVariables = {
       CURRENT_PLATFORM: PlatformsOnDesktop.Windows,

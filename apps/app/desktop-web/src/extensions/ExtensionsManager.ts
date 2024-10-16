@@ -1,72 +1,53 @@
 
 import { RegisterPoints } from './RegisterPoints';
-import { Extension } from 'electron';
+import { Extension } from './Extension';
+import { bus } from '@/events';
+import { isString } from '@suey/pkg-utils';
 
 /**
  * Extensions manager
  *
- *
- *
- * 注册点：
- *    事件点
- *
- *    UI点
- *
- * 插件声明周期：
- *
- *    register
- *
- *    activate
- *
- *    unRegister
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 export class ExtensionsManager {
-  private static readonly extensionsManager = new ExtensionsManager();
   constructor() { return ExtensionsManager.extensionsManager; }
+
+  private static readonly extensionsManager = new ExtensionsManager();
+  private readonly extensions = new Map<string, Extension>();
 
   public static getInstance() { return ExtensionsManager.extensionsManager; }
 
-  unGzipExtension(data: any): void {
+  async installExtension(...extensions: Extension[]) {
+    extensions.forEach(async extension => {
 
+      const id = extension.id;
+      const version = extension.version;
+
+      if (this.extensions.has(id)) {
+        const oldExtension = this.extensions.get(id)!;
+
+        await oldExtension.onUnregistered();
+        await oldExtension.onUninstalled();
+      }
+
+      // await extension.onInstalled(ExtensionRuntimeContext);
+      this.extensions.set(id, extension);
+    })
   }
 
-  installExtension(extension: Extension) {
+  async unregisterExtension(...ids: string[]): Promise<void>;
+  async unregisterExtension(...extensions: Extension[]): Promise<void>
+  async unregisterExtension(...extensions: string[] | Extension[]) {
+    extensions.forEach(async (extension: string | Extension) => {
+      const id = isString(extension) ? extension : extension.id;
 
-  }
+      const targetExtension = this.extensions.get(id);
+      if (targetExtension) {
+        await targetExtension.onUnregistered();
+        await targetExtension.onUninstalled();
+      }
 
-  removeExtension(extension: Extension) {
-
-  }
-
-  registerExtension(extension: Extension): void {
-
-
-  }
-
-  unregisterExtension(extension: Extension): void {
-
-  }
-
-  useRegisterPointer() {
-
-
+      this.extensions.delete(id);
+    })
   }
 }
 

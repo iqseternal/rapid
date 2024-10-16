@@ -332,6 +332,9 @@ importers:
       '@leafer-ui/interface':
         specifier: ^1.0.2
         version: 1.0.4
+      '@rapid/extensions':
+        specifier: workspace:^
+        version: link:../../../packages/extensions
       '@rapid/libs-web':
         specifier: workspace:^
         version: link:../../../packages/libs-web
@@ -382,6 +385,12 @@ importers:
       rspress:
         specifier: ^1.27.1
         version: 1.31.1(webpack@5.93.0)
+
+  apps/extensions:
+    dependencies:
+      '@rapid/extensions':
+        specifier: workspace:^
+        version: link:../../packages/extensions
 
   apps/scripts: {}
 

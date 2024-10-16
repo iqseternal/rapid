@@ -6,4 +6,4 @@ export * from './modules/useDocStore';
 
 export * from './modules/useThemeStore';
 
-export * from './modules/usePluginStore';
+export * from './modules/useExtensionStore';

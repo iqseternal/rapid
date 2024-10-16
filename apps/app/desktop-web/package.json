@@ -23,6 +23,7 @@
     "@leafer-in/text-editor": "^1.0.4",
     "@leafer-in/view": "^1.0.4",
     "@leafer-ui/interface": "^1.0.2",
+    "@rapid/extensions": "workspace:^",
     "@rapid/libs-web": "workspace:^",
     "current-device": "^0.10.2",
     "leafer": "^1.0.4",
