@@ -1,4 +1,4 @@
-
+import type { ExtensionContext } from '@rapid/extensions';
 
 export enum ExtensionEvents {
   OnInstalled = 'onInstalled',
@@ -10,50 +10,52 @@ export enum ExtensionEvents {
   OnUninstalled = 'onUninstalled',
 }
 
+export abstract class Extension{
+  abstract id: string;
+  abstract version: string;
 
+  abstract onInstalled(context: ExtensionContext): Promise<void>;
 
-export abstract class Extension {
-  id: string;
-  version: number;
+  abstract onRegistered(): Promise<void>;
+  abstract onActivated(): Promise<void>;
+  abstract onUpdated(): Promise<void>;
+  abstract onConfigChanged(): Promise<void>;
 
-  abstract [ExtensionEvents.OnInstalled]?: () => void;
-  abstract [ExtensionEvents.OnRegistered]?: () => void;
-  abstract [ExtensionEvents.OnActivated]?: () => void;
-  abstract [ExtensionEvents.OnUpdated]?: () => void;
-  abstract [ExtensionEvents.OnConfigChanged]?: () => void;
-  abstract [ExtensionEvents.OnUnregistered]?: () => void;
-  abstract [ExtensionEvents.OnUninstalled]?: () => void;
+  abstract onUnregistered(): Promise<void>;
+
+  abstract onUninstalled(): Promise<void>;
 }
+
 
 export class ThemePlugin extends Extension {
   override id = 'themePlugin';
-  override version = 1;
+  override version = '0.0.1';
 
-  override [ExtensionEvents.OnInstalled] = () => {
-
-  }
-
-  override [ExtensionEvents.OnRegistered] = () => {
+  override async onInstalled(context: ExtensionContext): Promise<void> {
 
   }
 
-  override [ExtensionEvents.OnActivated] = () => {
+  override async onRegistered() {
 
   }
 
-  override [ExtensionEvents.OnUpdated] = () => {
+  override async onActivated() {
 
   }
 
-  override [ExtensionEvents.OnConfigChanged] = () => {
+  override async onUpdated() {
 
   }
 
-  override [ExtensionEvents.OnUnregistered] = () => {
+  override async onConfigChanged() {
 
   }
 
-  override [ExtensionEvents.OnUninstalled] = () => {
+  override async onUnregistered() {
+
+  }
+
+  override async onUninstalled() {
 
   }
 }

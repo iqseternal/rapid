@@ -8,7 +8,6 @@ files:
   - 'resources/**'
 asarUnpack:
   - resources/**
-afterSign: builder/notarize.js
 win:
   executableName: rapid
 nsis:

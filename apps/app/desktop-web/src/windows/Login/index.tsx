@@ -33,7 +33,7 @@ export default function Login() {
     await useFadeOut(async () => {
       setAccessToken('1111');
       const { workbenchesRoute } = retrieveRoutes();
-      console.log('跳转出去', workbenchesRoute.meta.fullPath);
+      console.log('核心功能开发, 从登录界面自动跳转到工作区', workbenchesRoute.meta.fullPath);
 
       navigate(workbenchesRoute.meta.fullPath, { replace: true });
     });
