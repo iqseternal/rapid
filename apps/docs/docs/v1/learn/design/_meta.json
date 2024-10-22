@@ -2,11 +2,11 @@
   {
     "type": "file",
     "name": "eventsBus",
-    "label": "事件"
+    "label": "事件总线"
   },
   {
     "type": "file",
     "name": "extension",
-    "label": "插件"
+    "label": "插件化"
   }
 ]

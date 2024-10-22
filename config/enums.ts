@@ -9,7 +9,11 @@
 // 运行时声明
 
 /** 当前构建平台, 值为 number, 并且 PLATFORMS 不能重复 */
-export enum PlatformsOnDesktop { Windows = 0, Linux = 1, Mac = 2 }
+export enum PlatformsOnDesktop {
+  Windows = 0,
+  Linux = 1,
+  Mac = 2
+}
 
 export enum PlatformsOnMobile {}
 export enum PlatformsOnBrowser {}

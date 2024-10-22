@@ -20,7 +20,6 @@ import {
 
 import { AppStore } from '@/actions';
 import { bus } from '@/events';
-import { isString } from '@suey/pkg-utils';
 
 export interface Extension {
   /**
@@ -72,7 +71,7 @@ export const registerExtension = () => {
 }
 
 
-export const initPlugins = (...plugins: Plugin[]) => {
+export const initPlugins = (...plugins: Extension[]) => {
 
 
 }

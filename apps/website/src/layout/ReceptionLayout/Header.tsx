@@ -15,7 +15,7 @@ import { classnames } from '@libs/common';
 import { receptionMenuRoutes } from '@/router';
 import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 import { useReactive } from '@/hooks';
-import { isArray, isDef, isUnDef } from '@suey/pkg-utils';
+import { isArray, isDef, isUnDef } from '@rapid/libs';
 import { CONFIG } from '@rapid/config/constants';
 
 import styled, { css } from 'styled-components';

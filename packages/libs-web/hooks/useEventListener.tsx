@@ -1,4 +1,4 @@
-import { isDef } from '@suey/pkg-utils';
+import { isDef } from '@rapid/libs';
 import type { RefObject, DependencyList } from 'react';
 import { useEffect, useMemo } from 'react';
 

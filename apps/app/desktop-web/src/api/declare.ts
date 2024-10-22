@@ -1,11 +1,11 @@
 import { CONFIG } from '@rapid/config/constants';
-import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@suey/pkg-utils';
+import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@rapid/libs';
 import { StringFilters } from '@rapid/libs-web';
 import type { AxiosError } from 'axios';
 import { getAccessToken } from '@/features';
 
-export type { RequestConfig, Interceptors } from '@suey/pkg-utils';
-export { REQ_METHODS, createApiRequest, createRequest } from '@suey/pkg-utils';
+export type { RequestConfig, Interceptors } from '@rapid/libs';
+export { REQ_METHODS, createApiRequest, createRequest } from '@rapid/libs';
 
 /** 请求 hConfig 配置 */
 export interface RApiHConfig {
@@ -79,11 +79,7 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
     // nestjs server response.
     if (response.data && response.data.flag && response.data.status) {
       if (response.data.flag === 'ApiResponseOk') return Promise.resolve(response.data);
-      if (response.data.flag === 'ApiResponseFal') {
-        console.error(response.data);
-
-        return Promise.reject(response.data);
-      }
+      if (response.data.flag === 'ApiResponseFal') return Promise.reject(response.data);
 
       return response;
     }
@@ -107,12 +103,7 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
   }
 })
 
-export const {
-  apiGet: rApiGet,
-  apiPost: rApiPost,
-  request: rRequest,
-  createApi: rCreateApi
-} = rApi;
+export const { apiGet: rApiGet, apiPost: rApiPost, request: rRequest, createApi: rCreateApi } = rApi;
 
 export const rApiPut = rCreateApi(REQ_METHODS.PUT);
 

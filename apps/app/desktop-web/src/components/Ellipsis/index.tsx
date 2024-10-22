@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, memo } from 'react';
 import { classnames } from '@rapid/libs-web/common';
 import { useDebounceHook, useResizeObserver, useShallowReactive } from '@rapid/libs-web/hooks';
 import { commonStyles } from '@scss/common';
-import { isDef } from '@suey/pkg-utils';
+import { isDef } from '@rapid/libs';
 import { StringFilters } from '@rapid/libs-web';
 
 export interface EllipsisProps extends BaseProps {

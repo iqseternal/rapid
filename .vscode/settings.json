@@ -115,7 +115,7 @@
           "support.function"
         ],
         "settings": {
-          "foreground": "#ffbb00",
+          "foreground": "#ffbb00"
         }
       },
       { //逻辑符号：如 and  or
@@ -223,7 +223,7 @@
       },
       {
         "scope": [
-          "constant.other.symbol",
+          "constant.other.symbol"
         ],
         "settings": {
           "foreground": "#e0a118"
@@ -447,6 +447,7 @@
     "Leafer",
     "Maximizable",
     "Minimizable",
+    "pako",
     "rspack",
     "rspress",
     "typecheck",

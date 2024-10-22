@@ -18,7 +18,7 @@ export class TypeException extends Exception<ExceptionErrorMsgData> {
 export class TypeExceptionFilter extends ExceptionFilter {
 
 
-  override catch(err: TypeException): void {
+  public override catch(err: TypeException): void {
 
 
     PrinterService.printError('TypeException ==>', err.errMessage?.label);

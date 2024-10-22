@@ -1,4 +1,4 @@
-import { isNumber, isString } from '@suey/pkg-utils';
+import { isNumber, isString } from '@rapid/libs';
 import { PakoService } from './PakoService';
 
 export type ConvertDataType = string | number | Uint8Array | Buffer | object | Blob;

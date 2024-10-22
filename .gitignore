@@ -6,7 +6,6 @@
 
 # 缓存文件
 /**/cache
-/.eslintcache
 
 # 输出文件,
 /**/out

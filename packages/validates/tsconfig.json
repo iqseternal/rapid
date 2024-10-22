@@ -4,7 +4,12 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "module": "NodeNext"
   },
   "include": [
     "./**/*.ts", "./**/*.tsx"

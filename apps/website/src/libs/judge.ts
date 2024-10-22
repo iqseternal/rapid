@@ -1,4 +1,4 @@
-import { isDef, isUnDef } from '@suey/pkg-utils';
+import { isDef, isUnDef } from '@rapid/libs';
 import { after } from 'node:test';
 
 export const isNotSpaceStr = (...strs: (string | undefined | null)[]) => {

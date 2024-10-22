@@ -32,8 +32,11 @@ export type IpcActionMessageType<EvtActionType extends IpcActionEvent> = Omit<Ip
  * Ipc Action 中间件
  */
 export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
-  /** 中间件名称 */
+  /**
+   * 中间件名称
+   */
   name: string;
+
   /**
    * 转换参数, 可以利用本函数为每个子项的 action 函数提供统一的参数前缀, 因为默认情况下 electron ipc 第一个参数为 事件 e: IpcMainInvokeEvent | IpcMainEvent
    * 可能需要转换自定义对象或者 已有的 窗口对象
@@ -53,6 +56,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * 在 action 正式处理之前的回调函数
    */
   onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
+
   /**
    * 在 action 处理之后的回调函数
    */
@@ -64,6 +68,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * @param message 返回处理当前 ipc 句柄的信息
    */
   onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => void;
+
   /**
    * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
    * 如果不处理, 那么会在主进程产出一个错误.

@@ -1,4 +1,4 @@
-import { isString } from '@suey/pkg-utils';
+import { isString } from '@rapid/libs';
 import { useShallowReactive } from '../../hooks';
 import type { FC, ReactNode, ReactPropTypes, ReactElement } from 'react';
 import { isValidElement, useLayoutEffect, useMemo } from 'react';

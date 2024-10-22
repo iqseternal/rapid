@@ -1,6 +1,6 @@
 import type { IpcMainInvokeEvent, IpcMainEvent } from 'electron';
 import { BrowserWindow, app, screen, shell } from 'electron';
-import { isNumber } from '@suey/pkg-utils';
+import { isNumber } from '@rapid/libs';
 import { CONFIG, IS_DEV } from '@rapid/config/constants';
 
 /**

@@ -1,4 +1,4 @@
-import { isFunction, isString } from '@suey/pkg-utils';
+import { isFunction, isString } from '@rapid/libs';
 
 /** 有关样式的类型声明 */
 export namespace CSSTypes {

@@ -2,7 +2,7 @@
 import { RegisterPoints } from './RegisterPoints';
 import { Extension } from './Extension';
 import { bus } from '@/events';
-import { isString } from '@suey/pkg-utils';
+import { isString } from '@rapid/libs';
 
 /**
  * Extensions manager
@@ -17,8 +17,7 @@ export class ExtensionsManager {
   public static getInstance() { return ExtensionsManager.extensionsManager; }
 
   async installExtension(...extensions: Extension[]) {
-    extensions.forEach(async extension => {
-
+    const install = async (extension: Extension) => {
       const id = extension.id;
       const version = extension.version;
 
@@ -31,13 +30,15 @@ export class ExtensionsManager {
 
       // await extension.onInstalled(ExtensionRuntimeContext);
       this.extensions.set(id, extension);
-    })
+    }
+
+    extensions.forEach(install);
   }
 
   async unregisterExtension(...ids: string[]): Promise<void>;
   async unregisterExtension(...extensions: Extension[]): Promise<void>
   async unregisterExtension(...extensions: string[] | Extension[]) {
-    extensions.forEach(async (extension: string | Extension) => {
+    const uninstall = async (extension: Extension) => {
       const id = isString(extension) ? extension : extension.id;
 
       const targetExtension = this.extensions.get(id);
@@ -47,7 +48,9 @@ export class ExtensionsManager {
       }
 
       this.extensions.delete(id);
-    })
+    }
+
+    // extensions.forEach(uninstall);
   }
 }
 

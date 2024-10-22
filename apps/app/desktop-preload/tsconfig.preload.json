@@ -30,8 +30,9 @@
     "preload.ts"
   ],
   "exclude": [
-    "node_modules",
+    "src/**/*.d.ts",
 
+    "node_modules",
     "../**/*.test.ts"
   ],
   "references": [

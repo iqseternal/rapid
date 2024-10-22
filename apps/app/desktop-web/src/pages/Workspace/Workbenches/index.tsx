@@ -1,6 +1,6 @@
 import { useAsyncEffect, useShallowReactive, useUnmount, useMount } from '@rapid/libs-web/hooks';
 import { useUserStore, userUpdateInfo } from '@/features';
-import { isNull, isRawObject, isUnDef, toPicket } from '@suey/pkg-utils';
+import { isNull, isRawObject, isUnDef, toPicket } from '@rapid/libs';
 import { Card } from 'antd';
 import { useEffect, useRef, useState, memo } from 'react';
 import { FullSize, FullSizeHeight, FullSizeWidth, classnames } from '@rapid/libs-web';

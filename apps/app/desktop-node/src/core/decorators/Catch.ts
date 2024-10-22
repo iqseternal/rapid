@@ -2,11 +2,13 @@ import { PrinterService } from '../service/PrinterService';
 import { ExceptionFilter, Exception } from '../exceptions';
 import type { Decorator } from './common';
 import { decoratorGetMetadata, decoratorDefineMetadata, DescendantClass } from './common';
-import {  } from '@suey/pkg-utils';
 
 export interface CatchDecorator extends Decorator {
   (Exp: DescendantClass<Exception<any>>, ...Exceptions: DescendantClass<Exception<any>>[]): (ExpFilter: DescendantClass<ExceptionFilter>) => void;
 
+  /**
+   * 装饰器执行所需数据上下文
+   */
   context: {
     mapper: WeakMap<DescendantClass<Exception<any>>, ExceptionFilter>;
   }

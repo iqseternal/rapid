@@ -10,7 +10,7 @@ import type * as actions from '../desktop-node/src/ipc';
 
 export type IpcRendererEvent = Parameters<IpcRendererListener>[0];
 
-// 引入所有的 Action, 这就是为什么不许 ipc/index.ts 到处多余的变量
+// 引入所有的 Action, 这就是为什么不许 ipc/index.ts 导出多余的变量
 export type AllAction = typeof actions;
 
 // 创建句柄类型, 例如: { 'IpcStore/get': (key: string) => Promise<string> }

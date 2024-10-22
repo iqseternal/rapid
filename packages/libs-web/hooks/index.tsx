@@ -21,16 +21,14 @@ export type { MaintenanceStackOptions, JudgeIsCanBeControlStack } from './useMai
 export { useAsyncEffect, useAsyncLayoutEffect } from './useAsyncEffect';
 export type { AsyncEffectCallback } from './useAsyncEffect';
 
+export { useTransition } from './useTransition';
+export type { StartTransitionFunction } from './useTransition';
 
 // Exports
 export {
   useMount, useUnmount,
 
 } from 'ahooks';
-
-
-export { useTransition } from './useTransition';
-export type { StartTransitionFunction } from './useTransition';
 
 // 以下 Hook 需要优化
 

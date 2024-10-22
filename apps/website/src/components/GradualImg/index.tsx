@@ -1,4 +1,4 @@
-import { isUnDef } from '@suey/pkg-utils';
+import { isUnDef } from '@rapid/libs';
 import { Image, ImageProps } from 'antd';
 import { useEffect, useState, forwardRef } from 'react';
 import { MaxScreenWidth, MaxScreenHeight } from '@rapid/libs-web/styled';

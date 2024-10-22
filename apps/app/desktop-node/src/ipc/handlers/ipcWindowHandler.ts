@@ -2,7 +2,7 @@ import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { isSameWindowService, WindowService, WindowStateMachine } from '@/core/service/WindowService';
 import { TypeException } from '@/core';
-import { isNumber, isString, isUnDef } from '@suey/pkg-utils';
+import { isNumber, isString, isUnDef } from '@rapid/libs';
 import { AppConfigService } from '@/core/service/AppConfigService';
 import { UserConfigService } from '@/core/service/UserConfigService';
 import { toMakeIpcAction } from '@/core/ipc';

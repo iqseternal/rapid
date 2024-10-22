@@ -6,7 +6,7 @@ import { Button, Input, Space, Card, Dropdown, message } from 'antd';
 import type { FC } from 'react';
 import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toPicket } from '@suey/pkg-utils';
+import { toPicket } from '@rapid/libs';
 import { useDocStore } from '@/features';
 import { produce } from 'immer';
 import { toMakeZustandHijack, useZustandHijack } from '@rapid/libs-web';

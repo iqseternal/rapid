@@ -1,4 +1,4 @@
-import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isString, isUnDef } from '@suey/pkg-utils';
+import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isString, isUnDef } from '@rapid/libs';
 import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
 
 /**

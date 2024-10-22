@@ -2,13 +2,14 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { ipcMain } from 'electron';
 import { Exception } from '../exceptions';
-import { toPicket } from '@suey/pkg-utils';
+import { toPicket } from '@rapid/libs';
 import { Printer } from '@suey/printer';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
 
 /**
  * 获得制作 ipc 句柄的函数
+ *
  * @example
  * const { makeIpcHandleAction } = toMakeIpcAction();
  * const ipcHandle = makeIpcHandleAction(
@@ -98,15 +99,11 @@ export function toMakeIpcAction<
         listener: async (e: IpcMainEvent | IpcMainInvokeEvent, ...args: unknown[]) => {
           const runtimeContext = getIpcRuntimeContext();
 
-          const globalMiddlewares = (
-            evtActionType === IpcActionEvent.Handle
-              ? runtimeContext.globalMiddlewares.handle
-              : runtimeContext.globalMiddlewares.on
-          );
+          const globalMiddlewares = (evtActionType === IpcActionEvent.Handle ? runtimeContext.globalMiddlewares.handle : runtimeContext.globalMiddlewares.on);
 
           return runningIpcAction(globalMiddlewares, action, e, ...args);
         }
-      };
+      } as const;
 
       return action;
     }
@@ -157,7 +154,7 @@ export function toMakeIpcAction<
      * @param evtActionType
      */
     makeIpcOnAction: initMakeAction(IpcActionEvent.On)
-  };
+  } as const;
 }
 
 /**
@@ -176,91 +173,98 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
     action: action.action,
     event: e as any,
     listener: action.listener
-  }
+  } as const;
 
   let convertArgs = [e, ...args] as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
   let err: any = void 0;
 
   // 开始
-  globalMiddlewares.forEach(middleware => {
-    if (err) return;
-    if (!middleware.onBeforeEach) return;
+  for (let i = 0;i < globalMiddlewares.length;i ++) {
+    if (err) break;
+    const middleware = globalMiddlewares[i];
+    if (!middleware.onBeforeEach) continue;
 
-    try {
-      middleware.onBeforeEach(e, ...args);
-    } catch(error) {
+    const [error] = await toPicket(Promise.resolve(middleware.onBeforeEach(...convertArgs)));
+    if (error) {
       err = error;
+      break;
     }
-  });
+  }
   if (err) return Promise.reject(err);
 
   // 转换参数
-  globalMiddlewares.forEach(middleware => {
-    if (err) return;
-    if (!middleware.transform) return;
+  for (let i = 0;i < globalMiddlewares.length;i ++) {
+    if (err) break;
+    const middleware = globalMiddlewares[i];
+    if (!middleware.transform) continue;
 
-    try {
-      convertArgs = middleware.transform(...convertArgs) as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
-    } catch(error) {
+    const [error, args] = await toPicket(Promise.resolve(middleware.transform(...convertArgs)));
+
+    if (error) {
       err = error;
+      break;
     }
-  })
-
-  // 还没有得到 action 处理, 全局中间件就已经出现错误
+    convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
+  }
   if (err) return Promise.reject(err);
 
   // 获取自身内部中间件
   const middlewares = action.middlewares;
 
-  middlewares.forEach(middleware => {
-    if (err) return;
-    if (!middleware.onBeforeEach) return;
+  // 内部 beforeEach
+  for (let i = 0;i < middlewares.length;i ++) {
+    if (err) break;
 
-    try {
-      middleware.onBeforeEach(e, ...convertArgs);
-    } catch(error) {
+    const middleware = middlewares[i];
+    if (!middleware.onBeforeEach) continue;
+
+    const [error] = await toPicket(Promise.resolve(middleware.onBeforeEach(e, ...convertArgs)));
+    if (error) {
       err = error;
+      break;
     }
-  });
+  }
   if (err) return Promise.reject(err);
 
-  middlewares.forEach(middleware => {
-    if (err) return;
-    if (!middleware.transform) return;
+  // 内部 transform
+  for (let i = 0;i < middlewares.length;i ++) {
+    if (err) break;
+    const middleware = middlewares[i];
+    if (!middleware.transform) continue;
 
-    try {
-      convertArgs = middleware.transform(...convertArgs) as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
-    } catch(error) {
+    const [error, args] = await toPicket(Promise.resolve(middleware.transform(...convertArgs)));
+
+    if (error) {
       err = error;
+      break;
     }
-  })
+    convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
+  }
   if (err) return Promise.reject(err);
 
   // action 正式处理 ipc 句柄
-  const [error, res] = await toPicket(action.action(...convertArgs));
+  const [error, res] = await toPicket(Promise.resolve(action.action(...convertArgs)));
   err = error;
 
-  // 如果是自定义异常
+  // onError 周期
   if (err && err instanceof Exception) {
+    // 内部 onError
     for (let i = 0;i < middlewares.length;i ++) {
       const middleware = middlewares[i];
       if (!middleware.onError) continue;
 
-      const error = middleware.onError(err, actionMessage);
-
-      err = error;
+      err = middleware.onError(err, actionMessage);
       // 如果中间件没有返回异常, 那么代表这个异常被处理了
       if (!err) break;
     }
 
+    // 全局 onError
     if (err) {
       for (let i = 0;i < globalMiddlewares.length;i ++) {
         const middleware = globalMiddlewares[i];
         if (!middleware.onError) continue;
 
-        const error = middleware.onError(err, actionMessage);
-
-        err = error;
+        err = middleware.onError(err, actionMessage);
         // 如果中间件没有返回异常, 那么代表这个异常被处理了
         if (!err) break;
       }
@@ -270,6 +274,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
   // 异常没有被处理
   if (err) return Promise.reject(err);
 
+  // 执行期间没有出错 onSuccess
   if (!error) {
     middlewares.forEach(middleware => middleware?.onSuccess?.(res, actionMessage));
     globalMiddlewares.forEach(middleware => middleware?.onSuccess?.(res, actionMessage));

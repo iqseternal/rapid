@@ -6,7 +6,7 @@
  */
 import { WindowService } from '@/core/service/WindowService';
 import { RuntimeException } from '@/core';
-import { isString } from '@suey/pkg-utils';
+import { isString } from '@rapid/libs';
 import { toMakeIpcAction } from '@/core/ipc';
 import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 

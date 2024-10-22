@@ -1,6 +1,6 @@
 import type { FC, Ref, RefObject, DependencyList, EffectCallback } from 'react';
 import { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import { toPicket } from '@suey/pkg-utils';
+import { toPicket } from '@rapid/libs';
 
 // NOTE: callbacks are _only_ allowed to return either void, or a destructor.
 export type AsyncEffectCallback = () => (Promise<void | boolean | undefined | number | string | EffectCallback>);

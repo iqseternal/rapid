@@ -1,4 +1,4 @@
-import { isUndefined } from '@suey/pkg-utils';
+import { isUndefined } from '@rapid/libs';
 
 
 /**
@@ -50,5 +50,5 @@ export abstract class ExceptionFilter {
    * 处理异常的回调函数
    * @param exp
    */
-  abstract catch(exp: Exception<any>): void | Promise<void>;
+  public abstract catch(exp: Exception<any>): void | Promise<void>;
 }

@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@rapid/libs": "workspace:^",
+    "@rapid/libs-web": "workspace:^"
+  }
 }

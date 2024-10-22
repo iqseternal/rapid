@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
 import { App, Button } from 'antd';
-import { toPicket } from '@suey/pkg-utils';
+import { toPicket } from '@rapid/libs';
 import { setAccessToken, userLogin } from '@/features';
 import { registerReq } from '@/api';
 import { retrieveRoutes } from '@/router';

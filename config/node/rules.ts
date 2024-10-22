@@ -7,9 +7,8 @@ export const supportImportRaw: RuleSetRule = {
 }
 
 export const supportTypescript: RuleSetRule = {
-  test: /\.(c)?[tj]s$/,
+  test: /\.(c)?[tj]sx?$/,
   loader: 'builtin:swc-loader',
-
   options: {
     jsc: {
       loose: true,

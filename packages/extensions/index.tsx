@@ -1,5 +1,9 @@
 import type { ReactNode, PropsWithChildren, PropsWithRef } from 'react';
 
+import { rApp } from './rApp';
+
+export { rApp };
+
 export interface ExtensionContext {
 
 }
@@ -18,6 +22,10 @@ export interface Extension {
    */
   onActivate?: () => void;
   /**
+   * 插件被去活, 被禁用的状态
+   */
+  onDeactivated?: () => void;
+  /**
    * 插件更新
    */
   onUpdated?: () => void;
@@ -33,27 +41,4 @@ export interface Extension {
    * 插件的视图渲染函数, 在不同的注册点可能具有不同的使用方式
    */
   render?: (props: PropsWithChildren) => ReactNode;
-}
-
-export const rapid = {
-
-
-  extension: {
-
-    registerCommand() {
-
-
-    },
-
-
-    registerPoint(point: string, callback: () => void) {
-
-
-    }
-
-  }
-}
-
-export const createExtensionFactory = (factory: (context: ExtensionContext) => Extension) => {
-
 }

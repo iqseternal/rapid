@@ -1,4 +1,3 @@
-import { CONFIG } from '@rapid/config/constants';
 import { print, toColor, toPrintClear, isPrintStyleMessage, isPrintStyleMessageArr, STYLE, keyToAnsi } from '@suey/printer';
 import { SingleInstanceService } from './SingleInstanceService';
 import { FileService } from './FileService';
@@ -28,14 +27,14 @@ export class LoggerService {
   /**
    * 打印本地日志
    */
-  printLogAsLocal(...message: readonly any[]) {
+  async printLogAsLocal(...message: readonly any[]) {
     const { normalMessages } = printMessageParser(...message);
 
-    FileService.appendToFile(this.logFileStorageService.filePath, normalMessages.join(' ').concat('\n'));
+    await FileService.appendToFile(this.logFileStorageService.filePath, normalMessages.join(' ').concat('\n'));
   }
 
-  static printLogAsLocal(...message: readonly any[]) {
-    LoggerService.logService.printLogAsLocal(...message);
+  static async printLogAsLocal(...message: readonly any[]) {
+    await LoggerService.logService.printLogAsLocal(...message);
   }
 
   /**
@@ -54,53 +53,53 @@ export class LoggerService {
   /**
    * 打印普通日志
    */
-  info(...message: any[]) {
+  async info(...message: any[]) {
     const infoMessage = PrinterService.getPrintInfoMessageStyleArr(...message);
     print(...infoMessage);
-    this.printLogAsLocal(...infoMessage);
+    await this.printLogAsLocal(...infoMessage);
   }
 
-  static info(...message: any[]) {
-    LoggerService.logService.info(...message);
+  static async info(...message: any[]) {
+    await LoggerService.logService.info(...message);
   }
 
   /**
    * 打印警告日志
    */
-  warn(...message: any[]) {
+  async warn(...message: any[]) {
     const warnMessage = PrinterService.getPrintInfoMessageStyleArr(...message);
     print(...warnMessage);
-    this.printLogAsLocal(...warnMessage);
+    await this.printLogAsLocal(...warnMessage);
   }
 
-  static warn(...message: any[]) {
-    LoggerService.logService.warn(...message);
+  static async warn(...message: any[]) {
+    await LoggerService.logService.warn(...message);
   }
 
   /**
    * 打印成功日志
    */
-  success(...message: any[]) {
+  async success(...message: any[]) {
     const successMessage = PrinterService.getPrintSuccessMessageStyle(...message);
     print(...successMessage);
-    this.printLogAsLocal(...successMessage);
+    await this.printLogAsLocal(...successMessage);
   }
 
-  static success(...message: any[]) {
-    LoggerService.logService.success(...message);
+  static async success(...message: any[]) {
+    await LoggerService.logService.success(...message);
   }
 
   /**
    * 打印错误日志
    */
-  error(...message: any[]) {
+  async error(...message: any[]) {
     const errorMessage = PrinterService.getPrintErrorMessageStyleArr(...message);
     print(...errorMessage);
-    this.printLogAsLocal(...errorMessage);
+    await this.printLogAsLocal(...errorMessage);
   }
 
-  static error(...message: any[]) {
-    LoggerService.logService.error(...message);
+  static async error(...message: any[]) {
+    await LoggerService.logService.error(...message);
   }
 }
 

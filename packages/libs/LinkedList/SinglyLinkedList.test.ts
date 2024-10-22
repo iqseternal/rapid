@@ -1,5 +1,26 @@
 import { SinglyLinkedList } from './SinglyLinkedList';
 
+describe('SinglyLinkedList Iterator', () => {
+  let linkedList: SinglyLinkedList<number>;
+
+  beforeEach(() => {
+    linkedList = new SinglyLinkedList<number>();
+  });
+
+  it('should iterate over all values', () => {
+    linkedList.insert(1);
+    linkedList.insert(2);
+    linkedList.insert(3);
+
+    const iterator = linkedList[Symbol.iterator]();
+
+    expect(iterator.next().value).toEqual(1);
+    expect(iterator.next().value).toEqual(2);
+    expect(iterator.next().value).toEqual(3);
+    expect(iterator.next().done).toBe(true);
+  });
+});
+
 describe('SinglyLinkedList', () => {
   let list: SinglyLinkedList<number>;
 

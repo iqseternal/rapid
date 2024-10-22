@@ -62,6 +62,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/triple-slash-reference': 'off',
 
     'no-undef': 'off',
     'multiline-ternary': 'off',

@@ -175,8 +175,10 @@ export async function setupTrayMenu() {
       return;
     }
 
-    if (!mainWindowService.window.isVisible()) mainWindowService.window.show();
-    else mainWindowService.window.focus();
+    if (mainWindowService.window.isVisible()) {
+      mainWindowService.window.focus();
+    }
+    else mainWindowService.window.show();
   });
 
   tray.setTitle(CONFIG.PROJECT);
@@ -206,8 +208,10 @@ export async function setupTrayMenu() {
           return;
         }
 
-        if (!settingWindowService.window.isVisible()) settingWindowService.window.show();
-        else settingWindowService.window.focus();
+        if (settingWindowService.window.isVisible()) {
+          settingWindowService.window.focus();
+        }
+        else settingWindowService.window.show();
       }
     },
     { type: 'separator' },

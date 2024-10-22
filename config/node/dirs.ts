@@ -20,12 +20,14 @@ export const DIST_DIR = path.join(ROOT_DIR, './dist');
 
 /** 打包 website 的输出目录 */
 export const DIST_WEBSITE_DIR = path.join(DIST_DIR, './website');
+
 /** 打包 Web 平台的输出目录 */
 export const DIST_WEB_DIR = path.join(DIST_DIR, './web');
 /** 打包 desktop 的输出目录 */
 export const DIST_DESKTOP_DIR = path.join(DIST_DIR, './app');
 
 export const DIST_DOC_DIR = path.join(DIST_DIR, './app-doc');
+export const DIST_EXTENSIONS_DIR = path.join(DIST_DIR, './extensions');
 
 // =================================================================
 
@@ -45,7 +47,7 @@ export const DIRS = {
   DEV_DESKTOP_WEB_DIR, DEV_DESKTOP_MAIN_DIR, DEV_DESKTOP_PRELOAD_DIR,
 
   DIST_DIR,
-  DIST_DOC_DIR, DIST_WEBSITE_DIR, DIST_WEB_DIR, DIST_DESKTOP_DIR,
+  DIST_DOC_DIR, DIST_WEBSITE_DIR, DIST_WEB_DIR, DIST_DESKTOP_DIR, DIST_EXTENSIONS_DIR,
 
   OUT_DESKTOP_ROOT_DIR,
   OUT_DESKTOP_PRELOAD_DIR, OUT_DESKTOP_MAIN_DIR, OUT_DESKTOP_RENDERER_DIR

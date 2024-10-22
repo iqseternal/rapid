@@ -1,4 +1,4 @@
-import { isFunction, isRawObject } from '@suey/pkg-utils';
+import { isFunction, isRawObject } from '@rapid/libs';
 import { isValidElement, useCallback, useMemo, useSyncExternalStore } from 'react';
 import type { StoreApi, UseBoundStore } from 'zustand';
 import { useDependenciesListHook } from '../hooks';

@@ -1,5 +1,5 @@
 import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
-import { rsaEncryptAlgorithm } from '@suey/pkg-utils';
+import { rsaEncryptAlgorithm } from '@rapid/libs';
 import { rApiPost } from './declare';
 import type { RApiPromiseLike } from './declare';
 
@@ -65,6 +65,7 @@ export const registerReq = () => {
   })
 }
 
+// ==================================================================================
 
 export const logoutReq = () => {
   return rApiPost<null, null>('/user/logout');

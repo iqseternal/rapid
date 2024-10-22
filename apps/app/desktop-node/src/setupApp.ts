@@ -27,18 +27,18 @@ export const setupApp = (startApp: () => void | Promise<void>, ops?: Partial<App
     app.on('browser-window-created', (_, window) => optimizer.watchWindowShortcuts(window));
 
     // 已经具有实例, 那么找个窗口获得焦点
-    if (BrowserWindow.getAllWindows().length !== 0) {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      startApp();
+    }
+    else {
       BrowserWindow.getAllWindows()[0].focus();
     }
-    // 启动
-    else startApp();
 
     app.on('activate', () => {
       // 活跃状态时, 如果没有窗口那么就创建
       if (BrowserWindow.getAllWindows().length === 0) startApp();
     });
   });
-
 
   app.on('window-all-closed', async () => {
     if (process.platform !== 'darwin') {

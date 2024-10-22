@@ -2,7 +2,7 @@
 import { CONFIG, IS_BROWSER } from '@rapid/config/constants';
 import { windowShow, windowReload, windowRelaunch } from '@/actions';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
-import { toPicket } from '@suey/pkg-utils';
+import { toPicket } from '@rapid/libs';
 
 export interface FadeOptions {
   waitTimer?: number;

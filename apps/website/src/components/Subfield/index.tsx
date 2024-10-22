@@ -1,7 +1,7 @@
 import type { CSSObject } from 'styled-components';
 import type { CSSProperties } from 'react';
 import { FlexRowBetween, FlexColumnBetween } from '@rapid/libs-web/styled';
-import { isString } from '@suey/pkg-utils';
+import { isString } from '@rapid/libs';
 import { ReactNode } from 'react';
 
 interface SubfieldProps extends BaseProps {

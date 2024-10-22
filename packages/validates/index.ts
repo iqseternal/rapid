@@ -1,4 +1,4 @@
-import { isString, isDecimal, isDef } from '@suey/pkg-utils';
+import { isString, isDecimal, isDef } from '@rapid/libs';
 
 /**
  * 校验目标字符串是一个非空串

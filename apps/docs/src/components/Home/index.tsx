@@ -1,7 +1,7 @@
 import { FullSizeWidth, combinationStyled, maxScreenHeightStyle, maxViewHeightStyle } from '@rapid/libs-web/styled';
 import { css } from 'styled-components';
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 const FeaturesSectionContainer = combinationStyled('section', FullSizeWidth, css`
   /* height: 100vh; */

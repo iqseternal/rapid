@@ -1,6 +1,6 @@
 import { classnames, toWaitPromise } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
-import { toPicket } from '@suey/pkg-utils';
+import { toPicket } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { useFadeOut } from '@/hooks';
 import { logoutReq } from '@/api';

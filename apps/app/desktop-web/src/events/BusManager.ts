@@ -1,6 +1,6 @@
 import { Printer } from '@suey/printer';
-import type { DoubleLinkedNode } from './DoubleLinkedList';
-import { DoubleLinkedList } from './DoubleLinkedList';
+import type { DoubleLinkedNode } from '@rapid/libs';
+import { DoubleLinkedList } from '@rapid/libs';
 
 export type BusKey = '*' | string | symbol | number;
 
@@ -101,7 +101,7 @@ export abstract class BusManager {
   /**
    * 删除所有事件订阅
    */
-  protected clear(busName: string) {
+  protected clear(busName: Exclude<BusKey, '*'>) {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 

@@ -20,6 +20,9 @@
     "./env.d.ts",
     "rspress.config.ts"
   ],
+  "exclude": [
+    "src/**/*.d.ts"
+  ],
   "mdx": {
     "checkMdx": true
   }

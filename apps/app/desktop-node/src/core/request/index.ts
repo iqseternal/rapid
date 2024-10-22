@@ -4,9 +4,9 @@
  * ==========================================
  */
 import { CONFIG } from '@rapid/config/constants';
-import { REQ_METHODS, createApiRequest } from '@suey/pkg-utils';
+import { REQ_METHODS, createApiRequest } from '@rapid/libs';
 
-export const { apiGet, apiPost, createApi } = createApiRequest(CONFIG.API.URL, {}, {
+const { apiGet, apiPost, createApi } = createApiRequest(CONFIG.API.URL, {}, {
 
 })
 

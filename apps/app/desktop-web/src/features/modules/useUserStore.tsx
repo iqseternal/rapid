@@ -1,7 +1,7 @@
 import { AppStore } from '@/actions';
 import { loginReq, getUserinfoReq, UserinfoResponse, logoutReq } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
-import { toPicket, asynced, RPromiseLike } from '@suey/pkg-utils';
+import { toPicket, asynced, RPromiseLike } from '@rapid/libs';
 import { useEffect, useLayoutEffect } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';

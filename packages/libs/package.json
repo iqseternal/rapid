@@ -1,0 +1,18 @@
+{
+  "name": "@rapid/libs",
+  "version": "1.0.0",
+  "description": "",
+  "source": "./index.ts",
+  "main": "./index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rapid/validates": "workspace:^",
+    "@suey/pkg-utils": "0.1.12",
+    "ahooks": "^3.8.1"
+  }
+}

@@ -1,7 +1,7 @@
 
 import { userLogin } from '@/features';
 import { retrieveRoutes } from '@router/index';
-import { isNull, toPicket } from '@suey/pkg-utils';
+import { isNull, toPicket } from '@rapid/libs';
 import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Leafer, Rect, App, UI } from 'leafer-ui';

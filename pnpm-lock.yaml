@@ -11,9 +11,6 @@ importers:
       '@ant-design/icons':
         specifier: ^5.2.6
         version: 5.3.7(react-dom@18.3.1)(react@18.3.1)
-      '@suey/pkg-utils':
-        specifier: 0.1.12
-        version: 0.1.12(@angular/common@18.1.4)(@angular/core@18.1.4)
       '@suey/pkg-web':
         specifier: ^0.0.3
         version: 0.0.3(typescript@5.3.3)
@@ -292,6 +289,9 @@ importers:
 
   apps/app/desktop-node:
     dependencies:
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../../../packages/libs
       '@rapid/validates':
         specifier: workspace:^
         version: link:../../../packages/validates
@@ -335,6 +335,9 @@ importers:
       '@rapid/extensions':
         specifier: workspace:^
         version: link:../../../packages/extensions
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../../../packages/libs
       '@rapid/libs-web':
         specifier: workspace:^
         version: link:../../../packages/libs-web
@@ -399,6 +402,9 @@ importers:
       '@ant-design/icons':
         specifier: ^5.2.6
         version: 5.3.7(react-dom@18.3.1)(react@18.3.1)
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../../packages/libs
       '@rapid/libs-web':
         specifier: workspace:^
         version: link:../../packages/libs-web
@@ -493,10 +499,32 @@ importers:
 
   config: {}
 
-  packages/extensions: {}
+  packages/extensions:
+    dependencies:
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../libs
+      '@rapid/libs-web':
+        specifier: workspace:^
+        version: link:../libs-web
+
+  packages/libs:
+    dependencies:
+      '@rapid/validates':
+        specifier: workspace:^
+        version: link:../validates
+      '@suey/pkg-utils':
+        specifier: 0.1.12
+        version: 0.1.12(@angular/common@18.1.4)(@angular/core@18.1.4)
+      ahooks:
+        specifier: ^3.8.1
+        version: 3.8.1(react@18.3.1)
 
   packages/libs-web:
     dependencies:
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../libs
       '@rapid/validates':
         specifier: workspace:^
         version: link:../validates
@@ -504,7 +532,11 @@ importers:
         specifier: ^3.8.1
         version: 3.8.1(react@18.3.1)
 
-  packages/validates: {}
+  packages/validates:
+    dependencies:
+      '@rapid/libs':
+        specifier: workspace:^
+        version: link:../libs
 
 packages:
 

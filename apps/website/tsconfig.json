@@ -34,7 +34,16 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
-  "exclude": ["node_modules", "dist", ".git", ".ignore"]
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "exclude": [
+    "src/**/*.d.ts",
+    "node_modules",
+    "dist",
+    ".git",
+    ".ignore"
+  ]
 }
 

@@ -14,11 +14,6 @@
     "label": "安装"
   },
   {
-    "type": "dir",
-    "name": "extension",
-    "label": "插件化"
-  },
-  {
     "type": "divider",
     "dashed": false
   },
@@ -34,7 +29,12 @@
   {
     "type": "dir",
     "name": "dependencies",
-    "label": "依赖介绍"
+    "label": "依赖管理介绍"
+  },
+  {
+    "type": "dir",
+    "name": "design",
+    "label": "设计"
   },
   {
     "type": "dir",

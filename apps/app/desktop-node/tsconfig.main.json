@@ -35,6 +35,12 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules", "./**/*.test.ts"]
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.d.ts",
+    "node_modules",
+    "./**/*.test.ts"
+  ]
 }

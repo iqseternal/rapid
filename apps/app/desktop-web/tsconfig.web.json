@@ -50,11 +50,14 @@
       "@/*": ["src/*", "../desktop-node/src/*"]
     }
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
   "exclude": [
+    "src/**/*.d.ts",
+
     "node_modules",
-    "./**/*.test.ts",
-    "**/node_modules/*",
-    "node_modules/@meta2d/core"
+    "./**/*.test.ts"
   ]
 }

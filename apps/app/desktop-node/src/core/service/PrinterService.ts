@@ -1,6 +1,6 @@
 import { print, toColor, printClear, toPrintClear, STYLE, keyToAnsi, isPrintStyleMessage, isPrintStyleMessageArr } from '@suey/printer';
 import { CONFIG } from '@rapid/config/constants';
-import { isString } from '@suey/pkg-utils';
+import { isString } from '@rapid/libs';
 
 const AppName = CONFIG.PROJECT.toUpperCase();
 

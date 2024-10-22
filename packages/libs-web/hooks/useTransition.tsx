@@ -1,11 +1,8 @@
 import type { DependencyList } from 'react';
-import { useCallback, useState } from 'react';
-import { produce } from 'immer';
-import { useAsyncLayoutEffect, useAsyncEffect } from './useAsyncEffect';
+import { useCallback } from 'react';
 import { useShallowReactive } from './useReactive';
 
-
-export type StartTransitionFunction = () => Promise<unknown>;
+export type StartTransitionFunction = () => Promise<void>;
 
 /**
  * 类似 react 19. useTransition
@@ -13,19 +10,18 @@ export type StartTransitionFunction = () => Promise<unknown>;
  * @example
  *
  * const [error, setError] = useState(null);
- * const [isPendingState, startTransition] = useTransition();
+ * const [requestPendingState, startRequest, startTransition] = useTransition(async () => {
+ *   const [err, res] = await toPicket(req);
  *
- * const handleSubmit = () => {
- *   // 启动异步 actions
- *   startTransition(async () => {
- *     const error = await updateName(name);
- *     if (error) {
- *       setError(error);
- *       return;
- *     }
- *     redirect("/path");
- *   })
- * };
+ *   if (err) return;
+ *
+ *   // todo:
+ * }, []);
+ *
+ * <div
+ *    onClick={startRequest}
+ * >
+ * </div>
  *
  */
 export function useTransition(callback: StartTransitionFunction, deps: DependencyList) {
@@ -33,13 +29,18 @@ export function useTransition(callback: StartTransitionFunction, deps: Dependenc
     isPending: false
   })
 
-  const startTransition = useCallback(async () => {
+  const startTransition = useCallback(async (callback: StartTransitionFunction) => {
     state.isPending = true;
 
     await callback();
 
     state.isPending = false;
+  }, []);
+
+  const transition = useCallback(() => {
+
+    return startTransition(callback);
   }, deps);
 
-  return [state, startTransition] as const;
+  return [state, transition, startTransition] as const;
 }

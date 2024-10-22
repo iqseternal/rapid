@@ -3,7 +3,7 @@ import { useLayoutEffect, createContext, useState, useCallback, useMemo, forward
 import { useAsyncLayoutEffect, useReactive, useShallowReactive, useUnmount } from '@rapid/libs-web/hooks';
 import { Input, Skeleton } from 'antd';
 import { authHasAuthorized, authHasRoleSync, getAccessToken, useAuthRole, useUserStore, useAuthHasAuthorized } from '@/features';
-import { toPicket, isObject, isFunction, isClass } from '@suey/pkg-utils';
+import { toPicket, isObject, isFunction, isClass } from '@rapid/libs';
 import { useNavigate, useRouteLoaderData, useMatch } from 'react-router-dom';
 import { retrieveRoutes } from '@/router';
 

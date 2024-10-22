@@ -5,7 +5,7 @@ import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, useCallback, memo } from 'react';
 import { menus } from '@/menus';
 import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
-import { isDef, isUnDef, isUndefined, randomRegionForInt } from '@suey/pkg-utils';
+import { isDef, isUnDef, isUndefined, randomRegionForInt } from '@rapid/libs';
 import { Menu, Input } from 'antd';
 import type { AntdItemType, AntdMenuInstance, AntdSubMenuType } from '@components/AutoDropdownMenu';
 import { retrieveRoutes } from '@/router';

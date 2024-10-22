@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
+    "@rapid/libs": "workspace:^",
     "@rapid/libs-web": "workspace:^",
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.0.0",

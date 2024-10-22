@@ -3,8 +3,6 @@
  * preload 注入变量 Api
  * ==========================================
  */
-
-import type { CutHead } from '@suey/pkg-utils';
 import { autoExpose } from './autoExpose';
 import { electronAPI } from '@electron-toolkit/preload';
 import type { ElectronAPI } from './preload';
