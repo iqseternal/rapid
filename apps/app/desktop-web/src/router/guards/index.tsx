@@ -19,7 +19,6 @@ export const GuardsContext = {
 
 /**
  * 验证权限/角色是否符合规范
- * @returns
  */
 export function AuthRole<GFC extends ReactComponent>(Component: GFC): GFC;
 export function AuthRole<GProps extends { children: ReactNode }>(props: GProps): ReactNode;

@@ -1,4 +1,4 @@
-import { isFunction, isString } from '@rapid/libs';
+import { isFunction, isNumber, isString } from '@rapid/libs';
 
 /** 有关样式的类型声明 */
 export namespace CSSTypes {
@@ -26,7 +26,8 @@ export class CssValueConverts {
    *
    * @param value
    */
-  static toPixel(value: number): CSSTypes.PixelValue;
+  public static toPixel(value: number): CSSTypes.PixelValue;
+
   /**
    * @example
    * let size = '200';
@@ -34,13 +35,12 @@ export class CssValueConverts {
    *
    * @param value
    */
-  static toPixel(value: string): CSSTypes.PixelValue;
-  static toPixel(value: number | string): CSSTypes.PixelValue {
-    if (isString(value)) {
-      value = parseInt(value);
-      if (isNaN(value)) value = 0;
-    }
-    return value + 'px' as CSSTypes.PixelValue;
+  public static toPixel(value: string): CSSTypes.PixelValue;
+
+  public static toPixel(value: number | string): CSSTypes.PixelValue {
+    if (!isNumber(value)) value = parseInt(value);
+    if (isNaN(value)) value = 0;
+    return `${value}px`;
   }
 }
 
@@ -211,7 +211,7 @@ export interface GetFirstScrollContainerOptions {
 }
 
 /**
- * 找到第一个垂直滚动的父级元素
+ * 找到第一个滚动的父级元素
  * @param dom
  * @return
  */

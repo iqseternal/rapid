@@ -1,35 +1,47 @@
+import { IS_DEV } from '@rapid/config/constants';
 import { isUndefined } from '@rapid/libs';
-
+import { PrinterService } from '../service/PrinterService';
 
 /**
  * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等
  */
 export interface ExceptionErrorMsgData {
+  /**
+   * 异常标签, 通常用于打印服务
+   */
   label: string;
 
+  /**
+   * 异常等级
+   */
   level: 'ERROR' | 'SUCCESS' | 'INFO' | 'WARN';
 
+  /**
+   * 异常产生时间
+   */
   time: number;
 }
 
-
-/*
+/**
  * 异常基类
- *
  */
 export abstract class Exception<ErrMessageData extends ExceptionErrorMsgData> {
   public readonly errMessage: ErrMessageData;
 
-  constructor(public message: string, errMessage?: Partial<ErrMessageData>) {
-    if (isUndefined(errMessage)) errMessage = {};
-    if (isUndefined(errMessage.label)) errMessage.label = '<GLOBAL>';
-    else {
-      errMessage.label = `<${errMessage.label.trim()}>`;
+  constructor(public message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>) {
+    const { label = 'GLOBAL', level = 'ERROR' } = errMessage ?? {};
+
+    if (IS_DEV) {
+      if (label.startsWith('<') && label.endsWith('>')) {
+        PrinterService.printWarn(`Exception label属性传递不应该被 <> 包裹`);
+      }
     }
 
-    if (isUndefined(errMessage.level)) errMessage.level = 'ERROR';
-    if (isUndefined(errMessage.time)) errMessage.time = Date.now();
-    this.errMessage = errMessage as ErrMessageData;
+    this.errMessage = {
+      label: `<${label.trim()}>`,
+      level,
+      time: Date.now()
+    } as ErrMessageData;
   }
 }
 
@@ -43,7 +55,9 @@ export const isException = <Error>(exp: Error | Exception<any>): exp is Exceptio
 */
 export abstract class ExceptionFilter {
 
-  // 无参构造
+  /**
+   * 无参构造函数
+   */
   constructor() {}
 
   /**

@@ -1,13 +1,13 @@
 import { FullSize, FullSizeWidth, classnames, useAsyncEffect } from '@rapid/libs-web';
 import { commonStyles } from '@scss/common';
 import { windowDevtool, windowShow } from '@/actions';
+import { memo } from 'react';
 
 import Header from '@components/Header';
 import styles from './index.module.scss';
 import Widget from '@components/Widget';
 
-export default function WorkbenchesToolbar() {
-
+export const WorkbenchesToolbar = memo(() => {
   const onDragStart = async () => {
     // await windowSetDragData({ dragKey: 'tool' }, {
     //   username: 'helloWorld'
@@ -49,4 +49,6 @@ export default function WorkbenchesToolbar() {
 
     </FullSizeWidth>
   </FullSize>
-}
+});
+
+export default WorkbenchesToolbar;

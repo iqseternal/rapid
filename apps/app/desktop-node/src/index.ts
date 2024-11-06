@@ -2,22 +2,18 @@ import 'reflect-metadata';
 import './process';
 
 import { registerGlobalMiddleware, registerIpcHandle, registerIpcOn, IpcActionEvent } from '@/core/ipc';
-import { setupMainWindow, setupTrayMenu } from './setupService';
+import { setupTrayMenu, setupMainWindow } from './setupService';
 import { setupApp } from './setupApp';
 
 import {
-  ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
+  ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,
   ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow,
   ipcWindowSetMinimumSize,
   ipcWindowProperties,
+  ipcWindowWorkAreaSize,
 
-  ipcOpenWindow,
-
-  ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet, ipcStoreHas, ipcStoreGetStore,
-
-  ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs,
-
+  ipcAppStoreDelete, ipcAppStoreClear, ipcAppStoreGet, ipcAppStoreGetStore,
+  ipcAppStoreReset, ipcAppStoreHas, ipcAppStoreSet,
   ipcOpenDevTool,
 
   ipcForwardDataTakeIn, ipcForwardDataTakeOut,
@@ -26,21 +22,17 @@ import {
 import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
 
 registerIpcHandle([
-  ipcWindowClose, ipcWindowMaxSize, ipcWindowMinSize, ipcWindowReductionSize, ipcWindowRelaunch,
+  ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,
   ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow,
   ipcWindowSetMinimumSize,
-  ipcWindowProperties
+  ipcWindowProperties,
+  ipcWindowWorkAreaSize
 ]);
-registerIpcHandle([ipcOpenWindow]);
 registerIpcHandle([
-  ipcStoreClear, ipcStoreDelete, ipcStoreGet, ipcStoreReset,
-  ipcStoreSet, ipcStoreHas, ipcStoreGetStore
+  ipcAppStoreDelete, ipcAppStoreClear, ipcAppStoreGet, ipcAppStoreGetStore,
+  ipcAppStoreReset, ipcAppStoreHas, ipcAppStoreSet
 ]);
 registerIpcHandle([ipcOpenDevTool]);
-registerIpcHandle([
-  ipcRdDocSave, ipcRdDocExpose, ipcRdDocImport, ipcRdDocOpen, ipcRdDocSaveAs
-]);
-
 registerIpcHandle([ipcForwardDataTakeIn, ipcForwardDataTakeOut]);
 registerIpcOn([ipcOnBroadcast]);
 
@@ -51,8 +43,6 @@ setupApp(async () => {
   await setupMainWindow();
   await setupTrayMenu();
 });
-
-
 
 
 

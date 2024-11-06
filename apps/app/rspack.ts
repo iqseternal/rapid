@@ -1,23 +1,23 @@
-import { loadConfig , createRsbuild, mergeRsbuildConfig } from '@rsbuild/core';
-import { join } from 'path';
+import { loadConfig, createRsbuild, mergeRsbuildConfig } from '@rsbuild/core';
 
 import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/core';
 import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-
-import { Builder, NodeCommand, DIRS } from '../../config/node/builder';
+import { join } from 'path';
 
 import treeKill from 'tree-kill';
+
+import { Builder, DIRS } from '../../config/node/builder';
 
 // =====================================================================================
 // 环境变量定义
 
-type DEV_SERVER_MODE = 'all' | 'dev:web:only';
+declare type DEV_SERVER_MODE = 'all' | 'dev:web:only';
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv {
+    export interface ProcessEnv {
       DEV_SERVER_MODE: DEV_SERVER_MODE;
     }
   }
@@ -27,7 +27,7 @@ declare global {
 // 环境变量设置
 const builder = new Builder();
 
-const { IS_DEV, IS_PROD, IS_BUILD, IS_PREVIEW } = builder.toEnvs();
+const { IS_DEV, IS_PROD, IS_PREVIEW } = builder.toEnvs();
 
 if (!process.env.DEV_SERVER_MODE) process.env.DEV_SERVER_MODE = 'dev:web:only';
 const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
@@ -168,7 +168,7 @@ const transformRendererRsbuilder = async () => {
 
   const vars = builder.defineVars();
 
-  const rendererRsbuilder = await createRsbuild({
+  return createRsbuild({
     cwd: DIRS.DEV_DESKTOP_WEB_DIR,
     rsbuildConfig: mergeRsbuildConfig(content, ({
       source: {
@@ -179,8 +179,6 @@ const transformRendererRsbuilder = async () => {
       }
     }))
   });
-
-  return rendererRsbuilder;
 }
 
 // =====================================================================================
@@ -231,7 +229,7 @@ const transformRendererRsbuilder = async () => {
   if (IS_DEV) {
     // renderer 热更新服务启动
 
-
+    Printer.printInfo(`Compiler: web`);
     const rendererServer = await rendererRsbuilder.startDevServer();
 
 
@@ -252,12 +250,11 @@ const transformRendererRsbuilder = async () => {
     if (IS_DEV_SERVER_WEB_ONLY) {
 
       // 编译一次 main 和 preload 就启动服务
-      Promise.all([
-        compilerMain(),
-        compilerPreload()
-      ]).then(() => {
+      Promise.all([compilerMain(), compilerPreload()]).then(() => {
         startElectron(envs, mainCompiler.outputPath);
-      }).catch(() => process.exit(1));
+      }).catch(() => {
+        process.exit(1)
+      });
       return;
     }
 
@@ -276,6 +273,7 @@ const transformRendererRsbuilder = async () => {
     //   startElectron(envs, mainCompiler.outputPath);
     // })
     await compilerPreload();
+
     mainCompiler.watch({
       aggregateTimeout: 2000
     }, (err, stats) => {

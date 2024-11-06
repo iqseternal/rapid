@@ -1,4 +1,5 @@
 import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isString, isUnDef } from '@rapid/libs';
+import { validateValidStr } from '@rapid/validates';
 import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
 
 /**
@@ -25,23 +26,20 @@ import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticCom
 export const classnames = (...args: (string | undefined | boolean | number | Record<string, any | boolean | undefined>)[]) => {
   const classNameList: string[] = [];
 
-  args.forEach(arg => {
-    if (isUnDef(arg)) return;
-    if (isBoolean(arg)) return;
-    if (isNumber(arg)) return;
+  for (const arg of args) {
+    if (isUnDef(arg) || isBoolean(arg) || isNumber(arg)) continue;
 
     if (isString(arg)) {
-      classNameList.push(arg);
-      return;
+      if (arg.trim() !== '') classNameList.push(arg);
+      continue;
     }
 
     if (isRawObject(arg)) {
       for (const key in arg) {
-
         if (arg[key]) classNameList.push(key);
       }
     }
-  });
+  }
 
   return classNameList.join(' ');
 }

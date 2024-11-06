@@ -50,7 +50,7 @@ const WorkbenchesView = memo(() => {
  */
 const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
   useFadeIn(async () => Promise.allSettled([
-    windowResizeAble({ able: true }),
+    windowResizeAble({ resizeAble: true }),
     windowResetCustomSize({ type: 'mainWindow' })
   ]));
 
@@ -75,7 +75,6 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
       <main
         className={classnames(
-          commonStyles.fullSize,
           styles.mainContainer,
         )}
       >

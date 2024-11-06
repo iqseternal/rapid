@@ -3,7 +3,7 @@ import { useEventListener, useReactive, useThrottleHook } from '@rapid/libs-web/
 
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps } from 'antd';
-import { createContext, useContext, ReactNode, forwardRef, useMemo } from 'react';
+import { createContext, useContext, ReactNode, forwardRef, useMemo, useCallback } from 'react';
 import { MaxContent } from '@rapid/libs-web/styled';
 import type { MenuInstance, AntdMenuInstance, AntdItemType } from './declare';
 
@@ -35,10 +35,10 @@ const PropMenu = (props: PropMenuProps) => {
 
   const menuContent = useMemo(() => {
     return <Menu
-      subMenuOpenDelay={0}
+      subMenuOpenDelay={0.4}
       subMenuCloseDelay={0}
       selectable={false}
-      triggerSubMenuAction={'click'}
+      triggerSubMenuAction={'hover'}
       rootClassName={classnames(
         styles.dropdownMenuRootWrapper,
         {
@@ -46,14 +46,14 @@ const PropMenu = (props: PropMenuProps) => {
           [commonStyles.hidden]: !open
         }
       )}
-      getPopupContainer={(triggerNode) => {
+      getPopupContainer={() => {
         return document.body;
       }}
       defaultOpenKeys={[]}
-      onOpenChange={(openKeys) => {
+      onOpenChange={() => {
 
       }}
-      onClick={(info) => {
+      onClick={() => {
 
       }}
       onDoubleClick={(e) => {
@@ -102,16 +102,16 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
     open: false
   });
 
+  const close = useCallback(useThrottleHook(() => {
+    if (!state.open) return;
+    state.open = false;
+  }, 100), []);
+
   // 当窗口发生大小或者滚动事件的时候, 关闭菜单的显示
   useEventListener(window, {
-    'resize': useThrottleHook(() => {
-      if (!state.open) return;
-      state.open = false;
-    }),
-    'scroll': useThrottleHook(() => {
-      if (!state.open) return;
-      state.open = false;
-    }),
+    'resize': close,
+    'scroll': close,
+    'blur': close
   }, []);
 
   return <OpenContext.Provider value={state.open}>
@@ -137,6 +137,8 @@ export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) =
       <MaxContent
         className={classnames(
           styles.menuItem,
+          commonStyles.hFullSize,
+          commonStyles.flex,
           className
         )}
       >

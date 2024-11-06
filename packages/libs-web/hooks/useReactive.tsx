@@ -41,11 +41,9 @@ export function useReactive<S extends object>(initValue: S | (() => S)) {
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
 
-  const initialState = useMemo(() => {
-    return (typeof initValue === 'function') ? initValue() : initValue;
-  }, []);
-
   const [state] = useState(() => {
+    const initialState = (typeof initValue === 'function') ? initValue() : initValue;
+
     return new Proxy(initialState, {
       get(target, p, receiver) {
 

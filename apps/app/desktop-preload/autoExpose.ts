@@ -5,8 +5,6 @@
  */
 import { contextBridge } from 'electron';
 
-export type ExposeApiObj = Record<string | symbol, any>;
-
 /**
  * 自动暴露Api，解决手动的烦恼
  *
@@ -19,7 +17,7 @@ export type ExposeApiObj = Record<string | symbol, any>;
  * // in Web scripts
  * window.appName;
  */
-export function autoExpose<T extends ExposeApiObj>(exposeApiObj: T): void {
+export function autoExpose<T extends Record<string | symbol, any>>(exposeApiObj: T): void {
   if (process.contextIsolated) {
     Object.keys(exposeApiObj).forEach(key => {
       contextBridge.exposeInMainWorld(key, exposeApiObj[key]);

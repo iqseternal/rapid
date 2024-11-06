@@ -1,3 +1,4 @@
+import { Vessel } from '../declare';
 
 /**
  * 链表节点
@@ -16,8 +17,11 @@ export interface LinkedNode<V> {
 /**
  * 链表抽象类
  */
-export abstract class LinkedList<V, Node extends LinkedNode<V>> {
-  /** 链表的固定头节点 */
+export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V> {
+  /**
+   * 链表的固定头节点
+   *
+   */
   protected abstract readonly head: Node;
 
   /**
@@ -92,34 +96,35 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 删除一个节点
    */
   protected abstract deleteNode(node: Node): Node | null;
+
   /**
    * 删除符合 predicate 的元素节点
    */
-  public abstract delete(predicate: (value: V) => boolean): V[];
+  public abstract delete(value: V): V[];
 
   /**
      * 从头部顺序查找符合 predicate 的节点集合
      */
-  protected abstract findNodeFromHead(predicate: (value: Node) => boolean): Node | null;
+  protected abstract findNodeFromHead(value: V): Node | null;
 
   /**
    * 从头部顺序查找符合 predicate 的元素集合
    */
-  public abstract findFromHead(predicate: (value: V) => boolean): V | null;
+  public abstract findFromHead(value: V): V | null;
 
   /**
    * 查找符合 predicate 的节点集合
    */
-  protected abstract findNode(predicate: (node: Node) => boolean): Node | null;
+  protected abstract findNode(node: V): Node | null;
 
-  protected abstract findNodeAll(predicate: (value: Node) => boolean): Node[];
+  protected abstract findNodeAll(value: V): Node[];
 
   /**
    * 查找符合 predicate 的元素
    */
-  public abstract find(predicate: (value: V) => boolean): V | null;
+  public abstract find(value: V): V | null;
 
-  public abstract findAll(predicate: (value: V) => boolean): V[];
+  public abstract findAll(value: V): V[];
 
   /**
      * forEachNode 遍历节点
@@ -145,19 +150,4 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> {
    * 合并 otherList, 并获得一个新的 LinkedList
    */
   public abstract merge(otherList: LinkedList<V, Node>): LinkedList<V, Node>;
-
-  /**
-   * 清空链表
-   */
-  public abstract clear(): void;
-
-  /**
-   * 查看当前链表是否为空
-   */
-  public abstract isEmpty(): boolean;
-
-  /**
-   * 获取链表的长度
-   */
-  public abstract length(): number;
 }

@@ -1,13 +1,14 @@
 import { join } from 'path';
-import { BrowserWindow, type BrowserWindowConstructorOptions } from 'electron';
-import { setWindowCross, setWindowMaxSize, setWindowOpenHandler, setWindowCaption, getWindowFrom } from '@/core/common/window';
+import { BrowserWindow, type BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber, isNull } from '@rapid/libs';
 import { Catch, Exception, RuntimeException } from '@/core';
+import { getWindowFrom } from '../common';
 
-const iconUrl = join(__dirname, '../../../resources/icon.png');
-
-const DEFAULT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
+/**
+ * 默认构造窗口的属性
+ */
+const DefaultBrowserWindowConstructorOptions: Partial<BrowserWindowConstructorOptions> = {
   show: false,
   autoHideMenuBar: true,
   disableAutoHideCursor: false,
@@ -15,30 +16,28 @@ const DEFAULT_OPTIONS: Partial<BrowserWindowConstructorOptions> = {
   alwaysOnTop: false,
   transparent: false, // 设置为 true, 窗口会变得透明
   hasShadow: true
-};
+} as const;
 
+/**
+ * 创建 windowService 的选项
+ */
 export interface WindowServiceOptions {
   url: string;
   autoLoad: boolean;
   windowKey?: string;
 }
 
+/**
+ * 窗口服务对象
+ */
 export class WindowService {
-  public static readonly id = `WindowService`;
-
   public readonly window: BrowserWindow;
-  private loadThenCbs: (() => void)[] = [];
-  private loadCatchCbs: (() => void)[] = [];
-  private destroyCbs: (() => void)[] = [];
 
-  constructor(
-    windowOptions: Partial<BrowserWindowConstructorOptions>,
-    public readonly options: WindowServiceOptions
-  ) {
+  constructor(windowOptions: Partial<BrowserWindowConstructorOptions>, public readonly options: WindowServiceOptions) {
     this.window = new BrowserWindow({
       width: 1650,
       height: 780,
-      ...DEFAULT_OPTIONS,
+      ...DefaultBrowserWindowConstructorOptions,
       ...windowOptions,
       ...(IS_LINUX ? { } : {}),
       webPreferences: {
@@ -47,68 +46,36 @@ export class WindowService {
         devTools: true,
         webSecurity: true,
         nodeIntegration: false,
+        ...(windowOptions.webPreferences ?? {})
       },
     });
 
-    // setWindowCross(this.window);
-    // setWindowMaxSize(this.window);
-    // setWindowCaption(this.window, iconUrl, CONFIG.PROJECT);
-
-
-    if (this.options.windowKey) WindowStateMachine.addKey(this.options.windowKey, this);
-    else WindowStateMachine.addId(this);
-
-    this.addDestroyCb(() => {
-      if (this.options.windowKey) WindowStateMachine.removeKey(this.options.windowKey);
-      else WindowStateMachine.removeId(this);
-    });
-
+    WindowServiceStateMachine.addWindowService(this);
     if (options.autoLoad) this.load();
   }
 
   /**
-   * 添加一个打开窗口成功地回调函数
-   * @param cb
+   * 加载标签页
    */
-  addOpenThenCb(cb: () => void) { this.loadThenCbs.push(cb); }
-  /**
-   * 添加一个打开窗口失败的回调函数
-   * @param cb
-   */
-  addOpenCatchCb(cb: () => void) { this.loadCatchCbs.push(cb); }
-
   private load() {
-    let p: Promise<void>;
-
-    if (IS_DEV) p = this.window.loadURL(this.options.url);
-    else p = this.window.loadFile(this.options.url);
-
-    p.then(() => {
-      this.loadThenCbs.forEach(cb => cb());
-    }).catch(() => {
-      this.loadCatchCbs.forEach(cb => cb());
-    })
+    if (IS_DEV) this.window.loadURL(this.options.url);
+    else this.window.loadFile(this.options.url);
   }
 
   /**
    * 打开窗口
-   * @param ok 打开成功地回调函数
-   * @param fail 打开失败的回调函数
-   * @returns
    */
-  show(ok?: () => void, fail?: () => void) {
+  public show() {
     return new Promise<void>((resolve, reject) => {
       let isResolved = false;
 
       setTimeout(() => {
         if (isResolved) return;
-
-        fail && fail();
+        // 1 秒钟之内没有加载完成, 那么就失败
         reject();
       }, 1000);
 
       this.window.once('ready-to-show', () => {
-        ok && ok();
         isResolved = true;
         this.window.show();
         resolve();
@@ -117,48 +84,23 @@ export class WindowService {
   }
 
   /**
-   * 关闭某个窗口，类似于浏览器标签页关闭
-   * @returns
-   */
-  close() {
-    return new Promise<boolean>((resolve, reject) => {
-      if (this.window.closable) {
-
-        this.window.close();
-        resolve(true);
-      }
-      else reject(false);
-    });
-  }
-
-  /**
-   * 添加一个销毁时回调
-   * @param cb
-   */
-  addDestroyCb(cb: () => void) { this.destroyCbs.push(cb); }
-
-  /**
    * 销毁窗口对象
    */
-  destroy() {
+  public destroy() {
     if (this.window.isDestroyed()) return;
-
-    this.destroyCbs.forEach(cb => cb());
+    WindowServiceStateMachine.removeService(this);
+    // this.beforeDestroyCallbacks.forEach(callback => callback());
     this.window.close();
     this.window.destroy();
   }
 
   /**
-   * 从一个内置 name 获取一个指定窗口
+   * 从事件或者窗口id获得一个创建时的 Service 对象
+   *
    * @example
    * // 如果是通过 windowService 创建, 并且设置了 name 属性, 那么可以通过该方法找到
    * const windowService = WindowService.findWindowService('mainWindow');
    *
-   * @param name
-   */
-  static findWindowService(name: string): WindowService;
-  /**
-   * 从事件或者窗口id获得一个创建时的 Service 对象
    * @example
    * declare const e: IpcMainEvent;
    * const windowService = WindowService.findWindowService(e);
@@ -167,34 +109,34 @@ export class WindowService {
    * const windowService = WindowService.findWindowService(id);
    *
    */
-  static findWindowService(...args: Parameters<typeof getWindowFrom>): WindowService;
-  static findWindowService(...args: [string] | [string, (() => WindowService | Promise<WindowService>)?] | Parameters<typeof getWindowFrom>) {
+  static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]) {
     if (isString(args[0])) {
-      const service = WindowStateMachine.findWindowService(args[0]);
+      const service = WindowServiceStateMachine.findWindowService(args[0]);
 
-      if (!service) {
-        if (args[1]) return Promise.resolve(args[1]());
+      if (service) return service;
+      if (args[1]) return args[1]();
 
-        throw new RuntimeException(`not found BrowserWindow object in ${args[0]}.`, {
-          label: `WindowService:findWindowService`
-        })
-      }
-      else return service;
+      throw new RuntimeException(`not found BrowserWindow object in ${args[0]}.`, {
+        label: `WindowService:findWindowService`
+      })
     }
 
     const window = getWindowFrom(...(args as Parameters<typeof getWindowFrom>));
-    if (!window) throw new RuntimeException(`not found WindowService object in ${args}.`, {
-      label: this.id
-    });
 
-    return WindowStateMachine.findWindowService(window.id);
+    if (!window) {
+      throw new RuntimeException(`not found WindowService object in ${args}.`, {
+        label: 'WindowService'
+      });
+    }
+
+    return WindowServiceStateMachine.findWindowService(window.id)!;
   }
 }
 
 /**
  * window的状态机, 用于记录创建了那些窗口服务
  */
-export class WindowStateMachine {
+export class WindowServiceStateMachine {
   private static readonly keyToServiceMap = new Map<string, WindowService>();
   private static readonly idToServiceMap = new Map<number, WindowService>();
 
@@ -204,9 +146,21 @@ export class WindowStateMachine {
    * @returns
    */
   public static hasWindowService(windowService: WindowService) {
-    const service = WindowStateMachine.findWindowService(windowService.window.id);
-
+    const service = WindowServiceStateMachine.findWindowService(windowService.window.id);
     return service && isSameWindowService(service, windowService);
+  }
+
+  /**
+   * 放回当前状态机中是否含有当前 key
+   */
+  public static hasWindowServiceKey(key: string | number | WindowService) {
+    if (isString(key)) return this.hasKey(key);
+    if (isNumber(key)) return this.hasId(key);
+
+    const windowKey = key.options.windowKey;
+    const id = key.window.id;
+
+    return (windowKey && this.hasKey(windowKey)) || this.hasId(id);
   }
 
   /**
@@ -215,8 +169,8 @@ export class WindowStateMachine {
    * @param windowService
    */
   public static addKey(key: string, windowService: WindowService) {
-    WindowStateMachine.keyToServiceMap.set(key, windowService);
-    WindowStateMachine.addId(windowService);
+    WindowServiceStateMachine.keyToServiceMap.set(key, windowService);
+    WindowServiceStateMachine.addId(windowService.window.id, windowService);
   }
 
   /**
@@ -224,58 +178,79 @@ export class WindowStateMachine {
    * @param key
    */
   public static removeKey(key: string) {
-    const windowService = WindowStateMachine.keyToServiceMap.get(key);
-    WindowStateMachine.keyToServiceMap.delete(key);
-    if (windowService) WindowStateMachine.removeId(windowService);
+    const windowService = WindowServiceStateMachine.keyToServiceMap.get(key);
+    WindowServiceStateMachine.keyToServiceMap.delete(key);
+    if (windowService) WindowServiceStateMachine.removeId(windowService.window.id);
+  }
+
+  /**
+   * 查看当前状态机中是否含有 key
+   */
+  public static hasKey(key: string) {
+    return this.keyToServiceMap.has(key);
   }
 
   /**
    * 通过 id 添加一个 Service
-   * @param windowService
    */
-  public static addId(windowService: WindowService) {
-    WindowStateMachine.idToServiceMap.set(windowService.window.id, windowService);
+  public static addId(id: number, windowService: WindowService) {
+    WindowServiceStateMachine.idToServiceMap.set(id, windowService);
   }
 
   /**
    * 通过 id 删除一个 Service
-   * @param windowService
    */
-  public static removeId(windowService: WindowService) {
-    WindowStateMachine.idToServiceMap.delete(windowService.window.id);
+  public static removeId(id: number) {
+    WindowServiceStateMachine.idToServiceMap.delete(id);
+  }
+
+  /**
+   * 返回当前状态机中是否含有特定 id
+   */
+  public static hasId(key: number) {
+    return this.idToServiceMap.has(key);
+  }
+
+  /**
+   * 添加一个 windowService 到状态机中
+   */
+  public static addWindowService(windowService: WindowService) {
+    this.addId(windowService.window.id, windowService);
+    if (windowService.options.windowKey) this.addKey(windowService.options.windowKey, windowService);
+  }
+
+  public static removeService(windowService: WindowService) {
+    this.removeId(windowService.window.id);
+    if (windowService.options.windowKey) this.removeKey(windowService.options.windowKey);
   }
 
   /**
    * 通过名字或者 id 查找一个 Service
-   * @param key
    */
   public static findWindowService(key: string): WindowService | null;
   public static findWindowService(id: number): WindowService | null;
   public static findWindowService(key: string | number): WindowService | null {
     let windowService: WindowService | undefined = void 0;
 
-    if (isString(key)) windowService = WindowStateMachine.keyToServiceMap.get(key);
-    else if (isNumber(key)) windowService = WindowStateMachine.idToServiceMap.get(key);
+    if (isString(key)) windowService = WindowServiceStateMachine.keyToServiceMap.get(key);
+    else if (isNumber(key)) windowService = WindowServiceStateMachine.idToServiceMap.get(key);
 
     if (!windowService) return null;
-
     return windowService;
   }
 
+  /**
+   * 销毁一个 windowService 对象
+   */
   public static destroyWindowService(windowService: WindowService) {
-    if (!WindowStateMachine.hasWindowService(windowService)) {
-      throw new RuntimeException('WindowStateMachine: does not have a window object that is about to be destroyed', {
-        label: 'WindowStateMachine'
+    if (!WindowServiceStateMachine.hasWindowService(windowService)) {
+      throw new RuntimeException('无法从状态机中找到该对象, 销毁失败', {
+        label: 'WindowServiceStateMachine'
       })
     }
+
+    this.removeService(windowService);
     windowService.destroy();
-  }
-
-  /**
-   * 返回所有的窗口对象
-   */
-  public static getAllWindowService() {
-
   }
 }
 
@@ -287,8 +262,6 @@ export class WindowStateMachine {
  */
 export const isSameWindowService = (_1: WindowService | null, _2: WindowService | null) => {
   if (isNull(_1) || isNull(_2)) return false;
-
   if (_1 === _2) return true;
-
   return _1.window.id === _2.window.id;
 }

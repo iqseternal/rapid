@@ -7,7 +7,7 @@ import ReceptionLayout from '@/layout/ReceptionLayout';
 import Home from '@views/reception/home';
 import Download from '@views/reception/download';
 
-export const receptionRoutes = makeRoute({
+export const receptionRoute = makeRoute({
   path: '/reception', name: 'Reception', component: <Redirect from='/reception' to='/reception/index' element={<ReceptionLayout />} />,
   meta: { title: '' },
   children: [
@@ -32,4 +32,4 @@ export const receptionRoutes = makeRoute({
   ]
 });
 
-export const receptionMenuRoutes = receptionRoutes;
+export const receptionMenuRoute = receptionRoute;

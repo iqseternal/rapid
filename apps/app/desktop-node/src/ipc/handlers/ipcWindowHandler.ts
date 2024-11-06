@@ -1,139 +1,186 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
-import { isSameWindowService, WindowService, WindowStateMachine } from '@/core/service/WindowService';
+import { isSameWindowService, WindowService, WindowServiceStateMachine } from '@/core/service/WindowService';
 import { TypeException } from '@/core';
-import { isNumber, isString, isUnDef } from '@rapid/libs';
+import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
 import { AppConfigService } from '@/core/service/AppConfigService';
-import { UserConfigService } from '@/core/service/UserConfigService';
 import { toMakeIpcAction } from '@/core/ipc';
 import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 import { PAGES_WINDOW_MAIN } from '@/config';
 import { posix } from 'path';
+import { userConfigStore } from '../../store';
 
 const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]
 });
 
-export const ipcWindowMaxSize = makeIpcHandleAction(
+/**
+ * 窗口最大化, 可以在 options 中传递制定 id 来控制某个窗口
+ */
+export const ipcWindowMaximize = makeIpcHandleAction(
   'IpcWindow/maxSize',
   [],
-  async (windowService, options?: { id: number }) => {
-    if (options?.id) {
-      windowService = WindowService.findWindowService(options.id);
+  async (windowService, options?: { id?: number;windowKey?: string; }) => {
+    const { id, windowKey } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
     }
 
     if (windowService.window.isMaximizable()) windowService.window.maximize();
   }
 );
 
-export const ipcWindowMinSize = makeIpcHandleAction(
+/**
+ * 窗口最小化, 可以在 options 中传递制定 id 来控制某个窗口
+ */
+export const ipcWindowMinimize = makeIpcHandleAction(
   'IpcWindow/minSize',
   [],
-  async (windowService, options?: { id: number }) => {
-    if (options?.id) {
-      windowService = WindowService.findWindowService(options.id);
+  async (windowService, options?: { id?: number;windowKey?: string; }) => {
+    const { id, windowKey } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
     }
     if (windowService.window.isMinimizable()) windowService.window.minimize();
   }
 );
 
+/**
+ * 窗口还原指令, 还原窗口大小
+ */
 export const ipcWindowReductionSize = makeIpcHandleAction(
   'IpcWindow/reduction',
   [],
-  async (windowService, options?: { id: number }) => {
-    if (options?.id) {
-      windowService = WindowService.findWindowService(options.id);
+  async (windowService, options?: { id?: number;windowKey?: string; }) => {
+    const { id, windowKey } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
     }
+    // 如果窗口最大化状态, 那么还原他
     if (windowService.window.isMaximized()) {
       windowService.window.restore();
-      return true;
+      return;
     }
+    // 否则最大化他
     windowService.window.maximize();
-    return true;
   }
 );
 
+/**
+ * 设置窗口是否可以调整大小尺寸
+ */
 export const ipcWindowResizeAble = makeIpcHandleAction(
   'IpcWindow/resizeAble',
   [],
-  async (windowService, options?: {
-    id?: number,
-    able: boolean
-  }) => {
-    const { able = true } = options ?? {};
+  async (windowService, options?: { id?: number;windowKey?: string;resizeAble: boolean; }) => {
+    const { id, windowKey, resizeAble = true } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
 
-    windowService.window.setResizable(able);
+    windowService.window.setResizable(resizeAble);
   }
 );
 
+/**
+ * 重新加载某个窗口页面
+ */
 export const ipcWindowRelaunch = makeIpcHandleAction(
   'IpcWindow/relaunch',
   [],
-  async (windowService) => {
+  async (windowService, options?: { id?: number;windowKey?: string; }) => {
+    const { id, windowKey } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
     windowService.window.reload();
-    // app.relaunch();
   }
 );
 
+/**
+ * 设置窗口的最小尺寸大小
+ */
 export const ipcWindowSetMinimumSize = makeIpcHandleAction(
   'IpcWindow/setMinimumSize',
   [],
   async (windowService, options: {
-    id?: number
-    width: number,
-    height: number
+    id?: number;
+    windowKey?: string;
+    width: number;
+    height: number;
   }) => {
-    windowService.window.setMinimumSize(options.width, options.height);
+    const { id, windowKey, width, height } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
+
+    windowService.window.setMinimumSize(width, height);
   }
 );
 
+/**
+ * 设置窗口的当前尺寸
+ */
 export const ipcWindowSetSize = makeIpcHandleAction(
   'IpcWindow/setSize',
   [],
   async (windowService, options: {
     id?: number
+    windowKey?: string;
     width: number,
     height: number
   }) => {
-    if (windowService.window.isMaximized()) windowService.window.restore();
+    const { id, windowKey, width, height } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
 
-    // windowService.window.setMinimumSize(0, 0);
-    windowService.window.setSize(options.width, options.height);
+    if (windowService.window.isMaximized()) windowService.window.restore();
+    windowService.window.setSize(width, height);
   }
 );
 
+/**
+ * 重置窗口为制定大小, 用于记忆化窗口尺寸
+ */
 export const ipcWindowResetCustomSize = makeIpcHandleAction(
   'IpcWindow/resetCustomSize',
   [],
   async (windowService, options: {
     id?: number,
+    windowKey?: string;
     type: 'mainWindow'
   }) => {
+    const { id, windowKey } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
+
     const appConfigService = AppConfigService.getInstance();
-    const userConfigService = UserConfigService.getInstance();
 
     if (options.type === 'mainWindow') {
       const { minWidth, minHeight } = appConfigService.config.windows.mainWindow;
       windowService.window.setMinimumSize(minWidth, minHeight);
 
-      const { width: userWidth, height: userHeight } = userConfigService.config.windows.mainWindow;
       const { width: appWidth, height: appHeight } = appConfigService.config.windows.mainWindow;
+
+      const userWidth = userConfigStore.get('mainWindowMemoryWidth') ?? appWidth;
+      const userHeight = userConfigStore.get('mainWindowMemoryHeight') ?? appHeight;
 
       const [width, height] = windowService.window.getSize();
       const [positionX, positionY] = windowService.window.getPosition();
 
-      let targetWidth: number, targetHeight: number;
+      const targetWidth: number = userWidth, targetHeight: number = userHeight;
       // let gapWidth: number, gapHeight: number;
       let targetPx: number, targetPy: number;
-
-      if (!userWidth || !userHeight) {
-        targetWidth = appWidth;
-        targetHeight = appHeight;
-      }
-      else {
-        targetWidth = userWidth;
-        targetHeight = userHeight;
-      }
 
       const gapWidth = (targetWidth - width) * (targetWidth > width ? 1 : -1);
       const gapHeight = (targetHeight - height) * (targetHeight > height ? 1 : -1);
@@ -156,14 +203,24 @@ export const ipcWindowResetCustomSize = makeIpcHandleAction(
   }
 );
 
+/**
+ * 设置窗口的位置
+ */
 export const ipcWindowSetPosition = makeIpcHandleAction(
   'IpcWindow/setPosition',
   [],
   async (windowService, options: {
     id?: number,
+    windowKey?: string;
     x: 'center' | 'left' | 'right' | number
     y: 'center' | 'top' | 'bottom' | number
   }) => {
+    const { id, windowKey } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
+
     const { x, y } = options;
 
     const [currentPx, currentPy] = windowService.window.getPosition();
@@ -190,6 +247,9 @@ export const ipcWindowSetPosition = makeIpcHandleAction(
   }
 );
 
+/**
+ * TODO: 需要改进
+ */
 export const ipcOpenWindow = makeIpcHandleAction(
   'IpcWindow/openWindow',
   [],
@@ -198,7 +258,7 @@ export const ipcOpenWindow = makeIpcHandleAction(
 
     let targetWindowService: WindowService | null = null;
 
-    if (isString(windowKey)) targetWindowService = WindowStateMachine.findWindowService(windowKey);
+    if (isString(windowKey)) targetWindowService = WindowServiceStateMachine.findWindowService(windowKey);
     if (isUnDef(targetWindowService)) {
       targetWindowService = new WindowService(browserWindowOptions, {
         windowKey,
@@ -211,57 +271,84 @@ export const ipcOpenWindow = makeIpcHandleAction(
   }
 );
 
+/**
+ * 关闭窗口
+ */
 export const ipcWindowClose = makeIpcHandleAction(
   'IpcWindow/closeWindow',
   [],
-  async (windowService, options?: { windowKey?: string;fictitious?: boolean }) => {
-    const {
-      windowKey,
-      fictitious = false
-    } = options ?? {};
+  async (windowService, options?: {
+    windowKey?: string;
+    id?: number,
+    /**
+     * 遮掩的。为 true, 那么窗口不会正常地销毁, 而只是隐藏掉
+     */
+    fictitious?: boolean
+  }) => {
 
-    if (isString(windowKey)) {
-      const targetWindowService = WindowService.findWindowService(windowKey);
-      if (fictitious) targetWindowService.window.hide();
-
-      return targetWindowService.destroy();
+    const { id, windowKey, fictitious = false } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
     }
 
     const mainWindowService = WindowService.findWindowService(PAGES_WINDOW_MAIN);
-
+    // 主窗口只能隐藏
     if (isSameWindowService(mainWindowService, windowService)) {
-      return windowService.window.hide();
+      windowService.window.hide();
+      return;
     }
 
-    if (fictitious) return windowService.window.hide();
+    // 虚假地销毁
+    if (fictitious) {
+      windowService.window.hide();
+      return;
+    }
+
     windowService.destroy();
   }
 );
 
+/**
+ * 显示窗口, 如果窗口存在, 并且是隐藏地情况下
+ */
 export const ipcWindowShow = makeIpcHandleAction(
   'IpcWindow/showWindow',
   [],
   async (windowService: WindowService, options: {
     id?: number
+    windowKey?: string;
     show: boolean
   }) => {
-    const isVisible = windowService.window.isVisible();
+    const { id, windowKey, show } = options ?? {};
+    if (isDef(id) || isDef(windowKey)) {
+      const targetKey = windowKey || id!;
+      windowService = WindowService.findWindowService(targetKey);
+    }
 
-    if (options.show) {
+    const isVisible = windowService.window.isVisible();
+    if (show) {
       if (!isVisible) windowService.window.show();
+      return;
     }
-    else {
-      if (isVisible) windowService.window.hide();
-    }
+
+    if (isVisible) windowService.window.hide();
   }
 );
 
-declare interface WindowProperties {
+/**
+ * TODO:
+ */
+export declare interface WindowProperties {
   width: number;
   height: number;
   x: number;
   y: number;
 }
+
+/**
+ * TODO: 需要改进, 理想作用是通过一个 ipc 设置多个 window 属性
+ */
 export const ipcWindowProperties = makeIpcHandleAction(
   'IpcWindow/properties',
   [],
@@ -281,3 +368,14 @@ export const ipcWindowProperties = makeIpcHandleAction(
   }
 )
 
+/**
+ * 获取展示窗口的尺寸
+ */
+export const ipcWindowWorkAreaSize = makeIpcHandleAction(
+  'IpcWindow/workAreaSize',
+  [],
+  async () => {
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    return { width, height };
+  }
+)

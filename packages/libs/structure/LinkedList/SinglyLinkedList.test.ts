@@ -56,15 +56,15 @@ describe('SinglyLinkedList', () => {
 
   describe('delete', () => {
     it('should delete elements by predicate', () => {
-      list.delete(value => value === 2);
-      expect(list.find(value => value === 2)).toBeNull();
-      expect(list.length()).toBe(2);
+      list.delete(2);
+      expect(list.find(2)).toBeNull();
+      expect(list.size()).toBe(2);
     });
   });
 
   describe('find', () => {
     it('should find elements by predicate', () => {
-      expect(list.find(value => value === 2)).toBe(2);
+      expect(list.find(2)).toBe(2);
     });
   });
 
@@ -80,7 +80,7 @@ describe('SinglyLinkedList', () => {
     it('should clear all elements from the list', () => {
       list.clear();
       expect(list.isEmpty()).toBe(true);
-      expect(list.length()).toBe(0);
+      expect(list.size()).toBe(0);
     });
   });
 
@@ -97,28 +97,28 @@ describe('SinglyLinkedList', () => {
 
   describe('length', () => {
     it('should return the number of elements in the list', () => {
-      expect(list.length()).toBe(3);
+      expect(list.size()).toBe(3);
     });
   });
 
   describe('deleteAtHead', () => {
     it('should delete the element at the head of the list', () => {
       expect(list.deleteAtHead()).toBe(1);
-      expect(list.length()).toBe(2);
+      expect(list.size()).toBe(2);
     });
   });
 
   describe('deleteAtTail', () => {
     it('should delete the element at the tail of the list', () => {
       expect(list.deleteAtTail()).toBe(3);
-      expect(list.length()).toBe(2);
+      expect(list.size()).toBe(2);
     });
   });
 
   describe('clone', () => {
     it('should clone the list', () => {
       const clonedList = list.clone();
-      expect(clonedList.length()).toBe(list.length());
+      expect(clonedList.size()).toBe(list.size());
     });
   });
 

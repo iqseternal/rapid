@@ -1,11 +1,12 @@
-import { WindowService, WindowStateMachine } from '@/core/service/WindowService';
-import { CONFIG, IS_DEV, WINDOW_STATE_MACHINE_KEYS } from '@rapid/config/constants';
+import { WindowService, WindowServiceStateMachine } from '@/core/service/WindowService';
+import { CONFIG, IS_DEV } from '@rapid/config/constants';
 import { AppConfigService } from '@/core/service/AppConfigService';
 import { PrinterService } from '@/core/service/PrinterService';
 import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
 import { BrowserView, Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach, setWindowOpenHandler } from '@/core/common/window';
 import { join } from 'path';
+import { userConfigStore } from './store';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
 
@@ -15,7 +16,7 @@ const iconUrl = join(__dirname, '../../resources/icon.ico');
  * @returns
  */
 export async function setupMainWindow() {
-  const mainWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.MAIN_WINDOW);
+  const mainWindowService = WindowServiceStateMachine.findWindowService(PAGES_WINDOW_MAIN);
   if (mainWindowService) return mainWindowService;
 
   PrinterService.printInfo('窗口开始构建');
@@ -53,7 +54,6 @@ export async function setupMainWindow() {
 
     return { action: 'deny' };
   });
-
   if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
   PrinterService.printInfo('主窗口ID, ', windowService.window.id);
 
@@ -65,7 +65,7 @@ export async function setupMainWindow() {
  * @returns
  */
 export async function setupSettingWindow() {
-  const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+  const settingWindowService = WindowServiceStateMachine.findWindowService(PAGES_WINDOW_SETTING);
 
   if (settingWindowService) return settingWindowService;
   PrinterService.printInfo('构建设置页面');
@@ -74,7 +74,7 @@ export async function setupSettingWindow() {
   const windowService = new WindowService(appConfigService.config.windows.mediumPopupWindow, {
     url: PAGES_WINDOW_SETTING,
     autoLoad: true,
-    windowKey: WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW
+    windowKey: PAGES_WINDOW_SETTING
   });
 
   windowService.window.setResizable(false);
@@ -83,84 +83,6 @@ export async function setupSettingWindow() {
 
   return windowService;
 }
-
-export interface DialogWindowOptions {
-  type: typeof CONFIG.DIALOG[keyof typeof CONFIG.DIALOG]['NAME'];
-}
-
-/**
- * 创建自定义弹窗的函数
- * @param options
- * @returns
- */
-export async function setupDialogWindow(options: DialogWindowOptions) {
-  const dialogWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.DIALOG_WINDOW);
-
-  if (dialogWindowService) return dialogWindowService;
-  PrinterService.printInfo('构建弹窗');
-
-  const appConfigService = AppConfigService.getInstance();
-  const windowService = new WindowService(appConfigService.config.windows.smallPopupWindow, {
-    url: PAGES_WINDOW_DIALOG,
-    autoLoad: true,
-    windowKey: WINDOW_STATE_MACHINE_KEYS.DIALOG_WINDOW
-  });
-
-  windowService.window.setResizable(false);
-  windowService.window.setMenu(null);
-
-  setWindowCloseCaptionContextmenu(windowService.window);
-  setWindowOpenHandler(windowService.window);
-  // setWindowDevtoolsDetach(windowService.window);
-
-  windowService.addOpenThenCb(() => {
-    PrinterService.printWarn(`弹窗打开成功了`);
-
-    // sendToRenderer(windowService.window, IPC_RENDER_DIALOG_WINDOW.DIALOG_TYPE, new IpcResponseOk(options.type));
-  });
-  windowService.addOpenCatchCb(() => {
-    PrinterService.printWarn(`弹窗打开失败了`);
-  });
-
-  return windowService;
-}
-
-export interface ReportBugsWindowOptions {
-  /** 是否汇报 BUG 后自动重启 App */
-  autoReloadApp?: boolean;
-}
-
-/**
- * 创建汇报BUG页面的函数
- * @returns
- */
-export async function setupReportBugsWindow() {
-  const reportBugsWindow = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW);
-  if (reportBugsWindow) return reportBugsWindow;
-
-  const windowService = new WindowService({
-    width: 550,
-    height: 400,
-    frame: false,
-    autoHideMenuBar: false,
-    resizable: false,
-    fullscreenable: false
-  }, {
-    url: PAGES_WINDOW_REPORT_BUGS,
-    autoLoad: true,
-    windowKey: WINDOW_STATE_MACHINE_KEYS.REPORT_BUGS_WINDOW
-  });
-
-  // windowService.window.setMenu(null);
-  // setWindowCloseCaptionContextmenu(windowService.window);
-  setWindowDevtoolsDetach(windowService.window);
-  setWindowOpenHandler(windowService.window);
-
-  return windowService;
-}
-
-
-
 
 /**
  * 创建托盘和托盘菜单
@@ -169,7 +91,7 @@ export async function setupTrayMenu() {
   const tray = new Tray(nativeImage.createFromPath(iconUrl));
 
   tray.on('click', async () => {
-    const mainWindowService = WindowStateMachine.findWindowService(PAGES_WINDOW_MAIN);
+    const mainWindowService = WindowServiceStateMachine.findWindowService(PAGES_WINDOW_MAIN);
     if (!mainWindowService) {
       await setupMainWindow();
       return;
@@ -202,7 +124,7 @@ export async function setupTrayMenu() {
       label: '设置',
       type: 'normal',
       click: async () => {
-        const settingWindowService = WindowStateMachine.findWindowService(WINDOW_STATE_MACHINE_KEYS.SETTING_WINDOW);
+        const settingWindowService = WindowServiceStateMachine.findWindowService(PAGES_WINDOW_SETTING);
         if (!settingWindowService) {
           await setupSettingWindow();
           return;

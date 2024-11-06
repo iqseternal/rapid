@@ -150,10 +150,7 @@ export const toMakeZustandHijack = (options?: ToMakeZustandHijackOptions) => {
     beforeHijackCovert = <T>(e: T) => e
   } = options ?? {};
 
-  const makeZustandHijack = <
-    Target extends {},
-    UnHijackTarget = ZustandHijack.ZustandHijackTarget<Target>
-  >(toHijackSourceTarget: (selector: typeof zustandSelector) => Target): UnHijackTarget => {
+  const makeZustandHijack = <Target extends {}, UnHijackTarget = ZustandHijack.ZustandHijackTarget<Target>>(toHijackSourceTarget: (selector: typeof zustandSelector) => Target): UnHijackTarget => {
     const sourceTarget = toHijackSourceTarget(zustandSelector);
     const target = beforeHijackCovert(sourceTarget);
     if (zustandHijackMap.has(target)) return target;

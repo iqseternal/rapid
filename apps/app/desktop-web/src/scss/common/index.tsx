@@ -1,5 +1,5 @@
-import type { CSSTransitionClassNames } from 'react-transition-group/CSSTransition';
 import { useMemo } from 'react';
+import type { CSSTransitionClassNames } from 'react-transition-group/CSSTransition';
 
 import animationStyles from './animation.module.scss';
 import commonStyles from './index.module.scss';
@@ -60,10 +60,9 @@ export type AnimationClassNameSelector<AnimationClassName extends keyof Animatio
  * </CSSTransition>
  */
 export const useAnimationClassSelector = <AnimationClassName extends keyof AnimationClassNamesType, Selector extends AnimationClassNameSelector<AnimationClassName>>(selector: Selector) => {
-  return useMemo<ReturnType<Selector>>(() => {
-    const animationClassName = selector(animationClassNames) as ReturnType<Selector>;
-
-    return animationClassName;
-  }, []);
+  return useMemo<ReturnType<Selector>>(
+    () => selector(animationClassNames) as ReturnType<Selector>,
+    []
+  );
 }
 

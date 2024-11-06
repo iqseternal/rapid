@@ -1,21 +1,32 @@
 import { app } from 'electron';
 
+/**
+ * 单实例架构, getInstance 获取特定类实例对象
+ */
 export class CustomSingleInstanceService {
   constructor() {
-    app.on('will-quit', () => this.destory());
+    app.on('will-quit', () => this.destroy());
   }
 
+  /**
+   * 获取需要使用的类对象
+   */
   static getInstance(...args: unknown[]): any {
     return new this();
   }
 
-  destory(): void {
+  /**
+   * 销毁函数
+   */
+  destroy(): void {
 
   }
 }
 
 /**
- * 单实例基类
+ * 单实例基类, 与 CustomSingleInstanceService 区别:
+ *
+ * 只允许返回当前类的实例
  */
 export class SingleInstanceService<T extends SingleInstanceService<T>> extends CustomSingleInstanceService {
   private static instanceMap: Record<string, SingleInstanceService<any>> = {};
@@ -25,7 +36,6 @@ export class SingleInstanceService<T extends SingleInstanceService<T>> extends C
     if (!SingleInstanceService.isCanNew) {
       throw new Error(`请不要使用 New 操作符手动实例化 SingleInstanceService 对象, 请使用 SingleInstanceService 对象.getInstance().`);
     }
-
     super();
   }
 
@@ -48,7 +58,7 @@ export class SingleInstanceService<T extends SingleInstanceService<T>> extends C
   /**
    * 单一实例才应用程序即将退出时做的事情
    */
-  override destory(): void {
+  override destroy(): void {
 
   }
 }

@@ -78,7 +78,9 @@ export class SlotPoint {
         refresh();
       });
 
-      return unsubscribe;
+      return () => {
+        unsubscribe();
+      }
     }, []);
 
     const getSnapshot = useCallback(() => {

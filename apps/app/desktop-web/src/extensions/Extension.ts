@@ -17,8 +17,11 @@ export abstract class Extension{
   abstract onInstalled(context: ExtensionContext): Promise<void>;
 
   abstract onRegistered(): Promise<void>;
+
   abstract onActivated(): Promise<void>;
+
   abstract onUpdated(): Promise<void>;
+
   abstract onConfigChanged(): Promise<void>;
 
   abstract onUnregistered(): Promise<void>;

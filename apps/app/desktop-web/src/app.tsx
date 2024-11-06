@@ -1,13 +1,7 @@
-import { HashRouter } from 'react-router-dom';
-import { ConfigProvider, App, message } from 'antd';
-import type { ProfilerOnRenderCallback } from 'react';
-import { useState, Profiler, useCallback, useEffect } from 'react';
-import { FullSize } from '@rapid/libs-web';
+import { ConfigProvider, App } from 'antd';
 import { classnames } from '@rapid/libs-web/common';
 import { commonStyles } from '@scss/common';
-import { themeCssVarsSheet, makeVar } from './themes';
 
-import ReactDOM from 'react-dom/client';
 import RouterContext from './router';
 import styles from './app.module.scss';
 
@@ -61,10 +55,7 @@ export default function RapidApp() {
           commonStyles.fullSize
         )}
       >
-        <HashRouter>
-
-          <RouterContext />
-        </HashRouter>
+        <RouterContext />
       </App>
     </ConfigProvider>
   )

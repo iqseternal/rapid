@@ -2,19 +2,22 @@ import { print, toColor, printClear, toPrintClear, STYLE, keyToAnsi, isPrintStyl
 import { CONFIG } from '@rapid/config/constants';
 import { isString } from '@rapid/libs';
 
-const AppName = CONFIG.PROJECT.toUpperCase();
-
-export enum Thread {
-  Main = 'MAIN',
-  Renderer = 'RENDER'
-}
-
-export enum PrintType {
-  Info = 'INFO',
-  Warn = 'WARN',
-  Error = 'ERROR',
-  Success = 'SUCCESS'
-}
+/**
+ * 打印的制定信息
+ */
+export const PrinterMoreInfo = {
+  AppName: CONFIG.PROJECT.toUpperCase(),
+  Thread: {
+    Main: 'MAIN',
+    Renderer: 'RENDER'
+  },
+  PrintType: {
+    Info: 'INFO',
+    Warn: 'WARN',
+    Error: 'ERROR',
+    Success: 'SUCCESS',
+  }
+} as const;
 
 /**
  * 对打印信息进行解析, 因为打印信息中包含了对控制台色彩的控制, 可能有需要对色彩进行剔除存储的需求
@@ -41,17 +44,22 @@ export const printMessageParser = (...messages: unknown[]) => {
  */
 export class PrinterService {
 
+  /**
+   * 打印
+   */
   static print(...message: unknown[]) {
     PrinterService.printInfo(...message);
   }
 
-
+  /**
+   * 打印普通日志信息的样式信息
+   */
   static getPrintInfoMessageStyleArr(...message: unknown[]) {
     return [
-      toColor(['magenta'], `[${AppName}]`),
+      toColor(['magenta'], `[${PrinterMoreInfo.AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
-      toColor(['blue', 'underline'], `[${PrintType.Info}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
+      toColor(['blue', 'underline'], `[${PrinterMoreInfo.PrintType.Info}]${toPrintClear()}:`),
       ...message
     ]
   }
@@ -64,13 +72,15 @@ export class PrinterService {
     print(...PrinterService.getPrintInfoMessageStyleArr(...message));
   }
 
-
+  /**
+   * 打印警告日志信息的样式信息
+   */
   static getPrintWarnMessageStyleArr(...message: unknown[]) {
     return [
-      toColor(['magenta', 'bright'], `[${AppName}]`),
+      toColor(['magenta', 'bright'], `[${PrinterMoreInfo.AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
-      toColor(['yellow', 'underline'], `[${PrintType.Warn}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
+      toColor(['yellow', 'underline'], `[${PrinterMoreInfo.PrintType.Warn}]${toPrintClear()}:`),
       toColor(['yellow']),
       ...message
     ]
@@ -84,13 +94,15 @@ export class PrinterService {
     print(...PrinterService.getPrintWarnMessageStyleArr(...message));
   }
 
-
+  /**
+   * 打印成功日志信息的样式信息
+   */
   static getPrintSuccessMessageStyle(...message: unknown[]) {
     return [
-      toColor(['magenta'], `[${AppName}]`),
+      toColor(['magenta'], `[${PrinterMoreInfo.AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
-      toColor(['green', 'underline'], `[${PrintType.Success}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
+      toColor(['green', 'underline'], `[${PrinterMoreInfo.PrintType.Success}]${toPrintClear()}:`),
       toColor(['green']),
      ...message
     ]
@@ -104,12 +116,15 @@ export class PrinterService {
     print(...PrinterService.getPrintSuccessMessageStyle(...message));
   }
 
+  /**
+   * 打印错误日志信息的样式信息
+   */
   static getPrintErrorMessageStyleArr(...message: unknown[]) {
     return [
-      toColor(['magenta', 'bright'], `[${AppName}]`),
+      toColor(['magenta', 'bright'], `[${PrinterMoreInfo.AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${Thread.Main}]`),
-      toColor(['red', 'underline'], `[${PrintType.Error}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
+      toColor(['red', 'underline'], `[${PrinterMoreInfo.PrintType.Error}]${toPrintClear()}:`),
       toColor(['red']),
      ...message
     ]

@@ -1,16 +1,14 @@
+import { Subfield } from '@rapid/libs-web';
 import type { FC } from 'react';
 import { useEffect, useLayoutEffect, useRef, useState, useCallback, useContext, useMemo, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useOutlet, useLocation } from 'react-router-dom';
-import { Subfield, SubfieldSpace, SubfieldRow } from '@/components/Subfield';
-import { receptionRoutes } from '@/router/modules/reception';
 import { FloatButton } from 'antd';
 import { ReceptionScrollContainerContext, ReceptionHasPreposeContext, ReceptionHasPerposeHeaderClassNameContext } from '@/context';
 import { classnames } from '@libs/common';
 import { Provider } from 'react-redux';
-import { useEventListener, useDebounceHook, useReactive, useRefresh, useOverScreenSize, useShallowReactive } from '@/hooks';
-import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
-import { MaxScreen, MaxScreenWidth, Flex, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth } from '@rapid/libs-web/styled';
+import { useDebounceHook, useOverScreenSize, useShallowReactive } from '@/hooks';
+import { Flex, combinationStyled, FullSizeWidth, FullSize } from '@rapid/libs-web/styled';
 
 import styles from './index.module.scss';
 import headerStyles from './header.module.scss';

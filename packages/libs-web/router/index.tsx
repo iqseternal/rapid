@@ -1,12 +1,13 @@
 import type { RequiredRouteConfig } from './makeRequireRouteConfig';
 import {  } from './makeRequireRouteConfig';
-import type { FC, ReactElement, ReactNode, LazyExoticComponent } from 'react';
+import type { FC, ReactElement, ReactNode, LazyExoticComponent, MemoExoticComponent } from 'react';
 import { Suspense, isValidElement } from 'react';
+import { isString } from '@rapid/libs';
 import { Skeleton } from 'antd';
 import type { PathRouteProps } from 'react-router-dom';
 import { Route } from 'react-router-dom';
 import type { RedirectProps } from '../components/Redirect';
-import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC } from '../common';
+import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
 import { printWarn } from '@suey/printer';
 
 import Redirect from '../components/Redirect';
@@ -18,12 +19,15 @@ export interface CreateRoutesChildrenOptions {
    * 处理异步组件的展示
    * @returns
    */
-  onLazyComponent: (props: { children: ReactElement<LazyExoticComponent<FC<any>>> }) => ReactElement;
+  onLazyComponent:
+    FC<{ children: ReactElement<LazyExoticComponent<FC<any>>> }> |
+    MemoExoticComponent<FC<{ children: ReactElement<LazyExoticComponent<FC<any>>> }>>;
 }
 
 /**
  * 通过路由表创建符合要求的 ReactDomRouter 子元素
  * @param routeArr
+ * @param options
  * @returns
  */
 export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: CreateRoutesChildrenOptions) => {
@@ -37,8 +41,18 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: C
     // 这是一个重定向组件
     if (redirect) {
       Component = Redirect;
-      const from = meta.fullPath;
-      const to = redirect;
+
+      let from: string | RegExp = '', to = '';
+      if (isString(redirect)) {
+        printWarn(`createRoutesChildren: route 对象 redirect 没有被处理, route 应该由 makeRoute 函数创建`);
+        from = meta.fullPath;
+        to = redirect;
+      }
+      else {
+        from = redirect.from;
+        to = redirect.to;
+      }
+
       componentsProps = { from, to, element: component } as RedirectProps;
     }
 
@@ -50,20 +64,20 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: C
         <Component {...componentsProps} />
       </OnLazyComponent>;
     }
-
     // 放入的是一个 FC
     else if (
       isReactFC(Component) || isReactClassComponent(Component) ||
-      isReactForwardFC(Component)
-    ) realRoute.element = <Component {...componentsProps} />;
-
+      isReactForwardFC(Component) || isReactMemoFC(Component)
+    ) {
+      realRoute.element = <Component {...componentsProps} />;
+    }
     // 放入的 JSX Element
     else if (isValidElement(Component)) {
       realRoute.element = Component;
     }
     else {
       // printWarn(`createRoutesChildren: 传入的 component 不是一个有效的值`);
-      // realRoute.element = <></>;
+      realRoute.element = <></>;
     }
 
     return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath ?? index)}>

@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@rapid/validates": "workspace:^",
-    "@suey/pkg-utils": "0.1.12",
-    "ahooks": "^3.8.1"
+    "@suey/pkg-utils": "0.1.16"
   }
 }

@@ -102,6 +102,8 @@ export const windowEnableFullScreen = (el = document.body) => el.requestFullscre
  */
 export const windowExitFullScreen = () => document.exitFullscreen();
 
+export const windowWorkAreaSize = makeInvokeActions('IpcWindow/workAreaSize');
+
 /**
  * 打开一个子窗口
  * @returns

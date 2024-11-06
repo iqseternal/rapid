@@ -2,9 +2,13 @@ import type { OpenDevToolsOptions } from 'electron';
 import { IS_DEV } from '@rapid/config/constants';
 import { WindowService } from '@/core/service/WindowService';
 import { toMakeIpcAction } from '@/core/ipc';
+import { WindowServiceStateMachine } from '../../core/service/WindowService';
 
 const { makeIpcHandleAction } = toMakeIpcAction();
 
+/**
+ * 渲染进程打开开发者检查工具
+ */
 export const ipcOpenDevTool = makeIpcHandleAction(
   'IpcDevTool/openDevTool',
   [],
@@ -12,9 +16,10 @@ export const ipcOpenDevTool = makeIpcHandleAction(
     const windowService = WindowService.findWindowService(e);
 
     if (status) {
-      if (IS_DEV) windowService.window.webContents.openDevTools(options);
-      // else throw new PermissionException('生产模式, 不允许打开开发者工具', { });
+      windowService.window.webContents.openDevTools(options);
+      return;
     }
-    else windowService.window.webContents.closeDevTools();
+
+    windowService.window.webContents.closeDevTools();
   }
 );

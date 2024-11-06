@@ -2,7 +2,6 @@ import { defineConfig } from '@rspack/cli';
 import { node } from '@rspack/core';
 import type { RspackOptions } from '@rspack/core';
 import { join } from 'path';
-
 import { rules, DIRS } from '../../../config/node';
 
 const rspackConfig: RspackOptions = defineConfig({

@@ -24,11 +24,11 @@ export type { AsyncEffectCallback } from './useAsyncEffect';
 export { useTransition } from './useTransition';
 export type { StartTransitionFunction } from './useTransition';
 
-// Exports
-export {
-  useMount, useUnmount,
+export { useMount, useUnmount } from 'ahooks';
 
-} from 'ahooks';
+
+
+
 
 // 以下 Hook 需要优化
 

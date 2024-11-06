@@ -1,4 +1,4 @@
-
+import { Comparator } from '../declare';
 import type { LinkedNode } from './LinkedList';
 import { LinkedList } from './LinkedList';
 
@@ -28,13 +28,19 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     this.insert(...list);
   }
 
-  override *[Symbol.iterator](): Iterator<V> {
+  public override *[Symbol.iterator](): Iterator<V> {
     let node: SinglyLinkedNode<V> | null = this.head.next;
 
     while (node) {
       if (node.isHead) return;
       yield node.value;
       node = node.next;
+    }
+  }
+
+  public override contains(value: V): boolean {
+    for (const v of this) {
+      if (this.comparator(v, value) === 0) return true;
     }
   }
 
@@ -79,21 +85,27 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   }
 
   protected override deleteNode(node: SinglyLinkedNode<V>): SinglyLinkedNode<V> | null {
-    const prevNode = this.findNodeFromHead(node => node.next === node);
-    if (prevNode) {
-      prevNode.next = node.next;
-      node.next = null;
+    let prevNode: SinglyLinkedNode<V> | null = this.head;
+    while (prevNode) {
+      if (prevNode.next) {
+        if (prevNode.next === node) {
+          prevNode.next = prevNode.next.next;
+          break;
+        }
+      }
+
+      prevNode = prevNode.next;
     }
+
     return node;
   }
 
-  public override delete(predicate: (value: V) => boolean): V[] {
+  public override delete(value: V): V[] {
     const result: SinglyLinkedNode<V>[] = [];
 
     let node: SinglyLinkedNode<V> | null = this.head;
     while (node.next) {
-      if (predicate(node.next.value)) {
-
+      if (this.comparator(value, node.next.value) === 0) {
         const target = node.next;
         node.next = target.next;
         target.next = null;
@@ -120,13 +132,24 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   }
 
   protected override deleteNodeAtTail(): SinglyLinkedNode<V> | null {
-    const node = this.findNode(node => node.next === this.tail);
-    const nextNode = node?.next ?? null;
+    let node: SinglyLinkedNode<V> | null = this.head;
+    while (node) {
+      const nextNode = node;
+      if (nextNode) {
+        if (nextNode === this.tail) {
+          break;
+        }
+      }
+      node = nextNode;
+    }
+
     if (node) {
+      const tailNode = node.next;
       this.tail = node;
       node.next = null;
+      return tailNode;
     }
-    return nextNode;
+    return null;
   }
 
   public override deleteAtTail(): V | null {
@@ -135,54 +158,50 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return node.value;
   }
 
-  protected override findNodeFromHead(predicate: (value: SinglyLinkedNode<V>) => boolean): SinglyLinkedNode<V> | null {
+  protected override findNodeFromHead(value: V): SinglyLinkedNode<V> | null {
     let node: SinglyLinkedNode<V> | null = this.head.next;
     while (node) {
-      if (predicate(node)) break;
+      if (this.comparator(node.value, value) === 0) break;
       node = node.next;
     }
     return node;
   }
 
-  override findFromHead(predicate: (value: V) => boolean): V | null {
-    const node = this.findNodeFromHead(node => predicate(node.value));
+  public override findFromHead(value: V): V | null {
+    const node = this.findNodeFromHead(value);
     if (node) return node.value;
     return null;
   }
 
-  protected override findNode(predicate: (value: SinglyLinkedNode<V>) => boolean): SinglyLinkedNode<V> | null {
-    return this.findNodeFromHead(predicate);
+  protected override findNode(value: V): SinglyLinkedNode<V> | null {
+    return this.findNodeFromHead(value);
   }
 
-  protected override findNodeAll(predicate: (value: SinglyLinkedNode<V>) => boolean): SinglyLinkedNode<V>[] {
+  protected override findNodeAll(value: V): SinglyLinkedNode<V>[] {
     const results: SinglyLinkedNode<V>[] = [];
 
     let node = this.head.next;
     while (node) {
       if (node.isHead) break;
-
-      if (predicate(node)) {
+      if (this.comparator(node.value, value) === 0) {
         results.push(node);
       }
-
       node = node.next;
     }
 
     return results;
   }
 
-  public override find(predicate: (value: V) => boolean): V | null {
-    const node = this.findNode(node => predicate(node.value));
+  public override find(value: V): V | null {
+    const node = this.findNode(value);
     if (node) return node.value;
     return null;
   }
 
-  public override findAll(predicate: (value: V) => boolean): V[] {
-    const nodes = this.findNodeAll(node => predicate(node.value));
+  public override findAll(value: V): V[] {
+    const nodes = this.findNodeAll(value);
     return nodes.map(node => node.value);
   }
-
-
 
   protected override cloneNode(node: SinglyLinkedNode<V>): SinglyLinkedNode<V> {
     return this.initNode(node.value);
@@ -234,7 +253,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return this.head.next === null;
   }
 
-  public override length(): number {
+  public override size(): number {
     let length = 0;
     this.forEachNode(() => { length ++; });
     return length;

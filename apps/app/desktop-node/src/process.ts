@@ -13,7 +13,7 @@ if (IS_DEV) {
       Catch.parser(reason as unknown as Exception<ExceptionErrorMsgData>);
     } catch (err) {
       if (err && err === reason) {
-        LoggerService.error(`未捕获的异常`, JSON.stringify(reason), origin);
+        LoggerService.error(`未捕获的异常`, err, origin);
         return;
       }
 

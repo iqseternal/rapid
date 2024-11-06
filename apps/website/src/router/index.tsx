@@ -1,29 +1,17 @@
 import type { FC, ReactElement } from 'react';
-import { Suspense, lazy, useLayoutEffect, useTransition } from 'react';
+import { Suspense, lazy, memo, useLayoutEffect, useTransition } from 'react';
 import { Route, RouteProps, Routes, Navigate } from 'react-router-dom';
-import { createRoutesChildren, makeRoute } from '@rapid/libs-web/router';
-import { receptionRoutes, dashLoginRoute, dashRoutes } from './modules';
+import { createRoutesChildren, makeRoute, reserveRoutes } from '@rapid/libs-web/router';
 import { Skeleton } from 'antd';
 
 import Redirect from '@rapid/libs-web/components/Redirect';
 import DosLayout from '@/layout/DosLayout';
 
-const notFound = makeRoute({ path: '*', name: 'NotFound', component: lazy(() => import('@components/NotFound')) });
+import * as presetRoutes from './modules';
 
-const notRole = makeRoute({ path: '/403', name: 'NotRole', component: lazy(() => import('@components/NotRole')) });
+export const { retrieveRoutes } = reserveRoutes(presetRoutes);
 
-const rootRoute = makeRoute({ path: '/', name: 'Root', redirect: receptionRoutes.meta.fullPath });
-
-export const routes = [
-  rootRoute,
-  receptionRoutes,
-  dashLoginRoute, dashRoutes,
-  notFound, notRole
-];
-
-export * from './modules';
-
-export default function RouterContext() {
+export const RouterContext = memo(() => {
   return <Suspense
     fallback={<>
       <div>正在加载组件 ....</div>
@@ -31,21 +19,23 @@ export default function RouterContext() {
     </>}
   >
     <Routes>
-      {createRoutesChildren(routes, {
+      {createRoutesChildren([presetRoutes.rootRoute], {
         /**
          * 异步 lazy 组件展示
          * @returns {ReactElement}
          */
-        onLazyComponent: ({ children }): ReactElement => {
-
+        onLazyComponent: memo(({ children }): ReactElement => {
 
           return <Suspense fallback={
             <Skeleton />
           }>
             {children}
           </Suspense>
-        }
+        })
       })}
     </Routes>
   </Suspense>
-}
+})
+
+export default RouterContext;
+

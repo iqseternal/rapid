@@ -2,6 +2,9 @@ import type { DependencyList } from 'react';
 import { useCallback } from 'react';
 import { useShallowReactive } from './useReactive';
 
+/**
+ * 开始某个异步任务的函数类型
+ */
 export type StartTransitionFunction = () => Promise<void>;
 
 /**
@@ -15,7 +18,7 @@ export type StartTransitionFunction = () => Promise<void>;
  *
  *   if (err) return;
  *
- *   // todo:
+ *   //
  * }, []);
  *
  * <div
@@ -42,5 +45,5 @@ export function useTransition(callback: StartTransitionFunction, deps: Dependenc
     return startTransition(callback);
   }, deps);
 
-  return [state, transition, startTransition] as const;
+  return [state as Readonly<typeof state>, transition, startTransition] as const;
 }

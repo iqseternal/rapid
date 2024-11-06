@@ -1,13 +1,11 @@
-
-import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { ipcMain } from 'electron';
 
-import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
+import type { IpcActionType, IpcActionMiddleware } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
-import { Printer } from '@suey/printer';
 
 /**
  * 注册 ipc 全局中间件
+ *
  * @example
  * const middleware: IpcActionMiddleware<IpcActionEvent.Handle> = {
  *   name: 'middleware',
@@ -15,12 +13,23 @@ import { Printer } from '@suey/printer';
  *     return [WindowService.findWindowService(e), ...args];
  *   }
  * }
+ *
  * registerGlobalMiddleware(IpcActionEvent.Handle, [middleware]);
- * registerGlobalMiddleware(IpcActionEvent.On, [middleware]);
- *
- *
  */
 export function registerGlobalMiddleware<IpcActionEvent extends IpcActionEvent.Handle>(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]): void;
+/**
+ * 注册 ipc 全局中间件
+ *
+ * @example
+ * const middleware: IpcActionMiddleware<IpcActionEvent.Handle> = {
+ *   name: 'middleware',
+ *   transform(e, ...args){
+ *     return [WindowService.findWindowService(e), ...args];
+ *   }
+ * }
+ *
+ * registerGlobalMiddleware(IpcActionEvent.On, [middleware]);
+ */
 export function registerGlobalMiddleware<IpcActionEvent extends IpcActionEvent.On>(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]): void;
 export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]) {
   const runtimeContext = getIpcRuntimeContext();
@@ -56,6 +65,7 @@ export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares
 
 /**
  * 注册 ipc handle 句柄
+ *
  * @example
  * const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
  *   handleMiddlewares: [convertWindowService] // 中间件
@@ -74,8 +84,6 @@ export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares
  * );
  *
  * registerIpcHandle([ipcWindowMaxSize]);
- *
- * @param handles
  */
 export const registerIpcHandle = (handles: IpcActionType<IpcActionEvent.Handle>[]) => {
   handles.forEach(handle => {
@@ -84,6 +92,17 @@ export const registerIpcHandle = (handles: IpcActionType<IpcActionEvent.Handle>[
     }
   });
 }
+
+/**
+ * 注册 ipc handleOnce 句柄, 该句柄只会生效一次
+ *
+ * @example
+ * const { makeIpcHandleAction } = toMakeIpcAction();
+ *
+ * export const ipcWindowMaxSize = makeIpcHandleAction(...);
+ *
+ * registerIpcHandleOnce([ipcWindowMaxSize]);
+ */
 export const registerIpcHandleOnce = (handles: IpcActionType<IpcActionEvent.Handle>[]) => {
   handles.forEach(handle => {
     if (handle.actionType === IpcActionEvent.Handle) {
@@ -91,6 +110,23 @@ export const registerIpcHandleOnce = (handles: IpcActionType<IpcActionEvent.Hand
     }
   });
 }
+
+/**
+ * 移除 ipc handle 句柄
+ *
+ * @example
+ *
+ * const { makeIpcHandleAction } = toMakeIpcAction();
+ *
+ * const ipcWindowMaxSize = makeIpcHandleAction(...);
+ *
+ * registerIpcHandle([ipcWindowMaxSize]);
+ *
+ * // 移除句柄
+ * removeIpcHandle(ipcWindowMaxSize);
+ *
+ *
+ */
 export const removeIpcHandle = (handle: IpcActionType<IpcActionEvent.Handle>) => {
   if (handle.actionType === IpcActionEvent.Handle) {
     ipcMain.removeHandler(handle.channel);
@@ -99,6 +135,7 @@ export const removeIpcHandle = (handle: IpcActionType<IpcActionEvent.Handle>) =>
 
 /**
  * 注册 ipc on 句柄
+ *
  * 使用方式参见 registerIpcHandle
  */
 export const registerIpcOn = (handles: IpcActionType<IpcActionEvent.On>[]) => {
@@ -108,6 +145,12 @@ export const registerIpcOn = (handles: IpcActionType<IpcActionEvent.On>[]) => {
     }
   })
 }
+
+/**
+ * 注册 ipc once 句柄
+ *
+ * 使用方式参见 registerIpcHandleOnce
+ */
 export const registerIpcOnce = (handles: IpcActionType<IpcActionEvent.On>[]) => {
   handles.forEach(handle => {
     if (handle.actionType === IpcActionEvent.On) {
@@ -115,6 +158,12 @@ export const registerIpcOnce = (handles: IpcActionType<IpcActionEvent.On>[]) => 
     }
   })
 }
+
+/**
+ * 移除 ipc on 句柄
+ *
+ * 使用方式参见 removeIpcHandle
+ */
 export const offIpcOn = (handle: IpcActionType<IpcActionEvent.On>) => {
   if (handle.actionType === IpcActionEvent.On) {
     ipcMain.off(handle.channel, handle.listener);

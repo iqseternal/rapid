@@ -1,27 +1,10 @@
 @import '../var.scss';
 
+@import './common.scss';
 @import './flex.scss';
-
-@mixin ForMobile {
-  @media screen and (max-width: ($mobileSize - 1px)) { @content; }
-}
-
-@mixin ForPad {
-  @media screen and (min-width: $mobileSize) and (max-width: ($padSize - 1)) { @content; }
-}
-
-@mixin ForPc {
-  @media screen and (min-width: $pcSize) { @content; }
-}
-
-@mixin Overflow($scroll: scroll) {
-  overflow-x: hidden;
-  overflow-y: $scroll !important;
-}
+@import './media.scss';
 
 @mixin BeautifulBar() {
-  // overflow-y: $status;
-
   @media screen and (orientation:portrait) and (max-device-width:768px) and (max-device-height:1024px),
   screen and (orientation:landscape) and (max-device-width:1024px) and (max-device-height:768px) {
     &::-webkit-scrollbar {
@@ -55,7 +38,7 @@
 
 @mixin MiniBar {
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 7px;
   }
 }
 

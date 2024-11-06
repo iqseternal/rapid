@@ -1,4 +1,4 @@
-
+import { memo } from 'react';
 
 
 export interface RegisterProps {
@@ -7,32 +7,32 @@ export interface RegisterProps {
 }
 
 
-export const RegisterUsername = () => {
+export const RegisterUsername = memo(() => {
 
 
   return <>
 
   </>
-}
+})
 
-export const RegisterPassword = () => {
+export const RegisterPassword = memo(() => {
 
 
   return <>
 
 
   </>
-}
+})
 
-export const RegisterEmail = () => {
+export const RegisterEmail = memo(() => {
 
   return <>
 
   </>
-}
+})
 
 
-export default function Register(props: RegisterProps) {
+export const Register = memo((props: RegisterProps) => {
 
 
   return <>
@@ -43,4 +43,6 @@ export default function Register(props: RegisterProps) {
 
     <RegisterEmail />
   </>
-}
+})
+
+export default Register;

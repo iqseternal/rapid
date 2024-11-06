@@ -3,10 +3,17 @@ import { useDebounceHook } from './useDebounce';
 import { useRefresh } from './useRefresh';
 import { useDependenciesListHook } from './useDependencies';
 
+/**
+ * WindowInnerSize
+ */
 export interface WindowInnerSize {
   innerWidth: number;
   innerHeight: number;
 }
+
+/**
+ * WindowScreenSize
+ */
 export interface WindowScreenSize {
   screenWidth: number;
   screenHeight: number;
@@ -33,12 +40,20 @@ const windowResizeCallback = useDebounceHook(() => {
     screenSize.screenWidth !== screenWidth ||
     screenSize.screenHeight !== screenHeight
   );
-  if (screenHasChanged) screenSizeCallbacks.forEach(callback => callback(screenSize, innerSize));
+  if (screenHasChanged) {
+    screenSize.screenWidth = screenWidth;
+    screenSize.screenHeight = screenHeight;
+    screenSizeCallbacks.forEach(callback => callback(screenSize, innerSize));
+  }
   const innerHasChanged = (
     innerSize.innerWidth !== innerWidth ||
     innerSize.innerHeight !== innerHeight
   );
-  if (innerHasChanged) innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
+  if (innerHasChanged) {
+    innerSize.innerWidth = innerWidth;
+    innerSize.innerHeight = innerHeight;
+    innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
+  }
 }, 20);
 if (globalThis.window) window.addEventListener('resize', windowResizeCallback);
 

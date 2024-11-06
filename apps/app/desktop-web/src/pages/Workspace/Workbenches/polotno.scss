@@ -1,0 +1,30 @@
+
+@import "@scss/mixin";
+
+.polotno-side-panel {
+
+
+  .polotno-side-tabs-container {
+    min-width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+
+    @include BeautifulBar;
+    @include MiniBar;
+
+    .polotno-side-panel-tab {
+
+
+      height: 40px;
+    }
+  }
+
+
+  .polotno-panel-container {
+
+    div {
+      @include BeautifulBar;
+      @include MiniBar;
+    }
+  }
+}

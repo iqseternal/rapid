@@ -11,10 +11,11 @@ export * from './basic';
 export const workbenchesToolRoute = makeRoute({
   name: 'WorkbenchesTool',
   path: '/workbenchesTool',
+  redirect: 'toolbar',
   children: [
     {
       name: 'WorkbenchesToolbar',
-      path: '/workbenchesTool/toolbar',
+      path: '/toolbar',
       component: lazy(() => import('@/windows/Workbenches/Toolbar'))
     }
   ]
@@ -25,7 +26,8 @@ export const [
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
-  path: `/workbenches`, redirect: 'home',
+  path: `/workbenches`,
+  redirect: 'home',
   component: <WorkspaceLayout />,
   children: [
     {
@@ -57,7 +59,8 @@ export const [
 
 export const rootRoute = makeRoute({
   name: 'Root',
-  path: '/', redirect: 'login',
+  path: '/',
+  redirect: 'login',
   component: <RootLayout />,
   children: [
     loginRoute, registerRoute,

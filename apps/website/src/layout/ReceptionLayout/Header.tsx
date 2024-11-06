@@ -3,7 +3,6 @@ import { useState, forwardRef, useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Subfield, SubfieldCloumn } from '@/components/Subfield';
 import { FlexRowBetween, FlexRowStart, FullSizeWidth, MaxScreenHeight, combinationStyled, MaxScreenWidth, Flex } from '@rapid/libs-web/styled';
-import { receptionRoutes } from '@/router/modules/reception';
 import type { RadioChangeEvent } from 'antd';
 import type { SelectCommonPlacement } from 'antd/es/_util/motion';
 import { Space, Popover, TreeSelect, Drawer, ConfigProvider, Button } from 'antd';
@@ -12,11 +11,11 @@ import { useTranslation } from 'react-i18next';
 import type { LangMap, LangType } from '@/i18';
 import { ConfigProviderProps } from 'antd/es/config-provider';
 import { classnames } from '@libs/common';
-import { receptionMenuRoutes } from '@/router';
 import type { RequiredRouteConfig } from '@rapid/libs-web/router';
 import { useReactive } from '@/hooks';
 import { isArray, isDef, isUnDef } from '@rapid/libs';
 import { CONFIG } from '@rapid/config/constants';
+import { retrieveRoutes } from '@/router';
 
 import styled, { css } from 'styled-components';
 import styles from './header.module.scss';
@@ -92,15 +91,17 @@ function Control() {
 export default function Header(props: BaseProps) {
   const navigate = useNavigate();
 
+  const { receptionMenuRoute, receptionRoute } = retrieveRoutes();
+
   return <NavContainer className={classnames(props.className, styles.receptionHeaderContainer)}>
     <NavSubContianer className={styles.receptionNavContainer}>
       <Trademark
         onClick={() => {
-          navigate(receptionRoutes.meta.fullPath);
+          navigate(receptionRoute.meta.fullPath);
         }}
       />
       <Subfield className={styles.menu}>
-        {receptionMenuRoutes.children?.map(child => <Menu route={child} key={child.meta.fullPath} />)}
+        {receptionMenuRoute.children?.map(child => <Menu route={child} key={child.meta.fullPath} />)}
 
         {/* <NavLink to='/reception/download'>Download</NavLink>
         <NavLink to='/reception/download'>Download</NavLink> */}

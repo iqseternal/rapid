@@ -2,13 +2,12 @@
 @import "@scss/mixin";
 
 .mainNavigationContainer {
-  width: calc(var(--rapid-navigation-bar-width) - 4px);
+  width: calc(var(--rapid-navigation-bar-width) * 1.2) !important;
+  min-width: calc(var(--rapid-navigation-bar-width) * 1.2) !important;
   height: 100%;
   background-color: var(--rapid-navigation-bar-background-color);
-  padding: 0 2px;
   gap: 4px;
-
-  align-items: center;
+  flex: 0 0 auto !important;
   @include FlexColSpaceBetween;
 
   .topContainer {
@@ -21,7 +20,8 @@
   }
 
   .sideBarItem {
-    width: calc(var(--rapid-navigation-bar-width) - 4px - 2px - 6px);
+    width: calc(var(--rapid-navigation-bar-width) - 2px);
+    font-size: 16px;
     margin: 4px 0 4px 50%;
     transform: translateX(-50%);
     height: unset;

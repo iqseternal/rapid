@@ -11,10 +11,6 @@ export const useExtension = (registerPoint: RegisterPoints) => {
   return new ThemePlugin();
 }
 
-
-
-
-
 export { RegisterPoints } from './RegisterPoints';
 
 

@@ -7,6 +7,9 @@ import { Catch, isException } from '@/core';
  */
 export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> = {
   name: 'ipcExceptionFilterMiddleware',
+  /**
+   * ipc 接口出现了错误, 利用 onError 回调在主进程处理 ipc 产生地异常, 记录日志...
+   */
   onError(err, { action, actionType, channel }) {
     err.errMessage.label = channel;
 
@@ -22,10 +25,11 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
 export const convertWindowServiceMiddleware: IpcActionMiddleware<IpcActionEvent> = {
   name: 'convertWindowService',
 
+  /**
+   * 转换参数, 将事件 e 转换为对应地 WindowService
+   */
   transform(e, ...args) {
-
     const windowService = WindowService.findWindowService(e);
-
 
     return [windowService, ...args];
   }

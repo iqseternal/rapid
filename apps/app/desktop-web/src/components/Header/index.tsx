@@ -1,11 +1,11 @@
 import { classnames } from '@rapid/libs-web/common';
-import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowRelaunch } from '@/actions';
-import { Subfield, SubfieldFixed } from '@rapid/libs-web/components/Subfield';
+import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowRelaunch, windowWorkAreaSize } from '@/actions';
+import { Subfield } from '@rapid/libs-web/components';
 import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
-import { useMemo, ReactNode, useEffect, useRef, useCallback, memo } from 'react';
+import { useMemo, ReactNode, useEffect, useRef, useCallback, memo, useState } from 'react';
 import { menus } from '@/menus';
-import { FlexRowStart, FullSizeWidth, MaxContent, useEventListener, useMaintenanceStack, useReactive, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
-import { isDef, isUnDef, isUndefined, randomRegionForInt } from '@rapid/libs';
+import { FlexRowStart, FullSizeHeight, FullSizeWidth, MaxContent, useAsyncLayoutEffect, useEventListener, useMaintenanceStack, useReactive, useRefresh, useResizeObserver, useShallowReactive, useThrottleHook, useWindowInnerSize, useWindowScreenSize, useZustandHijack } from '@rapid/libs-web';
+import { isDef, isUnDef, isUndefined, randomRegionForInt, toPicket } from '@rapid/libs';
 import { Menu, Input } from 'antd';
 import type { AntdItemType, AntdMenuInstance, AntdSubMenuType } from '@components/AutoDropdownMenu';
 import { retrieveRoutes } from '@/router';
@@ -105,15 +105,16 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
 
   // 如果变成弹窗直接关闭所有监听
   useEffect(() => {
-    if (isDialog || isPane) resizeObserver.disconnect();
+    if (isDialog || isPane) {
+      resizeObserver.disconnect();
+    }
   }, [isDialog, isPane]);
 
   return <FlexRowStart
     ref={menusContainerRef}
     className={classnames(
-      {
-        [commonStyles.transparent]: !statusState.isCalcDone
-      }
+      commonStyles.hFullSize,
+      !statusState.isCalcDone && commonStyles.transparent
     )}
   >
     {!isDialog && !isPane && maintenanceStack.map(menu => {
@@ -134,6 +135,73 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
   </FlexRowStart>
 })
 
+
+export interface ControlProps {
+  // 是否是一个面板
+  isPane?: boolean;
+
+  // 是否是一个弹窗
+  isDialog?: boolean;
+}
+
+export const Control = memo((props: ControlProps) => {
+  const {
+    isDialog = false,
+    isPane = false,
+  } = props;
+
+  const refresh = useRefresh();
+
+  const [windowInnerSize] = useWindowInnerSize();
+  const [normalState] = useState({
+    workAreaSize: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    }
+  })
+
+  const isFullSize = windowInnerSize.innerWidth === normalState.workAreaSize.width && windowInnerSize.innerHeight === normalState.workAreaSize.height;
+
+  useAsyncLayoutEffect(async () => {
+    const [err, res] = await toPicket(windowWorkAreaSize());
+    if (err) return;
+    normalState.workAreaSize = res;
+    refresh();
+  }, []);
+
+  return (
+    <Subfield.SubfieldFixed
+      className={commonStyles.appRegionNo}
+      gap={[3]}
+    >
+      {!IS_BROWSER && <>
+        {!(isDialog && isPane) && <>
+          <Widget
+            icon='SettingOutlined'
+            tipText='设置'
+            onClick={() => {
+
+            }}
+          />
+        </>}
+
+        {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
+        <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
+        {!isDialog && !isPane && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => windowReduction()} />}
+        <Widget
+          icon='CloseOutlined'
+          tipText='关闭'
+          tipAttrs={{
+            placement: 'leftBottom'
+          }}
+          onClick={() => windowClose()}
+        />
+      </>}
+    </Subfield.SubfieldFixed>
+  )
+})
+
+
 export interface HeaderProps extends Omit<BaseProps, 'children'> {
   // 是否是一个面板
   isPane?: boolean;
@@ -144,6 +212,10 @@ export interface HeaderProps extends Omit<BaseProps, 'children'> {
     menu?: ReactNode;
   }
 }
+
+
+
+
 
 /**
  * 标题栏
@@ -159,6 +231,8 @@ export const Header = memo((props: HeaderProps) => {
   } = props;
 
 
+
+
   return <Subfield
     className={classnames(
       styles.header,
@@ -171,29 +245,29 @@ export const Header = memo((props: HeaderProps) => {
     <Subfield
       className={classnames(styles.menuContainer)}
     >
-      <SubfieldFixed
+      <Subfield.SubfieldFixed
         className={styles.logo}
       >
         <Logo />
-      </SubfieldFixed>
+      </Subfield.SubfieldFixed>
 
-      <MaxContent
+      <FullSizeHeight
         className={classnames(
           styles.menu,
           commonStyles.userSelectNone
         )}
       >
         {!(isDialog && isDialog) ? <MaintenanceMenus isDialog={isDialog} isPane={isPane} /> : <></>}
-      </MaxContent>
+      </FullSizeHeight>
 
-      <SubfieldFixed
+      <Subfield.SubfieldFixed
         className={classnames(
           styles.history,
           commonStyles.appRegionNo
         )}
       >
         {!(isDialog || isPane) && <Widget icon='HistoryOutlined' />}
-      </SubfieldFixed>
+      </Subfield.SubfieldFixed>
     </Subfield>
 
     <Subfield
@@ -216,36 +290,7 @@ export const Header = memo((props: HeaderProps) => {
       <div />
       <div />
 
-      <SubfieldFixed
-        className={commonStyles.appRegionNo}
-        gap={1}
-      >
-        {!IS_BROWSER &&
-          <>
-            {!(isDialog && isPane) && <>
-              <Widget
-                icon='SettingOutlined'
-                tipText='设置'
-                onClick={() => {
-
-                }}
-              />
-            </>}
-
-            {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
-            <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
-            {!isDialog && !isPane && <Widget icon='BorderOutlined' tipText='还原' onClick={() => windowReduction()} />}
-            <Widget
-              icon='CloseOutlined'
-              tipText='关闭'
-              tipAttrs={{
-                placement: 'leftBottom'
-              }}
-              onClick={() => windowClose()}
-            />
-          </>
-        }
-      </SubfieldFixed>
+      <Control />
     </Subfield>
   </Subfield>
 });

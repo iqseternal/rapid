@@ -87,7 +87,7 @@ module.exports = {
     'no-case-declarations': 'error',
     'no-multi-str': 'error',
     'no-with': 'error',
-    'no-confim': 'off',
+    'no-confirm': 'off',
 
     'sort-imports': [
       'error',

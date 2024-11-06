@@ -1,9 +1,6 @@
 
 import { combinationStyled, FlexRowCenter, FullSizeWidth } from '@rapid/libs-web/styled';
-
-import Subfield from '@rapid/libs-web/components/Subfield';
-
-import React from 'react';
+import { Subfield } from '@rapid/libs-web/components';
 
 import styles from './index.module.scss';
 

@@ -7,11 +7,13 @@
 
   .mainRootContainer {
     height: calc(100% - var(--rapid-caption-bar-height));
-    gap: 4px;
     @include Flex;
 
     .mainContainer {
+      width: 100%;
+      max-width: 100%;
       height: calc(100% - 8px);
+      padding: 0px 4px;
       border-radius: 4px;
 
       @include Overflow(auto);

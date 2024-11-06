@@ -18,21 +18,21 @@ describe('DoubleLinkedList', () => {
   describe('insert', () => {
     it('should insert elements at list', () => {
       list.insertAtHead(0);
-      expect(list.length()).toBe(4);
+      expect(list.size()).toBe(4);
     });
   });
 
   describe('delete', () => {
     it('should delete elements by predicate', () => {
-      list.delete(value => value === 2);
-      expect(list.find(value => value === 2)).toBeNull();
-      expect(list.length()).toBe(2);
+      list.delete(2);
+      expect(list.find(2)).toBeNull();
+      expect(list.size()).toBe(2);
     });
   });
 
   describe('find', () => {
     it('should find elements by predicate', () => {
-      expect(list.find(value => value === 2)).toBe(2);
+      expect(list.find(2)).toBe(2);
     });
   });
 
@@ -48,7 +48,7 @@ describe('DoubleLinkedList', () => {
     it('should clear all elements from the list', () => {
       list.clear();
       expect(list.isEmpty()).toBe(true);
-      expect(list.length()).toBe(0);
+      expect(list.size()).toBe(0);
     });
   });
 
@@ -65,7 +65,7 @@ describe('DoubleLinkedList', () => {
 
   describe('length', () => {
     it('should return the number of elements in the list', () => {
-      expect(list.length()).toBe(3);
+      expect(list.size()).toBe(3);
     });
   });
 });

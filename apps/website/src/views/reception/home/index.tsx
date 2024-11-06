@@ -12,6 +12,7 @@ import { autoGetScrollContainer } from '@libs/dom';
 import { useEventListener, useReactive, useDebounceHook } from '@/hooks';
 import { classnames } from '@libs/common';
 import type { GradualImgProps } from '@components/GradualImg';
+import { Ellipsis } from '@rapid/libs-web';
 
 import styles from './index.module.scss';
 import IconFont from '@components/IconFont';
@@ -100,6 +101,9 @@ export default function Home() {
 
     <ParallaxContainer isFirst bgSrc='http://www.fluttuo.com/wp-content/uploads/2013/11/Fluttuo_Made-Once-Only_Traugott-Collection_Cover_mini.jpg'>
       <h2>流程图构建</h2>
+
+
+
       <p>&nbsp;</p>
       <p>转变你使用数据和对数据进行可视化的方式，使你可以将最佳想法变为现实。</p>
       <p>&nbsp;</p>

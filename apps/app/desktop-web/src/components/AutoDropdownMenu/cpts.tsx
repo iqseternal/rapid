@@ -1,12 +1,14 @@
 import type { IconKey } from '@components/IconFont';
 import { classnames } from '@rapid/libs-web/common';
 import type { FC } from 'react';
-import IconFont from '@components/IconFont';
 import type { MenuItemType, SubMenuType } from './declare';
-import { useMemo } from 'react';
+import { isValidElement, useMemo } from 'react';
+import { isObject } from '@rapid/libs';
+import { isReactFC } from '@rapid/libs-web/common';
 
 import commonStyles from '@scss/common/index.module.scss';
 import styles from './cpts.module.scss';
+import IconFont from '@components/IconFont';
 
 
 export interface MenuItemProps extends BaseProps {
@@ -32,17 +34,24 @@ export const MenuItem: FC<MenuItemProps> = (props) => {
     shortcut ? [shortcut] : []
   ), [shortcut]);
 
+  const content = useMemo(() => {
+    if (!isReactFC(label)) return label;
+
+    const Label = label;
+    return <Label />
+  }, [label]);
+
   return <div
     className={classnames(
       styles.menuItem,
 
     )}
   >
-    {iconKey ? <IconFont icon={iconKey} /> : <span className={classnames(styles.icon, commonStyles.flexFixed)} />}
+    {iconKey ? <IconFont icon={iconKey} className={classnames(styles.icon, commonStyles.flexFixed)} /> : <span className={classnames(styles.icon, commonStyles.flexFixed)} />}
     <div className={styles.content}>
-      {label}
+      {content}
     </div>
-    <span className={classnames(commonStyles.flexFixed)}>
+    <span className={classnames(commonStyles.flexFixed, styles.shortcut)}>
       {shortcutKeys.length > 0 && shortcutKeys[0]}
     </span>
   </div>
@@ -68,7 +77,7 @@ export const SubMenu: FC<SubMenuProps> = (props) => {
       styles.menuItem
     )}
   >
-    {iconKey ? <IconFont icon={iconKey} /> : <span className={classnames(styles.icon, commonStyles.flexFixed)} />}
+    {iconKey ? <IconFont icon={iconKey} className={classnames(styles.icon, commonStyles.flexFixed)} /> : <span className={classnames(styles.icon, commonStyles.flexFixed)} />}
     <div className={styles.content}>
       {label}
     </div>

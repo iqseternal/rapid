@@ -12,5 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "@rapid/config": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/libs": "workspace:^"
   }
 }

@@ -5,6 +5,7 @@
     "baseUrl": ".",
 
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
 
     "jsx": "react-jsx",
     "lib": ["DOM", "ESNext"],
@@ -55,8 +56,6 @@
     "./src/**/*.tsx"
   ],
   "exclude": [
-    "src/**/*.d.ts",
-
     "node_modules",
     "./**/*.test.ts"
   ]

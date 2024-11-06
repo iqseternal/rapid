@@ -5,7 +5,8 @@ import type { AxiosError } from 'axios';
 import { getAccessToken } from '@/features';
 
 export type { RequestConfig, Interceptors } from '@rapid/libs';
-export { REQ_METHODS, createApiRequest, createRequest } from '@rapid/libs';
+export type { createApiRequest, createRequest } from '@rapid/libs';
+export { REQ_METHODS }
 
 /** 请求 hConfig 配置 */
 export interface RApiHConfig {
@@ -19,7 +20,7 @@ export interface RApiHConfig {
 /** 基本响应结构体的内容 */
 export interface RApiBasicResponse {
   status: number;
-  flag: string;
+  flag: 'ApiResponseOk' | 'ApiResponseFal';
   data: any;
   more?: {
     pako?: boolean;
@@ -27,9 +28,11 @@ export interface RApiBasicResponse {
   descriptor: string;
   _t: number;
 }
+
 export interface RApiSuccessResponse extends RApiBasicResponse {
   flag: 'ApiResponseOk';
 }
+
 export interface RApiFailResponse extends RApiBasicResponse {
   flag: 'ApiResponseFal';
 

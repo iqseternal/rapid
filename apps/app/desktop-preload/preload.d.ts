@@ -4,27 +4,41 @@
  * ==========================================
  */
 import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener } from '@electron-toolkit/preload';
-import type { CutHead, ExtractNever } from '@suey/pkg-utils';
-import type { IpcActionEvent } from '../desktop-node/src/core';
+import type { CutHead, ExtractNever } from '@rapid/libs';
+import type { IpcActionEvent, IpcActionType } from '../desktop-node/src/core';
 import type * as actions from '../desktop-node/src/ipc';
 
+/**
+ * 将一个值转换为 Promise 值
+ */
+export type PromiseWithValue<Value> = Value extends Promise<any> ? Value : Promise<Value>;
+
+
+/**
+ * 用于编写 渲染进程 on 事件的 e 类型
+ */
 export type IpcRendererEvent = Parameters<IpcRendererListener>[0];
 
-// 引入所有的 Action, 这就是为什么不许 ipc/index.ts 导出多余的变量
-export type AllAction = typeof actions;
+/**
+ * 获取所有的 ipcAction
+ */
+export type AllAction = {
+  [Key in keyof typeof actions]: (typeof actions)[Key] extends IpcActionType<IpcActionEvent> ? (typeof actions)[Key] : never;
+};
 
-// 创建句柄类型, 例如: { 'IpcStore/get': (key: string) => Promise<string> }
+/**
+ * 转换 ipcAction, 获取 key -> handler 的类型.
+ * 传递 IpcActionEventType 以获得 HandleHandlers 或者 OnHandlers
+ */
 export type AllHandlers<IpcActionEventType extends IpcActionEvent> = {
   [Key in keyof AllAction as AllAction[Key]['channel']]:
     AllAction[Key]['actionType'] extends IpcActionEventType
-      ? (...args: CutHead<Parameters<AllAction[Key]['action']>>)
-          => ReturnType<AllAction[Key]['action']> extends Promise<any>
-            ? ReturnType<AllAction[Key]['action']>
-            : Promise<ReturnType<AllAction[Key]['action']>>
+      ? (...args: CutHead<Parameters<AllAction[Key]['action']>>) => PromiseWithValue<ReturnType<AllAction[Key]['action']>>
       : never;
 }
 
 export type HandleHandlers = ExtractNever<AllHandlers<IpcActionEvent.Handle>>;
+
 export type OnHandlers = ExtractNever<AllHandlers<IpcActionEvent.On>>;
 
 /**

@@ -85,7 +85,7 @@ export class AppConfigService extends SingleInstanceService<AppConfigService> {
     return super.getInstance<T>();
   }
 
-  override destory(): void {
+  override destroy(): void {
     if (this.config.miscellaneous.appJson.overwrite) {
 
       PrinterService.printError(`当前还未编写覆写过程`);

@@ -5,7 +5,7 @@ import type {
   MenuItemGroupType as AntdMenuItemGroupType,
   ItemType as AntdItemType
 } from 'antd/lib/menu/interface';
-import type { Key, ReactNode } from 'react';
+import type { FC, Key, ReactElement, ReactNode } from 'react';
 import { MenuItem, SubMenu } from './cpts';
 import { IconKey, IconRealKey } from '../IconFont';
 import type { ZustandHijack } from '@rapid/libs-web';
@@ -16,26 +16,23 @@ export type MenuItemType = Omit<AntdMenuItemType, 'disabled'> & {
 
   iconKey?: IconKey;
 
-  content?: ReactNode;
-
   shortcut?: string | string[];
   type: 'item';
+
+  label?: ReactNode | FC<{}> | (() => JSX.Element);
+  key: string;
 };
 export { AntdMenuItemType };
+
 export function convertMenuItem<Item extends MenuItemType>(item: Item): AntdMenuItemType {
   const {
     hidden,
     disabled,
     iconKey,
-    content,
     shortcut,
     label,
     ...realItem
   } = item;
-
-  if (content) {
-    console.warn(`content是无效的属性, 请使用label`);
-  }
 
   return {
     ...realItem,
@@ -48,9 +45,10 @@ export type SubMenuType<T extends ItemType = ItemType> = Omit<AntdSubMenuType, '
   key: string;
   type: 'submenu';
   iconKey?: IconRealKey;
-  children?: (T | SubMenuType)[];
+  children?: (T | SubMenuType | MenuDividerType)[];
 };
 export { AntdSubMenuType };
+
 export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): AntdSubMenuType {
   const children = subMenu.children?.map(item => {
     if (!item) return void 0;
@@ -87,6 +85,7 @@ export type MenuDividerType = AntdMenuDividerType & {
   type: 'divider';
 };
 export { AntdMenuDividerType };
+
 export function convertMenuDivider<MenuDivider extends MenuDividerType>(divider: MenuDivider): AntdMenuDividerType {
   return divider;
 }
@@ -96,6 +95,7 @@ export type MenuItemGroupType<T extends ItemType = ItemType> = Omit<AntdMenuItem
   type: 'group';
 };
 export { AntdMenuItemGroupType };
+
 export function convertMenuItemGroupType<MenuItemGroup extends MenuItemGroupType>(group: MenuItemGroup) {
   const children = group.children?.map(item => {
     if (!item) return void 0;

@@ -17,7 +17,14 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   /** 当前控件展示的图标元素 */
   icon?: IconKey;
 
+  /**
+   * 控件 Hover 之后展示的提示文本
+   */
   tipText?: string;
+
+  /**
+   * 展示提示文本的 tooltip 的 attrs
+   */
   tipAttrs?: TooltipProps;
 
   /** 是否禁用当前控件 */

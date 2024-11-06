@@ -2,11 +2,16 @@ import type { FC, Ref, RefObject, DependencyList, EffectCallback } from 'react';
 import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { toPicket } from '@rapid/libs';
 
-// NOTE: callbacks are _only_ allowed to return either void, or a destructor.
-export type AsyncEffectCallback = () => (Promise<void | boolean | undefined | number | string | EffectCallback>);
+/**
+ * useAsyncLayoutEffect 的 回调类型
+ */
+export type AsyncEffectCallback = () => AsyncGenerator<void, void, void> | Promise<void>;
 
 export { useAsyncEffect } from 'ahooks';
 
+/**
+ * 和 useAsyncEffect 用法一致, 但是执行实际会比 useAsyncEffect 更靠前
+ */
 export function useAsyncLayoutEffect(asyncEffect: AsyncEffectCallback, deps?: DependencyList) {
 
   useLayoutEffect(() => {

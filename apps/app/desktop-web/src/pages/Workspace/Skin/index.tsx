@@ -14,7 +14,6 @@ import { toMakeZustandHijack, useZustandHijack } from '@rapid/libs-web';
 import IMessage from '@components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';
 
-import Subfield from '@rapid/libs-web/components/Subfield';
 import styles from './index.module.scss';
 
 interface StyleBlockProps extends BaseProps {

@@ -17,9 +17,8 @@ export const canCopyText = () => {
   return selection.toString() !== '';
 }
 
-/*
+/**
  * 复制选中的文字
- * @returns
  */
 export const copySelectionText = () => {
   const context = window.getSelection()?.toString();
@@ -28,7 +27,6 @@ export const copySelectionText = () => {
 
 /**
  * 粘贴指定文字
- * @param text
  */
 export const pasteSpecifiedText = (text: string) => {
   const activeElement = document.activeElement;

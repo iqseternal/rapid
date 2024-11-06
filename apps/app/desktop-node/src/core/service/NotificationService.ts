@@ -1,7 +1,6 @@
 
 import { CONFIG } from '@rapid/config/constants';
 import { Notification } from 'electron';
-// import icon from '#/resources/icon.png?asset';
 
 /**
  * 系统通知
@@ -11,6 +10,7 @@ export class NotificationService {
     return new Promise((resolve, reject) => {
       const notification = new Notification({
         title: CONFIG.PROJECT,
+
         subtitle: '通知',
         body: '这是一则通知',
         silent: false,
@@ -22,9 +22,12 @@ export class NotificationService {
         closeButtonText: '关闭',
       });
 
-      if (notification.hasReply) {
-        resolve(1);
-      }
+      notification.on('close', () => {
+
+      })
+      notification.on('reply', (evt, reply) => {
+        resolve(reply);
+      })
 
       notification.show();
     })

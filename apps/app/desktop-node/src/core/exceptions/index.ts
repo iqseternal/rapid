@@ -7,7 +7,6 @@ export { RuntimeException, RuntimeExceptionFilter } from './RuntimeException';
 
 export { TypeException, TypeExceptionFilter } from './TypeException';
 
-export { RequestException, RequestExceptionFilter } from './RequestException';
 
 
 

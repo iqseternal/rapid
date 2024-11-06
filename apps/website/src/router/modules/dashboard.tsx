@@ -10,7 +10,7 @@ export const dashLoginRoute = makeRoute({
   component: <></>
 })
 
-export const dashRoutes = makeRoute({
+export const dashRoute = makeRoute({
   path: '/dashboard', name: 'Dashboard', component: <Redirect from='/dashboard' to='/dashboard/home' element={DashLayout} />,
   meta: { title: '' },
   children: [

@@ -2,7 +2,7 @@ import type { ExceptionErrorMsgData } from './declare';
 import { Exception, ExceptionFilter } from './declare';
 import { Catch } from '../decorators';
 
-import { PrintType, PrinterService } from '../service/PrinterService';
+import { PrinterService } from '../service/PrinterService';
 import { Logger } from '../service/LoggerService';
 
 export interface RuntimeExceptionErrorMsgData extends ExceptionErrorMsgData {

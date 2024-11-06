@@ -22,6 +22,7 @@ import { getIpcRuntimeContext, IpcActionEvent } from './declare';
  *     return res;
  *   }
  * )
+ *
  * @example
  * const middleware: IpcActionMiddleware<IpcActionEvent.Handle> = {
  *   name: 'middleware',
@@ -41,6 +42,7 @@ import { getIpcRuntimeContext, IpcActionEvent } from './declare';
  *     return res;
  *   }
  * )
+ *
  * @example
  * const middleware: IpcActionMiddleware<IpcActionEvent.Handle> = {
  *   name: 'middleware',
@@ -62,9 +64,6 @@ import { getIpcRuntimeContext, IpcActionEvent } from './declare';
  *     return res;
  *   }
  * )
- *
- *
- * @param payload
  */
 export function toMakeIpcAction<
   HandleCutArgs extends any[] = [IpcMainInvokeEvent],
@@ -132,7 +131,7 @@ export function toMakeIpcAction<
      *  '句柄',
      *  [],
      *  async () => {
-     *    // TODO
+     *    //
      *  }
      * );
      *
@@ -147,7 +146,7 @@ export function toMakeIpcAction<
      *  '句柄',
      *  [],
      *  async () => {
-     *    // TODO
+     *    //
      *  }
      * );
      *
@@ -158,10 +157,7 @@ export function toMakeIpcAction<
 }
 
 /**
- * 处理一个 action, 来解决对应的 ipc 句柄
- * @param globalMiddlewares 全局中间件集合
- * @param action 被创建的 action 对象
- * @param ipcArgs ipc 传递的参数列表
+ * 处理一个 `action`, 来解决对应的 ipc 句柄
  */
 async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcActionEvent>[], action: IpcActionType<IpcActionEvent>, ...ipcArgs: unknown[]) {
   const [e, ...args] = ipcArgs as [IpcMainInvokeEvent | IpcMainEvent, ...unknown[]];

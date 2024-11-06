@@ -4,7 +4,7 @@ import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/hooks';
 import { useNavigate } from 'react-router-dom';
 import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
-import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
+import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toPicket } from '@rapid/libs';
 import { setAccessToken, userLogin } from '@/features';
@@ -12,11 +12,11 @@ import { registerReq } from '@/api';
 import { retrieveRoutes } from '@/router';
 import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/common';
 import { menus } from '@/menus';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, memo } from 'react';
+import { Subfield } from '@rapid/libs-web/components';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
-import Subfield from '@rapid/libs-web/components/Subfield';
 import Logo from '@components/Logo';
 
 import styles from './index.module.scss';
@@ -25,10 +25,10 @@ enum Step {
   Login, Register
 }
 
-export default function Login() {
+export const Login = memo(() => {
   useFadeIn(async () => {
     await windowSetSize({ width: 850, height: 550 });
-    await windowResizeAble({ able: false });
+    await windowResizeAble({ resizeAble: false });
     if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
     await useFadeOut(async () => {
       setAccessToken('1111');
@@ -48,7 +48,7 @@ export default function Login() {
     step: Step.Login
   })
 
-  const login = useCallback(async () => {
+  const [loginPending, login] = useTransition(async () => {
     const [loginErr] = await toPicket(userLogin({
       username: 'admin',
       password: '12345678'
@@ -63,7 +63,8 @@ export default function Login() {
       navigate(workbenchesRoute.meta.fullPath, { replace: true });
     });
   }, []);
-  const register = useCallback(async () => {
+
+  const [registerPending, register] = useTransition(async () => {
     const [registerErr] = await toPicket(registerReq());
     if (registerErr) {
       message.error(registerErr.descriptor);
@@ -90,15 +91,19 @@ export default function Login() {
       >
         <Button
           onClick={login}
+          loading={loginPending.isPending}
         >
           登录
         </Button>
         <Button
           onClick={register}
+          loading={registerPending.isPending}
         >
           注册
         </Button>
       </FullSize>
     </Subfield>
   </FullSize>
-}
+});
+
+export default Login;

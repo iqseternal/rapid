@@ -17,7 +17,6 @@ export class TypeException extends Exception<ExceptionErrorMsgData> {
 @Catch(TypeException)
 export class TypeExceptionFilter extends ExceptionFilter {
 
-
   public override catch(err: TypeException): void {
 
 

@@ -1,27 +1,29 @@
 @import '@scss/mixin/index.scss';
 
 .header {
-  width: calc(100% - 6px);
+  width: 100%;
   height: var(--rapid-caption-bar-height);
   background-color: var(--rapid-caption-bar-background-color);
-  padding: 0 3px;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 14px;
+  line-height: 14px;
   z-index: 9999;
 
   // sticky 为了让他不是 static, 因为 dropdown menu zIndex值为 1050, 会展示在 header 元素上方
   position: sticky;
   top: 0;
+  box-shadow: 1px 1px 2px #c5c5c535, -1px -1px 2px #ffffff85;
 
   .menuContainer {
+    margin-left: calc(var(--rapid-caption-bar-height) * 0.1);
     max-width: 100%;
     height: 100%;
     overflow: hidden;
-    flex: 2 1 auto;
+    flex: 1 1 auto;
 
     .logo {
       flex: 0 0 auto;
       height: 100%;
+      margin: 0 calc(var(--rapid-caption-bar-height) * 0.1);
     }
 
     .menu {
@@ -42,18 +44,16 @@
   .functionContainer {
     flex: 1 1;
     max-width: 100%;
-    font-size: 12px;
-
 
     .searchInput {
       font-size: 12px;
-
       height: 75%;
     }
   }
 
   .operatorContainer {
-    flex: 2 1;
+    margin-right: 5px;
+    flex: 1 1 30px;
     min-width: max-content;
   }
 }

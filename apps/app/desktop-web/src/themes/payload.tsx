@@ -28,9 +28,9 @@ const colorVarsSheet = {
 
 const widgetVarsSheet = {
   /** 控件宽度 */
-  widgetWidth: mRapidC('--rapid-widget-width', '24px', '控件宽度'),
+  widgetWidth: mRapidC('--rapid-widget-width', '26px', '控件宽度'),
   /** 控件高度 */
-  widgetHeight: mRapidC('--rapid-widget-height', '24px', '控件高度'),
+  widgetHeight: mRapidC('--rapid-widget-height', '26px', '控件高度'),
   /** 控件颜色 */
   widgetColor: mRapidC('--rapid-widget-color', '#212529', '控件颜色'),
   /** 控件Hover */
@@ -41,7 +41,7 @@ const widgetVarsSheet = {
 
 const navbarVarsSheet = {
   /** 标题栏高度 */
-  captionBarHeight: mRapidC('--rapid-caption-bar-height', '28px', '标题栏高度'),
+  captionBarHeight: mRapidC('--rapid-caption-bar-height', '32px', '标题栏高度'),
   /** 标题栏背景色 */
   captionBarBackgroundColor: mRapidC('--rapid-caption-bar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '标题栏背景色'),
 
@@ -103,8 +103,8 @@ const dropdownVarsSheet = {
 
   dropdownMenuBackgroundColor: mRapidC('--rapid-dropdown-menu-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
   dropdownMenuTextColor: mRapidC('--rapid-dropdown-menu-text-color', colorVarsSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
-  dropdownMenuBorderRadius: mRapidC('--rapid-dropdown-menu-border-radius', '6px', '下拉文件菜单圆角大小'),
-  dropdownMenuItemBorderRadius: mRapidC('--rapid-dropdown-menu-item-border-radius', '6px', '下拉菜单项圆角大小'),
+  dropdownMenuBorderRadius: mRapidC('--rapid-dropdown-menu-border-radius', '8px', '下拉文件菜单圆角大小'),
+  dropdownMenuItemBorderRadius: mRapidC('--rapid-dropdown-menu-item-border-radius', '8px', '下拉菜单项圆角大小'),
 } as const;
 
 
