@@ -65,7 +65,7 @@ export abstract class BusManager {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
-    hybridLinkedList.delete((slice) => slice.listener === listener);
+    hybridLinkedList.deleteWhere((slice) => slice.listener === listener);
   }
 
   /**

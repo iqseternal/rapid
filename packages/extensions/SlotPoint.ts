@@ -29,7 +29,7 @@ export class SlotPoint {
 
   unsubscribe(slotPointKey: SlotPointKey, subscribe: SlotPointSubscribe) {
     const linkedList = this.initSubscribeLinkedList(slotPointKey);
-    linkedList.delete((value) => value === subscribe);
+    linkedList.deleteWhere((value) => value === subscribe);
   }
 
   private setSlotPointInstanceMapValue(slotPointKey: SlotPointKey, data: ComponentType<any> | ComponentType<any>[]): void {

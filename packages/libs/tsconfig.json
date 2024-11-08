@@ -15,7 +15,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
+    "strictNullChecks": true,
     "moduleResolution": "NodeNext",
+    "noImplicitOverride": true,
     "module": "NodeNext"
   },
   "exclude": [

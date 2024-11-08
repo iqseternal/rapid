@@ -219,6 +219,9 @@ export class WindowServiceStateMachine {
     if (windowService.options.windowKey) this.addKey(windowService.options.windowKey, windowService);
   }
 
+  /**
+   * 删除制定的 service 服务
+   */
   public static removeService(windowService: WindowService) {
     this.removeId(windowService.window.id);
     if (windowService.options.windowKey) this.removeKey(windowService.options.windowKey);

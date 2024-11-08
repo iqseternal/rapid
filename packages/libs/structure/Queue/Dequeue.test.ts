@@ -16,21 +16,21 @@ describe('Dequeue', () => {
   test('should push elements to the front of the dequeue', () => {
     dequeue.pushFront(1, 2, 3);
     expect(dequeue.size()).toBe(3);
-    expect(dequeue.front()).toBe(3);  // 队首元素应为 3
-    expect(dequeue.back()).toBe(1);   // 队尾元素应为 1
+    expect(dequeue.front()).toBe(1);  // 队首元素应为 3
+    expect(dequeue.back()).toBe(3);   // 队尾元素应为 1
   });
 
   test('should push elements to the back of the dequeue', () => {
     dequeue.pushBack(1, 2, 3);
     expect(dequeue.size()).toBe(3);
-    expect(dequeue.front()).toBe(3);  // 队首元素应为 1
-    expect(dequeue.back()).toBe(1);   // 队尾元素应为 3
+    expect(dequeue.front()).toBe(1);  // 队首元素应为 1
+    expect(dequeue.back()).toBe(3);   // 队尾元素应为 3
   });
 
   test('should pop elements from the front of the dequeue', () => {
     dequeue.pushFront(1, 2, 3);
     const poppedElement = dequeue.popFront();
-    expect(poppedElement).toBe(3);  // 队首元素 3 被弹出
+    expect(poppedElement).toBe(1);  // 队首元素 3 被弹出
     expect(dequeue.size()).toBe(2);
     expect(dequeue.front()).toBe(2);  // 队首应变为 2
   });
@@ -63,7 +63,7 @@ describe('Dequeue', () => {
 
   test('should handle custom comparators for Dequeue', () => {
     const customComparator: Comparator<number> = (v1, v2) => v1 - v2;
-    dequeue.setCompare(customComparator);
+    dequeue.setComparator(customComparator);
     dequeue.pushFront(3, 1, 2);
 
     const iteratedValues: number[] = [];

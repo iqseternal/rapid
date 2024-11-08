@@ -1,9 +1,9 @@
 import { Popover, PopoverProps, Tooltip, TooltipProps } from 'antd';
 import type { ReactElement, ReactNode } from 'react';
-import { useEffect, useMemo, useRef, useState, memo, isValidElement } from 'react';
+import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
 import { useDebounceHook, useResizeObserver, useShallowReactive } from '../../hooks';
-import { isDef, isRawObject, isString } from '@rapid/libs';
+import { isRawObject, isString, isUndefined } from '@rapid/libs';
 import { StringFilters } from '../../filters';
 
 import styles from './index.module.scss';
@@ -13,7 +13,7 @@ export namespace EllipsisTypes {
    * Ellipsis props
    */
   export interface EllipsisProps {
-    children: ReactNode;
+    children?: ReactNode;
 
     className?: string;
 
@@ -81,6 +81,8 @@ const EllipsisBase = memo((props: EllipsisTypes.EllipsisProps) => {
       </Tooltip>;
     }
   } = props;
+
+  if (isUndefined(children)) return <></>;
 
   const [state] = useShallowReactive({
     // 当前内容是否溢出了容器

@@ -1,4 +1,3 @@
-import { Comparator } from '../declare';
 import type { LinkedNode } from './LinkedList';
 import { LinkedList } from './LinkedList';
 
@@ -23,11 +22,17 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
    */
   protected tail: SinglyLinkedNode<V> = this.head;
 
+  /**
+   * 使用数组初始化链表
+   */
   constructor(list: V[] = []) {
     super();
     this.insert(...list);
   }
 
+  /**
+   * 迭代器
+   */
   public override *[Symbol.iterator](): Iterator<V> {
     let node: SinglyLinkedNode<V> | null = this.head.next;
 
@@ -38,12 +43,19 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     }
   }
 
+  /**
+   * 查找链表中是否包含元素
+   */
   public override contains(value: V): boolean {
     for (const v of this) {
       if (this.comparator(v, value) === 0) return true;
     }
+    return false;
   }
 
+  /**
+   * 初始化结点
+   */
   protected override initNode(value: V): SinglyLinkedNode<V> {
     return {
       isHead: false,
@@ -52,11 +64,17 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     }
   }
 
+  /**
+   * 头插法, 插入元素
+   */
   public override insertAtHead(...values: V[]): void {
     const nodes = values.map(value => this.initNode(value));
     this.insertNodeAtHead(...nodes);
   }
 
+  /**
+   * 头插法, 插入结点
+   */
   protected override insertNodeAtHead(...nodes: SinglyLinkedNode<V>[]): void {
     nodes.forEach(node => {
       node.next = this.head.next;
@@ -64,11 +82,17 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     })
   }
 
+  /**
+   * 尾插法, 插入元素
+   */
   public override insertAtTail(...values: V[]): void {
     const nodes = values.map(value => this.initNode(value));
     this.insertNodeAtTail(...nodes);
   }
 
+  /**
+   * 尾插法, 插入结点
+   */
   protected override insertNodeAtTail(...nodes: SinglyLinkedNode<V>[]): void {
     nodes.forEach(node => {
       this.tail.next = node;
@@ -76,47 +100,64 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     })
   }
 
+  /**
+   * 插入结点
+   */
   protected override insertNode(...nodes: SinglyLinkedNode<V>[]): void {
     this.insertNodeAtTail(...nodes);
   }
 
+  /**
+   * 插入元素
+   */
   public override insert(...values: V[]) {
     this.insertAtTail(...values);
   }
 
+  /**
+   * 移除某个结点
+   */
   protected override deleteNode(node: SinglyLinkedNode<V>): SinglyLinkedNode<V> | null {
+    return this.deleteNodeWhere(innerNode => innerNode === node);
+  }
+
+  /**
+   * 条件移除某个结点
+   */
+  protected override deleteNodeWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean): SinglyLinkedNode<V> | null {
     let prevNode: SinglyLinkedNode<V> | null = this.head;
     while (prevNode) {
       if (prevNode.next) {
-        if (prevNode.next === node) {
+        if (condition(prevNode.next)) {
+          const node = prevNode.next;
           prevNode.next = prevNode.next.next;
-          break;
+          node.next = null;
+          return node;
         }
       }
 
       prevNode = prevNode.next;
     }
-
-    return node;
+    return null;
   }
 
-  public override delete(value: V): V[] {
-    const result: SinglyLinkedNode<V>[] = [];
-
-    let node: SinglyLinkedNode<V> | null = this.head;
-    while (node.next) {
-      if (this.comparator(value, node.next.value) === 0) {
-        const target = node.next;
-        node.next = target.next;
-        target.next = null;
-        result.push(target);
-      }
-      else node = node.next;
-    }
-
-    return result.map(node => node.value);
+  /**
+   * 移除元素
+   */
+  public override delete(value: V): V | null {
+    return this.deleteWhere(innerNode => this.comparator(innerNode, value) === 0);
   }
 
+  /**
+   * 条件移除元素
+   */
+  public override deleteWhere(condition: (value: V) => boolean): V | null {
+    return this.deleteNodeWhere(innerNode => condition(innerNode.value))?.value ?? null;
+  }
+
+  /**
+   * 删除第一个节点
+   */
   protected override deleteNodeAtHead(): SinglyLinkedNode<V> | null {
     const node = this.head.next;
     if (!node) return null;
@@ -125,12 +166,19 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return node;
   }
 
+
+  /**
+   * 删除第一个元素
+   */
   public override deleteAtHead(): V | null {
     const node = this.deleteNodeAtHead();
     if (!node) return null;
     return node.value;
   }
 
+  /**
+   * 删除尾结点
+   */
   protected override deleteNodeAtTail(): SinglyLinkedNode<V> | null {
     let node: SinglyLinkedNode<V> | null = this.head;
     while (node) {
@@ -152,38 +200,83 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return null;
   }
 
+  /**
+   * 删除尾元素
+   */
   public override deleteAtTail(): V | null {
     const node = this.deleteNodeAtTail();
     if (!node) return null;
     return node.value;
   }
 
-  protected override findNodeFromHead(value: V): SinglyLinkedNode<V> | null {
+  /**
+   * 查找一个结点
+   */
+  protected override findNodeFromHead(value: V): Readonly<SinglyLinkedNode<V>> | null {
+    return this.findNodeFromHeadWhere(innerNode => this.comparator(innerNode.value, value) === 0);
+  }
+
+  /**
+   * 条件查找
+   */
+  protected override findNodeFromHeadWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean): Readonly<SinglyLinkedNode<V>> | null {
     let node: SinglyLinkedNode<V> | null = this.head.next;
     while (node) {
-      if (this.comparator(node.value, value) === 0) break;
+      if (condition(node)) break;
       node = node.next;
     }
     return node;
   }
 
+  /**
+   * 查找某个元素
+   */
   public override findFromHead(value: V): V | null {
     const node = this.findNodeFromHead(value);
     if (node) return node.value;
     return null;
   }
 
-  protected override findNode(value: V): SinglyLinkedNode<V> | null {
+  /**
+   * 条件查找某个元素
+   */
+  public override findFromHeadWhere(condition: (node: V) => boolean): V | null {
+    const node = this.findNodeFromHeadWhere(node => condition(node.value));
+    if (node) return node.value;
+    return null;
+  }
+
+  /**
+   * 查找某个结点
+   */
+  protected override findNode(value: V): Readonly<SinglyLinkedNode<V>> | null {
     return this.findNodeFromHead(value);
   }
 
-  protected override findNodeAll(value: V): SinglyLinkedNode<V>[] {
+  /**
+   * 条件查找某个元素
+   */
+  protected override findNodeWhere(condition: (node:Readonly<SinglyLinkedNode<V>>) => boolean): Readonly<SinglyLinkedNode<V>> | null {
+    return this.findNodeFromHeadWhere(condition);
+  }
+
+  /**
+   * 查找所有结点
+   */
+  protected override findNodeAll(value: V): Readonly<SinglyLinkedNode<V>>[] {
+    return this.findNodeAllWhere(innerNode => this.comparator(innerNode.value, value) === 0);
+  }
+
+  /**
+   * 条件查找所有结点
+   */
+  protected override findNodeAllWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean): Readonly<SinglyLinkedNode<V>>[] {
     const results: SinglyLinkedNode<V>[] = [];
 
     let node = this.head.next;
     while (node) {
       if (node.isHead) break;
-      if (this.comparator(node.value, value) === 0) {
+      if (condition(node)) {
         results.push(node);
       }
       node = node.next;
@@ -192,21 +285,50 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return results;
   }
 
+  /**
+   * 查找某个元素
+   */
   public override find(value: V): V | null {
     const node = this.findNode(value);
     if (node) return node.value;
     return null;
   }
 
+  /**
+   * 条件查找某个元素
+   */
+  public override findWhere(condition: (value: V) => boolean): V | null {
+    const node = this.findNodeWhere(innerNode => condition(innerNode.value));
+    if (node) return node.value;
+    return null;
+  }
+
+  /**
+   * 查找所有元素集合
+   */
   public override findAll(value: V): V[] {
     const nodes = this.findNodeAll(value);
     return nodes.map(node => node.value);
   }
 
+  /**
+   * 查找所有元素集合
+   */
+  public override findAllWhere(condition: (value: V) => boolean): V[] {
+    const nodes = this.findNodeAllWhere(innerNode => condition(innerNode.value));
+    return nodes.map(node => node.value);
+  }
+
+  /**
+   * clone 某个结点
+   */
   protected override cloneNode(node: SinglyLinkedNode<V>): SinglyLinkedNode<V> {
     return this.initNode(node.value);
   }
 
+  /**
+   * clone 当前链表
+   */
   public override clone(): LinkedList<V, SinglyLinkedNode<V>> {
     const linkedList = new SinglyLinkedList<V>();
 
@@ -218,13 +340,19 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     return linkedList;
   }
 
+  /**
+   * 合并链表并返回一个新的链表集合
+   */
   public override merge(otherList: LinkedList<V, SinglyLinkedNode<V>>): LinkedList<V, SinglyLinkedNode<V>> {
     const cloneList = this.clone();
     for (const value of otherList) cloneList.insertAtTail(value);
     return cloneList;
   }
 
-  protected override forEachNode(callback: (node: SinglyLinkedNode<V>) => void): void {
+  /**
+   * forEach 结点
+   */
+  protected override forEachNode(callback: (node: Readonly<SinglyLinkedNode<V>>) => void): void {
     let node = this.head.next;
     while (node) {
       if (node.isHead) return;
@@ -233,10 +361,16 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     }
   }
 
+  /**
+   * forEach 元素
+   */
   public override forEach(callback: (value: V) => void): void {
     this.forEachNode(node => callback(node.value));
   }
 
+  /**
+   * 清空链表
+   */
   public override clear(): void {
     let node = this.head.next;
     while (node) {
@@ -249,10 +383,16 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     this.tail = this.head;
   }
 
+  /**
+   * 返回当前链表是否为空
+   */
   public override isEmpty(): boolean {
     return this.head.next === null;
   }
 
+  /**
+   * 返回当前链表的大小
+   */
   public override size(): number {
     let length = 0;
     this.forEachNode(() => { length ++; });

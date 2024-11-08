@@ -50,7 +50,7 @@ export class Queue<V> extends Vessel<V> {
    * push 元素到队列中
    */
   public push(...value: V[]) {
-    this.queueArr.push(...value.reverse());
+    this.queueArr.push(...value);
   }
 
   /**

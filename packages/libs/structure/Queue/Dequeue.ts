@@ -50,7 +50,7 @@ export class Dequeue<V> extends Vessel<V> {
    * push 元素到队首
    */
   public pushFront(...value: V[]) {
-    this.dequeueArr.unshift(...value.reverse());
+    this.dequeueArr.unshift(...value);
   }
 
   /**

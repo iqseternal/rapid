@@ -60,7 +60,7 @@ describe('Stack', () => {
       if (v1.id === v2.id) return 0;
       return v1.id > v2.id ? 1 : -1;
     };
-    stack.setCompare(customComparator);
+    stack.setComparator(customComparator);
 
     const obj2 = { id: 2 };
     const obj3 = { id: 3 };
@@ -80,7 +80,7 @@ describe('Stack', () => {
     const customComparator = (v1: any, v2: any) => {
       return v1.value === v2.value ? 0 : (v1.value > v2.value ? 1 : -1);
     };
-    stack.setCompare(customComparator);
+    stack.setComparator(customComparator);
 
     const obj1 = { value: 10 };
     const obj2 = { value: 20 };

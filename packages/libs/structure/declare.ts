@@ -1,4 +1,3 @@
-import { isObject } from '@suey/pkg-utils';
 
 /**
  * 比较器
@@ -17,9 +16,22 @@ export interface Comparator<V> {
  * stl 容器
  */
 export abstract class Vessel<V> {
+  /**
+   * 容器的默认比较器
+   *
+   * if v1 === v2 return 0
+   * if v1 > v2 return 1
+   * if v1 < v2 return -1
+   *
+   * if return === 0 表示两者相等
+   * if return > 0 表示 v1 > v2
+   * if return < 0 表示 v1 < v2
+   *
+   */
   protected comparator: Comparator<V> = (v1, v2) => {
     if (v1 === v2) return 0;
-    if (isObject(v1) || isObject(v2)) return 1;
+    if (typeof v1 !== 'number' && typeof v1 !== 'string') return 1;
+    if (typeof v2 !== 'number' && typeof v2 !== 'string') return 1;
     if (v1 > v2) return 1;
     return -1;
   };
@@ -53,7 +65,7 @@ export abstract class Vessel<V> {
   /**
    * 设置比较器
    */
-  public setCompare(comparator: Comparator<V>): void {
+  public setComparator(comparator: Comparator<V>): void {
     this.comparator = comparator;
   }
 }

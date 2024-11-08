@@ -35,7 +35,7 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    *    // value: number
    * }
    */
-  public abstract [Symbol.iterator](): Iterator<V>;
+  public abstract [Symbol.iterator](): Iterator<Readonly<V>>;
 
   /**
    * 通过 value 初始化一个节点
@@ -96,40 +96,48 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    * 删除一个节点
    */
   protected abstract deleteNode(node: Node): Node | null;
+  protected abstract deleteNodeWhere(condition: (node: Readonly<Node>) => boolean): Node | null;
 
   /**
    * 删除符合 predicate 的元素节点
    */
-  public abstract delete(value: V): V[];
+  public abstract delete(value: V): V | null;
+  public abstract deleteWhere(condition: (value: V) => boolean): V | null;
 
   /**
      * 从头部顺序查找符合 predicate 的节点集合
      */
-  protected abstract findNodeFromHead(value: V): Node | null;
+  protected abstract findNodeFromHead(value: V): Readonly<Node> | null;
+  protected abstract findNodeFromHeadWhere(condition: (node: Readonly<Node>) => boolean): Readonly<Node> | null;
 
   /**
    * 从头部顺序查找符合 predicate 的元素集合
    */
   public abstract findFromHead(value: V): V | null;
+  public abstract findFromHeadWhere(condition: (value: V) => boolean): V | null;
 
   /**
    * 查找符合 predicate 的节点集合
    */
-  protected abstract findNode(node: V): Node | null;
+  protected abstract findNode(value: V): Node | null;
+  protected abstract findNodeWhere(condition: (node: Readonly<Node>) => boolean): Readonly<Node> | null;
 
   protected abstract findNodeAll(value: V): Node[];
+  protected abstract findNodeAllWhere(condition: (node: Readonly<Node>) => boolean): Readonly<Node>[];
 
   /**
    * 查找符合 predicate 的元素
    */
   public abstract find(value: V): V | null;
+  public abstract findWhere(condition: (value: V) => boolean): V | null;
 
   public abstract findAll(value: V): V[];
+  public abstract findAllWhere(condition: (value: V) => boolean): V[];
 
   /**
      * forEachNode 遍历节点
      */
-  protected abstract forEachNode(callback: (node: Node) => void): void;
+  protected abstract forEachNode(callback: (node: Readonly<Node>) => void): void;
 
   /**
    * forEach 遍历元素

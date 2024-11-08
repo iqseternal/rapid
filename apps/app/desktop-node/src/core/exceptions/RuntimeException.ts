@@ -21,7 +21,7 @@ export class RuntimeException extends Exception<RuntimeExceptionErrorMsgData> {
 @Catch(RuntimeException)
 export class RuntimeExceptionFilter extends ExceptionFilter {
 
-  override catch(err: RuntimeException): void {
+  public override catch(err: RuntimeException): void {
     switch (err.errMessage.level) {
       case 'ERROR': {
         Logger.error(`${err.errMessage.label}`, err.message);

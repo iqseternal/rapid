@@ -23,7 +23,7 @@ import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticCom
  * @param args
  * @return
  */
-export const classnames = (...args: (string | undefined | boolean | number | Record<string, any | boolean | undefined>)[]) => {
+export const classnames = (...args: (string | undefined | boolean | null | number | Record<string, any | boolean | undefined>)[]) => {
   const classNameList: string[] = [];
 
   for (const arg of args) {

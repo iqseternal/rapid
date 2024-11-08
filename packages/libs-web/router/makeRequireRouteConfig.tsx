@@ -1,6 +1,5 @@
 import { isString } from '@rapid/libs';
-import { RedirectProps } from '../components/Redirect';
-import { Printer, printError } from '@suey/printer';
+import { printError } from '@suey/printer';
 
 type NotHasChildrenRouteConfig = Omit<RouteConfig, 'children'>;
 

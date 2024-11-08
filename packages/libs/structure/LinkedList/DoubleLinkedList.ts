@@ -1,6 +1,3 @@
-
-import { Printer } from '@suey/printer';
-import { Comparator } from '../declare';
 import type { LinkedNode } from './LinkedList';
 import { LinkedList } from './LinkedList';
 
@@ -67,11 +64,56 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
     }
   }
 
+  // /**
+  //  * 交换两个结点, 实际上也就是交换两个结点所对应的值, 伪交换
+  //  */
+  // protected swapNode(node1: DoubleLinkedNode<V>, node2: DoubleLinkedNode<V>) {
+  //   if (node1 === node2) return; // 如果两个节点相同，无需交换
+
+  //   // 保存 node1 和 node2 的相邻节点
+  //   const node1Prev = node1.previous;
+  //   const node1Next = node1.next;
+  //   const node2Prev = node2.previous;
+  //   const node2Next = node2.next;
+
+  //   // 交换 node1 和 node2 的相邻节点引用
+  //   if (node1Next === node2) { // 如果 node2 紧跟在 node1 后面
+  //     node1.next = node2Next;
+  //     node1.previous = node2;
+  //     node2.next = node1;
+  //     node2.previous = node1Prev;
+
+  //     if (node1Prev) node1Prev.next = node2;
+  //     if (node2Next) node2Next.previous = node1;
+  //   } else if (node2Next === node1) { // 如果 node1 紧跟在 node2 后面
+  //     node2.next = node1Next;
+  //     node2.previous = node1;
+  //     node1.next = node2;
+  //     node1.previous = node2Prev;
+
+  //     if (node2Prev) node2Prev.next = node1;
+  //     if (node1Next) node1Next.previous = node2;
+  //   } else { // 如果 node1 和 node2 不相邻
+  //     node1.next = node2Next;
+  //     node1.previous = node2Prev;
+  //     node2.next = node1Next;
+  //     node2.previous = node1Prev;
+
+  //     if (node1Prev) node1Prev.next = node2;
+  //     if (node1Next) node1Next.previous = node2;
+  //     if (node2Prev) node2Prev.next = node1;
+  //     if (node2Next) node2Next.previous = node1;
+  //   }
+  // }
+
   /**
    * 插入一个节点到链表的头部
    */
   protected override insertNodeAtHead(...nodes: DoubleLinkedNode<V>[]): void {
     nodes.forEach(node => {
+      node.next = null;
+      node.previous = null;
+
       const firstNode = this.head.next;
       if (!firstNode) return;
 
@@ -130,13 +172,34 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   }
 
   /**
+   * 获得头节点的值
+   */
+  public getHead(): V | null {
+    return this.head.next?.value ?? null;
+  }
+
+  /**
+   * 获得头节点
+   */
+  protected getHeadNode(): DoubleLinkedNode<V> | null {
+    return this.head.next ?? null;
+  }
+
+  /**
    * 从头部查找结点
    */
-  protected override findNodeFromHead(value: V): DoubleLinkedNode<V> | null {
+  protected override findNodeFromHead(value: V): Readonly<DoubleLinkedNode<V>> | null {
+    return this.findNodeFromHeadWhere(innerNode => this.comparator(innerNode.value, value) === 0);
+  }
+
+  /**
+   * 从头部条件查找结点
+   */
+  protected override findNodeFromHeadWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): Readonly<DoubleLinkedNode<V>> | null {
     let node: DoubleLinkedNode<V> | null = this.head.next;
     while (node) {
       if (node.isHead) break;
-      if (this.comparator(node.value, value) === 0) break;
+      if (condition(node)) break;
       node = node.next;
     }
     if (node?.isHead) return null;
@@ -153,13 +216,44 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   }
 
   /**
+   * 从头部条件查找元素
+   */
+  public override findFromHeadWhere(condition: (value: V) => boolean): V | null {
+    const node = this.findNodeFromHeadWhere(innerNode => condition(innerNode.value));
+    if (node) return node.value;
+    return null;
+  }
+
+
+  /**
+   * 获得尾结点的值
+   */
+  public getTail(): V | null {
+    return this.head.previous?.value ?? null;
+  }
+
+  /**
+   * 获得尾结点
+   */
+  protected getTailNode(): DoubleLinkedNode<V> | null {
+    return this.head.previous ?? null;
+  }
+
+  /**
    * 从尾部查找结点
    */
-  public findNodeFromTail(value: V): DoubleLinkedNode<V> | null {
+  public findNodeFromTail(value: V): Readonly<DoubleLinkedNode<V>> | null {
+    return this.findNodeFromTailWhere(innerNode => this.comparator(innerNode.value, value) === 0);
+  }
+
+  /**
+   * 从尾部条件查找结点
+   */
+  public findNodeFromTailWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): Readonly<DoubleLinkedNode<V>> | null {
     let node: DoubleLinkedNode<V> | null = this.head.previous;
     while (node) {
       if (node.isHead) break;
-      if (this.comparator(node.value, value) === 0) break;
+      if (condition(node)) break;
       node = node.previous;
     }
     if (node?.isHead) return null;
@@ -176,20 +270,44 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   }
 
   /**
+   * 从尾部条件查找元素
+   */
+  public findFromTailWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): V | null {
+    const node = this.findNodeFromTailWhere(condition);
+    if (node) return node.value;
+    return null;
+  }
+
+  /**
    * 查找结点
    */
-  protected override findNode(value: V): DoubleLinkedNode<V> | null {
+  protected override findNode(value: V): Readonly<DoubleLinkedNode<V>> | null {
     return this.findNodeFromTail(value);
   }
+
+  /**
+   * 条件查找结点
+   */
+  protected override findNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): Readonly<DoubleLinkedNode<V>> | null {
+    return this.findNodeFromTailWhere(condition);
+  }
+
 
   /**
    * 查找所有符合比较器的结点
    * @protected
    */
-  protected override findNodeAll(value: V): DoubleLinkedNode<V>[] {
+  protected override findNodeAll(value: V): Readonly<DoubleLinkedNode<V>>[] {
+    return this.findNodeAllWhere(innerNode => this.comparator(innerNode.value, value) === 0);
+  }
+
+  /**
+   * 查找所有符合条件的结点
+   */
+  protected override findNodeAllWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): Readonly<DoubleLinkedNode<V>>[] {
     const results: DoubleLinkedNode<V>[] = [];
     this.forEachNode(node => {
-      if (this.comparator(node.value, value) === 0) {
+      if (condition(node)) {
         results.push(node);
       }
     })
@@ -204,10 +322,27 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   }
 
   /**
+   * 默认倒序查找, 如果刚刚插入, 然后又去查询, 这将会变得快些
+   */
+  public override findWhere(condition: (value: V) => boolean): V | null {
+    const node = this.findNodeFromTailWhere(innerNode => condition(innerNode.value));
+    if (node) return node.value;
+    return null;
+  }
+
+  /**
    * 查找符合条件的所有元素集合
    */
   public override findAll(value: V): V[] {
     const nodes = this.findNodeAll(value);
+    return nodes.map(node => node.value);
+  }
+
+  /**
+   * 查找符合条件的所有元素集合
+   */
+  public override findAllWhere(condition: (value: V) => boolean): V[] {
+    const nodes = this.findNodeAllWhere(innerNode => condition(innerNode.value));
     return nodes.map(node => node.value);
   }
 
@@ -232,27 +367,26 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   }
 
   /**
+   * 删除某个结点
+   */
+  public override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): DoubleLinkedNode<V> | null {
+    const node = this.findNodeWhere(condition) as DoubleLinkedNode<V>;
+    if (node) return this.deleteNode(node);
+    return null;
+  }
+
+  /**
    * 删除元素
    */
-  public override delete(value: V): V[] {
-    const result: DoubleLinkedNode<V>[] = [];
+  public override delete(value: V): V | null {
+    return this.deleteNodeWhere(innerNode => this.comparator(innerNode.value, value) === 0)?.value ?? null;
+  }
 
-    let node: DoubleLinkedNode<V> | null = this.head.next;
-    while (node) {
-      if (node.isHead) break;
-
-      if (this.comparator(node.value, value) === 0) {
-        const nextNode = node.next;
-        const delNode = this.deleteNode(node);
-        node = nextNode;
-        if (delNode) result.push(delNode);
-        continue;
-      }
-
-      node = node.next;
-    }
-
-    return result.map(node => node.value);
+  /**
+   * 条件删除元素
+   */
+  public override deleteWhere(condition: (value: V) => boolean): V | null {
+    return this.deleteNodeWhere(innerNode => condition(innerNode.value))?.value ?? null;
   }
 
   /**
@@ -319,7 +453,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   /**
    * 遍历当前双链表
    */
-  public override forEachNode(callback: (node: DoubleLinkedNode<V>) => void): void {
+  public override forEachNode(callback: (node: Readonly<DoubleLinkedNode<V>>) => void): void {
     let node = this.head.next;
     while (node) {
       if (node.isHead) break;
@@ -368,7 +502,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
    */
   public override size(): number {
     let length = 0;
-    this.forEachNode(() => { length ++; });
+    this.forEachNode(() => { length++; });
     return length;
   }
 }

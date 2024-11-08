@@ -15,14 +15,14 @@ describe('Queue', () => {
   test('should push elements to the queue', () => {
     queue.push(1, 2, 3);
     expect(queue.size()).toBe(3);
-    expect(queue.front()).toBe(3);  // 队首元素应为 1
-    expect(queue.back()).toBe(1);   // 队尾元素应为 3
+    expect(queue.front()).toBe(1);  // 队首元素应为 1
+    expect(queue.back()).toBe(3);   // 队尾元素应为 3
   });
 
   test('should pop elements from the queue', () => {
     queue.push(1, 2, 3);
     const poppedElement = queue.pop();
-    expect(poppedElement).toBe(3);
+    expect(poppedElement).toBe(1);
     expect(queue.size()).toBe(2);
     expect(queue.front()).toBe(2);  // 队首应变为 2
   });
