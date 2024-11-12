@@ -5,7 +5,8 @@
     "incremental": true,
 
     "baseUrl": ".",
-    "noImplicitAny": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
 
     "target": "ESNext",
     "lib": ["DOM", "ESNext"],

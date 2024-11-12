@@ -2,14 +2,12 @@ import { WindowService, WindowServiceStateMachine } from '@/core/service/WindowS
 import { CONFIG, IS_DEV } from '@rapid/config/constants';
 import { AppConfigService } from '@/core/service/AppConfigService';
 import { PrinterService } from '@/core/service/PrinterService';
-import { PAGES_WINDOW_DIALOG, PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING, PAGES_WINDOW_REPORT_BUGS } from '@/config';
-import { BrowserView, Menu, Tray, app, nativeImage } from 'electron';
-import { setWindowCloseCaptionContextmenu, setWindowDevtoolsDetach, setWindowOpenHandler } from '@/core/common/window';
+import { PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from '@/config';
+import { Menu, Tray, app, nativeImage } from 'electron';
+import { setWindowOpenHandler } from '@/core/common/window';
 import { join } from 'path';
-import { userConfigStore } from './store';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
-
 
 /**
  * 创建主窗口的函数
@@ -29,8 +27,8 @@ export async function setupMainWindow() {
 
   PrinterService.printInfo(PAGES_WINDOW_MAIN);
 
-  windowService.window.webContents.setFrameRate(144);
   windowService.window.setMenu(null);
+  windowService.window.webContents.setFrameRate(144);
   windowService.window.webContents.setWindowOpenHandler((details) => {
     PrinterService.printInfo(`打开地址为： ${details.url}`);
 

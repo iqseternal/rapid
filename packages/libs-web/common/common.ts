@@ -1,11 +1,13 @@
 import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isString, isUnDef } from '@rapid/libs';
-import { validateValidStr } from '@rapid/validates';
-import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
+import type { Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
 
 /**
  * 合并多个classname类名,
+ *
+ * @param args
+ * @see https://www.npmjs.com/package/classnames
+ *
  * @example
- * ``` tsx
  * <div
  *    className={
  *      classnames(
@@ -19,9 +21,6 @@ import type { ClassType, Component, FC, ForwardRefExoticComponent, LazyExoticCom
  *       )
  *    }
  * ></div>
- *
- * @param args
- * @return
  */
 export const classnames = (...args: (string | undefined | boolean | null | number | Record<string, any | boolean | undefined>)[]) => {
   const classNameList: string[] = [];
@@ -52,7 +51,7 @@ export const classnames = (...args: (string | undefined | boolean | null | numbe
 export const isReactLazyFC = <Target extends LazyExoticComponent<FC<any>>>(target: Target | any): target is Target => {
   if (!isObject(target)) return false;
 
-  const isSymbol = typeof (target as unknown as Target).$$typeof === 'symbol';
+  const isSymbol = typeof (target as any).$$typeof === 'symbol';
   if (!isSymbol) return false;
 
   // lazy FC
@@ -72,7 +71,7 @@ export const isReactLazyFC = <Target extends LazyExoticComponent<FC<any>>>(targe
 export const isReactForwardFC = <Target extends ForwardRefExoticComponent<any>>(target: Target | any): target is Target => {
   if (!isObject(target)) return false;
 
-  const isSymbol = typeof (target as unknown as Target).$$typeof === 'symbol';
+  const isSymbol = typeof (target as any).$$typeof === 'symbol';
   if (!isSymbol) return false;
 
   // 常规 FC
@@ -87,7 +86,7 @@ export const isReactForwardFC = <Target extends ForwardRefExoticComponent<any>>(
 export const isReactMemoFC = <Target extends MemoExoticComponent<any>>(target: Target | any): target is Target => {
   if (!isObject(target)) return false;
 
-  const isSymbol = typeof (target as unknown as Target).$$typeof === 'symbol';
+  const isSymbol = typeof (target as any).$$typeof === 'symbol';
   if (!isSymbol) return false;
 
   // 常规 FC

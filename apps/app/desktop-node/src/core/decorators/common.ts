@@ -31,6 +31,7 @@ export type DescendantClass<Class> = { new(...args: any[]): Class; };
  * @param decorator {Decorator} 装饰器本身, 装饰器接口规定会含有一个 symbol 数据, 作为元数据的存放 key
  * @param target {any} 装饰器所服务的对象
  * @param data 定义的元数据
+ * @see https://jkchao.github.io/typescript-book-chinese/tips/metadata.html
  *
  * @example
  *
@@ -54,6 +55,7 @@ export const decoratorDefineMetadata = <Data>(decorator: Decorator, target: any,
  * 装饰器获取元数据, 本函数在创建装饰器的解析函数中执行
  * @param decorator {Decorator} 装饰器本身, 装饰器接口规定会含有一个 symbol 数据, 作为元数据的存放 key
  * @param target 装饰器所服务的对象
+ * @see https://jkchao.github.io/typescript-book-chinese/tips/metadata.html
  *
  * @example
  *

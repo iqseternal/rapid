@@ -1,8 +1,9 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { classnames } from '@rapid/libs-web/common';
 import { theme, Tooltip, TooltipProps } from 'antd';
 import type { IconKey } from '@components/IconFont';
-import type { HTMLAttributes, MouseEventHandler } from 'react';
-import { memo, useCallback } from 'react';
+import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'react';
+import { memo, useCallback, useState, useMemo } from 'react';
 import { CONFIG } from '@rapid/config/constants';
 import { commonStyles } from '@scss/common';
 import { FullSize } from '@rapid/libs-web';
@@ -12,10 +13,20 @@ import styles from './index.module.scss';
 
 export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   /** 当前控件是否具有 hover 背景特性 */
-  hover?: boolean;
+  hasHoverStyle?: boolean;
 
   /** 当前控件展示的图标元素 */
   icon?: IconKey;
+
+  /**
+   * 当前控件是否处于 loading 状态
+   */
+  loading?: boolean;
+
+  /**
+   * 处于 loading 状态时自定义展示 loading 元素
+   */
+  loadingContent?: ReactNode;
 
   /**
    * 控件 Hover 之后展示的提示文本
@@ -37,40 +48,49 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
 export const Widget = memo((props: WidgetProps) => {
   const {
     className,
-
-    hover = true,
-
+    hasHoverStyle = true,
     icon,
+    disabled = false, loading = false, loadingContent,
     tipText, tipAttrs = {},
-
-    disabled = false,
-
     onClick, onDoubleClick, onContextMenu,
-
     ...realProps
   } = props;
+
+  const [normalState] = useState({
+    loading: false,
+    disabled: false
+  })
+
+  normalState.loading = loading;
+  normalState.disabled = disabled;
 
   /**
    * 创建维护事件, 当 disabled 为 true 时, 将传递事件进行封装, 禁用执行
    * 即便有 css commonStyles.disabledPointerEvents 的支持, 但是也要从实际的执行层面解决禁用事件问题
    */
-  const withSafeEvent = useCallback((callback: MouseEventHandler<HTMLDivElement> | undefined) => {
+  const withSafeEvent = useCallback(<Event extends MouseEvent>(callback: MouseEventHandler<HTMLDivElement> | undefined) => {
     if (!callback) return callback;
 
-    return (e: any) => {
-      if (disabled) return;
-
-      return callback(e);
+    return (e: Event): void => {
+      if (normalState.disabled) return;
+      if (normalState.loading) return;
+      return callback(e as any);
     }
-  }, [disabled]);
+  }, []);
 
-  const withDisabledClick = withSafeEvent(onClick);
-  const withDisabledDoubleClick = withSafeEvent(onDoubleClick);
-  const withDisabledContextMenu = withSafeEvent(onContextMenu);
+  const withDisabledClick = useMemo(() => withSafeEvent<MouseEvent<HTMLDivElement>>(
+    onClick
+  ), [onClick]);
+  const withDisabledDoubleClick = useMemo(() => withSafeEvent<MouseEvent<HTMLDivElement>>(
+    onDoubleClick
+  ), [onDoubleClick]);
+  const withDisabledContextMenu = useMemo(() => withSafeEvent<MouseEvent<HTMLDivElement>>(
+    onContextMenu
+  ), [onContextMenu]);
 
   return <Tooltip
     title={tipText}
-    mouseEnterDelay={1}
+    mouseEnterDelay={0.5}
     autoAdjustOverflow
     {...tipAttrs}
   >
@@ -80,8 +100,8 @@ export const Widget = memo((props: WidgetProps) => {
         className,
         commonStyles.appRegionNo,
         {
-          [commonStyles.cursorNotAllowed]: disabled,
-          [styles.widgetHasHover]: hover,
+          [commonStyles.cursorNotAllowed]: loading || disabled,
+          [styles.widgetHasHover]: !loading && hasHoverStyle,
         }
       )}
     >
@@ -92,10 +112,16 @@ export const Widget = memo((props: WidgetProps) => {
         onContextMenu={withDisabledContextMenu}
         className={classnames(
           commonStyles.flexRowCenter,
-          disabled && commonStyles.disabledPointerEvents
+          {
+            [commonStyles.disabledPointerEvents]: loading || disabled
+          }
         )}
       >
-        {icon && <IconFont icon={icon}></IconFont>}
+        {loading ? <>
+          {loadingContent ? loadingContent : <LoadingOutlined />}
+        </> : <>
+          {icon && <IconFont icon={icon}></IconFont>}
+        </>}
       </FullSize>
     </div>
   </Tooltip>

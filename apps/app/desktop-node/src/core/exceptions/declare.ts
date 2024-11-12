@@ -1,5 +1,4 @@
 import { IS_DEV } from '@rapid/config/constants';
-import { isUndefined } from '@rapid/libs';
 import { PrinterService } from '../service/PrinterService';
 
 /**
@@ -61,7 +60,7 @@ export abstract class ExceptionFilter {
   constructor() {}
 
   /**
-   * 处理异常的回调函数
+   * 处理异常地回调函数
    * @param exp
    */
   public abstract catch(exp: Exception<any>): void | Promise<void>;

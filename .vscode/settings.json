@@ -454,6 +454,7 @@
     "Minimizable",
     "pako",
     "Polotno",
+    "preinstall",
     "rsbuild",
     "Rsbuilder",
     "rsdoctor",

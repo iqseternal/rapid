@@ -1,5 +1,4 @@
-import { Vessel, Comparator } from '../declare';
-
+import { Vessel } from '../declare';
 import { SinglyLinkedList } from '../LinkedList';
 
 /**
@@ -91,8 +90,7 @@ export class LinkedStack<V> extends Vessel<V> {
    * 访问栈顶元素, 但是不弹出元素
    */
   public top() {
-    const value = this.linked.findFromHeadWhere(() => true);
-    return value;
+    return this.linked.findFromHeadWhere(() => true);
   }
 
   /**

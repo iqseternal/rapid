@@ -1,6 +1,6 @@
 import { toMakeIpcAction } from '@/core/ipc';
 import { WindowService } from '@/core/service/WindowService';
-import { app, dialog } from 'electron';
+import { dialog } from 'electron';
 import { FileService } from '@/core/service/FileService';
 import { ConvertService } from '@/core/service/ConvertService';
 import { EXTENSIONS, ExportsExtensions, ExtensionType } from '@rapid/config/constants';
@@ -11,7 +11,7 @@ import { convertWindowServiceMiddleware } from '@/ipc/middlewares';
 
 import * as path from 'path';
 
-const { makeIpcHandleAction, makeIpcOnAction } = toMakeIpcAction<[WindowService]>({
+const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]
 });
 

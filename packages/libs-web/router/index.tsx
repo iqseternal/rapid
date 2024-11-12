@@ -6,11 +6,10 @@ import { isString } from '@rapid/libs';
 import { Skeleton } from 'antd';
 import type { PathRouteProps } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import type { RedirectProps } from '../components/Redirect';
+import type { RedirectProps } from '../components';
+import { Redirect } from '../components';
 import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
 import { printWarn } from '@suey/printer';
-
-import Redirect from '../components/Redirect';
 
 export * from './makeRequireRouteConfig';
 

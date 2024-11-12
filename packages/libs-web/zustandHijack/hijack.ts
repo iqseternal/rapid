@@ -15,11 +15,13 @@ export namespace ZustandHijack {
 
     /** 添加副作用 */
     appendEffect: (effect: (state: any, prevState: any) => void) => void;
+
     /** 移除副作用 */
     removeEffect: (effect: (state: any, prevState: any) => void) => void;
 
     /** 开始订阅 */
     subscribe: () => void;
+
     /** 停止订阅 */
     unsubscribe: () => void;
   }
@@ -30,6 +32,7 @@ export namespace ZustandHijack {
   export interface ZustandSelectorTarget<Value> {
     /** 标志位, 通过访问标志位判断是否是 选择器对象 */
     __TAG__: typeof ZustandSelectorTargetSymbol;
+
     /** 维护值 */
     value: Value;
 
@@ -64,8 +67,10 @@ export namespace ZustandHijack {
 
     /** 副作用列表 */
     effects: ((state: any, prevState: any) => void)[];
+
     /** 添加副作用 */
     appendEffect: (effect: () => void) => void;
+
     /** 移除副作用 */
     removeEffect: (effect: () => void) => void;
   }

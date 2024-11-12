@@ -31,7 +31,7 @@ const runtimeContext = {
  *
  */
 export const makeVar = <R extends keyof ThemeCssVarsSheet, CssVar extends (ThemeCssVarsSheet)[R]>(r: CssVar): `var(${CssVar['varName']}, ${CssVar['value']})` => {
-  return `var(${r.varName})` as `var(${CssVar['varName']}, ${CssVar['value']})`;
+  return `var(${r.varName}, ${r.value})` as `var(${CssVar['varName']}, ${CssVar['value']})`;
 }
 
 /**

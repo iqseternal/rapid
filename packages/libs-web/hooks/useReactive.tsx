@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
 
@@ -40,7 +40,7 @@ export function useReactive<S extends object>(initValue: S | (() => S)) {
  */
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
-
+  
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
 

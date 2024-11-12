@@ -109,7 +109,7 @@ export class WindowService {
    * const windowService = WindowService.findWindowService(id);
    *
    */
-  static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]) {
+  public static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]) {
     if (isString(args[0])) {
       const service = WindowServiceStateMachine.findWindowService(args[0]);
 

@@ -10,7 +10,7 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
   /**
    * ipc 接口出现了错误, 利用 onError 回调在主进程处理 ipc 产生地异常, 记录日志...
    */
-  onError(err, { action, actionType, channel }) {
+  onError(err, { channel }) {
     err.errMessage.label = channel;
 
     if (isException(err)) return Catch.parser(err);

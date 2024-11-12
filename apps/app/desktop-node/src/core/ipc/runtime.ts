@@ -1,9 +1,6 @@
-
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { ipcMain } from 'electron';
 import { Exception } from '../exceptions';
 import { toPicket } from '@rapid/libs';
-import { Printer } from '@suey/printer';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
 

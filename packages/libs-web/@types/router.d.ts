@@ -1,6 +1,6 @@
 import type { FC, ReactElement, LazyExoticComponent, JSX, MemoExoticComponent } from 'react';
 import type { PathRouteProps } from 'react-router-dom';
-import type { RedirectProps } from '../components/Redirect';
+import type { RedirectProps } from '../components';
 
 import type * as icons from '@ant-design/icons';
 

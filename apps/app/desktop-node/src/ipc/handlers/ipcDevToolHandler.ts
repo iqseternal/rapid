@@ -1,8 +1,6 @@
 import type { OpenDevToolsOptions } from 'electron';
-import { IS_DEV } from '@rapid/config/constants';
 import { WindowService } from '@/core/service/WindowService';
 import { toMakeIpcAction } from '@/core/ipc';
-import { WindowServiceStateMachine } from '../../core/service/WindowService';
 
 const { makeIpcHandleAction } = toMakeIpcAction();
 

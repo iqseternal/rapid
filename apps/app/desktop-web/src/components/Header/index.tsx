@@ -7,8 +7,6 @@ import { menus } from '@/menus';
 import { FlexRowStart, FullSizeHeight, FullSizeWidth, MaxContent, useAsyncLayoutEffect, useEventListener, useMaintenanceStack, useReactive, useRefresh, useResizeObserver, useShallowReactive, useThrottleHook, useWindowInnerSize, useWindowScreenSize, useZustandHijack } from '@rapid/libs-web';
 import { isDef, isUnDef, isUndefined, randomRegionForInt, toPicket } from '@rapid/libs';
 import { Menu, Input } from 'antd';
-import type { AntdItemType, AntdMenuInstance, AntdSubMenuType } from '@components/AutoDropdownMenu';
-import { retrieveRoutes } from '@/router';
 
 import Widget from '@components/Widget';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';

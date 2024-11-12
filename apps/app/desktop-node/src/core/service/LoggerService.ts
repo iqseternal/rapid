@@ -27,77 +27,77 @@ export class LoggerService {
   /**
    * 打印本地日志
    */
-  async printLogAsLocal(...message: readonly any[]) {
+  public async printLogAsLocal(...message: readonly any[]) {
     const { normalMessages } = printMessageParser(...message);
     await FileService.appendToFile(this.logFileStorageService.filePath, normalMessages.join(' ').concat('\n'));
   }
 
-  static async printLogAsLocal(...message: readonly any[]) {
+  public static async printLogAsLocal(...message: readonly any[]) {
     await LoggerService.logService.printLogAsLocal(...message);
   }
 
   /**
    * 获取本地日志
    */
-  readLogAsLocal(options: LoggerService.ReadLogAsLocalOptions) {
+  public readLogAsLocal(options: LoggerService.ReadLogAsLocalOptions) {
     const { pieces } = options;
 
     // TODO: 读取几行日志并解析返回
   }
 
-  static readLogAsLocal(options: LoggerService.ReadLogAsLocalOptions) {
+  public static readLogAsLocal(options: LoggerService.ReadLogAsLocalOptions) {
     return LoggerService.logService.readLogAsLocal(options);
   }
 
   /**
    * 打印普通日志
    */
-  async info(...message: any[]) {
+  public async info(...message: any[]) {
     const infoMessage = PrinterService.getPrintInfoMessageStyleArr(...message);
     print(...infoMessage);
     await this.printLogAsLocal(...infoMessage);
   }
 
-  static async info(...message: any[]) {
+  public static async info(...message: any[]) {
     await LoggerService.logService.info(...message);
   }
 
   /**
    * 打印警告日志
    */
-  async warn(...message: any[]) {
+  public async warn(...message: any[]) {
     const warnMessage = PrinterService.getPrintInfoMessageStyleArr(...message);
     print(...warnMessage);
     await this.printLogAsLocal(...warnMessage);
   }
 
-  static async warn(...message: any[]) {
+  public static async warn(...message: any[]) {
     await LoggerService.logService.warn(...message);
   }
 
   /**
    * 打印成功日志
    */
-  async success(...message: any[]) {
+  public async success(...message: any[]) {
     const successMessage = PrinterService.getPrintSuccessMessageStyle(...message);
     print(...successMessage);
     await this.printLogAsLocal(...successMessage);
   }
 
-  static async success(...message: any[]) {
+  public static async success(...message: any[]) {
     await LoggerService.logService.success(...message);
   }
 
   /**
    * 打印错误日志
    */
-  async error(...message: any[]) {
+  public async error(...message: any[]) {
     const errorMessage = PrinterService.getPrintErrorMessageStyleArr(...message);
     print(...errorMessage);
     await this.printLogAsLocal(...errorMessage);
   }
 
-  static async error(...message: any[]) {
+  public static async error(...message: any[]) {
     await LoggerService.logService.error(...message);
   }
 }

@@ -42,7 +42,7 @@ export class EnvBuilder {
   defineAlias(basePath: string, paths: Record<`${string}/*`, string[]>) {
     const alias: Record<string, string> = {};
 
-    const aliasMaps: [string, string][] = Object.keys(paths).map(key => {
+    const aliasMaps: [string, string][] = Object.keys(paths).map((key: `${string}/*`) => {
       return [key.replace(/\/\*$/, ''), join(basePath, paths[key][0].replace('/*', ''))] as const;
     });
 
