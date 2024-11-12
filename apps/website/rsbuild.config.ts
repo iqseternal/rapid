@@ -9,9 +9,9 @@ import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import { ECMAVersion } from '@rsdoctor/utils/ruleUtils';
 import { join } from 'path';
 
-import { Builder, DIRS } from '../../config/node';
+import { EnvBuilder, DIRS } from '../../config/node';
 
-const builder = new Builder({
+const envBuilder = new EnvBuilder({
   checker: false
 });
 
@@ -23,7 +23,7 @@ export default defineConfig(({ env, command }) => ({
     entry: {
       index: './src/index.tsx'
     },
-    define: builder.defineVars(),
+    define: envBuilder.defineVars(),
   },
   plugins: [
     pluginStyledComponents(),

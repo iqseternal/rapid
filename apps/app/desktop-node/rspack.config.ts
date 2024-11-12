@@ -1,12 +1,12 @@
 import { defineConfig } from '@rspack/cli';
 import { node, DefinePlugin, DefinePluginOptions, HotModuleReplacementPlugin, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import type { RspackOptions, RspackPluginInstance, RuleSetRule } from '@rspack/core';
-import { DIRS, rules, Builder } from '../../../config/node';
+import { DIRS, rules, EnvBuilder } from '../../../config/node';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.main.json';
 
-const builder = new Builder({
+const envBuilder = new EnvBuilder({
   checker: false
 })
 
@@ -20,7 +20,7 @@ const rspackConfig: RspackOptions = defineConfig({
   },
   resolve: {
     extensions: ['.ts', '.cts', '.js', '.cjs'],
-    alias: builder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths),
+    alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths),
   },
   plugins: [
     new node.NodeTargetPlugin(),

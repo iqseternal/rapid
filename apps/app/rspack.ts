@@ -1,5 +1,5 @@
-import { loadConfig, createRsbuild, mergeRsbuildConfig } from '@rsbuild/core';
-
+import { loadConfig, createRsbuild, mergeRsbuildConfig, RsbuildConfig, CreateRsbuildOptions } from '@rsbuild/core';
+import { EnvBuilder, DIRS } from '../../config/node/builder';
 import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/core';
 import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
@@ -8,7 +8,6 @@ import { join } from 'path';
 
 import treeKill from 'tree-kill';
 
-import { Builder, DIRS } from '../../config/node/builder';
 
 // =====================================================================================
 // 环境变量定义
@@ -25,9 +24,9 @@ declare global {
 
 // =====================================================================================
 // 环境变量设置
-const builder = new Builder();
+const envBuilder = new EnvBuilder();
 
-const { IS_DEV, IS_PROD, IS_PREVIEW } = builder.toEnvs();
+const { IS_DEV, IS_PROD, IS_PREVIEW } = envBuilder.toEnvs();
 
 if (!process.env.DEV_SERVER_MODE) process.env.DEV_SERVER_MODE = 'dev:web:only';
 const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
@@ -42,71 +41,107 @@ const bin = join(__dirname, './node_modules/.bin/electron');
 // =====================================================================================
 // 服务
 
-let electronProcess: ChildProcess;
-let isKillDone = true;
+interface State {
+  electronProcess?: ChildProcess;
+  isKillDone: boolean;
+}
 
-const exitElectron = () => {
+const state: State = {
+  electronProcess: void 0,
+  isKillDone: true,
+}
+
+/**
+ * 退出当前进程
+ */
+const exitCurrentProcess = () => {
   process.exit(0);
 }
 
-const initStartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
-  Printer.printInfo('启动程序');
+/**
+ * 退出在子进程运行的 electron 进程
+ */
+const exitElectronProcess = (callback = () => {}) => {
+  if (!state.electronProcess) return;
 
-  const envs = `cross-env ${envArgs.join(' ')}`;
-
-  // 设置环境变量并启动 electron
-  electronProcess = exec(`${envs} ${bin} ${startPath}`);
-
-  electronProcess?.stdout?.on('data', (data) => {
-    process.stdout.write(data.toString());
-  });
-  electronProcess.on('error', (err) => {
-    process.stderr.write(err.toString());
-  });
-  electronProcess.on('message', (message) => {
-    process.stderr.write(message.toString());
-  });
-  electronProcess.addListener('exit', exitElectron);
-}
-
-const startElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
-  if (!electronProcess) return initStartElectron(envArgs, startPath);
-
-  if (typeof electronProcess.pid === 'undefined') {
+  if (typeof state.electronProcess.pid === 'undefined') {
     Printer.printError(`electron 进程 pid 丢失`);
     process.exit(1);
   }
+  if (state.electronProcess.killed) return;
 
-  if (electronProcess.killed) return;
   // 重启过快, 上一次 kill 还没结束
-  if (!isKillDone) return;
+  if (!state.isKillDone) return;
 
-  Printer.printInfo(`结束 electron 进程`);
+  Printer.printInfo(`进行结束 electron 进程`);
 
   // 开始 kill
-  isKillDone = false;
+  state.isKillDone = false;
 
-  electronProcess.removeListener('exit', exitElectron);
+  state.electronProcess.removeListener('exit', exitCurrentProcess);
 
   // kill 上一次的 electron 进程
-  treeKill(electronProcess.pid, 'SIGTERM', err => {
+  treeKill(state.electronProcess.pid, 'SIGTERM', err => {
     if (err) {
       Printer.printError(`没有kill成功子进程, Electron重启失败`);
       Printer.printError(err);
       process.exit(1);
     }
 
-    initStartElectron(envArgs, startPath);
-
     // 结束 kill
-    isKillDone = true;
+    state.isKillDone = true;
+    Printer.printError(`electron 进程 kill 结束`);
+
+    callback();
+  })
+}
+
+/**
+ * 事件: 当当前进程即将结束时, 去结束 electron 进程
+ */
+const onCurrentProcessBeforeExit = () => exitCurrentProcess();
+
+/**
+ * 初始化并启动 electron 进程
+ */
+const initAndStartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
+  Printer.printInfo('启动程序');
+
+  const envs = `cross-env ${envArgs.join(' ')}`;
+
+  // 设置环境变量并启动 electron
+  state.electronProcess = exec(`${envs} ${bin} ${startPath}`);
+
+  state.electronProcess?.stdout?.on('data', (data) => {
+    process.stdout.write(data.toString());
+  });
+  state.electronProcess.on('error', (err) => {
+    process.stderr.write(err.toString());
+  });
+  state.electronProcess.on('message', (message) => {
+    process.stderr.write(message.toString());
+  });
+  state.electronProcess.addListener('exit', exitCurrentProcess);
+
+  process.removeListener('beforeExit', onCurrentProcessBeforeExit);
+  process.addListener('beforeExit', onCurrentProcessBeforeExit);
+}
+
+/**
+ * 重启 electron 进程
+ */
+const restartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
+  if (!state.electronProcess) return initAndStartElectron(envArgs, startPath);
+
+  exitElectronProcess(() => {
+    initAndStartElectron(envArgs, startPath);
   })
 }
 
 // =====================================================================================
 // 配置加载
 
-const transformMainRspackConfig = async () => {
+const transformMainRspackConfig = async (): Promise<RspackOptions> => {
   const mainRspackConfig = (await import(join(DIRS.DEV_DESKTOP_MAIN_DIR, './rspack.config.ts'))).default as RspackOptions;
 
   if (!mainRspackConfig.plugins) mainRspackConfig.plugins = [];
@@ -116,7 +151,7 @@ const transformMainRspackConfig = async () => {
   // 将结果写入到磁盘
   mainRspackConfig.devServer.devMiddleware.writeToDisk = true;
 
-  const vars = builder.defineVars();
+  const vars = envBuilder.defineVars();
   mainRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
   // mainRspackConfig.plugins?.push(new DefinePlugin({
@@ -136,7 +171,7 @@ const transformMainRspackConfig = async () => {
   return mainRspackConfig;
 }
 
-const transformPreloadRspackConfig = async () => {
+const transformPreloadRspackConfig = async (): Promise<RspackOptions> => {
   const preloadRspackConfig = (await import(join(DIRS.DEV_DESKTOP_PRELOAD_DIR, './rspack.config.ts'))).default as RspackOptions;
 
   if (!preloadRspackConfig.devServer) preloadRspackConfig.devServer = {};
@@ -145,7 +180,7 @@ const transformPreloadRspackConfig = async () => {
   // 将结果写入到磁盘
   preloadRspackConfig.devServer.devMiddleware.writeToDisk = true;
 
-  const vars = builder.defineVars();
+  const vars = envBuilder.defineVars();
   preloadRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
   if (IS_PROD) {
@@ -159,16 +194,16 @@ const transformPreloadRspackConfig = async () => {
   return preloadRspackConfig;
 }
 
-const transformRendererRsbuilder = async () => {
+const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> => {
   const { content } = await loadConfig({
     cwd: DIRS.DEV_DESKTOP_WEB_DIR,
     envMode: 'production',
     path: join(DIRS.DEV_DESKTOP_WEB_DIR, './rsbuild.config.ts'),
   });
 
-  const vars = builder.defineVars();
+  const vars = envBuilder.defineVars();
 
-  return createRsbuild({
+  return {
     cwd: DIRS.DEV_DESKTOP_WEB_DIR,
     rsbuildConfig: mergeRsbuildConfig(content, ({
       source: {
@@ -178,24 +213,22 @@ const transformRendererRsbuilder = async () => {
         }
       }
     }))
-  });
+  }
 }
 
 // =====================================================================================
 // 加载启动流
 ;(async () => {
-  Printer.printInfo(`加载编译....`);
+  Printer.printInfo(`加载编译配置文件....`);
 
   const mainRspackConfig = await transformMainRspackConfig();
   const preloadRspackConfig = await transformPreloadRspackConfig();
-
-  const rendererRsbuilder = await transformRendererRsbuilder();
-
-
+  const rendererRsbuildConfig = await transformRendererRsbuildConfig();
 
   // compiler
   const mainCompiler = rspack(mainRspackConfig);
   const preloadCompiler = rspack(preloadRspackConfig);
+  const rendererRsbuilder = await createRsbuild(rendererRsbuildConfig);
 
   // compiler once
   const compilerMain = () => {
@@ -211,6 +244,7 @@ const transformRendererRsbuilder = async () => {
       })
     })
   }
+
   const compilerPreload = () => {
     return new Promise<void>((resolve, reject) => {
       preloadCompiler.run((err, stats) => {
@@ -227,12 +261,11 @@ const transformRendererRsbuilder = async () => {
 
   // 开发模式, 配置热更新
   if (IS_DEV) {
-    // renderer 热更新服务启动
+    Printer.printInfo(`加载开发时编译....`);
 
+    // renderer 热更新服务启动
     Printer.printInfo(`Compiler: web`);
     const rendererServer = await rendererRsbuilder.startDevServer();
-
-
 
     // 服务启动地址
     const rendererServerUrl = rendererServer.urls[0];
@@ -242,16 +275,14 @@ const transformRendererRsbuilder = async () => {
     }
 
     // 环境变量
-    const envs = [
-      `ELECTRON_RENDERER_URL=${rendererServerUrl}`
-    ] as const;
+    const envs = [`ELECTRON_RENDERER_URL=${rendererServerUrl}`] as const;
 
     // 只有 web 热更新
     if (IS_DEV_SERVER_WEB_ONLY) {
 
       // 编译一次 main 和 preload 就启动服务
       Promise.all([compilerMain(), compilerPreload()]).then(() => {
-        startElectron(envs, mainCompiler.outputPath);
+        restartElectron(envs, mainCompiler.outputPath);
       }).catch(() => {
         process.exit(1)
       });
@@ -274,38 +305,32 @@ const transformRendererRsbuilder = async () => {
     // })
     await compilerPreload();
 
-    mainCompiler.watch({
-      aggregateTimeout: 2000
-    }, (err, stats) => {
+    mainCompiler.watch({ aggregateTimeout: 2000 }, (err, stats) => {
       if (err) {
         Printer.printError(err);
         process.exit(1);
       }
+
       Printer.printInfo(`Compiler: main`);
       Printer.print(stats.toString());
-      // if (preloadCompiler.running) return;
 
-      startElectron(envs, mainCompiler.outputPath);
+      // if (preloadCompiler.running) return;
+      restartElectron(envs, mainCompiler.outputPath);
     })
     return;
   }
 
-  Printer.printInfo(`加载编译....`);
-
   // 生产模式, 只需要输出产物
   if (IS_PROD) {
-    const envs = [
+    Printer.printInfo(`加载生产时编译....`);
 
-    ] as const;
+    const envs = [] as const;
 
-    Promise.all([
-      rendererRsbuilder.build(),
-      compilerMain(),
-      compilerPreload(),
-    ]).then(() => {
-
+    Promise.all([rendererRsbuilder.build(), compilerMain(), compilerPreload()]).then(() => {
       // 检查是否需要预览
-      if (IS_PREVIEW) startElectron(envs, mainCompiler.outputPath);
+      if (IS_PREVIEW) {
+        restartElectron(envs, mainCompiler.outputPath);
+      }
     }).catch(() => {
       process.exit(1)
     });

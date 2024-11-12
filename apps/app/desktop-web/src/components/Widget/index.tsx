@@ -92,15 +92,10 @@ export const Widget = memo((props: WidgetProps) => {
         onContextMenu={withDisabledContextMenu}
         className={classnames(
           commonStyles.flexRowCenter,
-          {
-
-            [commonStyles.disabledPointerEvents]: disabled
-          }
+          disabled && commonStyles.disabledPointerEvents
         )}
       >
-        {
-          icon && <IconFont icon={icon}></IconFont>
-        }
+        {icon && <IconFont icon={icon}></IconFont>}
       </FullSize>
     </div>
   </Tooltip>

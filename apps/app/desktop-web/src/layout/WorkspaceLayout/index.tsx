@@ -20,8 +20,6 @@ import IconFont from '@components/IconFont';
  */
 const WorkbenchesView = memo(() => {
   const location = useLocation();
-  const currentOutlet = useOutlet();
-
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch);
@@ -37,7 +35,7 @@ const WorkbenchesView = memo(() => {
         unmountOnExit={false}
       >
         <FullSize ref={nodeRef}>
-          {currentOutlet}
+          <Outlet />
         </FullSize>
       </CSSTransition>
     </SwitchTransition>

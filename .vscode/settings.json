@@ -455,6 +455,7 @@
     "pako",
     "Polotno",
     "rsbuild",
+    "Rsbuilder",
     "rsdoctor",
     "rspack",
     "rspress",

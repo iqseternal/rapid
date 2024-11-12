@@ -4,13 +4,13 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
-import { DIRS, Builder } from '../../../config/node';
+import { DIRS, EnvBuilder } from '../../../config/node';
 import { DefinePlugin } from '@rspack/core';
 import { join } from 'path';
 
 import tsConfigJson from './tsconfig.web.json';
 
-const builder = new Builder({
+const envBuilder = new EnvBuilder({
   checker: false
 });
 
@@ -21,7 +21,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       entry: {
         index: join(DIRS.DEV_DESKTOP_WEB_DIR, './src/index.tsx')
       },
-      alias: builder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths)
+      alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths)
     },
     plugins: [
       pluginSass(),

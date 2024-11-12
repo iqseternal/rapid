@@ -61,7 +61,7 @@ const mainConfig = (configEnv: ConfigEnv) => mergeConfig({
   },
   build: {
     lib: {
-      entry: path.join(DIRS.DEV_DESKTOP_MAIN_DIR, './src/index.tsx')
+      entry: path.join(DIRS.DEV_DESKTOP_MAIN_DIR, './src/index.ts')
     }
   }
 }, {
@@ -94,7 +94,7 @@ const preloadConfig = (configEnv: ConfigEnv) => mergeConfig({
   },
   build: {
     lib: {
-      entry: join(DIRS.DEV_DESKTOP_PRELOAD_DIR, './index.tsx')
+      entry: join(DIRS.DEV_DESKTOP_PRELOAD_DIR, './index.ts')
     }
   }
 }, ({

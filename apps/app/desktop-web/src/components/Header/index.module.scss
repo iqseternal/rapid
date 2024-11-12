@@ -40,10 +40,10 @@
     }
   }
 
-
   .functionContainer {
-    flex: 1 1;
-    max-width: 100%;
+    flex: 1 1 auto;
+    // max-width: 100%;
+    max-width: 700px;
 
     .searchInput {
       font-size: 12px;
@@ -53,7 +53,7 @@
 
   .operatorContainer {
     margin-right: 5px;
-    flex: 1 1 30px;
+    flex: 1 1 auto;
     min-width: max-content;
   }
 }

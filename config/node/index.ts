@@ -2,7 +2,7 @@
 export { default as DIRS } from './dirs';
 
 export type { BuilderOptions } from './builder';
-export { Builder } from './builder';
+export { EnvBuilder } from './builder';
 
 export {
   RuntimePlatforms,

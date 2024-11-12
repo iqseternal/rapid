@@ -6,13 +6,16 @@ import { EnvChecker } from './checker';
 export * from './index';
 
 export interface BuilderOptions {
+  /**
+   * 是否检查和自动校正当前环境变量到运行要求
+   */
   checker?: boolean;
 }
 
 /**
  * 构建
  */
-export class Builder {
+export class EnvBuilder {
   /**
    * 构造函数, 传递参数 checker 可控制是否自动判断和修正当前环境变量
    *
