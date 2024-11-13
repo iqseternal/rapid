@@ -4,22 +4,18 @@ import './process';
 import { registerGlobalMiddleware, registerIpcHandle, registerIpcOn, IpcActionEvent } from '@/core/ipc';
 import { setupTrayMenu, setupMainWindow } from './setupService';
 import { setupApp } from './setupApp';
+import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
 
-import {
+import * as ipcs from './ipc';
+
+const {
   ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,
   ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow,
-  ipcWindowSetMinimumSize,
-  ipcWindowProperties,
-  ipcWindowWorkAreaSize,
-
+  ipcWindowSetMinimumSize, ipcWindowProperties, ipcWindowWorkAreaSize,
   ipcAppStoreDelete, ipcAppStoreClear, ipcAppStoreGet, ipcAppStoreGetStore,
-  ipcAppStoreReset, ipcAppStoreHas, ipcAppStoreSet,
-  ipcOpenDevTool,
-
-  ipcForwardDataTakeIn, ipcForwardDataTakeOut,
-  ipcOnBroadcast,
-} from './ipc';
-import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
+  ipcAppStoreReset, ipcAppStoreHas, ipcAppStoreSet, ipcOpenDevTool,
+  ipcForwardDataTakeIn, ipcForwardDataTakeOut, ipcOnBroadcast
+} = ipcs;
 
 registerIpcHandle([
   ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,

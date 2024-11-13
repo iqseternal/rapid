@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import { toPicket } from '@rapid/libs';
 import { useDocStore } from '@/features';
 import { produce } from 'immer';
-import { toMakeZustandHijack, useZustandHijack } from '@rapid/libs-web';
 
 import IMessage from '@components/IMessage';
 import AutoDropdownMenu from '@components/AutoDropdownMenu';

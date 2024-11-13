@@ -91,7 +91,9 @@ export interface AutoDropdownMenuProps extends BaseProps {
 export const AutoDropdownMenu = forwardRef((props: AutoDropdownMenuProps, ref) => {
   const {
     menu,
-    attrs = {},
+    attrs = {
+      trigger: ['click']
+    },
 
     rootClassName,
     className,

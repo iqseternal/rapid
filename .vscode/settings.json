@@ -448,6 +448,7 @@
     "commitlint",
     "cpts",
     "immer",
+    "ipcs",
     "jsrsasign",
     "Leafer",
     "Maximizable",
@@ -464,5 +465,13 @@
     "typecheck",
     "Zustand"
   ],
-  "notebook.markup.fontSize": 0
+  "notebook.markup.fontSize": 0,
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.parameterNames.enabled": "literals",
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.suggest.completeFunctionCalls": false
 }
