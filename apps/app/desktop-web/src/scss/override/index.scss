@@ -7,21 +7,6 @@
 
 // 按钮
 // =====================================================================================================
-button:not(.ant-btn) {
-  border-radius: var(--rapid-button-border-radius);
-  background-color: var(--rapid-button-background-color);
-  color: var(--rapid-button-text-color);
-  border: unset;
-  height: 32px;
-  cursor: pointer;
-
-  &:hover {
-    filter: brightness(0.95);
-  }
-  &:active {
-    filter: brightness(0.85);
-  }
-}
 button.ant-btn {
   border-radius: var(--rapid-button-border-radius);
   background-color: var(--rapid-button-background-color);

@@ -1,19 +1,19 @@
 import { classnames } from '@rapid/libs-web/common';
-import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowRelaunch, windowWorkAreaSize } from '@/actions';
+import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowWorkAreaSize } from '@/actions';
 import { Subfield } from '@rapid/libs-web/components';
 import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
-import { useMemo, ReactNode, useEffect, useRef, useCallback, memo, useState } from 'react';
+import { useMemo, ReactNode, useEffect, useRef, memo, useState } from 'react';
 import { menus } from '@/menus';
-import { FlexRowStart, FullSizeHeight, FullSizeWidth, MaxContent, useAsyncLayoutEffect, useEventListener, useMaintenanceStack, useReactive, useRefresh, useResizeObserver, useShallowReactive, useThrottleHook, useWindowInnerSize, useWindowScreenSize, useZustandHijack } from '@rapid/libs-web';
-import { isDef, isUnDef, isUndefined, randomRegionForInt, toPicket } from '@rapid/libs';
+import { FlexRowStart, FullSizeHeight, useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useResizeObserver, useShallowReactive, useWindowInnerSize, useZustandHijack } from '@rapid/libs-web';
+import { isDef, isUnDef, isUndefined, toPicket } from '@rapid/libs';
 import { Menu, Input } from 'antd';
+import { commonStyles } from '@scss/common';
 
 import Widget from '@components/Widget';
-import AutoDropdownMenu from '@components/AutoDropdownMenu';
+import AutoContextMenu from '@components/AutoContextMenu';
 import IconFont from '@components/IconFont';
 import Logo from '@components/Logo';
 
-import commonStyles from '@scss/common/index.module.scss';
 import styles from './index.module.scss';
 
 export interface MaintenanceMenusProps {
@@ -115,20 +115,20 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
       !statusState.isCalcDone && commonStyles.transparent
     )}
   >
-    {!isDialog && !isPane && maintenanceStack.map(menu => {
-      return <AutoDropdownMenu
-        key={`menu.key ${randomRegionForInt(0, 1112023)}`}
+    {!isDialog && !isPane && maintenanceStack.map((menu, index) => {
+      return <AutoContextMenu
+        key={`menu.key ${index}`}
         menu={menu}
         className={commonStyles.appRegionNo}
       />
     })}
     {storageStack.length > 0 &&
-      <AutoDropdownMenu
+      <AutoContextMenu
         menu={{ label: 'header-storage-stack', key: 'header-storage-stack', children: storageStack }}
         className={commonStyles.appRegionNo}
       >
         <IconFont icon='MenuOutlined' />
-      </AutoDropdownMenu>
+      </AutoContextMenu>
     }
   </FlexRowStart>
 })
@@ -143,10 +143,7 @@ export interface ControlProps {
 }
 
 export const Control = memo((props: ControlProps) => {
-  const {
-    isDialog = false,
-    isPane = false,
-  } = props;
+  const { isDialog = false, isPane = false, } = props;
 
   const refresh = useRefresh();
 
@@ -199,37 +196,32 @@ export const Control = memo((props: ControlProps) => {
   )
 })
 
-
 export interface HeaderProps extends Omit<BaseProps, 'children'> {
-  // 是否是一个面板
+  /**
+   * 是否是一个面板, 例如设置 (不可全屏
+   */
   isPane?: boolean;
-  // 是否是一个弹窗
+
+  /**
+   * 是否是一个弹窗, like window.alert
+   */
   isDialog?: boolean;
 
+  /**
+   * 插槽定义
+   */
   slots?: {
     menu?: ReactNode;
+
+    functional?: ReactNode;
   }
 }
-
-
-
-
 
 /**
  * 标题栏
  */
 export const Header = memo((props: HeaderProps) => {
-  const {
-    isDialog = false,
-    isPane = false,
-
-    slots = {},
-
-    className
-  } = props;
-
-
-
+  const { isDialog = false, isPane = false, slots = {}, className } = props;
 
   return <Subfield
     className={classnames(

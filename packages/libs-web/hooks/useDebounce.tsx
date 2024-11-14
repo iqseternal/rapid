@@ -35,9 +35,7 @@ export function useDebounceHook<T extends (...args: any[]) => void>(this: any, c
  * }, [state.target]);
  *
  */
-export function useDebounce<T extends (...args: unknown[]) => void>(callback: T, time = 50, deps?: DependencyList) {
-  if (!deps) return useDebounceHook(callback, time);
-
+export function useDebounce<T extends (...args: unknown[]) => void>(callback: T, time = 50, deps: DependencyList) {
   return useCallback(useDebounceHook(callback, time), deps);
 }
 
@@ -48,11 +46,11 @@ export function useDebounce<T extends (...args: unknown[]) => void>(callback: T,
  *   console.log('scroll');
  * }))
  */
-export function useThrottleHook<T extends (...args: unknown[]) => void>(this: any, callback: T, time = 10) {
+export function useThrottleHook<T extends (...args: unknown[]) => void>(this: any, callback: T, time = 10): T {
   let timer: number | NodeJS.Timeout | undefined = void 0;
   const that: any = this;
 
-  return (...args: unknown[]) => {
+  return ((...args: unknown[]) => {
     if (timer) return;
 
     callback.call(that, ...args);
@@ -60,7 +58,7 @@ export function useThrottleHook<T extends (...args: unknown[]) => void>(this: an
     timer = setTimeout(() => {
       timer = void 0;
     }, time)
-  }
+  }) as unknown as T;
 }
 
 /**
@@ -75,8 +73,6 @@ export function useThrottleHook<T extends (...args: unknown[]) => void>(this: an
  * }, [state.target]);
  *
  */
-export function useThrottle<T extends (...args: unknown[]) => void>(callback: T, time = 10, deps?: DependencyList) {
-  if (!deps) return useThrottleHook(callback, time);
-
+export function useThrottle<T extends (...args: unknown[]) => void>(callback: T, time = 10, deps: DependencyList): T {
   return useCallback(useThrottleHook(callback, time), deps);
 }
