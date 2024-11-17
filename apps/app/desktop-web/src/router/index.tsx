@@ -5,7 +5,7 @@ import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/
 
 import * as presetRoutes from './modules';
 
-export const { retrieveRoutes } = reserveRoutes(presetRoutes);
+export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
 export default function RouterContext() {
 

@@ -5,11 +5,12 @@ import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { useFadeOut } from '@/hooks';
 import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { retrieveRoutes } from '@/router';
+import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { useTransition } from '@rapid/libs-web';
+import type { WidgetProps } from '@components/Widget';
 
 import IMessage from '@components/IMessage';
-import Widget, { type WidgetProps } from '@components/Widget';
+import Widget from '@components/Widget';
 
 import styles from './cpts.module.scss';
 
@@ -42,8 +43,8 @@ const SideBarItem: FC<SideBarItemProps> = memo((props) => {
  */
 export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className }) => {
   const navigate = useNavigate();
-
-  const [workbenchesRoute] = useState(retrieveRoutes().workbenchesRoute);
+  const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
+  const loginRoute = useRetrieveRoute(routes => routes.loginRoute);
 
   const [logoutPending, logout] = useTransition(async () => {
     // const [logoutErr] = await toPicket(logoutReq());
@@ -54,7 +55,6 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
 
     // await toWaitPromise();
     await useFadeOut(async () => {
-      const { loginRoute } = retrieveRoutes();
       navigate(loginRoute.meta.fullPath);
     })
   }, []);

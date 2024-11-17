@@ -1,7 +1,7 @@
 import type { RequiredRouteConfig } from './makeRequireRouteConfig';
 import {  } from './makeRequireRouteConfig';
 import type { FC, ReactElement, ReactNode, LazyExoticComponent, MemoExoticComponent } from 'react';
-import { Suspense, isValidElement } from 'react';
+import { Suspense, isValidElement, useMemo } from 'react';
 import { isString } from '@rapid/libs';
 import { Skeleton } from 'antd';
 import type { PathRouteProps } from 'react-router-dom';
@@ -115,6 +115,13 @@ export const reserveRoutes = <Routes extends Record<string, any>,>(presetRoutes:
      *
      * @returns
      */
-    retrieveRoutes: () => runtimeContext.routes
+    retrieveRoutes: () => runtimeContext.routes,
+
+    /**
+     * react hook, 检索, 取回 route 对象,
+     */
+    useRetrieveRoute: <RouteKey extends keyof Routes, RouteSelector extends (routes: Routes) => Routes[RouteKey]>(selector: RouteSelector) => {
+      return useMemo(() => selector(runtimeContext.routes), []);
+    }
   }
 }

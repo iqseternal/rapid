@@ -102,34 +102,37 @@ export const useAuthRole = (roleOptions: AuthHasRoleOptions) => {
   return state;
 }
 
+export const userActions = {
 
+  /**
+   * 用户登录
+   */
+  userLogin: asynced<typeof loginReq>(async (loginPayload) => {
+    const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
+    if (loginErr) return Promise.reject(loginErr);
 
+    await setAccessToken(loginRes.data.userinfo.token);
+    return loginRes;
+  }),
 
-/** 用户登录 */
-export const userLogin = asynced<typeof loginReq>(async (loginPayload) => {
-  const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
-  if (loginErr) return Promise.reject(loginErr);
-  await setAccessToken(loginRes.data.userinfo.token);
-  return loginRes;
-});
+  /**
+   * 更新用户信息
+   */
+  userUpdateInfo: asynced<typeof getUserinfoReq>(async () => {
+    const [infoErr, infoRes] = await toPicket(getUserinfoReq());
+    if (infoErr) return Promise.reject(infoErr);
 
-/** 更新用户信息 */
-export const userUpdateInfo = asynced<typeof getUserinfoReq>(async () => {
-  const [infoErr, infoRes] = await toPicket(getUserinfoReq());
+    useUserStore.setState({ userinfo: infoRes.data });
+    return infoRes;
+  }),
 
-  if (infoErr) return Promise.reject(infoErr);
+  /**
+   * 用户退出登录
+   */
+  useLogout: asynced<() => RPromiseLike<void>>(async () => {
+    const [err, res] = await toPicket(logoutReq());
 
-  useUserStore.setState({ userinfo: infoRes.data });
-  return infoRes;
-});
-
-/** 用户退出登录 */
-export const useLogout = asynced<() => RPromiseLike<void>>(async () => {
-  const [err, res] = await toPicket(logoutReq());
-
-  if (err) {
-    return Promise.reject();
-  }
-
-  return Promise.resolve();
-})
+    if (err) return Promise.reject();
+    return Promise.resolve();
+  })
+}

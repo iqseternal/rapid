@@ -7,9 +7,9 @@ import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toPicket } from '@rapid/libs';
-import { setAccessToken, userLogin } from '@/features';
+import { setAccessToken, userActions } from '@/features';
 import { registerReq } from '@/api';
-import { retrieveRoutes } from '@/router';
+import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/common';
 import { menus } from '@/menus';
 import { useCallback, useEffect, memo } from 'react';
@@ -26,30 +26,18 @@ enum Step {
 }
 
 export const Login = memo(() => {
-  useFadeIn(async () => {
-    await windowSetSize({ width: 850, height: 550 });
-    await windowResizeAble({ resizeAble: false });
-    if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
-    await useFadeOut(async () => {
-      setAccessToken('1111');
-      const { workbenchesRoute } = retrieveRoutes();
-      console.log('核心功能开发, 从登录界面自动跳转到工作区', workbenchesRoute.meta.fullPath);
-
-      navigate(workbenchesRoute.meta.fullPath, { replace: true });
-    });
-  });
-
-  const { message } = App.useApp();
-
   const navigate = useNavigate();
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
+  const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
+
+  const { message } = App.useApp();
 
   const [state] = useShallowReactive({
     step: Step.Login
   })
 
   const [loginPending, login] = useTransition(async () => {
-    const [loginErr] = await toPicket(userLogin({
+    const [loginErr] = await toPicket(userActions.userLogin({
       username: 'admin',
       password: '12345678'
     }));
@@ -59,7 +47,6 @@ export const Login = memo(() => {
     }
 
     await useFadeOut(async () => {
-      const { workbenchesRoute } = retrieveRoutes();
       navigate(workbenchesRoute.meta.fullPath, { replace: true });
     });
   }, []);
@@ -71,6 +58,18 @@ export const Login = memo(() => {
       return;
     }
   }, []);
+
+
+  useFadeIn(async () => {
+    await windowSetSize({ width: 850, height: 550 });
+    await windowResizeAble({ resizeAble: false });
+    if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
+    await useFadeOut(async () => {
+      setAccessToken('1111');
+      const { workbenchesRoute } = retrieveRoutes();
+      navigate(workbenchesRoute.meta.fullPath, { replace: true });
+    });
+  });
 
   return <FullSize className={styles.login}>
     <Header isPane />
