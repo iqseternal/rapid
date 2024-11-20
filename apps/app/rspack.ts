@@ -281,11 +281,11 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
     if (IS_DEV_SERVER_WEB_ONLY) {
 
       // 编译一次 main 和 preload 就启动服务
-      Promise.all([compilerMain(), compilerPreload()]).then(() => {
-        restartElectron(envs, mainCompiler.outputPath);
-      }).catch(() => {
-        process.exit(1)
-      });
+      Promise.all([compilerMain(), compilerPreload()])
+        .then(() => {
+          restartElectron(envs, mainCompiler.outputPath);
+        })
+        .catch(exitCurrentProcess);
       return;
     }
 
@@ -326,14 +326,15 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
 
     const envs = [] as const;
 
-    Promise.all([rendererRsbuilder.build(), compilerMain(), compilerPreload()]).then(() => {
-      // 检查是否需要预览
-      if (IS_PREVIEW) {
-        restartElectron(envs, mainCompiler.outputPath);
-      }
-    }).catch(() => {
-      process.exit(1)
-    });
+    Promise.all([rendererRsbuilder.build(), compilerMain(), compilerPreload()])
+      .then(() => {
+        // 检查是否需要预览
+        if (IS_PREVIEW) {
+          restartElectron(envs, mainCompiler.outputPath);
+        }
+      }).catch(() => {
+        process.exit(1)
+      });
     return;
   }
 })();

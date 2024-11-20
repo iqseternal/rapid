@@ -7,6 +7,7 @@ import { setupApp } from './setupApp';
 import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
 
 import * as ipcs from './ipc';
+import { ipcMain } from 'electron';
 
 const {
   ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,

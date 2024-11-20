@@ -1,7 +1,12 @@
-import { PriorityQueue, PriorityStack, Queue, Dequeue, Stack, SinglyLinkedList, DoubleLinkedList, LinkedStack, Vector } from '@rapid/libs';
+
+import { toPicket } from '@rapid/libs';
+
+
+async function main() {
 
 
 
 
+}
 
-
+;(main)();

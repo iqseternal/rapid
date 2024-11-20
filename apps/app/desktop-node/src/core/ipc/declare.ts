@@ -83,7 +83,11 @@ const runtimeContext = {
   globalMiddlewares: {
     handle: [] as IpcActionMiddleware<IpcActionEvent.Handle>[],
     on: [] as IpcActionMiddleware<IpcActionEvent.On>[]
+  },
+  registered: {
+    handle: new Set<string>(),
+    on: new Set<string>()
   }
-}
+} as const;
 
 export const getIpcRuntimeContext = () => runtimeContext;

@@ -19,6 +19,15 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
   },
 }
 
+export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
+  name: 'ipcResponseMiddleware',
+  onAfterEach(e, ...args) {
+
+
+    
+  },
+}
+
 /**
  * 转换参数的中间件, 将 ipc 句柄传递的事件 e 转换为 windowService
  */

@@ -2,6 +2,9 @@ import { ipcMain } from 'electron';
 
 import type { IpcActionType, IpcActionMiddleware } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
+import { PrinterService } from '../service/PrinterService';
+
+const ipcRuntimeContext = getIpcRuntimeContext();
 
 /**
  * 注册 ipc 全局中间件
@@ -32,8 +35,6 @@ export function registerGlobalMiddleware<IpcActionEvent extends IpcActionEvent.H
  */
 export function registerGlobalMiddleware<IpcActionEvent extends IpcActionEvent.On>(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]): void;
 export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]) {
-  const runtimeContext = getIpcRuntimeContext();
-
   // 向一个中间件集合 push 一堆中间件
   const appendMiddlewares = <EvtActionType extends IpcActionEvent>(middlewareSet: IpcActionMiddleware<EvtActionType>[], middlewares: IpcActionMiddleware<IpcActionEvent>[]) => {
     // 防止重复注册中间件的中间件 map
@@ -51,13 +52,13 @@ export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares
 
   // 注册全局中间件中的 handle
   if (actionType === IpcActionEvent.Handle) {
-    appendMiddlewares(runtimeContext.globalMiddlewares.handle, middlewares);
+    appendMiddlewares(ipcRuntimeContext.globalMiddlewares.handle, middlewares);
     return;
   }
 
   // 注册全局中间件中的 on
   if (actionType === IpcActionEvent.On) {
-    appendMiddlewares(runtimeContext.globalMiddlewares.on, middlewares);
+    appendMiddlewares(ipcRuntimeContext.globalMiddlewares.on, middlewares);
     return;
   }
 }
@@ -88,6 +89,11 @@ export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares
 export const registerIpcHandle = (handles: IpcActionType<IpcActionEvent.Handle>[]) => {
   handles.forEach(handle => {
     if (handle.actionType === IpcActionEvent.Handle) {
+      if (ipcRuntimeContext.registered.handle.has(handle.channel)) {
+        PrinterService.printWarn(`重复注册ipc句柄 handle: ${handle.channel}`);
+        ipcMain.removeHandler(handle.channel);
+      }
+      ipcRuntimeContext.registered.handle.add(handle.channel);
       ipcMain.handle(handle.channel, handle.listener);
     }
   });
@@ -106,6 +112,10 @@ export const registerIpcHandle = (handles: IpcActionType<IpcActionEvent.Handle>[
 export const registerIpcHandleOnce = (handles: IpcActionType<IpcActionEvent.Handle>[]) => {
   handles.forEach(handle => {
     if (handle.actionType === IpcActionEvent.Handle) {
+      if (ipcRuntimeContext.registered.handle.has(handle.channel)) {
+        PrinterService.printWarn(`重复注册ipc句柄 handleOnce: ${handle.channel}`);
+        ipcMain.removeHandler(handle.channel);
+      }
       ipcMain.handleOnce(handle.channel, handle.listener);
     }
   });
@@ -129,7 +139,10 @@ export const registerIpcHandleOnce = (handles: IpcActionType<IpcActionEvent.Hand
  */
 export const removeIpcHandle = (handle: IpcActionType<IpcActionEvent.Handle>) => {
   if (handle.actionType === IpcActionEvent.Handle) {
+    const deleted = ipcRuntimeContext.registered.handle.delete(handle.channel);
     ipcMain.removeHandler(handle.channel);
+
+    if (deleted) PrinterService.printWarn(`移除了一个未注册的句柄 handle: ${handle.channel}`);
   }
 }
 
@@ -141,6 +154,10 @@ export const removeIpcHandle = (handle: IpcActionType<IpcActionEvent.Handle>) =>
 export const registerIpcOn = (handles: IpcActionType<IpcActionEvent.On>[]) => {
   handles.forEach(handle => {
     if (handle.actionType === IpcActionEvent.On) {
+      if (ipcRuntimeContext.registered.on.has(handle.channel)) {
+        PrinterService.printWarn(`重复注册ipc句柄 on: ${handle.channel}`);
+        ipcMain.removeListener(handle.channel, handle.listener);
+      }
       ipcMain.on(handle.channel, handle.listener);
     }
   })
@@ -154,6 +171,10 @@ export const registerIpcOn = (handles: IpcActionType<IpcActionEvent.On>[]) => {
 export const registerIpcOnce = (handles: IpcActionType<IpcActionEvent.On>[]) => {
   handles.forEach(handle => {
     if (handle.actionType === IpcActionEvent.On) {
+      if (ipcRuntimeContext.registered.on.has(handle.channel)) {
+        PrinterService.printWarn(`重复注册ipc句柄 once: ${handle.channel}`);
+        ipcMain.removeListener(handle.channel, handle.listener);
+      }
       ipcMain.once(handle.channel, handle.listener);
     }
   })
@@ -166,6 +187,8 @@ export const registerIpcOnce = (handles: IpcActionType<IpcActionEvent.On>[]) => 
  */
 export const offIpcOn = (handle: IpcActionType<IpcActionEvent.On>) => {
   if (handle.actionType === IpcActionEvent.On) {
+    const deleted = ipcRuntimeContext.registered.on.delete(handle.channel);
     ipcMain.off(handle.channel, handle.listener);
+    if (deleted) PrinterService.printWarn(`移除了一个未注册的句柄 on: ${handle.channel}`);
   }
 }
