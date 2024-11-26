@@ -142,7 +142,7 @@ const restartElectron = (envArgs: readonly `${string}=${string | number}`[], sta
 // 配置加载
 
 const transformMainRspackConfig = async (): Promise<RspackOptions> => {
-  const mainRspackConfig = (await import(join(DIRS.DEV_DESKTOP_MAIN_DIR, './rspack.config.ts'))).default as RspackOptions;
+  const mainRspackConfig = (await import(join(__dirname, './desktop-node/rspack.config.ts'))).default as RspackOptions;
 
   if (!mainRspackConfig.plugins) mainRspackConfig.plugins = [];
   if (!mainRspackConfig.devServer) mainRspackConfig.devServer = {};
@@ -172,7 +172,7 @@ const transformMainRspackConfig = async (): Promise<RspackOptions> => {
 }
 
 const transformPreloadRspackConfig = async (): Promise<RspackOptions> => {
-  const preloadRspackConfig = (await import(join(DIRS.DEV_DESKTOP_PRELOAD_DIR, './rspack.config.ts'))).default as RspackOptions;
+  const preloadRspackConfig = (await import(join(__dirname, './desktop-preload/rspack.config.ts'))).default as RspackOptions;
 
   if (!preloadRspackConfig.devServer) preloadRspackConfig.devServer = {};
   if (!preloadRspackConfig.devServer.devMiddleware) preloadRspackConfig.devServer.devMiddleware = {};
@@ -195,16 +195,17 @@ const transformPreloadRspackConfig = async (): Promise<RspackOptions> => {
 }
 
 const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> => {
+  const desktopWebDir = join(__dirname, './desktop-web');
   const { content } = await loadConfig({
-    cwd: DIRS.DEV_DESKTOP_WEB_DIR,
+    cwd: desktopWebDir,
     envMode: 'production',
-    path: join(DIRS.DEV_DESKTOP_WEB_DIR, './rsbuild.config.ts'),
+    path: join(desktopWebDir, './rsbuild.config.ts'),
   });
 
   const vars = envBuilder.defineVars();
 
   return {
-    cwd: DIRS.DEV_DESKTOP_WEB_DIR,
+    cwd: desktopWebDir,
     rsbuildConfig: mergeRsbuildConfig(content, ({
       source: {
         define: {

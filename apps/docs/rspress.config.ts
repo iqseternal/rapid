@@ -1,5 +1,5 @@
 import { defineConfig } from 'rspress/config';
-import { DIST_DOC_DIR } from '../../config/node/dirs';
+import { DIRS } from '../../config/node';
 import { join } from 'path';
 
 export default defineConfig({
@@ -50,7 +50,7 @@ export default defineConfig({
   base: '/',
   globalStyles: join(__dirname, './theme/global.css'),
 
-  outDir: DIST_DOC_DIR,
+  outDir: DIRS.DIST_DOC_DIR,
   builderConfig: {
     server: {
       port: 8900

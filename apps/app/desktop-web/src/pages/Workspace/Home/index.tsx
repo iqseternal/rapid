@@ -4,9 +4,9 @@ import { Guards } from '@router/guards';
 import type { FC } from 'react';
 import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FullSizeWidth, FullSize } from '@rapid/libs-web';
-import { bus } from '@/events';
+import { bus } from '../../../libs/events';
 import { rApp } from '@rapid/extensions';
-import { RegisterPoints } from '@/extensions';
+import { RegisterPoints } from '../../../libs/extensions';
 import { commonStyles } from '@scss/common';
 
 import IconFont from '@components/IconFont';
@@ -96,6 +96,7 @@ const components: TLComponents = {
     const editor = useEditor()
     const shapeIds = useValue(
       'shapeIds',
+			// @ts-ignore
       () => editor.getSortedChildIdsForParent(editor.getCurrentPageId()),
       [editor]
     )

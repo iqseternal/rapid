@@ -14,7 +14,7 @@ const rspackConfig: RspackOptions = defineConfig({
   target: 'electron-main',
   entry: join(__dirname, './src/index.ts'),
   output: {
-    path: DIRS.OUT_DESKTOP_MAIN_DIR,
+    path: join(__dirname, '../out/main'),
     filename: 'index.js',
     clean: true,
   },

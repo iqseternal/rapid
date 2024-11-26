@@ -73,8 +73,8 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
   public abstract insert(...values: V[]): void;
 
   /**
-     * 删除一个头部节点
-     */
+   * 删除一个头部节点
+   */
   protected abstract deleteNodeAtHead(): Node | null;
 
   /**
@@ -96,47 +96,183 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    * 删除一个节点
    */
   protected abstract deleteNode(node: Node): Node | null;
+
+  /**
+   * 删除符合 condition 的节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.deleteNodeWhere((node) => node.value > 10);
+   */
   protected abstract deleteNodeWhere(condition: (node: Readonly<Node>) => boolean): Node | null;
 
   /**
-   * 删除符合 predicate 的元素节点
+   * 删除符合 value 的元素节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.delete(10);
    */
   public abstract delete(value: V): V | null;
+
+  /**
+   * 删除符合 condition 的元素节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.deleteWhere((value) => value > 10);
+   */
   public abstract deleteWhere(condition: (value: V) => boolean): V | null;
 
   /**
-     * 从头部顺序查找符合 predicate 的节点集合
-     */
+   * 从头部顺序查找符合 value 的节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findNodeFromHead(10);
+   */
   protected abstract findNodeFromHead(value: V): Readonly<Node> | null;
+
+  /**
+   * 从头部顺序查找符合 condition 的节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findNodeFromHeadWhere((node) => node.value > 10);
+   */
   protected abstract findNodeFromHeadWhere(condition: (node: Readonly<Node>) => boolean): Readonly<Node> | null;
 
   /**
-   * 从头部顺序查找符合 predicate 的元素集合
+   * 从头部顺序查找符合 value 的元素
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findFromHead(10);
    */
   public abstract findFromHead(value: V): V | null;
+
+  /**
+   * 从头部顺序查找符合 condition 的元素
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findFromHeadWhere((value) => value > 10);
+   */
   public abstract findFromHeadWhere(condition: (value: V) => boolean): V | null;
 
   /**
-   * 查找符合 predicate 的节点集合
+   * 查找符合 value 的节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findNode(10);
    */
   protected abstract findNode(value: V): Node | null;
+
+  /**
+   * 查找符合 condition 的节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findNodeWhere((node) => node.value > 10);
+   */
   protected abstract findNodeWhere(condition: (node: Readonly<Node>) => boolean): Readonly<Node> | null;
 
+  /**
+   * 查找符合 value 的节点集合
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findNodeAll(10);
+   */
   protected abstract findNodeAll(value: V): Node[];
+
+  /**
+   * 查找符合 condition 的节点集合
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findNodeAllWhere((node) => node.value > 10);
+   */
   protected abstract findNodeAllWhere(condition: (node: Readonly<Node>) => boolean): Readonly<Node>[];
 
   /**
-   * 查找符合 predicate 的元素
+   * 查找符合 value 的元素
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.find(10);
    */
   public abstract find(value: V): V | null;
+
+  /**
+   * 查找符合 condition 的元素
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findWhere((value) => value > 10);
+   */
   public abstract findWhere(condition: (value: V) => boolean): V | null;
 
+  /**
+   * 查找符合 value 的元素集合
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findAll(10);
+   */
   public abstract findAll(value: V): V[];
+
+  /**
+   * 查找符合 condition 的元素集合
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.findAllWhere((value) => value > 10);
+   */
   public abstract findAllWhere(condition: (value: V) => boolean): V[];
 
   /**
-     * forEachNode 遍历节点
-     */
+   * forEachNode 遍历节点
+   *
+   * @example
+   *
+   * const linkedList = new LinkedList<number>();
+   *
+   * linkedList.forEachNode((node) => {
+   *    // node: Readonly<Node>
+   * });
+   */
   protected abstract forEachNode(callback: (node: Readonly<Node>) => void): void;
 
   /**

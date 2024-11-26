@@ -2,7 +2,7 @@ import { print, toColor, toPrintClear, isPrintStyleMessage, isPrintStyleMessageA
 import { SingleInstanceService } from './SingleInstanceService';
 import { FileService } from './FileService';
 import { AppFileStorageService, logsDirStorageService } from './AppStorageService';
-import { PrinterService, printMessageParser, PrinterMoreInfo } from './PrinterService';
+import { PrinterService, printMessageParser } from './PrinterService';
 
 export namespace LoggerService {
 
@@ -79,7 +79,7 @@ export class LoggerService {
    * 打印成功日志
    */
   public async success(...message: any[]) {
-    const successMessage = PrinterService.getPrintSuccessMessageStyle(...message);
+    const successMessage = PrinterService.getPrintSuccessMessageStyleArr(...message);
     print(...successMessage);
     await this.printLogAsLocal(...successMessage);
   }

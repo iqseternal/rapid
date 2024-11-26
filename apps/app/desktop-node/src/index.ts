@@ -4,10 +4,9 @@ import './process';
 import { registerGlobalMiddleware, registerIpcHandle, registerIpcOn, IpcActionEvent } from '@/core/ipc';
 import { setupTrayMenu, setupMainWindow } from './setupService';
 import { setupApp } from './setupApp';
-import { ipcExceptionFilterMiddleware } from './ipc/middlewares';
+import { ipcExceptionFilterMiddleware, ipcResponseMiddleware } from './ipc/middlewares';
 
 import * as ipcs from './ipc';
-import { ipcMain } from 'electron';
 
 const {
   ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,
@@ -33,8 +32,8 @@ registerIpcHandle([ipcOpenDevTool]);
 registerIpcHandle([ipcForwardDataTakeIn, ipcForwardDataTakeOut]);
 registerIpcOn([ipcOnBroadcast]);
 
-registerGlobalMiddleware(IpcActionEvent.Handle, [ipcExceptionFilterMiddleware]);
-registerGlobalMiddleware(IpcActionEvent.On, [ipcExceptionFilterMiddleware]);
+registerGlobalMiddleware(IpcActionEvent.Handle, [ipcExceptionFilterMiddleware, ipcResponseMiddleware]);
+registerGlobalMiddleware(IpcActionEvent.On, [ipcExceptionFilterMiddleware, ipcResponseMiddleware]);
 
 setupApp(async () => {
   await setupMainWindow();

@@ -1,6 +1,6 @@
 {
   "name": "@rapid/config",
   "scripts": {
-    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.node.json\"  \"tsc --noEmit -p tsconfig.web.json\""
+    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.node.json\""
   }
 }

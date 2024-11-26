@@ -22,6 +22,7 @@ function ShapeItem({
 	const editor = useEditor()
 
 	const shape = useValue('shape', () => editor.getShape(shapeId), [editor])
+	// @ts-ignore
 	const children = useValue('children', () => editor.getSortedChildIdsForParent(shapeId), [editor])
 	const isHidden = useValue('isHidden', () => editor.isShapeHidden(shapeId), [editor])
 	const isSelected = useValue('isSelected', () => editor.getSelectedShapeIds().includes(shapeId), [

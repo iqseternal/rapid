@@ -23,7 +23,7 @@ export const StringFilters = {
     if (value.trim() === '') return fillStr;
     return value;
   }
-}
+} as const;
 
 /**
  * 数字转换
@@ -114,4 +114,4 @@ export const NumberFilters = {
 
     return value.toString();
   }
-}
+} as const;

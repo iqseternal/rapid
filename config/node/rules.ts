@@ -1,11 +1,17 @@
-import type { RspackOptions, RspackPluginInstance, RuleSetRule } from '@rspack/core';
+import type { RuleSetRule } from '@rspack/core';
 
+/**
+ * 支持导入 raw 资源
+ */
 export const supportImportRaw: RuleSetRule = {
   resourceQuery: /(\?raw$)|(\.(png|jpe?g|gif|ico)$)/,
   exclude: [/node_modules/],
   type: 'asset/resource'
-}
+} as const;
 
+/**
+ * 支持解析 typescript 资源
+ */
 export const supportTypescript: RuleSetRule = {
   test: /\.(c)?[tj]sx?$/,
   loader: 'builtin:swc-loader',
@@ -23,4 +29,4 @@ export const supportTypescript: RuleSetRule = {
     },
   },
   type: 'javascript/auto',
-}
+} as const;

@@ -30,7 +30,7 @@ const init = () => {
 init();
 
 // 为什么这么写? 因为 TS 在 NODE 环境下编译不通过: window.addEventListener
-if (globalThis?.window) globalThis?.window?.addEventListener('resize', useDebounceHook(init, 60));
+if (globalThis?.window) globalThis?.window?.addEventListener('resize', useDebounceHook(init, { wait: 60 }));
 
 export const maxScreenWidthStyle = css`max-width: ${makeCssVar(CSS_VARS_MAP.MAX_SCREEN_WIDTH)};`;
 export const maxScreenHeightStyle = css`max-height: ${makeCssVar(CSS_VARS_MAP.MAS_SCREEN_HEIGHT)}px;`;

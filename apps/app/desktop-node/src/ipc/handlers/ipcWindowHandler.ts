@@ -1,7 +1,7 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { isSameWindowService, WindowService, WindowServiceStateMachine } from '@/core/service/WindowService';
-import { TypeException } from '@/core';
+import { RuntimeException, TypeException } from '@/core';
 import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
 import { AppConfigService } from '@/core/service/AppConfigService';
 import { toMakeIpcAction } from '@/core/ipc';
@@ -376,6 +376,7 @@ export const ipcWindowWorkAreaSize = makeIpcHandleAction(
   [],
   async () => {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
     return { width, height } as const;
   }
 )

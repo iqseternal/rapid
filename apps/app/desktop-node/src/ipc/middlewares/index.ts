@@ -1,6 +1,10 @@
 import { WindowService } from '@/core/service/WindowService';
 import { IpcActionMiddleware, IpcActionEvent } from '@/core/ipc';
-import { Catch, isException } from '@/core';
+import { Catch, RuntimeException, isException } from '@/core';
+import type { RPromiseLike } from '@rapid/libs';
+import { toPicket, asynced } from '@rapid/libs';
+import type { Exception, ExceptionErrorMsgData } from '@/core';
+import { PrinterService } from '@/core/service/PrinterService';
 
 /**
  * ipc 全局中间件, 用于处理异常和日志行为
@@ -13,19 +17,46 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
   onError(err, { channel }) {
     err.errMessage.label = channel;
 
-    if (isException(err)) return Catch.parser(err);
+    if (isException(err)) Catch.parser(err);
 
     return err;
   },
 }
 
+/**
+ * 转换响应的函数类型
+ */
+export type IpcTransformResponseFc = <Data>(response: Promise<Data>) => RPromiseLike<Data, Exception<ExceptionErrorMsgData>>;
+
+/**
+ * 转换响应的中间件
+ */
 export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
   name: 'ipcResponseMiddleware',
-  onAfterEach(e, ...args) {
+  /**
+   * 转换响应, 将 ipc 句柄的响应转换为 RPromiseLike 对象
+   */
+  transformResponse: asynced<IpcTransformResponseFc>(async (response) => {
+    const [err, data] = await toPicket(response);
 
+    if (err) {
+      if (isException(err)) return Promise.reject(JSON.stringify(err));
 
-    
-  },
+      if (err instanceof Error) {
+        return Promise.reject(JSON.stringify(new RuntimeException(err.message, {
+          label: `ipcResponseMiddleware`,
+          level: 'ERROR'
+        })));
+      }
+
+      return Promise.reject(JSON.stringify(new RuntimeException('ipc句柄出现了未定义且未知的异常错误', {
+        label: `ipcResponseMiddleware`,
+        level: 'ERROR'
+      })));
+    }
+
+    return data;
+  }),
 }
 
 /**
@@ -37,7 +68,7 @@ export const convertWindowServiceMiddleware: IpcActionMiddleware<IpcActionEvent>
   /**
    * 转换参数, 将事件 e 转换为对应地 WindowService
    */
-  transform(e, ...args) {
+  transformArgs(e, ...args) {
     const windowService = WindowService.findWindowService(e);
 
     return [windowService, ...args];

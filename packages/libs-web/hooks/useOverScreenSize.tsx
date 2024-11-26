@@ -37,7 +37,7 @@ export function useWindowOverScreenSize() {
       state.overflowWidth = overflowWidth;
       state.overflowHeight = overflowHeight;
     }
-  }, 20, []);
+  }, { wait: 20 }, []);
 
   useEventListener(window, 'resize', judgeStatus, []);
   return [state as Readonly<WindowOverScreenSize>];

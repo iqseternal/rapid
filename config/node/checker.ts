@@ -10,10 +10,20 @@ declare global {
   }
 }
 
+/**
+ * 环境检查器
+ */
 export class EnvChecker {
   private static COMMANDS = [NodeCommand.Dev, NodeCommand.Build, NodeCommand.Preview];
 
+  /**
+   * 是否检查过运行脚本
+   */
   private static checkedCommand = false;
+
+  /**
+   * 是否检查过运行环境
+   */
   private static checkedNodeEnv = false;
 
   /**
@@ -32,9 +42,12 @@ export class EnvChecker {
       IS_PROD,
       IS_BUILD,
       IS_PREVIEW
-    };
+    } as const;
   }
 
+  /**
+   * 检查所有运行环境
+   */
   public static checkerAll() {
     EnvChecker.checkerRuntimeCommand();
     EnvChecker.checkerRuntimeNodeEnv();

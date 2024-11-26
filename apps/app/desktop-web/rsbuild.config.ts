@@ -19,7 +19,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
   return {
     source: {
       entry: {
-        index: join(DIRS.DEV_DESKTOP_WEB_DIR, './src/index.tsx')
+        index: join(__dirname, './src/index.tsx')
       },
       alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths)
     },
@@ -27,8 +27,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginSass(),
       pluginStyledComponents(),
       pluginTypedCSSModules(),
-      pluginReact(),
-      pluginSourceBuild(),
+      pluginReact()
     ],
     server: {
       port: 3002
@@ -37,7 +36,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       polyfill: 'off',
       assetPrefix: '.',
       distPath: {
-        root: DIRS.OUT_DESKTOP_RENDERER_DIR,
+        root: join(__dirname, '../out/renderer'),
       },
       cleanDistPath: true,
       minify: {

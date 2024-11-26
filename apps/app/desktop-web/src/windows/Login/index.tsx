@@ -1,9 +1,9 @@
 import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
-import { useFadeIn, useFadeOut } from '@/hooks';
+import { useFadeIn, useFadeOut } from '../../libs/hooks';
 import { useNavigate } from 'react-router-dom';
-import { windowResizeAble, windowSetPosition, windowSetSize } from '@/actions';
+import { windowResizeAble, windowSetPosition, windowSetSize } from '../../libs/actions';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toPicket } from '@rapid/libs';

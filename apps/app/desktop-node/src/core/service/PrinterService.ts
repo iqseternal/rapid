@@ -3,23 +3,6 @@ import { CONFIG } from '@rapid/config/constants';
 import { isString } from '@rapid/libs';
 
 /**
- * 打印的制定信息
- */
-export const PrinterMoreInfo = {
-  AppName: CONFIG.PROJECT.toUpperCase(),
-  Thread: {
-    Main: 'MAIN',
-    Renderer: 'RENDER'
-  },
-  PrintType: {
-    Info: 'INFO',
-    Warn: 'WARN',
-    Error: 'ERROR',
-    Success: 'SUCCESS',
-  }
-} as const;
-
-/**
  * 对打印信息进行解析, 因为打印信息中包含了对控制台色彩的控制, 可能有需要对色彩进行剔除存储的需求
  * @returns
  */
@@ -43,25 +26,62 @@ export const printMessageParser = (...messages: unknown[]) => {
  * 信息打印服务
  */
 export class PrinterService {
+  private static readonly PrintType = {
+    Info: 'INFO',
+    Warn: 'WARN',
+    Error: 'ERROR',
+    Success: 'SUCCESS',
+  } as const;
+
+  /**
+   * 主进程打印器
+   */
+  private static readonly instance: PrinterService = new PrinterService(
+    CONFIG.PROJECT.toUpperCase(),
+    'MAIN'
+  );
+
+  public constructor(
+    public readonly AppName: string,
+    public readonly Thread: 'MAIN' | 'RENDER' | 'PRELOAD'
+  ) {}
+
+  /**
+   * 打印
+   */
+  public print(...message: unknown[]) {
+    print(...this.getPrintInfoMessageStyleArr(...message));
+  }
 
   /**
    * 打印
    */
   public static print(...message: unknown[]) {
-    PrinterService.printInfo(...message);
+    PrinterService.instance.print(...message);
+  }
+
+  /**
+   * 打印普通日志信息的样式信息
+   */
+  public getPrintInfoMessageStyleArr(...message: unknown[]) {
+    return [
+      toColor(['magenta'], `[${this.AppName}]`),
+      toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
+      toColor(['cyan', 'bright'], `[${this.Thread}]`),
+      toColor(['blue', 'underline'], `[${PrinterService.PrintType.Info}]${toPrintClear()}:`),
+      ...message
+    ];
   }
 
   /**
    * 打印普通日志信息的样式信息
    */
   public static getPrintInfoMessageStyleArr(...message: unknown[]) {
-    return [
-      toColor(['magenta'], `[${PrinterMoreInfo.AppName}]`),
-      toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
-      toColor(['blue', 'underline'], `[${PrinterMoreInfo.PrintType.Info}]${toPrintClear()}:`),
-      ...message
-    ]
+    return PrinterService.instance.getPrintInfoMessageStyleArr(...message);
+  }
+
+  public printInfo(...message: unknown[]) {
+    print(...this.getPrintInfoMessageStyleArr(...message));
   }
 
   /**
@@ -69,21 +89,35 @@ export class PrinterService {
    * @param message
    */
   public static printInfo(...message: unknown[]) {
-    print(...PrinterService.getPrintInfoMessageStyleArr(...message));
+    print(...PrinterService.instance.getPrintInfoMessageStyleArr(...message));
+  }
+
+  /**
+   * 打印警告日志信息的样式信息
+   */
+  public getPrintWarnMessageStyleArr(...message: unknown[]) {
+    return [
+      toColor(['magenta', 'bright'], `[${this.AppName}]`),
+      toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
+      toColor(['cyan', 'bright'], `[${this.Thread}]`),
+      toColor(['yellow', 'underline'], `[${PrinterService.PrintType.Warn}]${toPrintClear()}:`),
+      toColor(['yellow']),
+      ...message
+    ];
   }
 
   /**
    * 打印警告日志信息的样式信息
    */
   public static getPrintWarnMessageStyleArr(...message: unknown[]) {
-    return [
-      toColor(['magenta', 'bright'], `[${PrinterMoreInfo.AppName}]`),
-      toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
-      toColor(['yellow', 'underline'], `[${PrinterMoreInfo.PrintType.Warn}]${toPrintClear()}:`),
-      toColor(['yellow']),
-      ...message
-    ]
+    return PrinterService.instance.getPrintWarnMessageStyleArr(...message);
+  }
+
+  /**
+   * 打印一条警告信息
+   */
+  public printWarn(...message: unknown[]) {
+    print(...this.getPrintWarnMessageStyleArr(...message));
   }
 
   /**
@@ -91,21 +125,36 @@ export class PrinterService {
    * @param message
    */
   public static printWarn(...message: unknown[]) {
-    print(...PrinterService.getPrintWarnMessageStyleArr(...message));
+    print(...PrinterService.instance.getPrintWarnMessageStyleArr(...message));
   }
 
   /**
    * 打印成功日志信息的样式信息
    */
-  public static getPrintSuccessMessageStyle(...message: unknown[]) {
+  public getPrintSuccessMessageStyleArr(...message: unknown[]) {
     return [
-      toColor(['magenta'], `[${PrinterMoreInfo.AppName}]`),
+      toColor(['magenta'], `[${this.AppName}]`),
       toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
-      toColor(['green', 'underline'], `[${PrinterMoreInfo.PrintType.Success}]${toPrintClear()}:`),
+      toColor(['cyan', 'bright'], `[${this.Thread}]`),
+      toColor(['green', 'underline'], `[${PrinterService.PrintType.Success}]${toPrintClear()}:`),
       toColor(['green']),
      ...message
     ]
+  }
+
+  /**
+   * 打印成功日志信息的样式信息
+   */
+  public static getPrintSuccessMessageStyleArr(...message: unknown[]) {
+    return PrinterService.instance.getPrintSuccessMessageStyleArr(...message);
+  }
+
+  /**
+   * 打印一条成功信息
+   * @param message
+   */
+  public printSuccess(...message: unknown[]) {
+    print(...this.getPrintSuccessMessageStyleArr(...message));
   }
 
   /**
@@ -113,21 +162,36 @@ export class PrinterService {
    * @param message
    */
   public static printSuccess(...message: unknown[]) {
-    print(...PrinterService.getPrintSuccessMessageStyle(...message));
+    print(...PrinterService.instance.getPrintSuccessMessageStyleArr(...message));
+  }
+
+  /**
+   * 打印错误日志信息的样式信息
+   */
+  public getPrintErrorMessageStyleArr(...message: unknown[]) {
+    return [
+      toColor(['magenta', 'bright'], `[${this.AppName}]`),
+      toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
+      toColor(['cyan', 'bright'], `[${this.Thread}]`),
+      toColor(['red', 'underline'], `[${PrinterService.PrintType.Error}]${toPrintClear()}:`),
+      toColor(['red']),
+     ...message
+    ]
   }
 
   /**
    * 打印错误日志信息的样式信息
    */
   public static getPrintErrorMessageStyleArr(...message: unknown[]) {
-    return [
-      toColor(['magenta', 'bright'], `[${PrinterMoreInfo.AppName}]`),
-      toColor(['cyan', 'bright'], `[${new Date().toLocaleString()}]`),
-      toColor(['cyan', 'bright'], `[${PrinterMoreInfo.Thread.Main}]`),
-      toColor(['red', 'underline'], `[${PrinterMoreInfo.PrintType.Error}]${toPrintClear()}:`),
-      toColor(['red']),
-     ...message
-    ]
+    return PrinterService.instance.getPrintErrorMessageStyleArr(...message);
+  }
+
+  /**
+   * 打印一条错误信息
+   * @param message
+   */
+  public printError(...message: unknown[]) {
+    print(...this.getPrintErrorMessageStyleArr(...message));
   }
 
   /**
@@ -135,6 +199,6 @@ export class PrinterService {
    * @param message
    */
   public static printError(...message: unknown[]) {
-    print(...PrinterService.getPrintErrorMessageStyleArr(...message));
+    print(...PrinterService.instance.getPrintErrorMessageStyleArr(...message));
   }
 }

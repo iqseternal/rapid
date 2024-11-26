@@ -1,4 +1,4 @@
-import { AppStore } from '@/actions';
+import { AppStore } from '../../libs/actions';
 import { loginReq, getUserinfoReq, UserinfoResponse, logoutReq } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
 import { toPicket, asynced, RPromiseLike } from '@rapid/libs';
@@ -102,6 +102,12 @@ export const useAuthRole = (roleOptions: AuthHasRoleOptions) => {
   return state;
 }
 
+
+/**
+ * 用户相关的操作, actions
+ *
+ * 异步、网络请求
+ */
 export const userActions = {
 
   /**
@@ -136,3 +142,4 @@ export const userActions = {
     return Promise.resolve();
   })
 }
+

@@ -76,7 +76,7 @@ export const AutoContextMenu = memo(forwardRef((props: AutoDropdownMenuProps, re
   const close = useThrottle(() => {
     if (!state.open) return;
     state.open = false;
-  }, 100, []);
+  }, { wait: 100 }, []);
 
   // 当窗口发生大小或者滚动事件的时候, 关闭菜单的显示
   useEventListener(window, {

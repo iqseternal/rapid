@@ -64,7 +64,7 @@ export namespace SubfieldTypes {
 }
 
 /**
- * flex: space-between 布局容器
+ * flex: space-between 布局容器, 快速三栏布局
  */
 const SubfieldBase = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTypes.SubfieldProps>((props, ref) => {
   const { className, direction = 'horizontal', justifyContent, alignItems, gap = [], ...realProps } = props;
@@ -112,6 +112,7 @@ const SubfieldFixed = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTy
 
 /**
  * flex: none; 的普通 div
+ *
  */
 const Fixed = memo(forwardRef<HTMLDivElement, SubfieldTypes.FixedProps>((props, ref) => {
   const { className, ...realProps } = props;

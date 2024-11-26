@@ -1,5 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
-import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowWorkAreaSize } from '@/actions';
+import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowWorkAreaSize } from '../../libs/actions';
 import { Subfield } from '@rapid/libs-web/components';
 import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, memo, useState } from 'react';
@@ -65,7 +65,7 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
       if (!other) return false;
       return menusContainer.clientWidth < other.calcWidth;
     });
-  });
+  }, []);
 
   // 计算元素宽度 以及 它距离最作放的距离
   useEffect(() => {
@@ -160,6 +160,7 @@ export const Control = memo((props: ControlProps) => {
   useAsyncLayoutEffect(async () => {
     const [err, res] = await toPicket(windowWorkAreaSize());
     if (err) return;
+
     normalState.workAreaSize = res;
     refresh();
   }, []);

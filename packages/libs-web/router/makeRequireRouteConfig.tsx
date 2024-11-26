@@ -20,6 +20,24 @@ const path = {
 
 /**
  * 制作一个基础路由对象, 路由对象中的数据会被自动地按照上下级 补全
+ *
+ * @example
+ *
+ * const route = makeRoute({
+ *   path: 'home',
+ *   meta: {
+ *     title: '首页'
+ *   },
+ *   component: lazy(() => import('@/views/home')),
+ *   children: [
+ *     {
+ *       path: 'user',
+ *       meta: {
+ *         title: '用户'
+ *       }
+ *     }
+ *   ]
+ * });
  * @returns
  */
 export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): RequiredRouteConfig {

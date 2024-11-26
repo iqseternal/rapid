@@ -1,6 +1,6 @@
 import { FullSize, FullSizeWidth, classnames, useAsyncEffect } from '@rapid/libs-web';
 import { commonStyles } from '@scss/common';
-import { windowDevtool, windowShow } from '@/actions';
+import { windowDevtool, windowShow } from '../../../libs/actions';
 import { memo } from 'react';
 
 import Header from '@components/Header';

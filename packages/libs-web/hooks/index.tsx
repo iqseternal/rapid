@@ -1,8 +1,10 @@
-export { useReactive, useShallowReactive } from './useReactive';
+export { useReactive, useDepReactive, useShallowReactive, useNormalState } from './useReactive';
+export type { ReactiveOptions } from './useReactive';
 
 export { useRefresh, useUpdate } from './useRefresh';
 
 export { useDebounceHook, useThrottleHook, useDebounce, useThrottle } from './useDebounce';
+export type { DebounceOptions, ThrottleOptions, DebounceTarget, ThrottleTarget } from './useDebounce';
 
 export { useDependenciesListHook } from './useDependencies';
 export type { AppendDepFn, RemoveDepFn } from './useDependencies';
@@ -26,13 +28,30 @@ export type { StartTransitionFunction } from './useTransition';
 
 export { useMount, useUnmount } from 'ahooks';
 
+export { useSetState } from 'ahooks';
 
+export { useInfiniteScroll } from 'ahooks';
+
+export { useDynamicList } from 'ahooks';
+
+export { useVirtualList } from 'ahooks';
+
+export { useHistoryTravel } from 'ahooks';
+
+export { useNetwork } from 'ahooks';
+
+export { useCountDown } from 'ahooks';
+
+export { useTextSelection } from 'ahooks';
+
+export { useCookieState, useSessionStorageState, useLocalStorageState } from 'ahooks';
+
+export { useEventListener } from './useEventListener';
 
 
 
 // 以下 Hook 需要优化
-
-export { useEventListener } from './useEventListener';
+export { useRequest } from 'ahooks';
 
 
 // 以下 Hook 需要整改

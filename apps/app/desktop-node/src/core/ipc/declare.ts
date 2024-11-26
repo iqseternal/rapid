@@ -44,13 +44,18 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * @example
    * export const convertWindowService: IpcActionMiddleware<IpcActionEvent.Handle> = {
    *   name: 'convertWindowService',
-   *   transform(e, ...args) {
+   *   transformArgs(e, ...args) {
    *     const windowService = WindowService.findWindowService(e);
    *     return [windowService, ...args];
    *   }
    * }
    */
-  transform?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => any[];
+  transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => any[];
+
+  /**
+   * 转换响应
+   */
+  transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
 
   /**
    * 在 action 正式处理之前的回调函数

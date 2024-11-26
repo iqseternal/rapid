@@ -2,7 +2,7 @@ import { AntdMenuInstanceType, convertMenuInstance, type MenuInstanceType } from
 
 import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
 import { toMakeZustandHijack } from '@rapid/libs-web';
-import { windowDevtool } from '@/actions';
+import { windowDevtool } from '../../libs/actions';
 
 const { makeZustandHijack } = toMakeZustandHijack({
   beforeHijackCovert<T extends MenuInstanceType>(target: T) {

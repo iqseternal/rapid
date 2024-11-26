@@ -1,26 +1,68 @@
+import { isUndefined } from '@rapid/libs';
 import type { DependencyList } from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+
+/**
+ * 防抖函数的配置
+ */
+export interface DebounceOptions {
+  /**
+   * 等待时间
+   */
+  readonly wait: number;
+  /**
+   * 最大等待时间
+   * @description > 0
+   */
+  readonly maxWait?: number;
+}
+
+/**
+ * 防抖函数的类型
+ */
+export interface DebounceTarget<Fn extends (...args: any[]) => void> {
+  (this: ThisParameterType<Fn>, ...args: Parameters<Fn>): ReturnType<Fn>;
+  /**
+   * 取消防抖
+   */
+  cancel: () => void;
+}
 
 /**
  * 可以在 组件外部使用
  * @example
  * window.addEventListener('scroll', useDebounceHook(() => {
  *   console.log('scroll');
- * }))
+ * }, { wait: 1000 }))
  *
  * @returns
  */
-export function useDebounceHook<T extends (...args: any[]) => void>(this: any, cb: T, time: number = 50) {
-  let timer: number | NodeJS.Timeout | undefined = void 0;
-  const that: any = this;
+export function useDebounceHook<T extends (...args: any[]) => void>(callback: T, options: DebounceOptions) {
+  const { wait, maxWait = void 0 } = options;
 
-  return ((...args: unknown[]) => {
+  let timer: number | NodeJS.Timeout | undefined = void 0;
+  let lastCallTime: number = 0;
+
+  const that: ThisParameterType<T> = this;
+
+  const debounce = ((...args: Parameters<T>): void => {
+    const now = Date.now();
+    const remaining = maxWait && maxWait - (now - lastCallTime);
+
     if (timer) clearTimeout(timer);
+
     timer = setTimeout(() => {
-      cb.call(that, ...args);
-      timer = void 0;
-    }, time) as unknown as number;
-  }) as unknown as T;
+      callback.call(that, ...args);
+    }, remaining || wait);
+
+    lastCallTime = now;
+  }) as DebounceTarget<T>;
+
+  debounce.cancel = () => {
+    if (timer) clearTimeout(timer);
+  }
+
+  return debounce;
 }
 
 /**
@@ -32,33 +74,66 @@ export function useDebounceHook<T extends (...args: any[]) => void>(this: any, c
  * });
  * const onScroll = useDebounce(() => {
  *   console.log('scroll');
- * }, [state.target]);
+ * }, { wait: 1000 }, [state.target]);
  *
  */
-export function useDebounce<T extends (...args: unknown[]) => void>(callback: T, time = 50, deps: DependencyList) {
-  return useCallback(useDebounceHook(callback, time), deps);
+export function useDebounce<T extends (...args: any[]) => void>(callback: T, options: DebounceOptions, deps: DependencyList) {
+  const targetFn = useRef(callback);
+
+  useLayoutEffect(() => {
+    targetFn.current = callback;
+  }, deps);
+
+  const debounce = useMemo(() => {
+    return useDebounceHook<T>(((...args) => {
+      targetFn.current(...args);
+    }) as T, options);
+  }, []);
+
+  return debounce;
+}
+
+
+export interface ThrottleOptions {
+  /**
+   * 等待时间
+   */
+  readonly wait: number;
+}
+
+/**
+ * 节流函数的类型
+ */
+export interface ThrottleTarget<Fn extends (...args: any[]) => void> {
+  (this: ThisParameterType<Fn>, ...args: Parameters<Fn>): ReturnType<Fn>;
 }
 
 /**
  *
  * @example
- * window.addEventListener('scroll', useThrottleHook(() => {
+ *
+ * const onScroll = useThrottle(() => {
  *   console.log('scroll');
- * }))
+ * }, { wait: 1000 });
+ *
  */
-export function useThrottleHook<T extends (...args: unknown[]) => void>(this: any, callback: T, time = 10): T {
-  let timer: number | NodeJS.Timeout | undefined = void 0;
-  const that: any = this;
+export function useThrottleHook<T extends (...args: unknown[]) => void>(callback: T, options: ThrottleOptions) {
+  const { wait } = options;
 
-  return ((...args: unknown[]) => {
+  let timer: number | NodeJS.Timeout | undefined = void 0;
+  const that: ThisParameterType<T> = this;
+
+  const throttle = ((...args: Parameters<T>): void => {
     if (timer) return;
 
     callback.call(that, ...args);
 
     timer = setTimeout(() => {
       timer = void 0;
-    }, time)
-  }) as unknown as T;
+    }, wait);
+  }) as ThrottleTarget<T>;
+
+  return throttle;
 }
 
 /**
@@ -70,9 +145,21 @@ export function useThrottleHook<T extends (...args: unknown[]) => void>(this: an
  * });
  * const onScroll = useThrottle(() => {
  *   console.log('scroll');
- * }, [state.target]);
+ * }, { wait: 1000 }, [state.target]);
  *
  */
-export function useThrottle<T extends (...args: unknown[]) => void>(callback: T, time = 10, deps: DependencyList): T {
-  return useCallback(useThrottleHook(callback, time), deps);
+export function useThrottle<T extends (...args: any[]) => void>(callback: T, options: ThrottleOptions, deps: DependencyList) {
+  const targetFn = useRef(callback);
+
+  useLayoutEffect(() => {
+    targetFn.current = callback;
+  }, deps);
+
+  const throttle = useMemo(() => {
+    return useThrottleHook<T>(((...args) => {
+      targetFn.current(...args);
+    }) as T, options);
+  }, []);
+
+  return throttle;
 }

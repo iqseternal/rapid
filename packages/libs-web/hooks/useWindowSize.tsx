@@ -54,7 +54,7 @@ const windowResizeCallback = useDebounceHook(() => {
     innerSize.innerHeight = innerHeight;
     innerSizeCallbacks.forEach(callback => callback(innerSize, screenSize));
   }
-}, 20);
+}, { wait: 20 });
 if (globalThis.window) window.addEventListener('resize', windowResizeCallback);
 
 /**

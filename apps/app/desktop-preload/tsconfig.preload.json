@@ -27,7 +27,9 @@
   "include": [
     "./autoExpose.ts",
     "./index.ts",
-    "preload.ts"
+    "preload.ts",
+    "./server/*.ts",
+    "./core/*.ts"
   ],
   "exclude": [
     "src/**/*.d.ts",

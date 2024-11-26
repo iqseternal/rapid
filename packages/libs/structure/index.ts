@@ -1,8 +1,11 @@
 
-export * from './LinkedList';
+export type { Vessel, Comparator } from './declare';
 
-export * from './Stack';
+export type { SinglyLinkedNode, DoubleLinkedNode, LinkedList, LinkedNode } from './LinkedList';
+export { SinglyLinkedList, DoubleLinkedList } from './LinkedList';
 
-export * from './Queue';
+export { Stack, PriorityStack } from './Stack';
 
-export * from './Vector';
+export { Queue, PriorityQueue } from './Queue';
+
+export { Vector } from './Vector';

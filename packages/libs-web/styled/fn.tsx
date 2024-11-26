@@ -7,12 +7,16 @@ import styled, { css, isStyledComponent } from 'styled-components';
  */
 export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(componentType?: K, ...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T;
 
+/**
+ * 合并多个 styled 的样式, 形成新的 styled 组件
+ */
 export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T;
 
 export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(componentType?: K | T, ...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T {
   let tag = 'div';
 
   let isDiy = false;
+
   if (typeof componentType === 'string') {
     tag = componentType;
     isDiy = true;
@@ -20,7 +24,8 @@ export function combinationStyled<T extends ReturnType<typeof styled[K]>, K exte
   else if (componentType?.target) {
     tag = (componentType)?.target as string;
   }
-  const Component = styled[tag]``;
+
+  const Component = styled[tag as 'div']``;
 
   function addStyle(...cssStyle: (string | RuleSet)[]) {
     (Component as any).componentStyle.rules.push(...cssStyle);
@@ -37,5 +42,5 @@ export function combinationStyled<T extends ReturnType<typeof styled[K]>, K exte
     else addStyle(arg);
   });
 
-  return Component;
+  return Component as unknown as T;
 }

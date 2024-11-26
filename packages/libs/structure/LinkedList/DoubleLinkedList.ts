@@ -5,8 +5,14 @@ import { LinkedList } from './LinkedList';
  * 双向链表的节点
  */
 export interface DoubleLinkedNode<V> extends LinkedNode<V> {
+  /**
+   * 前一个节点
+   */
   previous: this | null;
 
+  /**
+   * 下一个节点
+   */
   next: this | null;
 }
 
@@ -63,48 +69,6 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
       next: null,
     }
   }
-
-  // /**
-  //  * 交换两个结点, 实际上也就是交换两个结点所对应的值, 伪交换
-  //  */
-  // protected swapNode(node1: DoubleLinkedNode<V>, node2: DoubleLinkedNode<V>) {
-  //   if (node1 === node2) return; // 如果两个节点相同，无需交换
-
-  //   // 保存 node1 和 node2 的相邻节点
-  //   const node1Prev = node1.previous;
-  //   const node1Next = node1.next;
-  //   const node2Prev = node2.previous;
-  //   const node2Next = node2.next;
-
-  //   // 交换 node1 和 node2 的相邻节点引用
-  //   if (node1Next === node2) { // 如果 node2 紧跟在 node1 后面
-  //     node1.next = node2Next;
-  //     node1.previous = node2;
-  //     node2.next = node1;
-  //     node2.previous = node1Prev;
-
-  //     if (node1Prev) node1Prev.next = node2;
-  //     if (node2Next) node2Next.previous = node1;
-  //   } else if (node2Next === node1) { // 如果 node1 紧跟在 node2 后面
-  //     node2.next = node1Next;
-  //     node2.previous = node1;
-  //     node1.next = node2;
-  //     node1.previous = node2Prev;
-
-  //     if (node2Prev) node2Prev.next = node1;
-  //     if (node1Next) node1Next.previous = node2;
-  //   } else { // 如果 node1 和 node2 不相邻
-  //     node1.next = node2Next;
-  //     node1.previous = node2Prev;
-  //     node2.next = node1Next;
-  //     node2.previous = node1Prev;
-
-  //     if (node1Prev) node1Prev.next = node2;
-  //     if (node1Next) node1Next.previous = node2;
-  //     if (node2Prev) node2Prev.next = node1;
-  //     if (node2Next) node2Next.previous = node1;
-  //   }
-  // }
 
   /**
    * 插入一个节点到链表的头部

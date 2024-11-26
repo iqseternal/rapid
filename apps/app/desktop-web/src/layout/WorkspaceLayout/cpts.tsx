@@ -2,7 +2,7 @@ import { classnames, toWaitPromise } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toPicket } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
-import { useFadeOut } from '@/hooks';
+import { useFadeOut } from '../../libs/hooks';
 import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';

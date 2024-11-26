@@ -1,4 +1,4 @@
-import { RegisterPoints } from '@/extensions/RegisterPoints';
+import { RegisterPoints } from '../../libs/extensions/RegisterPoints';
 import { produce } from 'immer';
 import type { ReactNode } from 'react';
 import { create } from 'zustand';
@@ -18,8 +18,8 @@ import {
   REQ_METHODS
 } from '@/api';
 
-import { AppStore } from '@/actions';
-import { bus } from '@/events';
+import { AppStore } from '../../libs/actions';
+import { bus } from '../../libs/events';
 
 export interface Extension {
   /**

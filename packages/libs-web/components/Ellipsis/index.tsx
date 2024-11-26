@@ -65,6 +65,30 @@ export namespace EllipsisTypes {
 
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Tooltip
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis>
+ *     hello world ....................
+ *   </Ellipsis>
+ * </div>
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Tooltip>
+ *     hello world ....................
+ *   </Ellipsis.Tooltip>
+ * </div>
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Popover>
+ *     hello world ....................
+ *   </Ellipsis.Popover>
+ * </div>
  */
 const EllipsisBase = memo((props: EllipsisTypes.EllipsisProps) => {
   const {
@@ -114,7 +138,7 @@ const EllipsisBase = memo((props: EllipsisTypes.EllipsisProps) => {
       if (isOverflow === state.isOverflow) return;
       state.isOverflow = isOverflow;
     }
-  }, 200));
+  }, { wait: 200 }), []);
 
   // 启动 observer
   useEffect(() => {
@@ -141,12 +165,20 @@ const EllipsisBase = memo((props: EllipsisTypes.EllipsisProps) => {
 
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Tooltip
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Tooltip>
+ *     hello world ....................
+ *   </Ellipsis.Tooltip>
+ * </div>
  */
 const EllipsisTooltip = memo((props: EllipsisTypes.EllipsisTooltipProps) => {
-  const { tipAttrs, ...realProps } = props;
+  const { tipAttrs, children, ...realProps } = props;
 
   return <EllipsisBase
-    overlayRender={(children) => {
+    overlayRender={(realContent) => {
 
       return <Tooltip
 
@@ -154,29 +186,39 @@ const EllipsisTooltip = memo((props: EllipsisTypes.EllipsisTooltipProps) => {
         autoAdjustOverflow
         {...tipAttrs}
       >
-        {children}
+        {realContent}
       </Tooltip>
     }}
+    children={children}
     {...realProps}
   />
 })
 
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Popover
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Popover>
+ *     hello world ....................
+ *   </Ellipsis.Popover>
+ * </div>
  */
 const EllipsisPopover = memo((props: EllipsisTypes.EllipsisPopoverProps) => {
-  const { tipAttrs, ...realProps } = props;
+  const { tipAttrs, children, ...realProps } = props;
 
   return <EllipsisBase
-    overlayRender={(children) => {
+    overlayRender={(realContent) => {
       return <Popover
         overlay={<>{children}</>}
         autoAdjustOverflow
         {...tipAttrs}
       >
-        {children}
+        {realContent}
       </Popover>
     }}
+    children={children}
     {...realProps}
   />
 })

@@ -13,21 +13,31 @@ import rendererTsConfigJson from './desktop-web/tsconfig.web.json';
 
 import * as path from 'path';
 
-export enum Platforms { Windows, Linux, Mac, Web }
+enum Platforms { Windows, Linux, Mac, Web }
 
-export enum Env { Dev, Prod }
+enum Env { Dev, Prod }
 
-export enum ConfigEnvMode {
+const DEV_DESKTOP_DIR = path.join(DIRS.ROOT_DIR, './apps/app');
+const DEV_DESKTOP_MAIN_DIR = path.join(DEV_DESKTOP_DIR, './desktop-node');
+const DEV_DESKTOP_PRELOAD_DIR = path.join(DEV_DESKTOP_DIR, './desktop-preload')
+const DEV_DESKTOP_WEB_DIR = path.join(DEV_DESKTOP_DIR, './desktop-web');
+
+const OUT_DESKTOP_ROOT_DIR = path.join(DIRS.ROOT_DIR, './apps/app/out');
+const OUT_DESKTOP_MAIN_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './main');
+const OUT_DESKTOP_PRELOAD_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './preload');
+const OUT_DESKTOP_RENDERER_DIR = path.join(OUT_DESKTOP_ROOT_DIR, './renderer');
+
+enum ConfigEnvMode {
   Development = 'development',
   Production = 'production'
 }
 
-export enum ConfigEnvCommand {
+enum ConfigEnvCommand {
   Dev = 'dev',
   Build = 'build'
 }
 
-export function defineVars({ mode }: { mode: string;command: string; }) {
+function defineVars({ mode }: { mode: string;command: string; }) {
   const vars = {
     CURRENT_PLATFORM: Platforms.Windows,
     CURRENT_RUNTIME_PLATFORM: RuntimePlatforms.Desktop,
@@ -57,11 +67,11 @@ function resolveAlias(basePath: string, aliasPath: Record<string, string[]>) {
 
 const mainConfig = (configEnv: ConfigEnv) => mergeConfig({
   resolve: {
-    alias: resolveAlias(DIRS.DEV_DESKTOP_MAIN_DIR, mainTsConfigJson.compilerOptions.paths)
+    alias: resolveAlias(DEV_DESKTOP_MAIN_DIR, mainTsConfigJson.compilerOptions.paths)
   },
   build: {
     lib: {
-      entry: path.join(DIRS.DEV_DESKTOP_MAIN_DIR, './src/index.ts')
+      entry: path.join(DEV_DESKTOP_MAIN_DIR, './src/index.ts')
     }
   }
 }, {
@@ -81,7 +91,7 @@ const mainConfig = (configEnv: ConfigEnv) => mergeConfig({
       }
     },
     sourcemap: false,
-    outDir: DIRS.OUT_DESKTOP_MAIN_DIR
+    outDir: OUT_DESKTOP_MAIN_DIR
   },
   server: {
     open: false
@@ -90,11 +100,11 @@ const mainConfig = (configEnv: ConfigEnv) => mergeConfig({
 
 const preloadConfig = (configEnv: ConfigEnv) => mergeConfig({
   resolve: {
-    alias: resolveAlias(DIRS.DEV_DESKTOP_PRELOAD_DIR, {})
+    alias: resolveAlias(DEV_DESKTOP_PRELOAD_DIR, {})
   },
   build: {
     lib: {
-      entry: join(DIRS.DEV_DESKTOP_PRELOAD_DIR, './index.ts')
+      entry: join(DEV_DESKTOP_PRELOAD_DIR, './index.ts')
     }
   }
 }, ({
@@ -111,14 +121,14 @@ const preloadConfig = (configEnv: ConfigEnv) => mergeConfig({
         drop_debugger: true
       }
     },
-    outDir: DIRS.OUT_DESKTOP_PRELOAD_DIR
+    outDir: OUT_DESKTOP_PRELOAD_DIR
   }
 }));
 
 const rendererConfig = (configEnv: ConfigEnv) => mergeConfig({
   root: __dirname,
   resolve: {
-    alias: resolveAlias(DIRS.DEV_DESKTOP_WEB_DIR, rendererTsConfigJson.compilerOptions.paths),
+    alias: resolveAlias(DEV_DESKTOP_WEB_DIR, rendererTsConfigJson.compilerOptions.paths),
 
   },
 
@@ -135,7 +145,7 @@ const rendererConfig = (configEnv: ConfigEnv) => mergeConfig({
   build: {
     rollupOptions: {
       input: {
-        index: join(DIRS.DEV_DESKTOP_WEB_DIR, './index.html')
+        index: join(DEV_DESKTOP_WEB_DIR, './index.html')
       }
     },
   },
@@ -143,7 +153,7 @@ const rendererConfig = (configEnv: ConfigEnv) => mergeConfig({
     strictPort: false
   }
 }, {
-  root: DIRS.DEV_DESKTOP_WEB_DIR,
+  root: DEV_DESKTOP_WEB_DIR,
   define: defineVars(configEnv),
   plugins: [],
   server: {
@@ -165,7 +175,7 @@ const rendererConfig = (configEnv: ConfigEnv) => mergeConfig({
       }
     },
     sourcemap: false,
-    outDir: DIRS.OUT_DESKTOP_RENDERER_DIR
+    outDir: OUT_DESKTOP_RENDERER_DIR
   }
 });
 

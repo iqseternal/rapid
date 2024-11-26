@@ -97,7 +97,7 @@ export function toMakeIpcAction<
 
           const globalMiddlewares = (evtActionType === IpcActionEvent.Handle ? runtimeContext.globalMiddlewares.handle : runtimeContext.globalMiddlewares.on);
 
-          return runningIpcAction(globalMiddlewares, action, e, ...args);
+          return findHandleHandlingGuard(globalMiddlewares, action, e, ...args);
         }
       } as const;
 
@@ -156,7 +156,7 @@ export function toMakeIpcAction<
 /**
  * 处理一个 `action`, 来解决对应的 ipc 句柄
  */
-async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcActionEvent>[], action: IpcActionType<IpcActionEvent>, ...ipcArgs: unknown[]) {
+async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActionEvent>[], action: IpcActionType<IpcActionEvent>, ...ipcArgs: unknown[]) {
   const [e, ...args] = ipcArgs as [IpcMainInvokeEvent | IpcMainEvent, ...unknown[]];
 
   // action 回调信息
@@ -168,7 +168,7 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
     listener: action.listener
   } as const;
 
-  let convertArgs = [e, ...args] as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
+  let convertArgs = [e, ...args] as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transformArgs']>;
   let err: any = void 0;
 
   // 开始
@@ -189,15 +189,15 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
   for (let i = 0;i < globalMiddlewares.length;i ++) {
     if (err) break;
     const middleware = globalMiddlewares[i];
-    if (!middleware.transform) continue;
+    if (!middleware.transformArgs) continue;
 
-    const [error, args] = await toPicket(Promise.resolve(middleware.transform(...convertArgs)));
+    const [error, args] = await toPicket(Promise.resolve(middleware.transformArgs(...convertArgs)));
 
     if (error) {
       err = error;
       break;
     }
-    convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
+    convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transformArgs']>;
   }
   if (err) return Promise.reject(err);
 
@@ -223,15 +223,15 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
   for (let i = 0;i < middlewares.length;i ++) {
     if (err) break;
     const middleware = middlewares[i];
-    if (!middleware.transform) continue;
+    if (!middleware.transformArgs) continue;
 
-    const [error, args] = await toPicket(Promise.resolve(middleware.transform(...convertArgs)));
+    const [error, args] = await toPicket(Promise.resolve(middleware.transformArgs(...convertArgs)));
 
     if (error) {
       err = error;
       break;
     }
-    convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transform']>;
+    convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transformArgs']>;
   }
   if (err) return Promise.reject(err);
 
@@ -279,3 +279,29 @@ async function runningIpcAction(globalMiddlewares: IpcActionMiddleware<IpcAction
   return res;
 }
 
+/**
+ * 处理一个 `action`, 来解决对应的 ipc 句柄, 并处理响应
+ */
+async function findHandleHandlingGuard(globalMiddlewares: IpcActionMiddleware<IpcActionEvent>[], action: IpcActionType<IpcActionEvent>, ...ipcArgs: unknown[]) {
+  let response = findHandleHandling(globalMiddlewares, action, ...ipcArgs);
+
+  // 获取自身内部中间件
+  const middlewares = action.middlewares;
+
+  // 内部 transformResponse
+  for (let i = 0;i < middlewares.length;i ++) {
+    const middleware = middlewares[i];
+    if (!middleware.transformResponse) continue;
+    response = middleware.transformResponse(response);
+  }
+
+  // 全局 transformResponse
+  for (let i = 0;i < globalMiddlewares.length;i ++) {
+    const middleware = globalMiddlewares[i];
+    if (!middleware.transformResponse) continue;
+    response = middleware.transformResponse(response);
+  }
+
+  // 返回响应
+  return response;
+}

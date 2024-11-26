@@ -3,7 +3,9 @@
 import type { RuntimePlatforms, Env, PlatformsOnDesktop, PlatformsOnMobile, PlatformsOnBrowser } from '../enums';
 
 declare global {
-  /** 注入变量的接口, 用于创建注入变量集合 */
+  /**
+   * 注入变量的接口, 用于创建注入变量集合
+   */
   interface InjectionVariables {
     CURRENT_PLATFORM: PlatformsOnDesktop | PlatformsOnMobile | PlatformsOnBrowser;
     CURRENT_RUNTIME_PLATFORM: RuntimePlatforms;

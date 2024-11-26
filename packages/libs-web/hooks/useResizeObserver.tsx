@@ -1,14 +1,25 @@
-import { useEffect, useMemo, useState } from 'react';
-import type { Ref, RefObject } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import type { DependencyList, Ref, RefObject } from 'react';
 import { printError } from '@suey/printer';
+import { useNormalState } from './useReactive';
 
 /**
  * resizeObserver, 利用 Hook 的方式创建该对象, 传递 Ref, 自动添加 callback 注册
+ *
+ * @example
+ *
+ * const [resizeObserver] = useResizeObserver(dom, callback, deps);
+ *
  * @returns
  */
-export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement> | TElement, callback: ResizeObserverCallback) {
+export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement | null> | TElement, callback: ResizeObserverCallback, deps: DependencyList) {
+  const [normalState] = useNormalState({
+    resizeCallback: callback,
+  })
   const [resizeObserver] = useState(() => {
-    return new ResizeObserver(callback);
+    return new ResizeObserver((entries, observer) => {
+      normalState.resizeCallback?.(entries, observer);
+    });
   })
 
   const tDom = useMemo(() => {
@@ -17,6 +28,10 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
     printError(`useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
     return dom;
   }, []);
+
+  useLayoutEffect(() => {
+    normalState.resizeCallback = callback;
+  }, [deps]);
 
   useEffect(() => {
     if (!tDom.current) return () => {};

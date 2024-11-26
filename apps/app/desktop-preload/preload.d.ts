@@ -4,15 +4,17 @@
  * ==========================================
  */
 import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener } from '@electron-toolkit/preload';
-import type { CutHead, ExtractNever } from '@rapid/libs';
+import type { CutHead, ExtractNever, RPromiseLike } from '@rapid/libs';
+import type { Exception, ExceptionErrorMsgData } from '../desktop-node/src/core';
 import type { IpcActionEvent, IpcActionType } from '../desktop-node/src/core';
 import type * as actions from '../desktop-node/src/ipc';
+
+export type { Exception, ExceptionErrorMsgData }
 
 /**
  * 将一个值转换为 Promise 值
  */
 export type PromiseWithValue<Value> = Value extends Promise<any> ? Value : Promise<Value>;
-
 
 /**
  * 用于编写 渲染进程 on 事件的 e 类型
@@ -33,7 +35,7 @@ export type AllAction = {
 export type AllHandlers<IpcActionEventType extends IpcActionEvent> = {
   [Key in keyof AllAction as AllAction[Key]['channel']]:
     AllAction[Key]['actionType'] extends IpcActionEventType
-      ? (...args: CutHead<Parameters<AllAction[Key]['action']>>) => PromiseWithValue<ReturnType<AllAction[Key]['action']>>
+      ? (...args: CutHead<Parameters<AllAction[Key]['action']>>) => RPromiseLike<Awaited<PromiseWithValue<ReturnType<AllAction[Key]['action']>>>, Exception<ExceptionErrorMsgData>>
       : never;
 }
 

@@ -8,7 +8,7 @@ const rspackConfig: RspackOptions = defineConfig({
   target: 'electron-main',
   entry: join(__dirname, './index.ts'),
   output: {
-    path: DIRS.OUT_DESKTOP_PRELOAD_DIR,
+    path: join(__dirname, '../out/preload'),
     filename: 'index.js',
     clean: true,
   },
