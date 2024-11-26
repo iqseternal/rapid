@@ -2,7 +2,7 @@ import { print, toColor, toPrintClear, isPrintStyleMessage, isPrintStyleMessageA
 import { SingleInstanceService } from './SingleInstanceService';
 import { FileService } from './FileService';
 import { AppFileStorageService, logsDirStorageService } from './AppStorageService';
-import { PrinterService, printMessageParser } from './PrinterService';
+import { PrinterService } from './PrinterService';
 
 export namespace LoggerService {
 
@@ -28,7 +28,7 @@ export class LoggerService {
    * 打印本地日志
    */
   public async printLogAsLocal(...message: readonly any[]) {
-    const { normalMessages } = printMessageParser(...message);
+    const { normalMessages } = PrinterService.extractNormalMessage(...message);
     await FileService.appendToFile(this.logFileStorageService.filePath, normalMessages.join(' ').concat('\n'));
   }
 

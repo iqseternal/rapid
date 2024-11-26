@@ -11,7 +11,6 @@ import styles from './app.module.scss';
  */
 export default function RapidApp() {
 
-
   return (
     <ConfigProvider
       componentDisabled={false}

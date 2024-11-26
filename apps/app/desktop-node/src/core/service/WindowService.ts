@@ -57,7 +57,7 @@ export class WindowService {
   /**
    * 加载标签页
    */
-  private load() {
+  private load(): void {
     if (IS_DEV) this.window.loadURL(this.options.url);
     else this.window.loadFile(this.options.url);
   }
@@ -65,7 +65,7 @@ export class WindowService {
   /**
    * 打开窗口
    */
-  public show() {
+  public async show() {
     return new Promise<void>((resolve, reject) => {
       let isResolved = false;
 
@@ -86,7 +86,7 @@ export class WindowService {
   /**
    * 销毁窗口对象
    */
-  public destroy() {
+  public destroy(): void {
     if (this.window.isDestroyed()) return;
     WindowServiceStateMachine.removeService(this);
     // this.beforeDestroyCallbacks.forEach(callback => callback());

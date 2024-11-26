@@ -6,6 +6,18 @@
 import { contextBridge } from 'electron';
 
 /**
+ * 注入一个api到渲染进程
+ */
+export const expose = (exposeKey: string, api: any) => {
+  if (process.contextIsolated) {
+    contextBridge.exposeInMainWorld(exposeKey, api);
+  }
+  else {
+    window[exposeKey as any] = api;
+  }
+}
+
+/**
  * 自动暴露Api，解决手动的烦恼
  *
  * @example
@@ -18,15 +30,8 @@ import { contextBridge } from 'electron';
  * window.appName;
  */
 export function autoExpose<T extends Record<string | symbol, any>>(exposeApiObj: T): void {
-  if (process.contextIsolated) {
-    Object.keys(exposeApiObj).forEach(key => {
-      contextBridge.exposeInMainWorld(key, exposeApiObj[key]);
-    });
-  }
-  else {
-    Object.keys(exposeApiObj).forEach(key => {
-      window[key as any] = exposeApiObj[key];
-    });
-  }
+  const exposeKeys = Object.keys(exposeApiObj);
+
+  exposeKeys.forEach(key => expose(key, exposeApiObj[key]));
 }
 

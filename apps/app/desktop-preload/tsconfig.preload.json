@@ -12,6 +12,8 @@
     "module": "ES2020",
     "lib": ["ESNext", "DOM"],
     "experimentalDecorators": true,
+    "sourceMap": false,
+
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
 
@@ -25,15 +27,13 @@
     ]
   },
   "include": [
-    "./autoExpose.ts",
     "./index.ts",
-    "preload.ts",
-    "./server/*.ts",
-    "./core/*.ts"
+    "./server/**/*.ts",
+    "./actions/**/*.ts",
+    "./core/**/*.ts"
   ],
   "exclude": [
     "src/**/*.d.ts",
-
     "node_modules",
     "../**/*.test.ts"
   ],

@@ -41,6 +41,7 @@ export function useDepReactive<S extends object>(initValue: S | (() => S)) {
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
 
+
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
 

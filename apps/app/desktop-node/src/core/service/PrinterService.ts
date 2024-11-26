@@ -3,26 +3,6 @@ import { CONFIG } from '@rapid/config/constants';
 import { isString } from '@rapid/libs';
 
 /**
- * 对打印信息进行解析, 因为打印信息中包含了对控制台色彩的控制, 可能有需要对色彩进行剔除存储的需求
- * @returns
- */
-export const printMessageParser = (...messages: unknown[]) => {
-  const normalMessages: string[] = messages.map((message, index) => {
-    if (isPrintStyleMessageArr(message)) {
-      // 在打印中, 打印类型 [INFO] 存在下划线延长, 需要清除样式, 所以需要剔除 NORMAL 信息
-      if (index === 3 && isString(message.data[1])) return message.data[1].replace(keyToAnsi[STYLE.NORMAL], '');
-      return message.data[1];
-    }
-    if (isPrintStyleMessage(message)) message = message.data;
-    if (typeof message === 'object') message = JSON.stringify(message);
-
-    return message as string;
-  }) as unknown as string[];
-
-  return { normalMessages, messages };
-}
-
-/**
  * 信息打印服务
  */
 export class PrinterService {
@@ -47,6 +27,27 @@ export class PrinterService {
   ) {}
 
   /**
+   * 对打印信息进行解析, 还原最普通的文本信息, 因为打印信息中包含了对控制台色彩的控制, 可能有需要对色彩进行剔除存储的需求
+   * @returns
+   */
+  public static extractNormalMessage(...messages: unknown[]) {
+    const normalMessages: string[] = messages.map((message, index) => {
+      if (isPrintStyleMessageArr(message)) {
+        // 在打印中, 打印类型 [INFO] 存在下划线延长, 需要清除样式, 所以需要剔除 NORMAL 信息
+        if (index === 3 && isString(message.data[1])) return message.data[1].replace(keyToAnsi[STYLE.NORMAL], '');
+        return message.data[1];
+      }
+      if (isPrintStyleMessage(message)) message = message.data;
+      if (typeof message === 'object') message = JSON.stringify(message);
+
+      return message as string;
+    }) as unknown as string[];
+
+    return { normalMessages, messages } as const;
+  }
+
+
+  /**
    * 打印
    */
   public print(...message: unknown[]) {
@@ -56,7 +57,7 @@ export class PrinterService {
   /**
    * 打印
    */
-  public static print(...message: unknown[]) {
+  public static print(...message: unknown[]): void {
     PrinterService.instance.print(...message);
   }
 
@@ -80,7 +81,7 @@ export class PrinterService {
     return PrinterService.instance.getPrintInfoMessageStyleArr(...message);
   }
 
-  public printInfo(...message: unknown[]) {
+  public printInfo(...message: unknown[]): void {
     print(...this.getPrintInfoMessageStyleArr(...message));
   }
 
@@ -116,7 +117,7 @@ export class PrinterService {
   /**
    * 打印一条警告信息
    */
-  public printWarn(...message: unknown[]) {
+  public printWarn(...message: unknown[]): void {
     print(...this.getPrintWarnMessageStyleArr(...message));
   }
 
@@ -153,7 +154,7 @@ export class PrinterService {
    * 打印一条成功信息
    * @param message
    */
-  public printSuccess(...message: unknown[]) {
+  public printSuccess(...message: unknown[]): void {
     print(...this.getPrintSuccessMessageStyleArr(...message));
   }
 
@@ -190,7 +191,7 @@ export class PrinterService {
    * 打印一条错误信息
    * @param message
    */
-  public printError(...message: unknown[]) {
+  public printError(...message: unknown[]): void {
     print(...this.getPrintErrorMessageStyleArr(...message));
   }
 

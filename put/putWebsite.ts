@@ -1,4 +1,4 @@
-import { DIST_WEBSITE_DIR } from '../config/dirs';
+import { DIST_WEBSITE_DIR } from '../config/node/dirs';
 import { putContent, type PutArgs } from './libs';
 import * as path from 'path';
 
