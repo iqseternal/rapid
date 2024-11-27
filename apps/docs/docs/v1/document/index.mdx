@@ -1,3 +1,2434 @@
 
+``` md
 
-这里告诉你本项目具有哪些 Api 文档可以供开发项目使用
+数据结构
+1. 栈
+abstract class Stack<T> {
+  abstract push(value: T): void;
+  abstract pop(): T;
+}
+1.1 单调栈
+暂时无法在飞书文档外展示此内容
+2. 队列
+2.1 单向队列
+  https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/Queue/Queue.ts
+abstract class Queue<T> {
+  abstract push(value: T): void;
+  abstract pop(): T;
+}
+2.2 双端队列
+  https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/Queue/Dequeue.ts
+abstract class Dequeue<T> {
+  abstract push_back(value: T): void;
+  abstract pop_back(): T;
+
+  abstract push_front(value: T): void;
+  abstract pop_front(): T;
+}
+2.3 单调队列（优先级队列
+暂时无法在飞书文档外展示此内容
+export interface Comparator<V> {
+  (v1: V, v2: V): number;
+}
+
+export abstract class Vessel<V> {
+  protected comparator: Comparator<V> = (v1, v2) => {
+    if (v1 === v2) return 0;
+    if (typeof v1 !== 'number' || typeof v1 !== 'string') return 1;
+    if (typeof v2 !== 'number' || typeof v2 !== 'string') return 1;
+    if (v1 > v2) return 1;
+    return -1;
+  };
+
+  public abstract [Symbol.iterator](): Iterator<V>;
+  public abstract size(): number;
+  public abstract isEmpty(): boolean;
+  public abstract clear(): void;
+  public abstract contains(value: V): boolean;
+  public setComparator(comparator: Comparator<V>): void { this.comparator = comparator; }
+}
+
+export class PriorityQueue<V> extends Vessel<V> {
+
+  private priorityQueueArr: [undefined, ...V[]] = [void 0];
+  private length: number = 0;
+
+  public override *[Symbol.iterator](): Iterator<V> {
+    while (this.length) {
+      const v = this.pop()!;
+      yield v;
+    }
+  }
+
+  public top(): V | null {
+    if (this.length === 0) return null;
+    return this.priorityQueueArr[1];
+  }
+
+  public push(...values: V[]): void {
+    values.forEach(value => {
+      this.priorityQueueArr[++ this.length] = value;
+      this.swim(this.length);
+    })
+  }
+
+  public pop(): V | null {
+    if (this.length === 0) return null;
+    const value = this.priorityQueueArr[1]!;
+    this.swap(1, this.length);
+    this.length --;
+    this.sink(1);
+    return value;
+  }
+
+  private swim(index: number) {
+    while (index > 1 && this.comparator(this.priorityQueueArr[index]!, this.priorityQueueArr[index >> 1]!) < 0) {
+      this.swap(index, index >> 1);
+
+      index = index >> 1;
+    }
+  }
+
+  private sink(index: number) {
+    if (index <= 0) return;
+
+    while (2 * index <= this.length) {
+      let k = index * 2;
+
+      if (k + 1 <= this.length && this.comparator(this.priorityQueueArr[k + 1]!, this.priorityQueueArr[k]!) < 0) {
+        k ++;
+      }
+
+      if (this.comparator(this.priorityQueueArr[index]!, this.priorityQueueArr[k]!) > 0) {
+        this.swap(index, k);
+        index = k;
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  private swap(i: number, j: number) {
+    if (i <= 0 || i > this.length) return;
+    if (j <= 0 || j > this.length) return;
+    const t = this.priorityQueueArr[i];
+    this.priorityQueueArr[i] = this.priorityQueueArr[j];
+    this.priorityQueueArr[j] = t;
+  }
+
+  public override contains(value: V): boolean {
+    for (let i = 1;i <= this.length;i ++) {
+      const v = this.priorityQueueArr[i];
+      if (this.comparator(v!, value) === 0) return true;
+    }
+    return false;
+  }
+
+  public override clear() {
+    this.priorityQueueArr = [void 0];
+    this.length = 0;
+  }
+
+  public override isEmpty(): boolean {
+    return this.size() === 0;
+  }
+
+  public override size(): number {
+    return this.length;
+  }
+}
+3. 数组（向量。
+abstract class Vector<T> {
+  abstract push_back(value: T): void;
+}
+4. 链表
+4.1 单链表
+4.1.1 带头节点
+暂时无法在飞书文档外展示此内容
+    https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/LinkedList/SinglyLinkedList.ts
+头 -> null
+头 -> 元素1 -> 元素2 -> 元素3 -> null
+4.1.2 非带头结点
+null
+元素1 -> null
+元素1 -> 元素2 -> 元素3 -> null
+4.2 双链表
+4.2.1 带头节点
+    https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/LinkedList/DoubleLinkedList.ts
+头 -> 元素1 -> 元素2 -> null
+null <- 头 <- 元素1 <- 元素2
+4.2.2 非带头结点
+null
+
+元素1 -> null
+null <- 元素1
+
+元素1 -> 元素2 -> null
+null <- 元素1 <- 元素2
+4.3 循环链表
+4.3.1 循环单链表
+4.3.2 循环双链表
+5. 树
+暂时无法在飞书文档外展示此内容
+declare interface TreeNode<V> {
+  value: V;
+
+  left: TreeNode<V>;
+  right: TreeNode<V>;
+}
+6. 堆
+堆（heap）是一种满足特定条件的完全二叉树。
+小顶堆（min heap）：任意节点的值 <= 其子节点的值。
+大顶堆（max heap）：任意节点的值  >=  其子节点的值。
+[图片]
+优先级队列就是堆的应用：基础数据结构与算法
+7. 图
+7.1 邻接表（散列表
+暂时无法在飞书文档外展示此内容
+const inputs = [
+  [1, 2, 3],
+  [1, 3, 2],
+  [2, 4, 3],
+  [2, 3, 2]
+] as const;
+
+function solution() {
+  const n = 4;
+
+  const head: number[] = new Array(n + 1).fill(-1);
+  const edge: number[] = [];
+  const next: number[] = [];
+  const ver: number[] = [];
+
+  // 边的数量
+  let index = 0;
+
+  for (let i = 0;i < inputs.length;i ++) {
+    const [x, y, cost] = inputs[i];
+    edge[index] = y, ver[index] = cost, next[index] = head[x], head[x] = index ++;
+  }
+
+  const start = 1, end = 4;
+  const flag: boolean[] = new Array(n + 1).fill(false);
+  let canArrive = false;
+
+  function walk(x: number) {
+    flag[x] = true;
+
+    if (x === end) {
+      canArrive = true;
+      return;
+    }
+    if (canArrive) return;
+
+    for (let index = head[x];index != -1 && edge[index] !== -1;index = next[index]) {
+
+      const target = edge[index];
+      const cost = ver[index];
+
+      if (flag[target] === false) {
+        console.log(`${x} => ${edge[index]}`);
+        walk(target);
+      }
+    }
+  }
+
+  walk(start);
+  console.log(`${canArrive ? '' : '不'}能够从点 ${start} 到达点 ${end}`);
+}
+
+solution();
+
+7.2 邻接矩阵
+暂时无法在飞书文档外展示此内容
+
+const inputs = [
+  [1, 2, 3],
+  [1, 4, 2],
+  [2, 4, 3],
+  [1, 3, 2]
+] as const;
+
+function solution() {
+
+  const n = 4;
+  const maps: number[][] = new Array(n + 1).fill(0).map(() => new Array(n + 1).fill(0))
+
+  for (let i = 0;i < inputs.length;i ++) {
+    const [x, y, v] = inputs[i];
+
+    maps[x][y] = v;
+    maps[y][x] = v; // 去掉这一行: 单向图
+  }
+
+  const start = 1, end = 4;
+  const flag = maps.map(() => false);
+
+  let canArrive = false;
+
+  function walk(x: number) {
+    flag[x] = true;
+    if (x === end) {
+      canArrive = true;
+      return;
+    }
+
+    if (canArrive) return;
+
+    for (let i = 1;i <= n;i ++) {
+      if (maps[x][i] !== 0 && flag[i] === false) {
+        walk(i);
+
+        if (canArrive) break;
+      }
+    }
+  }
+
+  walk(start);
+  console.log(`${canArrive ? '' : '不'}能够从点 ${start} 到达点 ${end}`);
+}
+
+solution();
+
+基本算法
+1. 数论
+1.1 质数
+function isPrimeNumber(value: number): boolean {
+  // i * i
+  for (let i = 2;i * i <= value;i ++) {
+    if (value % i === 0) {
+      return false;
+    }
+  }
+
+  return true;
+}
+  简单判别如上，但也确实如此，但如果有条件性：例如，在某个区间范围内需要非常重复的判断一个数是否是质数，如何解决？
+  如果数字较大一些，多轮的判别就会使得这种条件判别造成时间过长，因为每一次都需要去走 for 去除余数。
+
+  打表（如何获得某个范围内的质数集合？ 1-10000000 内。如果用上述方法, 那么运算次数太多了。
+  使用晒素数。利用质数规则，含有因数的数，是合数
+暂时无法在飞书文档外展示此内容
+
+const max = 10000000;
+
+const isPrime = new Array(max + 1).fill(true);
+const primeArr: number[] = [];
+
+function filterPrimeNumber() {
+  isPrime[1] = false;
+
+  for (let i = 2;i <= max;i ++) {
+    if (isPrime[i]) {
+      primeArr.push(i);
+    }
+
+    for (let j = 0;j < primeArr.length;j ++) {
+      if (i * primeArr[j] > max) break;
+      isPrime[i * primeArr[j]] = false;
+    }
+  }
+}
+
+filterPrimeNumber();
+
+console.log(primeArr);
+1.2 快速幂
+/**
+ *
+ * @param a
+ * @param b b >= 0
+ * @returns
+ */
+function binpow(a: number, b: number) {
+  let result = 1;
+  while (b > 0) {
+    if (b & 1) result *= a;
+    a *= a;
+    b = b >> 1;
+  }
+  return result;
+}
+
+console.log(binpow(2, 3));
+
+1.3 x是否2的整数幂
+  判断一个数是否是2的整数幂
+function solution(n: number) {
+  if (n !== ~~n) {
+    throw new Error('Input must be an integer');
+  }
+
+  while (n != 1) {
+    if ((n & 1) !== 0) {
+      return false;
+    }
+    n = n >> 1;
+  }
+
+  return true;
+}
+
+console.log(solution(1));
+console.log(solution(2));
+console.log(solution(3));
+console.log(solution(4));
+console.log(solution(8));
+console.log(solution(16));
+console.log(solution(13));
+console.log(solution(2.2));
+
+
+function solution(n: number) {
+  if (n !== ~~n) {
+    throw new Error('Input must be an integer');
+  }
+  return (n & (n - 1)) === 0;
+}
+
+console.log(solution(1));
+console.log(solution(2));
+
+console.log(solution(3));
+console.log(solution(4));
+console.log(solution(8));
+console.log(solution(16));
+console.log(solution(13));
+
+console.log(solution(2.2));
+2. 博弈论
+1. 摸牌问题
+暂时无法在飞书文档外展示此内容
+  谁能赢？
+const n = 5;
+
+if (n % 3 === 0) {
+  console.log('Cici');
+}
+else {
+  console.log('Kiki');
+}
+3. 排序
+3.1 冒泡
+  依次两两比较，如果满足条件就交换，每一次交换能够保证数组的最右端或者最左端为最大或者最小值。
+
+const arr = [2, 46, 43, 12, 12, 3];
+
+function sort(arr: number[]) {
+
+  for (let i = 0;i < arr.length - 1;i ++) {
+
+    for (let j = 0;j < arr.length - i -1;j ++) {
+
+      if (arr[j] > arr[j + 1]) {
+        let t = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = t;
+      }
+    }
+  }
+}
+
+sort(arr);
+
+console.log(arr);;
+
+3.2 快排
+  分治思想，就是把一个大的问题划分为可以直接解决的多个子问题，然后逐个解决这些子问题。
+  假设，数组为一个区间 ————————————————
+  如果有一个定值 x，让这个数组满足 ----------------- x --------------------
+  左侧区间都小于 x，右侧区间都大于 x，那么在宏观来说，区间1 < 区间2 这个整体区间来说就是有序的。
+  那么在逐个解决这两个子区间是否有序的问题，如果这些子区间被逐个递归划分，达到了区间单位长度为 1了，那么这个数组就是有序的了。
+const arr = [1, 2, 9, 3, 5, 4, 1, 12, 546, 1, 2, 9, 3, 5, 4, 1, 12, 546];
+
+function swap<T>(arr: T[], i: number, j: number) {
+  let t = arr[i];
+  arr[i] = arr[j];
+  arr[j] = t;
+}
+
+function quickSort<T>(arr: T[], start: number, end: number, compare: (a: T, b: T) => number) {
+  if (start >= end) return;
+  let i = start - 1, j = end + 1;
+  const x = arr[(start + end) >> 1];
+
+  while (i < j) {
+    do { i ++; } while (compare(x, arr[i]) > 0);
+    do { j --; } while (compare(arr[j], x) > 0);
+    if (i < j) swap(arr, i, j);
+  }
+
+  quickSort(arr, start, j, compare);
+  quickSort(arr, j + 1, end, compare);
+}
+
+quickSort(arr, 0, arr.length - 1, (a, b) => a - b);
+
+console.log(arr);
+3.3 归并
+  分治思想，但是这个思想为先把问题划分下去，逐层解决上来。
+  例如数组arr：先划分区间单位，划分到最小问题上，最小区间单位，也就是长度为1，那么
+  区间 ------------------------------------- 在每个最小单位上它是有序的，宏观上是无序的。
+  那么依次按照划分规则，回传合并。
+  例如：划分区间为  [1, 3, 4]  [2, 3, 5]
+  这两个区间，在其子区间内已经回传合并了，然后合并他们。
+  所以合并：[1,2,3,3,4,5] 然后这个区间为有序序列，直到回传到整个数组长度。
+const arr = [1, 2, 9, 3, 5, 4, 1, 12, 546, 1, 2, 9, 3, 5, 4, 1, 12, 546];
+
+function mergeSort<T>(arr: T[], start: number, end: number, compare: (a: T, b: T) => number) {
+  if (start >= end) return;
+
+  const mid = (start + end) >> 1;
+
+  mergeSort(arr, start, mid, compare);
+  mergeSort(arr, mid + 1, end, compare);
+
+  let res: T[] = [];
+  let i = start, j = mid + 1;
+  while (i <= mid && j <= end) {
+    if (compare(arr[i], arr[j]) <= 0) {
+      res.push(arr[i ++]);
+    }
+    else {
+      res.push(arr[j ++]);
+    }
+  }
+  while (i <= mid) res.push(arr[i ++]);
+  while (j <= end) res.push(arr[j ++]);
+  for (let i = 0;i < res.length;i ++) arr[start + i] = res[i];
+}
+
+mergeSort(arr, 0, arr.length - 1, (a, b) => a - b);
+
+console.log(arr);
+4. 前缀/后缀 和 差分
+4.1 前缀和
+  前缀和数组，数组每一项存储原数组下标位置与0下标数组位置之间的和。
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+
+function solution() {
+  let fix = 0;
+  const and = arr.map(x => {
+    fix += x;
+    return fix;
+  });
+
+  const searchAnd = (start: number, end: number) => {
+    const safeArea = (index: number, defaultIndex: number) => {
+      if (index < 0 || index >= arr.length) return defaultIndex;
+      return index;
+    }
+
+    const safeStart = safeArea(start - 1, 0), safeEnd = safeArea(end - 1, arr.length - 1);
+
+    return and[safeEnd] - and[safeStart] + arr[safeStart];
+  }
+
+  console.log(searchAnd(1, 1));
+  console.log(searchAnd(1, 3));
+  console.log(searchAnd(3, 7));
+}
+
+solution();
+4.2 后缀和
+4.3 差分
+const arr = [1, 2, 2, 1, 2, 1];
+
+function solution() {
+  // 差分序列
+  const finite = arr.map((x, index) => {
+    if (index === 0) return x;
+    return x - arr[index - 1];
+  });
+
+  console.log(finite);
+}
+
+solution();
+  看起来好像没什么用对吧，上个例子，如上原序列，[1, 2, 2, 1, 2, 1]，现在要进行多次操作，
+  每次会给定区间范围：x -> y, 然后让这个区间内的每一个数都加上 v。
+  问进行 n 次操作后，原序列应该变成了什么样。
+
+  如果用老实的办法，每次都按照操作数对区间元素进行 +v：
+  - 如果 x -> y 区间够长，那么每一次都需要遍历  y-x+1 个元素，也就需要 O(y-x+1), O(n)
+  - 如果 操作次数多，那么会经历多次，如果每次的区间还足够长, 那么足以媲美 O(n^2)
+
+  如下利用差分：
+  1. 得出差分 O(n)
+  2. 走操作 O(n)
+  3. 还原数据 O(n)
+  总的 O(n)
+
+const arr = [1, 2, 2, 1, 2, 1];
+
+// 2 3 3 1 2 1
+// 2 3 3 2 3 2
+// 3 4 4 3 4 3
+
+const operators = [
+  [1, 3, 1],
+  [3, 5, 1],
+  [1, 6, 1]
+] as const;
+
+function solution() {
+  // 差分序列
+  const finite: number[] = arr.map((x, index) => {
+    if (index === 0) return x;
+    return x - arr[index - 1];
+  });
+
+  for (let i = 0;i < operators.length;i++) {
+    const [start, end, v] = operators[i];
+    if (start - 1 >= 0) finite[start - 1] += v;
+    if (end <= finite.length - 1) finite[end] -= v;
+  }
+
+  let fix = 0;
+  const res = finite.map((x, index) => {
+    fix += x;
+    return fix;
+  })
+
+  console.log(res);
+}
+
+solution();
+
+5. 二分查找
+在有序序列中，查找某个数的下标位置，或者查找它存不存在。
+
+const arr = [1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 9, 9, 12];
+
+// 查找 x 第一次出现所在下标, 不存在返回 -1
+function find(x: number): number {
+  let i = 0, j = arr.length - 1;
+
+  while (i < j) {
+    const mid = (i + j) >> 1;
+    if (arr[mid] === x) return mid;
+    if (arr[mid] < x) i = mid + 1;
+    else j = mid;
+  }
+  if (arr[i] === x) return i;
+  return -1;
+}
+
+console.log(find(12), arr[find(12)]);
+6. 递归问题
+6.1 全排列问题
+  全排列问题：有字符 a,b,c,d,e,f,g 需要输出其全排列（可选择排列数
+const arr = ['a', 'b', 'c', 'd'];
+const results: string[] = [];
+
+function arrange(num: number) {
+  const flag = new Array(arr.length).fill(false);
+  const tmp = new Array(num).fill(void 0);
+
+  function rank(position: number) {
+    if (position >= num) {
+      const str = tmp.join('');
+      results.push(str);
+      return;
+    }
+
+    for (let i = 0;i < arr.length;i ++) {
+      if (flag[i]) continue;
+
+      tmp[position] = arr[i];
+      flag[i] = true;
+
+      rank(position + 1);
+
+      tmp[position] = void 0;
+      flag[i] = false;
+    }
+  }
+
+  rank(0);
+}
+
+arrange(3);
+
+console.log(results);
+
+6.2 组合问题
+  组合问题：有字符 a,b,c,d,e,f,g 需要输出其组合 （可选择组合数量
+const arr = ['a', 'b', 'c', 'd'];
+const results: string[] = [];
+
+function combination(num: number) {
+  const flag = new Array(arr.length).fill(false);
+  const tmp = new Array(num).fill(void 0);
+
+  function rank(position: number, n: number) {
+    if (position >= num) {
+      const str = tmp.join('');
+      results.push(str);
+      return;
+    }
+
+    for (let i = n;i < arr.length;i ++) {
+      if (flag[i]) continue;
+
+      tmp[position] = arr[i];
+      flag[i] = true;
+
+      rank(position + 1, i + 1);
+
+      tmp[position] = void 0;
+      flag[i] = false;
+    }
+  }
+
+  rank(0, 0);
+}
+
+combination(3);
+
+console.log(results);
+
+7. 遍历
+7.1 深度优先遍历 dfs
+1. 树
+1. 前序遍历
+暂时无法在飞书文档外展示此内容
+///        3
+///      /   \
+///    2       5
+///   / \     / \
+///  1   4   6   7
+interface Tree<T> {
+  value: T;
+  left?: Tree<T>;
+  right?: Tree<T>;
+}
+
+const tree: Tree<number> = {
+  value: 3,
+  left: { value: 2, left: { value: 1 }, right: { value: 4 } },
+  right: { value: 5, left: { value: 6 }, right: { value: 7 } }
+}
+
+let firstStr = ``, midStr = ``, endStr = ``;
+
+function first<T extends Tree<any>>(tree: T) {
+  if (tree.left) first(tree.left);
+  firstStr += `${tree.value}, `;
+  if (tree.right) first(tree.right);
+}
+
+first(tree);
+console.log(firstStr);
+
+2. 中序遍历
+///        3
+///      /   \
+///    2       5
+///   / \     / \
+///  1   4   6   7
+interface Tree<T> {
+  value: T;
+  left?: Tree<T>;
+  right?: Tree<T>;
+}
+
+const tree: Tree<number> = {
+  value: 3,
+  left: { value: 2, left: { value: 1 }, right: { value: 4 } },
+  right: { value: 5, left: { value: 6 }, right: { value: 7 } }
+}
+
+let firstStr = ``, midStr = ``, endStr = ``;
+
+function mid<T extends Tree<any>>(tree: T) {
+  midStr += `${tree.value}, `;
+  if (tree.left) mid(tree.left);
+  if (tree.right) mid(tree.right);
+}
+
+mid(tree);
+console.log(midStr);
+
+3. 后序遍历
+///        3
+///      /   \
+///    2       5
+///   / \     / \
+///  1   4   6   7
+interface Tree<T> {
+  value: T;
+  left?: Tree<T>;
+  right?: Tree<T>;
+}
+
+const tree: Tree<number> = {
+  value: 3,
+  left: { value: 2, left: { value: 1 }, right: { value: 4 } },
+  right: { value: 5, left: { value: 6 }, right: { value: 7 } }
+}
+
+let firstStr = ``, midStr = ``, endStr = ``;
+
+function end<T extends Tree<any>>(tree: T) {
+  if (tree.left) end(tree.left);
+  if (tree.right) end(tree.right);
+  endStr += `${tree.value}, `;
+}
+
+end(tree);
+console.log(endStr);
+
+2. 图
+2.1 二维矩阵点图
+    判断某个地图能否到达终点，map: 二维空间, 需要从 (0, 0) 到 (n - 1,m - 1) 点，需要判断是否能够到达
+const map = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0],
+  [1, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1],
+  [0, 1, 0, 0, 0],
+];
+
+function shortestPath(): number {
+  const n = map.length, m = map[n - 1].length;
+
+  const paths: number[][] = new Array(map.length);
+  const rounds: [number, number][][] = new Array(map.length); // 路径
+
+  for (let i = 0; i < map.length; i ++) {
+    paths[i] = new Array(map[i].length);
+    paths[i].fill(-1); // -1 表示不可达
+    rounds[i] = new Array(map[i].length);
+    for (let j = 0;j < rounds[i].length;j ++) rounds[i][j] = [-1, -1];
+  }
+
+  const dx = [0, 1, -1, 0], dy = [1, 0, 0, -1];
+  function checker(x: number, y: number): boolean {
+    if (x < 0 || x >= n || y < 0 || y >= m) return false;
+    return map[x][y] !== 1;
+  }
+
+  const que: [number, number][] = [];
+
+  if (map[0][0] === 0) {
+    que.push([0, 0]);
+    paths[0][0] = 0;
+  }
+
+  while (que.length !== 0) {
+    const [x, y] = que.shift();
+
+    for (let i = 0;i < dx.length && i < dy.length;i ++) {
+      const tx = x + dx[i], ty = y + dy[i];
+
+      if (checker(tx, ty)) {
+        if (paths[tx][ty] === -1) {
+          paths[tx][ty] = paths[x][y] + 1;
+          rounds[tx][ty] = [x, y];
+          que.push([tx, ty]);
+        }
+
+        if (paths[tx][ty] > paths[x][y] + 1) {
+          paths[tx][ty] = paths[x][y] + 1;
+          rounds[tx][ty] = [x, y];
+        }
+      }
+    }
+  }
+
+  return paths[n - 1][m - 1];
+}
+
+console.log(shortestPath()); // true
+2.2 邻接矩阵
+    基础数据结构与算法
+2.3 邻接表
+    基础数据结构与算法
+7.2 广度优先遍历 bfs
+  map: 二维空间, 需要从 (0, 0) 到 (n - 1,m - 1) 点，需要知道最短需要多少步数 （可以涵盖路径）
+
+
+const map = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0],
+  [1, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1],
+  [0, 1, 0, 0, 0],
+];
+
+function shortestPath(): number {
+  const n = map.length, m = map[n - 1].length;
+
+  const paths: number[][] = new Array(map.length);
+
+  for (let i = 0; i < map.length; i ++) {
+    paths[i] = new Array(map[i].length);
+    paths[i].fill(-1); // -1 表示不可达
+  }
+
+  const dx = [0, 1, -1, 0], dy = [1, 0, 0, -1];
+  function checker(x: number, y: number): boolean {
+    if (x < 0 || x >= n || y < 0 || y >= m) return false;
+    return map[x][y] !== 1;
+  }
+
+  const que: [number, number][] = [];
+
+  if (map[0][0] === 0) {
+    que.push([0, 0]);
+    paths[0][0] = 0;
+  }
+
+  while (que.length !== 0) {
+    const [x, y] = que.shift();
+
+    for (let i = 0;i < dx.length && i < dy.length;i ++) {
+      const tx = x + dx[i], ty = y + dy[i];
+
+      if (checker(tx, ty)) {
+        if (paths[tx][ty] === -1) {
+          paths[tx][ty] = paths[x][y] + 1;
+          que.push([tx, ty]);
+        }
+
+        paths[tx][ty] = Math.min(paths[tx][ty], paths[x][y] + 1);
+      }
+    }
+  }
+
+  return paths[n - 1][m - 1];
+}
+
+console.log(shortestPath()); // true
+7.3 最短路
+暂时无法在飞书文档外展示此内容
+    采用图遍历（上述遍历方式遍历即可，在遍历到达终点的时候，同时记录最小值就行）
+7.3.1 djkstra
+import { PriorityQueue } from '@rapid/libs';
+// 优先级队列，需要自行实现，js 没有现成的。不然去找三方库也可以
+
+const inputs = [
+  [1, 2, 3],
+  [1, 4, 7],
+  [2, 4, 3],
+  [1, 3, 2],
+  [3, 4, 2]
+] as const;
+
+function solution() {
+
+  const n = 4;
+  const maps: number[][] = new Array(n + 1).fill(0).map(() => new Array(n + 1).fill(0))
+
+  for (let i = 0;i < inputs.length;i ++) {
+    const [x, y, v] = inputs[i];
+    maps[x][y] = v;
+  }
+
+  const paths: number[] = new Array(n + 1).fill(Infinity);
+  const sure: boolean[] = new Array(n + 1).fill(false);
+
+  const que = new PriorityQueue<{ j: number;value: number; }>();
+  que.setComparator((node1, node2) => {
+    return node1.value - node2.value;
+  })
+
+  paths[1] = 0;
+  que.push({ j: 1, value: 0 });
+
+  while (!que.isEmpty()) {
+    const top = que.pop();
+    const { j, value } = top;
+
+    if (sure[j]) continue;
+    sure[j] = true;
+
+    for (let y = 1;y <= n;y ++) {
+      // 有路
+      if (maps[j][y] !== 0) {
+        const v = maps[j][y];
+
+        if (paths[j] + v < paths[y]) {
+
+          paths[y] = paths[j] + v;
+
+          que.push({ j: y, value: paths[y] });
+        }
+      }
+    }
+  }
+
+  console.log(paths[n]);
+}
+
+solution();
+
+8. 并查集
+此类算法要和具体的问题结合理解。例如：找亲戚问题。
+有一群人，a - b 是亲戚，b - c 是亲戚, 那么 a - c 就是亲戚。
+那么给出一堆人的两两关系, 要求随机的查找 某两个人是否是亲戚。
+暂时无法在飞书文档外展示此内容
+// 亲戚关系表
+const listOfRelatives: number[] = [];
+// 表长度, 表索引
+let index = 0;
+
+// 通过id标识查找这个人在 关系表中的下标位置
+const idToIndexMap = new Map<string, number>();
+
+// 关系网,
+const arr = [
+  ['a', 'b', 'c'],
+  ['c', 'g', 'f'],
+  ['j', 'k'],
+  ['l', 'm', 'p'],
+  ['p', 'e'],
+  ['e', 'j']
+];
+
+function add(a: string) {
+  if (idToIndexMap.has(a)) return idToIndexMap.get(a)!;
+  idToIndexMap.set(a, index);
+  listOfRelatives[index] = index;
+  index ++;
+  return index - 1;
+}
+
+function find(index: number): number {
+  if (listOfRelatives[index] !== index) listOfRelatives[index] = find(listOfRelatives[index]);
+  return listOfRelatives[index];
+}
+
+function findChar(char: string): number {
+  const index = add(char);
+  return find(index);
+}
+
+function contain(a: string, b: string) {
+  listOfRelatives[findChar(a)] = findChar(b);
+}
+
+function init() {
+  arr.forEach(list => {
+    for (let i = 0;i < list.length - 1;i ++) {
+      contain(list[i], list[i + 1]);
+    }
+  })
+}
+
+init();
+
+console.log('find', findChar('a') === findChar('e'));
+9. 贪心
+基础数据结构与算法dijkstra就是一个典型的贪心算法应用
+10. 动态规划
+10.1 01背包问题
+  problem：https://www.acwing.com/problem/content/2/
+  贪心是不能解决此类问题的。
+  诸如：贪心解决此类问题的思路为，一直拿取性价比最高的物品，直到装不下。但是可能会出现，拿两个物品组合起来性价比堪比最高性价比的一个物品的情况，那么贪心就出问题了。
+
+  如何动态规划？动态规划也就是去找状态转移方程。
+4 5 // 总共有 4件物品，背包体积为 5
+1 2
+2 4
+3 4
+4 5
+  1. 拿一件物品，那么当然就是有容量的才可以拿。第一件物品的容量 1，价值 2
+物品 i/体积 j
+0
+1
+2
+3
+4
+5
+1
+0
+2
+2
+2
+2
+2
+  如果 背包体积 > 物品体积，背包价值 = 物品价值
+  如果 背包体积为 j < 物品体积, 那么背包价值 = 背包[i][j - 1] 的价值
+  2. 拿第二件物品，此时背包里面可能已经放置了物品。此时需要取判断。第二件物品容量 2，价值 4
+物品 i/体积 j
+0
+1
+2
+3
+4
+5
+1
+0
+2
+2
+2
+2
+2
+2
+0
+2
+4
+6
+6
+6
+  在选择当前背包是否放入当前物品，需要考虑什么？ 该物品是否可以放得下，放下该物品价值是否更高？
+  该物品是否可以放得下：j >= 物品体积 保证可以放，否则放不下那就只能是背包 [i - 1][j] 的价值 (上一次迭代的价值)
+  放下该物品价值是否更高：max(原本的背包价值, 放下该物品的后背包的价值)
+  max(背包[i - 1][j], 背包[i - 1][j - 物品体积] + 物品价值)   , 第二项为 在背包能够容纳当前物品时的最大价值加上当前物品的价值
+  获得最大值后，就是该物品的最大价值。
+  3. 拿第三/四件物品，第三件容量为 3，价值为 4
+物品 i/体积 j
+0
+1
+2
+3
+4
+5
+1
+0
+2
+2
+2
+2
+2
+2
+0
+2
+4
+6
+6
+6
+3
+0
+2
+4
+6
+6
+8
+4
+0
+2
+4
+6
+6
+8
+  所以最大价值就是 8.
+  按照逻辑推理, 设定 f[N][M] 为背包，v[N] 为物品体积，w[N] 为物品价值
+  即状态转移方程：
+  f[i][j] = f[i - 1][j]
+  f[i][j] = max(f[i - 1][j], f[i - 1][j - v[i]] + w[i])
+  二维数组
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 1010;
+
+int v[N], w[N];
+int f[N][N];
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    for (int i = 1;i <= n;i ++) cin >> v[i] >> w[i];
+
+    for (int i = 1;i <= n;i ++) {
+        for (int j = 1;j <= m;j ++) {
+
+            if (j >= v[i]) {
+                f[i][j] = max(f[i - 1][j], f[i - 1][j - v[i]] + w[i]);
+            }
+            else {
+                f[i][j] = f[i - 1][j];
+            }
+
+        }
+    }
+
+    cout << f[n][m] << endl;
+    return 0;
+}
+
+  上面的解决用到了二维数组，但是在推导过程中不难发现：当背包体积为 j 的时候，f[i][j] 的状态推导与 f[i][j - 1], f[i][j - 2], f[i][j - 3]....无关，如果只用一个一维数组，每次拿物品重复迭代这个数组，那么也是可以的。
+
+  j的方向需要逆序，因为如果正序迭代背包，那么后面的元素会被前面的影响。
+
+  一维数组版本 (滚动数组
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 1010;
+
+int v[N], w[N];
+int f[N];
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    for (int i = 1;i <= n;i ++) cin >> v[i] >> w[i];
+
+    for (int i = 1;i <= n;i ++) {
+        for (int j = m;j >= v[i];j --) {
+            f[j] = max(f[j], f[j - v[i]] + w[i]);
+        }
+    }
+
+    cout << f[m] << endl;
+    return 0;
+}
+10.2 完全背包问题
+  与 01 背包问题一致，也就是物品可以无限使用，那么就在放置物品的时候，判断是否可以多次放置该物品即可。然后一次性放置尽可能多的物品，但是状态转移方程基本一致。
+  K 为放置同一件物品 k 次
+  f[i][j] = f[i - 1][j]
+  f[i][j] = max(f[i - 1][j], f[i - 1][j - v[i] * k] + w[i] * k)
+10.3 多重背包问题
+10.3.1 数据量小
+    对于物品有具体的数量，那么可以把同一种物品看作是多个物品。
+    例如：1号物品 体积 2，价值 3，数量 3
+    那么可以放置 3 次一号物品作为不同的物品进行 01背包问题处理。
+10.3.2 数据量大
+    如果数据量大，利用将多重背包化解为 01 背包问题求解时，可能会导致超时情况出现。那么需要优化。
+    其根本思路不变，但是进行化解的时候需要进行特定处理。
+    例如：
+    3 个物品，我们可以纳入 2 个物品和 1 个物品
+    7 个物品，我们可以纳入 4 个物品和 2 个物品和 1个物品
+    6 个物品，我们可以纳入 3 个物品和 2 个物品和1个物品
+    为什么这么做？为什么这样划分：
+    因为把 7 划分为 4，2，1
+    可以利用 4，2，1组合出 1~7 中的所有数字。
+    1，
+    2，
+    3：2 + 1，
+    4，
+    5：4 + 1，
+    6：4 + 2，
+    7：4 + 2 + 1
+
+    为什么？？那么去分析这个数的二进制：7 => 111
+    我们把 111 分成了 100, 10, 1 显而易见可以组合出自己想要的任何数字。
+    6 => 110 => 11,10,1
+
+
+数据结构
+1. 栈
+abstract class Stack<T> {
+  abstract push(value: T): void;
+  abstract pop(): T;
+}
+1.1 单调栈
+暂时无法在飞书文档外展示此内容
+2. 队列
+2.1 单向队列
+  https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/Queue/Queue.ts
+abstract class Queue<T> {
+  abstract push(value: T): void;
+  abstract pop(): T;
+}
+2.2 双端队列
+  https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/Queue/Dequeue.ts
+abstract class Dequeue<T> {
+  abstract push_back(value: T): void;
+  abstract pop_back(): T;
+
+  abstract push_front(value: T): void;
+  abstract pop_front(): T;
+}
+2.3 单调队列（优先级队列
+暂时无法在飞书文档外展示此内容
+export interface Comparator<V> {
+  (v1: V, v2: V): number;
+}
+
+export abstract class Vessel<V> {
+  protected comparator: Comparator<V> = (v1, v2) => {
+    if (v1 === v2) return 0;
+    if (typeof v1 !== 'number' || typeof v1 !== 'string') return 1;
+    if (typeof v2 !== 'number' || typeof v2 !== 'string') return 1;
+    if (v1 > v2) return 1;
+    return -1;
+  };
+
+  public abstract [Symbol.iterator](): Iterator<V>;
+  public abstract size(): number;
+  public abstract isEmpty(): boolean;
+  public abstract clear(): void;
+  public abstract contains(value: V): boolean;
+  public setComparator(comparator: Comparator<V>): void { this.comparator = comparator; }
+}
+
+export class PriorityQueue<V> extends Vessel<V> {
+
+  private priorityQueueArr: [undefined, ...V[]] = [void 0];
+  private length: number = 0;
+
+  public override *[Symbol.iterator](): Iterator<V> {
+    while (this.length) {
+      const v = this.pop()!;
+      yield v;
+    }
+  }
+
+  public top(): V | null {
+    if (this.length === 0) return null;
+    return this.priorityQueueArr[1];
+  }
+
+  public push(...values: V[]): void {
+    values.forEach(value => {
+      this.priorityQueueArr[++ this.length] = value;
+      this.swim(this.length);
+    })
+  }
+
+  public pop(): V | null {
+    if (this.length === 0) return null;
+    const value = this.priorityQueueArr[1]!;
+    this.swap(1, this.length);
+    this.length --;
+    this.sink(1);
+    return value;
+  }
+
+  private swim(index: number) {
+    while (index > 1 && this.comparator(this.priorityQueueArr[index]!, this.priorityQueueArr[index >> 1]!) < 0) {
+      this.swap(index, index >> 1);
+
+      index = index >> 1;
+    }
+  }
+
+  private sink(index: number) {
+    if (index <= 0) return;
+
+    while (2 * index <= this.length) {
+      let k = index * 2;
+
+      if (k + 1 <= this.length && this.comparator(this.priorityQueueArr[k + 1]!, this.priorityQueueArr[k]!) < 0) {
+        k ++;
+      }
+
+      if (this.comparator(this.priorityQueueArr[index]!, this.priorityQueueArr[k]!) > 0) {
+        this.swap(index, k);
+        index = k;
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  private swap(i: number, j: number) {
+    if (i <= 0 || i > this.length) return;
+    if (j <= 0 || j > this.length) return;
+    const t = this.priorityQueueArr[i];
+    this.priorityQueueArr[i] = this.priorityQueueArr[j];
+    this.priorityQueueArr[j] = t;
+  }
+
+  public override contains(value: V): boolean {
+    for (let i = 1;i <= this.length;i ++) {
+      const v = this.priorityQueueArr[i];
+      if (this.comparator(v!, value) === 0) return true;
+    }
+    return false;
+  }
+
+  public override clear() {
+    this.priorityQueueArr = [void 0];
+    this.length = 0;
+  }
+
+  public override isEmpty(): boolean {
+    return this.size() === 0;
+  }
+
+  public override size(): number {
+    return this.length;
+  }
+}
+3. 数组（向量。
+abstract class Vector<T> {
+  abstract push_back(value: T): void;
+}
+4. 链表
+4.1 单链表
+4.1.1 带头节点
+暂时无法在飞书文档外展示此内容
+    https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/LinkedList/SinglyLinkedList.ts
+头 -> null
+头 -> 元素1 -> 元素2 -> 元素3 -> null
+4.1.2 非带头结点
+null
+元素1 -> null
+元素1 -> 元素2 -> 元素3 -> null
+4.2 双链表
+4.2.1 带头节点
+    https://github.com/iqseternal/rapid/blob/pre-main-react/packages/libs/structure/LinkedList/DoubleLinkedList.ts
+头 -> 元素1 -> 元素2 -> null
+null <- 头 <- 元素1 <- 元素2
+4.2.2 非带头结点
+null
+
+元素1 -> null
+null <- 元素1
+
+元素1 -> 元素2 -> null
+null <- 元素1 <- 元素2
+4.3 循环链表
+4.3.1 循环单链表
+4.3.2 循环双链表
+5. 树
+暂时无法在飞书文档外展示此内容
+declare interface TreeNode<V> {
+  value: V;
+
+  left: TreeNode<V>;
+  right: TreeNode<V>;
+}
+6. 堆
+堆（heap）是一种满足特定条件的完全二叉树。
+小顶堆（min heap）：任意节点的值 <= 其子节点的值。
+大顶堆（max heap）：任意节点的值  >=  其子节点的值。
+[图片]
+优先级队列就是堆的应用：基础数据结构与算法
+7. 图
+7.1 邻接表（散列表
+暂时无法在飞书文档外展示此内容
+const inputs = [
+  [1, 2, 3],
+  [1, 3, 2],
+  [2, 4, 3],
+  [2, 3, 2]
+] as const;
+
+function solution() {
+  const n = 4;
+
+  const head: number[] = new Array(n + 1).fill(-1);
+  const edge: number[] = [];
+  const next: number[] = [];
+  const ver: number[] = [];
+
+  // 边的数量
+  let index = 0;
+
+  for (let i = 0;i < inputs.length;i ++) {
+    const [x, y, cost] = inputs[i];
+    edge[index] = y, ver[index] = cost, next[index] = head[x], head[x] = index ++;
+  }
+
+  const start = 1, end = 4;
+  const flag: boolean[] = new Array(n + 1).fill(false);
+  let canArrive = false;
+
+  function walk(x: number) {
+    flag[x] = true;
+
+    if (x === end) {
+      canArrive = true;
+      return;
+    }
+    if (canArrive) return;
+
+    for (let index = head[x];index != -1 && edge[index] !== -1;index = next[index]) {
+
+      const target = edge[index];
+      const cost = ver[index];
+
+      if (flag[target] === false) {
+        console.log(`${x} => ${edge[index]}`);
+        walk(target);
+      }
+    }
+  }
+
+  walk(start);
+  console.log(`${canArrive ? '' : '不'}能够从点 ${start} 到达点 ${end}`);
+}
+
+solution();
+
+7.2 邻接矩阵
+暂时无法在飞书文档外展示此内容
+
+const inputs = [
+  [1, 2, 3],
+  [1, 4, 2],
+  [2, 4, 3],
+  [1, 3, 2]
+] as const;
+
+function solution() {
+
+  const n = 4;
+  const maps: number[][] = new Array(n + 1).fill(0).map(() => new Array(n + 1).fill(0))
+
+  for (let i = 0;i < inputs.length;i ++) {
+    const [x, y, v] = inputs[i];
+
+    maps[x][y] = v;
+    maps[y][x] = v; // 去掉这一行: 单向图
+  }
+
+  const start = 1, end = 4;
+  const flag = maps.map(() => false);
+
+  let canArrive = false;
+
+  function walk(x: number) {
+    flag[x] = true;
+    if (x === end) {
+      canArrive = true;
+      return;
+    }
+
+    if (canArrive) return;
+
+    for (let i = 1;i <= n;i ++) {
+      if (maps[x][i] !== 0 && flag[i] === false) {
+        walk(i);
+
+        if (canArrive) break;
+      }
+    }
+  }
+
+  walk(start);
+  console.log(`${canArrive ? '' : '不'}能够从点 ${start} 到达点 ${end}`);
+}
+
+solution();
+
+基本算法
+1. 数论
+1.1 质数
+function isPrimeNumber(value: number): boolean {
+  // i * i
+  for (let i = 2;i * i <= value;i ++) {
+    if (value % i === 0) {
+      return false;
+    }
+  }
+
+  return true;
+}
+  简单判别如上，但也确实如此，但如果有条件性：例如，在某个区间范围内需要非常重复的判断一个数是否是质数，如何解决？
+  如果数字较大一些，多轮的判别就会使得这种条件判别造成时间过长，因为每一次都需要去走 for 去除余数。
+
+  打表（如何获得某个范围内的质数集合？ 1-10000000 内。如果用上述方法, 那么运算次数太多了。
+  使用晒素数。利用质数规则，含有因数的数，是合数
+暂时无法在飞书文档外展示此内容
+
+const max = 10000000;
+
+const isPrime = new Array(max + 1).fill(true);
+const primeArr: number[] = [];
+
+function filterPrimeNumber() {
+  isPrime[1] = false;
+
+  for (let i = 2;i <= max;i ++) {
+    if (isPrime[i]) {
+      primeArr.push(i);
+    }
+
+    for (let j = 0;j < primeArr.length;j ++) {
+      if (i * primeArr[j] > max) break;
+      isPrime[i * primeArr[j]] = false;
+    }
+  }
+}
+
+filterPrimeNumber();
+
+console.log(primeArr);
+1.2 快速幂
+/**
+ *
+ * @param a
+ * @param b b >= 0
+ * @returns
+ */
+function binpow(a: number, b: number) {
+  let result = 1;
+  while (b > 0) {
+    if (b & 1) result *= a;
+    a *= a;
+    b = b >> 1;
+  }
+  return result;
+}
+
+console.log(binpow(2, 3));
+
+1.3 x是否2的整数幂
+  判断一个数是否是2的整数幂
+function solution(n: number) {
+  if (n !== ~~n) {
+    throw new Error('Input must be an integer');
+  }
+
+  while (n != 1) {
+    if ((n & 1) !== 0) {
+      return false;
+    }
+    n = n >> 1;
+  }
+
+  return true;
+}
+
+console.log(solution(1));
+console.log(solution(2));
+console.log(solution(3));
+console.log(solution(4));
+console.log(solution(8));
+console.log(solution(16));
+console.log(solution(13));
+console.log(solution(2.2));
+
+
+function solution(n: number) {
+  if (n !== ~~n) {
+    throw new Error('Input must be an integer');
+  }
+  return (n & (n - 1)) === 0;
+}
+
+console.log(solution(1));
+console.log(solution(2));
+
+console.log(solution(3));
+console.log(solution(4));
+console.log(solution(8));
+console.log(solution(16));
+console.log(solution(13));
+
+console.log(solution(2.2));
+2. 博弈论
+1. 摸牌问题
+暂时无法在飞书文档外展示此内容
+  谁能赢？
+const n = 5;
+
+if (n % 3 === 0) {
+  console.log('Cici');
+}
+else {
+  console.log('Kiki');
+}
+3. 排序
+3.1 冒泡
+  依次两两比较，如果满足条件就交换，每一次交换能够保证数组的最右端或者最左端为最大或者最小值。
+
+const arr = [2, 46, 43, 12, 12, 3];
+
+function sort(arr: number[]) {
+
+  for (let i = 0;i < arr.length - 1;i ++) {
+
+    for (let j = 0;j < arr.length - i -1;j ++) {
+
+      if (arr[j] > arr[j + 1]) {
+        let t = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = t;
+      }
+    }
+  }
+}
+
+sort(arr);
+
+console.log(arr);;
+
+3.2 快排
+  分治思想，就是把一个大的问题划分为可以直接解决的多个子问题，然后逐个解决这些子问题。
+  假设，数组为一个区间 ————————————————
+  如果有一个定值 x，让这个数组满足 ----------------- x --------------------
+  左侧区间都小于 x，右侧区间都大于 x，那么在宏观来说，区间1 < 区间2 这个整体区间来说就是有序的。
+  那么在逐个解决这两个子区间是否有序的问题，如果这些子区间被逐个递归划分，达到了区间单位长度为 1了，那么这个数组就是有序的了。
+const arr = [1, 2, 9, 3, 5, 4, 1, 12, 546, 1, 2, 9, 3, 5, 4, 1, 12, 546];
+
+function swap<T>(arr: T[], i: number, j: number) {
+  let t = arr[i];
+  arr[i] = arr[j];
+  arr[j] = t;
+}
+
+function quickSort<T>(arr: T[], start: number, end: number, compare: (a: T, b: T) => number) {
+  if (start >= end) return;
+  let i = start - 1, j = end + 1;
+  const x = arr[(start + end) >> 1];
+
+  while (i < j) {
+    do { i ++; } while (compare(x, arr[i]) > 0);
+    do { j --; } while (compare(arr[j], x) > 0);
+    if (i < j) swap(arr, i, j);
+  }
+
+  quickSort(arr, start, j, compare);
+  quickSort(arr, j + 1, end, compare);
+}
+
+quickSort(arr, 0, arr.length - 1, (a, b) => a - b);
+
+console.log(arr);
+3.3 归并
+  分治思想，但是这个思想为先把问题划分下去，逐层解决上来。
+  例如数组arr：先划分区间单位，划分到最小问题上，最小区间单位，也就是长度为1，那么
+  区间 ------------------------------------- 在每个最小单位上它是有序的，宏观上是无序的。
+  那么依次按照划分规则，回传合并。
+  例如：划分区间为  [1, 3, 4]  [2, 3, 5]
+  这两个区间，在其子区间内已经回传合并了，然后合并他们。
+  所以合并：[1,2,3,3,4,5] 然后这个区间为有序序列，直到回传到整个数组长度。
+const arr = [1, 2, 9, 3, 5, 4, 1, 12, 546, 1, 2, 9, 3, 5, 4, 1, 12, 546];
+
+function mergeSort<T>(arr: T[], start: number, end: number, compare: (a: T, b: T) => number) {
+  if (start >= end) return;
+
+  const mid = (start + end) >> 1;
+
+  mergeSort(arr, start, mid, compare);
+  mergeSort(arr, mid + 1, end, compare);
+
+  let res: T[] = [];
+  let i = start, j = mid + 1;
+  while (i <= mid && j <= end) {
+    if (compare(arr[i], arr[j]) <= 0) {
+      res.push(arr[i ++]);
+    }
+    else {
+      res.push(arr[j ++]);
+    }
+  }
+  while (i <= mid) res.push(arr[i ++]);
+  while (j <= end) res.push(arr[j ++]);
+  for (let i = 0;i < res.length;i ++) arr[start + i] = res[i];
+}
+
+mergeSort(arr, 0, arr.length - 1, (a, b) => a - b);
+
+console.log(arr);
+4. 前缀/后缀 和 差分
+4.1 前缀和
+  前缀和数组，数组每一项存储原数组下标位置与0下标数组位置之间的和。
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+
+function solution() {
+  let fix = 0;
+  const and = arr.map(x => {
+    fix += x;
+    return fix;
+  });
+
+  const searchAnd = (start: number, end: number) => {
+    const safeArea = (index: number, defaultIndex: number) => {
+      if (index < 0 || index >= arr.length) return defaultIndex;
+      return index;
+    }
+
+    const safeStart = safeArea(start - 1, 0), safeEnd = safeArea(end - 1, arr.length - 1);
+
+    return and[safeEnd] - and[safeStart] + arr[safeStart];
+  }
+
+  console.log(searchAnd(1, 1));
+  console.log(searchAnd(1, 3));
+  console.log(searchAnd(3, 7));
+}
+
+solution();
+4.2 后缀和
+4.3 差分
+const arr = [1, 2, 2, 1, 2, 1];
+
+function solution() {
+  // 差分序列
+  const finite = arr.map((x, index) => {
+    if (index === 0) return x;
+    return x - arr[index - 1];
+  });
+
+  console.log(finite);
+}
+
+solution();
+  看起来好像没什么用对吧，上个例子，如上原序列，[1, 2, 2, 1, 2, 1]，现在要进行多次操作，
+  每次会给定区间范围：x -> y, 然后让这个区间内的每一个数都加上 v。
+  问进行 n 次操作后，原序列应该变成了什么样。
+
+  如果用老实的办法，每次都按照操作数对区间元素进行 +v：
+  - 如果 x -> y 区间够长，那么每一次都需要遍历  y-x+1 个元素，也就需要 O(y-x+1), O(n)
+  - 如果 操作次数多，那么会经历多次，如果每次的区间还足够长, 那么足以媲美 O(n^2)
+
+  如下利用差分：
+  1. 得出差分 O(n)
+  2. 走操作 O(n)
+  3. 还原数据 O(n)
+  总的 O(n)
+
+const arr = [1, 2, 2, 1, 2, 1];
+
+// 2 3 3 1 2 1
+// 2 3 3 2 3 2
+// 3 4 4 3 4 3
+
+const operators = [
+  [1, 3, 1],
+  [3, 5, 1],
+  [1, 6, 1]
+] as const;
+
+function solution() {
+  // 差分序列
+  const finite: number[] = arr.map((x, index) => {
+    if (index === 0) return x;
+    return x - arr[index - 1];
+  });
+
+  for (let i = 0;i < operators.length;i++) {
+    const [start, end, v] = operators[i];
+    if (start - 1 >= 0) finite[start - 1] += v;
+    if (end <= finite.length - 1) finite[end] -= v;
+  }
+
+  let fix = 0;
+  const res = finite.map((x, index) => {
+    fix += x;
+    return fix;
+  })
+
+  console.log(res);
+}
+
+solution();
+
+5. 二分查找
+在有序序列中，查找某个数的下标位置，或者查找它存不存在。
+
+const arr = [1, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 9, 9, 12];
+
+// 查找 x 第一次出现所在下标, 不存在返回 -1
+function find(x: number): number {
+  let i = 0, j = arr.length - 1;
+
+  while (i < j) {
+    const mid = (i + j) >> 1;
+    if (arr[mid] === x) return mid;
+    if (arr[mid] < x) i = mid + 1;
+    else j = mid;
+  }
+  if (arr[i] === x) return i;
+  return -1;
+}
+
+console.log(find(12), arr[find(12)]);
+6. 递归问题
+6.1 全排列问题
+  全排列问题：有字符 a,b,c,d,e,f,g 需要输出其全排列（可选择排列数
+const arr = ['a', 'b', 'c', 'd'];
+const results: string[] = [];
+
+function arrange(num: number) {
+  const flag = new Array(arr.length).fill(false);
+  const tmp = new Array(num).fill(void 0);
+
+  function rank(position: number) {
+    if (position >= num) {
+      const str = tmp.join('');
+      results.push(str);
+      return;
+    }
+
+    for (let i = 0;i < arr.length;i ++) {
+      if (flag[i]) continue;
+
+      tmp[position] = arr[i];
+      flag[i] = true;
+
+      rank(position + 1);
+
+      tmp[position] = void 0;
+      flag[i] = false;
+    }
+  }
+
+  rank(0);
+}
+
+arrange(3);
+
+console.log(results);
+
+6.2 组合问题
+  组合问题：有字符 a,b,c,d,e,f,g 需要输出其组合 （可选择组合数量
+const arr = ['a', 'b', 'c', 'd'];
+const results: string[] = [];
+
+function combination(num: number) {
+  const flag = new Array(arr.length).fill(false);
+  const tmp = new Array(num).fill(void 0);
+
+  function rank(position: number, n: number) {
+    if (position >= num) {
+      const str = tmp.join('');
+      results.push(str);
+      return;
+    }
+
+    for (let i = n;i < arr.length;i ++) {
+      if (flag[i]) continue;
+
+      tmp[position] = arr[i];
+      flag[i] = true;
+
+      rank(position + 1, i + 1);
+
+      tmp[position] = void 0;
+      flag[i] = false;
+    }
+  }
+
+  rank(0, 0);
+}
+
+combination(3);
+
+console.log(results);
+
+7. 遍历
+7.1 深度优先遍历 dfs
+1. 树
+1. 前序遍历
+暂时无法在飞书文档外展示此内容
+///        3
+///      /   \
+///    2       5
+///   / \     / \
+///  1   4   6   7
+interface Tree<T> {
+  value: T;
+  left?: Tree<T>;
+  right?: Tree<T>;
+}
+
+const tree: Tree<number> = {
+  value: 3,
+  left: { value: 2, left: { value: 1 }, right: { value: 4 } },
+  right: { value: 5, left: { value: 6 }, right: { value: 7 } }
+}
+
+let firstStr = ``, midStr = ``, endStr = ``;
+
+function first<T extends Tree<any>>(tree: T) {
+  if (tree.left) first(tree.left);
+  firstStr += `${tree.value}, `;
+  if (tree.right) first(tree.right);
+}
+
+first(tree);
+console.log(firstStr);
+
+2. 中序遍历
+///        3
+///      /   \
+///    2       5
+///   / \     / \
+///  1   4   6   7
+interface Tree<T> {
+  value: T;
+  left?: Tree<T>;
+  right?: Tree<T>;
+}
+
+const tree: Tree<number> = {
+  value: 3,
+  left: { value: 2, left: { value: 1 }, right: { value: 4 } },
+  right: { value: 5, left: { value: 6 }, right: { value: 7 } }
+}
+
+let firstStr = ``, midStr = ``, endStr = ``;
+
+function mid<T extends Tree<any>>(tree: T) {
+  midStr += `${tree.value}, `;
+  if (tree.left) mid(tree.left);
+  if (tree.right) mid(tree.right);
+}
+
+mid(tree);
+console.log(midStr);
+
+3. 后序遍历
+///        3
+///      /   \
+///    2       5
+///   / \     / \
+///  1   4   6   7
+interface Tree<T> {
+  value: T;
+  left?: Tree<T>;
+  right?: Tree<T>;
+}
+
+const tree: Tree<number> = {
+  value: 3,
+  left: { value: 2, left: { value: 1 }, right: { value: 4 } },
+  right: { value: 5, left: { value: 6 }, right: { value: 7 } }
+}
+
+let firstStr = ``, midStr = ``, endStr = ``;
+
+function end<T extends Tree<any>>(tree: T) {
+  if (tree.left) end(tree.left);
+  if (tree.right) end(tree.right);
+  endStr += `${tree.value}, `;
+}
+
+end(tree);
+console.log(endStr);
+
+2. 图
+2.1 二维矩阵点图
+    判断某个地图能否到达终点，map: 二维空间, 需要从 (0, 0) 到 (n - 1,m - 1) 点，需要判断是否能够到达
+const map = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0],
+  [1, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1],
+  [0, 1, 0, 0, 0],
+];
+
+function shortestPath(): number {
+  const n = map.length, m = map[n - 1].length;
+
+  const paths: number[][] = new Array(map.length);
+  const rounds: [number, number][][] = new Array(map.length); // 路径
+
+  for (let i = 0; i < map.length; i ++) {
+    paths[i] = new Array(map[i].length);
+    paths[i].fill(-1); // -1 表示不可达
+    rounds[i] = new Array(map[i].length);
+    for (let j = 0;j < rounds[i].length;j ++) rounds[i][j] = [-1, -1];
+  }
+
+  const dx = [0, 1, -1, 0], dy = [1, 0, 0, -1];
+  function checker(x: number, y: number): boolean {
+    if (x < 0 || x >= n || y < 0 || y >= m) return false;
+    return map[x][y] !== 1;
+  }
+
+  const que: [number, number][] = [];
+
+  if (map[0][0] === 0) {
+    que.push([0, 0]);
+    paths[0][0] = 0;
+  }
+
+  while (que.length !== 0) {
+    const [x, y] = que.shift();
+
+    for (let i = 0;i < dx.length && i < dy.length;i ++) {
+      const tx = x + dx[i], ty = y + dy[i];
+
+      if (checker(tx, ty)) {
+        if (paths[tx][ty] === -1) {
+          paths[tx][ty] = paths[x][y] + 1;
+          rounds[tx][ty] = [x, y];
+          que.push([tx, ty]);
+        }
+
+        if (paths[tx][ty] > paths[x][y] + 1) {
+          paths[tx][ty] = paths[x][y] + 1;
+          rounds[tx][ty] = [x, y];
+        }
+      }
+    }
+  }
+
+  return paths[n - 1][m - 1];
+}
+
+console.log(shortestPath()); // true
+2.2 邻接矩阵
+    基础数据结构与算法
+2.3 邻接表
+    基础数据结构与算法
+7.2 广度优先遍历 bfs
+  map: 二维空间, 需要从 (0, 0) 到 (n - 1,m - 1) 点，需要知道最短需要多少步数 （可以涵盖路径）
+
+
+const map = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0],
+  [1, 0, 0, 0, 0],
+  [0, 0, 0, 1, 1],
+  [0, 1, 0, 0, 0],
+];
+
+function shortestPath(): number {
+  const n = map.length, m = map[n - 1].length;
+
+  const paths: number[][] = new Array(map.length);
+
+  for (let i = 0; i < map.length; i ++) {
+    paths[i] = new Array(map[i].length);
+    paths[i].fill(-1); // -1 表示不可达
+  }
+
+  const dx = [0, 1, -1, 0], dy = [1, 0, 0, -1];
+  function checker(x: number, y: number): boolean {
+    if (x < 0 || x >= n || y < 0 || y >= m) return false;
+    return map[x][y] !== 1;
+  }
+
+  const que: [number, number][] = [];
+
+  if (map[0][0] === 0) {
+    que.push([0, 0]);
+    paths[0][0] = 0;
+  }
+
+  while (que.length !== 0) {
+    const [x, y] = que.shift();
+
+    for (let i = 0;i < dx.length && i < dy.length;i ++) {
+      const tx = x + dx[i], ty = y + dy[i];
+
+      if (checker(tx, ty)) {
+        if (paths[tx][ty] === -1) {
+          paths[tx][ty] = paths[x][y] + 1;
+          que.push([tx, ty]);
+        }
+
+        paths[tx][ty] = Math.min(paths[tx][ty], paths[x][y] + 1);
+      }
+    }
+  }
+
+  return paths[n - 1][m - 1];
+}
+
+console.log(shortestPath()); // true
+7.3 最短路
+暂时无法在飞书文档外展示此内容
+    采用图遍历（上述遍历方式遍历即可，在遍历到达终点的时候，同时记录最小值就行）
+7.3.1 djkstra
+import { PriorityQueue } from '@rapid/libs';
+// 优先级队列，需要自行实现，js 没有现成的。不然去找三方库也可以
+
+const inputs = [
+  [1, 2, 3],
+  [1, 4, 7],
+  [2, 4, 3],
+  [1, 3, 2],
+  [3, 4, 2]
+] as const;
+
+function solution() {
+
+  const n = 4;
+  const maps: number[][] = new Array(n + 1).fill(0).map(() => new Array(n + 1).fill(0))
+
+  for (let i = 0;i < inputs.length;i ++) {
+    const [x, y, v] = inputs[i];
+    maps[x][y] = v;
+  }
+
+  const paths: number[] = new Array(n + 1).fill(Infinity);
+  const sure: boolean[] = new Array(n + 1).fill(false);
+
+  const que = new PriorityQueue<{ j: number;value: number; }>();
+  que.setComparator((node1, node2) => {
+    return node1.value - node2.value;
+  })
+
+  paths[1] = 0;
+  que.push({ j: 1, value: 0 });
+
+  while (!que.isEmpty()) {
+    const top = que.pop();
+    const { j, value } = top;
+
+    if (sure[j]) continue;
+    sure[j] = true;
+
+    for (let y = 1;y <= n;y ++) {
+      // 有路
+      if (maps[j][y] !== 0) {
+        const v = maps[j][y];
+
+        if (paths[j] + v < paths[y]) {
+
+          paths[y] = paths[j] + v;
+
+          que.push({ j: y, value: paths[y] });
+        }
+      }
+    }
+  }
+
+  console.log(paths[n]);
+}
+
+solution();
+
+8. 并查集
+此类算法要和具体的问题结合理解。例如：找亲戚问题。
+有一群人，a - b 是亲戚，b - c 是亲戚, 那么 a - c 就是亲戚。
+那么给出一堆人的两两关系, 要求随机的查找 某两个人是否是亲戚。
+暂时无法在飞书文档外展示此内容
+// 亲戚关系表
+const listOfRelatives: number[] = [];
+// 表长度, 表索引
+let index = 0;
+
+// 通过id标识查找这个人在 关系表中的下标位置
+const idToIndexMap = new Map<string, number>();
+
+// 关系网,
+const arr = [
+  ['a', 'b', 'c'],
+  ['c', 'g', 'f'],
+  ['j', 'k'],
+  ['l', 'm', 'p'],
+  ['p', 'e'],
+  ['e', 'j']
+];
+
+function add(a: string) {
+  if (idToIndexMap.has(a)) return idToIndexMap.get(a)!;
+  idToIndexMap.set(a, index);
+  listOfRelatives[index] = index;
+  index ++;
+  return index - 1;
+}
+
+function find(index: number): number {
+  if (listOfRelatives[index] !== index) listOfRelatives[index] = find(listOfRelatives[index]);
+  return listOfRelatives[index];
+}
+
+function findChar(char: string): number {
+  const index = add(char);
+  return find(index);
+}
+
+function contain(a: string, b: string) {
+  listOfRelatives[findChar(a)] = findChar(b);
+}
+
+function init() {
+  arr.forEach(list => {
+    for (let i = 0;i < list.length - 1;i ++) {
+      contain(list[i], list[i + 1]);
+    }
+  })
+}
+
+init();
+
+console.log('find', findChar('a') === findChar('e'));
+9. 贪心
+基础数据结构与算法dijkstra就是一个典型的贪心算法应用
+10. 动态规划
+10.1 01背包问题
+  problem：https://www.acwing.com/problem/content/2/
+  贪心是不能解决此类问题的。
+  诸如：贪心解决此类问题的思路为，一直拿取性价比最高的物品，直到装不下。但是可能会出现，拿两个物品组合起来性价比堪比最高性价比的一个物品的情况，那么贪心就出问题了。
+
+  如何动态规划？动态规划也就是去找状态转移方程。
+4 5 // 总共有 4件物品，背包体积为 5
+1 2
+2 4
+3 4
+4 5
+  1. 拿一件物品，那么当然就是有容量的才可以拿。第一件物品的容量 1，价值 2
+物品 i/体积 j
+0
+1
+2
+3
+4
+5
+1
+0
+2
+2
+2
+2
+2
+  如果 背包体积 > 物品体积，背包价值 = 物品价值
+  如果 背包体积为 j < 物品体积, 那么背包价值 = 背包[i][j - 1] 的价值
+  2. 拿第二件物品，此时背包里面可能已经放置了物品。此时需要取判断。第二件物品容量 2，价值 4
+物品 i/体积 j
+0
+1
+2
+3
+4
+5
+1
+0
+2
+2
+2
+2
+2
+2
+0
+2
+4
+6
+6
+6
+  在选择当前背包是否放入当前物品，需要考虑什么？ 该物品是否可以放得下，放下该物品价值是否更高？
+  该物品是否可以放得下：j >= 物品体积 保证可以放，否则放不下那就只能是背包 [i - 1][j] 的价值 (上一次迭代的价值)
+  放下该物品价值是否更高：max(原本的背包价值, 放下该物品的后背包的价值)
+  max(背包[i - 1][j], 背包[i - 1][j - 物品体积] + 物品价值)   , 第二项为 在背包能够容纳当前物品时的最大价值加上当前物品的价值
+  获得最大值后，就是该物品的最大价值。
+  3. 拿第三/四件物品，第三件容量为 3，价值为 4
+物品 i/体积 j
+0
+1
+2
+3
+4
+5
+1
+0
+2
+2
+2
+2
+2
+2
+0
+2
+4
+6
+6
+6
+3
+0
+2
+4
+6
+6
+8
+4
+0
+2
+4
+6
+6
+8
+  所以最大价值就是 8.
+  按照逻辑推理, 设定 f[N][M] 为背包，v[N] 为物品体积，w[N] 为物品价值
+  即状态转移方程：
+  f[i][j] = f[i - 1][j]
+  f[i][j] = max(f[i - 1][j], f[i - 1][j - v[i]] + w[i])
+  二维数组
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 1010;
+
+int v[N], w[N];
+int f[N][N];
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    for (int i = 1;i <= n;i ++) cin >> v[i] >> w[i];
+
+    for (int i = 1;i <= n;i ++) {
+        for (int j = 1;j <= m;j ++) {
+
+            if (j >= v[i]) {
+                f[i][j] = max(f[i - 1][j], f[i - 1][j - v[i]] + w[i]);
+            }
+            else {
+                f[i][j] = f[i - 1][j];
+            }
+
+        }
+    }
+
+    cout << f[n][m] << endl;
+    return 0;
+}
+
+  上面的解决用到了二维数组，但是在推导过程中不难发现：当背包体积为 j 的时候，f[i][j] 的状态推导与 f[i][j - 1], f[i][j - 2], f[i][j - 3]....无关，如果只用一个一维数组，每次拿物品重复迭代这个数组，那么也是可以的。
+
+  j的方向需要逆序，因为如果正序迭代背包，那么后面的元素会被前面的影响。
+
+  一维数组版本 (滚动数组
+#include <bits/stdc++.h>
+
+using namespace std;
+
+const int N = 1010;
+
+int v[N], w[N];
+int f[N];
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+
+    for (int i = 1;i <= n;i ++) cin >> v[i] >> w[i];
+
+    for (int i = 1;i <= n;i ++) {
+        for (int j = m;j >= v[i];j --) {
+            f[j] = max(f[j], f[j - v[i]] + w[i]);
+        }
+    }
+
+    cout << f[m] << endl;
+    return 0;
+}
+10.2 完全背包问题
+  与 01 背包问题一致，也就是物品可以无限使用，那么就在放置物品的时候，判断是否可以多次放置该物品即可。然后一次性放置尽可能多的物品，但是状态转移方程基本一致。
+  K 为放置同一件物品 k 次
+  f[i][j] = f[i - 1][j]
+  f[i][j] = max(f[i - 1][j], f[i - 1][j - v[i] * k] + w[i] * k)
+10.3 多重背包问题
+10.3.1 数据量小
+    对于物品有具体的数量，那么可以把同一种物品看作是多个物品。
+    例如：1号物品 体积 2，价值 3，数量 3
+    那么可以放置 3 次一号物品作为不同的物品进行 01背包问题处理。
+10.3.2 数据量大
+    如果数据量大，利用将多重背包化解为 01 背包问题求解时，可能会导致超时情况出现。那么需要优化。
+    其根本思路不变，但是进行化解的时候需要进行特定处理。
+    例如：
+    3 个物品，我们可以纳入 2 个物品和 1 个物品
+    7 个物品，我们可以纳入 4 个物品和 2 个物品和 1个物品
+    6 个物品，我们可以纳入 3 个物品和 2 个物品和1个物品
+    为什么这么做？为什么这样划分：
+    因为把 7 划分为 4，2，1
+    可以利用 4，2，1组合出 1~7 中的所有数字。
+    1，
+    2，
+    3：2 + 1，
+    4，
+    5：4 + 1，
+    6：4 + 2，
+    7：4 + 2 + 1
+
+    为什么？？那么去分析这个数的二进制：7 => 111
+    我们把 111 分成了 100, 10, 1 显而易见可以组合出自己想要的任何数字。
+    6 => 110 => 11,10,1
+
+
+
+
+```
