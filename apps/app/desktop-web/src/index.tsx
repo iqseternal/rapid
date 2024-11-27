@@ -14,9 +14,7 @@ app.installAll();
 const rootContainer = document.getElementById('root')!;
 
 ReactDOM.createRoot(rootContainer).render(
-
   <StrictMode>
     <RapidApp />
-
   </StrictMode>
 );

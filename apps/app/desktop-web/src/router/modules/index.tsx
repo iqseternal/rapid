@@ -27,20 +27,23 @@ export const [
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
   path: `/workbenches`,
-  redirect: 'home',
+  redirect: 'workstation',
   component: <WorkspaceLayout />,
   children: [
-    {
-      name: 'WorkbenchesHome',
-      path: '/home',
-      meta: { title: '首页', icon: 'HomeOutlined' },
-      component: lazy(() => import('@pages/Workspace/Home'))
-    },
     {
       name:  'WorkbenchesWorkstation',
       path: '/workstation',
       meta: { title: '工作区', icon: 'FileWordOutlined' },
       component: lazy(() => import('@pages/Workspace/Workbenches'))
+    },
+
+
+
+    {
+      name: 'WorkbenchesHome',
+      path: '/home',
+      meta: { title: '首页', icon: 'HomeOutlined' },
+      component: lazy(() => import('@pages/Workspace/Home'))
     },
     {
       name: 'Skin',

@@ -2,7 +2,6 @@ import { AntdMenuInstanceType, convertMenuInstance, type MenuInstanceType } from
 
 import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
 import { toMakeZustandHijack } from '@rapid/libs-web';
-import { windowDevtool } from '../../libs/actions';
 
 const { makeZustandHijack } = toMakeZustandHijack({
   beforeHijackCovert<T extends MenuInstanceType>(target: T) {
@@ -342,7 +341,7 @@ export const headerHelpMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
         type: 'item',
         label: '打开开发人员工具',
         onClick: () => {
-          windowDevtool(true, { mode: 'detach' });
+          window.ipcActions.windowDevtool(true, { mode: 'detach' });
         }
       },
       {

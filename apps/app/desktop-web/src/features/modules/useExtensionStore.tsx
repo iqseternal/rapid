@@ -18,7 +18,6 @@ import {
   REQ_METHODS
 } from '@/api';
 
-import { AppStore } from '../../libs/actions';
 import { bus } from '../../libs/events';
 
 export interface Extension {

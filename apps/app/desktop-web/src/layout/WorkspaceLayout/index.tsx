@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Outlet, useOutlet, useLocation, useOutletContext } from 'react-router-dom';
 import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 'react-transition-group';
 import { MaxScreen, MaxScreenWidth, Flex, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth, FullSize } from '@rapid/libs-web/styled';
-import { windowResizeAble, windowResetCustomSize, windowShow, windowRelaunch, WindowPopup } from '../../libs/actions';
 import { useFadeIn } from '../../libs/hooks';
 import { NavigationBar } from './cpts';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
@@ -48,8 +47,8 @@ const WorkbenchesView = memo(() => {
  */
 const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
   useFadeIn(async () => Promise.allSettled([
-    windowResizeAble({ resizeAble: true }),
-    windowResetCustomSize({ type: 'mainWindow' })
+    window.ipcActions.windowResizeAble({ resizeAble: true }),
+    window.ipcActions.windowResetCustomSize({ type: 'mainWindow' })
   ]));
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);

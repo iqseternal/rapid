@@ -1,5 +1,4 @@
 import { classnames } from '@rapid/libs-web/common';
-import { windowClose, windowDevtool, windowMin, windowOpen, windowReduction, windowWorkAreaSize } from '../../libs/actions';
 import { Subfield } from '@rapid/libs-web/components';
 import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, memo, useState } from 'react';
@@ -158,7 +157,7 @@ export const Control = memo((props: ControlProps) => {
   const isFullSize = windowInnerSize.innerWidth === normalState.workAreaSize.width && windowInnerSize.innerHeight === normalState.workAreaSize.height;
 
   useAsyncLayoutEffect(async () => {
-    const [err, res] = await toPicket(windowWorkAreaSize());
+    const [err, res] = await toPicket(window.ipcActions.windowWorkAreaSize());
     if (err) return;
 
     normalState.workAreaSize = res;
@@ -181,16 +180,16 @@ export const Control = memo((props: ControlProps) => {
           />
         </>}
 
-        {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => windowDevtool(true, { mode: 'detach' })} />}
-        <Widget icon='LineOutlined' tipText='最小化' onClick={() => windowMin()} />
-        {!isDialog && !isPane && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => windowReduction()} />}
+        {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => window.ipcActions.windowDevtool(true, { mode: 'detach' })} />}
+        <Widget icon='LineOutlined' tipText='最小化' onClick={() => window.ipcActions.windowMin()} />
+        {!isDialog && !isPane && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => window.ipcActions.windowReduction()} />}
         <Widget
           icon='CloseOutlined'
           tipText='关闭'
           tipAttrs={{
             placement: 'leftBottom'
           }}
-          onClick={() => windowClose()}
+          onClick={() => window.ipcActions.windowClose()}
         />
       </>}
     </Subfield.SubfieldFixed>

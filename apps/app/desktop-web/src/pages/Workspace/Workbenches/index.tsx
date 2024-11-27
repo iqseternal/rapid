@@ -1,32 +1,59 @@
-import { memo } from 'react';
-import { Card } from 'antd';
+import { memo, useEffect } from 'react';
+import { Tldraw } from 'tldraw';
+import { FullSize } from '@rapid/libs-web';
+import { polotnoMutations, usePolotnoStore } from '@/features';
+import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog } from '@/tldraw';
 
-import { useSetState, useRequest } from '@rapid/libs-web';
-import { toPicket } from '@rapid/libs';
-import { windowWorkAreaSize } from '../../../libs/actions';
+import './tldraw.scss';
 
 export const Workbenches = memo(() => {
+  const tlShapes = usePolotnoStore(store => store.tlShapeUtils);
+	const tlTools = usePolotnoStore(store => store.tlTools);
+	const tlUiOverrides = usePolotnoStore(store => store.tlUiOverrides);
+	const tlComponents = usePolotnoStore(store => store.tlComponents);
 
-  const [state, setState] = useSetState({
-    name: 1,
-    age: 18
-  })
+	useEffect(() => {
+		const unregisterBrush = polotnoMutations.registerComponent('Brush', Brush);
+		const unregisterScribble = polotnoMutations.registerComponent('Scribble', Scribble);
+		const unregisterSnapIndicator = polotnoMutations.registerComponent('SnapIndicator', SnapIndicator);
+		const unregisterToolbar = polotnoMutations.registerComponent('Toolbar', Toolbar);
+		const unregisterInFrontOfTheCanvas = polotnoMutations.registerComponent('InFrontOfTheCanvas', InFrontOfTheCanvas);
+		const unregisterKeyboardShortcutsDialog = polotnoMutations.registerComponent('KeyboardShortcutsDialog', KeyboardShortcutsDialog);
 
-  return (
-    <Card
-      onClick={() => {
-        setState({
-          name: state.name + 1
-        })
-      }}
-    >
-      {state.name}
+		const unregisterShapeList = polotnoMutations.registerUiOverride('tools', tools);
 
+		const unregisterStickerTool = polotnoMutations.registerTool(StickerTool);
 
-      <div>
-        {state.age}
-      </div>
-    </Card>
+		const unregisterErrorShapeUtil = polotnoMutations.registerShapeUtil(ErrorShapeUtil);
+
+		return () => {
+			unregisterBrush();
+			unregisterScribble();
+			unregisterSnapIndicator();
+			unregisterToolbar();
+			unregisterInFrontOfTheCanvas();
+			unregisterKeyboardShortcutsDialog();
+
+			unregisterShapeList();
+
+			unregisterStickerTool();
+
+			unregisterErrorShapeUtil();
+		}
+	}, []);
+
+	return (
+		<FullSize>
+      <Tldraw
+        shapeUtils={tlShapes}
+        tools={tlTools}
+        initialState="sticker"
+        overrides={tlUiOverrides}
+        components={tlComponents}
+        // assetUrls={customAssetUrls}
+        isShapeHidden={(s) => !!s.meta.hidden}
+      />
+    </FullSize>
   )
 })
 

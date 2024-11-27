@@ -4,6 +4,9 @@ import { isString } from '@rapid/libs';
 
 /**
  * 信息打印服务
+ *
+ * 此服务 两个进程都在使用, 需要使用兼容的写法
+ *
  */
 export class PrinterService {
   private static readonly PrintType = {

@@ -1,6 +1,5 @@
 import { FullSize, FullSizeWidth, classnames, useAsyncEffect } from '@rapid/libs-web';
 import { commonStyles } from '@scss/common';
-import { windowDevtool, windowShow } from '../../../libs/actions';
 import { memo } from 'react';
 
 import Header from '@components/Header';
@@ -19,9 +18,8 @@ export const WorkbenchesToolbar = memo(() => {
   }
 
   useAsyncEffect(async () => {
-    await windowShow({ show: true });
+    await window.ipcActions.windowShow({ show: true });
     // await windowDevtool(true, { mode: 'detach' });
-
   }, []);
 
   return <FullSize

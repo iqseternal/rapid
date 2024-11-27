@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue } from 'tldraw'
+import { memo, useRef, useState } from 'react'
+import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue, type TLComponents, useTransform, toDomPrecision, DefaultKeyboardShortcutsDialogContent, useIsToolSelected, TldrawUiMenuItem, DefaultToolbarContent, DefaultToolbar, useTools, DefaultKeyboardShortcutsDialog, type TLUiOverrides, type TLUiAssetUrlOverrides } from 'tldraw'
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
 import './index.scss';
@@ -154,26 +154,12 @@ function getShapeName(editor: Editor, shapeId: TLShapeId) {
 	)
 }
 
-import { StateNode } from 'tldraw'
-
-const OFFSET = 12
-export class StickerTool extends StateNode {
-	static override id = 'sticker'
-
-	override onEnter() {
-		this.editor.setCursor({ type: 'cross', rotation: 0 })
-	}
-
-	override onPointerDown() {
-		const { currentPagePoint } = this.editor.inputs
-		this.editor.createShape({
-			type: 'text',
-			x: currentPagePoint.x - OFFSET,
-			y: currentPagePoint.y - OFFSET,
-			props: { text: '❤️' },
-		})
-	}
+export const customAssetUrls: TLUiAssetUrlOverrides = {
+	icons: {
+		// 'heart-icon': '/heart-icon.svg',
+	},
 }
+
 
 
 
@@ -249,23 +235,15 @@ export const ContextToolbarComponent = track(() => {
 })
 
 
-import { BaseBoxShapeUtil, TLBaseShape } from 'tldraw'
 
-export type ErrorShape = TLBaseShape<'error', { w: number; h: number; message: string }>
 
-/**
- * 处理误差错误
- */
-export class ErrorShapeUtil extends BaseBoxShapeUtil<ErrorShape> {
-	static override type = 'error' as const
 
-	getDefaultProps() {
-		return { message: 'Error!', w: 100, h: 100 }
-	}
-	component(shape: ErrorShape) {
-		throw new Error(shape.props.message)
-	}
-	indicator() {
-		throw new Error(`Error shape indicator!`)
-	}
-}
+
+
+
+
+
+
+
+
+

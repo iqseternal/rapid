@@ -1,6 +1,4 @@
-
 import { CONFIG, IS_BROWSER } from '@rapid/config/constants';
-import { windowShow, windowReload, windowRelaunch } from '../actions';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toPicket } from '@rapid/libs';
 
@@ -40,13 +38,13 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
       if (err) {
         console.dir(err);
         onError(err);
-        return windowShow({ show: true }).catch(onError);
+        return window.ipcActions.windowShow({ show: true }).catch(onError);
       }
     }
     if (IS_BROWSER) return;
 
     setTimeout(async () => {
-      windowShow({ show: true }).catch(onError);
+      window.ipcActions.windowShow({ show: true }).catch(onError);
     }, waitTimer);
   }, []);
 }
@@ -62,6 +60,6 @@ export async function useFadeOut(callback?: () => (void | Promise<any>), options
     }
   } = options ?? {};
 
-  if (!IS_BROWSER) await windowShow({ show: false }).catch(onError);
+  if (!IS_BROWSER) await window.ipcActions.windowShow({ show: false }).catch(onError);
   callback && Promise.resolve(callback())?.catch(onError);
 }

@@ -2,6 +2,8 @@ export * from './common';
 
 export * from './filters';
 
+export * from './bus';
+
 export * from './hooks';
 
 export * from './router';

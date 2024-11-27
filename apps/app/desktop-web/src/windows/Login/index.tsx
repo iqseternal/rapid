@@ -3,7 +3,6 @@ import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '../../libs/hooks';
 import { useNavigate } from 'react-router-dom';
-import { windowResizeAble, windowSetPosition, windowSetSize } from '../../libs/actions';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toPicket } from '@rapid/libs';
@@ -61,9 +60,9 @@ export const Login = memo(() => {
 
 
   useFadeIn(async () => {
-    await windowSetSize({ width: 850, height: 550 });
-    await windowResizeAble({ resizeAble: false });
-    if (IS_PROD) await windowSetPosition({ x: 'center', y: 'center' });
+    await window.ipcActions.windowSetSize({ width: 850, height: 550 });
+    await window.ipcActions.windowResizeAble({ resizeAble: false });
+    if (IS_PROD) await window.ipcActions.windowSetPosition({ x: 'center', y: 'center' });
     await useFadeOut(async () => {
       setAccessToken('1111');
       const { workbenchesRoute } = retrieveRoutes();

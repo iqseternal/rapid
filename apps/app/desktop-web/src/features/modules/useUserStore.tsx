@@ -1,4 +1,3 @@
-import { AppStore } from '../../libs/actions';
 import { loginReq, getUserinfoReq, UserinfoResponse, logoutReq } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
 import { toPicket, asynced, RPromiseLike } from '@rapid/libs';
@@ -25,7 +24,7 @@ export const useUserStore = create<UserStore>()(persist(immer((set, get, store) 
  * 获得用户的 AccessToken
  */
 export const getAccessToken = async () => {
-  const accessToken = await AppStore.get('accessToken');
+  const accessToken = await window.stores.appStore.get('accessToken');
   //
   if (accessToken !== useUserStore.getState().accessToken) return Promise.reject('');
 
@@ -33,7 +32,7 @@ export const getAccessToken = async () => {
 }
 
 export const setAccessToken = async (accessToken: string) => {
-  const [err, res] = await toPicket(AppStore.set('accessToken', accessToken));
+  const [err, res] = await toPicket(window.stores.appStore.set('accessToken', accessToken));
   if (err) return Promise.reject(err);
 
   useUserStore.setState({ accessToken });
