@@ -16,7 +16,7 @@ export const workbenchesToolRoute = makeRoute({
     {
       name: 'WorkbenchesToolbar',
       path: '/toolbar',
-      component: lazy(() => import('@/windows/Workbenches/Toolbar'))
+      component: lazy(() => import('@/pages/Workbenches/Toolbar'))
     }
   ]
 })

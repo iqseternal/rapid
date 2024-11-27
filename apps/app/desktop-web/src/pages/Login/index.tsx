@@ -60,8 +60,11 @@ export const Login = memo(() => {
 
 
   useFadeIn(async () => {
-    await window.ipcActions.windowSetSize({ width: 850, height: 550 });
-    await window.ipcActions.windowResizeAble({ resizeAble: false });
+    await Promise.allSettled([
+      window.ipcActions.windowSetSize({ width: 850, height: 550 }),
+      window.ipcActions.windowResizeAble({ resizeAble: false })
+    ]);
+
     if (IS_PROD) await window.ipcActions.windowSetPosition({ x: 'center', y: 'center' });
     await useFadeOut(async () => {
       setAccessToken('1111');

@@ -46,10 +46,12 @@ const WorkbenchesView = memo(() => {
  * 该工作区需要用户登录后才可以正常使用, 因此使用 Guards.AuthAuthorized 来校验用户是否已经获得了授权
  */
 const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
-  useFadeIn(async () => Promise.allSettled([
-    window.ipcActions.windowResizeAble({ resizeAble: true }),
-    window.ipcActions.windowResetCustomSize({ type: 'mainWindow' })
-  ]));
+  useFadeIn(async () => {
+    await Promise.allSettled([
+      window.ipcActions.windowResizeAble({ resizeAble: true }),
+      window.ipcActions.windowResetCustomSize({ type: 'mainWindow' })
+    ]);
+  });
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
@@ -63,9 +65,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
     <FullSize
       className={classnames(
         styles.mainRootContainer,
-        {
-          [commonStyles.flexRowReverse]: mainSidebarStatus === 'right'
-        }
+        mainSidebarStatus === 'right' && commonStyles.flexRowReverse
       )}
     >
       {mainSidebarStatus !== 'none' && <NavigationBar />}

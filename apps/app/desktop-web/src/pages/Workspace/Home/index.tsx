@@ -2,7 +2,6 @@ import { memo, useEffect } from 'react';
 import { Tldraw } from 'tldraw';
 import { FullSize } from '@rapid/libs-web';
 import { polotnoMutations, usePolotnoStore } from '@/features';
-import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog } from '@/polotno';
 import { Card } from 'antd';
 
 export const Home = memo(() => {
