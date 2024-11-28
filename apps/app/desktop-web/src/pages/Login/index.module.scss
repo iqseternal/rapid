@@ -8,6 +8,8 @@
 
 
     height: calc(100% - var(--rapid-caption-bar-height));
+
+    @include FlexRowSpaceAround;
   }
 
 }

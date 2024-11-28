@@ -182,7 +182,7 @@ export const Control = memo((props: ControlProps) => {
 
         {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => window.ipcActions.windowDevtool(true, { mode: 'detach' })} />}
         <Widget icon='LineOutlined' tipText='最小化' onClick={() => window.ipcActions.windowMin()} />
-        {!isDialog && !isPane && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => window.ipcActions.windowReduction()} />}
+        {(isDialog || isPane) && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => window.ipcActions.windowReduction()} />}
         <Widget
           icon='CloseOutlined'
           tipText='关闭'

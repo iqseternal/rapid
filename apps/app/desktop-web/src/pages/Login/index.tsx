@@ -74,15 +74,18 @@ export const Login = memo(() => {
     <Subfield
       className={classnames(styles.didContent)}
     >
-      <FullSize
+      <Subfield
         className={classnames(commonStyles.flexRowCenter)}
+        style={{
+
+        }}
       >
         <Logo
           src={lockUrl}
         />
-      </FullSize>
+      </Subfield>
 
-      <FullSize
+      <Subfield
         className={classnames(commonStyles.flexRowCenter)}
       >
         <Button
@@ -97,7 +100,7 @@ export const Login = memo(() => {
         >
           注册
         </Button>
-      </FullSize>
+      </Subfield>
     </Subfield>
   </FullSize>
 });
