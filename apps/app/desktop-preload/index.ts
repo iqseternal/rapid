@@ -14,6 +14,9 @@ import { printerServer } from './server/printer';
 import type { AppStoreType } from './server/stores';
 import { appStore } from './server/stores';
 
+import { join } from 'path';
+import { IS_PROD } from '@rapid/config/constants';
+
 import * as ipcActions from './actions';
 
 export type { printerServer };
@@ -42,7 +45,9 @@ export interface ExposeApi {
    */
   stores: {
     appStore: AppStoreType;
-  }
+  },
+
+  WEB_ROOT_DIR: () => string;
 }
 
 autoExpose<ExposeApi>({
@@ -51,6 +56,11 @@ autoExpose<ExposeApi>({
   ipcActions,
   stores: {
     appStore
+  },
+  WEB_ROOT_DIR: () => {
+    if (IS_PROD) return join(process.cwd(), '/out/renderer/').replace(/\\/g, '/')
+
+    return join(process.cwd(), '/desktop-web/public/').replace(/\\/g, '/')
   }
 });
 

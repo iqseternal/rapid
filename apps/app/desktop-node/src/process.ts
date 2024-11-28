@@ -4,7 +4,7 @@ import { Catch, Exception, ExceptionErrorMsgData, isException } from './core';
 import { PrinterService } from './core/service/PrinterService';
 
 // 关闭渲染进程安全警告
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+// process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 // 处理没有捕捉的异常
 if (IS_DEV) {

@@ -336,6 +336,13 @@ export const headerHelpMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
       {
         type: 'divider',
       },
+      {
+        type: 'item',
+        label: '重新加载',
+        onClick: () => {
+          window.ipcActions.windowReload();
+        }
+      },
 
       {
         type: 'item',

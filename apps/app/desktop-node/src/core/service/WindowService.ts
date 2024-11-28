@@ -11,6 +11,7 @@ import { getWindowFrom } from '../common';
 const DefaultBrowserWindowConstructorOptions: Partial<BrowserWindowConstructorOptions> = {
   show: false,
   autoHideMenuBar: true,
+  
   disableAutoHideCursor: false,
   frame: false, // 是否带有边框的窗口
   alwaysOnTop: false,
@@ -45,7 +46,6 @@ export class WindowService {
         sandbox: false,
         devTools: true,
         webSecurity: true,
-        nodeIntegration: false,
         ...(windowOptions.webPreferences ?? {})
       },
     });

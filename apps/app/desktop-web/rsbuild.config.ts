@@ -23,6 +23,11 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       },
       alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths)
     },
+    html: {
+      meta: {
+
+      }
+    },
     plugins: [
       pluginSass(),
       pluginStyledComponents(),

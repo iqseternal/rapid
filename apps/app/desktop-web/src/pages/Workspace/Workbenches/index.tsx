@@ -1,14 +1,15 @@
 import { memo, useEffect } from 'react';
 import { Tldraw, useEditor } from 'tldraw';
-import { FullSize } from '@rapid/libs-web';
+import { FullSize, useAsyncEffect } from '@rapid/libs-web';
 import { polotnoMutations, useTldrawStore } from '@/features';
 import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog, MainMenu, PageMenu } from '@/tldraw';
-import { getAssetUrlsByMetaUrl } from '@tldraw/assets/urls';
+import { getAssetUrls } from '@tldraw/assets/selfHosted';
+import { getDefaultCdnBaseUrl } from 'tldraw';
 
 import './tldraw.scss';
 
 export const Workbenches = memo(() => {
-  const tlShapes = useTldrawStore(store => store.tlShapeUtils);
+	const tlShapes = useTldrawStore(store => store.tlShapeUtils);
 	const tlTools = useTldrawStore(store => store.tlTools);
 	const tlUiOverrides = useTldrawStore(store => store.tlUiOverrides);
 	const tlComponents = useTldrawStore(store => store.tlComponents);
@@ -48,18 +49,20 @@ export const Workbenches = memo(() => {
 
 	return (
 		<FullSize>
-      <Tldraw
-        shapeUtils={tlShapes}
-        tools={tlTools}
-        initialState='sticker'
+			<Tldraw
+				shapeUtils={tlShapes}
+				tools={tlTools}
+				initialState='sticker'
 				persistenceKey='tldraw'
-        overrides={tlUiOverrides}
-        components={tlComponents}
-				assetUrls={getAssetUrlsByMetaUrl()}
-        isShapeHidden={(s) => !!s.meta.hidden}
-      />
-    </FullSize>
-  )
+				overrides={tlUiOverrides}
+				components={tlComponents}
+				assetUrls={getAssetUrls({
+					baseUrl: getDefaultCdnBaseUrl()
+				})}
+				isShapeHidden={(s) => !!s.meta.hidden}
+			/>
+		</FullSize>
+	)
 })
 
 export default Workbenches;

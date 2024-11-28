@@ -4,7 +4,7 @@ import { AppConfigService } from '@/core/service/AppConfigService';
 import { PrinterService } from '@/core/service/PrinterService';
 import { PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from '@/config';
 import { Menu, Tray, app, nativeImage } from 'electron';
-import { setWindowOpenHandler } from '@/core/common/window';
+import { setWindowCross, setWindowOpenHandler } from '@/core/common/window';
 import { join } from 'path';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');

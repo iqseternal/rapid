@@ -6,7 +6,9 @@ export type ErrorShape = TLBaseShape<'error', { w: number; h: number; message: s
  * 处理误差错误
  */
 export class ErrorShapeUtil extends BaseBoxShapeUtil<ErrorShape> {
-	static override type = 'error' as const
+	public static override type = 'error' as const;
+
+	public type = 'error' as const;
 
 	getDefaultProps() {
 		return { message: 'Error!', w: 100, h: 100 }
