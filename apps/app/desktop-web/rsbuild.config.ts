@@ -27,7 +27,8 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginSass(),
       pluginStyledComponents(),
       pluginTypedCSSModules(),
-      pluginReact()
+      pluginReact(),
+      pluginSourceBuild()
     ],
     server: {
       port: 3002

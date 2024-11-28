@@ -71,17 +71,6 @@ const SubfieldBase = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTyp
 
   const [colGap, rowGap] = gap;
 
-  const style = useMemo(() => {
-    const styles: CSSProperties = {};
-
-    if (!isUndefined(rowGap)) styles.rowGap = rowGap;
-    if (!isUndefined(colGap)) styles.columnGap = colGap;
-    if (!isUndefined(justifyContent)) styles.justifyContent = justifyContent;
-    if (!isUndefined(alignItems)) styles.alignItems = alignItems;
-
-    return styles;
-  }, [rowGap, colGap, justifyContent, alignItems]);
-
   return <div
     ref={ref}
     className={classnames(
@@ -92,7 +81,12 @@ const SubfieldBase = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTyp
         [styles.flexCol]: direction === 'vertical'
       }
     )}
-    style={style}
+    style={{
+      rowGap,
+      columnGap: colGap,
+      justifyContent,
+      alignItems
+    }}
     {...realProps}
   />
 }));

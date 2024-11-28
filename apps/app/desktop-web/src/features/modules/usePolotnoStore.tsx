@@ -4,7 +4,7 @@ import { immer } from 'zustand/middleware/immer';
 import { StateNode, BaseBoxShapeUtil, TLBaseShape, TLUiOverrides, TLComponents, TLAnyShapeUtilConstructor, TLStateNodeConstructor } from 'tldraw';
 import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue } from 'tldraw';
 
-export interface PolotnoStore {
+export interface TldrawStore {
   /**
    * 工具栏
    */
@@ -26,11 +26,11 @@ export interface PolotnoStore {
   tlComponents: Partial<TLComponents>;
 }
 
-export const usePolotnoStore = create<PolotnoStore>()(
+export const useTldrawStore = create<TldrawStore>()(
   persist(
-    immer<PolotnoStore>((set, get, store) => {
+    immer<TldrawStore>((set, get, store) => {
 
-      const tlStore: PolotnoStore = {
+      const tlStore: TldrawStore = {
         tlTools: [],
         tlShapeUtils: [],
         tlUiOverrides: {},
@@ -50,24 +50,24 @@ export const polotnoMutations = {
    * 注册组件
    */
   registerComponent: <CKey extends keyof TLComponents>(key: CKey, component: TLComponents[CKey]) => {
-    usePolotnoStore.setState(state => {
+    useTldrawStore.setState(state => {
       state.tlComponents[key] = component;
     });
 
     return () => {
-      usePolotnoStore.setState((state) => {
+      useTldrawStore.setState((state) => {
         state.tlComponents[key] = void 0 as TLComponents[CKey];
       });
     }
   },
 
   registerUiOverride: <UKey extends keyof TLUiOverrides>(key: UKey, override: TLUiOverrides[UKey]) => {
-    usePolotnoStore.setState(state => {
+    useTldrawStore.setState(state => {
       state.tlUiOverrides[key] = override;
     });
 
     return () => {
-      usePolotnoStore.setState(state => {
+      useTldrawStore.setState(state => {
         state.tlUiOverrides[key] = void 0 as TLUiOverrides[UKey];
       });
     }
@@ -75,12 +75,12 @@ export const polotnoMutations = {
 
 
   registerTool: (tool: TLStateNodeConstructor) => {
-    usePolotnoStore.setState(state => {
+    useTldrawStore.setState(state => {
       state.tlTools.push(tool);
     });
 
     return () => {
-      usePolotnoStore.setState(state => {
+      useTldrawStore.setState(state => {
         state.tlTools = state.tlTools.filter(t => {
           return t && t !== tool;
         });
@@ -89,12 +89,12 @@ export const polotnoMutations = {
   },
 
   registerShapeUtil: (shapeUtil: TLAnyShapeUtilConstructor) => {
-    usePolotnoStore.setState(state => {
+    useTldrawStore.setState(state => {
       state.tlShapeUtils.push(shapeUtil);
     });
 
     return () => {
-      usePolotnoStore.setState(state => {
+      useTldrawStore.setState(state => {
         state.tlShapeUtils = state.tlShapeUtils.filter(s => {
           return s && s !== shapeUtil;
         });

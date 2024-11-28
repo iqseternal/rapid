@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import type { ReactElement } from 'react';
 import { Routes, HashRouter } from 'react-router-dom';
 import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/router';
@@ -9,6 +9,9 @@ export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
 export default function RouterContext() {
 
+  useEffect(() => {
+    window.printer.printInfo('RouterContext 路由挂载渲染');
+  }, []);
 
   return (
     <HashRouter>

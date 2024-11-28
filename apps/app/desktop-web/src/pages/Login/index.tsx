@@ -66,11 +66,6 @@ export const Login = memo(() => {
     ]);
 
     if (IS_PROD) await window.ipcActions.windowSetPosition({ x: 'center', y: 'center' });
-    await useFadeOut(async () => {
-      setAccessToken('1111');
-      const { workbenchesRoute } = retrieveRoutes();
-      navigate(workbenchesRoute.meta.fullPath, { replace: true });
-    });
   });
 
   return <FullSize className={styles.login}>

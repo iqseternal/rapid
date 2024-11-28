@@ -11,6 +11,11 @@ import styles from './app.module.scss';
  */
 export default function RapidApp() {
 
+
+  useEffect(() => {
+    window.printer.printInfo('Rapid App 挂载...');
+  }, []);
+
   return (
     <ConfigProvider
       componentDisabled={false}
@@ -34,6 +39,10 @@ export default function RapidApp() {
       theme={{
         components: {
           Message: {
+
+          },
+          Card: {
+
 
           }
         },

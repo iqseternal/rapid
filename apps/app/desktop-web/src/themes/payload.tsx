@@ -109,7 +109,15 @@ const dropdownVarsSheet = {
 
 
 
+const tldrawVarsSheet = {
+  tldrawShapeItemParentSelectedBg: mRapidC('--rapid-tldraw-shape-item-parent-selected-bg', '#f5f5f5', 'tldraw 图形项父项选中背景色'),
+  tldrawShapeItemChildSelectedBg: mRapidC('--rapid-tldraw-shape-item-child-selected-bg', '#f5f5f5', 'tldraw 图形项子项选中背景色'),
+  tldrawShapeItemSelectedBg: mRapidC('--rapid-tldraw-shape-item-selected-bg', '#e5e5e5', 'tldraw 图形项选中背景色'),
 
+  tldrawShapeItemPaddingLeft: mRapidC('--rapid-tldraw-shape-item-padding-left', '10px', 'tldraw 图形项左侧内边距'),
+
+
+} as const;
 
 
 
@@ -216,6 +224,7 @@ export const themeCssVarsSheet = {
   ...messageVarsSheet,
   ...cardVarsSheet,
   ...dropdownVarsSheet,
+  ...tldrawVarsSheet,
 
   ...colorsVarsSheet,
   ...sizeVarsSheet

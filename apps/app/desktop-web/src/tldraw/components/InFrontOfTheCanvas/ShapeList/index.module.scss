@@ -1,0 +1,56 @@
+
+@import '@scss/mixin/index';
+
+.layerPanel {
+	position: absolute;
+	left: 0;
+	top: 42px;
+	width: 200px;
+	height: calc(100% - 42px);
+	background: white;
+	display: flex;
+	flex-direction: column;
+
+	.layerPanelTitle {
+		padding: 10px;
+		font-size: smaller;
+		font-weight: bolder;
+	}
+
+
+	.shapeItem {
+		padding: 6px 10px;
+
+		@include FlexRowSpaceAround;
+
+
+		.shapeName {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			text-wrap: nowrap;
+		}
+
+
+		.shapeNameInput {
+			border: none;
+			background: none;
+			width: 0;
+			flex-grow: 1;
+			padding: 0;
+		}
+
+		.shapeVisibilityToggle {
+			padding: 3px 6px;
+			border-radius: 3px;
+			outline: none;
+			border: none;
+			background: none;
+			flex-shrink: 0;
+
+			&:hover {
+				cursor: pointer;
+				background-color: #0000000b;
+			}
+		}
+	}
+}

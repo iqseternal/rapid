@@ -387,7 +387,7 @@
   "editor.suggest.showDeprecated": false,
   "files.trimTrailingWhitespace": true,
   "workbench.startupEditor": "none",
-  "editor.fontSize": 15,
+  "editor.fontSize": 16,
   "workbench.hover.delay": 250,
   "files.maxMemoryForLargeFilesMB": 8192,
   "typescript.tsserver.maxTsServerMemory": 8192,
@@ -425,7 +425,7 @@
   "workbench.colorTheme": "GitHub Dark",
   "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "git.openRepositoryInParentFolders": "never",
-  "window.zoomLevel": -1,
+  "window.zoomLevel": -1.2,
   "git.ignoreLegacyWarning": true,
   "winopacity.opacity": 251,
   "editor.smoothScrolling": true,
@@ -475,5 +475,6 @@
   "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
   "typescript.inlayHints.variableTypes.enabled": false,
   "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.suggest.completeFunctionCalls": false
+  "typescript.suggest.completeFunctionCalls": false,
+  "terminal.integrated.mouseWheelZoom": false
 }

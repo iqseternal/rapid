@@ -1,8 +1,6 @@
 
 import { Outlet } from 'react-router-dom';
 import { FullSize } from '@rapid/libs-web/styled';
-
-import { Guards, GuardsContext } from '@router/guards';
 import { useAuthHasAuthorized } from '@/features';
 import { memo } from 'react';
 
@@ -11,11 +9,8 @@ import { memo } from 'react';
  * 可以利用本组件为整个 App 添加动画等.
  */
 const RootLayout = memo(() => {
-  const hasAuthorizeState = useAuthHasAuthorized();
 
-  return <GuardsContext.Authorized.Provider value={hasAuthorizeState}>
-    <Outlet />
-  </GuardsContext.Authorized.Provider>
+  return <Outlet />
 })
 
 export default RootLayout;

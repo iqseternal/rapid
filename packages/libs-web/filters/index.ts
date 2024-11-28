@@ -22,6 +22,13 @@ export const StringFilters = {
     if (!(typeof value === 'string')) return fillStr;
     if (value.trim() === '') return fillStr;
     return value;
+  },
+
+  /**
+   * 首字母大写
+   */
+  toCapitalizeFirstLetter(value: string) {
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 } as const;
 

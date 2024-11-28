@@ -82,7 +82,6 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: C
     return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath ?? index)}>
       {children && createRoutesChildren(children, options)}
     </Route>
-
   });
 }
 

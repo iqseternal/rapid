@@ -19,7 +19,9 @@
     "@rapid/extensions": "workspace:^",
     "@rapid/libs": "workspace:^",
     "@rapid/libs-web": "workspace:^",
+    "@tldraw/assets": "^3.5.0",
+    "@tldraw/sync": "^3.5.0",
     "current-device": "^0.10.2",
-    "tldraw": "^3.4.1"
+    "tldraw": "^3.5.0"
   }
 }

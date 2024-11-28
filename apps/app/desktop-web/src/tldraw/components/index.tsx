@@ -1,11 +1,11 @@
-import { ShapeList } from '@pages/Workspace/Home/Panel';
-import { ContextToolbarComponent } from '@pages/Workspace/Home/Panel';
 import { memo, useRef } from 'react';
 import type { TLComponents } from 'tldraw';
 import {
 	DefaultKeyboardShortcutsDialog, DefaultKeyboardShortcutsDialogContent, TldrawUiMenuItem, DefaultToolbar,
 	toDomPrecision, useIsToolSelected, useTools, useTransform, useEditor, useValue, DefaultToolbarContent
 } from 'tldraw';
+
+import { ShapePanel, ContextToolbarComponent } from './InFrontOfTheCanvas';
 
 /**
  * @description 画笔组件
@@ -56,25 +56,12 @@ export const Toolbar: TLComponents['Toolbar'] = memo((props) => {
  * @description 画布前组件
  */
 export const InFrontOfTheCanvas: TLComponents['InFrontOfTheCanvas'] = memo(() => {
-	const editor = useEditor()
-	const shapeIds = useValue(
-		'shapeIds',
-		// @ts-ignore
-		() => editor.getSortedChildIdsForParent(editor.getCurrentPageId()),
-		[editor]
-	)
+
 	return (
-		<div className="layer-panel">
-			<div className="layer-panel-title">Shapes</div>
-
-			<ShapeList
-				// [2]
-				shapeIds={shapeIds}
-				depth={0}
-			/>
-
+		<>
+			<ShapePanel />
 			<ContextToolbarComponent />
-		</div>
+		</>
 	)
 })
 
@@ -92,3 +79,20 @@ export const KeyboardShortcutsDialog: TLComponents['KeyboardShortcutsDialog'] = 
 		</DefaultKeyboardShortcutsDialog>
 	)
 })
+
+
+
+
+export const MainMenu: TLComponents['MainMenu'] = memo((props) => {
+
+
+	return <>
+
+
+	</>
+})
+
+export const PageMenu: TLComponents['PageMenu'] = memo((props) => {
+	return <></>
+})
+

@@ -69,7 +69,9 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
       className={styles.topContainer}
     >
       {
-        workbenchesRoute.children?.map(routeItem => {
+        workbenchesRoute.children?.filter(routeItem => {
+          return !routeItem.meta.hiddenInMenu;
+        }).map(routeItem => {
           return <SideBarItem
             key={routeItem.meta.fullPath}
             icon={routeItem.meta.icon}
@@ -82,11 +84,7 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
         })
       }
 
-      <SideBarItem
-        icon='LogoutOutlined'
-        tipText='退出登录'
-        onClick={logout}
-      />
+
     </FullSizeWidth>
 
     <FullSizeWidth
@@ -101,6 +99,12 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
       <SideBarItem
         icon='SettingOutlined'
         tipText='设置'
+      />
+
+      <SideBarItem
+        icon='LogoutOutlined'
+        tipText='退出登录'
+        onClick={logout}
       />
     </FullSizeWidth>
   </div>

@@ -60,7 +60,7 @@ export const Redirect = memo((props: RedirectProps) => {
   }, [location.pathname, from, to]);
 
   return useMemo(() => {
-    if (normalState.isMatched) return <Navigate to={to}/>
+    if (normalState.isMatched) return <Navigate to={to}/>;
     if (isValidElement(element)) return element;
 
     const Element = element as FC;

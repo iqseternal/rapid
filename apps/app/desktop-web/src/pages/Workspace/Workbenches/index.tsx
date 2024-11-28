@@ -1,16 +1,17 @@
 import { memo, useEffect } from 'react';
-import { Tldraw } from 'tldraw';
+import { Tldraw, useEditor } from 'tldraw';
 import { FullSize } from '@rapid/libs-web';
-import { polotnoMutations, usePolotnoStore } from '@/features';
-import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog } from '@/tldraw';
+import { polotnoMutations, useTldrawStore } from '@/features';
+import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog, MainMenu, PageMenu } from '@/tldraw';
+import { getAssetUrlsByMetaUrl } from '@tldraw/assets/urls';
 
 import './tldraw.scss';
 
 export const Workbenches = memo(() => {
-  const tlShapes = usePolotnoStore(store => store.tlShapeUtils);
-	const tlTools = usePolotnoStore(store => store.tlTools);
-	const tlUiOverrides = usePolotnoStore(store => store.tlUiOverrides);
-	const tlComponents = usePolotnoStore(store => store.tlComponents);
+  const tlShapes = useTldrawStore(store => store.tlShapeUtils);
+	const tlTools = useTldrawStore(store => store.tlTools);
+	const tlUiOverrides = useTldrawStore(store => store.tlUiOverrides);
+	const tlComponents = useTldrawStore(store => store.tlComponents);
 
 	useEffect(() => {
 		const unregisterBrush = polotnoMutations.registerComponent('Brush', Brush);
@@ -19,9 +20,10 @@ export const Workbenches = memo(() => {
 		const unregisterToolbar = polotnoMutations.registerComponent('Toolbar', Toolbar);
 		const unregisterInFrontOfTheCanvas = polotnoMutations.registerComponent('InFrontOfTheCanvas', InFrontOfTheCanvas);
 		const unregisterKeyboardShortcutsDialog = polotnoMutations.registerComponent('KeyboardShortcutsDialog', KeyboardShortcutsDialog);
+		const unregisterMainMenu = polotnoMutations.registerComponent('MainMenu', MainMenu);
+		const unregisterPageMenu = polotnoMutations.registerComponent('PageMenu', PageMenu);
 
 		const unregisterShapeList = polotnoMutations.registerUiOverride('tools', tools);
-
 		const unregisterStickerTool = polotnoMutations.registerTool(StickerTool);
 
 		const unregisterErrorShapeUtil = polotnoMutations.registerShapeUtil(ErrorShapeUtil);
@@ -33,6 +35,8 @@ export const Workbenches = memo(() => {
 			unregisterToolbar();
 			unregisterInFrontOfTheCanvas();
 			unregisterKeyboardShortcutsDialog();
+			unregisterMainMenu();
+			unregisterPageMenu();
 
 			unregisterShapeList();
 
@@ -47,10 +51,11 @@ export const Workbenches = memo(() => {
       <Tldraw
         shapeUtils={tlShapes}
         tools={tlTools}
-        initialState="sticker"
+        initialState='sticker'
+				persistenceKey='tldraw'
         overrides={tlUiOverrides}
         components={tlComponents}
-        // assetUrls={customAssetUrls}
+				assetUrls={getAssetUrlsByMetaUrl()}
         isShapeHidden={(s) => !!s.meta.hidden}
       />
     </FullSize>

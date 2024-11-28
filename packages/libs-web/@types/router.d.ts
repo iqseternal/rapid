@@ -28,6 +28,10 @@ declare global {
      * 这个路由对象完整的 fullPath, 不填写会自动生成
      */
     fullPath?: string;
+    /**
+     * 是否在菜单中隐藏
+     */
+    hiddenInMenu?: boolean;
   }
 
   /**

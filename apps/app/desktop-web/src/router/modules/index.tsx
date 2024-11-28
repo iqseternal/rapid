@@ -37,18 +37,16 @@ export const workbenchesRoute = makeRoute({
       component: lazy(() => import('@pages/Workspace/Workbenches'))
     },
 
-
-
     {
       name: 'WorkbenchesHome',
       path: '/home',
-      meta: { title: '首页', icon: 'HomeOutlined' },
+      meta: { title: '首页', icon: 'HomeOutlined', hiddenInMenu: true },
       component: lazy(() => import('@pages/Workspace/Home'))
     },
     {
       name: 'Skin',
       path: '/skin',
-      meta: { title: '皮肤', icon: 'SkinOutlined' },
+      meta: { title: '皮肤', icon: 'SkinOutlined', hiddenInMenu: true },
       component: lazy(() => import('@pages/Workspace/Skin'))
     }
   ]

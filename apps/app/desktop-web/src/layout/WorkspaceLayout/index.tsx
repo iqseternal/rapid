@@ -6,7 +6,7 @@ import { MaxScreen, MaxScreenWidth, Flex, MaxScreenHeight, MaxViewHeight, combin
 import { useFadeIn } from '../../libs/hooks';
 import { NavigationBar } from './cpts';
 import { commonStyles, useAnimationClassSelector } from '@scss/common';
-import { Guards } from '@router/guards';
+import { Guards } from '@/guards';
 import { classnames } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
 
@@ -55,11 +55,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  return <FullSize
-    className={classnames(
-      styles.workbenchesLayout
-    )}
-  >
+  return <FullSize className={classnames(styles.workbenchesLayout)}>
     <Header />
 
     <FullSize
@@ -70,11 +66,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
     >
       {mainSidebarStatus !== 'none' && <NavigationBar />}
 
-      <main
-        className={classnames(
-          styles.mainContainer,
-        )}
-      >
+      <main className={classnames(styles.mainContainer)}>
         <WorkbenchesView />
       </main>
     </FullSize>

@@ -55,15 +55,7 @@ export const authHasAuthorized = async () => {
 }
 export const useAuthHasAuthorized = () => {
   const accessToken = useUserStore((store) => store.accessToken);
-
-  const [state] = useShallowReactive({
-    hasAuthorize: (accessToken && accessToken.trim() !== '')
-  });
-
-  useLayoutEffect(() => {
-    state.hasAuthorize = (accessToken && accessToken.trim() !== '');
-  }, [accessToken]);
-  return state;
+  return !!accessToken && accessToken.trim() !== '';
 }
 
 export interface AuthHasRoleOptions {
@@ -96,6 +88,7 @@ export const useAuthRole = (roleOptions: AuthHasRoleOptions) => {
     if (roles.includes('admin')) {
       state.hasRole = true;
     }
+    state.hasRole = true;
   }, [accessToken, roles]);
 
   return state;

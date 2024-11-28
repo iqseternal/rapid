@@ -1,16 +1,19 @@
 import { memo, useEffect } from 'react';
 import { Tldraw } from 'tldraw';
 import { FullSize } from '@rapid/libs-web';
-import { polotnoMutations, usePolotnoStore } from '@/features';
+import { polotnoMutations } from '@/features';
 import { Card } from 'antd';
+
+import Guards from '@/guards';
 
 export const Home = memo(() => {
 
 
 	return (
 		<Card>
-
-			Home
+			<Guards.AuthRole>
+				home
+			</Guards.AuthRole>
 		</Card>
   )
 })
