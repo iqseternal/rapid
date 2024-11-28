@@ -31,7 +31,7 @@ export const Login = memo(() => {
 
   const { message } = App.useApp();
 
-  const [state] = useShallowReactive({
+  const [shallowState] = useShallowReactive({
     step: Step.Login
   })
 

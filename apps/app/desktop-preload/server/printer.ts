@@ -15,23 +15,23 @@ export interface PrinterServer {
   /**
    * 打印日志
    */
-  print: typeof printer.print;
+  readonly print: typeof printer.print;
   /**
    * 打印日志
    */
-  printInfo: typeof printer.printInfo;
+  readonly printInfo: typeof printer.printInfo;
   /**
    * 打印一条警告信息
    */
-  printWarn: typeof printer.printWarn;
+  readonly printWarn: typeof printer.printWarn;
   /**
    * 打印一条错误信息
    */
-  printError: typeof printer.printError;
+  readonly printError: typeof printer.printError;
   /**
    * 打印一条成功信息
    */
-  printSuccess: typeof printer.printSuccess;
+  readonly printSuccess: typeof printer.printSuccess;
 }
 
 /**
@@ -45,4 +45,4 @@ export const printerServer: PrinterServer = {
   printWarn: (...message) => printer.printWarn(...message),
   printError: (...message) => printer.printError(...message),
   printSuccess: (...message) => printer.printSuccess(...message)
-};
+} as const;

@@ -1,20 +1,14 @@
 
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
+export const Home = memo(() => {
 
+  return (
+    <>
 
+      Dash
+    </>
+  )
+})
 
-export default function Home() {
-
-
-
-
-  useEffect(() => {
-    console.log(1);
-  })
-
-  return <div>
-
-    Dash
-  </div>
-}
+export default Home;

@@ -1,10 +1,9 @@
 import { memo, useEffect } from 'react';
-import { Tldraw, useEditor } from 'tldraw';
+import { Tldraw, useEditor, getDefaultCdnBaseUrl } from 'tldraw';
 import { FullSize, useAsyncEffect } from '@rapid/libs-web';
 import { polotnoMutations, useTldrawStore } from '@/features';
 import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog, MainMenu, PageMenu } from '@/tldraw';
 import { getAssetUrls } from '@tldraw/assets/selfHosted';
-import { getDefaultCdnBaseUrl } from 'tldraw';
 
 import './tldraw.scss';
 

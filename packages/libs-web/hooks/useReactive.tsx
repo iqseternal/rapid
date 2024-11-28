@@ -15,7 +15,7 @@ import { useReactive as useAHookReactive } from 'ahooks';
  * state.a = 2; // 自动刷新组件
  * state.b.c = 2; // 自动刷新组件
  */
-export function useDepReactive<S extends object>(initValue: S | (() => S)) {
+export function useDeepReactive<S extends object>(initValue: S | (() => S)) {
   const initialState = useMemo(() => {
     return (typeof initValue === 'function') ? initValue() : initValue;
   }, []);
@@ -89,7 +89,7 @@ export interface ReactiveOptions {
 export function useReactive<S extends object>(initValue: S | (() => S), options?: ReactiveOptions) {
   const { deep = true } = options ?? {};
 
-  if (deep) return useDepReactive(initValue);
+  if (deep) return useDeepReactive(initValue);
   return useShallowReactive(initValue);
 }
 

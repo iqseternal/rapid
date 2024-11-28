@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { StateNode, BaseBoxShapeUtil, TLBaseShape, TLUiOverrides, TLComponents, TLAnyShapeUtilConstructor, TLStateNodeConstructor } from 'tldraw';
-import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue } from 'tldraw';
 
 export interface TldrawStore {
   /**

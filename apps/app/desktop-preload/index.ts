@@ -31,23 +31,23 @@ export type IpcActions = typeof ipcActions;
  * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
  */
 export interface ExposeApi {
-  electron: ElectronAPI;
+  readonly electron: ElectronAPI;
   /**
    * 打印器对象
    */
-  printer: PrinterServer;
+  readonly printer: PrinterServer;
   /**
    * IPC 事件
    */
-  ipcActions: IpcActions;
+  readonly ipcActions: IpcActions;
   /**
    * 应用的 store
    */
-  stores: {
-    appStore: AppStoreType;
+  readonly stores: {
+    readonly appStore: AppStoreType;
   },
 
-  WEB_ROOT_DIR: () => string;
+  readonly WEB_ROOT_DIR: () => string;
 }
 
 autoExpose<ExposeApi>({

@@ -28,14 +28,14 @@ export type StartTransitionFunction = (...args: any[]) => Promise<void>;
  *
  */
 export function useTransition<StartTransitionFn extends StartTransitionFunction>(callback: StartTransitionFn, deps: DependencyList) {
-  const [state] = useShallowReactive({
+  const [shallowState] = useShallowReactive({
     isPending: false
   })
 
   const startTransition = useCallback(async (callback: () => Promise<void>) => {
-    state.isPending = true;
+    shallowState.isPending = true;
     await callback();
-    state.isPending = false;
+    shallowState.isPending = false;
   }, []);
 
   const transition = useCallback((...args: Parameters<StartTransitionFn>) => {
@@ -43,7 +43,7 @@ export function useTransition<StartTransitionFn extends StartTransitionFunction>
   }, deps);
 
   return [
-    state as Readonly<typeof state>,
+    shallowState as Readonly<typeof shallowState>,
     transition as unknown as StartTransitionFn,
     startTransition
   ] as const;

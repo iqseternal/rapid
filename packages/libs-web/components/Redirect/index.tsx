@@ -46,26 +46,26 @@ export const Redirect = memo((props: RedirectProps) => {
 
   const location = useLocation();
 
-  const [normalState] = useShallowReactive({
+  const [shallowState] = useShallowReactive({
     isMatched: false
   })
 
   useLayoutEffect(() => {
     if (isString(from)) {
-      normalState.isMatched = location.pathname === from;
+      shallowState.isMatched = location.pathname === from;
       return;
     }
 
-    normalState.isMatched = from.test(location.pathname);
+    shallowState.isMatched = from.test(location.pathname);
   }, [location.pathname, from, to]);
 
   return useMemo(() => {
-    if (normalState.isMatched) return <Navigate to={to}/>;
+    if (shallowState.isMatched) return <Navigate to={to}/>;
     if (isValidElement(element)) return element;
 
     const Element = element as FC;
     return <Element />;
-  }, [normalState.isMatched, element]);
+  }, [shallowState.isMatched, element]);
 })
 
 export type RedirectType = typeof Redirect;

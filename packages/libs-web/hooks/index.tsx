@@ -1,4 +1,4 @@
-export { useReactive, useDepReactive, useShallowReactive, useNormalState } from './useReactive';
+export { useReactive, useDeepReactive, useShallowReactive, useNormalState } from './useReactive';
 export type { ReactiveOptions } from './useReactive';
 
 export { useRefresh, useUpdate } from './useRefresh';

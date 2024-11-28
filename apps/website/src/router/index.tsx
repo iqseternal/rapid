@@ -3,13 +3,13 @@ import { Suspense, lazy, memo, useLayoutEffect, useTransition } from 'react';
 import { Route, RouteProps, Routes, Navigate } from 'react-router-dom';
 import { createRoutesChildren, makeRoute, reserveRoutes } from '@rapid/libs-web/router';
 import { Skeleton } from 'antd';
+import { Redirect } from '@rapid/libs-web';
 
-import Redirect from '@rapid/libs-web/components/Redirect';
 import DosLayout from '@/layout/DosLayout';
 
 import * as presetRoutes from './modules';
 
-export const { retrieveRoutes } = reserveRoutes(presetRoutes);
+export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
 export const RouterContext = memo(() => {
   return <Suspense

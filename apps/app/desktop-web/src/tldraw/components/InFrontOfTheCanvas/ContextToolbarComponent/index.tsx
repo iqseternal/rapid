@@ -25,7 +25,7 @@ export const ContextToolbarComponent = track(() => {
 	// [2]
 	const size = editor.getSharedStyles().get(DefaultSizeStyle)
 	if (!size) return null
-	const currentSize = size.type === 'shared' ? size.value : undefined
+	const currentSize = size.type === 'shared' ? size.value : void 0
 
 	const pageCoordinates = editor.pageToViewport(selectionRotatedPageBounds.point)
 
