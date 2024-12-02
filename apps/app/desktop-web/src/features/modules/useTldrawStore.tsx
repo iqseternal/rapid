@@ -26,7 +26,7 @@ export interface TldrawStore {
 }
 
 export const useTldrawStore = create<TldrawStore>()(
-  persist(
+  (
     immer<TldrawStore>((set, get, store) => {
 
       const tlStore: TldrawStore = {
@@ -37,13 +37,11 @@ export const useTldrawStore = create<TldrawStore>()(
       }
 
       return tlStore
-    }), {
-      name: 'polotnoStore'
-    }
+    })
   )
 );
 
-export const polotnoMutations = {
+export const tldrawStoreMutations = {
 
   /**
    * 注册组件

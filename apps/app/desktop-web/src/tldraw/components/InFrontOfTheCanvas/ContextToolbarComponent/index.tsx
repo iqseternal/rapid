@@ -18,16 +18,19 @@ const SIZES = [
 export const ContextToolbarComponent = track(() => {
 	const editor = useEditor()
 	const showToolbar = editor.isIn('select.idle')
-	if (!showToolbar) return null
+
+	if (!showToolbar) return <></>;
+
 	const selectionRotatedPageBounds = editor.getSelectionRotatedPageBounds()
-	if (!selectionRotatedPageBounds) return null
+	if (!selectionRotatedPageBounds) return <></>;
 
 	// [2]
-	const size = editor.getSharedStyles().get(DefaultSizeStyle)
-	if (!size) return null
-	const currentSize = size.type === 'shared' ? size.value : void 0
+	const size = editor.getSharedStyles().get(DefaultSizeStyle);
 
-	const pageCoordinates = editor.pageToViewport(selectionRotatedPageBounds.point)
+	if (!size) return <></>;
+	const currentSize = size.type === 'shared' ? size.value : void 0;
+
+	const pageCoordinates = editor.pageToViewport(selectionRotatedPageBounds.point);
 
 	return (
 		<div
@@ -56,7 +59,8 @@ export const ContextToolbarComponent = track(() => {
 				}}
 			>
 				{SIZES.map(({ value, icon }) => {
-					const isActive = value === currentSize
+					const isActive = value === currentSize;
+
 					return (
 						<div
 							key={value}

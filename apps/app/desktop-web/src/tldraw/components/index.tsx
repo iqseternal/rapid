@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import type { TLComponents } from 'tldraw';
 import {
 	DefaultKeyboardShortcutsDialog, DefaultKeyboardShortcutsDialogContent, TldrawUiMenuItem, DefaultToolbar,
@@ -42,8 +42,9 @@ export const SnapIndicator: TLComponents['SnapIndicator'] = null;
  * @description 工具栏组件
  */
 export const Toolbar: TLComponents['Toolbar'] = memo((props) => {
-	const tools = useTools()
-	const isStickerSelected = useIsToolSelected(tools['sticker'])
+	const tools = useTools();
+	const isStickerSelected = useIsToolSelected(tools['sticker']);
+
 	return (
 		<DefaultToolbar {...props}>
 			<TldrawUiMenuItem {...tools['sticker']} isSelected={isStickerSelected} />
@@ -58,10 +59,10 @@ export const Toolbar: TLComponents['Toolbar'] = memo((props) => {
 export const InFrontOfTheCanvas: TLComponents['InFrontOfTheCanvas'] = memo(() => {
 
 	return (
-		<>
+		<div>
 			<ShapePanel />
 			<ContextToolbarComponent />
-		</>
+		</div>
 	)
 })
 
@@ -86,13 +87,13 @@ export const KeyboardShortcutsDialog: TLComponents['KeyboardShortcutsDialog'] = 
 export const MainMenu: TLComponents['MainMenu'] = memo((props) => {
 
 
-	return <>
+	return <div>
 
 
-	</>
+	</div>
 })
 
 export const PageMenu: TLComponents['PageMenu'] = memo((props) => {
-	return <></>
+	return <div></div>
 })
 

@@ -2,7 +2,7 @@ import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isStri
 import type { Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
 
 /**
- * 合并多个classname类名,
+ * 合并多个 className 类名,
  *
  * @param args
  * @see https://www.npmjs.com/package/classnames

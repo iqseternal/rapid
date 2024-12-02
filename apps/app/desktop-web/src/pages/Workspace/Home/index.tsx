@@ -1,7 +1,6 @@
 import { memo, useEffect } from 'react';
 import { Tldraw } from 'tldraw';
 import { FullSize } from '@rapid/libs-web';
-import { polotnoMutations } from '@/features';
 import { Card } from 'antd';
 
 import Guards from '@/guards';

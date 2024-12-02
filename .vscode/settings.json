@@ -465,6 +465,7 @@
     "tsnd",
     "tsup",
     "typecheck",
+    "ungzip",
     "Zustand"
   ],
   "notebook.markup.fontSize": 0,

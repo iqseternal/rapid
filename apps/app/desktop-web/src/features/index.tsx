@@ -2,7 +2,7 @@
 
 export * from './modules/useUserStore';
 
-export * from './modules/usePolotnoStore';
+export * from './modules/useTldrawStore';
 
 export * from './modules/useDocStore';
 

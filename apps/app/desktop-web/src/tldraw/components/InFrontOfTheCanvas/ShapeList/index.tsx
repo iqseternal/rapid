@@ -13,6 +13,7 @@ import styles from './index.module.scss';
  */
 const formatShapeName = (editor: Editor, shapeId: TLShapeId) => {
   const shape = editor.getShape(shapeId);
+
   if (!shape) return `未命名 形状`;
 
   return (
@@ -81,7 +82,7 @@ export const ShapeItem = memo((props: ShapeItemProps) => {
 		return void 0;
 	}, [isSelected, parentIsSelected, depth])
 
-	if (!shape) return null;
+	if (!shape) return <></>;
 
 	return (
 		<>
@@ -107,6 +108,7 @@ export const ShapeItem = memo((props: ShapeItemProps) => {
 								shallowState.isEditingShapeName = false;
 							}}
 							onChange={(ev) => {
+								if (!shape) return;
 								if (shape.type === 'frame') {
 									editor.updateShape({ ...shape, props: { name: ev.target.value } });
 								} else {

@@ -1,7 +1,7 @@
 import { memo, useEffect } from 'react';
 import { Tldraw, useEditor, getDefaultCdnBaseUrl } from 'tldraw';
 import { FullSize, useAsyncEffect } from '@rapid/libs-web';
-import { polotnoMutations, useTldrawStore } from '@/features';
+import { tldrawStoreMutations, useTldrawStore } from '@/features';
 import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog, MainMenu, PageMenu } from '@/tldraw';
 import { getAssetUrls } from '@tldraw/assets/selfHosted';
 
@@ -14,19 +14,19 @@ export const Workbenches = memo(() => {
 	const tlComponents = useTldrawStore(store => store.tlComponents);
 
 	useEffect(() => {
-		const unregisterBrush = polotnoMutations.registerComponent('Brush', Brush);
-		const unregisterScribble = polotnoMutations.registerComponent('Scribble', Scribble);
-		const unregisterSnapIndicator = polotnoMutations.registerComponent('SnapIndicator', SnapIndicator);
-		const unregisterToolbar = polotnoMutations.registerComponent('Toolbar', Toolbar);
-		const unregisterInFrontOfTheCanvas = polotnoMutations.registerComponent('InFrontOfTheCanvas', InFrontOfTheCanvas);
-		const unregisterKeyboardShortcutsDialog = polotnoMutations.registerComponent('KeyboardShortcutsDialog', KeyboardShortcutsDialog);
-		const unregisterMainMenu = polotnoMutations.registerComponent('MainMenu', MainMenu);
-		const unregisterPageMenu = polotnoMutations.registerComponent('PageMenu', PageMenu);
+		const unregisterBrush = tldrawStoreMutations.registerComponent('Brush', Brush);
+		const unregisterScribble = tldrawStoreMutations.registerComponent('Scribble', Scribble);
+		const unregisterSnapIndicator = tldrawStoreMutations.registerComponent('SnapIndicator', SnapIndicator);
+		const unregisterToolbar = tldrawStoreMutations.registerComponent('Toolbar', Toolbar);
+		const unregisterInFrontOfTheCanvas = tldrawStoreMutations.registerComponent('InFrontOfTheCanvas', InFrontOfTheCanvas);
+		const unregisterKeyboardShortcutsDialog = tldrawStoreMutations.registerComponent('KeyboardShortcutsDialog', KeyboardShortcutsDialog);
+		const unregisterMainMenu = tldrawStoreMutations.registerComponent('MainMenu', MainMenu);
+		const unregisterPageMenu = tldrawStoreMutations.registerComponent('PageMenu', PageMenu);
 
-		const unregisterShapeList = polotnoMutations.registerUiOverride('tools', tools);
-		const unregisterStickerTool = polotnoMutations.registerTool(StickerTool);
+		const unregisterShapeList = tldrawStoreMutations.registerUiOverride('tools', tools);
+		const unregisterStickerTool = tldrawStoreMutations.registerTool(StickerTool);
 
-		const unregisterErrorShapeUtil = polotnoMutations.registerShapeUtil(ErrorShapeUtil);
+		const unregisterErrorShapeUtil = tldrawStoreMutations.registerShapeUtil(ErrorShapeUtil);
 
 		return () => {
 			unregisterBrush();
