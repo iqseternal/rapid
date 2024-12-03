@@ -110,7 +110,7 @@
         ],
         "settings": {
           "foreground": "#FFAA33",
-          "fontStyle": ""
+          "fontStyle": "bold"
         }
       },
       { // 当框架/库提供类时。
@@ -189,10 +189,19 @@
           "fontStyle": "italic"
         }
       },
+      {
+        "scope": [
+          "entity.name.type.parameter",
+        ],
+        "settings": {
+          "foreground": "#00eccdf4",
+          "fontStyle": ""
+        }
+      },
       { // 类型定义, type C = number;
         "scope": "entity.name.type",
         "settings": {
-          "foreground": "#eeebeb",
+          "foreground": "#ffffff",
           "fontStyle": ""
         }
       },
@@ -298,6 +307,7 @@
           "fontStyle": ""
         }
       },
+
       { // Operator操作符, =, +, -, *, /
         "scope": "keyword.operator",
         "settings": {
@@ -609,7 +619,7 @@
   "editor.suggest.showDeprecated": false,
   "files.trimTrailingWhitespace": true,
   "workbench.startupEditor": "none",
-  "editor.fontSize": 16,
+  "editor.fontSize": 15,
   "workbench.hover.delay": 250,
   "files.maxMemoryForLargeFilesMB": 8192,
   "typescript.tsserver.maxTsServerMemory": 8192,
@@ -687,7 +697,6 @@
     "tsnd",
     "tsup",
     "typecheck",
-    "ungzip",
     "Zustand"
   ],
   "notebook.markup.fontSize": 0,
