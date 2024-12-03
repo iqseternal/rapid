@@ -5,8 +5,9 @@
     "baseUrl": ".",
     "rootDir": "../../",
     "resolveJsonModule": true,
+    "jsx": "react-jsx",
     "module": "NodeNext",
-    
+
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true,
@@ -17,7 +18,7 @@
   },
   "include": [
     "./src/**/*.ts"
-  ],
+, "src/index.tsx"  ],
   "exclude": [
     "src/**/*.d.ts",
     "node_modules"
