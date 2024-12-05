@@ -5,7 +5,7 @@ import { useFadeIn, useFadeOut } from '../../libs/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
-import { toPicket } from '@rapid/libs';
+import { toNil } from '@rapid/libs';
 import { setAccessToken, userActions } from '@/features';
 import { registerReq } from '@/api';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
@@ -36,7 +36,7 @@ export const Login = memo(() => {
   })
 
   const [loginPending, login] = useTransition(async () => {
-    const [loginErr] = await toPicket(userActions.userLogin({
+    const [loginErr] = await toNil(userActions.userLogin({
       username: 'admin',
       password: '12345678'
     }));
@@ -51,7 +51,7 @@ export const Login = memo(() => {
   }, []);
 
   const [registerPending, register] = useTransition(async () => {
-    const [registerErr] = await toPicket(registerReq());
+    const [registerErr] = await toNil(registerReq());
     if (registerErr) {
       message.error(registerErr.descriptor);
       return;

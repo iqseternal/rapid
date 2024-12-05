@@ -48,11 +48,11 @@ export interface RApiFailResponse extends RApiBasicResponse {
 
 /**
  * RApiPromiseLike, 可以通过 then, catch 获得不同的相应数据类型提示
- * 也可以通过 toPicket 获取类型
+ * 也可以通过 toNil 获取类型
  *
  * ```ts
  * declare const pr: RApiPromiseLike<number,  string>;
- * const [err, res] = await toPicket(pr);
+ * const [err, res] = await toNil(pr);
  * if (err) {
  *   console.log(err.descriptor);
  *   return;

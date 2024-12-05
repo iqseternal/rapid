@@ -1,6 +1,6 @@
 import { classnames, toWaitPromise } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
-import { toPicket } from '@rapid/libs';
+import { toNil } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { useFadeOut } from '../../libs/hooks';
 import { logoutReq } from '@/api';
@@ -47,7 +47,7 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
   const loginRoute = useRetrieveRoute(routes => routes.loginRoute);
 
   const [logoutPending, logout] = useTransition(async () => {
-    // const [logoutErr] = await toPicket(logoutReq());
+    // const [logoutErr] = await toNil(logoutReq());
     // if (logoutErr) {
     //   IMessage.error(logoutErr.descriptor);
     //   return;

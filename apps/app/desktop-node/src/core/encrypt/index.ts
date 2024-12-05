@@ -1,5 +1,5 @@
 
-import { aesDecryptAlgorithm, aesEncryptAlgorithm, rsaEncryptAlgorithm } from '@rapid/libs';
+import { aesEncryptAlgorithm, aesDecryptAlgorithm, rsaEncryptAlgorithm } from '@rapid/libs';
 
 export const aes = () => {
 
@@ -8,11 +8,8 @@ export const aes = () => {
 
 export const des = () => {
 
-
-
   return aesDecryptAlgorithm('sdada', 'asd');
 }
-
 
 export const rsaEncrypt = (algorithm: string, data: string): string => {
   return rsaEncryptAlgorithm(algorithm, data);

@@ -14,7 +14,7 @@ export type StartTransitionFunction = (...args: any[]) => Promise<void>;
  *
  * const [error, setError] = useState(null);
  * const [requestPendingState, startRequest, startTransition] = useTransition(async () => {
- *   const [err, res] = await toPicket(req);
+ *   const [err, res] = await toNil(req);
  *
  *   if (err) return;
  *

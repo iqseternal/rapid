@@ -4,7 +4,7 @@ import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
 import { useMemo, ReactNode, useEffect, useRef, memo, useState } from 'react';
 import { menus } from '@/menus';
 import { FlexRowStart, FullSizeHeight, useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useResizeObserver, useShallowReactive, useWindowInnerSize, useZustandHijack } from '@rapid/libs-web';
-import { isDef, isUnDef, isUndefined, toPicket } from '@rapid/libs';
+import { isDef, isUnDef, isUndefined, toNil } from '@rapid/libs';
 import { Menu, Input } from 'antd';
 import { commonStyles } from '@scss/common';
 
@@ -157,7 +157,7 @@ export const Control = memo((props: ControlProps) => {
   const isFullSize = windowInnerSize.innerWidth === normalState.workAreaSize.width && windowInnerSize.innerHeight === normalState.workAreaSize.height;
 
   useAsyncLayoutEffect(async () => {
-    const [err, res] = await toPicket(window.ipcActions.windowWorkAreaSize());
+    const [err, res] = await toNil(window.ipcActions.windowWorkAreaSize());
     if (err) return;
 
     normalState.workAreaSize = res;

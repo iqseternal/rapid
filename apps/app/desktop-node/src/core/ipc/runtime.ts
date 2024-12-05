@@ -1,6 +1,6 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { Exception } from '../exceptions';
-import { toPicket } from '@rapid/libs';
+import { toNil } from '@rapid/libs';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
 
@@ -177,7 +177,7 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
     const middleware = globalMiddlewares[i];
     if (!middleware.onBeforeEach) continue;
 
-    const [error] = await toPicket(Promise.resolve(middleware.onBeforeEach(...convertArgs)));
+    const [error] = await toNil(Promise.resolve(middleware.onBeforeEach(...convertArgs)));
     if (error) {
       err = error;
       break;
@@ -191,7 +191,7 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
     const middleware = globalMiddlewares[i];
     if (!middleware.transformArgs) continue;
 
-    const [error, args] = await toPicket(Promise.resolve(middleware.transformArgs(...convertArgs)));
+    const [error, args] = await toNil(Promise.resolve(middleware.transformArgs(...convertArgs)));
 
     if (error) {
       err = error;
@@ -211,7 +211,7 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
     const middleware = middlewares[i];
     if (!middleware.onBeforeEach) continue;
 
-    const [error] = await toPicket(Promise.resolve(middleware.onBeforeEach(e, ...convertArgs)));
+    const [error] = await toNil(Promise.resolve(middleware.onBeforeEach(e, ...convertArgs)));
     if (error) {
       err = error;
       break;
@@ -225,7 +225,7 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
     const middleware = middlewares[i];
     if (!middleware.transformArgs) continue;
 
-    const [error, args] = await toPicket(Promise.resolve(middleware.transformArgs(...convertArgs)));
+    const [error, args] = await toNil(Promise.resolve(middleware.transformArgs(...convertArgs)));
 
     if (error) {
       err = error;
@@ -236,7 +236,7 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
   if (err) return Promise.reject(err);
 
   // action 正式处理 ipc 句柄
-  const [error, res] = await toPicket(Promise.resolve(action.action(...convertArgs)));
+  const [error, res] = await toNil(Promise.resolve(action.action(...convertArgs)));
   err = error;
 
   // onError 周期

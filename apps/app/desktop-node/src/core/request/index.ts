@@ -6,7 +6,7 @@
  * ==========================================
  */
 import { CONFIG } from '@rapid/config/constants';
-import { REQ_METHODS, createApiRequest } from '@rapid/libs';
+import { createApiRequest, REQ_METHODS } from '@rapid/libs';
 
 export const { apiGet, apiPost, createApi } = createApiRequest(CONFIG.API.URL, {}, {
 

@@ -2,7 +2,7 @@ import { WindowService } from '@/core/service/WindowService';
 import { IpcActionMiddleware, IpcActionEvent } from '@/core/ipc';
 import { Catch, RuntimeException, isException } from '@/core';
 import type { RPromiseLike } from '@rapid/libs';
-import { toPicket, asynced } from '@rapid/libs';
+import { toNil, asynced } from '@rapid/libs';
 import type { Exception, ExceptionErrorMsgData } from '@/core';
 import { PrinterService } from '@/core/service/PrinterService';
 
@@ -37,7 +37,7 @@ export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
    * 转换响应, 将 ipc 句柄的响应转换为 RPromiseLike 对象
    */
   transformResponse: asynced<IpcTransformResponseFc>(async (response) => {
-    const [err, data] = await toPicket(response);
+    const [err, data] = await toNil(response);
 
     if (err) {
       if (isException(err)) return Promise.reject(JSON.stringify(err));

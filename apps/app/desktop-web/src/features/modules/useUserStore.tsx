@@ -1,6 +1,6 @@
 import { loginReq, getUserinfoReq, UserinfoResponse, logoutReq } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
-import { toPicket, asynced, RPromiseLike } from '@rapid/libs';
+import { toNil, asynced, RPromiseLike } from '@rapid/libs';
 import { useEffect, useLayoutEffect } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -32,7 +32,7 @@ export const getAccessToken = async () => {
 }
 
 export const setAccessToken = async (accessToken: string) => {
-  const [err, res] = await toPicket(window.stores.appStore.set('accessToken', accessToken));
+  const [err, res] = await toNil(window.stores.appStore.set('accessToken', accessToken));
   if (err) return Promise.reject(err);
 
   useUserStore.setState({ accessToken });
@@ -49,7 +49,7 @@ export const authHasAuthorizedSync = () => {
   return (accessToken && accessToken.trim() !== '');
 }
 export const authHasAuthorized = async () => {
-  const [err, accessToken] = await toPicket(getAccessToken());
+  const [err, accessToken] = await toNil(getAccessToken());
   if (err || !accessToken || accessToken.trim() === '') return false;
   return true;
 }
@@ -106,7 +106,7 @@ export const userActions = {
    * 用户登录
    */
   userLogin: asynced<typeof loginReq>(async (loginPayload) => {
-    const [loginErr, loginRes] = await toPicket(loginReq(loginPayload));
+    const [loginErr, loginRes] = await toNil(loginReq(loginPayload));
     if (loginErr) return Promise.reject(loginErr);
 
     await setAccessToken(loginRes.data.userinfo.token);
@@ -117,7 +117,7 @@ export const userActions = {
    * 更新用户信息
    */
   userUpdateInfo: asynced<typeof getUserinfoReq>(async () => {
-    const [infoErr, infoRes] = await toPicket(getUserinfoReq());
+    const [infoErr, infoRes] = await toNil(getUserinfoReq());
     if (infoErr) return Promise.reject(infoErr);
 
     useUserStore.setState({ userinfo: infoRes.data });
@@ -128,7 +128,7 @@ export const userActions = {
    * 用户退出登录
    */
   useLogout: asynced<() => RPromiseLike<void>>(async () => {
-    const [err, res] = await toPicket(logoutReq());
+    const [err, res] = await toNil(logoutReq());
 
     if (err) return Promise.reject();
     return Promise.resolve();
