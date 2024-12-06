@@ -1,46 +1,34 @@
-import type { IStyledComponent, SupportedHTMLElements, RuleSet } from 'styled-components';
+import type { IStyledComponent, IStyledComponentFactory, SupportedHTMLElements, RuleSet, Styled, StyledInstance, LibraryStyled, WebTarget } from 'styled-components';
 import styled, { css, isStyledComponent } from 'styled-components';
+
+export type StyledComponentSheet = Pick<Styled, SupportedHTMLElements>;
 
 /**
  * 合并多个 styled 的样式, 形成新的 styled 组件
  * @returns
  */
-export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(componentType?: K, ...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T;
+export function combinationStyled<Target extends SupportedHTMLElements, TInstance extends IStyledComponent<'web'>>(componentType: Target, ...args: (RuleSet | TInstance)[]): TInstance;
 
 /**
  * 合并多个 styled 的样式, 形成新的 styled 组件
  */
-export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T;
+export function combinationStyled<Target extends SupportedHTMLElements, TInstance extends IStyledComponent<'web'>>(...args: [TInstance, ...(RuleSet | TInstance)[]]): TInstance;
 
-export function combinationStyled<T extends ReturnType<typeof styled[K]>, K extends SupportedHTMLElements = 'div'>(componentType?: K | T, ...args: (RuleSet | ReturnType<typeof styled[SupportedHTMLElements]>)[]): T {
-  let tag = 'div';
-
-  let isDiy = false;
-
-  if (typeof componentType === 'string') {
-    tag = componentType;
-    isDiy = true;
-  }
-  else if (componentType?.target) {
-    tag = (componentType)?.target as string;
-  }
-
+export function combinationStyled<Target extends SupportedHTMLElements, TInstance extends IStyledComponent<'web'>>(componentType: SupportedHTMLElements | TInstance, ...args: (RuleSet | TInstance)[]): TInstance {
+  const tag: SupportedHTMLElements = (typeof componentType === 'string') ? componentType : 'div';
   const Component = styled[tag as 'div']``;
 
-  function addStyle(...cssStyle: (string | RuleSet)[]) {
-    (Component as any).componentStyle.rules.push(...cssStyle);
-  }
+  console.log(Component);
+  const combinationStyle = (...cssStyle: (string | RuleSet)[]) => Component.componentStyle.rules.push(...cssStyle);
 
-  function combination(cpt: ReturnType<typeof styled[SupportedHTMLElements]>) {
-    addStyle(...(cpt as any).componentStyle.rules);
-  }
+  const combination = (cpt: TInstance) => combinationStyle(cpt.componentStyle.rules as (RuleSet)[]);
 
-  if (!isDiy) combination(componentType as T);
+  if (typeof componentType !== 'string') combination(componentType);
 
   args.forEach(arg => {
     if (isStyledComponent(arg)) combination(arg);
-    else addStyle(arg);
-  });
+    else combinationStyle(arg);
+  })
 
-  return Component as unknown as T;
+  return Component;
 }

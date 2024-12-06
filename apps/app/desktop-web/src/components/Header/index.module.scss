@@ -1,4 +1,4 @@
-@import '@scss/mixin/index.scss';
+@use '@scss/mixin/index.scss' as *;
 
 .header {
   width: 100%;

@@ -1,4 +1,4 @@
-import { print, toColor, printClear, toPrintClear, STYLE, keyToAnsi, isPrintStyleMessage, isPrintStyleMessageArr } from '@suey/printer';
+import { print, toColor, printClear, toPrintClear, Ansi, isAnsiStyleMessage, isAnsiStyleMessageArr } from '@suey/printer';
 import { CONFIG } from '@rapid/config/constants';
 import { isString } from '@rapid/libs';
 
@@ -35,12 +35,12 @@ export class PrinterService {
    */
   public static extractNormalMessage(...messages: unknown[]) {
     const normalMessages: string[] = messages.map((message, index) => {
-      if (isPrintStyleMessageArr(message)) {
+      if (isAnsiStyleMessageArr(message)) {
         // 在打印中, 打印类型 [INFO] 存在下划线延长, 需要清除样式, 所以需要剔除 NORMAL 信息
-        if (index === 3 && isString(message.data[1])) return message.data[1].replace(keyToAnsi[STYLE.NORMAL], '');
+        if (index === 3 && isString(message.data[1])) return message.data[1].replace(Ansi.AnsiTransformer[Ansi.AnsiEnum.NORMAL], '');
         return message.data[1];
       }
-      if (isPrintStyleMessage(message)) message = message.data;
+      if (isAnsiStyleMessage(message)) message = message.data;
       if (typeof message === 'object') message = JSON.stringify(message);
 
       return message as string;

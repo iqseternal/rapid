@@ -1,4 +1,4 @@
-@import './var.scss';
+@use './var.scss';
 
 @mixin overflow($scroll: scroll) { // 溢出影藏
   overflow-x: hidden;

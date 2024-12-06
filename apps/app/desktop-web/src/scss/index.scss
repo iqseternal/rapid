@@ -1,8 +1,6 @@
-@import './var.scss';
-
-@import './preset/index.scss';
-
-@import './override/index.scss';
+@use './var.scss';
+@use './preset';
+@use './override';
 
 #root {
   width: 100% !important;

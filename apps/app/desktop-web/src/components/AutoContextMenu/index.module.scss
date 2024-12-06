@@ -1,4 +1,4 @@
-@import "@scss/mixin";
+@use "@scss/mixin" as *;
 
 div.menuItem {
   padding: 0px 8px;

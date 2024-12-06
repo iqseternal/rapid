@@ -11,7 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rapid/validates": "workspace:^",
     "@suey/pkg-utils": "0.2.1"
   }
 }

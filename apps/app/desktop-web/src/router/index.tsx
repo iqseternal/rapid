@@ -14,7 +14,13 @@ export default function RouterContext() {
   }, []);
 
   return (
-    <HashRouter>
+    <HashRouter
+
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true
+      }}
+    >
       <Suspense
         fallback={<>
           <div>正在加载组件 ....</div>

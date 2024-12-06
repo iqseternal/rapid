@@ -1,4 +1,4 @@
-@import "@scss/mixin";
+@use "@scss/mixin" as *;
 
 .icon {
   display: none;

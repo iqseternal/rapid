@@ -1,5 +1,5 @@
-@import '@scss/mixin.scss';
-@import '@scss/var.scss';
+@use '@scss/mixin';
+@use '@scss/var';
 
 @mixin padding {
   padding: var(--h-tb-padding) 200px;

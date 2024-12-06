@@ -14,7 +14,7 @@ export const MaxScreenWidth = combinationStyled('div', maxScreenWidthStyle);
 export const MaxScreenHeight = combinationStyled('div', maxScreenHeightStyle);
 export const MaxScreen = combinationStyled(MaxScreenWidth, MaxScreenHeight);
 
-export const MaxViewWidth = combinationStyled('div', maxViewWidthStyle);
+export const MaxViewWidth = combinationStyled('section', maxViewWidthStyle);
 export const MaxViewHeight = combinationStyled('div', maxViewHeightStyle);
 export const MaxView = combinationStyled(MaxViewWidth, MaxViewHeight);
 

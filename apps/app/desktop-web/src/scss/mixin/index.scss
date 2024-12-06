@@ -1,8 +1,7 @@
-@import '../var.scss';
-
-@import './common.scss';
-@import './flex.scss';
-@import './media.scss';
+@forward '../var';
+@forward './common';
+@forward './flex';
+@forward './media';
 
 @mixin BeautifulBar() {
   @media screen and (orientation:portrait) and (max-device-width:768px) and (max-device-height:1024px),

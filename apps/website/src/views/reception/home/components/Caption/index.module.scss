@@ -1,7 +1,7 @@
 
 
-@import '@scss/mixin.scss';
-@import '@scss/var.scss';
+@use '@scss/mixin.scss';
+@use '@scss/var.scss';
 
 .caption {
   width: calc(100% - 20px * 2);

@@ -3,7 +3,7 @@
  * 定义的默认样式
  * ==========================================
  */
-@import '../mixin/index.scss';
+@use '../mixin/index.scss' as *;
 
 .flex { @include Flex; }
 .flexRow { @include Flex; }

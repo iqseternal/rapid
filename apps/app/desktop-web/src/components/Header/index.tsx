@@ -107,29 +107,31 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
     }
   }, [isDialog, isPane]);
 
-  return <FlexRowStart
-    ref={menusContainerRef}
-    className={classnames(
-      commonStyles.hFullSize,
-      !statusState.isCalcDone && commonStyles.transparent
-    )}
-  >
-    {!isDialog && !isPane && maintenanceStack.map((menu, index) => {
-      return <AutoContextMenu
-        key={`menu.key ${index}`}
-        menu={menu}
-        className={commonStyles.appRegionNo}
-      />
-    })}
-    {storageStack.length > 0 &&
-      <AutoContextMenu
-        menu={{ label: 'header-storage-stack', key: 'header-storage-stack', children: storageStack }}
-        className={commonStyles.appRegionNo}
-      >
-        <IconFont icon='MenuOutlined' />
-      </AutoContextMenu>
-    }
-  </FlexRowStart>
+  return (
+    <FlexRowStart
+      ref={menusContainerRef}
+      className={classnames(
+        commonStyles.hFullSize,
+        !statusState.isCalcDone && commonStyles.transparent
+      )}
+    >
+      {!isDialog && !isPane && maintenanceStack.map((menu, index) => {
+        return <AutoContextMenu
+          key={`menu.key ${index}`}
+          menu={menu}
+          className={commonStyles.appRegionNo}
+        />
+      })}
+      {storageStack.length > 0 &&
+        <AutoContextMenu
+          menu={{ label: 'header-storage-stack', key: 'header-storage-stack', children: storageStack }}
+          className={commonStyles.appRegionNo}
+        >
+          <IconFont icon='MenuOutlined' />
+        </AutoContextMenu>
+      }
+    </FlexRowStart>
+  )
 })
 
 
@@ -182,7 +184,7 @@ export const Control = memo((props: ControlProps) => {
 
         {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => window.ipcActions.windowDevtool(true, { mode: 'detach' })} />}
         <Widget icon='LineOutlined' tipText='最小化' onClick={() => window.ipcActions.windowMin()} />
-        {(isDialog || isPane) && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => window.ipcActions.windowReduction()} />}
+        {(!isDialog && !isPane) && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => window.ipcActions.windowReduction()} />}
         <Widget
           icon='CloseOutlined'
           tipText='关闭'

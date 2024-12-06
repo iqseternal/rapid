@@ -1,5 +1,4 @@
-
-@import "@scss/mixin";
+@use "@scss/mixin" as *;
 
 .mainNavigationContainer {
   width: calc(var(--rapid-navigation-bar-width) * 1.2) !important;
