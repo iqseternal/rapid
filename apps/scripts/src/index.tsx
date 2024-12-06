@@ -1,5 +1,7 @@
 import { Printer, printClear } from '@suey/printer';
 
+declare const React: any;
+
 Printer.print('Hello');
 
 let i = 0, j = true;
@@ -12,7 +14,7 @@ for (let i = 0;i < 100;i ++) {
 }
 
 abstract class A {
-  public static readonly name: string = 'a';
+  public static readonly nameStr: string = 'a';
 
   abstract run(): void;
 }
