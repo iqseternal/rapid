@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "@rapid/config": "workspace:^",
-    "rspress": "^1.27.1"
+    "rspress": "1.27.1"
   }
 }

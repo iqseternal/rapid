@@ -1,6 +1,7 @@
 import { CONFIG, IS_BROWSER } from '@rapid/config/constants';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toNil } from '@rapid/libs';
+import { useEffect, useState } from 'react';
 
 export interface FadeOptions {
   waitTimer?: number;
@@ -32,6 +33,8 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
   } = options ?? {};
 
   useAsyncEffect(async () => {
+    if (IS_BROWSER) return;
+
     if (beforeCallback) {
       const [err] = await toNil(Promise.resolve(beforeCallback()));
 
@@ -41,7 +44,6 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
         return window.ipcActions.windowShow({ show: true }).catch(onError);
       }
     }
-    if (IS_BROWSER) return;
 
     setTimeout(async () => {
       window.ipcActions.windowShow({ show: true }).catch(onError);

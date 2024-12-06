@@ -13,6 +13,6 @@
   "dependencies": {
     "@rapid/libs": "workspace:^",
     "@rapid/validates": "workspace:^",
-    "ahooks": "^3.8.1"
+    "ahooks": "3.8.4"
   }
 }

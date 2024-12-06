@@ -14,13 +14,7 @@ export default function RouterContext() {
   }, []);
 
   return (
-    <HashRouter
-
-      future={{
-        v7_relativeSplatPath: true,
-        v7_startTransition: true
-      }}
-    >
+    <HashRouter>
       <Suspense
         fallback={<>
           <div>正在加载组件 ....</div>
@@ -34,8 +28,6 @@ export default function RouterContext() {
              * @returns {ReactElement}
              */
             onLazyComponent: ({ children }): ReactElement => {
-
-
               return <Suspense fallback={
                 // <Skeleton />
 

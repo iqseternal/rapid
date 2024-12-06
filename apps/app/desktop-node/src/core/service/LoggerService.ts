@@ -1,4 +1,4 @@
-import { print, toColor, toPrintClear, isPrintStyleMessage, isPrintStyleMessageArr, STYLE, keyToAnsi } from '@suey/printer';
+import { print, toColor, toPrintClear } from '@suey/printer';
 import { SingleInstanceService } from './SingleInstanceService';
 import { FileService } from './FileService';
 import { AppFileStorageService, logsDirStorageService } from './AppStorageService';

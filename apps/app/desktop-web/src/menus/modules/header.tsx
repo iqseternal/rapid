@@ -21,7 +21,7 @@ export const headerFileMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
 
     {
       type: 'submenu',
-      icon: 'DockerOutlined',
+      icon: 'FileDoneOutlined',
       label: '新建文档',
       children: [
         {
@@ -39,7 +39,7 @@ export const headerFileMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
     },
     {
       type: 'item',
-      icon: 'OpenAIOutlined',
+      icon: 'FolderOpenOutlined',
       label: '打开',
       shortcut: ['Ctrl+O'],
       disabled: selector(useDocStore, state => state.isWork),
@@ -136,7 +136,6 @@ export const headerEditMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
     },
     {
       type: 'item',
-
       label: '剪切',
       disabled: selector(useDocStore, state => !state.isWork),
     },

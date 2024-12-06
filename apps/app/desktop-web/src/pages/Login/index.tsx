@@ -1,7 +1,7 @@
 import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
-import { useFadeIn, useFadeOut } from '../../libs/hooks';
+import { useFadeIn, useFadeOut } from '@/libs/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
@@ -57,7 +57,6 @@ export const Login = memo(() => {
       return;
     }
   }, []);
-
 
   useFadeIn(async () => {
     await Promise.allSettled([

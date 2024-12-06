@@ -81,7 +81,7 @@ export function convertMenuItem<Item extends MenuItemType>(item: Item): AntdMenu
  * 定义子菜单的类型, 继承自 AntdSubMenuType, 但同时具有自定义扩展的类型
  */
 export type SubMenuType<T extends ItemType = ItemType> = Omit<AntdSubMenuType, 'children' | 'icon' | 'key'> & {
-  type: 'submenu';
+  type: 'submenu' | string;
   icon?: IconKey;
   label?: ReactNode | FC | (() => JSX.Element);
   children?: (T | SubMenuType | MenuDividerType)[];
@@ -122,7 +122,7 @@ export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): A
  * 定义分割线的类型
  */
 export type MenuDividerType = AntdMenuDividerType & {
-  type: 'divider';
+  type: 'divider' | string;
 };
 export { AntdMenuDividerType };
 
@@ -138,10 +138,9 @@ export function convertMenuDivider<MenuDivider extends MenuDividerType>(divider:
  */
 export type MenuItemGroupType<T extends ItemType = ItemType> = Omit<AntdMenuItemGroupType, 'children'> & {
   children?: T[];
-  type: 'group';
+  type: 'group' | string;
 };
 export { AntdMenuItemGroupType };
-
 
 /**
  * 转换菜单组到 antd 可以使用的对象
