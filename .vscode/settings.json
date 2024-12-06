@@ -657,7 +657,6 @@
   "workbench.colorTheme": "GitHub Dark",
   "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "git.openRepositoryInParentFolders": "never",
-  "window.zoomLevel": 0,
   "git.ignoreLegacyWarning": true,
   "winopacity.opacity": 251,
   "editor.smoothScrolling": true,
