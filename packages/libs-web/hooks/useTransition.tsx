@@ -1,11 +1,11 @@
 import type { DependencyList } from 'react';
 import { useCallback } from 'react';
-import { useShallowReactive } from './useReactive';
+import { useNormalState, useShallowReactive } from './useReactive';
 
 /**
  * 开始某个异步任务的函数类型
  */
-export type StartTransitionFunction = (...args: any[]) => Promise<void>;
+export type StartTransitionFunction = (...args: any[]) => Promise<any>;
 
 /**
  * 类似 react 19. useTransition
@@ -28,23 +28,39 @@ export type StartTransitionFunction = (...args: any[]) => Promise<void>;
  *
  */
 export function useTransition<StartTransitionFn extends StartTransitionFunction>(callback: StartTransitionFn, deps: DependencyList) {
+  const [normalState] = useNormalState({
+    times: 0
+  })
   const [shallowState] = useShallowReactive({
     isPending: false
   })
 
-  const startTransition = useCallback(async (callback: () => Promise<void>) => {
-    shallowState.isPending = true;
-    await callback();
-    shallowState.isPending = false;
+  /**
+   * 执行一个异步任务, 状态会和 hook 公用 pending 保持一致
+   */
+  const transition = useCallback(async <Data extends any = void>(callback: () => Promise<Data>): Promise<Data> => {
+    normalState.times ++;
+    if (normalState.times >= 1) shallowState.isPending = true;
+
+    const data = await callback();
+    normalState.times --;
+
+    if (normalState.times === 0) shallowState.isPending = false;
+    return data;
   }, []);
 
-  const transition = useCallback((...args: Parameters<StartTransitionFn>) => {
-    return startTransition(() => callback(...args)) as ReturnType<StartTransitionFn>;
-  }, deps);
+  /**
+   * 执行本次异步任务
+   */
+  const startWithTransition = useCallback(((...args) => {
+    return transition(() => callback(...args));
+  }) as StartTransitionFn, deps);
 
   return [
     shallowState as Readonly<typeof shallowState>,
-    transition as unknown as StartTransitionFn,
-    startTransition
+
+    startWithTransition,
+
+    transition
   ] as const;
 }

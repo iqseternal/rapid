@@ -26,6 +26,7 @@ enum Step {
 
 export const Login = memo(() => {
   const navigate = useNavigate();
+
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
 
