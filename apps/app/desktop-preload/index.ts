@@ -19,7 +19,7 @@ import { IS_PROD } from '@rapid/config/constants';
 
 import * as ipcActions from './actions';
 
-export type { printerServer };
+export type { PrinterServer };
 
 export type { HandleHandlers, OnHandlers, ExceptionErrorMsgData, Exception } from './server/electron';
 

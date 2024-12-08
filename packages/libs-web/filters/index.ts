@@ -13,10 +13,6 @@ export const StringFilters = {
    * const str: (null | string) = '';
    *
    * <>{StringFilters.toValidStr(str, '-')}</> // 展示 -
-   *
-   * @param value
-   * @param fillStr
-   * @returns
    */
   toValidStr(value: string | undefined | null, fillStr: string) {
     if (!(typeof value === 'string')) return fillStr;
@@ -46,10 +42,6 @@ export const NumberFilters = {
    *
    * const nr: (undefined | number) = void 0;
    * <>{NumberFilters.toFixed(nr, 2)}</> // 展示 0.00
-   *
-   * @param value
-   * @param position
-   * @returns
    */
   toFixed(value: number | undefined | null, position = 2) {
     if (!(typeof value === 'number')) return 0;

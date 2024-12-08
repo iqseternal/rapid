@@ -27,7 +27,7 @@ export interface ExceptionErrorMsgData {
 export abstract class Exception<ErrMessageData extends ExceptionErrorMsgData> {
   public readonly errMessage: ErrMessageData;
 
-  constructor(public message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>) {
+  public constructor(public message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>) {
     const { label = 'GLOBAL', level = 'ERROR' } = errMessage ?? {};
 
     if (IS_DEV) {

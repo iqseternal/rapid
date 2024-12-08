@@ -58,7 +58,6 @@ export abstract class Vessel<V> {
 
   /**
    * 查看容器中是否包含某个元素
-   * @param value
    */
   public abstract contains(value: V): boolean;
 

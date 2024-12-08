@@ -11,9 +11,9 @@ import styles from './app.module.scss';
  */
 export default function RapidApp() {
 
-
   useEffect(() => {
-    window.printer.printInfo('Rapid App 挂载...');
+    printer.printInfo('Rapid App 挂载...');
+
   }, []);
 
   return (

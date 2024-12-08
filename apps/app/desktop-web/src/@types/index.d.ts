@@ -20,6 +20,9 @@ declare global {
    */
   declare interface Window extends ExposeApi { }
 
+  declare const printer: RdPreload.PrinterServer;
+  declare const ipcActions: RPreload.IpcActions;
+
   /**
    * 定义 `React` 组件的基本 `props`, 让 组件能够快速定义
    *

@@ -14,7 +14,7 @@ export interface AppStoreOptions {
 
 /** store 存储服务 */
 export class AppStore extends CustomSingleInstanceService {
-  private static readonly storeMap = new Map<string, any>;
+  private static readonly storeMap = new Map<string, any>();
 
   /** 获取一个存储服务实例, 该实例映射到各个 electron-store */
   static override getInstance<StoreType extends {}>(storeKey: string, options: AppStoreOptions): ElectronStore<StoreType> {

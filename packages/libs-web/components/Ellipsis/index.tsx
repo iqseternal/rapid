@@ -3,7 +3,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
 import { useDebounceHook, useResizeObserver, useShallowReactive } from '../../hooks';
-import { isRawObject, isString, isUndefined } from '@rapid/libs';
+import { isRawObject, isString, isUndefined, isUnDef } from '@rapid/libs';
 import { StringFilters } from '../../filters';
 
 import styles from './index.module.scss';
@@ -106,7 +106,7 @@ const EllipsisBase = memo((props: EllipsisTypes.EllipsisProps) => {
     }
   } = props;
 
-  if (isUndefined(children)) return <></>;
+  if (isUnDef(children)) return <></>;
 
   const [state] = useShallowReactive({
     // 当前内容是否溢出了容器
@@ -123,8 +123,7 @@ const EllipsisBase = memo((props: EllipsisTypes.EllipsisProps) => {
       return defaultContent;
     }
 
-    if (isString(children)) return StringFilters.toValidStr(children, defaultContent);
-    return defaultContent;
+    return StringFilters.toValidStr(children.toString(), defaultContent);
   }, [children, defaultContent]);
 
   // 创建 resizeObserver, 添加调整尺寸时的侦听器

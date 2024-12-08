@@ -21,13 +21,13 @@ export class AppFileStorageService {
   ) {}
 
   /** 按照指定格式保存当前想要的文件 */
-  async save<T extends ConvertDataType>(content: T) {
+  public async save<T extends ConvertDataType>(content: T) {
     const data = await ConvertService.toDeflate(content);
     return FileService.saveFileAsStream(this.filePath, data);
   }
 
   /** 按照指定格式读取当前想要的文件 */
-  async read() {
+  public async read() {
     const content = await FileService.readFile(this.filePath);
     return new ConvertService<Exclude<ConvertDataType, Blob>>(ConvertService.toInflate(content));
   }
@@ -68,7 +68,7 @@ export class AppDirStorageService {
    * @param sub
    * @returns
    */
-  createDirService(sub: string) {
+  public createDirService(sub: string) {
     const subPath = join(this.absoluteTargetUrl, sub);
     return new AppDirStorageService(this.targetName, subPath);
   }
@@ -77,7 +77,7 @@ export class AppDirStorageService {
    * 通过本 service 的 targetUrl 创建一个子文件的 service
    * @returns
    */
-  createFileService(subPath: string) {
+  public createFileService(subPath: string) {
     return new AppFileStorageService(join(this.targetUrl, subPath));
   }
 
@@ -87,7 +87,7 @@ export class AppDirStorageService {
    * @param dirPath
    * @returns
    */
-  async mkdir(dirPath: string) {
+  public async mkdir(dirPath: string) {
     if (validateLocalPathHasDriveLetter(dirPath)) {
       throw new TypeException(`the dirPath is not absolute path`, { label: `AppStorageService:mkdir` });
     }
@@ -102,7 +102,7 @@ export class AppDirStorageService {
    * @param content
    * @returns
    */
-  async saveFile(filePath: string, content: ConvertDataType) {
+  public async saveFile(filePath: string, content: ConvertDataType) {
     if (validateLocalPathHasDriveLetter(filePath)) {
       throw new TypeException(`the filePath is not absolute path`, { label: `AppStorageService:save` });
     }
@@ -115,14 +115,14 @@ export class AppDirStorageService {
    * @param filePath
    * @returns
    */
-  async readFile(filePath: string) {
+  public async readFile(filePath: string) {
     return new AppFileStorageService(join(this.targetUrl, filePath)).read();
   }
 
   /**
    * 获取本 service 下的文件结构数组
    */
-  async folderList(options: Parameters<typeof FileService.folderList>[1]) {
+  public async folderList(options: Parameters<typeof FileService.folderList>[1]) {
     const list = await FileService.folderList(this.targetUrl, options);
 
 
