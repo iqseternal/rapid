@@ -11,7 +11,7 @@ import { getWindowFrom } from '../common';
 const DefaultBrowserWindowConstructorOptions: Partial<BrowserWindowConstructorOptions> = {
   show: false,
   autoHideMenuBar: true,
-  
+
   disableAutoHideCursor: false,
   frame: false, // 是否带有边框的窗口
   alwaysOnTop: false,
@@ -165,8 +165,6 @@ export class WindowServiceStateMachine {
 
   /**
    * 通过名字添加一个 Service 到状态机中
-   * @param key
-   * @param windowService
    */
   public static addKey(key: string, windowService: WindowService) {
     WindowServiceStateMachine.keyToServiceMap.set(key, windowService);
@@ -175,7 +173,6 @@ export class WindowServiceStateMachine {
 
   /**
    * 通过名字删除一个 Service
-   * @param key
    */
   public static removeKey(key: string) {
     const windowService = WindowServiceStateMachine.keyToServiceMap.get(key);
