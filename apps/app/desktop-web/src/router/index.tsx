@@ -9,10 +9,6 @@ export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
 export default function RouterContext() {
 
-  useEffect(() => {
-    window.printer.printInfo('RouterContext 路由挂载渲染');
-  }, []);
-
   return (
     <HashRouter>
       <Suspense

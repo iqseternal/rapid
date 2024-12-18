@@ -6,37 +6,32 @@ import { useNavigate } from 'react-router-dom';
 
 import { useRetrieveRoute } from '@/router';
 import { useAuthHasAuthorized } from '@/features';
+import { isReactComponent } from '@rapid/libs-web';
+
+export interface AuthAuthorizedComponentProps {
+
+  children: ReactNode;
+}
 
 /**
  * 验证是否获得了授权
  */
-const AuthAuthorizedFc = memo((props: { children: ReactNode; }) => {
+export const AuthAuthorized = heavyDutyGuard(memo((props: AuthAuthorizedComponentProps): ReactElement => {
   const { children } = props;
 
   const navigate = useNavigate();
   const hasAuthorized = useAuthHasAuthorized();
   const loginRoute = useRetrieveRoute(routes => routes.loginRoute);
 
-  useLayoutEffect(() => {
-    if (!hasAuthorized) navigate(loginRoute.meta.fullPath);
+  useEffect(() => {
+    if (!hasAuthorized) {
+      navigate(loginRoute.meta.fullPath);
+    }
   }, [hasAuthorized]);
 
   if (!hasAuthorized) return <></>;
+
   return <>{children}</>;
-});
-
-function AuthAuthorizedFn<GFC extends ReactComponent>(Component: GFC): GFC {
-  return memo(forwardRef((props, ref) => {
-    const F = Component as ReactComponent;
-    const children = <F ref={ref} />;
-
-    return <AuthAuthorizedFc {...props} children={children} />
-  })) as unknown as GFC;
-}
-
-/**
- * 验证是否获得了授权
- */
-export const AuthAuthorized = heavyDutyGuard(AuthAuthorizedFn, AuthAuthorizedFc);
+}));
 
 export default AuthAuthorized;

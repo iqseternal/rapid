@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
 
@@ -25,6 +25,9 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)) {
   return [state] as const;
 }
 
+
+export function useShallowReactive<S extends object>(initValue: (() => S)): readonly [S, () => void];
+
 /**
  * 修改 state 自动刷新组件
  * @example
@@ -38,9 +41,19 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)) {
  * state.a = 2; // 自动刷新组件
  * state.b.c = 2; // 不会自动刷新组件
  */
+export function useShallowReactive<S extends object>(initValue: S): readonly [S];
+
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
 
+  const isInitFunction = useMemo(() => {
+    return typeof initValue === 'function';
+  }, []);
+
+  const [normalState] = useNormalState({
+    initValue: initValue
+  })
+  normalState.initValue = initValue;
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
@@ -67,9 +80,20 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
     })
   });
 
+  /**
+   * 重置 state
+   */
+  const resetState = useCallback(() => {
+    const initValue = normalState.initValue;
+    if (typeof initValue !== 'function') return;
+    const initialState = initValue();
+    for (const key in initialState) state[key] = initialState[key];
+  }, []);
+
+  if (isInitFunction) return [state, resetState] as const;
+
   return [state] as const;
 }
-
 
 /**
  * 修改 state 自动刷新组件 的配置

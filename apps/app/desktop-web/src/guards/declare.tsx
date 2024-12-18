@@ -2,7 +2,7 @@ import { isObject, isRawObject } from '@rapid/libs';
 import { useAuthRole } from '@/features';
 import { isReactComponent, isReactFC } from '@rapid/libs-web';
 import type { FC, ForwardRefExoticComponent, ReactElement, ReactNode } from 'react';
-import { isValidElement } from 'react';
+import { forwardRef, isValidElement, memo } from 'react';
 
 /**
  * 可用的 React 组件
@@ -12,7 +12,7 @@ export type ReactComponent<Props extends {} = any> = ForwardRefExoticComponent<P
 /**
  * 重载守卫, 根据传递的 FC 和 FN 返回重载函数
  */
-export interface HeavyDutyGuard<GFN extends (Component: ReactComponent) => ReactComponent, GFC extends ReactComponent<{ children: ReactNode }>> {
+export interface HeavyDutyGuard<GFC extends ReactComponent<any>> {
   /**
    * 包裹 FC, 返回一个新的守卫组件
    *
@@ -26,7 +26,7 @@ export interface HeavyDutyGuard<GFN extends (Component: ReactComponent) => React
    *   return <></>;
    * })
    */
-  <HFC extends ReactComponent>(Component: HFC): ReturnType<GFN>;
+  <HFC extends ReactComponent>(Component: HFC): HFC;
 
   /**
    * 包裹 ReactElement
@@ -41,46 +41,34 @@ export interface HeavyDutyGuard<GFN extends (Component: ReactComponent) => React
    *  </XXGuard>
    * </div>
    */
-  <HArgs extends Parameters<GFC>>(...args: HArgs): ReactElement;
+  <HArgs extends Parameters<GFC>>(...args: HArgs): ReturnType<GFC>;
 }
 
 /**
  * 重载守卫
  */
-export const heavyDutyGuard = <
-  GFN extends (Component: ReactComponent) => ReactComponent,
-  GFC extends ReactComponent<{ children: ReactNode }>
->(
-  fn: GFN,
-  fc: GFC
-): HeavyDutyGuard<GFN, GFC> => {
+export const heavyDutyGuard = <GFC extends ReactComponent>(Component: GFC): HeavyDutyGuard<GFC> => {
 
-  /**
-   * 直接包裹组件, 那么返回一个新的组件, 用于避免组件的重新渲染
-   */
-  function guard<HFC extends ReactComponent>(Component: HFC): ReturnType<GFN>;
+  function guard<HFC extends ReactComponent>(Component: HFC): HFC;
 
-  /**
-   * 将守卫作为组件, 那么实际情况侠避免组件 children 的渲染就可以
-   */
-  function guard<HArgs extends Parameters<GFC>>(...args: HArgs): ReactElement;
+  function guard<HArgs extends Parameters<GFC>>(...args: HArgs): ReturnType<GFC>;
 
-  function guard<HT extends [ReactComponent] | Parameters<GFC>>(...args: HT): ReturnType<GFN> | ReactElement {
-    const [Component, ...restArgs] = args;
+  function guard<HT extends [ReactComponent] | Parameters<GFC>>(...args: HT): ReactComponent | ReturnType<GFC> {
 
-    /**
-     * 如果目标是一个对象, 并且含有 children 属性, 那么会将其视为是一个 props, 即满足第二个重载
-     */
-    if (isRawObject(Component) && ((Component as { children: ReactNode }).children)) {
-      const Gfc = fc as unknown as FC<any>;
-      return <Gfc {...Component} {...restArgs} />;
+    const [Cpt] = args;
+
+    if (isReactComponent<ReactComponent>(Cpt)) {
+      return memo(forwardRef<any, any>((props, ref) => {
+        const F = Cpt as ReactComponent;
+
+        return <Component {...props} children={<F ref={ref} />}>
+
+        </Component>;
+      })) as unknown as ReactComponent;
     }
 
-    /**
-     * 如果是一个合格的 Element, 那么满足第一个重载
-     */
-    if (isReactComponent<ReactComponent>(Component)) {
-      return fn(Component) as unknown as ReturnType<GFN>;
+    if (isRawObject(Cpt) && ((Cpt as { children: ReactNode }).children)) {
+      return <Component {...(Cpt as Parameters<GFC>[0])} /> as ReturnType<GFC>;
     }
 
     throw new Error(`heavyDutyGuard: 参数错误`);

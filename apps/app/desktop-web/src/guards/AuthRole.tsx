@@ -13,28 +13,15 @@ export interface AuthRoleProps {
 }
 
 /**
- * 守卫函数组件
+ * 验证用户的角色
  */
-const AuthRoleFc = memo<AuthRoleProps>((props): ReactNode => {
+export const AuthRole = heavyDutyGuard(memo<AuthRoleProps>((props): ReactNode => {
   const { children } = props;
+  
   const hasRoleState = useAuthRole({});
 
   if (!hasRoleState.hasRole) return <></>;
   return <>{children}</>;
-})
-
-function AuthRoleFn<GFC extends ReactComponent>(Component: GFC): GFC {
-  return memo(forwardRef<any, any>((props, ref) => {
-    const F = Component as ReactComponent;
-    const children = <F ref={ref} />;
-
-    return <AuthRoleFc {...props} children={children} />;
-  })) as unknown as GFC;
-}
-
-/**
- * 验证用户的角色
- */
-export const AuthRole = heavyDutyGuard(AuthRoleFn, AuthRoleFc);
+}));
 
 export default AuthRole;

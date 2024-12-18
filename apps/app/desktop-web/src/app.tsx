@@ -1,7 +1,7 @@
 import { ConfigProvider, App } from 'antd';
 import { classnames } from '@rapid/libs-web/common';
 import { commonStyles } from '@scss/common';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 import RouterContext from './router';
 import styles from './app.module.scss';
@@ -10,11 +10,6 @@ import styles from './app.module.scss';
  * App component
  */
 export default function RapidApp() {
-
-  useEffect(() => {
-    printer.printInfo('Rapid App 挂载...');
-
-  }, []);
 
   return (
     <ConfigProvider

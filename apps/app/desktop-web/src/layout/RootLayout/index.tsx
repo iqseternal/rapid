@@ -1,5 +1,5 @@
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { FullSize } from '@rapid/libs-web/styled';
 import { useAuthHasAuthorized } from '@/features';
 import { memo } from 'react';
@@ -9,7 +9,6 @@ import { memo } from 'react';
  * 可以利用本组件为整个 App 添加动画等.
  */
 const RootLayout = memo(() => {
-
   return <Outlet />
 })
 

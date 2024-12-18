@@ -50,7 +50,7 @@ export const Widget = memo((props: WidgetProps) => {
     className,
     hasHoverStyle = true,
     icon,
-    disabled = false, loading = false, loadingContent,
+    disabled = false, loading = false, loadingContent = <LoadingOutlined />,
     tipText, tipAttrs = {},
     onClick, onDoubleClick, onContextMenu,
     ...realProps
@@ -117,9 +117,7 @@ export const Widget = memo((props: WidgetProps) => {
           }
         )}
       >
-        {loading ? <>
-          {loadingContent ? loadingContent : <LoadingOutlined />}
-        </> : <>
+        {loading ? loadingContent : <>
           {icon && <IconFont icon={icon}></IconFont>}
         </>}
       </FullSize>
