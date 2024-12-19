@@ -2,7 +2,7 @@ import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/libs/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHijack, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toNil } from '@rapid/libs';
@@ -26,6 +26,7 @@ enum Step {
 
 export const Login = memo(() => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const headerFileMenu = useZustandHijack(menus.headerFileMenu);
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
@@ -35,6 +36,8 @@ export const Login = memo(() => {
   const [shallowState] = useShallowReactive({
     step: Step.Login
   })
+
+  printer.printInfo('进入了登录页面', location.pathname);
 
   const [loginPending, login] = useTransition(async () => {
     const [loginErr] = await toNil(userActions.userLogin({
@@ -60,12 +63,9 @@ export const Login = memo(() => {
   }, []);
 
   useFadeIn(async () => {
-    await Promise.allSettled([
-      window.ipcActions.windowSetSize({ width: 850, height: 550 }),
-      window.ipcActions.windowResizeAble({ resizeAble: false })
-    ]);
-
-    if (IS_PROD) await window.ipcActions.windowSetPosition({ x: 'center', y: 'center' });
+    await ipcActions.windowSetSize({ width: 850, height: 550 });
+    await ipcActions.windowResizeAble({ resizeAble: false });
+    if (IS_PROD) await ipcActions.windowSetPosition({ x: 'center', y: 'center' });
   });
 
   return <FullSize className={styles.login}>

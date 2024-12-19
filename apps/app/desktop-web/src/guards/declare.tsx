@@ -49,19 +49,25 @@ export interface HeavyDutyGuard<GFC extends ReactComponent<any>> {
  */
 export const heavyDutyGuard = <GFC extends ReactComponent>(Component: GFC): HeavyDutyGuard<GFC> => {
 
-  function guard<HFC extends ReactComponent>(Component: HFC): HFC;
+  /**
+   * 函数
+   */
+  function Guard<HFC extends ReactComponent>(Component: HFC): HFC;
 
-  function guard<HArgs extends Parameters<GFC>>(...args: HArgs): ReturnType<GFC>;
+  /**
+   * 组件
+   */
+  function Guard<HArgs extends Parameters<GFC>>(...args: HArgs): ReturnType<GFC>;
 
-  function guard<HT extends [ReactComponent] | Parameters<GFC>>(...args: HT): ReactComponent | ReturnType<GFC> {
+  function Guard<HT extends [ReactComponent] | Parameters<GFC>>(...args: HT): ReactComponent | ReturnType<GFC> {
 
     const [Cpt] = args;
 
     if (isReactComponent<ReactComponent>(Cpt)) {
-      return memo(forwardRef<any, any>((props, ref) => {
+      return memo(((props: any) => {
         const F = Cpt as ReactComponent;
 
-        return <Component {...props} children={<F ref={ref} />}>
+        return <Component {...props} children={<F />}>
 
         </Component>;
       })) as unknown as ReactComponent;
@@ -74,5 +80,5 @@ export const heavyDutyGuard = <GFC extends ReactComponent>(Component: GFC): Heav
     throw new Error(`heavyDutyGuard: 参数错误`);
   }
 
-  return guard;
+  return Guard;
 }

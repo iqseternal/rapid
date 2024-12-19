@@ -18,14 +18,14 @@ export * from './declare';
 const DropdownMenuOpenContext = createContext(false);
 
 interface ContextMenuProps {
-  menu: AntdMenuInstanceType;
+  menu: AntdItemType[];
   menuAttrs: MenuProps;
 }
 
 /**
  * 解决某些问题下展开的菜单不正常关闭问题
  */
-const ContextMenu: FC<ContextMenuProps> = memo((props) => {
+const ContextMenu = memo<ContextMenuProps>((props) => {
   const { menu, menuAttrs } = props;
 
   const open = useContext(DropdownMenuOpenContext);
@@ -33,7 +33,7 @@ const ContextMenu: FC<ContextMenuProps> = memo((props) => {
 
   return (
     <Menu
-      items={menu.children.concat([])}
+      items={menu.concat([])}
       getPopupContainer={() => document.body}
       triggerSubMenuAction={'click'}
       {...menuAttrs}
@@ -42,32 +42,28 @@ const ContextMenu: FC<ContextMenuProps> = memo((props) => {
   )
 })
 
-
-export interface AutoDropdownMenuProps extends BaseProps {
-  /** 渲染的菜单实例 */
-  menu: AntdMenuInstanceType;
-
-  /** 给 dropdown 附加的属性参数 */
-  attrs?: DropDownProps;
-
+export interface AutoDropdownMenuProps {
+  /**
+   * 渲染的菜单实例
+   * */
+  menu: AntdItemType[];
   menuAttrs?: MenuProps;
 
-  rootClassName?: string;
+  /**
+   * 给 dropdown 附加的属性参数
+   *
+   */
+  dropdownAttrs?: DropDownProps;
+
+  children: ReactNode;
 }
 
 /**
  * 自动渲染菜单的组件, 该菜单为 contextMenu 或者文件菜单
  *
  */
-export const AutoContextMenu = memo(forwardRef((props: AutoDropdownMenuProps, ref) => {
-  const {
-    menu,
-    attrs = {},
-    menuAttrs = {},
-    rootClassName,
-    className,
-    children
-  } = props;
+export const AutoContextMenu = memo((props: AutoDropdownMenuProps) => {
+  const { menu, menuAttrs = {}, dropdownAttrs = {}, children } = props;
 
   const [state] = useShallowReactive({
     open: false
@@ -89,11 +85,7 @@ export const AutoContextMenu = memo(forwardRef((props: AutoDropdownMenuProps, re
     <Dropdown
       open={state.open}
       arrow={false}
-      trigger={attrs.trigger ?? ['click']}
-      rootClassName={classnames(
-        styles.dropdownMenuRootWrapper,
-        rootClassName
-      )}
+      trigger={['click']}
       autoAdjustOverflow
       mouseEnterDelay={0}
       mouseLeaveDelay={0}
@@ -106,20 +98,17 @@ export const AutoContextMenu = memo(forwardRef((props: AutoDropdownMenuProps, re
         menu={menu}
         menuAttrs={menuAttrs}
       />}
-      {...attrs}
+      {...dropdownAttrs}
+      rootClassName={classnames(
+        styles.dropdownMenuRootWrapper,
+        dropdownAttrs.className
+      )}
     >
-      <MaxContent
-        className={classnames(
-          styles.menuItem,
-          commonStyles.hFullSize,
-          commonStyles.flex,
-          className
-        )}
-      >
-        {children ? children : menu.label}
-      </MaxContent>
+      <div>
+        {children}
+      </div>
     </Dropdown>
   </DropdownMenuOpenContext.Provider>)
-}))
+})
 
 export default AutoContextMenu;

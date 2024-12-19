@@ -32,7 +32,9 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
     }
   } = options ?? {};
 
+  printer.printInfo('use fade in call');
   useAsyncEffect(async () => {
+    printer.printInfo('use fade in call');
     if (IS_BROWSER) return;
 
     if (beforeCallback) {

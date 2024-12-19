@@ -110,6 +110,11 @@ export const userActions = {
     if (loginErr) return Promise.reject(loginErr);
 
     await setAccessToken(loginRes.data.userinfo.token);
+    useUserStore.setState({
+      userinfo: {
+        username: 'Apache'
+      }
+    })
     return loginRes;
   }),
 

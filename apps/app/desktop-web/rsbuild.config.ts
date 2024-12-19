@@ -7,6 +7,7 @@ import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { DIRS, EnvBuilder } from '../../../config/node';
 import { DefinePlugin } from '@rspack/core';
 import { join } from 'path';
+import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 
 import tsConfigJson from './tsconfig.web.json';
 
@@ -33,7 +34,10 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginStyledComponents(),
       pluginTypedCSSModules(),
       pluginReact(),
-      pluginSourceBuild()
+      pluginSourceBuild(),
+      pluginTailwindCSS({
+        config: './tailwind.config.js',
+      })
     ],
     server: {
       port: 3002

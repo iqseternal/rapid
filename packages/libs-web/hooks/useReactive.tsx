@@ -25,9 +25,6 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)) {
   return [state] as const;
 }
 
-
-export function useShallowReactive<S extends object>(initValue: (() => S)): readonly [S, () => void];
-
 /**
  * 修改 state 自动刷新组件
  * @example
@@ -42,6 +39,8 @@ export function useShallowReactive<S extends object>(initValue: (() => S)): read
  * state.b.c = 2; // 不会自动刷新组件
  */
 export function useShallowReactive<S extends object>(initValue: S): readonly [S];
+
+export function useShallowReactive<S extends object>(initValue: (() => S)): readonly [S, () => void];
 
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
@@ -110,11 +109,11 @@ export interface ReactiveOptions {
 /**
  * 修改 state 自动刷新组件
  */
-export function useReactive<S extends object>(initValue: S | (() => S), options?: ReactiveOptions) {
+export function useReactive<S extends object>(initValue: S | (() => S), options?: ReactiveOptions): readonly [S] {
   const { deep = true } = options ?? {};
 
   if (deep) return useDeepReactive(initValue);
-  return useShallowReactive(initValue);
+  return useShallowReactive(initValue) as readonly [S];
 }
 
 

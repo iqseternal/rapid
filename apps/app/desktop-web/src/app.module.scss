@@ -1,5 +1,10 @@
 @use '@scss/mixin';
 
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .app {
   color: var(--rapid-primary-text-color);
   background-color: var(--rapid-third-background-color);

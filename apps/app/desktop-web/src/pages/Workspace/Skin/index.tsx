@@ -94,7 +94,7 @@ export const Skin = memo(() => {
       <span>{state.name}</span>
 
       <Button
-        onClick={() => (state.name++)}
+        onClick={() => (state.name ++)}
       >
         加
       </Button>

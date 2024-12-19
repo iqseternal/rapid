@@ -1,5 +1,12 @@
 @use '@scss/mixin/index.scss' as *;
 
+.menuItem {
+  font-size: 14px;
+  line-height: 14px;
+  gap: 18px;
+  padding: 7px 0px;
+}
+
 .header {
   width: 100%;
   height: var(--rapid-caption-bar-height);
@@ -33,6 +40,13 @@
       width: 100%;
       max-width: 100%;
       overflow: hidden;
+
+      .menuItem {
+        font-size: 14px;
+        line-height: 14px;
+        gap: 18px;
+        padding: 7px 0px;
+      }
     }
 
     .history {

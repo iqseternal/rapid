@@ -55,7 +55,11 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  return <FullSize className={classnames(styles.workbenchesLayout)}>
+  return <FullSize
+    className={classnames(
+      styles.workbenchesLayout
+    )}
+  >
     <Header />
 
     <FullSize
@@ -64,6 +68,8 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
         mainSidebarStatus === 'right' && commonStyles.flexRowReverse
       )}
     >
+
+
       {mainSidebarStatus !== 'none' && <NavigationBar />}
 
       <main className={classnames(styles.mainContainer)}>

@@ -1,6 +1,4 @@
 import { memo, useEffect } from 'react';
-import { Tldraw } from 'tldraw';
-import { FullSize } from '@rapid/libs-web';
 import { Card } from 'antd';
 
 import Guards from '@/guards';

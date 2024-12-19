@@ -88,12 +88,7 @@ export const Widget = memo((props: WidgetProps) => {
     onContextMenu
   ), [onContextMenu]);
 
-  return <Tooltip
-    title={tipText}
-    mouseEnterDelay={0.5}
-    autoAdjustOverflow
-    {...tipAttrs}
-  >
+  return (
     <div
       className={classnames(
         styles.widget,
@@ -105,24 +100,31 @@ export const Widget = memo((props: WidgetProps) => {
         }
       )}
     >
-      <FullSize
-        {...realProps}
-        onClick={withDisabledClick}
-        onDoubleClick={withDisabledDoubleClick}
-        onContextMenu={withDisabledContextMenu}
-        className={classnames(
-          commonStyles.flexRowCenter,
-          {
-            [commonStyles.disabledPointerEvents]: loading || disabled
-          }
-        )}
+      <Tooltip
+        title={tipText}
+        mouseEnterDelay={0.5}
+        autoAdjustOverflow
+        {...tipAttrs}
       >
-        {loading ? loadingContent : <>
-          {icon && <IconFont icon={icon}></IconFont>}
-        </>}
-      </FullSize>
+        <FullSize
+          {...realProps}
+          onClick={withDisabledClick}
+          onDoubleClick={withDisabledDoubleClick}
+          onContextMenu={withDisabledContextMenu}
+          className={classnames(
+            commonStyles.flexRowCenter,
+            {
+              [commonStyles.disabledPointerEvents]: loading || disabled
+            }
+          )}
+        >
+          {loading ? loadingContent : <>
+            {icon && <IconFont icon={icon}></IconFont>}
+          </>}
+        </FullSize>
+      </Tooltip>
     </div>
-  </Tooltip>
+  )
 })
 
 export default Widget;

@@ -1,6 +1,6 @@
 
-import { AuthRole } from './AuthRole';
-import { AuthAuthorized } from './AuthAuthorized';
+import AuthRole from './AuthRole';
+import AuthAuthorized from './AuthAuthorized';
 
 export const Guards = {
   

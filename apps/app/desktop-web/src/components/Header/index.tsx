@@ -118,22 +118,33 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
       {!isDialog && !isPane && maintenanceStack.map((menu, index) => {
         return <AutoContextMenu
           key={`menu.key ${index}`}
-          menu={menu}
-          className={commonStyles.appRegionNo}
-        />
+          menu={menu.children}
+        >
+          <span
+            className={classnames(
+              commonStyles.appRegionNo,
+              styles.menuItem
+            )}
+          >
+            {menu.label}
+          </span>
+        </AutoContextMenu>
       })}
       {storageStack.length > 0 &&
         <AutoContextMenu
-          menu={{ label: 'header-storage-stack', key: 'header-storage-stack', children: storageStack }}
-          className={commonStyles.appRegionNo}
+          menu={storageStack}
         >
-          <IconFont icon='MenuOutlined' />
+          <IconFont
+            icon='MenuOutlined'
+            className={classnames(
+              commonStyles.appRegionNo
+            )}
+          />
         </AutoContextMenu>
       }
     </FlexRowStart>
   )
 })
-
 
 export interface ControlProps {
   // 是否是一个面板
@@ -172,15 +183,15 @@ export const Control = memo((props: ControlProps) => {
       gap={[3]}
     >
       {!IS_BROWSER && <>
-        {!(isDialog && isPane) && <>
-          <Widget
-            icon='SettingOutlined'
-            tipText='设置'
-            onClick={() => {
+        {/*{!(isDialog && isPane) && <>*/}
+        {/*  <Widget*/}
+        {/*    icon='SettingOutlined'*/}
+        {/*    tipText='设置'*/}
+        {/*    onClick={() => {*/}
 
-            }}
-          />
-        </>}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*</>}*/}
 
         {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => window.ipcActions.windowDevtool(true, { mode: 'detach' })} />}
         <Widget icon='LineOutlined' tipText='最小化' onClick={() => window.ipcActions.windowMin()} />
@@ -233,7 +244,6 @@ export const Header = memo((props: HeaderProps) => {
       props.className
     )}
   >
-
     <Subfield
       className={classnames(styles.menuContainer)}
     >
@@ -251,30 +261,9 @@ export const Header = memo((props: HeaderProps) => {
       >
         {!(isDialog && isDialog) ? <MaintenanceMenus isDialog={isDialog} isPane={isPane} /> : <></>}
       </FullSizeHeight>
-
-      <Subfield.SubfieldFixed
-        className={classnames(
-          styles.history,
-          commonStyles.appRegionNo
-        )}
-      >
-        {!(isDialog || isPane) && <Widget icon='HistoryOutlined' />}
-      </Subfield.SubfieldFixed>
     </Subfield>
 
-    <Subfield
-      className={classnames(
-        styles.functionContainer,
-        commonStyles.appRegionNo
-      )}
-    >
-      {!(isDialog || isPane) && <>
-        <Input
-          className={styles.searchInput}
-          placeholder='Ctrl+K'
-        />
-      </>}
-    </Subfield>
+    <Subfield />
 
     <Subfield
       className={styles.operatorContainer}

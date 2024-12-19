@@ -57,7 +57,7 @@ export default function RapidApp() {
       <App
         className={classnames(
           styles.app,
-          commonStyles.fullSize
+          'w-full h-full'
         )}
       >
         <RouterContext />

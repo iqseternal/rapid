@@ -5,15 +5,6 @@
 }
 
 :global(.ant-dropdown-menu) {
-  .menuItem {
-    font-size: 14px;
-    line-height: 14px;
-    gap: 18px;
-    padding: 7px 0px;
-
-    @include FlexRowSpaceBetween;
-  }
-
   .content {
     flex: 1 1 auto;
     margin-right: 8px;
