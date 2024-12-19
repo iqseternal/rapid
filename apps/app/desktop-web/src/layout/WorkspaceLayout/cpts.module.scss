@@ -1,8 +1,8 @@
 @use "@scss/mixin" as *;
 
 .mainNavigationContainer {
-  width: calc(var(--rapid-navigation-bar-width) * 1.2) !important;
-  min-width: calc(var(--rapid-navigation-bar-width) * 1.2) !important;
+  width: calc(var(--rapid-navigation-bar-width) * 1.2);
+  min-width: calc(var(--rapid-navigation-bar-width) * 1.2);
   height: 100%;
   background-color: var(--rapid-navigation-bar-background-color);
   gap: 4px;

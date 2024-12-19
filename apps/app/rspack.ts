@@ -212,6 +212,9 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
           ...vars
         }
+      },
+      dev: {
+        hmr: true
       }
     }))
   }

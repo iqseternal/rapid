@@ -91,7 +91,7 @@ export const Widget = memo((props: WidgetProps) => {
   return (
     <div
       className={classnames(
-        styles.widget,
+        'max-w-full max-h-full',
         className,
         commonStyles.appRegionNo,
         {

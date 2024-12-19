@@ -11,6 +11,7 @@ import type { WidgetProps } from '@components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useUserStore } from '@/features';
 import { commonStyles } from '@scss/common';
+import { makeVar, themeCssVarsSheet } from '@/themes';
 
 import IMessage from '@components/IMessage';
 import Widget from '@components/Widget';
@@ -67,6 +68,9 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
       styles.mainNavigationContainer,
       className
     )}
+    style={{
+      width: makeVar(themeCssVarsSheet.navigationBarWidth)
+    }}
   >
     <FullSizeWidth
       className={styles.topContainer}

@@ -13,8 +13,6 @@ export const Workbenches = memo(() => {
 	const tlUiOverrides = useTldrawStore(store => store.tlUiOverrides);
 	const tlComponents = useTldrawStore(store => store.tlComponents);
 
-	return <></>;
-
 	useEffect(() => {
 		const unregisterBrush = tldrawStoreMutations.registerComponent('Brush', Brush);
 		const unregisterScribble = tldrawStoreMutations.registerComponent('Scribble', Scribble);

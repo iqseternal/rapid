@@ -5,13 +5,13 @@ import { CSSTransition, Transition, TransitionGroup, SwitchTransition } from 're
 import { MaxScreen, MaxScreenWidth, Flex, MaxScreenHeight, MaxViewHeight, combinationStyled, FullSizeWidth, FullSize } from '@rapid/libs-web/styled';
 import { useFadeIn } from '../../libs/hooks';
 import { NavigationBar } from './cpts';
-import { commonStyles, useAnimationClassSelector } from '@scss/common';
+import { useAnimationClassSelector } from '@scss/common';
 import { Guards } from '@/guards';
 import { classnames } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
+import { makeVar, themeCssVarsSheet } from '@/themes';
 
 import Header from '@components/Header';
-import styles from './index.module.scss';
 import IconFont from '@components/IconFont';
 
 /**
@@ -55,24 +55,23 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  return <FullSize
-    className={classnames(
-      styles.workbenchesLayout
-    )}
-  >
+  return <FullSize>
     <Header />
 
     <FullSize
       className={classnames(
-        styles.mainRootContainer,
-        mainSidebarStatus === 'right' && commonStyles.flexRowReverse
+        'flex justify-between flex-nowrap items-center',
+        mainSidebarStatus === 'right' && 'flex-row-reverse'
       )}
+      style={{
+        height: `calc(100% - ${makeVar(themeCssVarsSheet.captionBarHeight)})`
+      }}
     >
-
-
       {mainSidebarStatus !== 'none' && <NavigationBar />}
 
-      <main className={classnames(styles.mainContainer)}>
+      <main
+        className='w-full h-full px-1 py-1 rounded-md overflow-x-hidden overflow-y-auto'
+      >
         <WorkbenchesView />
       </main>
     </FullSize>

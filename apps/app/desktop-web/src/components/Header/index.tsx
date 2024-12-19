@@ -7,13 +7,12 @@ import { FlexRowStart, FullSizeHeight, useAsyncLayoutEffect, useMaintenanceStack
 import { isDef, isUnDef, isUndefined, toNil } from '@rapid/libs';
 import { Menu, Input } from 'antd';
 import { commonStyles } from '@scss/common';
+import { makeVar, themeCssVarsSheet } from '@/themes';
 
 import Widget from '@components/Widget';
 import AutoContextMenu from '@components/AutoContextMenu';
 import IconFont from '@components/IconFont';
 import Logo from '@components/Logo';
-
-import styles from './index.module.scss';
 
 export interface MaintenanceMenusProps {
   isDialog: boolean;
@@ -120,14 +119,14 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
           key={`menu.key ${index}`}
           menu={menu.children}
         >
-          <span
+          <div
             className={classnames(
               commonStyles.appRegionNo,
-              styles.menuItem
+              'py-2 px-2 rounded-lg overflow-hidden hover:bg-gray-200'
             )}
           >
             {menu.label}
-          </span>
+          </div>
         </AutoContextMenu>
       })}
       {storageStack.length > 0 &&
@@ -238,35 +237,44 @@ export const Header = memo((props: HeaderProps) => {
 
   return <Subfield
     className={classnames(
-      styles.header,
+      'w-full text-sm',
       commonStyles.appRegion,
-      className,
-      props.className
+      className
     )}
+    style={{
+      height: makeVar(themeCssVarsSheet.captionBarHeight),
+      backgroundColor: makeVar(themeCssVarsSheet.captionBarBackgroundColor)
+    }}
   >
     <Subfield
-      className={classnames(styles.menuContainer)}
+      className={'w-full z-50'}
     >
-      <Subfield.SubfieldFixed
-        className={styles.logo}
-      >
-        <Logo />
-      </Subfield.SubfieldFixed>
+      <Logo
+        className='flex-none h-full'
+        style={{
+          width: makeVar(themeCssVarsSheet.navigationBarWidth),
+          margin: `0 calc(${makeVar(themeCssVarsSheet.navigationBarWidth)} * 0.1)`
+        }}
+      />
 
       <FullSizeHeight
         className={classnames(
-          styles.menu,
+          'cursor-default w-max flex-auto max-w-full overflow-hidden',
           commonStyles.userSelectNone
         )}
       >
         {!(isDialog && isDialog) ? <MaintenanceMenus isDialog={isDialog} isPane={isPane} /> : <></>}
       </FullSizeHeight>
+
+      <Subfield.Fixed />
     </Subfield>
 
-    <Subfield />
+    <Subfield
+
+    />
 
     <Subfield
-      className={styles.operatorContainer}
+      className='mr-1 flex-auto min-w-max'
     >
       <div />
       <div />

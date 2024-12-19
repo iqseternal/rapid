@@ -57,7 +57,7 @@ export default function RapidApp() {
       <App
         className={classnames(
           styles.app,
-          'w-full h-full'
+          'w-full h-full max-w-9'
         )}
       >
         <RouterContext />

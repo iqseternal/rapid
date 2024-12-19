@@ -8,8 +8,10 @@ import { DIRS, EnvBuilder } from '../../../config/node';
 import { DefinePlugin } from '@rspack/core';
 import { join } from 'path';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
+import { Printer } from '@suey/printer';
 
 import tsConfigJson from './tsconfig.web.json';
+import tailwindcss from 'tailwindcss'
 
 const envBuilder = new EnvBuilder({
   checker: false
@@ -18,6 +20,7 @@ const envBuilder = new EnvBuilder({
 const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
 
   return {
+
     source: {
       entry: {
         index: join(__dirname, './src/index.tsx')
@@ -34,10 +37,7 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginStyledComponents(),
       pluginTypedCSSModules(),
       pluginReact(),
-      pluginSourceBuild(),
-      pluginTailwindCSS({
-        config: './tailwind.config.js',
-      })
+      pluginSourceBuild()
     ],
     server: {
       port: 3002
