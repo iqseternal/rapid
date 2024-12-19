@@ -7,6 +7,7 @@ import { exec } from 'child_process';
 import { join } from 'path';
 
 import treeKill from 'tree-kill';
+import tailwindcss from 'tailwindcss';
 
 
 // =====================================================================================
@@ -215,7 +216,20 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
       },
       dev: {
         hmr: true
-      }
+      },
+      tools: {
+        postcss: {
+          postcssOptions: {
+            plugins: [
+              tailwindcss({
+                content: [
+                  './desktop-web/src/**/*.{html,js,ts,jsx,tsx}'
+                ],
+              }),
+            ],
+          },
+        },
+      },
     }))
   }
 }

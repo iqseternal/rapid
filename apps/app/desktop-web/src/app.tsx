@@ -2,9 +2,9 @@ import { ConfigProvider, App } from 'antd';
 import { classnames } from '@rapid/libs-web/common';
 import { commonStyles } from '@scss/common';
 import { useEffect, useLayoutEffect } from 'react';
+import { makeVar, themeCssVarsSheet } from './themes';
 
 import RouterContext from './router';
-import styles from './app.module.scss';
 
 /**
  * App component
@@ -49,16 +49,13 @@ export default function RapidApp() {
 
       }}
       variant='outlined'
-      // virtual
-      // warning={{
-      //   strict: false
-      // }}
     >
       <App
-        className={classnames(
-          styles.app,
-          'w-full h-full max-w-9'
-        )}
+        className='w-full h-full'
+        style={{
+          color: makeVar(themeCssVarsSheet.primaryTextColor),
+          backgroundColor: makeVar(themeCssVarsSheet.thirdBackgroundColor)
+        }}
       >
         <RouterContext />
       </App>

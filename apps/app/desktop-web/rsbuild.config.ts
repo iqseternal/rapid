@@ -11,11 +11,13 @@ import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 import { Printer } from '@suey/printer';
 
 import tsConfigJson from './tsconfig.web.json';
-import tailwindcss from 'tailwindcss'
+import tailwindcss from 'tailwindcss';
 
 const envBuilder = new EnvBuilder({
   checker: false
 });
+
+const { IS_PROD } = envBuilder.toEnvs();
 
 const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
 
@@ -37,7 +39,8 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       pluginStyledComponents(),
       pluginTypedCSSModules(),
       pluginReact(),
-      pluginSourceBuild()
+      pluginSourceBuild(),
+      IS_PROD && pluginTailwindCSS()
     ],
     server: {
       port: 3002

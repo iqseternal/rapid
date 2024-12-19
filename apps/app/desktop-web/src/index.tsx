@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom/client';
 import RapidApp from './app';
 
 import '@scss/index.scss';
+import './tailwind.css';
 
 app.use(themePlugins);
 app.installAll();
