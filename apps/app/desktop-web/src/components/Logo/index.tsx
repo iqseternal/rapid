@@ -4,8 +4,6 @@ import { classnames } from '@rapid/libs-web/common';
 
 import { default as iconUrl } from '../../../../resources/icon.png?raw';
 
-import styles from './index.module.scss';
-
 export interface LogoProps extends HTMLAttributes<HTMLDivElement> {
   src?: string;
 
@@ -22,10 +20,17 @@ export const Logo = memo((props: LogoProps) => {
   } = props;
 
   return <div
-    className={classnames(styles.logo, className)}
+    className={classnames(
+      'max-w-full max-h-full w-full aspect-square',
+      className
+    )}
     {...realProps}
   >
-    <img src={src} alt={alt} />
+    <img
+      className='w-full h-full aspect-square scale-[0.6] object-contain'
+      src={src}
+      alt={alt}
+    />
   </div>;
 });
 

@@ -1,11 +1,13 @@
-import { AntdMenuInstanceType, convertMenuInstance, type MenuInstanceType } from '@components/AutoContextMenu';
+import type { MenuInstanceType, AntdMenuInstanceType } from '../../components/AutoMenu';
 
 import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
 import { toMakeZustandHijack } from '@rapid/libs-web';
 
+import AutoMenu from '@components/AutoMenu';
+
 const { makeZustandHijack } = toMakeZustandHijack({
   beforeHijackCovert<T extends MenuInstanceType>(target: T) {
-    return convertMenuInstance(target);
+    return AutoMenu.convertMenuInstance(target);
   },
 })
 
@@ -18,7 +20,6 @@ export const headerFileMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
       label: '新建窗口',
       shortcut: 'Ctrl+N'
     },
-
     {
       type: 'submenu',
       icon: 'FileDoneOutlined',

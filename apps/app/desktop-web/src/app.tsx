@@ -19,11 +19,7 @@ export default function RapidApp() {
 
       }}
       direction='ltr'
-      getPopupContainer={(triggerNode) => {
-        if (triggerNode && triggerNode.parentNode && triggerNode.parentNode instanceof HTMLElement) return triggerNode.parentNode;
-
-        return document.body;
-      }}
+      getPopupContainer={(triggerNode) => document.body}
       getTargetContainer={() => window}
       iconPrefixCls={'anticon'}
       // locale={{}}
@@ -38,7 +34,7 @@ export default function RapidApp() {
           },
           Card: {
 
-
+            
           }
         },
         cssVar: {

@@ -7,7 +7,7 @@ import type {
   ItemType as AntdItemType
 } from 'antd/lib/menu/interface';
 import type { FC, Key, ReactElement, ReactNode } from 'react';
-import { MenuInstance, MenuItem, SubMenu } from './cpts';
+import { MenuItem, SubMenu } from './cpts';
 import { IconKey, IconRealKey } from '../IconFont';
 import type { ZustandHijack } from '@rapid/libs-web';
 
@@ -168,7 +168,7 @@ export type ItemType<T extends MenuItemType = MenuItemType> = T | SubMenuType<T>
 export { AntdItemType };
 
 /**
- * 定义一个菜单实例对象的类型, 通过菜单实例和组件 AutoContextMenu 来生成一个上下文菜单
+ * 定义一个菜单实例对象的类型, 通过菜单实例和组件 AutoMenu 来生成一个上下文菜单
  */
 export type MenuInstanceType = {
   label: ReactNode;
@@ -178,6 +178,8 @@ export type MenuInstanceType = {
 }
 export type AntdMenuInstanceType = Omit<MenuInstanceType, 'children'> & {
   key: string;
+  icon?: IconKey;
+  label?: ReactNode;
   children: AntdItemType[]
 };
 
@@ -200,10 +202,8 @@ export function convertMenuInstance<Menu extends MenuInstanceType>(menuInstance:
 
   return {
     key: generatorStackingKey(),
-    label: <MenuInstance
-      icon={icon}
-      label={label}
-    />,
+    label: label,
+    icon: icon,
     trigger,
     children: antdMenuInstanceChildren
   }

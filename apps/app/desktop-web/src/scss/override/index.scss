@@ -117,37 +117,29 @@ input.ant-input::placeholder {
 
 // 普通下拉菜单
 // =====================================================================================================
-div.ant-dropdown {
-  .ant-dropdown-arrow {
+ul.ant-dropdown-menu {
+  background-color: var(--rapid-dropdown-background-color);
+  color: var(--rapid-dropdown-text-color);
+  border-radius: var(--rapid-dropdown-border-radius);
 
+  .ant-dropdown-menu-submenu {
+    .ant-dropdown-menu-submenu-title {
 
-  }
+      display: flex;
+      align-items: center;
 
-  ul.ant-dropdown-menu {
-    background-color: var(--rapid-dropdown-background-color);
-    color: var(--rapid-dropdown-text-color);
-    border-radius: var(--rapid-dropdown-border-radius);
+      .ant-dropdown-menu-submenu-arrow-icon {
 
-
-    .ant-dropdown-menu-submenu {
-
-
-
-      .ant-dropdown-menu-submenu-title {
-        .ant-dropdown-menu-submenu-arrow-icon {
-          font-size: 14px;
-        }
       }
     }
+  }
 
-    .ant-dropdown-menu-item {
-      border-radius: var(--rapid-dropdown-item-border-radius);
+  .ant-dropdown-menu-item {
+    border-radius: var(--rapid-dropdown-item-border-radius);
 
-      .ant-dropdown-menu-title-content {
+    .ant-dropdown-menu-title-content {
 
-      }
     }
   }
 }
-
 

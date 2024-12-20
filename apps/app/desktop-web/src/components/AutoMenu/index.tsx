@@ -1,19 +1,27 @@
 import { classnames , getFirstScrollContainer } from '@rapid/libs-web/common';
 import { useEventListener, useReactive, useThrottleHook, useShallowReactive, useThrottle } from '@rapid/libs-web/hooks';
-
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps, MenuProps } from 'antd';
-import { createContext, useContext, ReactNode, forwardRef, useMemo, useCallback, memo, FC } from 'react';
+import { createContext, useContext, forwardRef, useMemo, useCallback, memo } from 'react';
+import type { ReactNode, FC } from 'react';
 import { FullSize, MaxContent } from '@rapid/libs-web/styled';
-import type { MenuInstanceType, AntdMenuInstanceType, AntdItemType, AntdMenuItemType } from './declare';
-
 import { commonStyles } from '@scss/common';
+import { convertMenuDivider, convertMenuInstance, convertMenuItem, convertMenuItemGroupType, convertSubMenu } from './declare';
+import type {
+  AntdItemType, AntdMenuDividerType, AntdMenuInstanceType, AntdMenuItemGroupType, AntdMenuItemType, AntdSubMenuType,
+  ItemType, MenuItemGroupType, MenuInstanceType, MenuDividerType, MenuItemType, SubMenuType
+} from './declare';
 
-import IconFont from '@components/IconFont';
+import { MenuItem, SubMenu } from './cpts';
+import type { MenuItemProps, SubMenuProps } from './cpts';
+
 import styles from './index.module.scss';
 
-export * from './cpts';
-export * from './declare';
+export type {
+  AntdItemType, AntdMenuDividerType, AntdMenuInstanceType, AntdMenuItemGroupType, AntdMenuItemType, AntdSubMenuType,
+  ItemType, MenuItemGroupType, MenuInstanceType, MenuDividerType, MenuItemType, SubMenuType
+}
+export type { MenuItemProps, SubMenuProps }
 
 const DropdownMenuOpenContext = createContext(false);
 
@@ -42,7 +50,7 @@ const ContextMenu = memo<ContextMenuProps>((props) => {
   )
 })
 
-export interface AutoDropdownMenuProps {
+export interface AutoMenuProps {
   /**
    * 渲染的菜单实例
    * */
@@ -62,7 +70,7 @@ export interface AutoDropdownMenuProps {
  * 自动渲染菜单的组件, 该菜单为 contextMenu 或者文件菜单
  *
  */
-export const AutoContextMenu = memo((props: AutoDropdownMenuProps) => {
+const AutoContextMenu = memo((props: AutoMenuProps) => {
   const { menu, menuAttrs = {}, dropdownAttrs = {}, children } = props;
 
   const [state] = useShallowReactive({
@@ -77,8 +85,8 @@ export const AutoContextMenu = memo((props: AutoDropdownMenuProps) => {
   // 当窗口发生大小或者滚动事件的时候, 关闭菜单的显示
   useEventListener(window, {
     'resize': close,
-    'scroll': close,
-    'blur': close
+    // 'scroll': close,
+    // 'blur': close
   }, []);
 
   return (<DropdownMenuOpenContext.Provider value={state.open}>
@@ -111,4 +119,25 @@ export const AutoContextMenu = memo((props: AutoDropdownMenuProps) => {
   </DropdownMenuOpenContext.Provider>)
 })
 
-export default AutoContextMenu;
+export type AutoMenuType = typeof AutoContextMenu & {
+  convertMenuDivider: typeof convertMenuDivider,
+  convertMenuInstance: typeof convertMenuInstance,
+  convertMenuItem: typeof convertMenuItem,
+  convertMenuItemGroupType: typeof convertMenuItemGroupType,
+  convertSubMenu: typeof convertSubMenu,
+  MenuItem: typeof MenuItem,
+  SubMenu: typeof SubMenu
+}
+
+export const AutoMenu: AutoMenuType = AutoContextMenu as AutoMenuType;
+
+AutoMenu.convertMenuDivider = convertMenuDivider;
+AutoMenu.convertMenuInstance = convertMenuInstance;
+
+AutoMenu.convertMenuItem = convertMenuItem;
+AutoMenu.convertMenuItemGroupType = convertMenuItemGroupType;
+AutoMenu.convertSubMenu = convertSubMenu;
+AutoMenu.MenuItem = MenuItem;
+AutoMenu.SubMenu = SubMenu;
+
+export default AutoMenu;

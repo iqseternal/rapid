@@ -16,7 +16,7 @@ import { makeVar, themeCssVarsSheet } from '@/themes';
 import IMessage from '@components/IMessage';
 import Widget from '@components/Widget';
 import styles from './cpts.module.scss';
-import AutoContextMenu from '@/components/AutoContextMenu';
+import AutoMenu from '@/components/AutoMenu';
 
 interface SideBarItemProps extends WidgetProps {
 
@@ -101,7 +101,10 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
     <FullSizeWidth
       className={styles.bottomContainer}
     >
-      <AutoContextMenu
+      <div>
+
+      </div>
+      <AutoMenu
         dropdownAttrs={{
           trigger: ['click'],
           placement: 'topRight',
@@ -113,6 +116,31 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
             label: '退出登录',
             icon: <LogoutOutlined />,
             onClick: logout
+          },
+          {
+            key: 'setting-logout2',
+            label: '退出登录',
+            icon: <LogoutOutlined />,
+            onClick: logout
+          },
+          {
+            key: 'setting-logout1',
+            label: '退出登录',
+            icon: <LogoutOutlined />,
+            onClick: logout
+          },
+          {
+            key: 'as',
+            type: 'submenu',
+            label: 'as',
+            children: [
+              {
+                key: 'setting-logout3',
+                label: '退出登录',
+                icon: <LogoutOutlined />,
+                onClick: logout
+              },
+            ]
           }
         ]}
       >
@@ -120,7 +148,7 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
           icon='SettingOutlined'
           tipText='设置'
         />
-      </AutoContextMenu>
+      </AutoMenu>
 
       {/*<SideBarItem*/}
       {/*  icon='LogoutOutlined'*/}

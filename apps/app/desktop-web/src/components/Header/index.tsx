@@ -10,7 +10,7 @@ import { commonStyles } from '@scss/common';
 import { makeVar, themeCssVarsSheet } from '@/themes';
 
 import Widget from '@components/Widget';
-import AutoContextMenu from '@components/AutoContextMenu';
+import AutoMenu from '../AutoMenu';
 import IconFont from '@components/IconFont';
 import Logo from '@components/Logo';
 
@@ -36,7 +36,7 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
     maintenanceStack: [
       headerFileMenu, headerEditMenu, headerViewMenu, headerHelpMenu
     ],
-    otherStack: [] as ({ sourceWidth: number;calcWidth: number; } | undefined)[],
+    otherStack: [] as ({ sourceWidth: number; calcWidth: number; } | undefined)[],
   });
   // 菜单容器
   const menusContainerRef = useRef<HTMLDivElement>(null);
@@ -72,7 +72,7 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
     let columnGap = parseInt(getComputedStyle(menusContainerRef.current).columnGap);
     if (isNaN(columnGap)) columnGap = 0;
 
-    for (let i = 0;i < maintenanceStack.length && i < menusContainerRef.current.children.length;i ++) {
+    for (let i = 0; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
       const child = menusContainerRef.current.children[i];
       if (!(child instanceof HTMLElement)) continue;
       if (!otherStack[i]) otherStack[i] = { sourceWidth: child.clientWidth, calcWidth: 0 };
@@ -81,7 +81,7 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
       if (otherStack[0]) otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
     }
 
-    for (let i = 1;i < maintenanceStack.length && i < menusContainerRef.current.children.length;i ++) {
+    for (let i = 1; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
       if (otherStack.length === 0) continue;
 
       if (isUndefined(otherStack)) continue;
@@ -110,36 +110,58 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
     <FlexRowStart
       ref={menusContainerRef}
       className={classnames(
-        commonStyles.hFullSize,
-        !statusState.isCalcDone && commonStyles.transparent
+        'py-0.5 h-full',
+        !statusState.isCalcDone && 'opacity-0'
       )}
     >
       {!isDialog && !isPane && maintenanceStack.map((menu, index) => {
-        return <AutoContextMenu
+        return <AutoMenu
           key={`menu.key ${index}`}
           menu={menu.children}
+          dropdownAttrs={{
+            className: 'h-full'
+          }}
         >
           <div
             className={classnames(
               commonStyles.appRegionNo,
-              'py-2 px-2 rounded-lg overflow-hidden hover:bg-gray-200'
+              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
             )}
           >
             {menu.label}
           </div>
-        </AutoContextMenu>
+        </AutoMenu>
       })}
       {storageStack.length > 0 &&
-        <AutoContextMenu
-          menu={storageStack}
+        <AutoMenu
+          menu={storageStack.map(menu => {
+            return {
+              key: menu.key,
+              label: <AutoMenu.SubMenu
+                icon={menu.icon}
+                label={menu.label}
+              />,
+              children: menu.children
+            }
+          })}
+          dropdownAttrs={{
+            className: 'h-full'
+          }}
         >
-          <IconFont
-            icon='MenuOutlined'
+          <div
             className={classnames(
-              commonStyles.appRegionNo
+              commonStyles.appRegionNo,
+              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
             )}
-          />
-        </AutoContextMenu>
+          >
+            <IconFont
+              icon='MenuOutlined'
+              className={classnames(
+                commonStyles.appRegionNo
+              )}
+            />
+          </div>
+        </AutoMenu>
       }
     </FlexRowStart>
   )
@@ -181,29 +203,37 @@ export const Control = memo((props: ControlProps) => {
       className={commonStyles.appRegionNo}
       gap={[3]}
     >
-      {!IS_BROWSER && <>
-        {/*{!(isDialog && isPane) && <>*/}
-        {/*  <Widget*/}
-        {/*    icon='SettingOutlined'*/}
-        {/*    tipText='设置'*/}
-        {/*    onClick={() => {*/}
+      <Widget
+        size='md'
+        icon='BugOutlined'
+        tipText='开发者工具'
+        onClick={() => ipcActions.windowDevtool(true, { mode: 'detach' })}
+      />
 
-        {/*    }}*/}
-        {/*  />*/}
-        {/*</>}*/}
+      <Widget
+        icon='LineOutlined'
+        size='large'
+        tipText='最小化'
+        onClick={() => ipcActions.windowMin()}
+      />
 
-        {!IS_BROWSER && <Widget icon='BugOutlined' tipText='开发者工具' onClick={() => window.ipcActions.windowDevtool(true, { mode: 'detach' })} />}
-        <Widget icon='LineOutlined' tipText='最小化' onClick={() => window.ipcActions.windowMin()} />
-        {(!isDialog && !isPane) && <Widget icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'} tipText='还原' onClick={() => window.ipcActions.windowReduction()} />}
+      {(!isDialog && !isPane) && <>
         <Widget
-          icon='CloseOutlined'
-          tipText='关闭'
-          tipAttrs={{
-            placement: 'leftBottom'
-          }}
-          onClick={() => window.ipcActions.windowClose()}
+          icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'}
+          tipText='还原'
+          onClick={() => ipcActions.windowReduction()}
         />
+
       </>}
+
+      <Widget
+        icon='CloseOutlined'
+        tipText='关闭'
+        tipAttrs={{
+          placement: 'leftBottom'
+        }}
+        onClick={() => ipcActions.windowClose()}
+      />
     </Subfield.SubfieldFixed>
   )
 })
@@ -247,7 +277,7 @@ export const Header = memo((props: HeaderProps) => {
     }}
   >
     <Subfield
-      className={'w-full z-50'}
+      className='w-full h-full z-50'
     >
       <Logo
         className='flex-none h-full'
@@ -257,28 +287,25 @@ export const Header = memo((props: HeaderProps) => {
         }}
       />
 
-      <FullSizeHeight
+      <div
         className={classnames(
-          'cursor-default w-max flex-auto max-w-full overflow-hidden',
+          'cursor-default w-max h-full flex-auto max-w-full overflow-hidden',
           commonStyles.userSelectNone
         )}
       >
         {!(isDialog && isDialog) ? <MaintenanceMenus isDialog={isDialog} isPane={isPane} /> : <></>}
-      </FullSizeHeight>
+      </div>
 
-      <Subfield.Fixed />
+      <Subfield.Auto />
     </Subfield>
 
-    <Subfield
-
-    />
+    <div />
 
     <Subfield
       className='mr-1 flex-auto min-w-max'
     >
       <div />
       <div />
-
       <Control />
     </Subfield>
   </Subfield>

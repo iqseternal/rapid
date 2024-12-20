@@ -11,7 +11,7 @@ import { useDocStore } from '@/features';
 import { produce } from 'immer';
 
 import IMessage from '@components/IMessage';
-import AutoDropdownMenu from '@components/AutoContextMenu';
+import AutoDropdownMenu from '@components/AutoMenu';
 
 import styles from './index.module.scss';
 

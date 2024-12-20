@@ -29,6 +29,11 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   loadingContent?: ReactNode;
 
   /**
+   * @default 'base'
+   */
+  size?: 'base' | 'md' | 'large';
+
+  /**
    * 控件 Hover 之后展示的提示文本
    */
   tipText?: string;
@@ -50,6 +55,7 @@ export const Widget = memo((props: WidgetProps) => {
     className,
     hasHoverStyle = true,
     icon,
+    size = 'base',
     disabled = false, loading = false, loadingContent = <LoadingOutlined />,
     tipText, tipAttrs = {},
     onClick, onDoubleClick, onContextMenu,
@@ -91,7 +97,7 @@ export const Widget = memo((props: WidgetProps) => {
   return (
     <div
       className={classnames(
-        'max-w-full max-h-full',
+        'w-max h-max max-w-full max-h-full rounded-md text-[#636c76] overflow-hidden cursor-pointer select-none flex-none drop-shadow-sm flex justify-center items-center',
         className,
         commonStyles.appRegionNo,
         {
@@ -102,26 +108,30 @@ export const Widget = memo((props: WidgetProps) => {
     >
       <Tooltip
         title={tipText}
-        mouseEnterDelay={0.5}
+        getPopupContainer={() => document.body}
+        mouseEnterDelay={0.7}
         autoAdjustOverflow
         {...tipAttrs}
       >
-        <FullSize
+        <div
           {...realProps}
           onClick={withDisabledClick}
           onDoubleClick={withDisabledDoubleClick}
           onContextMenu={withDisabledContextMenu}
           className={classnames(
-            commonStyles.flexRowCenter,
+            'flex items-center justify-center text-[100%] p-[25%] max-w-full max-h-full',
+            'w-7 h-7',
             {
               [commonStyles.disabledPointerEvents]: loading || disabled
-            }
+            },
+            size === 'large' && '!w-8 !h-8 text-[110%]',
+            size === 'md' && '!w-6 !h-6 text-[90%]'
           )}
         >
           {loading ? loadingContent : <>
             {icon && <IconFont icon={icon}></IconFont>}
           </>}
-        </FullSize>
+        </div>
       </Tooltip>
     </div>
   )
