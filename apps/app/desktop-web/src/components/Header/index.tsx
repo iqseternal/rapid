@@ -204,7 +204,6 @@ export const Control = memo((props: ControlProps) => {
       gap={[3]}
     >
       <Widget
-        size='md'
         icon='BugOutlined'
         tipText='开发者工具'
         onClick={() => ipcActions.windowDevtool(true, { mode: 'detach' })}
@@ -212,7 +211,6 @@ export const Control = memo((props: ControlProps) => {
 
       <Widget
         icon='LineOutlined'
-        size='large'
         tipText='最小化'
         onClick={() => ipcActions.windowMin()}
       />
