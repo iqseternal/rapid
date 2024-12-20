@@ -1,5 +1,6 @@
 appId: com.electron.app
 productName: rapid
+electronVersion: 24.8.8
 directories:
   buildResources: builder
   output: ../../dist/app/

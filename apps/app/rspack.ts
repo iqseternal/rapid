@@ -4,10 +4,13 @@ import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/cor
 import { Printer } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
+import { BytenodeWebpackPlugin } from '@herberttn/bytenode-webpack-plugin';
 import { join } from 'path';
 
 import treeKill from 'tree-kill';
 import tailwindcss from 'tailwindcss';
+import bytenode from 'bytenode';
+import { writeFile, writeFileSync } from 'fs';
 
 
 // =====================================================================================
@@ -62,7 +65,7 @@ const exitCurrentProcess = () => {
 /**
  * 退出在子进程运行的 electron 进程
  */
-const exitElectronProcess = (callback = () => {}) => {
+const exitElectronProcess = (callback = () => { }) => {
   if (!state.electronProcess) return;
 
   if (typeof state.electronProcess.pid === 'undefined') {
@@ -236,7 +239,33 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
 
 // =====================================================================================
 // 加载启动流
-;(async () => {
+; (async () => {
+  // console.log(process);
+
+  function safeStringify(obj, space = 2) {
+    const seen = new WeakSet();
+    return JSON.stringify(
+        obj,
+        (key, value) => {
+            if (typeof value === "function" || typeof value === "symbol") {
+                return undefined; // 忽略函数和 Symbol
+            }
+            if (typeof value === "object" && value !== null) {
+                if (seen.has(value)) {
+                    return "[Circular]"; // 处理循环引用
+                }
+                seen.add(value);
+            }
+            return value;
+        },
+        space
+    );
+}
+
+  // writeFileSync('./a', safeStringify(process,  2), 'utf-8');
+
+  Printer.printInfo(`Electron 版本: ${process.versions.electron || '未知'}`)
+
   Printer.printInfo(`加载编译配置文件....`);
 
   const mainRspackConfig = await transformMainRspackConfig();
@@ -344,15 +373,32 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
 
     const envs = [] as const;
 
-    Promise.all([rendererRsbuilder.build(), compilerMain(), compilerPreload()])
-      .then(() => {
-        // 检查是否需要预览
-        if (IS_PREVIEW) {
-          restartElectron(envs, mainCompiler.outputPath);
-        }
-      }).catch(() => {
-        process.exit(1)
-      });
+    await Promise.all([rendererRsbuilder.build(), compilerMain(), compilerPreload()]);
+
+    const targetMain = join(__dirname, './out/main/index.js');
+    const targetPreload = join(__dirname, './out/preload/index.js');
+
+    const distMain = join(__dirname, './out/main/index.jsc');
+    const distPreload = join(__dirname, './out/preload/index.js');
+
+    const bytenodeMain = async () => {
+      const dist = await bytenode.compileFile(targetMain, distMain);
+      bytenode.addLoaderFile(dist, 'index.js');
+      Printer.printInfo('主进程编译字节码', targetMain);
+    }
+
+    const bytenodePreload = async () => {
+      const dist = await bytenode.compileFile(targetPreload, distPreload);
+      bytenode.addLoaderFile(dist, 'index.js');
+      Printer.printInfo('渲染进程编译字节码', targetPreload);
+    }
+
+    await Promise.all([bytenodeMain(), bytenodePreload()]);
+
+    // 检查是否需要预览
+    if (IS_PREVIEW) {
+      restartElectron(envs, mainCompiler.outputPath);
+    }
     return;
   }
 })();
