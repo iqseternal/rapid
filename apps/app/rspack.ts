@@ -1,17 +1,16 @@
 import { loadConfig, createRsbuild, mergeRsbuildConfig, RsbuildConfig, CreateRsbuildOptions } from '@rsbuild/core';
 import { EnvBuilder, DIRS } from '../../config/node/builder';
 import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/core';
-import { Printer } from '@suey/printer';
+import { Printer, print, printWarn } from '@suey/printer';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-import { BytenodeWebpackPlugin } from '@herberttn/bytenode-webpack-plugin';
 import { join } from 'path';
+import { writeFile, writeFileSync } from 'fs';
 
 import treeKill from 'tree-kill';
 import tailwindcss from 'tailwindcss';
 import bytenode from 'bytenode';
-import { writeFile, writeFileSync } from 'fs';
-
+import packageJson from './package.json';
 
 // =====================================================================================
 // 环境变量定义
@@ -30,7 +29,7 @@ declare global {
 // 环境变量设置
 const envBuilder = new EnvBuilder();
 
-const { IS_DEV, IS_PROD, IS_PREVIEW } = envBuilder.toEnvs();
+const { IS_DEV, IS_PROD, IS_PREVIEW, IS_BUILD } = envBuilder.toEnvs();
 
 if (!process.env.DEV_SERVER_MODE) process.env.DEV_SERVER_MODE = 'dev:web:only';
 const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
@@ -45,7 +44,7 @@ const bin = join(__dirname, './node_modules/.bin/electron');
 // =====================================================================================
 // 服务
 
-interface State {
+declare interface State {
   electronProcess?: ChildProcess;
   isKillDone: boolean;
 }
@@ -158,12 +157,6 @@ const transformMainRspackConfig = async (): Promise<RspackOptions> => {
   const vars = envBuilder.defineVars();
   mainRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
-  // mainRspackConfig.plugins?.push(new DefinePlugin({
-  //   'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV ?? 'production'),
-  //   'process.env.ELECTRON_RENDERER_URL': JSON.stringify(1),
-  //   [`process.env['ELECTRON_RENDERER_URL']`]: JSON.stringify(1)
-  // }));
-
   if (IS_PROD) {
     // 构建时, 展示构建文件
     mainRspackConfig.plugins.push(new ProgressPlugin({
@@ -240,32 +233,18 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
 // =====================================================================================
 // 加载启动流
 ; (async () => {
-  // console.log(process);
+  Printer.printInfo(`Electron 版本: ${packageJson?.devDependencies?.electron || packageJson?.dependencies?.['electron'] || '未知'}`);
+  Printer.printInfo(`Electron-Builder 版本: ${packageJson?.devDependencies?.['electron-builder'] || packageJson?.dependencies?.['electron-builder'] || '未知'}`);
 
-  function safeStringify(obj, space = 2) {
-    const seen = new WeakSet();
-    return JSON.stringify(
-        obj,
-        (key, value) => {
-            if (typeof value === "function" || typeof value === "symbol") {
-                return undefined; // 忽略函数和 Symbol
-            }
-            if (typeof value === "object" && value !== null) {
-                if (seen.has(value)) {
-                    return "[Circular]"; // 处理循环引用
-                }
-                seen.add(value);
-            }
-            return value;
-        },
-        space
-    );
-}
+  Printer.printInfo('当前识别环境变量: ');
 
-  // writeFileSync('./a', safeStringify(process,  2), 'utf-8');
+  printWarn(`  IS_DEV=${IS_DEV}`);
+  printWarn(`  IS_PROD=${IS_PROD}`);
+  printWarn(`  IS_BUILD=${IS_BUILD}`);
+  printWarn(`  IS_PREVIEW=${IS_PREVIEW}`);
+  printWarn(`  IS_DEV_SERVER_WEB_ONLY=${IS_DEV_SERVER_WEB_ONLY}`);
 
-  Printer.printInfo(`Electron 版本: ${process.versions.electron || '未知'}`)
-
+  print();
   Printer.printInfo(`加载编译配置文件....`);
 
   const mainRspackConfig = await transformMainRspackConfig();
@@ -280,12 +259,14 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
   // compiler once
   const compilerMain = () => {
     return new Promise<void>((resolve, reject) => {
+      Printer.printInfo(`Compiler: main`);
+
       mainCompiler.run((err, stats) => {
         if (err) {
           Printer.printError(err);
           return reject();
         }
-        Printer.printInfo(`Compiler: main`);
+        Printer.printInfo(`Compiler Success: main`);
         Printer.print(stats.toString());
         resolve();
       })
@@ -294,21 +275,32 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
 
   const compilerPreload = () => {
     return new Promise<void>((resolve, reject) => {
+      Printer.printInfo(`Compiler: preload`);
+
       preloadCompiler.run((err, stats) => {
         if (err) {
           Printer.printError(err);
           return reject();
         }
-        Printer.printInfo(`Compiler: preload`);
+        Printer.printInfo(`Compiler Success: preload`);
         Printer.print(stats.toString());
         resolve();
       })
     })
   }
 
+  const compilerRenderer = () => {
+    return new Promise<void>(async (resolve, reject) => {
+      await rendererRsbuilder.build();
+      Printer.printInfo(`Compiler: web`);
+      resolve();
+    })
+  }
+
   // 开发模式, 配置热更新
   if (IS_DEV) {
     Printer.printInfo(`加载开发时编译....`);
+    print();
 
     // renderer 热更新服务启动
     Printer.printInfo(`Compiler: web`);
@@ -322,7 +314,11 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
     }
 
     // 环境变量
-    const envs = [`ELECTRON_RENDERER_URL=${rendererServerUrl}`] as const;
+
+    // ELECTRON_RENDERER_URL: 在主进程代码中有动态判断, 如果是开发模式就加载指定 URL.
+    const envs = [
+      `ELECTRON_RENDERER_URL=${rendererServerUrl}`
+    ] as const;
 
     // 只有 web 热更新
     if (IS_DEV_SERVER_WEB_ONLY) {
@@ -352,13 +348,14 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
     // })
     await compilerPreload();
 
+    Printer.printInfo(`Compiler: main`);
     mainCompiler.watch({ aggregateTimeout: 2000 }, (err, stats) => {
       if (err) {
         Printer.printError(err);
         process.exit(1);
       }
 
-      Printer.printInfo(`Compiler: main`);
+      Printer.printInfo(`Compiler Success: main`);
       Printer.print(stats.toString());
 
       // if (preloadCompiler.running) return;
@@ -370,33 +367,49 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
   // 生产模式, 只需要输出产物
   if (IS_PROD) {
     Printer.printInfo(`加载生产时编译....`);
+    print();
 
-    const envs = [] as const;
+    await Promise.all([compilerRenderer(), compilerMain(), compilerPreload()]);
 
-    await Promise.all([rendererRsbuilder.build(), compilerMain(), compilerPreload()]);
-
-    const targetMain = join(__dirname, './out/main/index.js');
-    const targetPreload = join(__dirname, './out/preload/index.js');
-
-    const distMain = join(__dirname, './out/main/index.jsc');
-    const distPreload = join(__dirname, './out/preload/index.js');
-
+    /**
+     * 构建主进程字节码
+     */
     const bytenodeMain = async () => {
-      const dist = await bytenode.compileFile(targetMain, distMain);
-      bytenode.addLoaderFile(dist, 'index.js');
-      Printer.printInfo('主进程编译字节码', targetMain);
+      Printer.printInfo('bytenode main...');
+      const dist = await bytenode.compileFile({
+        filename: join(mainCompiler.outputPath, 'index.js'),
+        compileAsModule: true,
+        electron: true,
+        createLoader: true,
+        loaderFilename: 'index.js',
+      });
+      Printer.printInfo('主进程编译字节码', dist);
     }
 
+    /**
+     * 构建渲染进程字节码
+     */
     const bytenodePreload = async () => {
-      const dist = await bytenode.compileFile(targetPreload, distPreload);
-      bytenode.addLoaderFile(dist, 'index.js');
-      Printer.printInfo('渲染进程编译字节码', targetPreload);
+      Printer.printInfo('bytenode preload...');
+      const dist = await bytenode.compileFile({
+        filename: join(preloadCompiler.outputPath, 'index.js'),
+        compileAsModule: true,
+        electron: true,
+        createLoader: true,
+        loaderFilename: 'index.js',
+      });
+      Printer.printInfo('预加载进程编译字节码', dist);
     }
 
+    /**
+     * 并行
+     */
     await Promise.all([bytenodeMain(), bytenodePreload()]);
 
     // 检查是否需要预览
     if (IS_PREVIEW) {
+      const envs = [] as const;
+
       restartElectron(envs, mainCompiler.outputPath);
     }
     return;

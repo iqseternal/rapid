@@ -10,6 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rapid/libs": "workspace:^"
+    "@rapid/libs": "workspace:^",
+    "exceljs": "^4.4.0",
+    "pg": "^8.13.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.10"
   }
 }
