@@ -8,6 +8,8 @@ export * from './index';
 export interface BuilderOptions {
   /**
    * 是否检查和自动校正当前环境变量到运行要求
+   *
+   * @default true
    */
   checker?: boolean;
 }

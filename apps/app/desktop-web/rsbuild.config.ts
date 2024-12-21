@@ -64,7 +64,24 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
         },
         css: true,
       }
-    }
+    },
+    tools: {
+      postcss: {
+        postcssOptions: {
+          plugins: [
+            // 为什么配置了 tailwind.config.ts 还需要在这里配置
+            // 因为项目 cwd 为 /apps/app 并非 /apps/app/desktop-web
+            // 所以为了修正路径, 需要在这里配置
+            // tailwind.config.ts 文件是为了让编辑器读取配置, 从而进行类名提示
+            tailwindcss({
+              content: [
+                './desktop-web/src/**/*.{html,js,ts,jsx,tsx}'
+              ],
+            }),
+          ],
+        },
+      },
+    },
   }
 })
 

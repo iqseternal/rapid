@@ -45,7 +45,13 @@ const bin = join(__dirname, './node_modules/.bin/electron');
 // 服务
 
 declare interface State {
+  /**
+   * 存储启动的 electron 子进程
+   */
   electronProcess?: ChildProcess;
+  /**
+   * 当前是否 kill 完成子进程
+   */
   isKillDone: boolean;
 }
 
@@ -209,23 +215,7 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
           ...vars
         }
-      },
-      dev: {
-        hmr: true
-      },
-      tools: {
-        postcss: {
-          postcssOptions: {
-            plugins: [
-              tailwindcss({
-                content: [
-                  './desktop-web/src/**/*.{html,js,ts,jsx,tsx}'
-                ],
-              }),
-            ],
-          },
-        },
-      },
+      }
     }))
   }
 }
