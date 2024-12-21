@@ -39,7 +39,6 @@ export const Workbenches = memo(() => {
 			unregisterPageMenu();
 
 			unregisterShapeList();
-
 			unregisterStickerTool();
 
 			unregisterErrorShapeUtil();
