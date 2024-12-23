@@ -13,7 +13,7 @@ export interface UserStore {
 
 export const useUserStore = create<UserStore>()(persist(immer((set, get, store) => ({
   // store
-  userinfo: {},
+  userinfo: void 0,
   accessToken: ''
 })), {
   name: 'userStore',
@@ -112,6 +112,7 @@ export const userActions = {
     await setAccessToken(loginRes.data.userinfo.token);
     useUserStore.setState({
       userinfo: {
+        id: 1,
         username: 'Apache'
       }
     })

@@ -202,8 +202,8 @@ export function convertMenuInstance<Menu extends MenuInstanceType>(menuInstance:
 
   return {
     key: generatorStackingKey(),
-    label: label,
-    icon: icon,
+    label,
+    icon,
     trigger,
     children: antdMenuInstanceChildren
   }

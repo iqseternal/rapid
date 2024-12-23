@@ -4,20 +4,6 @@ import type { ReactNode } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-
-import { useUserStore } from '@/features';
-import { useDocStore } from '@/features';
-import { useThemeStore } from '@/features';
-
-import type { ExtensionContext } from '@rapid/extensions';
-
-import {
-  rApi, rCreateApi,
-  rRequest,
-  rApiGet, rApiPost, rApiDelete, rApiPatch, rApiPut,
-  REQ_METHODS
-} from '@/api';
-
 import { bus } from '../../libs/events';
 
 export interface Extension {

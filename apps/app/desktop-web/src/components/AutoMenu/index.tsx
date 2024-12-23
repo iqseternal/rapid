@@ -109,7 +109,7 @@ const AutoContextMenu = memo((props: AutoMenuProps) => {
       {...dropdownAttrs}
       rootClassName={classnames(
         styles.dropdownMenuRootWrapper,
-        dropdownAttrs.className
+        dropdownAttrs.rootClassName
       )}
     >
       <div>

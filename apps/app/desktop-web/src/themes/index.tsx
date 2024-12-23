@@ -1,17 +1,25 @@
-import { themeCssVarsSheet } from './payload';
+import { cssVarsSheet } from './payload';
 import { cssRoot } from '@rapid/libs-web/common';
+import { isRawObject, isFunction } from '@rapid/libs';
 
-export { themeCssVarsSheet } from './payload';
+export { cssVarsSheet } from './payload';
 
-/** 创建的主题变量映射表 */
-export type ThemeCssVarsSheet = typeof themeCssVarsSheet;
-/** 主题变量的声明表: 例如: { '--rapid-xx-xx': '#FFF' } */
-export type ThemeCssVarsDeclaration = {
-  [Key in (keyof ThemeCssVarsSheet) as ThemeCssVarsSheet[Key]['varName']]: ThemeCssVarsSheet[Key]['value'];
+/**
+ * 创建的主题变量映射表
+ * */
+export type CssVarsSheet = typeof cssVarsSheet;
+
+/**
+ * 主题变量的声明表: 例如: { '--rapid-xx-xx': '#FFF' }
+ * */
+export type CssVarsDeclaration = {
+  [Key in (keyof CssVarsSheet) as CssVarsSheet[Key]['varName']]: CssVarsSheet[Key]['value'];
 }
 
 const runtimeContext = {
-  /** 记录一个 style 标签, 防止主题变量呗重复创建 append 到 head 中 */
+  /**
+   * 记录一个 style 标签, 防止主题变量呗重复创建 append 到 head 中
+   * */
   styleTag: void 0 as (undefined | HTMLStyleElement)
 }
 
@@ -19,19 +27,43 @@ const runtimeContext = {
  * 创建一个可用的 Css 变量调用, 常用于 TSX 中内嵌样式的使用
  *
  * ```tsx
- * import { makeVar, themeCssVarsSheet } from '@/themes';
+ * import { makeCssVar, cssVarsSheet } from '@/themes';
  *
  * <FullSizeWidth
  *   style={{
- *     color: makeVar(themeCssVarsSheet.primaryTextColor),
+ *     color: makeCssVar(cssVarsSheet.primaryTextColor),
  *   }}
  * ></FullSizeWidth>
  *
  * ```
  *
  */
-export const makeVar = <R extends keyof ThemeCssVarsSheet, CssVar extends (ThemeCssVarsSheet)[R]>(r: CssVar): `var(${CssVar['varName']}, ${CssVar['value']})` => {
-  return `var(${r.varName}, ${r.value})` as `var(${CssVar['varName']}, ${CssVar['value']})`;
+export function makeCssVar<R extends keyof CssVarsSheet, CssVar extends (CssVarsSheet)[R]>(r: CssVar): `var(${CssVar['varName']}, ${CssVar['value']})`;
+
+/**
+ * 创建一个可用的 Css 变量调用, 常用于 TSX 中内嵌样式的使用
+ *
+ * ```tsx
+ * import { makeCssVar } from '@/themes';
+ *
+ * <FullSizeWidth
+ *   style={{
+ *     color: makeCssVar(vars => vars.primaryTextColor),
+ *   }}
+ * ></FullSizeWidth>
+ *
+ * ```
+ *
+ */
+export function makeCssVar<R extends keyof CssVarsSheet, CssVar extends (CssVarsSheet)[R]>(getter: (cssVars: CssVarsSheet) => CssVar): `var(${CssVar['varName']}, ${CssVar['value']})`;
+
+export function makeCssVar<R extends keyof CssVarsSheet, CssVar extends (CssVarsSheet)[R]>(rc: CssVar | ((cssVars: CssVarsSheet) => CssVar)): `var(${CssVar['varName']}, ${CssVar['value']})` {
+  if (isFunction(rc)) {
+    const cssVar = rc(cssVarsSheet);
+    return `var(${cssVar.varName}, ${cssVar.value})` as `var(${CssVar['varName']}, ${CssVar['value']})`;
+  }
+
+  return `var(${rc.varName}, ${rc.value})` as `var(${CssVar['varName']}, ${CssVar['value']})`;
 }
 
 /**
@@ -41,11 +73,11 @@ export const makeVar = <R extends keyof ThemeCssVarsSheet, CssVar extends (Theme
  * }
  *
  */
-export const makeVarsDeclaration = () => {
-  const varsDeclaration = {} as ThemeCssVarsDeclaration;
+export const makeCssVarsDeclaration = () => {
+  const varsDeclaration = {} as CssVarsDeclaration;
 
-  (Object.keys(themeCssVarsSheet) as (keyof ThemeCssVarsSheet)[]).forEach(cssKey => {
-    let { varName, value } = themeCssVarsSheet[cssKey];
+  (Object.keys(cssVarsSheet) as (keyof CssVarsSheet)[]).forEach(cssKey => {
+    let { varName, value } = cssVarsSheet[cssKey];
     // 如果 document 中已经含有了这个变量, 那么这个 value 就为 document 中的值, 而不再是 初始化 的值
     // 因为这个变量可能被嵌入的主题插件所更改
     if (runtimeContext.styleTag) value = getComputedStyle(cssRoot)[cssKey];
@@ -57,9 +89,8 @@ export const makeVarsDeclaration = () => {
 
 /**
  * 安装主题中的 css 变量
- * @param declaration
  */
-export const installThemeCssVars = <Declaration extends ThemeCssVarsDeclaration>(declaration: Declaration) => {
+export const installThemeCssVars = <Declaration extends CssVarsDeclaration>(declaration: Declaration) => {
   // 移除已经创建的 style 标签
   if (runtimeContext.styleTag) runtimeContext.styleTag.remove();
 

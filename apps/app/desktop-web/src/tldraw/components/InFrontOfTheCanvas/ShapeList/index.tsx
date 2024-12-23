@@ -3,7 +3,7 @@ import { memo, useMemo, useRef, useState } from 'react';
 import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue } from 'tldraw';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { StringFilters, useShallowReactive, classnames } from '@rapid/libs-web';
-import { themeCssVarsSheet, makeVar } from '@/themes';
+import { makeCssVar } from '@/themes';
 import { commonStyles } from '@scss/common';
 
 import styles from './index.module.scss';
@@ -75,9 +75,9 @@ export const ShapeItem = memo((props: ShapeItemProps) => {
 	}
 
 	const cssBackground = useMemo(() => {
-		if (isSelected) return makeVar(themeCssVarsSheet.tldrawShapeItemSelectedBg);
-		if (parentIsSelected) return makeVar(themeCssVarsSheet.tldrawShapeItemParentSelectedBg);
-		if (depth > 0) return makeVar(themeCssVarsSheet.tldrawShapeItemChildSelectedBg);
+		if (isSelected) return makeCssVar(vars => vars.tldrawShapeItemSelectedBg);
+		if (parentIsSelected) return makeCssVar(vars => vars.tldrawShapeItemParentSelectedBg);
+		if (depth > 0) return makeCssVar(vars => vars.tldrawShapeItemChildSelectedBg);
 
 		return void 0;
 	}, [isSelected, parentIsSelected, depth])

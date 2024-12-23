@@ -11,11 +11,10 @@ import type { WidgetProps } from '@components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useUserStore } from '@/features';
 import { commonStyles } from '@scss/common';
-import { makeVar, themeCssVarsSheet } from '@/themes';
+import { makeCssVar } from '@/themes';
 
 import IMessage from '@components/IMessage';
 import Widget from '@components/Widget';
-import styles from './cpts.module.scss';
 import AutoMenu from '@/components/AutoMenu';
 
 interface SideBarItemProps extends WidgetProps {
@@ -30,7 +29,7 @@ const SideBarItem = memo<SideBarItemProps>((props) => {
 
   return <Widget
     {...props}
-    className={classnames(className, styles.sideBarItem)}
+    className={classnames('text-base h-[unset] aspect-square', className)}
     tipAttrs={{
       ...tipAttrs,
       placement: 'right',
@@ -65,15 +64,18 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
 
   return <div
     className={classnames(
-      styles.mainNavigationContainer,
+      'h-full gap-1 flex-auto flex flex-col justify-between items-center',
       className
     )}
     style={{
-      width: makeVar(themeCssVarsSheet.navigationBarWidth)
+      width: makeCssVar(vars => vars.navigationBarWidth),
+      minWidth: makeCssVar(vars => vars.navigationBarWidth),
+      maxWidth: makeCssVar(vars => vars.navigationBarWidth),
+      backgroundColor: makeCssVar(vars => vars.navigationBarBackgroundColor)
     }}
   >
     <FullSizeWidth
-      className={styles.topContainer}
+      className='mt-[2px] h-max flex justify-center'
     >
       <SideBarItem
         icon='UserOutlined'
@@ -99,11 +101,10 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
     </FullSizeWidth>
 
     <FullSizeWidth
-      className={styles.bottomContainer}
+      className='mb-8 flex justify-center'
     >
-      <div>
+      <div />
 
-      </div>
       <AutoMenu
         dropdownAttrs={{
           trigger: ['click'],
@@ -116,31 +117,6 @@ export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className 
             label: '退出登录',
             icon: <LogoutOutlined />,
             onClick: logout
-          },
-          {
-            key: 'setting-logout2',
-            label: '退出登录',
-            icon: <LogoutOutlined />,
-            onClick: logout
-          },
-          {
-            key: 'setting-logout1',
-            label: '退出登录',
-            icon: <LogoutOutlined />,
-            onClick: logout
-          },
-          {
-            key: 'as',
-            type: 'submenu',
-            label: 'as',
-            children: [
-              {
-                key: 'setting-logout3',
-                label: '退出登录',
-                icon: <LogoutOutlined />,
-                onClick: logout
-              },
-            ]
           }
         ]}
       >

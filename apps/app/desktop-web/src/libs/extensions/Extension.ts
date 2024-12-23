@@ -1,4 +1,3 @@
-import type { ExtensionContext } from '@rapid/extensions';
 
 export enum ExtensionEvents {
   OnInstalled = 'onInstalled',
@@ -14,7 +13,7 @@ export abstract class Extension{
   abstract id: string;
   abstract version: string;
 
-  abstract onInstalled(context: ExtensionContext): Promise<void>;
+  abstract onInstalled(context: any): Promise<void>;
 
   abstract onRegistered(): Promise<void>;
 
@@ -34,7 +33,7 @@ export class ThemePlugin extends Extension {
   override id = 'themePlugin';
   override version = '0.0.1';
 
-  override async onInstalled(context: ExtensionContext): Promise<void> {
+  override async onInstalled(context: any): Promise<void> {
 
   }
 

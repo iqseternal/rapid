@@ -50,7 +50,7 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   }, []);
 
   const [normalState] = useNormalState({
-    initValue: initValue
+    initValue
   })
   normalState.initValue = initValue;
 

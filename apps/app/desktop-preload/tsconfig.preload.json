@@ -30,15 +30,12 @@
     "./index.ts",
     "./server/**/*.ts",
     "./actions/**/*.ts",
-    "./core/**/*.ts"
+    "./core/**/*.ts",
+    "../desktop-node/src"
   ],
   "exclude": [
-    "src/**/*.d.ts",
     "node_modules",
     "../**/*.test.ts"
-  ],
-  "references": [
-    { "path": "../desktop-node/tsconfig.main.json" }
   ]
 }
 

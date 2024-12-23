@@ -6,17 +6,19 @@ import type { RApiPromiseLike } from './declare';
 // ==================================================================================
 
 export type LoginResponse = {
-  userinfo: {
-    id: number;
-    token: string;
+  readonly userinfo: {
+    readonly id: number;
+    readonly token: string;
   }
 }
 
 export interface LoginReqPayload {
-  username: string;
-  password: string;
+  readonly username: string;
+  readonly password: string;
 }
+
 export type LoginReqPromise = RApiPromiseLike<LoginResponse, null>;
+
 export const loginReq = (payload: LoginReqPayload) => {
   return rApiPost<LoginResponse, {}>('/user/login', {
     hConfig: {
@@ -30,23 +32,24 @@ export const loginReq = (payload: LoginReqPayload) => {
 }
 
 // ==================================================================================
+export interface UserinfoResponse {
+  readonly id: number;
+  readonly username: string;
+  readonly nickname?: string;
+  readonly roles?: string[];
+  readonly isVip?: number;
+  readonly vipTime?: number;
+  readonly sex?: boolean | null;
+  readonly avatarUrl?: string;
+  readonly age?: number;
+  readonly qq?: string;
+  readonly email?: string;
+  readonly phone?: string;
+  readonly address?: string;
+}
 
-export type UserinfoResponse = Partial<{
-  id: number;
-  username: string;
-  nickname: string;
-  roles: string[];
-  isVip: number;
-  vipTime: number;
-  sex: boolean | null;
-  avatarUrl: string;
-  age: number;
-  qq: string;
-  email: string;
-  phone: string;
-  address: string;
-}>;
 export type GetUserinfoReqPromise = RApiPromiseLike<UserinfoResponse>;
+
 export const getUserinfoReq = () => {
   return rApiPost<UserinfoResponse>('/user/getUserinfo', {
 
@@ -56,9 +59,10 @@ export const getUserinfoReq = () => {
 
 // ==================================================================================
 
-export type RegisterSuccessResponse = {
+export interface RegisterSuccessResponse {
 
 }
+
 export const registerReq = () => {
   return rApiPost<RegisterSuccessResponse, null>('/user/register', {
 

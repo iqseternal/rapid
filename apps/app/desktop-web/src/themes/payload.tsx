@@ -216,7 +216,7 @@ const colorsVarsSheet = {
   panelBorderColor: mRapidC('--rapid-panel-border-color', '#dee2e6', '面板边框颜色')
 } as const;
 
-export const themeCssVarsSheet = {
+export const cssVarsSheet = {
   ...widgetVarsSheet,
   ...navbarVarsSheet,
   ...colorVarsSheet,

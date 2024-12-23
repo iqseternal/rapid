@@ -2,7 +2,7 @@ import { ConfigProvider, App } from 'antd';
 import { classnames } from '@rapid/libs-web/common';
 import { commonStyles } from '@scss/common';
 import { useEffect, useLayoutEffect } from 'react';
-import { makeVar, themeCssVarsSheet } from './themes';
+import { makeCssVar } from './themes';
 
 import RouterContext from './router';
 
@@ -34,7 +34,7 @@ export default function RapidApp() {
           },
           Card: {
 
-            
+
           }
         },
         cssVar: {
@@ -49,8 +49,8 @@ export default function RapidApp() {
       <App
         className='w-full h-full'
         style={{
-          color: makeVar(themeCssVarsSheet.primaryTextColor),
-          backgroundColor: makeVar(themeCssVarsSheet.thirdBackgroundColor)
+          color: makeCssVar(vars => vars.primaryTextColor),
+          backgroundColor: makeCssVar(vars => vars.thirdBackgroundColor)
         }}
       >
         <RouterContext />
