@@ -1,6 +1,6 @@
 import type { IconKey } from '@components/IconFont';
 import { classnames, isReactFC } from '@rapid/libs-web/common';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import type { MenuInstanceType, MenuItemType, SubMenuType } from './declare';
 import { isValidElement, useMemo, memo } from 'react';
 import { isString } from '@rapid/libs';
@@ -8,7 +8,7 @@ import { commonStyles } from '@scss/common';
 
 import IconFont from '@components/IconFont';
 
-export interface MenuItemProps extends BaseProps {
+export interface MenuItemProps {
   /**
    * 该菜单项的 icon name
    * */
@@ -28,7 +28,7 @@ export interface MenuItemProps extends BaseProps {
 /**
  * MenuItem 组件, 为 AutoMenu 服务, 作用为渲染自定义的 item 配置, 因为 item 中包含了某些额外的自定义属性
  */
-export const MenuItem: FC<MenuItemProps> = memo((props) => {
+export const MenuItem = memo<MenuItemProps>((props) => {
   const { icon, label: Label, shortcut } = props;
 
   const shortcutKeys = useMemo(() => {
@@ -68,15 +68,19 @@ export const MenuItem: FC<MenuItemProps> = memo((props) => {
   </div>
 })
 
-export interface SubMenuProps extends BaseProps {
+export interface SubMenuProps {
   icon: SubMenuType['icon'];
   label: SubMenuType['label'];
+
+  children?: ReactNode;
+
+  className?: string;
 }
 
 /**
  * SubMenu 组件, 为 AutoMenu 服务, 作用为渲染自定义的 SubMenu 配置, 因为 SubMenu 中包含了某些额外的自定义属性
  */
-export const SubMenu: FC<SubMenuProps> = memo((props) => {
+export const SubMenu = memo<SubMenuProps>((props) => {
   const { icon, label: Label } = props;
 
   const content = useMemo(() => {

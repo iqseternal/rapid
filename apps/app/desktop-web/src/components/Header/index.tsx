@@ -1,11 +1,9 @@
 import { classnames } from '@rapid/libs-web/common';
 import { Subfield } from '@rapid/libs-web/components';
-import { IS_BROWSER, IS_DEV } from '@rapid/config/constants';
-import { useMemo, ReactNode, useEffect, useRef, memo, useState } from 'react';
+import { ReactNode, useEffect, useRef, memo, useState } from 'react';
 import { menus } from '@/menus';
-import { FlexRowStart, FullSizeHeight, useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useResizeObserver, useShallowReactive, useWindowInnerSize, useZustandHijack } from '@rapid/libs-web';
-import { isDef, isUnDef, isUndefined, toNil } from '@rapid/libs';
-import { Menu, Input } from 'antd';
+import { FlexRowStart, useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useResizeObserver, useShallowReactive, useWindowInnerSize, useZustandHijack } from '@rapid/libs-web';
+import { isUndefined, toNil } from '@rapid/libs';
 import { commonStyles } from '@scss/common';
 import { makeCssVar } from '@/themes';
 
@@ -54,12 +52,12 @@ export const MaintenanceMenus = memo((props: MaintenanceMenusProps) => {
     if (!menusContainer) return;
 
     // 什么条件添加到展示栈中
-    pushMaintenanceStack((menu, other, index) => {
+    pushMaintenanceStack((_, other) => {
       if (!other) return false;
       return menusContainer.clientWidth >= other.calcWidth;
     });
 
-    popMaintenanceStack((menu, other, index) => {
+    popMaintenanceStack((_, other) => {
       if (!other) return false;
       return menusContainer.clientWidth < other.calcWidth;
     });
@@ -236,7 +234,7 @@ export const Control = memo((props: ControlProps) => {
   )
 })
 
-export interface HeaderProps extends Omit<BaseProps, 'children'> {
+export interface HeaderProps {
   /**
    * 是否是一个面板, 例如设置 (不可全屏
    */
@@ -255,13 +253,15 @@ export interface HeaderProps extends Omit<BaseProps, 'children'> {
 
     functional?: ReactNode;
   }
+
+  className?: string;
 }
 
 /**
  * 标题栏
  */
 export const Header = memo((props: HeaderProps) => {
-  const { isDialog = false, isPane = false, slots = {}, className } = props;
+  const { isDialog = false, isPane = false, className } = props;
 
   return <Subfield
     className={classnames(

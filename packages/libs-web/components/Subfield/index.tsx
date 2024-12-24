@@ -135,15 +135,18 @@ const Auto = memo(forwardRef<HTMLDivElement, SubfieldTypes.AutoProps>((props, re
 }))
 
 export type SubfieldType = typeof SubfieldBase & {
-  SubfieldFixed: typeof SubfieldFixed;
-  Fixed: typeof Fixed;
-  Auto: typeof Auto;
+  readonly SubfieldFixed: typeof SubfieldFixed;
+  readonly Fixed: typeof Fixed;
+  readonly Auto: typeof Auto;
 };
 
 export const Subfield = SubfieldBase as SubfieldType;
 
+// @ts-ignore
 Subfield.Fixed = Fixed;
+// @ts-ignore
 Subfield.Auto = Auto;
+// @ts-ignore
 Subfield.SubfieldFixed = SubfieldFixed;
 
 export default Subfield;

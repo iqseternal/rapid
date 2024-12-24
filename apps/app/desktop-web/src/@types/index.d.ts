@@ -20,28 +20,15 @@ declare global {
    */
   declare interface Window extends ExposeApi { }
 
+  /**
+   * 注入的 printer 打印日志对象
+   */
   declare const printer: RdPreload.PrinterServer;
-  declare const ipcActions: RPreload.IpcActions;
 
   /**
-   * 定义 `React` 组件的基本 `props`, 让 组件能够快速定义
-   *
-   * ```tsx
-   * const Component = (props: BaseProps) => </>;
-   * ```
-   *
-   * ```tsx
-   * interface ComponentProps extends BaseProps {}
-   *
-   * const Component = (props: ComponentProps) => </>;
-   *
-   * ```
+   * 注入的 ipc 对象
    */
-  declare interface BaseProps {
-    children?: ReactNode;
-
-    className?: string;
-  }
+  declare const ipcActions: RPreload.IpcActions;
 }
 
 export {};

@@ -24,7 +24,7 @@ export function useWindowOverScreenSize() {
   const [windowScreenSize] = useState(useWindowScreenSizeHook);
   const [windowInnerSize] = useState(useWindowInnerSizeHook);
 
-  const [state] = useReactive({
+  const [state] = useReactive<WindowOverScreenSize>({
     overflowWidth: windowInnerSize.innerWidth > windowScreenSize.screenWidth,
     overflowHeight: windowInnerSize.innerHeight > windowScreenSize.screenHeight
   });
@@ -40,6 +40,6 @@ export function useWindowOverScreenSize() {
   }, { wait: 20 }, []);
 
   useEventListener(window, 'resize', judgeStatus, []);
-  return [state as Readonly<WindowOverScreenSize>];
+  return [state as Readonly<WindowOverScreenSize>] as const;
 }
 

@@ -8,17 +8,19 @@ export interface ExceptionErrorMsgData {
   /**
    * 异常标签, 通常用于打印服务
    */
-  label: string;
+  readonly label: string;
 
   /**
    * 异常等级
    */
-  level: 'ERROR' | 'SUCCESS' | 'INFO' | 'WARN';
+  readonly level: 'ERROR' | 'SUCCESS' | 'INFO' | 'WARN';
 
   /**
    * 异常产生时间
    */
-  time: number;
+  readonly time: number;
+
+  readonly other: Record<string, any>;
 }
 
 /**
@@ -39,7 +41,8 @@ export abstract class Exception<ErrMessageData extends ExceptionErrorMsgData> {
     this.errMessage = {
       label: `<${label.trim()}>`,
       level,
-      time: Date.now()
+      time: Date.now(),
+      other: {}
     } as ErrMessageData;
   }
 }

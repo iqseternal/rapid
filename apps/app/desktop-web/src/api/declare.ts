@@ -14,35 +14,35 @@ export interface RApiHConfig {
    * 默认都需要认证
    * @default true
    */
-  needAuth?: boolean;
+  readonly needAuth?: boolean;
 }
 
 /** 基本响应结构体的内容 */
 export interface RApiBasicResponse {
-  status: number;
-  flag: 'ApiResponseOk' | 'ApiResponseFal';
-  data: any;
-  more?: {
-    pako?: boolean;
+  readonly status: number;
+  readonly flag: 'ApiResponseOk' | 'ApiResponseFal';
+  readonly data: any;
+  readonly more?: {
+    readonly pako?: boolean;
   }
-  descriptor: string;
-  _t: number;
+  readonly descriptor: string;
+  readonly _t: number;
 }
 
 export interface RApiSuccessResponse extends RApiBasicResponse {
-  flag: 'ApiResponseOk';
+  readonly flag: 'ApiResponseOk';
 }
 
 export interface RApiFailResponse extends RApiBasicResponse {
-  flag: 'ApiResponseFal';
+  readonly flag: 'ApiResponseFal';
 
   /** 更多的错误信息 */
-  INNER: {
-    stack: string;
-    name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
-    config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];
-    request: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['request'];
-    response: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['response'];
+  readonly INNER: {
+    readonly stack: string;
+    readonly name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
+    readonly config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];
+    readonly request: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['request'];
+    readonly response: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['response'];
   }
 }
 
@@ -69,8 +69,10 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
 }, {
   async onFulfilled(config) {
     if (!config.hConfig) config.hConfig = { needAuth: true };
-    if (isUndefined(config.hConfig.needAuth)) config.hConfig.needAuth = true;
-    if (config.hConfig.needAuth && config.headers) {
+
+    const needAuth = config.hConfig.needAuth ?? true;
+
+    if (needAuth && config.headers) {
       // TODO:
       const accessToken = await getAccessToken();
       if (accessToken) config.headers.authorization = `Bearer ${accessToken}`;

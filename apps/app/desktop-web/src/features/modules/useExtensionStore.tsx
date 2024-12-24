@@ -34,7 +34,7 @@ export interface Extension {
   /**
    * 插件的视图渲染函数, 在不同的注册点可能具有不同的使用方式
    */
-  render(props: BaseProps): ReactNode;
+  render(): ReactNode;
 }
 
 export interface ExtensionStore {

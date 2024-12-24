@@ -34,6 +34,7 @@ export function registerGlobalMiddleware<IpcActionEvent extends IpcActionEvent.H
  * registerGlobalMiddleware(IpcActionEvent.On, [middleware]);
  */
 export function registerGlobalMiddleware<IpcActionEvent extends IpcActionEvent.On>(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]): void;
+
 export function registerGlobalMiddleware(actionType: IpcActionEvent, middlewares: IpcActionMiddleware<IpcActionEvent>[]) {
   // 向一个中间件集合 push 一堆中间件
   const appendMiddlewares = <EvtActionType extends IpcActionEvent>(middlewareSet: IpcActionMiddleware<EvtActionType>[], middlewares: IpcActionMiddleware<IpcActionEvent>[]) => {

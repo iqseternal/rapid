@@ -68,7 +68,7 @@ Omit<
  * 重新创建 ElectronAPI, 来覆盖 window.electron 的类型
  */
 export interface ElectronAPI {
-  ipcRenderer: IpcRenderer;
-  webFrame: WebFrame;
-  process: NodeProcess;
+  readonly ipcRenderer: IpcRenderer;
+  readonly webFrame: WebFrame;
+  readonly process: NodeProcess;
 }

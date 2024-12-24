@@ -98,7 +98,7 @@ export function useWindowInnerSize(options?: UseWindowInnerSizeOptions) {
     return () => removeInnerSizeCallback(refresh, ...effects);
   }, [effects.length]);
 
-  return [windowInnerSize];
+  return [windowInnerSize] as const;
 }
 
 /**
@@ -141,6 +141,6 @@ export function useWindowScreenSize(options?: UseWindowScreenSizeOptions) {
     return () => removeScreenSizeCallback(refresh, ...effects);
   }, [effects.length]);
 
-  return [windowScreenSize];
+  return [windowScreenSize] as const;
 }
 

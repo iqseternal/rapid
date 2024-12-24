@@ -25,9 +25,6 @@ export interface CreateRoutesChildrenOptions {
 
 /**
  * 通过路由表创建符合要求的 ReactDomRouter 子元素
- * @param routeArr
- * @param options
- * @returns
  */
 export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: CreateRoutesChildrenOptions) => {
   return routeArr.map((route, index) => {

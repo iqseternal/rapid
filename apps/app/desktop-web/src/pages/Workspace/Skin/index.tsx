@@ -3,7 +3,7 @@ import { classnames } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toNil } from '@rapid/libs';
@@ -15,9 +15,13 @@ import AutoDropdownMenu from '@components/AutoMenu';
 
 import styles from './index.module.scss';
 
-interface StyleBlockProps extends BaseProps {
+interface StyleBlockProps {
   title?: string;
   subTitle?: string;
+
+  children?: ReactNode;
+
+  className?: string;
 }
 
 const StyleBlock: FC<StyleBlockProps> = (props) => {

@@ -11,17 +11,17 @@ export interface RedirectProps {
   /**
    * match: 当 pathname 满足 from 条件, 就会发生重定向, 重定向到 to 页面, 并且当前页面返回 element.
    */
-  from: string | RegExp;
+  readonly from: string | RegExp;
 
   /**
    * to
    */
-  to: string;
+  readonly to: string;
 
   /**
    * 展示元素
    */
-  element: FC<any> | ReactElement | MemoExoticComponent<any> | LazyExoticComponent<any>;
+  readonly element: FC<any> | ReactElement | MemoExoticComponent<any> | LazyExoticComponent<any>;
 }
 
 /**

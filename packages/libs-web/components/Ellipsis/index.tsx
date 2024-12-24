@@ -223,13 +223,15 @@ const EllipsisPopover = memo((props: EllipsisTypes.EllipsisPopoverProps) => {
 })
 
 export type EllipsisType = typeof EllipsisBase & {
-  Tooltip: typeof EllipsisTooltip;
-  Popover: typeof EllipsisPopover;
+  readonly Tooltip: typeof EllipsisTooltip;
+  readonly Popover: typeof EllipsisPopover;
 };
 
 export const Ellipsis = EllipsisBase as EllipsisType;
 
+// @ts-ignore
 Ellipsis.Tooltip = EllipsisTooltip;
+// @ts-ignore
 Ellipsis.Popover = EllipsisPopover;
 
 export default Ellipsis;

@@ -39,10 +39,14 @@ const SideBarItem = memo<SideBarItemProps>((props) => {
   />;
 })
 
+export interface NavigationBarProps {
+  className?: string;
+}
+
 /**
  * 该组件为 WorkspaceLayout 提供服务, 作用为创建工作区的左侧导航条
  */
-export const NavigationBar: FC<Omit<BaseProps, 'children'>> = memo(({ className }) => {
+export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
   const navigate = useNavigate();
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
   const loginRoute = useRetrieveRoute(routes => routes.loginRoute);

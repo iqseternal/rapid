@@ -10,22 +10,22 @@ export enum IpcActionEvent {
 /** 自定义 ipc action 对象 */
 export type IpcActionType<EvtActionType extends IpcActionEvent, Channel extends string = string, Action extends (...args: any[]) => any = (...args: any[]) => any> = {
   /** 句柄名称 */
-  channel: Channel;
+  readonly channel: Channel;
   /** 编写的 Action 回调, 可以让其他 Action 进行调用 */
-  action: Action;
+  readonly action: Action;
   /** Action Type */
-  actionType: EvtActionType;
+  readonly actionType: EvtActionType;
   /** 中间件列表 */
-  middlewares: IpcActionMiddleware<EvtActionType>[];
+  readonly middlewares: IpcActionMiddleware<EvtActionType>[];
   /**
    * ipc 句柄的处理函数, 该函数会走中间件, 调用 action 对象的 action 方法作为返回值
    */
-  listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => Promise<any>;
+  readonly listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => Promise<any>;
 }
 
 /** 在中间件中 onSuccess 或者 onError 中获取当前的 action 信息的类型 */
 export type IpcActionMessageType<EvtActionType extends IpcActionEvent> = Omit<IpcActionType<EvtActionType>, 'middlewares'> & {
-  event: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent;
+  readonly event: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent;
 }
 
 /**
@@ -35,7 +35,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
   /**
    * 中间件名称
    */
-  name: string;
+  readonly name: string;
 
   /**
    * 转换参数, 可以利用本函数为每个子项的 action 函数提供统一的参数前缀, 因为默认情况下 electron ipc 第一个参数为 事件 e: IpcMainInvokeEvent | IpcMainEvent
@@ -50,29 +50,29 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    *   }
    * }
    */
-  transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => any[];
+  readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => any[];
 
   /**
    * 转换响应
    */
-  transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
+  readonly transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
 
   /**
    * 在 action 正式处理之前的回调函数
    */
-  onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
+  readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
 
   /**
    * 在 action 处理之后的回调函数
    */
-  onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
+  readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
 
   /**
    * 在 action 正确处理 ipc 句柄的成功回调函数
    * @param res 正确处理的返回数据
    * @param message 返回处理当前 ipc 句柄的信息
    */
-  onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => void;
+  readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => void;
 
   /**
    * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
@@ -80,7 +80,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * @param res 错误处理时产生的异常对象
    * @param message 返回处理当前 ipc 句柄的信息
    */
-  onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => void | Exception<ExceptionErrorMsgData>;
+  readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => void | Exception<ExceptionErrorMsgData>;
 }
 
 /** 存储注册的全局中间件 */

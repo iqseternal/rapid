@@ -103,7 +103,7 @@ export interface ReactiveOptions {
    *
    * @default true
    */
-  deep?: boolean;
+  readonly deep?: boolean;
 }
 
 /**

@@ -13,15 +13,15 @@ export interface CatchDecorator extends Decorator {
   /**
    * 装饰器执行所需数据上下文
    */
-  context: {
-    mapper: WeakMap<DescendantClass<Exception<any>>, ExceptionFilter[]>;
+  readonly context: {
+    readonly mapper: WeakMap<DescendantClass<Exception<any>>, ExceptionFilter[]>;
   }
 
   /**
    * 处理某个异常, 如果异常是 Exception 子类, 并且被成功处理了, 本函数返回 void
    * 否则抛出异常
    */
-  parser(Exception: Exception<any>): void;
+  readonly parser: (Exception: Exception<any>) => void;
 }
 
 /**
@@ -65,7 +65,10 @@ export const Catch: CatchDecorator = function(...Exceptions: DescendantClass<Exc
   }
 }
 
+// @ts-ignore
 Catch.symbol = Symbol('CatchMetadata');
+
+// @ts-ignore
 Catch.context = {
   mapper: new WeakMap()
 }
@@ -73,6 +76,8 @@ Catch.context = {
 /**
  * 处理装饰器, Catch 捕捉一个异常类
  */
+
+// @ts-ignore
 Catch.parser = (exception) => {
   const Exception = exception.constructor as unknown as DescendantClass<Exception<any>>;
 

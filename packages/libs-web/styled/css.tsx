@@ -5,7 +5,7 @@ import { useDebounceHook, useWindowScreenSizeHook } from '../hooks';
 const CSS_VARS_MAP = {
   MAX_SCREEN_WIDTH: '--rapid-o-styled-max-screen-width',
   MAS_SCREEN_HEIGHT: '--rapid-o-styled-max-screen-height',
-};
+} as const;
 
 const windowSize = useWindowScreenSizeHook();
 const valueMap = new Map<keyof typeof CSS_VARS_MAP, string | number>();

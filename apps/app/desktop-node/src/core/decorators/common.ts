@@ -11,13 +11,13 @@ export interface Decorator {
   /**
    * 唯一标识
    */
-  symbol: Symbol;
+  readonly symbol: Symbol;
 
   /**
    * 执行解析函数, 这个函数是抽象的, 由子接口定义
    * @returns
    */
-  parser: (...args: any[]) => any;
+  readonly parser: (...args: any[]) => any;
 }
 
 /**
