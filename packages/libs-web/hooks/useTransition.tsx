@@ -5,7 +5,7 @@ import { useNormalState, useShallowReactive } from './useReactive';
 /**
  * 开始某个异步任务的函数类型
  */
-export type StartTransitionFunction = (...args: any[]) => Promise<any>;
+export type StartTransitionFunction = (...args: any[]) => Promise<void>;
 
 /**
  * 类似 react 19. useTransition
@@ -36,31 +36,21 @@ export function useTransition<StartTransitionFn extends StartTransitionFunction>
   })
 
   /**
-   * 执行一个异步任务, 状态会和 hook 公用 pending 保持一致
-   */
-  const transition = useCallback(async <Data extends any = void>(callback: () => Promise<Data>): Promise<Data> => {
-    normalState.times ++;
-    if (normalState.times >= 1) shallowState.isPending = true;
-
-    const data = await callback();
-    normalState.times --;
-
-    if (normalState.times === 0) shallowState.isPending = false;
-    return data;
-  }, []);
-
-  /**
    * 执行本次异步任务
    */
-  const startWithTransition = useCallback(((...args) => {
-    return transition(() => callback(...args));
+  const startWithTransition = useCallback<StartTransitionFn>((async (...args: Parameters<StartTransitionFn>) => {
+    if (shallowState.isPending) return;
+
+    shallowState.isPending = true;
+
+    await callback();
+
+    shallowState.isPending = false;
   }) as StartTransitionFn, deps);
 
   return [
     shallowState as Readonly<typeof shallowState>,
 
-    startWithTransition,
-
-    transition
+    startWithTransition
   ] as const;
 }

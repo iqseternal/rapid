@@ -19,13 +19,40 @@ export interface RApiHConfig {
 
 /** 基本响应结构体的内容 */
 export interface RApiBasicResponse {
+  /**
+   * 状态码
+   */
   readonly status: number;
+
+  /**
+   * 标志
+   */
   readonly flag: 'ApiResponseOk' | 'ApiResponseFal';
+
+  /**
+   * 返回数据, 具有 data 定义
+   */
   readonly data: any;
+
+  /**
+   * 更多的响应体修饰
+   */
   readonly more?: {
+
+    /**
+     * 响应数据是否被压缩了
+     */
     readonly pako?: boolean;
   }
+
+  /**
+   * 响应描述
+   */
   readonly descriptor: string;
+
+  /**
+   * 响应服务器 响应时时间戳
+   */
   readonly _t: number;
 }
 
@@ -36,8 +63,13 @@ export interface RApiSuccessResponse extends RApiBasicResponse {
 export interface RApiFailResponse extends RApiBasicResponse {
   readonly flag: 'ApiResponseFal';
 
-  /** 更多的错误信息 */
+  /**
+   * 更多的错误信息
+   */
   readonly INNER: {
+    /**
+     * 栈信息
+     */
     readonly stack: string;
     readonly name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
     readonly config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];

@@ -150,6 +150,7 @@ const proxyMap = new WeakMap(), rawMap = new WeakMap();
 export interface ToMakeZustandHijackOptions {
   beforeHijackCovert?: (target: any) => any;
 }
+
 export const toMakeZustandHijack = (options?: ToMakeZustandHijackOptions) => {
   const {
     beforeHijackCovert = <T>(e: T) => e

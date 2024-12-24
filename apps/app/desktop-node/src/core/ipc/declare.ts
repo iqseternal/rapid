@@ -9,14 +9,26 @@ export enum IpcActionEvent {
 
 /** 自定义 ipc action 对象 */
 export type IpcActionType<EvtActionType extends IpcActionEvent, Channel extends string = string, Action extends (...args: any[]) => any = (...args: any[]) => any> = {
-  /** 句柄名称 */
+  /**
+   * 句柄名称
+   */
   readonly channel: Channel;
-  /** 编写的 Action 回调, 可以让其他 Action 进行调用 */
+
+  /**
+   * 编写的 Action 回调, 可以让其他 Action 进行调用
+   */
   readonly action: Action;
-  /** Action Type */
+
+  /**
+   * Action Type
+   */
   readonly actionType: EvtActionType;
-  /** 中间件列表 */
+
+  /**
+   * 中间件列表
+   */
   readonly middlewares: IpcActionMiddleware<EvtActionType>[];
+
   /**
    * ipc 句柄的处理函数, 该函数会走中间件, 调用 action 对象的 action 方法作为返回值
    */

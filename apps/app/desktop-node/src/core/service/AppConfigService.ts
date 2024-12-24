@@ -81,11 +81,11 @@ const APP_CONFIG = {
 export class AppConfigService extends SingleInstanceService<AppConfigService> {
   public readonly config = APP_CONFIG;
 
-  static override getInstance<T = AppConfigService>() {
+  public static override getInstance<T = AppConfigService>() {
     return super.getInstance<T>();
   }
 
-  override destroy(): void {
+  protected override destroy(): void {
     if (this.config.miscellaneous.appJson.overwrite) {
 
       PrinterService.printError(`当前还未编写覆写过程`);

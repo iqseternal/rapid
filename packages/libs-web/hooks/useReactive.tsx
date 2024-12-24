@@ -40,6 +40,21 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)) {
  */
 export function useShallowReactive<S extends object>(initValue: S): readonly [S];
 
+/**
+ * 修改 state 自动刷新组件
+ * @example
+ * const [state, resetState] = useShallowReactive(() => ({
+ *   a: 1,
+ *   b: {
+ *     c: 1
+ *   }
+ * });
+ *
+ * state.a = 2; // 自动刷新组件
+ * state.b.c = 2; // 不会自动刷新组件
+ *
+ * resetState(); // 调用初始化函数重置 state
+ */
 export function useShallowReactive<S extends object>(initValue: (() => S)): readonly [S, () => void];
 
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
@@ -86,6 +101,8 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
     const initValue = normalState.initValue;
     if (typeof initValue !== 'function') return;
     const initialState = initValue();
+    // why ? 为了保持 shallowState 的引用地址不变
+    // 如何保证能够重置数据 ? 利用 TS 检测, 不允许动态添加属性, 需要先提前定义才行
     for (const key in initialState) state[key] = initialState[key];
   }, []);
 

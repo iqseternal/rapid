@@ -21,12 +21,11 @@ export declare namespace Rapid {
   export namespace Bus {
 
     export type BusEvent = {
-      'message': (message: any) => void;
 
-      'extension:activate': (evtName: string) => void;
-      'extension:deactivate': (evtName: string) => void;
-      'extension:install': (evtName: string) => void;
-      'extension:uninstall': (evtName: string) => void;
+
+
+
+
     }
   }
 }
