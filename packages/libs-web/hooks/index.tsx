@@ -26,6 +26,8 @@ export type { AsyncEffectCallback } from './useAsyncEffect';
 export { useTransition } from './useTransition';
 export type { StartTransitionFunction } from './useTransition';
 
+export { useMousetrap } from './useMousetrap';
+
 export { useMount, useUnmount } from 'ahooks';
 
 export { useSetState } from 'ahooks';
