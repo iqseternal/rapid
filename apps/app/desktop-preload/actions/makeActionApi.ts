@@ -17,10 +17,12 @@ export const makeInvokeActions = <InvokeKey extends keyof HandleHandlers>(invoke
     const [err, data] = await toNil(action);
 
     if (err) {
-      const data = err.message.match(/Error invoking remote method .*?:/);
+      const reason = err.reason as Error;
+
+      const data = reason.message.match(/Error invoking remote method .*?:/);
 
       if (data) {
-        const expStr = err.message.replace(data[0], '').trim();
+        const expStr = reason.message.replace(data[0], '').trim();
 
         return Promise.reject(JSON.parse(expStr));
       }

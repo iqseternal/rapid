@@ -1,7 +1,6 @@
-import { RSA_PUBLIC_KEY } from '@rapid/config/constants';
-import { rsaEncryptAlgorithm } from '@rapid/libs';
 import { rApiPost } from './declare';
 import type { RApiPromiseLike } from './declare';
+import { rRsaEncrypt } from '@libs/crypto';
 
 // ==================================================================================
 
@@ -26,7 +25,7 @@ export const loginReq = (payload: LoginReqPayload) => {
     },
     data: {
       username: payload.username,
-      password: rsaEncryptAlgorithm(payload.password, RSA_PUBLIC_KEY)
+      password: rRsaEncrypt(payload.password)
     }
   });
 }

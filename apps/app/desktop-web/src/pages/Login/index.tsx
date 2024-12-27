@@ -44,8 +44,9 @@ export const Login = memo(() => {
       username: 'admin',
       password: '12345678'
     }));
+
     if (loginErr) {
-      message.error(loginErr.descriptor);
+      message.error(loginErr.reason.descriptor);
       return;
     }
 
@@ -57,7 +58,7 @@ export const Login = memo(() => {
   const [registerPending, register] = useTransition(async () => {
     const [registerErr] = await toNil(registerReq());
     if (registerErr) {
-      message.error(registerErr.descriptor);
+      message.error(registerErr.reason.descriptor);
       return;
     }
   }, []);

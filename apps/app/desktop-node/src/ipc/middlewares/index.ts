@@ -40,10 +40,10 @@ export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
     const [err, data] = await toNil(response);
 
     if (err) {
-      if (isException(err)) return Promise.reject(JSON.stringify(err));
+      if (isException(err.reason)) return Promise.reject(JSON.stringify(err.reason));
 
-      if (err instanceof Error) {
-        return Promise.reject(JSON.stringify(new RuntimeException(err.message, {
+      if (err.reason instanceof Error) {
+        return Promise.reject(JSON.stringify(new RuntimeException(err.reason.message, {
           label: `ipcResponseMiddleware`,
           level: 'ERROR'
         })));

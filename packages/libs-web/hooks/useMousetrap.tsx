@@ -58,12 +58,6 @@ export function makeFlowKeys<FlowKeys extends readonly KeyboardSampleCompose[]>(
   return keys.join(' ') as Join<FlowKeys>;
 }
 
-declare const callback: () => void;
-
-const c = makeFlowKeys('mod+end', 'mod+esc');
-
-useMousetrap(['mod+c'], callback);
-useMousetrap(['mod+a', 'mod+e'], callback);
 
 export function useMousetrap(keys: readonly KeyboardSampleCompose[], callback: () => void): void;
 

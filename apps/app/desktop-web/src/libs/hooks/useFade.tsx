@@ -39,8 +39,8 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
       const [err] = await toNil(Promise.resolve(beforeCallback()));
 
       if (err) {
-        console.dir(err);
-        onError(err);
+        console.dir(err.reason);
+        onError(err.reason);
         return window.ipcActions.windowShow({ show: true }).catch(onError);
       }
     }

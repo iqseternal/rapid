@@ -1,9 +1,3 @@
-
-import { IS_BROWSER, IS_DESKTOP } from '@rapid/config/constants';
-import { getIpcRuntimeContext } from '../../desktop-node/src/core/ipc';
-import { ipcRenderer } from 'electron';
-import { toNil } from '@rapid/libs';
-
 import { makeInvokeActions } from './makeActionApi';
 
 /** 打开文档数据 */

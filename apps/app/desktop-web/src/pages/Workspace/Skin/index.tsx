@@ -6,7 +6,6 @@ import { Button, Input, Space, Card, Dropdown, message } from 'antd';
 import type { FC, ReactNode } from 'react';
 import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toNil } from '@rapid/libs';
 import { useDocStore } from '@/features';
 import { produce } from 'immer';
 

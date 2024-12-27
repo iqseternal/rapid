@@ -1,6 +1,5 @@
 import type { FC, Ref, RefObject, DependencyList, EffectCallback } from 'react';
 import { useEffect, useRef, useState, useLayoutEffect } from 'react';
-import { toNil } from '@rapid/libs';
 
 /**
  * useAsyncLayoutEffect 的 回调类型
