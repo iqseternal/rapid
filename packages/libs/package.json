@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@suey/pkg-utils": "0.2.3"
+    "@suey/pkg-utils": "0.2.4"
   }
 }

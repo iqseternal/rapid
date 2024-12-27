@@ -1,4 +1,4 @@
-import { forge } from '@rapid/libs';
+import { forge, bcrypt } from '@rapid/libs';
 
 const KEY = `
 -----BEGIN PUBLIC KEY-----
