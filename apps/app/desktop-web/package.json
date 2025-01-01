@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "typecheck": "concurrently \"tsc --noEmit -p tsconfig.web.json\"  \"tsc --noEmit -p tsconfig.node.json\""
   },

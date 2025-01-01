@@ -22,12 +22,12 @@ const { IS_PROD } = envBuilder.toEnvs();
 const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
 
   return {
-
     source: {
       entry: {
         index: join(__dirname, './src/index.tsx')
       },
-      alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths)
+      alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths),
+      tsconfigPath: join(__dirname, './tsconfig.web.json')
     },
     html: {
       meta: {
