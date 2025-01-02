@@ -51,7 +51,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   /**
    * 查找链表中是否含有某个元素
    */
-  public override contains(value: V): boolean {
+  public contains(value: V): boolean {
     for (const v of this) {
       if (this.comparator(v, value) === 0) return true;
     }

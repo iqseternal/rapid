@@ -46,7 +46,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   /**
    * 查找链表中是否包含元素
    */
-  public override contains(value: V): boolean {
+  public contains(value: V): boolean {
     for (const v of this) {
       if (this.comparator(v, value) === 0) return true;
     }
@@ -182,7 +182,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   protected override deleteNodeAtTail(): SinglyLinkedNode<V> | null {
     let node: SinglyLinkedNode<V> | null = this.head;
     while (node) {
-      const nextNode = node;
+      const nextNode = node.next;
       if (nextNode) {
         if (nextNode === this.tail) {
           break;

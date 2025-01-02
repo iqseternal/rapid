@@ -7,34 +7,36 @@ export interface Extension {
    * 插件的唯一标识 name
    */
   readonly name: string | symbol;
+
   /**
    * 插件被注册
    */
   readonly onRegistered?: () => void;
+
   /**
    * 插件被激活, 被使用的状态
    */
   readonly onActivate?: () => void;
+
   /**
    * 插件被去活, 被禁用的状态
    */
   readonly onDeactivated?: () => void;
+
   /**
    * 插件更新
    */
   readonly onUpdated?: () => void;
+
   /**
    * 插件被禁用
    */
   readonly onDisabled?: () => void;
+
   /**
    * 插件被卸载
    */
   readonly onUnregistered?: () => void;
-  /**
-   * 插件的视图渲染函数, 在不同的注册点可能具有不同的使用方式
-   */
-  readonly render?: (props: PropsWithChildren) => ReactNode;
 }
 
 export interface ExtensionManagerInnerStore {
@@ -59,11 +61,17 @@ export class ExtensionManager<SlotsInterface extends Record<string | number | sy
     this.store.setState({ update: {} });
   }
 
+  /**
+   * store hook
+   */
+  private useStore() {
+    this.store(store => store.update);
+  }
 
   /**
    * 某个插件
    */
-  public unregisterExtension<SlotKey extends keyof SlotsInterface>(slotKey, ...extensions: SlotsInterface[SlotKey][]) {
+  public unregisterExtension<SlotKey extends keyof SlotsInterface>(slotKey: SlotKey, ...extensions: SlotsInterface[SlotKey][]) {
     if (!this.mapper.has(slotKey)) return;
     const list = this.mapper.get(slotKey)!;
     const targetList = list.filter(li => {
@@ -103,7 +111,7 @@ export class ExtensionManager<SlotsInterface extends Record<string | number | sy
    * 使用某个插件
    */
   public useExtension<SlotKey extends keyof SlotsInterface>(slotKey: SlotKey): SlotsInterface[SlotKey] | undefined | null {
-    this.store(store => store.update);
+    this.useStore();
     if (!this.mapper.has(slotKey)) return void 0;
 
     const list = this.mapper.get(slotKey)!;
@@ -116,7 +124,7 @@ export class ExtensionManager<SlotsInterface extends Record<string | number | sy
    * 使用某组插件
    */
   public useExtensions<SlotKey extends keyof SlotsInterface>(slotKey: SlotKey): SlotsInterface[SlotKey][] | undefined {
-    this.store(store => store.update);
+    this.useStore();
     if (!this.mapper.has(slotKey)) return void 0;
 
     const list = this.mapper.get(slotKey)!;

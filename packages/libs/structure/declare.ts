@@ -57,11 +57,6 @@ export abstract class Vessel<V> {
   public abstract clear(): void;
 
   /**
-   * 查看容器中是否包含某个元素
-   */
-  public abstract contains(value: V): boolean;
-
-  /**
    * 设置比较器
    */
   public setComparator(comparator: Comparator<V>): void {

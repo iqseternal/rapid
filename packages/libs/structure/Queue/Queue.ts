@@ -18,7 +18,7 @@ export class Queue<V> extends Vessel<V> {
   /**
    * 检查队列中是否含有某个元素
    */
-  public override contains(value: V): boolean {
+  public contains(value: V): boolean {
     for (const v of this.queueArr) {
       if (this.comparator(v, value) === 0) return true;
     }

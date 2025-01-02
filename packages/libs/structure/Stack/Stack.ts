@@ -20,7 +20,7 @@ export class Stack<V> extends Vessel<V> {
   /**
    * 检查栈中是否有制定元素
    */
-  public override contains(value: V): boolean {
+  public contains(value: V): boolean {
     for (const v of this.stackArr) {
       if (this.comparator(v, value) === 0) return true;
     }
@@ -134,7 +134,7 @@ export class LinkedStack<V> extends Vessel<V> {
   /**
    * 检查栈中是否有制定元素
    */
-  public override contains(value: V): boolean {
+  public contains(value: V): boolean {
     for (const v of this.linked) {
       if (this.comparator(v, value) === 0) return true;
     }

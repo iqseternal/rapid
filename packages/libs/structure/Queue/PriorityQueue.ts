@@ -94,17 +94,6 @@ export class PriorityQueue<V> extends Vessel<V> {
   }
 
   /**
-   * 查找单调队列中是否含有某个元素
-   */
-  public override contains(value: V): boolean {
-    for (let i = 1;i <= this.length;i ++) {
-      const v = this.priorityQueueArr[i];
-      if (this.comparator(v!, value) === 0) return true;
-    }
-    return false;
-  }
-
-  /**
    * 清空单调队列
    */
   public override clear() {

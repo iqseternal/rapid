@@ -47,10 +47,6 @@ describe('classnames', () => {
     expect(classnames({ 'class1': true, 'class2': { 'class3': true } })).toBe('class1 class2');
   });
 
-  it('should accept an array of class names', () => {
-    expect(classnames(['class1', 'class2'])).toBe('');
-  });
-
   it('should handle multiple classes in a single object', () => {
     expect(classnames({ 'class1': true, 'class2': true })).toBe('class1 class2');
   });

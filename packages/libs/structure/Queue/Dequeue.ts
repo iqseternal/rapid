@@ -18,7 +18,7 @@ export class Dequeue<V> extends Vessel<V> {
   /**
    * 检查双端队列中是否含有某个特定元素
    */
-  public override contains(value: V): boolean {
+  public contains(value: V): boolean {
     for (const v of this.dequeueArr) {
       if (this.comparator(v, value) === 0) return true;
     }
