@@ -106,7 +106,9 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    *
    * linkedList.deleteNodeWhere((node) => node.value > 10);
    */
-  protected abstract deleteNodeWhere(condition: (node: Readonly<Node>) => boolean): Node | null;
+  protected abstract deleteNodeWhere(condition: (node: Readonly<Node>) => boolean, multiple?: false): Node | null;
+  protected abstract deleteNodeWhere(condition: (node: Readonly<Node>) => boolean, multiple: true): Node[];
+  protected abstract deleteNodeWhere(condition: (node: Readonly<Node>) => boolean, multiple?: boolean): Node | null | Node[];
 
   /**
    * 删除符合 value 的元素节点
@@ -117,7 +119,9 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    *
    * linkedList.delete(10);
    */
-  public abstract delete(value: V): V | null;
+  public abstract delete(value: V, multiple?: false): V | null;
+  public abstract delete(value: V, multiple: true): V[];
+  public abstract delete(value: V, multiple?: boolean): V | null | V[];
 
   /**
    * 删除符合 condition 的元素节点
@@ -128,7 +132,9 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    *
    * linkedList.deleteWhere((value) => value > 10);
    */
-  public abstract deleteWhere(condition: (value: V) => boolean): V | null;
+  public abstract deleteWhere(condition: (value: V) => boolean, multiple?: false): V | null;
+  public abstract deleteWhere(condition: (value: V) => boolean, multiple: true): V[];
+  public abstract deleteWhere(condition: (value: V) => boolean, multiple?: boolean): V | null | V[];
 
   /**
    * 从头部顺序查找符合 value 的节点
@@ -294,4 +300,9 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    * 合并 otherList, 并获得一个新的 LinkedList
    */
   public abstract merge(otherList: LinkedList<V, Node>): LinkedList<V, Node>;
+
+  /**
+   * 返回当前链表长度
+   */
+  public abstract get length(): number;
 }

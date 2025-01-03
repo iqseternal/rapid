@@ -1,10 +1,33 @@
 import { Vessel } from '../declare';
 import { SinglyLinkedList } from '../LinkedList';
 
+export abstract class StackType<V> extends Vessel<V> {
+  /**
+   * 检查栈中是否有制定元素
+   */
+  public abstract contains(value: V): boolean;
+
+  /**
+   * 压栈
+   */
+  public abstract push(value: V): void;
+
+  /**
+   * 弹出栈顶元素
+   * @returns
+   */
+  public abstract pop(): V | null;
+
+  /**
+   * 访问栈顶元素, 但是不弹出元素
+   */
+  public abstract top(): V | null;
+}
+
 /**
  * 数据结构：栈
  */
-export class Stack<V> extends Vessel<V> {
+export class Stack<V> extends StackType<V> {
   private stackArr: V[] = [];
 
   /**
@@ -20,7 +43,7 @@ export class Stack<V> extends Vessel<V> {
   /**
    * 检查栈中是否有制定元素
    */
-  public contains(value: V): boolean {
+  public override contains(value: V): boolean {
     for (const v of this.stackArr) {
       if (this.comparator(v, value) === 0) return true;
     }
@@ -51,14 +74,14 @@ export class Stack<V> extends Vessel<V> {
   /**
    * 压栈
    */
-  public push(...value: V[]): void {
+  public override push(...value: V[]): void {
     this.stackArr.push(...value);
   }
 
   /**
    * 访问栈顶元素, 但是不弹出元素
    */
-  public top(): V | null {
+  public override top(): V | null {
     return this.stackArr[this.stackArr.length - 1];
   }
 
@@ -66,7 +89,7 @@ export class Stack<V> extends Vessel<V> {
    * 弹出栈顶元素
    * @returns
    */
-  public pop(): V | null {
+  public override pop(): V | null {
     return this.stackArr.pop() ?? null;
   }
 }
@@ -74,22 +97,22 @@ export class Stack<V> extends Vessel<V> {
 /**
  * 数据结构：链栈
  */
-export class LinkedStack<V> extends Vessel<V> {
+export class LinkedStack<V> extends StackType<V> {
   private readonly linked = new SinglyLinkedList<V>();
 
   /**
    * 压栈
    */
-  public push(...value: V[]): void {
+  public override push(...value: V[]): void {
     for (const v of value) {
-      this.linked.insertAtTail(v);
+      this.linked.insertAtHead(v);
     }
   }
 
   /**
    * 访问栈顶元素, 但是不弹出元素
    */
-  public top() {
+  public override top() {
     return this.linked.findFromHeadWhere(() => true);
   }
 
@@ -97,8 +120,8 @@ export class LinkedStack<V> extends Vessel<V> {
    * 弹出栈顶元素
    * @returns
    */
-  public pop(): V | null {
-    return this.linked.deleteAtTail();
+  public override pop(): V | null {
+    return this.linked.deleteAtHead();
   }
 
   /**
@@ -134,7 +157,7 @@ export class LinkedStack<V> extends Vessel<V> {
   /**
    * 检查栈中是否有制定元素
    */
-  public contains(value: V): boolean {
+  public override contains(value: V): boolean {
     for (const v of this.linked) {
       if (this.comparator(v, value) === 0) return true;
     }

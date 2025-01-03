@@ -39,7 +39,7 @@ export abstract class Vessel<V> {
   /**
    * 容器可被迭代
    */
-  public abstract [Symbol.iterator](): Iterator<V>;
+  protected abstract [Symbol.iterator](): Iterator<V>;
 
   /**
    * 获取容器的尺寸大小

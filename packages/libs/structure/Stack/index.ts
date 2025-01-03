@@ -1,4 +1,6 @@
 
+export type { StackType } from './Stack';
 
 export { Stack, LinkedStack } from './Stack';
-export { PriorityStack } from './PriorityStack';
+
+export { PriorityStack, PriorityLinkedStack } from './PriorityStack';

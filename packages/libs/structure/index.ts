@@ -4,7 +4,8 @@ export type { Vessel, Comparator } from './declare';
 export type { SinglyLinkedNode, DoubleLinkedNode, LinkedList, LinkedNode } from './LinkedList';
 export { SinglyLinkedList, DoubleLinkedList } from './LinkedList';
 
-export { Stack, PriorityStack } from './Stack';
+export type { StackType } from './Stack';
+export { Stack, LinkedStack, PriorityStack, PriorityLinkedStack } from './Stack';
 
 export { Queue, PriorityQueue } from './Queue';
 

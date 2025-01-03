@@ -21,11 +21,12 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
    * 单向链表的最后一个节点
    */
   protected tail: SinglyLinkedNode<V> = this.head;
+  protected __length = 0;
 
   /**
    * 使用数组初始化链表
    */
-  constructor(list: V[] = []) {
+  public constructor(list: V[] = []) {
     super();
     this.insert(...list);
   }
@@ -65,7 +66,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   }
 
   /**
-   * 头插法, 插入元素
+   * 头插法, 插入元素 (多个元素按照顺序依次执行头插法)
    */
   public override insertAtHead(...values: V[]): void {
     const nodes = values.map(value => this.initNode(value));
@@ -79,11 +80,12 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     nodes.forEach(node => {
       node.next = this.head.next;
       this.head.next = node;
+      this.__length ++;
     })
   }
 
   /**
-   * 尾插法, 插入元素
+   * 尾插法, 插入元素, (多个元素按照顺序依次执行尾插法)
    */
   public override insertAtTail(...values: V[]): void {
     const nodes = values.map(value => this.initNode(value));
@@ -97,6 +99,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
     nodes.forEach(node => {
       this.tail.next = node;
       this.tail = node;
+      this.__length ++;
     })
   }
 
@@ -124,35 +127,59 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   /**
    * 条件移除某个结点
    */
-  protected override deleteNodeWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean): SinglyLinkedNode<V> | null {
+  protected override deleteNodeWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean, multiple?: false): SinglyLinkedNode<V> | null;
+  protected override deleteNodeWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean, multiple: true): SinglyLinkedNode<V>[];
+  protected override deleteNodeWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean, multiple?: boolean): SinglyLinkedNode<V> | null | SinglyLinkedNode<V>[];
+  protected override deleteNodeWhere(condition: (node: Readonly<SinglyLinkedNode<V>>) => boolean, multiple: boolean = false): SinglyLinkedNode<V> | null | SinglyLinkedNode<V>[] {
     let prevNode: SinglyLinkedNode<V> | null = this.head;
+    const list: SinglyLinkedNode<V>[] = [];
+
     while (prevNode) {
-      if (prevNode.next) {
-        if (condition(prevNode.next)) {
-          const node = prevNode.next;
-          prevNode.next = prevNode.next.next;
-          node.next = null;
-          return node;
-        }
+      if (!prevNode.next) break;
+
+      if (condition(prevNode.next)) {
+        const node = prevNode.next;
+        prevNode.next = node.next;
+        node.next = null;
+        this.__length --;
+
+        list.push(node);
+
+        if (!multiple) break;
+
+        continue;
       }
 
       prevNode = prevNode.next;
     }
-    return null;
+
+    if (multiple) return list;
+
+    return list[0] ?? null;
   }
 
   /**
    * 移除元素
    */
-  public override delete(value: V): V | null {
-    return this.deleteWhere(innerNode => this.comparator(innerNode, value) === 0);
+  public override delete(value: V, multiple?: false): V | null;
+  public override delete(value: V, multiple: true): V[];
+  public override delete(value: V, multiple?: boolean): V | V[] | null;
+  public override delete(value: V, multiple: boolean = false): V | V[] | null {
+    return this.deleteWhere(innerNode => this.comparator(innerNode, value) === 0, multiple);
   }
 
   /**
    * 条件移除元素
    */
-  public override deleteWhere(condition: (value: V) => boolean): V | null {
-    return this.deleteNodeWhere(innerNode => condition(innerNode.value))?.value ?? null;
+  public override deleteWhere(condition: (value: V) => boolean, multiple?: false): V | null;
+  public override deleteWhere(condition: (value: V) => boolean, multiple: true): V[];
+  public override deleteWhere(condition: (value: V) => boolean, multiple?: boolean): V | V[] | null;
+  public override deleteWhere(condition: (value: V) => boolean, multiple: boolean = false): V | V[] | null {
+    const result = this.deleteNodeWhere(innerNode => condition(innerNode.value), multiple);
+    if (!multiple) return (result as SinglyLinkedNode<V>)?.value ?? null;
+    else {
+      return (result as SinglyLinkedNode<V>[]).map(t => t.value);
+    }
   }
 
   /**
@@ -377,6 +404,7 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
       const nextNode = node.next;
       node.next = null;
       node = nextNode;
+      this.__length --;
     }
 
     this.head.next = null;
@@ -394,8 +422,13 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
    * 返回当前链表的大小
    */
   public override size(): number {
-    let length = 0;
-    this.forEachNode(() => { length ++; });
-    return length;
+    return this.length;
+  }
+
+  /**
+   * 返回当前链表的大小
+   */
+  public override get length() {
+    return this.__length;
   }
 }

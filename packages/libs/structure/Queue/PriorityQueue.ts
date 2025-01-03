@@ -10,8 +10,9 @@ export class PriorityQueue<V> extends Vessel<V> {
 
   /**
    * 迭代单调队列, 但使用迭代器迭代队列会导致元素被清空
+   * 外部不允许对优先级队列使用迭代器
    */
-  public override *[Symbol.iterator](): Iterator<V> {
+  protected override *[Symbol.iterator](): Iterator<V> {
     while (this.length) {
       const v = this.pop()!;
       yield v;

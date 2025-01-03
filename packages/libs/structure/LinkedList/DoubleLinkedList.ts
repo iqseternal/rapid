@@ -22,11 +22,12 @@ export interface DoubleLinkedNode<V> extends LinkedNode<V> {
  */
 export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   protected override readonly head: DoubleLinkedNode<V>;
+  protected __length = 0;
 
   /**
    * 可通过数组初始化部分链表结点
    */
-  constructor(list: V[] = []) {
+  public constructor(list: V[] = []) {
     super();
     const head: DoubleLinkedNode<V> = { isHead: true, value: null as V, previous: null, next: null };
     head.previous = head;
@@ -61,7 +62,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   /**
    * 通过 value 生成一个循环链表初始化节点
    */
-  public override initNode(value: V): DoubleLinkedNode<V> {
+  protected override initNode(value: V): DoubleLinkedNode<V> {
     return {
       isHead: false,
       value,
@@ -86,6 +87,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
 
       this.head.next = node;
       firstNode.previous = node;
+      this.__length ++;
     })
   }
 
@@ -110,6 +112,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
 
       lastNode.next = node;
       this.head.previous = node;
+      this.__length ++;
     })
   }
 
@@ -133,20 +136,6 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
    */
   public override insert(...values: V[]) {
     this.insertAtTail(...values);
-  }
-
-  /**
-   * 获得头节点的值
-   */
-  public getHead(): V | null {
-    return this.head.next?.value ?? null;
-  }
-
-  /**
-   * 获得头节点
-   */
-  protected getHeadNode(): DoubleLinkedNode<V> | null {
-    return this.head.next ?? null;
   }
 
   /**
@@ -188,32 +177,17 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
     return null;
   }
 
-
-  /**
-   * 获得尾结点的值
-   */
-  public getTail(): V | null {
-    return this.head.previous?.value ?? null;
-  }
-
-  /**
-   * 获得尾结点
-   */
-  protected getTailNode(): DoubleLinkedNode<V> | null {
-    return this.head.previous ?? null;
-  }
-
   /**
    * 从尾部查找结点
    */
-  public findNodeFromTail(value: V): Readonly<DoubleLinkedNode<V>> | null {
+  protected findNodeFromTail(value: V): Readonly<DoubleLinkedNode<V>> | null {
     return this.findNodeFromTailWhere(innerNode => this.comparator(innerNode.value, value) === 0);
   }
 
   /**
    * 从尾部条件查找结点
    */
-  public findNodeFromTailWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): Readonly<DoubleLinkedNode<V>> | null {
+  protected findNodeFromTailWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): Readonly<DoubleLinkedNode<V>> | null {
     let node: DoubleLinkedNode<V> | null = this.head.previous;
     while (node) {
       if (node.isHead) break;
@@ -236,8 +210,8 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   /**
    * 从尾部条件查找元素
    */
-  public findFromTailWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): V | null {
-    const node = this.findNodeFromTailWhere(condition);
+  public findFromTailWhere(condition: (node: V) => boolean): V | null {
+    const node = this.findNodeFromTailWhere(innerNode => condition(innerNode.value));
     if (node) return node.value;
     return null;
   }
@@ -313,7 +287,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   /**
    * 删除某个结点
    */
-  public override deleteNode(node: DoubleLinkedNode<V>): DoubleLinkedNode<V> | null {
+  protected override deleteNode(node: DoubleLinkedNode<V>): DoubleLinkedNode<V> | null {
     const previousNode = node.previous;
     const nextNode = node.next;
 
@@ -324,33 +298,71 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
       if (!node.isHead) {
         node.previous = null;
         node.next = null;
+        this.__length --;
+
+        return node;
       }
-      return node;
     }
+
     return null;
   }
 
   /**
    * 删除某个结点
    */
-  public override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean): DoubleLinkedNode<V> | null {
-    const node = this.findNodeWhere(condition) as DoubleLinkedNode<V>;
-    if (node) return this.deleteNode(node);
-    return null;
+  protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple?: false): DoubleLinkedNode<V> | null;
+  protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple: true): DoubleLinkedNode<V>[];
+  protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple?: boolean): DoubleLinkedNode<V> | null | DoubleLinkedNode<V>[];
+
+  protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple: boolean = false): DoubleLinkedNode<V> | null | DoubleLinkedNode<V>[] {
+    let node = this.head;
+    const list: DoubleLinkedNode<V>[] = [];
+
+    while (node.next !== node) {
+      if (!node.next) break;
+      if (node.next.isHead) break;
+
+      const td = node.next;
+      if (condition(td)) {
+        const t = this.deleteNode(td);
+        if (t) list.push(t);
+
+        if (!multiple) break;
+
+        continue;
+      }
+
+      node = node.next;
+    }
+
+    if (multiple) return list;
+    return list[0] ?? null;
   }
 
   /**
    * 删除元素
    */
-  public override delete(value: V): V | null {
-    return this.deleteNodeWhere(innerNode => this.comparator(innerNode.value, value) === 0)?.value ?? null;
+  public override delete(value: V, multiple?: false): V | null;
+  public override delete(value: V, multiple: true): V[];
+  public override delete(value: V, multiple?: boolean): V | null | V[];
+
+  public override delete(value: V, multiple: boolean = false): V | null | V[] {
+    return this.deleteWhere(v => this.comparator(v, value) === 0, multiple);
   }
 
   /**
    * 条件删除元素
    */
-  public override deleteWhere(condition: (value: V) => boolean): V | null {
-    return this.deleteNodeWhere(innerNode => condition(innerNode.value))?.value ?? null;
+  public override deleteWhere(condition: (value: V) => boolean, multiple?: false): V | null;
+  public override deleteWhere(condition: (value: V) => boolean, multiple: true): V[];
+  public override deleteWhere(condition: (value: V) => boolean, multiple?: boolean): V | null;
+
+  public override deleteWhere(condition: (value: V) => boolean, multiple: boolean = false): V | null | V[] {
+    const result = this.deleteNodeWhere(innerNode => condition(innerNode.value), multiple);
+    if (!multiple) return (result as DoubleLinkedNode<V>)?.value ?? null;
+    else {
+      return (result as DoubleLinkedNode<V>[]).map(t => t.value);
+    }
   }
 
   /**
@@ -417,7 +429,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   /**
    * 遍历当前双链表
    */
-  public override forEachNode(callback: (node: Readonly<DoubleLinkedNode<V>>) => void): void {
+  protected override forEachNode(callback: (node: Readonly<DoubleLinkedNode<V>>) => void): void {
     let node = this.head.next;
     while (node) {
       if (node.isHead) break;
@@ -446,6 +458,7 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
 
       node.next = null;
       node.previous = null;
+      this.__length --;
 
       node = nextNode;
     }
@@ -465,8 +478,13 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
    * 返回当前双链表的长度
    */
   public override size(): number {
-    let length = 0;
-    this.forEachNode(() => { length++; });
-    return length;
+    return this.length;
+  }
+
+  /**
+   * 返回当前链表的大小
+   */
+  public override get length() {
+    return this.__length;
   }
 }
