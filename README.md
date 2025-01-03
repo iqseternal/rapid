@@ -8,7 +8,7 @@
 
 ## ✨ Features
 
-<a href="http://rapid-doc.oupro.cn/">文档</a>
+<a href="http://rapid-doc.oupro.cn/" target="_blank">文档</a>
 
 -🧩 **灵活多样的Hook变用**：涵盖多种调用场景，能够快速完成想要的业务逻辑。
 
