@@ -10,7 +10,7 @@ import { writeFile, writeFileSync } from 'fs';
 import treeKill from 'tree-kill';
 import tailwindcss from 'tailwindcss';
 import bytenode from 'bytenode';
-import packageJson from './package.json';
+import packageJson from '../../package.json';
 
 // =====================================================================================
 // 环境变量定义
@@ -38,7 +38,7 @@ const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
 // =====================================================================================
 // 变量定义
 
-const bin = join(__dirname, './node_modules/.bin/electron');
+const bin = join(__dirname, '../../node_modules/.bin/electron');
 
 
 // =====================================================================================

@@ -1,7 +1,6 @@
 import { CONFIG } from '@rapid/config/constants';
-import { REQ_METHODS, createApiRequest, isUndefined, ApiPromiseResultTypeBuilder } from '@rapid/libs';
+import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError } from '@rapid/libs';
 import { StringFilters } from '@rapid/libs-web';
-import type { AxiosError } from 'axios';
 import { getAccessToken } from '@/features';
 
 export type { RequestConfig, Interceptors } from '@rapid/libs';

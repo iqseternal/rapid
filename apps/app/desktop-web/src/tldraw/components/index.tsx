@@ -76,7 +76,7 @@ export const KeyboardShortcutsDialog: TLComponents['KeyboardShortcutsDialog'] = 
 		<DefaultKeyboardShortcutsDialog {...props}>
 			<DefaultKeyboardShortcutsDialogContent />
 				{/* Ideally, we'd interleave this into the tools group */}
-				<TldrawUiMenuItem {...tools['sticker']} />
+			<TldrawUiMenuItem {...tools['sticker']} />
 		</DefaultKeyboardShortcutsDialog>
 	)
 })

@@ -22,9 +22,8 @@ export class SlotPoint {
 
   subscribe(slotPointKey: SlotPointKey, subscribe: SlotPointSubscribe) {
     const linkedList = this.initSubscribeLinkedList(slotPointKey);
-    const node = linkedList.initNode(subscribe);
-    linkedList.insertNode(node);
-    return () => linkedList.deleteNode(node);
+    linkedList.insert(subscribe);
+    return () => linkedList.delete(subscribe);
   }
 
   unsubscribe(slotPointKey: SlotPointKey, subscribe: SlotPointSubscribe) {

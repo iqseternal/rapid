@@ -22,16 +22,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@electron-toolkit/preload": "3.0.0",
-    "@electron-toolkit/tsconfig": "1.0.1",
-    "@electron-toolkit/utils": "3.0.0",
-    "@electron/notarize": "2.3.0",
-    "electron": "24.8.8",
-    "electron-builder": "24.13.3",
-    "electron-store": "8.2.0",
-    "electron-vite": "2.3.0"
-  },
   "dependencies": {
     "bytenode": "1.5.6",
     "combined-stream": "1.0.8",

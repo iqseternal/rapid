@@ -17,7 +17,6 @@
     "@rapid/validates": "workspace:^"
   },
   "devDependencies": {
-    "@rapid/config": "workspace:^",
-    "rspress": "1.27.1"
+    "@rapid/config": "workspace:^"
   }
 }

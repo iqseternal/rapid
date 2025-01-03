@@ -49,11 +49,15 @@ export abstract class BusManager {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
-    const node = hybridLinkedList.initNode({ once: options?.once, listener });
-    hybridLinkedList.insertNode(node);
+    const v = {
+      once: options?.once,
+      listener
+    };
+
+    hybridLinkedList.insertAtHead(v);
 
     return () => {
-      hybridLinkedList.deleteNode(node);
+      hybridLinkedList.deleteWhere(li => li === v);
     }
   }
 
@@ -90,11 +94,18 @@ export abstract class BusManager {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
-    hybridLinkedList.forEachNode(node => {
-      const slice = node.value;
+    const usedOnceSlices: BusListenerSlice[] = [];
+
+    hybridLinkedList.forEach(slice => {
       slice.listener(...args);
 
-      if (slice.once) hybridLinkedList.deleteNode(node);
+      if (slice.once) {
+        usedOnceSlices.push(slice);
+      }
+    })
+
+    usedOnceSlices.forEach(slice => {
+      hybridLinkedList.delete(slice);
     })
   }
 
