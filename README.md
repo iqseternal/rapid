@@ -1,37 +1,27 @@
-# Rapid⚡
+<div align="center">
 
-本程序是基于 `Electron`, `Electron-Vite`/`Rspack`, `Electron-Builder`, `pnpm` `monorepo`, `React` 建立的桌面端应用程序。
+<img src="./apps/app/resources/icon.ico" alt="">
 
-编写一套快速迭代桌面应用程序的示例，编写项目快速启动编写的框架, 本项目可供模板支持，开发基础和思路支持，但请勿直接使用。
+<h1>Rapid⚡</h1>
 
-你可以根据本程序, 进行快速迭代开发, 让你的生产力进行加速。
+</div>
 
-## Preface
+## ✨ Features
 
-想要了解本项目, 并具有改造和修正和扩展能力, 你应该具有如下基本概念：
+<a href="http://rapid-doc.oupro.cn/">文档</a>
 
-- pnpm monorepo 依赖安装和管理
+-🧩 **灵活多样的Hook变用**：涵盖多种调用场景，能够快速完成想要的业务逻辑。
 
-- Nodejs 对本地文件的基本操作能力
+-🔄 **数据流的高效管理**：提供强大的工具来管理数据流，提高开发效率。
 
-- Pako 的基本认知
+-🛡 **完整的TypeScript支持**：使用TypeScript开发，确保强大的类型覆盖率，以改善开发体验和可靠性。
 
-- Electron 基本知识概念
+-🎨 **高级主题定制**：支持细粒度样式调整，以满足各种用例和个性化需求。
 
-- Typescript 类型运算基本能力(推导能力)
-
-- 装饰器集成以及 Reflect-metadata 基本概念
-
-- React Vite 构建 Web， 以及 Vite 树摇的形成，变量注入
-
-## Project Setup
-
-### Install
+### 📦 Install
 
 ```bash
 $ git clone https://github.com/iqseternal/rapid.git
-
-$ git checkout pre-main-react
 
 $ pnpm install
 
@@ -40,18 +30,6 @@ $ pnpm app:dev
 
 # 构建
 $ pnpm app:build
-
-# 打包 win 产物
-$ pnpm build:win
-
-# 当然也可以 cd 到指定目录
-$ cd ./apps/app
-
-$ pnpm dev
-
-$ pnpm build
-
-$ pnpm build:win
 
 # 本程序还包括其他项目, 例如 doc, website
 
