@@ -24,6 +24,7 @@
 $ git clone https://github.com/iqseternal/rapid.git
 
 $ pnpm install
+# 默认在 .npmrc 中配置了代理地址, 请检查代理地址是否一致.
 
 # 开发
 $ pnpm app:dev
