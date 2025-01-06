@@ -7,7 +7,7 @@ export const putDocs: PutArgs = [
   [
     '-r',
     path.join(DIST_DOC_DIR, '*'),
-    'root@oupro.cn:/www/wwwroot/rapid-doc/dist'
+    'root@oupro.cn:/www/wwwroot/rapid_doc/dist'
   ]
 ];
 
