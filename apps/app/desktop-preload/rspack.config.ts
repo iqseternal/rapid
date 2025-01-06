@@ -5,7 +5,7 @@ import { join } from 'path';
 import { rules, DIRS } from '../../../config/node';
 
 const rspackConfig: RspackOptions = defineConfig({
-  target: 'electron-main',
+  target: 'electron-preload',
   entry: join(__dirname, './index.ts'),
   output: {
     path: join(__dirname, '../out/preload'),

@@ -2,6 +2,7 @@ import { loadConfig, createRsbuild, mergeRsbuildConfig, RsbuildConfig, CreateRsb
 import { EnvBuilder, DIRS } from '../../config/node/builder';
 import { DefinePlugin, ProgressPlugin, RspackOptions, rspack } from '@rspack/core';
 import { Printer, print, printWarn } from '@suey/printer';
+import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
 import { join } from 'path';
@@ -163,11 +164,17 @@ const transformMainRspackConfig = async (): Promise<RspackOptions> => {
   const vars = envBuilder.defineVars();
   mainRspackConfig.plugins.push(new DefinePlugin(vars as Record<string, any>));
 
-  if (IS_PROD) {
+  if (IS_BUILD) {
     // 构建时, 展示构建文件
     mainRspackConfig.plugins.push(new ProgressPlugin({
       prefix: 'rapid',
       profile: true
+    }));
+  }
+
+  if (IS_PREVIEW) {
+    mainRspackConfig.plugins.push(new RsdoctorRspackPlugin({
+
     }));
   }
 
@@ -194,6 +201,12 @@ const transformPreloadRspackConfig = async (): Promise<RspackOptions> => {
     }));
   }
 
+  if (IS_PREVIEW) {
+    preloadRspackConfig.plugins.push(new RsdoctorRspackPlugin({
+
+    }));
+  }
+
   return preloadRspackConfig;
 }
 
@@ -215,14 +228,19 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
           'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
           ...vars
         }
+      },
+      performance: {
+        bundleAnalyze: {
+
+        },
       }
     }))
   }
-}
+};
 
 // =====================================================================================
 // 加载启动流
-; (async () => {
+;; (async () => {
   Printer.printInfo(`Electron 版本: ${packageJson?.devDependencies?.electron || packageJson?.dependencies?.['electron'] || '未知'}`);
   Printer.printInfo(`Electron-Builder 版本: ${packageJson?.devDependencies?.['electron-builder'] || packageJson?.dependencies?.['electron-builder'] || '未知'}`);
 
@@ -391,10 +409,13 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
       Printer.printInfo('预加载进程编译字节码', dist);
     }
 
-    /**
-     * 并行
-     */
-    await Promise.all([bytenodeMain(), bytenodePreload()]);
+    if (IS_BUILD) {
+      /**
+       * 并行
+       */
+      await Promise.all([bytenodeMain(), bytenodePreload()]);
+    }
+
 
     // 检查是否需要预览
     if (IS_PREVIEW) {

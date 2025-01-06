@@ -17,7 +17,7 @@ const envBuilder = new EnvBuilder({
   checker: false
 });
 
-const { IS_PROD } = envBuilder.toEnvs();
+const { IS_PROD, IS_DEV } = envBuilder.toEnvs();
 
 const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
 
@@ -46,16 +46,56 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       port: 3002
     },
     output: {
-      polyfill: 'off',
       assetPrefix: '.',
+      charset: 'utf8',
+      cleanDistPath: true,
+      copy: [
+
+      ],
+      cssModules: {
+        auto: true,
+        exportLocalsConvention: 'asIs',
+        exportGlobals: false,
+        mode: 'local',
+        namedExport: false,
+      },
+      defaultDatUriLimit: {
+        svg: 4096,
+        font: 4096,
+        image: 4096,
+        media: 4096,
+        assets: 4096,
+      },
       distPath: {
         root: join(__dirname, '../out/renderer'),
       },
-      cleanDistPath: true,
+
+      emitAssets: true,
+      emitCss: true,
+      externals: {
+
+      },
+      filenameHash: true,
+      injectStyles: IS_DEV,
+      legalComments: 'linked',
+      manifest: true,
+
       minify: {
         js: true,
         jsOptions: {
+          extractComments: false,
           minimizerOptions: {
+            minify: IS_PROD,
+            compress: {
+              drop_console: true,
+              drop_debugger: true
+            },
+            mangle: {
+              keep_classnames: false,
+              keep_fnames: false,
+              keep_private_props: false,
+              reserved: []
+            },
             format: {
               comments: false,
               ecma: 2016
@@ -63,7 +103,20 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
           }
         },
         css: true,
+        cssOptions: {
+          minimizerOptions: {
+
+          }
+        }
+      },
+      polyfill: 'off',
+      sourceMap: {
+        js: false,
+        css: false,
       }
+    },
+    performance: {
+      removeMomentLocale: true,
     },
     tools: {
       postcss: {
