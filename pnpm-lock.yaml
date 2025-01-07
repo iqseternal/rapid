@@ -510,8 +510,8 @@ importers:
   packages/libs:
     dependencies:
       '@suey/pkg-utils':
-        specifier: 0.2.7
-        version: 0.2.7(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))
+        specifier: 0.2.8
+        version: 0.2.8(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))
 
   packages/libs-web:
     dependencies:
@@ -2612,8 +2612,8 @@ packages:
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
 
-  '@suey/pkg-utils@0.2.7':
-    resolution: {integrity: sha512-k15Ktx3gt+OGRxINezBGSiBR4A+t/vqNVttd3Pt76G0sd3Occ1g+RxFAaxqfalGIDwYRquU497JJiq87cuvBpQ==}
+  '@suey/pkg-utils@0.2.8':
+    resolution: {integrity: sha512-tKDYf3L9ARyOh+Xp+5et7LFHs/n4QviMICHYTb5L6UWEYnJxeVOmPPJtyszbCWxxdV1GOki4AuM37DJ0UsmmUw==}
 
   '@suey/pkg-web@0.0.3':
     resolution: {integrity: sha512-8QBstiqu4N/TSuF329F2a4vxxUnxaQQRvNKzWWy20b3j69t0jcEtDlfDLOlx6pyB7Lup6mC5M/GCkXs/Lmt5Iw==}
@@ -12035,7 +12035,7 @@ snapshots:
 
   '@socket.io/component-emitter@3.1.2': {}
 
-  '@suey/pkg-utils@0.2.7(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))':
+  '@suey/pkg-utils@0.2.8(@angular/common@19.0.5(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.5(rxjs@7.8.1)(zone.js@0.15.0))':
     dependencies:
       '@types/js-cookie': 3.0.6
       '@types/jsrsasign': 10.5.15
