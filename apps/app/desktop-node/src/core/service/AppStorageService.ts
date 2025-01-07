@@ -16,7 +16,7 @@ export type AppDirectoryName = Parameters<typeof app.getPath>[0];
  * 在此处自定义扩展名文件的保存和读写动作
  */
 export class AppFileStorageService {
-  constructor(
+  public constructor(
     public readonly filePath: string
   ) {}
 
@@ -41,7 +41,7 @@ export class AppDirStorageService {
   /** 此服务对应本地某个路径 url */
   public readonly targetUrl: string;
 
-  constructor(
+  public constructor(
     /** electron 准备的文件夹路径标识 */
     private readonly targetName: AppDirectoryName,
     /** 相较于 targetName 的子路径  */

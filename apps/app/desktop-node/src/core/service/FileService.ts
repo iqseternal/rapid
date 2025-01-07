@@ -16,7 +16,7 @@ export class FileService {
    * 判断两个文件路径是否具有同样的扩展名
    * @returns
    */
-  static isSameExt(file1: string, file2: string) {
+  public static isSameExt(file1: string, file2: string) {
     const ext1 = file1.split('.').pop() || '';
     const ext2 = file2.split('.').pop() || '';
     return ext1.toLowerCase() === ext2.toLowerCase();
@@ -26,7 +26,7 @@ export class FileService {
    * 以流的方式写入文件
    * @returns
    */
-  static async saveFileAsStream(filePath: string, content: any, options?: Parameters<typeof fs.createWriteStream>[1]) {
+  public static async saveFileAsStream(filePath: string, content: any, options?: Parameters<typeof fs.createWriteStream>[1]) {
     const writeStream = fs.createWriteStream(filePath, options);
     return new Promise<void>((resolve, reject) => {
       writeStream.write(content, (err) => {
@@ -40,7 +40,7 @@ export class FileService {
    * 以文本的方式读取文件
    * @returns
    */
-  static async readFile(filePath: string) {
+  public static async readFile(filePath: string) {
     return new Promise<string | Buffer>((resolve, reject) => {
       const content = fs.readFileSync(filePath);
       resolve(content);
@@ -52,7 +52,7 @@ export class FileService {
    * @param {string} dir
    * @returns
    */
-  static async mkDir(dir: string): Promise<void> {
+  public static async mkDir(dir: string): Promise<void> {
     return new Promise((resolve, reject) => {
       fs.mkdir(dir, { recursive: true }, err => {
         if (err) {
@@ -68,7 +68,7 @@ export class FileService {
    * 向文件中新增数据
    * @returns
    */
-  static async appendToFile(filePath: string, content: string | Buffer): Promise<void> {
+  public static async appendToFile(filePath: string, content: string | Buffer): Promise<void> {
     return new Promise((resolve, reject) => {
 
       fs.appendFile(filePath, content, err => {

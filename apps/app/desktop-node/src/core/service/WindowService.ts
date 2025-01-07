@@ -34,7 +34,7 @@ export interface WindowServiceOptions {
 export class WindowService {
   public readonly window: BrowserWindow;
 
-  constructor(windowOptions: Partial<BrowserWindowConstructorOptions>, public readonly options: WindowServiceOptions) {
+  public constructor(windowOptions: Partial<BrowserWindowConstructorOptions>, public readonly options: WindowServiceOptions) {
     this.window = new BrowserWindow({
       width: 1650,
       height: 780,

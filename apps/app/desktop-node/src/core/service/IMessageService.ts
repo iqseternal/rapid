@@ -4,20 +4,20 @@
  * 系统弹窗提示
  */
 export class IMessageService {
-  static showInfo() {
+  public static showInfo() {
 
   }
 
 
-  static showSuccess() {
+  public static showSuccess() {
 
   }
 
-  static showWarn() {
+  public static showWarn() {
 
   }
 
-  static showError() {
+  public static showError() {
 
   }
 }

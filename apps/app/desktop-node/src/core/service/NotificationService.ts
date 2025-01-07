@@ -6,7 +6,7 @@ import { Notification } from 'electron';
  * 系统通知
  */
 export class NotificationService {
-  static showNotificationInfo() {
+  public static showNotificationInfo() {
     return new Promise((resolve, reject) => {
       const notification = new Notification({
         title: CONFIG.PROJECT,

@@ -11,7 +11,7 @@ export interface BuilderOptions {
    *
    * @default true
    */
-  checker?: boolean;
+  readonly checker?: boolean;
 }
 
 /**
@@ -22,7 +22,7 @@ export class EnvBuilder {
    * 构造函数, 传递参数 checker 可控制是否自动判断和修正当前环境变量
    *
    */
-  constructor(options?: BuilderOptions) {
+  public constructor(options?: BuilderOptions) {
     const { checker = true } = options || {};
 
     if (checker) EnvChecker.checkerAll();
@@ -31,7 +31,7 @@ export class EnvBuilder {
   /**
    * 获得环境的判别常量
    */
-  toEnvs() {
+  public toEnvs() {
     return EnvChecker.toEnvs();
   }
 
@@ -41,7 +41,7 @@ export class EnvBuilder {
    *    "@": "./src"
    * }
    */
-  defineAlias(basePath: string, paths: Record<string, string[]>) {
+  public defineAlias(basePath: string, paths: Record<string, string[]>) {
     const alias: Record<string, string> = {};
 
     const aliasMaps: [string, string][] = Object.keys(paths).filter((key) => paths[key].length > 0).map((key) => {
@@ -60,7 +60,7 @@ export class EnvBuilder {
    * @example
    * const IS_DEV = CURRENT_ENV === Env.Dev;
    */
-  defineVars<Variables extends Partial<Omit<InjectionVariables, 'CURRENT_ENV'>>>(variables?: Variables): InjectionVariables {
+  public defineVars<Variables extends Partial<Omit<InjectionVariables, 'CURRENT_ENV'>>>(variables?: Variables): InjectionVariables {
     const vars: InjectionVariables = {
       CURRENT_PLATFORM: PlatformsOnDesktop.Windows,
       CURRENT_RUNTIME_PLATFORM: RuntimePlatforms.Desktop,

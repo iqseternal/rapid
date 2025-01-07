@@ -60,7 +60,7 @@ export abstract class ExceptionFilter {
   /**
    * 无参构造函数
    */
-  constructor() {}
+  public constructor() {}
 
   /**
    * 处理异常地回调函数

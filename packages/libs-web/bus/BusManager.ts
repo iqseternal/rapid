@@ -13,16 +13,16 @@ export type BusListenerOffCallback = () => void;
 
 export type BusListenerSlice = {
   /** 监听是否只生效一次 */
-  once?: boolean;
+  readonly once?: boolean;
 
-  listener: BusListener;
+  readonly listener: BusListener;
 }
 
 export type BusListenerHybrid = {
   // 预留：可做函数到链表节点的快速映射
-  listenerMap: WeakMap<BusListener, DoubleLinkedNode<BusListenerSlice>>;
+  readonly listenerMap: WeakMap<BusListener, DoubleLinkedNode<BusListenerSlice>>;
 
-  linkedList: DoubleLinkedList<BusListenerSlice>;
+  readonly linkedList: DoubleLinkedList<BusListenerSlice>;
 }
 
 export abstract class BusManager {

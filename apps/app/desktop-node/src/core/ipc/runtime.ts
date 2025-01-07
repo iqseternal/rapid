@@ -1,6 +1,6 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { Exception } from '../exceptions';
-import { toNil } from '@rapid/libs';
+import { Exception, isException } from '../exceptions';
+import { toNil, Nil } from '@rapid/libs';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
 
@@ -169,63 +169,62 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
   } as const;
 
   let convertArgs = [e, ...args] as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transformArgs']>;
-  let err: any = void 0;
+  let err: Nil.NilRefusedReasonType<any> | undefined = void 0;
 
   // 开始
-  for (let i = 0;i < globalMiddlewares.length;i ++) {
+  for (let i = 0; i < globalMiddlewares.length; i++) {
     if (err) break;
     const middleware = globalMiddlewares[i];
     if (!middleware.onBeforeEach) continue;
 
-    const [error] = await toNil(Promise.resolve(middleware.onBeforeEach(...convertArgs)));
+    const [error] = await toNil(middleware.onBeforeEach(...convertArgs));
     if (error) {
       err = error;
       break;
     }
   }
-  if (err) return Promise.reject(err);
+  if (err) return Promise.reject(err.reason);
 
   // 转换参数
-  for (let i = 0;i < globalMiddlewares.length;i ++) {
+  for (let i = 0; i < globalMiddlewares.length; i++) {
     if (err) break;
     const middleware = globalMiddlewares[i];
     if (!middleware.transformArgs) continue;
 
-    const [error, args] = await toNil(Promise.resolve(middleware.transformArgs(...convertArgs)));
-
+    const [error, args] = await toNil(middleware.transformArgs(...convertArgs));
     if (error) {
       err = error;
       break;
     }
     convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transformArgs']>;
   }
-  if (err) return Promise.reject(err);
+  if (err) return Promise.reject(err.reason);
 
   // 获取自身内部中间件
   const middlewares = action.middlewares;
 
   // 内部 beforeEach
-  for (let i = 0;i < middlewares.length;i ++) {
+  for (let i = 0; i < middlewares.length; i++) {
     if (err) break;
 
     const middleware = middlewares[i];
     if (!middleware.onBeforeEach) continue;
 
-    const [error] = await toNil(Promise.resolve(middleware.onBeforeEach(e, ...convertArgs)));
+    const [error] = await toNil(middleware.onBeforeEach(e, ...convertArgs));
     if (error) {
       err = error;
       break;
     }
   }
-  if (err) return Promise.reject(err);
+  if (err) return Promise.reject(err.reason);
 
   // 内部 transform
-  for (let i = 0;i < middlewares.length;i ++) {
+  for (let i = 0; i < middlewares.length; i++) {
     if (err) break;
     const middleware = middlewares[i];
     if (!middleware.transformArgs) continue;
 
-    const [error, args] = await toNil(Promise.resolve(middleware.transformArgs(...convertArgs)));
+    const [error, args] = await toNil(middleware.transformArgs(...convertArgs));
 
     if (error) {
       err = error;
@@ -233,39 +232,61 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
     }
     convertArgs = args as Parameters<Required<IpcActionMiddleware<IpcActionEvent>>['transformArgs']>;
   }
-  if (err) return Promise.reject(err);
+  if (err) return Promise.reject(err.reason);
 
   // action 正式处理 ipc 句柄
   const [error, res] = await toNil(Promise.resolve(action.action(...convertArgs)));
   err = error;
 
   // onError 周期
-  if (err && err instanceof Exception) {
+  if (err && isException(err.reason)) {
+    let isResolved = false;
+
     // 内部 onError
-    for (let i = 0;i < middlewares.length;i ++) {
+    for (let i = 0; i < middlewares.length; i++) {
       const middleware = middlewares[i];
       if (!middleware.onError) continue;
 
-      err = middleware.onError(err, actionMessage);
-      // 如果中间件没有返回异常, 那么代表这个异常被处理了
-      if (!err) break;
+      const [error, exp] = await toNil(middleware.onError(err.reason, actionMessage));
+      if (error) {
+        return Promise.reject(err.reason);
+      }
+
+      if (!exp) {
+        isResolved = true;
+        continue;
+      }
+    }
+
+    if (isResolved) {
+      err = void 0;
     }
 
     // 全局 onError
     if (err) {
-      for (let i = 0;i < globalMiddlewares.length;i ++) {
+      for (let i = 0; i < globalMiddlewares.length; i++) {
         const middleware = globalMiddlewares[i];
         if (!middleware.onError) continue;
 
-        err = middleware.onError(err, actionMessage);
-        // 如果中间件没有返回异常, 那么代表这个异常被处理了
-        if (!err) break;
+        const [error, exp] = await toNil(middleware.onError(err.reason, actionMessage));
+        if (error) {
+          return Promise.reject(err.reason);
+        }
+
+        if (!exp) {
+          isResolved = true;
+          continue;
+        }
       }
+    }
+
+    if (isResolved) {
+      err = void 0;
     }
   }
 
   // 异常没有被处理
-  if (err) return Promise.reject(err);
+  if (err) return Promise.reject(err.reason);
 
   // 执行期间没有出错 onSuccess
   if (!error) {
@@ -289,17 +310,25 @@ async function findHandleHandlingGuard(globalMiddlewares: IpcActionMiddleware<Ip
   const middlewares = action.middlewares;
 
   // 内部 transformResponse
-  for (let i = 0;i < middlewares.length;i ++) {
+  for (let i = 0; i < middlewares.length; i++) {
     const middleware = middlewares[i];
     if (!middleware.transformResponse) continue;
-    response = middleware.transformResponse(response);
+
+    const [err, res] = await toNil(middleware.transformResponse(response));
+    if (err) return Promise.reject(err.reason);
+
+    response = res;
   }
 
   // 全局 transformResponse
-  for (let i = 0;i < globalMiddlewares.length;i ++) {
+  for (let i = 0; i < globalMiddlewares.length; i++) {
     const middleware = globalMiddlewares[i];
     if (!middleware.transformResponse) continue;
-    response = middleware.transformResponse(response);
+
+    const [err, res] = await toNil(middleware.transformResponse(response));
+    if (err) return Promise.reject(err.reason);
+
+    response = res;
   }
 
   // 返回响应

@@ -17,7 +17,7 @@ export class AppStore extends CustomSingleInstanceService {
   private static readonly storeMap = new Map<string, any>();
 
   /** 获取一个存储服务实例, 该实例映射到各个 electron-store */
-  static override getInstance<StoreType extends {}>(storeKey: string, options: AppStoreOptions): ElectronStore<StoreType> {
+  public static override getInstance<StoreType extends {}>(storeKey: string, options: AppStoreOptions): ElectronStore<StoreType> {
     if (AppStore.storeMap.has(storeKey)) return AppStore.storeMap.get(storeKey) as ElectronStore<StoreType>;
 
     const { fileName, fileExtension } = options;

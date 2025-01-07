@@ -14,7 +14,7 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
   /**
    * ipc 接口出现了错误, 利用 onError 回调在主进程处理 ipc 产生地异常, 记录日志...
    */
-  onError(err, { channel }) {
+  onError: async (err, { channel }) => {
     err.errMessage.other.channel = channel;
 
     if (isException(err)) Catch.parser(err);
@@ -68,7 +68,7 @@ export const convertWindowServiceMiddleware: IpcActionMiddleware<IpcActionEvent>
   /**
    * 转换参数, 将事件 e 转换为对应地 WindowService
    */
-  transformArgs(e, ...args) {
+  transformArgs: async (e, ...args) => {
     const windowService = WindowService.findWindowService(e);
 
     return [windowService, ...args];

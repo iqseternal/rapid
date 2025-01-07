@@ -27,7 +27,7 @@ export type IpcRendererEvent = Parameters<IpcRendererListener>[0];
  * 获取所有的 ipcAction
  */
 export type AllAction = {
-  [Key in keyof typeof actions]: (typeof actions)[Key] extends IpcActionType<IpcActionEvent> ? (typeof actions)[Key] : never;
+  readonly [Key in keyof typeof actions]: (typeof actions)[Key] extends IpcActionType<IpcActionEvent> ? (typeof actions)[Key] : never;
 };
 
 /**
@@ -35,7 +35,7 @@ export type AllAction = {
  * 传递 IpcActionEventType 以获得 HandleHandlers 或者 OnHandlers
  */
 export type AllHandlers<IpcActionEventType extends IpcActionEvent> = {
-  [Key in keyof AllAction as AllAction[Key]['channel']]:
+  readonly [Key in keyof AllAction as AllAction[Key]['channel']]:
     AllAction[Key]['actionType'] extends IpcActionEventType
       ? (...args: CutHead<Parameters<AllAction[Key]['action']>>) => RPromiseLike<Awaited<PromiseWithValue<ReturnType<AllAction[Key]['action']>>>, Exception<ExceptionErrorMsgData>>
       : never;

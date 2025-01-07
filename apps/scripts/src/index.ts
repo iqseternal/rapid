@@ -1,4 +1,22 @@
 
-console.log(
-  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].slice(5, 10)
-)
+import { randomRegionForInt, toNil } from '@rapid/libs';
+
+;;(async () => {
+
+  const p = new Promise<any>((resolve, reject) => {
+
+    const t = randomRegionForInt(2, 2);
+    if (t === 2) {
+      reject({
+
+        name: 'as'
+      })
+
+    }
+
+
+  })
+
+  const a = await toNil(p);
+
+})();

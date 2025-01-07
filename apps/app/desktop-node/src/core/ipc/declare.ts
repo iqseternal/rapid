@@ -62,7 +62,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    *   }
    * }
    */
-  readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => any[];
+  readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<any[]>;
 
   /**
    * 转换响应
@@ -72,19 +72,19 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
   /**
    * 在 action 正式处理之前的回调函数
    */
-  readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
+  readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
 
   /**
    * 在 action 处理之后的回调函数
    */
-  readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => void;
+  readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
 
   /**
    * 在 action 正确处理 ipc 句柄的成功回调函数
    * @param res 正确处理的返回数据
    * @param message 返回处理当前 ipc 句柄的信息
    */
-  readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => void;
+  readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => Promise<void>;
 
   /**
    * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
@@ -92,7 +92,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * @param res 错误处理时产生的异常对象
    * @param message 返回处理当前 ipc 句柄的信息
    */
-  readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => void | Exception<ExceptionErrorMsgData>;
+  readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => Promise<void | Exception<ExceptionErrorMsgData>>;
 }
 
 /** 存储注册的全局中间件 */
