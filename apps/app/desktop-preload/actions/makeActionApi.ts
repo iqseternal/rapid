@@ -6,6 +6,21 @@ import type { HandleHandlers } from '../server/electron';
 import { toNil } from '@rapid/libs';
 
 /**
+ * 解析 IPC 句柄中的错误信息
+ */
+export const parseIpcErrorReason = (err: Error) => {
+  const data = err.message.match(/Error invoking remote method .*?:/);
+
+  if (data) {
+    const expStr = err.message.replace(data[0], '').trim();
+
+    return expStr;
+  }
+
+  return null;
+}
+
+/**
  * 创建 ipc 句柄的调用函数
  */
 export const makeInvokeActions = <InvokeKey extends keyof HandleHandlers>(invokeKey: InvokeKey): HandleHandlers[InvokeKey] => {
@@ -17,13 +32,8 @@ export const makeInvokeActions = <InvokeKey extends keyof HandleHandlers>(invoke
     const [err, data] = await toNil(action);
 
     if (err) {
-      const reason = err.reason as Error;
-
-      const data = reason.message.match(/Error invoking remote method .*?:/);
-
-      if (data) {
-        const expStr = reason.message.replace(data[0], '').trim();
-
+      const expStr = parseIpcErrorReason(err.reason as Error);
+      if (expStr) {
         return Promise.reject(JSON.parse(expStr));
       }
 

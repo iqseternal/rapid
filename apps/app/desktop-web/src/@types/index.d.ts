@@ -21,9 +21,19 @@ declare global {
   declare interface Window extends ExposeApi { }
 
   /**
+   * 注入的 electron 对象
+   */
+  declare const electron: RdPreload.ElectronAPI;
+
+  /**
    * 注入的 printer 打印日志对象
    */
   declare const printer: RdPreload.PrinterServer;
+
+  /**
+   * 注入的 logger 日志器对象
+   */
+  declare const logger: RdPreload.LoggerServer;
 
   /**
    * 注入的 ipc 对象

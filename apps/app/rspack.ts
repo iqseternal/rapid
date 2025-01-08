@@ -230,9 +230,7 @@ const transformRendererRsbuildConfig = async (): Promise<CreateRsbuildOptions> =
         }
       },
       performance: {
-        bundleAnalyze: {
-
-        },
+        // bundleAnalyze: {},
       }
     }))
   }

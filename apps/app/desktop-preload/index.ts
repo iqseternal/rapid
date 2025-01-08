@@ -11,15 +11,19 @@ import { electron } from './server/electron';
 import type { PrinterServer } from './server/printer';
 import { printerServer } from './server/printer';
 
+import type { LoggerServer } from './server/logger';
+import { loggerServer } from './server/logger';
+
 import type { AppStoreType } from './server/stores';
 import { appStore } from './server/stores';
 
-import { join } from 'path';
-import { IS_PROD } from '@rapid/config/constants';
-
 import * as ipcActions from './actions';
 
+export type { ElectronAPI };
+
 export type { PrinterServer };
+
+export type { LoggerServer };
 
 export type { HandleHandlers, OnHandlers, ExceptionErrorMsgData, Exception } from './server/electron';
 
@@ -32,35 +36,38 @@ export type IpcActions = typeof ipcActions;
  */
 export interface ExposeApi {
   readonly electron: ElectronAPI;
+
   /**
    * 打印器对象
    */
   readonly printer: PrinterServer;
+
+  /**
+   * 日志器对象
+   *
+   */
+  readonly logger: LoggerServer;
+
   /**
    * IPC 事件
    */
   readonly ipcActions: IpcActions;
+
   /**
    * 应用的 store
    */
   readonly stores: {
     readonly appStore: AppStoreType;
-  },
-
-  readonly WEB_ROOT_DIR: () => string;
+  }
 }
 
 autoExpose<ExposeApi>({
   electron,
   printer: printerServer,
+  logger: loggerServer,
   ipcActions,
   stores: {
     appStore
-  },
-  WEB_ROOT_DIR: () => {
-    if (IS_PROD) return join(process.cwd(), '/out/renderer/').replace(/\\/g, '/')
-
-    return join(process.cwd(), '/desktop-web/public/').replace(/\\/g, '/')
   }
 });
 
