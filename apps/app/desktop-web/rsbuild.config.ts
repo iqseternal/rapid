@@ -81,28 +81,28 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       manifest: true,
 
       minify: {
-        js: true,
+        js: IS_PROD,
         jsOptions: {
           extractComments: false,
           minimizerOptions: {
             minify: IS_PROD,
             compress: {
-              drop_console: true,
-              drop_debugger: true
+              drop_console: IS_PROD,
+              drop_debugger: IS_PROD
             },
             mangle: {
-              keep_classnames: false,
-              keep_fnames: false,
-              keep_private_props: false,
+              keep_classnames: IS_DEV,
+              keep_fnames: IS_DEV,
+              keep_private_props: IS_DEV,
               reserved: []
             },
             format: {
-              comments: false,
+              comments: IS_DEV ? 'all' : false,
               ecma: 2016
             }
           }
         },
-        css: true,
+        css: IS_PROD,
         cssOptions: {
           minimizerOptions: {
 
@@ -111,8 +111,8 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       },
       polyfill: 'off',
       sourceMap: {
-        js: false,
-        css: false,
+        js: IS_DEV ? void 0 : false,
+        css: IS_DEV,
       }
     },
     performance: {
