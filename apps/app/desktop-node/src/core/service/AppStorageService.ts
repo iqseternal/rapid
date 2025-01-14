@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import { join } from 'path';
 import { FileService } from './FileService';
-import { TypeException } from '@/core';
+import { TypeException } from '../exceptions';
 import { statSync } from 'fs';
 import { ConvertDataType, ConvertService } from './ConvertService';
 import { validateLocalPathHasDriveLetter } from '@rapid/validates';

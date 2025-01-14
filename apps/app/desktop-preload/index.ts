@@ -11,9 +11,6 @@ import { electron } from './server/electron';
 import type { PrinterServer } from './server/printer';
 import { printerServer } from './server/printer';
 
-import type { LoggerServer } from './server/logger';
-import { loggerServer } from './server/logger';
-
 import type { AppStoreType } from './server/stores';
 import { appStore } from './server/stores';
 
@@ -23,7 +20,7 @@ export type { ElectronAPI };
 
 export type { PrinterServer };
 
-export type { LoggerServer };
+// export type { LoggerServer };
 
 export type { HandleHandlers, OnHandlers, ExceptionErrorMsgData, Exception } from './server/electron';
 
@@ -43,12 +40,6 @@ export interface ExposeApi {
   readonly printer: PrinterServer;
 
   /**
-   * 日志器对象
-   *
-   */
-  readonly logger: LoggerServer;
-
-  /**
    * IPC 事件
    */
   readonly ipcActions: IpcActions;
@@ -64,7 +55,6 @@ export interface ExposeApi {
 autoExpose<ExposeApi>({
   electron,
   printer: printerServer,
-  logger: loggerServer,
   ipcActions,
   stores: {
     appStore

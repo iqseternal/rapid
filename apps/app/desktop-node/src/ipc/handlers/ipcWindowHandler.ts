@@ -377,7 +377,7 @@ export const ipcWindowWorkAreaSize = makeIpcHandleAction(
   async () => {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
-    throw new RuntimeException('自定义');
+    // throw new RuntimeException('自定义');
 
     return { width, height } as const;
   }

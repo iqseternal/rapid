@@ -1,5 +1,22 @@
 import type { CONFIG } from '@rapid/config/constants';
 
+export interface CssVar<VarName extends `--${Lowercase<typeof CONFIG['PROJECT']>}-${string}`, VarValue extends string = string, TipLabel extends string = string> {
+  /**
+   * 变量名
+   */
+  readonly varName: VarName;
+
+  /**
+   * 变量值
+   */
+  readonly varValue: VarValue;
+
+  /**
+   * 提示, 表面变量作用
+   */
+  readonly tipLabel: TipLabel;
+}
+
 /**
  * 创建一个预设的 Css 样式
  * @param varName Css 变量名
@@ -10,13 +27,16 @@ import type { CONFIG } from '@rapid/config/constants';
  */
 export function mRapidC<
   VarName extends `--${Lowercase<typeof CONFIG['PROJECT']>}-${string}`,
-  // Value extends string,
-  Label extends string
->(varName: VarName, value: string, label: Label) {
-  return {
+  VarValue extends string,
+  TipLabel extends string
+>(varName: VarName, varValue: VarValue, tipLabel: TipLabel): CssVar<VarName, VarValue, TipLabel> {
+
+  const cssVar: CssVar<VarName, VarValue, TipLabel> = {
     varName,
-    value,
-    label
-  };
+    varValue,
+    tipLabel
+  } as const;
+
+  return cssVar;
 }
 

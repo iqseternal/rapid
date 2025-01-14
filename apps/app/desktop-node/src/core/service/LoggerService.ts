@@ -20,7 +20,7 @@ export class LoggerService {
 
   private readonly logFileStorageService: AppFileStorageService;
 
-  constructor(filename: string) {
+  public constructor(filename: string) {
     this.logFileStorageService = logsDirStorageService.createFileService(filename);
   }
 

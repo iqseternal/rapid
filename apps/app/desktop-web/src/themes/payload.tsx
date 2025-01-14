@@ -43,16 +43,16 @@ const navbarVarsSheet = {
   /** 标题栏高度 */
   captionBarHeight: mRapidC('--rapid-caption-bar-height', '32px', '标题栏高度'),
   /** 标题栏背景色 */
-  captionBarBackgroundColor: mRapidC('--rapid-caption-bar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '标题栏背景色'),
+  captionBarBackgroundColor: mRapidC('--rapid-caption-bar-background-color', colorVarsSheet.secondaryBackgroundColor.varValue, '标题栏背景色'),
 
   navigationBarWidth: mRapidC('--rapid-navigation-bar-width', '32px', '纵向导航栏宽度'),
-  navigationBarBackgroundColor: mRapidC('--rapid-navigation-bar-background-color', colorVarsSheet.secondaryBackgroundColor.value, '导航栏背景色')
+  navigationBarBackgroundColor: mRapidC('--rapid-navigation-bar-background-color', colorVarsSheet.secondaryBackgroundColor.varValue, '导航栏背景色')
 } as const;
 
 const buttonVarsSheet = {
   /** 所有按钮 */
-  buttonBackgroundColor: mRapidC('--rapid-button-background-color', colorVarsSheet.primaryBackgroundColor.value, ''),
-  buttonTextColor: mRapidC('--rapid-button-text-color', colorVarsSheet.primaryTextColor.value, '按钮文字颜色'),
+  buttonBackgroundColor: mRapidC('--rapid-button-background-color', colorVarsSheet.primaryBackgroundColor.varValue, ''),
+  buttonTextColor: mRapidC('--rapid-button-text-color', colorVarsSheet.primaryTextColor.varValue, '按钮文字颜色'),
   buttonBorderRadius: mRapidC('--rapid-button-border-radius', '10px', '按钮的圆角尺寸'),
 
   /** 主按钮 */
@@ -60,20 +60,20 @@ const buttonVarsSheet = {
   primaryButtonTextColor: mRapidC('--rapid-primary-button-text-color', '#FFF', '主要按钮文字颜色'),
 
   /** 带边线的按钮 */
-  dashedButtonBackgroundColor: mRapidC('--rapid-dashed-button-background-color', colorVarsSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
-  dashedButtonTextColor: mRapidC('--rapid-dashed-button-text-color', colorVarsSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+  dashedButtonBackgroundColor: mRapidC('--rapid-dashed-button-background-color', colorVarsSheet.primaryBackgroundColor.varValue, '带边框按钮背景色'),
+  dashedButtonTextColor: mRapidC('--rapid-dashed-button-text-color', colorVarsSheet.primaryTextColor.varValue, '带边框按钮文字颜色'),
 
   /** 默认的按钮 */
-  defaultButtonBackgroundColor: mRapidC('--rapid-default-button-background-color', colorVarsSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
-  defaultButtonTextColor: mRapidC('--rapid-default-button-text-color', colorVarsSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+  defaultButtonBackgroundColor: mRapidC('--rapid-default-button-background-color', colorVarsSheet.primaryBackgroundColor.varValue, '带边框按钮背景色'),
+  defaultButtonTextColor: mRapidC('--rapid-default-button-text-color', colorVarsSheet.primaryTextColor.varValue, '带边框按钮文字颜色'),
 
   /** 链接按钮 */
   linkButtonBackgroundColor: mRapidC('--rapid-link-button-background-color', 'unset', '带边框按钮背景色'),
-  linkButtonTextColor: mRapidC('--rapid-link-button-text-color', colorVarsSheet.linkTextColor.value, '带边框按钮文字颜色'),
+  linkButtonTextColor: mRapidC('--rapid-link-button-text-color', colorVarsSheet.linkTextColor.varValue, '带边框按钮文字颜色'),
 
   /** 文本按钮 */
-  textButtonBackgroundColor: mRapidC('--rapid-text-button-background-color', colorVarsSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
-  textButtonTextColor: mRapidC('--rapid-text-button-text-color', colorVarsSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+  textButtonBackgroundColor: mRapidC('--rapid-text-button-background-color', colorVarsSheet.primaryBackgroundColor.varValue, '带边框按钮背景色'),
+  textButtonTextColor: mRapidC('--rapid-text-button-text-color', colorVarsSheet.primaryTextColor.varValue, '带边框按钮文字颜色'),
 } as const;
 
 const messageVarsSheet = {
@@ -96,13 +96,13 @@ const cardVarsSheet = {
 } as const;
 
 const dropdownVarsSheet = {
-  dropdownBackgroundColor: mRapidC('--rapid-dropdown-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉菜单的背景颜色'),
-  dropdownTextColor: mRapidC('--rapid-dropdown-text-color', colorVarsSheet.primaryTextColor.value, '下拉菜单的文字颜色'),
+  dropdownBackgroundColor: mRapidC('--rapid-dropdown-background-color', colorVarsSheet.secondaryBackgroundColor.varValue, '下拉菜单的背景颜色'),
+  dropdownTextColor: mRapidC('--rapid-dropdown-text-color', colorVarsSheet.primaryTextColor.varValue, '下拉菜单的文字颜色'),
   dropdownBorderRadius: mRapidC('--rapid-dropdown-border-radius', '10px', '下拉菜单圆角大小'),
   dropdownItemBorderRadius: mRapidC('--rapid-dropdown-item-border-radius', '5px', '下拉菜单项圆角大小'),
 
-  dropdownMenuBackgroundColor: mRapidC('--rapid-dropdown-menu-background-color', colorVarsSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
-  dropdownMenuTextColor: mRapidC('--rapid-dropdown-menu-text-color', colorVarsSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
+  dropdownMenuBackgroundColor: mRapidC('--rapid-dropdown-menu-background-color', colorVarsSheet.secondaryBackgroundColor.varValue, '下拉文件菜单背景颜色'),
+  dropdownMenuTextColor: mRapidC('--rapid-dropdown-menu-text-color', colorVarsSheet.primaryTextColor.varValue, '下拉文件菜单文字颜色'),
   dropdownMenuBorderRadius: mRapidC('--rapid-dropdown-menu-border-radius', '8px', '下拉文件菜单圆角大小'),
   dropdownMenuItemBorderRadius: mRapidC('--rapid-dropdown-menu-item-border-radius', '8px', '下拉菜单项圆角大小'),
 } as const;
