@@ -43,15 +43,15 @@ const navbarVariablesSheet = {
   /** 标题栏高度 */
   captionBarHeight: makeRapidCssVarPayload('--rapid-caption-bar-height', '32px', '标题栏高度'),
   /** 标题栏背景色 */
-  captionBarBackgroundColor: makeRapidCssVarPayload('--rapid-caption-bar-background-color', colorVariablesSheet.secondaryBackgroundColor.variable, '标题栏背景色'),
+  captionBarBackgroundColor: makeRapidCssVarPayload('--rapid-caption-bar-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '标题栏背景色'),
 
   navigationBarWidth: makeRapidCssVarPayload('--rapid-navigation-bar-width', '32px', '纵向导航栏宽度'),
-  navigationBarBackgroundColor: makeRapidCssVarPayload('--rapid-navigation-bar-background-color', colorVariablesSheet.secondaryBackgroundColor.variable, '导航栏背景色')
+  navigationBarBackgroundColor: makeRapidCssVarPayload('--rapid-navigation-bar-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '导航栏背景色')
 } as const;
 
 const buttonVariablesSheet = {
   /** 所有按钮 */
-  buttonBackgroundColor: makeRapidCssVarPayload('--rapid-button-background-color', colorVariablesSheet.primaryBackgroundColor.variable, ''),
+  buttonBackgroundColor: makeRapidCssVarPayload('--rapid-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, ''),
   buttonTextColor: makeRapidCssVarPayload('--rapid-button-text-color', colorVariablesSheet.primaryTextColor.variable, '按钮文字颜色'),
   buttonBorderRadius: makeRapidCssVarPayload('--rapid-button-border-radius', '10px', '按钮的圆角尺寸'),
 
@@ -60,20 +60,20 @@ const buttonVariablesSheet = {
   primaryButtonTextColor: makeRapidCssVarPayload('--rapid-primary-button-text-color', '#FFF', '主要按钮文字颜色'),
 
   /** 带边线的按钮 */
-  dashedButtonBackgroundColor: makeRapidCssVarPayload('--rapid-dashed-button-background-color', colorVariablesSheet.primaryBackgroundColor.variable, '带边框按钮背景色'),
-  dashedButtonTextColor: makeRapidCssVarPayload('--rapid-dashed-button-text-color', colorVariablesSheet.primaryTextColor.variable, '带边框按钮文字颜色'),
+  dashedButtonBackgroundColor: makeRapidCssVarPayload('--rapid-dashed-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  dashedButtonTextColor: makeRapidCssVarPayload('--rapid-dashed-button-text-color', colorVariablesSheet.primaryTextColor.value, '带边框按钮文字颜色'),
 
   /** 默认的按钮 */
-  defaultButtonBackgroundColor: makeRapidCssVarPayload('--rapid-default-button-background-color', colorVariablesSheet.primaryBackgroundColor.variable, '带边框按钮背景色'),
-  defaultButtonTextColor: makeRapidCssVarPayload('--rapid-default-button-text-color', colorVariablesSheet.primaryTextColor.variable, '带边框按钮文字颜色'),
+  defaultButtonBackgroundColor: makeRapidCssVarPayload('--rapid-default-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  defaultButtonTextColor: makeRapidCssVarPayload('--rapid-default-button-text-color', colorVariablesSheet.primaryTextColor.value, '带边框按钮文字颜色'),
 
   /** 链接按钮 */
   linkButtonBackgroundColor: makeRapidCssVarPayload('--rapid-link-button-background-color', 'unset', '带边框按钮背景色'),
-  linkButtonTextColor: makeRapidCssVarPayload('--rapid-link-button-text-color', colorVariablesSheet.linkTextColor.variable, '带边框按钮文字颜色'),
+  linkButtonTextColor: makeRapidCssVarPayload('--rapid-link-button-text-color', colorVariablesSheet.linkTextColor.value, '带边框按钮文字颜色'),
 
   /** 文本按钮 */
-  textButtonBackgroundColor: makeRapidCssVarPayload('--rapid-text-button-background-color', colorVariablesSheet.primaryBackgroundColor.variable, '带边框按钮背景色'),
-  textButtonTextColor: makeRapidCssVarPayload('--rapid-text-button-text-color', colorVariablesSheet.primaryTextColor.variable, '带边框按钮文字颜色'),
+  textButtonBackgroundColor: makeRapidCssVarPayload('--rapid-text-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  textButtonTextColor: makeRapidCssVarPayload('--rapid-text-button-text-color', colorVariablesSheet.primaryTextColor.value, '带边框按钮文字颜色'),
 } as const;
 
 const messageVariablesSheet = {
@@ -96,13 +96,13 @@ const cardVariablesSheet = {
 } as const;
 
 const dropdownVariablesSheet = {
-  dropdownBackgroundColor: makeRapidCssVarPayload('--rapid-dropdown-background-color', colorVariablesSheet.secondaryBackgroundColor.variable, '下拉菜单的背景颜色'),
-  dropdownTextColor: makeRapidCssVarPayload('--rapid-dropdown-text-color', colorVariablesSheet.primaryTextColor.variable, '下拉菜单的文字颜色'),
+  dropdownBackgroundColor: makeRapidCssVarPayload('--rapid-dropdown-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '下拉菜单的背景颜色'),
+  dropdownTextColor: makeRapidCssVarPayload('--rapid-dropdown-text-color', colorVariablesSheet.primaryTextColor.value, '下拉菜单的文字颜色'),
   dropdownBorderRadius: makeRapidCssVarPayload('--rapid-dropdown-border-radius', '10px', '下拉菜单圆角大小'),
   dropdownItemBorderRadius: makeRapidCssVarPayload('--rapid-dropdown-item-border-radius', '5px', '下拉菜单项圆角大小'),
 
-  dropdownMenuBackgroundColor: makeRapidCssVarPayload('--rapid-dropdown-menu-background-color', colorVariablesSheet.secondaryBackgroundColor.variable, '下拉文件菜单背景颜色'),
-  dropdownMenuTextColor: makeRapidCssVarPayload('--rapid-dropdown-menu-text-color', colorVariablesSheet.primaryTextColor.variable, '下拉文件菜单文字颜色'),
+  dropdownMenuBackgroundColor: makeRapidCssVarPayload('--rapid-dropdown-menu-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
+  dropdownMenuTextColor: makeRapidCssVarPayload('--rapid-dropdown-menu-text-color', colorVariablesSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
   dropdownMenuBorderRadius: makeRapidCssVarPayload('--rapid-dropdown-menu-border-radius', '8px', '下拉文件菜单圆角大小'),
   dropdownMenuItemBorderRadius: makeRapidCssVarPayload('--rapid-dropdown-menu-item-border-radius', '8px', '下拉菜单项圆角大小'),
 } as const;
