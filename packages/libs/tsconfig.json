@@ -18,6 +18,7 @@
     "strictNullChecks": true,
     "moduleResolution": "NodeNext",
     "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "module": "NodeNext"
   },
   "exclude": [

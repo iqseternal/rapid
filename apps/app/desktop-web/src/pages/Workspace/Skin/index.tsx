@@ -1,4 +1,3 @@
-import { makeCssVar } from '@/themes';
 import { classnames } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
@@ -33,7 +32,7 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
   >
     <FullSizeWidth
       style={{
-        color: makeCssVar(vars => vars.primaryTextColor),
+        color: cssVars.primaryTextColor,
         margin: '10px 0'
       }}
     >
@@ -41,7 +40,7 @@ const StyleBlock: FC<StyleBlockProps> = (props) => {
         {props.title}
         <span
           style={{
-            color: makeCssVar(vars => vars.secondaryTextColor)
+            color: cssVars.secondaryTextColor
           }}
         >
           {props.subTitle}
@@ -106,31 +105,31 @@ export const Skin = memo(() => {
     <StyleBlock title='背景色色阶' subTitle='块'>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.primaryBackgroundColor),
-          color: makeCssVar(vars => vars.primaryTextColor)
+          backgroundColor: cssVars.primaryBackgroundColor,
+          color: cssVars.primaryTextColor
         }}
       >
         1 级背景
       </div>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.secondaryBackgroundColor),
-          color: makeCssVar(vars => vars.secondaryTextColor)
+          backgroundColor: cssVars.secondaryBackgroundColor,
+          color: cssVars.secondaryTextColor
         }}
       >
         2 级背景
       </div>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.thirdBackgroundColor),
-          color: makeCssVar(vars => vars.placeholderTextColor)
+          backgroundColor: cssVars.thirdBackgroundColor,
+          color: cssVars.placeholderTextColor
         }}
       >
         3 级背景
       </div>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.fourthBackgroundColor)
+          backgroundColor: cssVars.fourthBackgroundColor
         }}
       >
         4 级背景
@@ -140,24 +139,24 @@ export const Skin = memo(() => {
     <StyleBlock title='文字颜色'>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.secondaryBackgroundColor),
-          color: makeCssVar(vars => vars.primaryTextColor)
+          backgroundColor: cssVars.secondaryBackgroundColor,
+          color: cssVars.primaryTextColor
         }}
       >
         主要文本
       </div>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.secondaryBackgroundColor),
-          color: makeCssVar(vars => vars.secondaryTextColor)
+          backgroundColor: cssVars.secondaryBackgroundColor,
+          color: cssVars.secondaryTextColor
         }}
       >
         次要文本
       </div>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.secondaryBackgroundColor),
-          color: makeCssVar(vars => vars.placeholderTextColor)
+          backgroundColor: cssVars.secondaryBackgroundColor,
+          color: cssVars.placeholderTextColor
         }}
       >
         <Space>
@@ -168,8 +167,8 @@ export const Skin = memo(() => {
       </div>
       <div
         style={{
-          backgroundColor: makeCssVar(vars => vars.secondaryBackgroundColor),
-          color: makeCssVar(vars => vars.placeholderTextColor),
+          backgroundColor: cssVars.secondaryBackgroundColor,
+          color: cssVars.placeholderTextColor,
           padding: '10px 0'
         }}
       >
@@ -181,7 +180,7 @@ export const Skin = memo(() => {
           Message类
 
           <div
-            style={{ color: makeCssVar(vars => vars.successMessageColor) }}
+            style={{ color: cssVars.successMessageColor }}
             onClick={() => {
               IMessage.success({
                 duration: 1000,
@@ -192,7 +191,7 @@ export const Skin = memo(() => {
             success
           </div>
           <div
-            style={{ color: makeCssVar(vars => vars.warningMessageColor) }}
+            style={{ color: cssVars.warningMessageColor }}
             onClick={() => {
               IMessage.warning({
                 duration: 1000,
@@ -203,7 +202,7 @@ export const Skin = memo(() => {
             warning
           </div>
           <div
-            style={{ color: makeCssVar(vars => vars.errorMessageColor) }}
+            style={{ color: cssVars.errorMessageColor }}
             onClick={() => {
               IMessage.error({
                 duration: 1000,

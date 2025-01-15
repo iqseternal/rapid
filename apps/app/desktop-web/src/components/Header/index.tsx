@@ -5,7 +5,6 @@ import { menus } from '@/menus';
 import { FlexRowStart, useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useResizeObserver, useShallowReactive, useWindowInnerSize, useZustandHijack } from '@rapid/libs-web';
 import { isUndefined, toNil } from '@rapid/libs';
 import { commonStyles } from '@scss/common';
-import { makeCssVar } from '@/themes';
 
 import Widget from '@components/Widget';
 import AutoMenu from '../AutoMenu';
@@ -270,8 +269,8 @@ export const Header = memo((props: HeaderProps) => {
       className
     )}
     style={{
-      height: makeCssVar(vars => vars.captionBarHeight),
-      backgroundColor: makeCssVar(vars => vars.captionBarBackgroundColor)
+      height: cssVars.captionBarHeight,
+      backgroundColor: cssVars.captionBarBackgroundColor
     }}
   >
     <Subfield
@@ -280,8 +279,8 @@ export const Header = memo((props: HeaderProps) => {
       <Logo
         className='flex-none h-full'
         style={{
-          width: makeCssVar(vars => vars.navigationBarWidth),
-          margin: `0 calc(${makeCssVar(vars => vars.navigationBarWidth)} * 0.1)`
+          width: cssVars.navigationBarWidth,
+          margin: `0 calc(${cssVars.navigationBarWidth} * 0.1)`
         }}
       />
 

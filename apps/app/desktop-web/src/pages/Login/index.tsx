@@ -18,10 +18,9 @@ import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
 import Logo from '@components/Logo';
 
-import styles from './index.module.scss';
-
 enum Step {
-  Login, Register
+  Login,
+  Register
 }
 
 export const Login = memo(() => {
@@ -69,11 +68,14 @@ export const Login = memo(() => {
     if (IS_PROD) await ipcActions.windowSetPosition({ x: 'center', y: 'center' });
   });
 
-  return <FullSize className={styles.login}>
+  return <FullSize>
     <Header isPane />
 
     <Subfield
-      className={classnames(styles.didContent)}
+      className='flex space-around'
+      style={{
+        height: `calc(100% - ${cssVars.captionBarHeight})`
+      }}
     >
       <Subfield
         className={classnames(commonStyles.flexRowCenter)}

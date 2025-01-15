@@ -1,7 +1,6 @@
 import type { ReactNode, HTMLAttributes, CSSProperties } from 'react';
-import { forwardRef, memo, useMemo } from 'react';
+import { forwardRef, memo } from 'react';
 import { classnames } from '../../common';
-import { isUndefined } from '@rapid/libs';
 
 import styles from './index.module.scss';
 

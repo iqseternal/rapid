@@ -9,7 +9,6 @@ import { useAnimationClassSelector } from '@scss/common';
 import { Guards } from '@/guards';
 import { classnames } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
-import { makeCssVar } from '@/themes';
 
 import Header from '@components/Header';
 import IconFont from '@components/IconFont';
@@ -48,8 +47,8 @@ const WorkbenchesView = memo(() => {
 const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
   useFadeIn(async () => {
     await Promise.allSettled([
-      window.ipcActions.windowResizeAble({ resizeAble: true }),
-      window.ipcActions.windowResetCustomSize({ type: 'mainWindow' })
+      ipcActions.windowResizeAble({ resizeAble: true }),
+      ipcActions.windowResetCustomSize({ type: 'mainWindow' })
     ]);
   });
 
@@ -64,7 +63,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
         mainSidebarStatus === 'right' && 'flex-row-reverse'
       )}
       style={{
-        height: `calc(100% - ${makeCssVar(vars => vars.captionBarHeight)})`
+        height: `calc(100% - ${cssVars.captionBarHeight})`
       }}
     >
       {mainSidebarStatus !== 'none' && <NavigationBar />}

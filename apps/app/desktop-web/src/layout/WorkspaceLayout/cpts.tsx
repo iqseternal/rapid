@@ -10,8 +10,6 @@ import { useTransition } from '@rapid/libs-web';
 import type { WidgetProps } from '@components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useUserStore } from '@/features';
-import { commonStyles } from '@scss/common';
-import { makeCssVar } from '@/themes';
 
 import IMessage from '@components/IMessage';
 import Widget from '@components/Widget';
@@ -72,10 +70,10 @@ export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
       className
     )}
     style={{
-      width: makeCssVar(vars => vars.navigationBarWidth),
-      minWidth: makeCssVar(vars => vars.navigationBarWidth),
-      maxWidth: makeCssVar(vars => vars.navigationBarWidth),
-      backgroundColor: makeCssVar(vars => vars.navigationBarBackgroundColor)
+      width: cssVars.navigationBarWidth,
+      minWidth: cssVars.navigationBarWidth,
+      maxWidth: cssVars.navigationBarWidth,
+      backgroundColor: cssVars.navigationBarBackgroundColor
     }}
   >
     <FullSizeWidth

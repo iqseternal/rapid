@@ -3,7 +3,6 @@ import { commonStyles } from '@scss/common';
 import { memo } from 'react';
 
 import Header from '@components/Header';
-import styles from './index.module.scss';
 import Widget from '@components/Widget';
 
 export const WorkbenchesToolbar = memo(() => {
@@ -25,7 +24,7 @@ export const WorkbenchesToolbar = memo(() => {
   return <FullSize
     className={classnames(
       commonStyles.appRegion,
-      styles.toolbar
+      'min-w-8 min-h-[400px]'
     )}
   >
 

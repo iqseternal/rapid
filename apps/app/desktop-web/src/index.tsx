@@ -1,3 +1,4 @@
+import './inject';
 import { useState, StrictMode } from 'react';
 import { useReactive } from '@rapid/libs-web';
 import { themePlugins, app } from './plugins';

@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
+    "strictNullChecks": true,
     "skipLibCheck": true,
     "target": "ESNext",
     "moduleResolution": "node",

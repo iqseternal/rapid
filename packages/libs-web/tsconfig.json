@@ -18,7 +18,8 @@
     "resolveJsonModule": true,
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noImplicitReturns": true
   },
   "exclude": [
     "node_modules"

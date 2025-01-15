@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "module": "NodeNext",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noImplicitReturns": true
   },
   "include": [
     "./**/*.ts", "./**/*.tsx"
