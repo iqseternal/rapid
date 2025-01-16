@@ -4,7 +4,10 @@ import type { RdSKin } from '@/skin';
 declare global {
   declare namespace Rapid { export = RA; }
 
-  declare var cssVars: RdSKin.CssVarsSheet;
+  interface Window {
+    cssVars: RdSKin.CssVarsSheet
+  }
+
   declare const cssVars: RdSKin.CssVarsSheet;
 }
 

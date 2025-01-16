@@ -1,4 +1,4 @@
-import { classnames, toWaitPromise } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toNil } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
