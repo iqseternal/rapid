@@ -5,7 +5,7 @@ declare global {
   declare namespace Rapid { export = RA; }
 
   interface Window {
-    cssVars: RdSKin.CssVarsSheet
+    readonly cssVars: RdSKin.CssVarsSheet
   }
 
   declare const cssVars: RdSKin.CssVarsSheet;

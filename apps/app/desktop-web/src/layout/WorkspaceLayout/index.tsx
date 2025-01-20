@@ -54,27 +54,29 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  return <FullSize>
-    <Header />
+  return (
+    <FullSize>
+      <Header />
 
-    <FullSize
-      className={classnames(
-        'flex justify-between flex-nowrap items-center',
-        mainSidebarStatus === 'right' && 'flex-row-reverse'
-      )}
-      style={{
-        height: `calc(100% - ${cssVars.captionBarHeight})`
-      }}
-    >
-      {mainSidebarStatus !== 'none' && <NavigationBar />}
-
-      <main
-        className='w-full h-full px-1 py-1 rounded-md overflow-x-hidden overflow-y-auto'
+      <FullSize
+        className={classnames(
+          'flex justify-between flex-nowrap items-center',
+          mainSidebarStatus === 'right' && 'flex-row-reverse'
+        )}
+        style={{
+          height: `calc(100% - ${cssVars.captionBarHeight})`,
+        }}
       >
-        <WorkbenchesView />
-      </main>
+        {mainSidebarStatus !== 'none' && <NavigationBar />}
+
+        <main
+          className='w-full h-full px-1 py-1 rounded-md overflow-x-hidden overflow-y-auto'
+        >
+          <WorkbenchesView />
+        </main>
+      </FullSize>
     </FullSize>
-  </FullSize>
+  )
 }));
 
 export default WorkspaceLayout;

@@ -51,7 +51,7 @@ export namespace RdSKin {
    * cssVars sheet
    */
   export type CssVarsSheet = {
-    [Key in keyof CssVariablesSheet]: CssVar<CssVariablesSheet[Key]>;
+    readonly [Key in keyof CssVariablesSheet]: CssVar<CssVariablesSheet[Key]>;
   }
 
   /**

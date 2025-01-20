@@ -1,22 +1,19 @@
 
-import { randomRegionForInt, toNil } from '@rapid/libs';
+import { randomRegionForInt, toNil, apiPost, apiGet } from '@rapid/libs';
+
 
 ;;(async () => {
-
-  const p = new Promise<any>((resolve, reject) => {
-
-    const t = randomRegionForInt(2, 2);
-    if (t === 2) {
-      reject({
-
-        name: 'as'
-      })
-
+  const [err, res] = await toNil(apiGet('http://oupro.cn/api/v1.0.0/t', {
+    data: {
+      username: "username",
+      password: ""
     }
+  }));
 
+  if (err) {
+    console.error('Failed to fetch data:', err?.reason.data);
+    return;
+  }
 
-  })
-
-  const a = await toNil(p);
-
+  console.log(res.data);
 })();

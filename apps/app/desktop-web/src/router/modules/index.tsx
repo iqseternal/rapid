@@ -36,7 +36,6 @@ export const workbenchesRoute = makeRoute({
       meta: { title: '工作区', icon: 'FileWordOutlined' },
       component: lazy(() => import('@pages/Workspace/Workbenches'))
     },
-
     {
       name: 'WorkbenchesHome',
       path: '/home',
@@ -61,7 +60,7 @@ export const [
 export const rootRoute = makeRoute({
   name: 'Root',
   path: '/',
-  redirect: 'login',
+  redirect: workbenchesRoute.meta.fullPath,
   component: <RootLayout />,
   children: [
     loginRoute, registerRoute,
