@@ -1,8 +1,7 @@
 import './inject';
+
 import { useState, StrictMode } from 'react';
-import { useReactive } from '@rapid/libs-web';
-import { themePlugins, app } from './plugins';
-import { IS_DEV } from '@rapid/config/constants';
+import { ThemeExtension } from '@/plugins/modules/theme';
 
 import ReactDOM from 'react-dom/client';
 import RapidApp from './app';
@@ -10,8 +9,18 @@ import RapidApp from './app';
 import '@scss/index.scss';
 import './tailwind.css';
 
-app.use(themePlugins);
-app.installAll();
+// TODO: 建议动态获取 KEY
+;(async () => {
+  // rApp.extension.registerExtension(ThemeExtension);
+
+  requestAnimationFrame(() => {
+
+    rApp.extension.registerExtension(ThemeExtension);
+  })
+
+
+})();
+
 
 const rootContainer = document.getElementById('root')!;
 

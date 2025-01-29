@@ -12,6 +12,7 @@ import IMessage from '@components/IMessage';
 import AutoDropdownMenu from '@components/AutoMenu';
 
 import styles from './index.module.scss';
+import { ThemeExtension } from '../../../plugins';
 
 interface StyleBlockProps {
   title?: string;
@@ -80,6 +81,24 @@ export const Skin = memo(() => {
     >
       open
     </div>
+
+    <div>
+      <Button
+        onClick={() => {
+          rApp.extension.activatedExtension(ThemeExtension.name);
+        }}
+      >
+        启用插件
+      </Button>
+      <Button
+        onClick={() => {
+          rApp.extension.deactivatedExtension(ThemeExtension.name);
+        }}
+      >
+        禁用插件
+      </Button>
+    </div>
+
 
     <StyleBlock>
 

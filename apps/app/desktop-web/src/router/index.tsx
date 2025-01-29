@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, memo } from 'react';
 import type { ReactElement } from 'react';
 import { Routes, HashRouter } from 'react-router-dom';
 import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/router';
@@ -7,7 +7,7 @@ import * as presetRoutes from './modules';
 
 export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
-export default function RouterContext() {
+export const RouterContext = memo(() => {
 
   return (
     <HashRouter>
@@ -37,4 +37,6 @@ export default function RouterContext() {
       </Suspense>
     </HashRouter>
   )
-}
+})
+
+export default RouterContext;

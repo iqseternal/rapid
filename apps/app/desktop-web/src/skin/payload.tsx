@@ -52,7 +52,7 @@ const navbarVariablesSheet = {
 const buttonVariablesSheet = {
   /** 所有按钮 */
   buttonBackgroundColor: mrcvp('--rapid-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, ''),
-  buttonTextColor: mrcvp('--rapid-button-text-color', colorVariablesSheet.primaryTextColor.variable, '按钮文字颜色'),
+  buttonTextColor: mrcvp('--rapid-button-text-color', colorVariablesSheet.primaryTextColor.value, '按钮文字颜色'),
   buttonBorderRadius: mrcvp('--rapid-button-border-radius', '10px', '按钮的圆角尺寸'),
 
   /** 主按钮 */

@@ -14,6 +14,24 @@ export namespace RdSKin {
    * */
   export type CssVariablesSheet = typeof cssVariablesSheet;
 
+  export const cssVariablesPayloadSheet: CssVariablesPayloadSheet = cssVariablesSheet;
+  
+  export type CssVariablesPayloadSheet = {
+    [Key in keyof CssVariablesSheet]:
+      // 还原类型提升到更广的宽阈类型
+      Omit<CssVariablesSheet[Key], 'value'> & {
+        value: (
+          CssVariablesSheet[Key]['value'] extends string
+            ? string
+            : (
+              CssVariablesSheet[Key]['value'] extends number
+                ? number
+                : CssVariablesSheet[Key]['value']
+              )
+        )
+      }
+  };
+
   /**
    * 主题变量的声明表: 例如: { '--rapid-xx-xx': '#FFF' }
    * */
@@ -82,6 +100,16 @@ export namespace RdSKin {
     document.head.appendChild(style);
     // 记录 style 标签, 供下一次的替换, 因为有主题插件脚本的介入
     runtimeContext.styleTag = style;
+  }
+
+  /**
+   * 卸载
+   */
+  export const uninstall = () => {
+    if (runtimeContext.styleTag)  {
+      runtimeContext.styleTag.remove();
+      runtimeContext.styleTag = void 0; // 置空, 防止多次 remove
+    }
   }
 }
 

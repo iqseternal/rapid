@@ -1,8 +1,16 @@
+import {} from '../../app/desktop-web/src/@types/index';
 
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import { rApp } from '@rapid/extensions';
-import { useState, useEffect } from 'react';
+const Exp = rApp.extension.defineExtension({
+  name: 'captionbar.functional',
+  version: '1.0.0',
+
+  onActivated() {
 
 
+
+
+
+  },
+})
+
+rApp.extension.registerExtension(Exp);

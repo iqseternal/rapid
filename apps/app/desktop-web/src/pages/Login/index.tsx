@@ -13,6 +13,7 @@ import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/
 import { menus } from '@/menus';
 import { useCallback, useEffect, memo } from 'react';
 import { Subfield } from '@rapid/libs-web/components';
+import { ThemeExtension } from '@/plugins';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
@@ -27,7 +28,6 @@ export const Login = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const headerFileMenu = useZustandHijack(menus.headerFileMenu);
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
 
   const { message } = App.useApp();

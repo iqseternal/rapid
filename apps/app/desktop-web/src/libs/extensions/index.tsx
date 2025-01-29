@@ -1,16 +1,7 @@
-import { Extension, ExtensionEvents, ThemePlugin } from './Extension';
-import { ExtensionsManager } from './ExtensionsManager';
-import { RegisterPoints } from './RegisterPoints';
 
-import { rApp } from '@rapid/extensions';
+import { Extension, ExtensionManager, MetadataManager } from '@rapid/extensions';
 
-
-export const useExtension = (registerPoint: RegisterPoints) => {
+export const extensionManager = new ExtensionManager();
 
 
-  return new ThemePlugin();
-}
-
-export { RegisterPoints } from './RegisterPoints';
-
-
+export const metadataManager = new MetadataManager<Rapid.Metadata.MetadataEntries>();

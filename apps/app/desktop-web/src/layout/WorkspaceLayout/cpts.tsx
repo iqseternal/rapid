@@ -77,29 +77,20 @@ export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
     }}
   >
     <FullSizeWidth
-      className='mt-[2px] h-max flex justify-center'
+      className='mt-[2px] h-max flex justify-center flex-col'
     >
-      <SideBarItem
-        icon='UserOutlined'
-        tipText='个人信息'
-        tipAttrs={{
-          overlay: <>
-            {userinfo?.username}
-          </>
-        }}
-      />
-
-      {/*{workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {*/}
-      {/*  return <SideBarItem*/}
-      {/*    key={routeItem.meta.fullPath}*/}
-      {/*    icon={routeItem.meta.icon}*/}
-      {/*    tipText={routeItem.meta.title}*/}
-      {/*    onClick={() => {*/}
-      {/*      navigate(routeItem.meta.fullPath);*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*  </SideBarItem>;*/}
-      {/*})}*/}
+      {workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {
+        return (
+          <SideBarItem
+            key={routeItem.meta.fullPath}
+            icon={routeItem.meta.icon}
+            tipText={routeItem.meta.title}
+            onClick={() => {
+              navigate(routeItem.meta.fullPath);
+            }}
+          />
+        )
+      })}
     </FullSizeWidth>
 
     <FullSizeWidth

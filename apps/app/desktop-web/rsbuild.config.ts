@@ -43,7 +43,18 @@ const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
       IS_PROD && pluginTailwindCSS()
     ],
     server: {
-      port: 3002
+      port: 3002,
+      proxy: {
+        '/rapi': {
+          pathRewrite: (pathname, req) => {
+            if (pathname.startsWith('/rapi')) return pathname.replace('/rapi', '/api');
+            return pathname;
+          },
+          changeOrigin: true,
+
+          target: 'http://localhost:3000',
+        }
+      }
     },
     output: {
       assetPrefix: '.',

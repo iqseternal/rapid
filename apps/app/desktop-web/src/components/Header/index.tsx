@@ -1,15 +1,16 @@
-import { classnames } from '@rapid/libs-web/common';
+import { classnames, isReactFC } from '@rapid/libs-web/common';
 import { Subfield } from '@rapid/libs-web/components';
-import { ReactNode, useEffect, useRef, memo, useState } from 'react';
+import { ReactNode, useEffect, useRef, memo, useState, useMemo, CSSProperties, isValidElement, type ReactElement } from 'react';
 import { menus } from '@/menus';
 import { FlexRowStart, useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useResizeObserver, useShallowReactive, useWindowInnerSize, useZustandHijack } from '@rapid/libs-web';
-import { isUndefined, toNil } from '@rapid/libs';
+import { isFunction, isUndefined, toNil } from '@rapid/libs';
 import { commonStyles } from '@scss/common';
 
 import Widget from '@components/Widget';
 import AutoMenu from '../AutoMenu';
 import IconFont from '@components/IconFont';
 import Logo from '@components/Logo';
+import { cssVars } from '../../skin';
 
 export interface MaintenanceMenusProps {
   isDialog: boolean;
@@ -233,6 +234,12 @@ export const Control = memo((props: ControlProps) => {
   )
 })
 
+export interface HeadSlotRenderTypeProps {
+  isPane?: boolean;
+  isDialog?: boolean;
+}
+export type HeadSlotRenderType = (props: HeadSlotRenderTypeProps) => ReactNode;
+
 export interface HeaderProps {
   /**
    * 是否是一个面板, 例如设置 (不可全屏
@@ -244,38 +251,51 @@ export interface HeaderProps {
    */
   isDialog?: boolean;
 
-  /**
-   * 插槽定义
-   */
-  slots?: {
-    menu?: ReactNode;
 
-    functional?: ReactNode;
-  }
+  logoRender?: ReactNode | HeadSlotRenderType;
+
+  menuRender?: ReactNode | HeadSlotRenderType;
+
+  titleRender?: ReactNode | HeadSlotRenderType;
+
+  functionalRender?: ReactNode | HeadSlotRenderType;
 
   className?: string;
+  style?: CSSProperties;
 }
 
 /**
  * 标题栏
  */
 export const Header = memo((props: HeaderProps) => {
-  const { isDialog = false, isPane = false, className } = props;
+  const {
+    isDialog = false,
+    isPane = false,
 
-  return <Subfield
-    className={classnames(
-      'w-full text-sm',
-      commonStyles.appRegion,
-      className
-    )}
-    style={{
-      height: cssVars.captionBarHeight,
-      backgroundColor: cssVars.captionBarBackgroundColor
-    }}
-  >
-    <Subfield
-      className='w-full h-full z-50'
-    >
+    className,
+    style,
+
+    logoRender,
+    menuRender,
+    functionalRender
+  } = props;
+
+  const LogoNode = ((): ReactNode => {
+    if (logoRender) {
+      if (isFunction(logoRender)) {
+        const LogRender = logoRender;
+        return (
+          <LogRender
+            isDialog={isDialog}
+            isPane={isPane}
+          />
+        )
+      }
+
+      return logoRender;
+    }
+
+    return (
       <Logo
         className='flex-none h-full'
         style={{
@@ -283,14 +303,76 @@ export const Header = memo((props: HeaderProps) => {
           margin: `0 calc(${cssVars.navigationBarWidth} * 0.1)`
         }}
       />
+    )
+  })();
+
+  const menuNode = ((): ReactNode => {
+    if (isPane || isDialog) return <></>;
+    if (menuRender) {
+      if (isFunction(menuRender)) {
+        const MenuRender = menuRender;
+        return (
+          <MenuRender
+            isDialog={isDialog}
+            isPane={isPane}
+          />
+        )
+      }
+
+      return menuRender;
+    }
+
+    return (
+      <MaintenanceMenus
+        isDialog={isDialog}
+        isPane={isPane}
+      />
+    )
+  })();
+
+  const functionalNode = ((): ReactNode => {
+    if (functionalRender) {
+      if (isFunction(functionalRender)) {
+        const FunctionalRender = functionalRender;
+        return (
+          <FunctionalRender
+            isDialog={isDialog}
+            isPane={isPane}
+          />
+        )
+      }
+
+      return functionalRender;
+    }
+
+    return (
+      <>
+        <div />
+        <div />
+        <Control
+          isPane={isPane}
+          isDialog={isDialog}
+        />
+      </>
+    )
+  })();
+
+  return <Subfield
+    className={classnames('w-full text-sm', commonStyles.appRegion, className)}
+    // style={style}
+    style={{
+      backgroundColor: cssVars.captionBarBackgroundColor
+    }}
+  >
+    <Subfield
+      className='w-full h-full z-50'
+    >
+      {LogoNode}
 
       <div
-        className={classnames(
-          'cursor-default w-max h-full flex-auto max-w-full overflow-hidden',
-          commonStyles.userSelectNone
-        )}
+        className={'cursor-default w-max h-full flex-auto max-w-full overflow-hidden select-none'}
       >
-        {!(isDialog && isDialog) ? <MaintenanceMenus isDialog={isDialog} isPane={isPane} /> : <></>}
+        {menuNode}
       </div>
 
       <Subfield.Auto />
@@ -301,9 +383,7 @@ export const Header = memo((props: HeaderProps) => {
     <Subfield
       className='mr-1 flex-auto min-w-max'
     >
-      <div />
-      <div />
-      <Control />
+      {functionalNode}
     </Subfield>
   </Subfield>
 });

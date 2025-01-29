@@ -45,7 +45,7 @@ export const workbenchesRoute = makeRoute({
     {
       name: 'Skin',
       path: '/skin',
-      meta: { title: '皮肤', icon: 'SkinOutlined', hiddenInMenu: true },
+      meta: { title: '皮肤', icon: 'SkinOutlined', hiddenInMenu: false },
       component: lazy(() => import('@pages/Workspace/Skin'))
     }
   ]
