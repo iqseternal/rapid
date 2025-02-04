@@ -1,4 +1,5 @@
-import { RdSKin } from '@/skin';
+
+import type { RdSKin } from '@/skin';
 
 const transformer = (cssVariablesPayloadSheet: RdSKin.CssVariablesPayloadSheet) => {
 

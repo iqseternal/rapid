@@ -1,10 +1,9 @@
 import { ConfigProvider, App } from 'antd';
-import { memo, useEffect, useLayoutEffect } from 'react';
-
-import { useAsyncLayoutEffect, useNormalState, useUnmount } from '@rapid/libs-web';
+import { memo, useLayoutEffect } from 'react';
 import { RdSKin } from './skin';
 
 import RouterContext from './router';
+import REmpty from '@components/Empty';
 
 /**
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
@@ -19,14 +18,14 @@ const RapidAppContext = memo(() => {
 
       }}
       direction='ltr'
-      getPopupContainer={(triggerNode) => document.body}
+      getPopupContainer={() => document.body}
       getTargetContainer={() => window}
       iconPrefixCls={'anticon'}
       // locale={{}}
       popupMatchSelectWidth={true}
       popupOverflow={'viewport'}
       prefixCls='ant'
-      // renderEmpty={() => <></>}
+      renderEmpty={() => <REmpty />}
       theme={{
         components: {
           Message: {
@@ -82,12 +81,9 @@ const RapidApp = memo(() => {
   rApp.extension.useExtensions();
 
   const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transform');
-  useLayoutEffect(() => {
-    if (!themePayloadTransformers) {
-      return () => {
 
-      };
-    }
+  useLayoutEffect(() => {
+    if (!themePayloadTransformers) return;
 
     let declaration = RdSKin.toCssVariablesDeclaration() as unknown as RdSKin.CssVariablesPayloadSheet;
     themePayloadTransformers.forEach(transform => {

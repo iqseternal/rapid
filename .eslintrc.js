@@ -50,7 +50,7 @@ module.exports = {
       { allowNamedFunctions: false, allowUnboundThis: true },
     ],
     'object-shorthand': [
-      'error',
+      'off',
       'always',
       { ignoreConstructors: false, avoidQuotes: true },
     ],

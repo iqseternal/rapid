@@ -3,10 +3,6 @@ import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError 
 import { StringFilters } from '@rapid/libs-web';
 import { getAccessToken } from '@/features';
 
-export type { RequestConfig, Interceptors } from '@rapid/libs';
-export type { createApiRequest, createRequest } from '@rapid/libs';
-export { REQ_METHODS }
-
 /** 请求 hConfig 配置 */
 export interface RApiHConfig {
   /**
@@ -94,8 +90,7 @@ export interface RApiFailResponse extends RApiBasicResponse {
  */
 export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
-
-export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(CONFIG.API.URL, {
+const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(CONFIG.API.URL, {
   timeout: 5000
 }, {
   async onFulfilled(config) {
@@ -139,7 +134,7 @@ export const rApi = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
   }
 })
 
-export const { apiGet: rApiGet, apiPost: rApiPost, request: rRequest, createApi: rCreateApi } = rApi;
+export const { apiGet: rApiGet, apiPost: rApiPost, request: rRequest, createApi: rCreateApi } = rApiRequest;
 
 export const rApiPut = rCreateApi(REQ_METHODS.PUT);
 

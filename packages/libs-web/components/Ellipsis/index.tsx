@@ -231,6 +231,7 @@ export const Ellipsis = EllipsisBase as EllipsisType;
 
 // @ts-ignore
 Ellipsis.Tooltip = EllipsisTooltip;
+
 // @ts-ignore
 Ellipsis.Popover = EllipsisPopover;
 

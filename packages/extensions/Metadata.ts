@@ -33,23 +33,22 @@ export class MetadataInnerZustandStoreManager {
     setStoreFunction();
     this.__updateStore();
   }
-
 }
 
 export class MetadataManager<MetadataEntries> extends MetadataInnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
 
-  defineMetadata<MetadataKey extends keyof MetadataEntries, Metadata extends MetadataEntries[MetadataKey]>(metadataKey: MetadataKey, metadata: Metadata) {
+  public defineMetadata<MetadataKey extends keyof MetadataEntries, Metadata extends MetadataEntries[MetadataKey]>(metadataKey: MetadataKey, metadata: Metadata) {
     super.__setStore(() => {
       this.metadataMap.set(metadataKey, metadata);
     })
   }
 
-  getMetadata<MetadataKey extends keyof MetadataEntries, Metadata extends MetadataEntries[MetadataKey]>(metadataKey: MetadataKey): Metadata | null {
+  public getMetadata<MetadataKey extends keyof MetadataEntries, Metadata extends MetadataEntries[MetadataKey]>(metadataKey: MetadataKey): Metadata | null {
     return this.metadataMap.get(metadataKey) ?? null;
   }
 
-  useMetadata<MetadataKey extends keyof MetadataEntries, Metadata extends MetadataEntries[MetadataKey]>(metadataKey: MetadataKey): Metadata | null {
+  public useMetadata<MetadataKey extends keyof MetadataEntries, Metadata extends MetadataEntries[MetadataKey]>(metadataKey: MetadataKey): Metadata | null {
     this.__useStore();
     return this.getMetadata(metadataKey) ?? null;
   }

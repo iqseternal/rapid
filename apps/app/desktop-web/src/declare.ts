@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { ExtensionManager, MetadataManager, Extension } from '@rapid/extensions';
-import type { RdSKin } from './skin';
+import { RdSKin } from '@/skin';
 
 /**
  * 总线
@@ -41,4 +41,5 @@ export declare interface RApp {
    */
   readonly metadata: MetadataManager<Metadata.MetadataEntries>;
 
+  readonly RdSKin: typeof RdSKin;
 }

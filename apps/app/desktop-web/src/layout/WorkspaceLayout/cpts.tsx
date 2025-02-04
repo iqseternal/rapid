@@ -3,7 +3,6 @@ import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toNil } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { useFadeOut } from '@/libs/hooks';
-import { logoutReq } from '@/api';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { useTransition } from '@rapid/libs-web';

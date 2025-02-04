@@ -1,4 +1,4 @@
-import { loginReq, getUserinfoReq, UserinfoResponse, logoutReq } from '@/api';
+import { rApi } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
 import { toNil, asynced, RPromiseLike } from '@rapid/libs';
 import { useEffect, useLayoutEffect } from 'react';
@@ -7,7 +7,11 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 export interface UserStore {
-  userinfo?: UserinfoResponse;
+  userinfo?: {
+    roles?: string[];
+    id?: number;
+    username?: string;
+  };
   accessToken: string;
 }
 
@@ -105,8 +109,8 @@ export const userActions = {
   /**
    * 用户登录
    */
-  userLogin: asynced<typeof loginReq>(async (loginPayload) => {
-    const [loginErr, loginRes] = await toNil(loginReq(loginPayload));
+  userLogin: asynced<typeof rApi.loginApi>(async (loginPayload) => {
+    const [loginErr, loginRes] = await toNil(rApi.loginApi(loginPayload));
     if (loginErr) {
       // return Promise.reject(loginErr.reason);
       await setAccessToken('虚假的 TOKEN');
@@ -137,8 +141,14 @@ export const userActions = {
   /**
    * 更新用户信息
    */
-  userUpdateInfo: asynced<typeof getUserinfoReq>(async () => {
-    const [infoErr, infoRes] = await toNil(getUserinfoReq());
+  userUpdateInfo: asynced<typeof rApi.registerApi>(async () => {
+    const [infoErr, infoRes] = await toNil(Promise.resolve({
+      data: {
+
+
+      }
+    }));
+
     if (infoErr) return Promise.reject(infoErr.reason);
 
     useUserStore.setState({ userinfo: infoRes.data });
@@ -148,8 +158,8 @@ export const userActions = {
   /**
    * 用户退出登录
    */
-  useLogout: asynced<() => RPromiseLike<void>>(async () => {
-    const [err, res] = await toNil(logoutReq());
+  useLogout: asynced<typeof rApi.logoutApi>(async (payload) => {
+    const [err, res] = await toNil(rApi.logoutApi(payload));
 
     if (err) return Promise.reject();
     return Promise.resolve();

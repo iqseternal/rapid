@@ -7,7 +7,7 @@ import { useAsyncEffect, useMount, useReactive, useShallowReactive, useZustandHi
 import { App, Button } from 'antd';
 import { toNil } from '@rapid/libs';
 import { setAccessToken, userActions } from '@/features';
-import { registerReq } from '@/api';
+import { rApi } from '@/api';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/common';
 import { menus } from '@/menus';
@@ -36,8 +36,6 @@ export const Login = memo(() => {
     step: Step.Login
   })
 
-  printer.printInfo('进入了登录页面', location.pathname);
-
   const [loginPending, login] = useTransition(async () => {
     const [loginErr] = await toNil(userActions.userLogin({
       username: 'admin',
@@ -55,7 +53,7 @@ export const Login = memo(() => {
   }, []);
 
   const [registerPending, register] = useTransition(async () => {
-    const [registerErr] = await toNil(registerReq());
+    const [registerErr] = await toNil(rApi.registerApi({}));
     if (registerErr) {
       message.error(registerErr.reason.descriptor);
       return;
