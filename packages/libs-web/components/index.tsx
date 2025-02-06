@@ -1,4 +1,3 @@
-
 export { default as Redirect } from './Redirect';
 export type { RedirectType, RedirectProps } from './Redirect';
 

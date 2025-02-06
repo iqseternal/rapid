@@ -6,7 +6,7 @@
 
 import { mrcvp } from './make';
 
-const colorVariablesSheet = {
+const colorVariablesPayloadSheet = {
   /** 主要背景色 */
   primaryBackgroundColor: mrcvp('--rapid-primary-background-color', '#ffffff', '主要背景色'),
   /** 二级次背景色 */
@@ -26,7 +26,7 @@ const colorVariablesSheet = {
   linkTextColor: mrcvp('--rapid-link-text-color', '#1a73e8', '链接文本颜色'),
 } as const;
 
-const widgetVariablesSheet = {
+const widgetVariablesPayloadSheet = {
   /** 控件宽度 */
   widgetWidth: mrcvp('--rapid-widget-width', '26px', '控件宽度'),
   /** 控件高度 */
@@ -39,20 +39,20 @@ const widgetVariablesSheet = {
   widgetBorderRadius: mrcvp('--rapid-widget-border-radius', '4px', '控件圆角')
 } as const;
 
-const navbarVariablesSheet = {
+const navbarVariablesPayloadSheet = {
   /** 标题栏高度 */
   captionBarHeight: mrcvp('--rapid-caption-bar-height', '32px', '标题栏高度'),
   /** 标题栏背景色 */
-  captionBarBackgroundColor: mrcvp('--rapid-caption-bar-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '标题栏背景色'),
+  captionBarBackgroundColor: mrcvp('--rapid-caption-bar-background-color', colorVariablesPayloadSheet.secondaryBackgroundColor.value, '标题栏背景色'),
 
   navigationBarWidth: mrcvp('--rapid-navigation-bar-width', '32px', '纵向导航栏宽度'),
-  navigationBarBackgroundColor: mrcvp('--rapid-navigation-bar-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '导航栏背景色')
+  navigationBarBackgroundColor: mrcvp('--rapid-navigation-bar-background-color', colorVariablesPayloadSheet.secondaryBackgroundColor.value, '导航栏背景色')
 } as const;
 
-const buttonVariablesSheet = {
+const buttonVariablesPayloadSheet = {
   /** 所有按钮 */
-  buttonBackgroundColor: mrcvp('--rapid-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, ''),
-  buttonTextColor: mrcvp('--rapid-button-text-color', colorVariablesSheet.primaryTextColor.value, '按钮文字颜色'),
+  buttonBackgroundColor: mrcvp('--rapid-button-background-color', colorVariablesPayloadSheet.primaryBackgroundColor.value, ''),
+  buttonTextColor: mrcvp('--rapid-button-text-color', colorVariablesPayloadSheet.primaryTextColor.value, '按钮文字颜色'),
   buttonBorderRadius: mrcvp('--rapid-button-border-radius', '10px', '按钮的圆角尺寸'),
 
   /** 主按钮 */
@@ -60,23 +60,23 @@ const buttonVariablesSheet = {
   primaryButtonTextColor: mrcvp('--rapid-primary-button-text-color', '#FFF', '主要按钮文字颜色'),
 
   /** 带边线的按钮 */
-  dashedButtonBackgroundColor: mrcvp('--rapid-dashed-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
-  dashedButtonTextColor: mrcvp('--rapid-dashed-button-text-color', colorVariablesSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+  dashedButtonBackgroundColor: mrcvp('--rapid-dashed-button-background-color', colorVariablesPayloadSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  dashedButtonTextColor: mrcvp('--rapid-dashed-button-text-color', colorVariablesPayloadSheet.primaryTextColor.value, '带边框按钮文字颜色'),
 
   /** 默认的按钮 */
-  defaultButtonBackgroundColor: mrcvp('--rapid-default-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
-  defaultButtonTextColor: mrcvp('--rapid-default-button-text-color', colorVariablesSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+  defaultButtonBackgroundColor: mrcvp('--rapid-default-button-background-color', colorVariablesPayloadSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  defaultButtonTextColor: mrcvp('--rapid-default-button-text-color', colorVariablesPayloadSheet.primaryTextColor.value, '带边框按钮文字颜色'),
 
   /** 链接按钮 */
   linkButtonBackgroundColor: mrcvp('--rapid-link-button-background-color', 'unset', '带边框按钮背景色'),
-  linkButtonTextColor: mrcvp('--rapid-link-button-text-color', colorVariablesSheet.linkTextColor.value, '带边框按钮文字颜色'),
+  linkButtonTextColor: mrcvp('--rapid-link-button-text-color', colorVariablesPayloadSheet.linkTextColor.value, '带边框按钮文字颜色'),
 
   /** 文本按钮 */
-  textButtonBackgroundColor: mrcvp('--rapid-text-button-background-color', colorVariablesSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
-  textButtonTextColor: mrcvp('--rapid-text-button-text-color', colorVariablesSheet.primaryTextColor.value, '带边框按钮文字颜色'),
+  textButtonBackgroundColor: mrcvp('--rapid-text-button-background-color', colorVariablesPayloadSheet.primaryBackgroundColor.value, '带边框按钮背景色'),
+  textButtonTextColor: mrcvp('--rapid-text-button-text-color', colorVariablesPayloadSheet.primaryTextColor.value, '带边框按钮文字颜色'),
 } as const;
 
-const messageVariablesSheet = {
+const messageVariablesPayloadSheet = {
   messageBorderRadius: mrcvp('--rapid-message-border-radius', '8px', 'message圆角'),
 
   /** 成功按钮颜色 */
@@ -87,7 +87,7 @@ const messageVariablesSheet = {
   errorMessageColor: mrcvp('--rapid-error-message-color', '#dc3545', '错误按钮颜色'),
 } as const;
 
-const cardVariablesSheet = {
+const cardVariablesPayloadSheet = {
   cardBorderRadius: mrcvp('--rapid-card-border-radius', '12px', '卡片圆角'),
 
   /* 卡片内边距 */
@@ -95,21 +95,21 @@ const cardVariablesSheet = {
 
 } as const;
 
-const dropdownVariablesSheet = {
-  dropdownBackgroundColor: mrcvp('--rapid-dropdown-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '下拉菜单的背景颜色'),
-  dropdownTextColor: mrcvp('--rapid-dropdown-text-color', colorVariablesSheet.primaryTextColor.value, '下拉菜单的文字颜色'),
+const dropdownVariablesPayloadSheet = {
+  dropdownBackgroundColor: mrcvp('--rapid-dropdown-background-color', colorVariablesPayloadSheet.secondaryBackgroundColor.value, '下拉菜单的背景颜色'),
+  dropdownTextColor: mrcvp('--rapid-dropdown-text-color', colorVariablesPayloadSheet.primaryTextColor.value, '下拉菜单的文字颜色'),
   dropdownBorderRadius: mrcvp('--rapid-dropdown-border-radius', '10px', '下拉菜单圆角大小'),
   dropdownItemBorderRadius: mrcvp('--rapid-dropdown-item-border-radius', '5px', '下拉菜单项圆角大小'),
 
-  dropdownMenuBackgroundColor: mrcvp('--rapid-dropdown-menu-background-color', colorVariablesSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
-  dropdownMenuTextColor: mrcvp('--rapid-dropdown-menu-text-color', colorVariablesSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
+  dropdownMenuBackgroundColor: mrcvp('--rapid-dropdown-menu-background-color', colorVariablesPayloadSheet.secondaryBackgroundColor.value, '下拉文件菜单背景颜色'),
+  dropdownMenuTextColor: mrcvp('--rapid-dropdown-menu-text-color', colorVariablesPayloadSheet.primaryTextColor.value, '下拉文件菜单文字颜色'),
   dropdownMenuBorderRadius: mrcvp('--rapid-dropdown-menu-border-radius', '8px', '下拉文件菜单圆角大小'),
   dropdownMenuItemBorderRadius: mrcvp('--rapid-dropdown-menu-item-border-radius', '8px', '下拉菜单项圆角大小'),
 } as const;
 
 
 
-const tldrawVariablesSheet = {
+const tldrawVariablesPayloadSheet = {
   tldrawShapeItemParentSelectedBg: mrcvp('--rapid-tldraw-shape-item-parent-selected-bg', '#f5f5f5', 'tldraw 图形项父项选中背景色'),
   tldrawShapeItemChildSelectedBg: mrcvp('--rapid-tldraw-shape-item-child-selected-bg', '#f5f5f5', 'tldraw 图形项子项选中背景色'),
   tldrawShapeItemSelectedBg: mrcvp('--rapid-tldraw-shape-item-selected-bg', '#e5e5e5', 'tldraw 图形项选中背景色'),
@@ -126,7 +126,7 @@ const tldrawVariablesSheet = {
 
 
 
-const sizeVariablesSheet = {
+const sizeVariablesPayloadSheet = {
 
   /* 正文字体大小 */
   bodyFontSize: mrcvp('--rapid-body-font-size', '16px', '正文字体大小'),
@@ -157,7 +157,7 @@ const sizeVariablesSheet = {
   tooltipPadding: mrcvp('--rapid-tooltip-padding', '8px 12px', '工具提示内边距')
 } as const;
 
-const colorsVariablesSheet = {
+const colorsVariablesPayloadSheet = {
 
 
   /* 辅助色 */
@@ -216,16 +216,16 @@ const colorsVariablesSheet = {
   panelBorderColor: mrcvp('--rapid-panel-border-color', '#dee2e6', '面板边框颜色')
 } as const;
 
-export const cssVariablesSheet = {
-  ...widgetVariablesSheet,
-  ...navbarVariablesSheet,
-  ...colorVariablesSheet,
-  ...buttonVariablesSheet,
-  ...messageVariablesSheet,
-  ...cardVariablesSheet,
-  ...dropdownVariablesSheet,
-  ...tldrawVariablesSheet,
+export const cssVariablesPayloadSheet = {
+  ...widgetVariablesPayloadSheet,
+  ...navbarVariablesPayloadSheet,
+  ...colorVariablesPayloadSheet,
+  ...buttonVariablesPayloadSheet,
+  ...messageVariablesPayloadSheet,
+  ...cardVariablesPayloadSheet,
+  ...dropdownVariablesPayloadSheet,
+  ...tldrawVariablesPayloadSheet,
 
-  ...colorsVariablesSheet,
-  ...sizeVariablesSheet
+  ...colorsVariablesPayloadSheet,
+  ...sizeVariablesPayloadSheet
 } as const;

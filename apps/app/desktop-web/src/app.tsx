@@ -85,13 +85,12 @@ const RapidApp = memo(() => {
   useLayoutEffect(() => {
     if (!themePayloadTransformers) return;
 
-    let declaration = RdSKin.toCssVariablesDeclaration() as unknown as RdSKin.CssVariablesPayloadSheet;
+    let declaration = RdSKin.toCssVariablesDeclaration();
     themePayloadTransformers.forEach(transform => {
       declaration = transform(declaration);
     })
 
-    printer.printInfo('最终加载的颜色为： ', declaration, declaration.captionBarBackgroundColor);
-    RdSKin.install(declaration as unknown as RdSKin.CssVariablesDeclaration);
+    RdSKin.install(declaration);
 
     return () => {
       RdSKin.uninstall();

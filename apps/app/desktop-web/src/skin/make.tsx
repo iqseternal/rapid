@@ -16,7 +16,6 @@ export const makeRapidCssVarPayload = <CssVar extends SKin.CssVariable, CssVarVa
   tip: cssVarTip
 } as const);
 
-
 /**
  * 创建一个预设的 Css 样式, 别名：makeRapidCssVarPayload
  */

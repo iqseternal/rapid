@@ -238,6 +238,7 @@ export interface HeadSlotRenderTypeProps {
   isPane?: boolean;
   isDialog?: boolean;
 }
+
 export type HeadSlotRenderType = (props: HeadSlotRenderTypeProps) => ReactNode;
 
 export interface HeaderProps {

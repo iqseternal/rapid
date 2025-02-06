@@ -22,7 +22,7 @@ export namespace Metadata {
     /**
      * 功能 - 主题 - 变量 - 转换
      */
-    'functional.theme.variables.transform': ((variables: RdSKin.CssVariablesPayloadSheet) => RdSKin.CssVariablesPayloadSheet)[];
+    'functional.theme.variables.transform': ((variables: RdSKin.CssVariablesDeclaration) => RdSKin.CssVariablesDeclaration)[];
 
 
 

@@ -64,35 +64,44 @@ export const Widget = memo((props: WidgetProps) => {
 
   const [normalState] = useState({
     loading: false,
-    disabled: false
+    disabled: false,
+
+    onClick: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
+    onDoubleClick: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
+    onContextMenu: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
   })
 
   normalState.loading = loading;
   normalState.disabled = disabled;
+  normalState.onClick = onClick;
+  normalState.onDoubleClick = onDoubleClick;
+  normalState.onContextMenu = onContextMenu;
 
   /**
    * 创建维护事件, 当 disabled 为 true 时, 将传递事件进行封装, 禁用执行
    * 即便有 css commonStyles.disabledPointerEvents 的支持, 但是也要从实际的执行层面解决禁用事件问题
    */
-  const withSafeEvent = useCallback(<Event extends MouseEvent>(callback: MouseEventHandler<HTMLDivElement> | undefined) => {
-    if (!callback) return callback;
+  const withSafeEvent = useCallback(<Event extends MouseEvent>(callbackGetter: (() => (MouseEventHandler<HTMLDivElement> | undefined))) => {
 
     return (e: Event): void => {
       if (normalState.disabled) return;
       if (normalState.loading) return;
-      return callback(e as any);
+      const callback = callbackGetter();
+      if (callback) callback(e as any);
     }
   }, []);
 
-  const withDisabledClick = useMemo(() => withSafeEvent<MouseEvent<HTMLDivElement>>(
-    onClick
-  ), [onClick]);
-  const withDisabledDoubleClick = useMemo(() => withSafeEvent<MouseEvent<HTMLDivElement>>(
-    onDoubleClick
-  ), [onDoubleClick]);
-  const withDisabledContextMenu = useMemo(() => withSafeEvent<MouseEvent<HTMLDivElement>>(
-    onContextMenu
-  ), [onContextMenu]);
+  const withDisabledClick = useMemo(() => {
+    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => normalState.onClick);
+  }, []);
+
+  const withDisabledDoubleClick = useMemo(() => {
+    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => normalState.onDoubleClick);
+  }, []);
+
+  const withDisabledContextMenu = useMemo(() => {
+    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => normalState.onContextMenu);
+  }, []);
 
   return (
     <div

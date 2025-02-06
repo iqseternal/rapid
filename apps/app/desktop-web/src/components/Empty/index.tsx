@@ -2,6 +2,8 @@
 import { memo } from 'react';
 import { Empty } from 'antd';
 
+import { inject } from '@rapid/libs';
+
 import { NotHasAnyData } from './NotHasAnyData';
 import { Wrong } from './Wrong';
 
@@ -26,9 +28,7 @@ export type EmptyType = (typeof REmptyInstance) & {
 
 export const REmpty: EmptyType = REmptyInstance as EmptyType;
 
-// @ts-ignore
-Empty.NotHasAnyData = NotHasAnyData;
-// @ts-ignore
-Empty.Wrong = Wrong;
+inject(REmpty, 'NotHasAnyData', NotHasAnyData);
+inject(REmpty, 'Wrong', Wrong);
 
 export default REmpty;

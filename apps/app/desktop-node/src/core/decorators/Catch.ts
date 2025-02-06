@@ -3,6 +3,7 @@ import { PrinterService } from '../service/PrinterService';
 import { ExceptionFilter, Exception } from '../exceptions';
 import type { Decorator } from './common';
 import { DescendantClass } from './common';
+import { inject } from '@rapid/libs';
 
 export interface CatchDecorator extends Decorator {
   /**
@@ -36,7 +37,7 @@ export interface CatchDecorator extends Decorator {
  *
  *
  */
-export const Catch: CatchDecorator = function(...Exceptions: DescendantClass<Exception<any>>[]) {
+export const Catch = (function(...Exceptions: DescendantClass<Exception<any>>[]) {
   if (Exceptions.length === 0) {
     PrinterService.printError(`Catch 装饰器至少传递一个 Exception 类作为监听对象.`);
     return () => {}
@@ -63,22 +64,12 @@ export const Catch: CatchDecorator = function(...Exceptions: DescendantClass<Exc
       Catch.context.mapper.set(Exception, filters);
     })
   }
-}
-
-// @ts-ignore
-Catch.symbol = Symbol('CatchMetadata');
-
-// @ts-ignore
-Catch.context = {
-  mapper: new WeakMap()
-}
+}) as CatchDecorator;
 
 /**
  * 处理装饰器, Catch 捕捉一个异常类
  */
-
-// @ts-ignore
-Catch.parser = (exception) => {
+const parser: CatchDecorator['parser'] = (exception) => {
   const Exception = exception.constructor as unknown as DescendantClass<Exception<any>>;
 
   const filters = Catch.context.mapper.get(Exception);
@@ -97,3 +88,9 @@ Catch.parser = (exception) => {
 
   throw exception;
 }
+
+inject(Catch, 'symbol', Symbol('CatchMetadata'));
+inject(Catch, 'context', {
+  mapper: new WeakMap()
+})
+inject(Catch, 'parser', parser);

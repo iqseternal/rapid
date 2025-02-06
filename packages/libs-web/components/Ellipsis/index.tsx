@@ -1,6 +1,7 @@
 import { EllipsisBase, type EllipsisProps } from './EllipsisBase';
 import { EllipsisTooltip, type EllipsisTooltipProps } from './EllipsisTooltip';
 import { EllipsisPopover, type EllipsisPopoverProps } from './EllipsisPopover';
+import { inject } from '@rapid/libs/inject';
 
 export type { EllipsisProps, EllipsisTooltipProps, EllipsisPopoverProps };
 
@@ -11,11 +12,8 @@ export type EllipsisType = typeof EllipsisBase & {
 
 const Ellipsis = EllipsisBase as EllipsisType;
 
-// @ts-ignore
-Ellipsis.Tooltip = EllipsisTooltip;
-
-// @ts-ignore
-Ellipsis.Popover = EllipsisPopover;
+inject(Ellipsis, 'Tooltip', EllipsisTooltip);
+inject(Ellipsis, 'Popover', EllipsisPopover);
 
 export { Ellipsis };
 

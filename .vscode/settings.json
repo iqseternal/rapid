@@ -658,7 +658,7 @@
   "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "git.openRepositoryInParentFolders": "never",
   "git.ignoreLegacyWarning": true,
-  "winopacity.opacity": 251,
+  "winopacity.opacity": 250,
   "editor.smoothScrolling": true,
   "terminal.integrated.smoothScrolling": true,
   "editor.mouseWheelScrollSensitivity": 2,
@@ -709,5 +709,6 @@
   "typescript.preferences.preferTypeOnlyAutoImports": true,
   "typescript.suggest.completeFunctionCalls": false,
   "terminal.integrated.mouseWheelZoom": false,
-  "workbench.preferredLightColorTheme": "GitHub Dark"
+  "workbench.preferredLightColorTheme": "GitHub Dark",
+  "material-icon-theme.opacity": 1
 }

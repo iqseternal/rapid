@@ -1,13 +1,10 @@
 
 import type { RdSKin } from '@/skin';
 
-const transformer = (cssVariablesPayloadSheet: RdSKin.CssVariablesPayloadSheet) => {
+const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) => {
+  cssVariablesDeclaration['--rapid-caption-bar-background-color'] = '#0F0';
 
-  printer.printInfo('主题插件已经加载, 修改了标题栏的背景色');
-
-  cssVariablesPayloadSheet['--rapid-caption-bar-background-color'] = '#0F0';
-
-  return cssVariablesPayloadSheet;
+  return cssVariablesDeclaration;
 }
 
 export const ThemeExtension = rApp.extension.defineExtension({

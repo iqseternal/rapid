@@ -1,6 +1,7 @@
 import type { ReactNode, HTMLAttributes, CSSProperties } from 'react';
 import { forwardRef, memo } from 'react';
 import { classnames } from '../../common';
+import { inject } from '@rapid/libs/inject';
 
 import styles from './index.module.scss';
 
@@ -141,11 +142,8 @@ export type SubfieldType = typeof SubfieldBase & {
 
 export const Subfield = SubfieldBase as SubfieldType;
 
-// @ts-ignore
-Subfield.Fixed = Fixed;
-// @ts-ignore
-Subfield.Auto = Auto;
-// @ts-ignore
-Subfield.SubfieldFixed = SubfieldFixed;
+inject(Subfield, 'Fixed', Fixed);
+inject(Subfield, 'Auto', Auto);
+inject(Subfield, 'SubfieldFixed', SubfieldFixed);
 
 export default Subfield;

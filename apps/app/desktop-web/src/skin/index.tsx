@@ -1,5 +1,7 @@
 import { SKin } from './declare';
-import { cssVariablesSheet } from './payload';
+import { cssVariablesPayloadSheet } from './payload';
+
+type CssVariablesPayloadSheetType = typeof cssVariablesPayloadSheet;
 
 export namespace RdSKin {
   /**
@@ -10,23 +12,19 @@ export namespace RdSKin {
   }
 
   /**
-   * 创建的主题变量映射表
-   * */
-  export type CssVariablesSheet = typeof cssVariablesSheet;
-
-  export const cssVariablesPayloadSheet: CssVariablesPayloadSheet = cssVariablesSheet;
-  
+   * 创建的主题变量负载映射表
+   */
   export type CssVariablesPayloadSheet = {
-    [Key in keyof CssVariablesSheet]:
+    [Key in keyof CssVariablesPayloadSheetType]:
       // 还原类型提升到更广的宽阈类型
-      Omit<CssVariablesSheet[Key], 'value'> & {
+      Omit<CssVariablesPayloadSheetType[Key], 'value'> & {
         value: (
-          CssVariablesSheet[Key]['value'] extends string
+          CssVariablesPayloadSheetType[Key]['value'] extends string
             ? string
             : (
-              CssVariablesSheet[Key]['value'] extends number
+              CssVariablesPayloadSheetType[Key]['value'] extends number
                 ? number
-                : CssVariablesSheet[Key]['value']
+                : CssVariablesPayloadSheetType[Key]['value']
               )
         )
       }
@@ -36,15 +34,19 @@ export namespace RdSKin {
    * 主题变量的声明表: 例如: { '--rapid-xx-xx': '#FFF' }
    * */
   export type CssVariablesDeclaration = {
-    [Key in (keyof CssVariablesSheet) as SKin.ExtractCssVariableFromPayload<CssVariablesSheet[Key]>]: SKin.ExtractCssVariableValueFromPayload<CssVariablesSheet[Key]>;
+    [Key in (keyof typeof cssVariablesPayloadSheet) as SKin.ExtractCssVariableFromPayload<CssVariablesPayloadSheetType[Key]>]:
+      SKin.ExtractCssVariableValueFromPayload<CssVariablesPayloadSheetType[Key]> extends number
+        ? number
+        : string
+      ;
   }
 
   export function toCssVariablesDeclaration(): CssVariablesDeclaration {
     const cssVariablesDeclaration = {} as Record<string, string>;
-    const payloadKeys = Object.keys(cssVariablesSheet) as (keyof CssVariablesSheet)[];
+    const payloadKeys = Object.keys(cssVariablesPayloadSheet) as (keyof CssVariablesPayloadSheetType)[];
 
     payloadKeys.forEach(key => {
-      const { variable, value } = cssVariablesSheet[key];
+      const { variable, value } = cssVariablesPayloadSheet[key];
 
       cssVariablesDeclaration[variable] = value;
     })
@@ -60,8 +62,8 @@ export namespace RdSKin {
   /**
    * 通过预设 payload 创建 cssVar
    */
-  export function toCssVar<Payload extends SKin.CssVariablePayload>(selector: (sheet: CssVariablesSheet) => Payload): CssVar<Payload> {
-    const cssVar = selector(cssVariablesSheet);
+  export function toCssVar<Payload extends SKin.CssVariablePayload>(selector: (sheet: CssVariablesPayloadSheetType) => Payload): CssVar<Payload> {
+    const cssVar = selector(cssVariablesPayloadSheet);
     return `var(${cssVar.variable}, ${cssVar.value})` as CssVar<Payload>;
   }
 
@@ -69,7 +71,7 @@ export namespace RdSKin {
    * cssVars sheet
    */
   export type CssVarsSheet = {
-    readonly [Key in keyof CssVariablesSheet]: CssVar<CssVariablesSheet[Key]>;
+    readonly [Key in keyof CssVariablesPayloadSheetType]: CssVar<CssVariablesPayloadSheetType[Key]>;
   }
 
   /**
@@ -77,7 +79,7 @@ export namespace RdSKin {
    */
   export function toCssVars(): CssVarsSheet {
     const cssVars = {} as CssVarsSheet;
-    for (const key in cssVariablesSheet) cssVars[key] = toCssVar((sheet) => sheet[key]);
+    for (const key in cssVariablesPayloadSheet) cssVars[key] = toCssVar((sheet) => sheet[key]);
     return cssVars;
   }
 

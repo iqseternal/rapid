@@ -14,6 +14,7 @@ import type {
 
 import { MenuItem, SubMenu } from './cpts';
 import type { MenuItemProps, SubMenuProps } from './cpts';
+import { inject } from '@rapid/libs';
 
 import styles from './index.module.scss';
 
@@ -137,19 +138,12 @@ export type AutoMenuType = typeof AutoContextMenu & {
 
 export const AutoMenu: AutoMenuType = AutoContextMenu as AutoMenuType;
 
-// @ts-ignore
-AutoMenu.convertMenuDivider = convertMenuDivider;
-// @ts-ignore
-AutoMenu.convertMenuInstance = convertMenuInstance;
-// @ts-ignore
-AutoMenu.convertMenuItem = convertMenuItem;
-// @ts-ignore
-AutoMenu.convertMenuItemGroupType = convertMenuItemGroupType;
-// @ts-ignore
-AutoMenu.convertSubMenu = convertSubMenu;
-// @ts-ignore
-AutoMenu.MenuItem = MenuItem;
-// @ts-ignore
-AutoMenu.SubMenu = SubMenu;
+inject(AutoMenu, 'convertMenuDivider', convertMenuDivider);
+inject(AutoMenu, 'convertMenuInstance', convertMenuInstance);
+inject(AutoMenu, 'convertMenuItem', convertMenuItem);
+inject(AutoMenu, 'convertMenuItemGroupType', convertMenuItemGroupType);
+inject(AutoMenu, 'convertSubMenu', convertSubMenu);
+inject(AutoMenu, 'MenuItem', MenuItem);
+inject(AutoMenu, 'SubMenu', SubMenu);
 
 export default AutoMenu;
