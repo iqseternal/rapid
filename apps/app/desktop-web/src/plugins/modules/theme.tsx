@@ -12,14 +12,12 @@ export const ThemeExtension = rApp.extension.defineExtension({
   version: '0.0.0',
 
   onActivated() {
-    const transformers = rApp.metadata.getMetadata('functional.theme.variables.transform') ?? [];
-    transformers.push(transformer);
-    rApp.metadata.defineMetadata('functional.theme.variables.transform', [...transformers]);
+
+    rApp.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
   },
 
   onDeactivated() {
-    const transformers = rApp.metadata.getMetadata('functional.theme.variables.transform') ?? [];
-    const newTransformers = transformers.filter(t => t !== transformer);
-    rApp.metadata.defineMetadata('functional.theme.variables.transform', newTransformers);
+
+    rApp.metadata.delMetadataInVector('functional.theme.variables.transformer', transformer);
   }
 })

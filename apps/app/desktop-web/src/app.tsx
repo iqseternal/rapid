@@ -80,7 +80,7 @@ const RapidAppContext = memo(() => {
 const RapidApp = memo(() => {
   rApp.extension.useExtensions();
 
-  const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transform');
+  const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transformer');
 
   useLayoutEffect(() => {
     if (!themePayloadTransformers) return;
