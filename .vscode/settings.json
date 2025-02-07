@@ -658,7 +658,7 @@
   "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
   "git.openRepositoryInParentFolders": "never",
   "git.ignoreLegacyWarning": true,
-  "winopacity.opacity": 250,
+  "winopacity.opacity": 254,
   "editor.smoothScrolling": true,
   "terminal.integrated.smoothScrolling": true,
   "editor.mouseWheelScrollSensitivity": 2,
