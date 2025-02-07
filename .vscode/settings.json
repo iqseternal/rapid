@@ -648,7 +648,7 @@
   "vue.complete.casing.props": "camel",
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
   "liveServer.settings.donotShowInfoMsg": true,
-  "http.proxyAuthorization": "false",
+  "http.proxyAuthorization": null,
   "typescript.preferences.quoteStyle": "single",
   "volar.format.initialIndent": {
     "html": true
@@ -684,6 +684,7 @@
     "Leafer",
     "Maximizable",
     "Minimizable",
+    "mrcvp",
     "pako",
     "Polotno",
     "preinstall",
@@ -710,5 +711,9 @@
   "typescript.suggest.completeFunctionCalls": false,
   "terminal.integrated.mouseWheelZoom": false,
   "workbench.preferredLightColorTheme": "GitHub Dark",
-  "material-icon-theme.opacity": 1
+  "material-icon-theme.opacity": 1,
+  "gitlens.proxy": {
+
+  },
+  "testing.automaticallyOpenTestResults": "openOnTestFailure"
 }

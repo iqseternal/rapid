@@ -17,7 +17,7 @@ const map = [
   [4, 5, 1]
 ];
 
-;; (async () => {
+;(async () => {
   for (let i = 0; i < map.length; i++) {
     const [x, y, v] = map[i];
 
@@ -25,9 +25,7 @@ const map = [
     edge[++index] = y, next[index] = head[x], value[index] = v, head[x] = index;
   }
 
-  let str = ``;
-  let cost = 0;
-  let isCanArrived = false;
+  let str = ``, cost = 0, isCanArrived = false;
 
   const visited: boolean[] = new Array(5 + 1).fill(false);
   function dfs(x: number) {
