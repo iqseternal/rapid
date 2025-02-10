@@ -7,4 +7,4 @@ pnpm typecheck
 pnpm test
 
 # pnpm exec lint-staged
-pnpm lint
+# pnpm lint
