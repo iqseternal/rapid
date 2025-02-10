@@ -11,7 +11,7 @@
 /**/out
 
 # lint 缓存文件, lint 自动生成
-/.eslintcache
+/**/.eslintcache
 
 # ts 编译增量文件, tsc 自动生成
 /**/*.tsbuildinfo
