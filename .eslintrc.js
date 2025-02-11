@@ -125,6 +125,7 @@ module.exports = {
         "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
         "allowedNames": ["self", 'that']
       }
-    ]
+    ],
+    '@typescript-eslint/no-empty-object-type': 'off',
   }
 }

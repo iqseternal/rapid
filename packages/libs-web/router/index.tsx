@@ -19,8 +19,9 @@ export interface CreateRoutesChildrenOptions {
    * @returns
    */
   onLazyComponent:
-    FC<{ children: ReactElement<LazyExoticComponent<FC<any>>> }> |
-    MemoExoticComponent<FC<{ children: ReactElement<LazyExoticComponent<FC<any>>> }>>;
+  MemoExoticComponent<FC<{ children: ReactElement<{}> }>> |
+    FC<{ children: ReactElement<{}> }>;
+
 }
 
 /**

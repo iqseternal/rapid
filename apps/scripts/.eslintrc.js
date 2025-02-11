@@ -588,7 +588,7 @@ const Rules = {
    * 对多行注释强制使用特定样式
    * @link https://eslint.org/docs/v8.x/rules/multiline-comment-style
    */
-  'multiline-comment-style': ["error", "starred-block"],
+  'multiline-comment-style': 'off',
 
   /**
    * 要求构造函数名称以大写字母开头
@@ -777,5 +777,6 @@ module.exports = {
      */
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-this-alias': 'off',
+    '@typescript-eslint/no-empty-object-type': 'off',
   }
 }

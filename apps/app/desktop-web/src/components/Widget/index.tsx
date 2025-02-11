@@ -56,9 +56,14 @@ export const Widget = memo((props: WidgetProps) => {
     hasHoverStyle = true,
     icon,
     size = 'base',
-    disabled = false, loading = false, loadingContent = <LoadingOutlined />,
-    tipText, tipAttrs = {},
-    onClick, onDoubleClick, onContextMenu,
+    disabled = false,
+    loading = false,
+    loadingContent = <LoadingOutlined />,
+    tipText,
+    tipAttrs = {},
+    onClick,
+    onDoubleClick,
+    onContextMenu,
     ...realProps
   } = props;
 
@@ -71,11 +76,11 @@ export const Widget = memo((props: WidgetProps) => {
     onContextMenu: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
   })
 
-  normalState.loading = loading;
-  normalState.disabled = disabled;
-  normalState.onClick = onClick;
-  normalState.onDoubleClick = onDoubleClick;
-  normalState.onContextMenu = onContextMenu;
+  if (normalState.loading !== loading) normalState.loading = loading;
+  if (normalState.disabled !== disabled) normalState.disabled = disabled;
+  if (normalState.onClick!== onClick) normalState.disabled = disabled;
+  if (normalState.onDoubleClick!== onDoubleClick) normalState.disabled = disabled;
+  if (normalState.onContextMenu!== onContextMenu) normalState.disabled = disabled;
 
   /**
    * 创建维护事件, 当 disabled 为 true 时, 将传递事件进行封装, 禁用执行
