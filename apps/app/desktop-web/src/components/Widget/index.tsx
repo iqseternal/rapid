@@ -78,9 +78,9 @@ export const Widget = memo((props: WidgetProps) => {
 
   if (normalState.loading !== loading) normalState.loading = loading;
   if (normalState.disabled !== disabled) normalState.disabled = disabled;
-  if (normalState.onClick!== onClick) normalState.disabled = disabled;
-  if (normalState.onDoubleClick!== onDoubleClick) normalState.disabled = disabled;
-  if (normalState.onContextMenu!== onContextMenu) normalState.disabled = disabled;
+  if (normalState.onClick !== onClick) normalState.onClick = onClick;
+  if (normalState.onDoubleClick !== onDoubleClick) normalState.onDoubleClick = onDoubleClick;
+  if (normalState.onContextMenu !== onContextMenu) normalState.onContextMenu = onContextMenu;
 
   /**
    * 创建维护事件, 当 disabled 为 true 时, 将传递事件进行封装, 禁用执行
@@ -90,7 +90,7 @@ export const Widget = memo((props: WidgetProps) => {
 
     return (e: Event): void => {
       if (normalState.disabled) return;
-      if (normalState.loading) return;
+      // if (normalState.loading) return;
       const callback = callbackGetter();
       if (callback) callback(e as any);
     }

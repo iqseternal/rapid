@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@rapid/extensions": "workspace:^",
+    "@rapid/i18n": "workspace:*",
     "@rapid/libs": "workspace:^",
     "@rapid/libs-web": "workspace:^",
     "@tldraw/assets": "3.5.0",
