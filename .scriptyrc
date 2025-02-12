@@ -1,0 +1,27 @@
+{
+  "scripts": {
+    "app:dev": "pnpm -C ./apps/app run dev",
+    "app:build": "pnpm -C ./apps/app run build",
+    "app:preview": "pnpm -C ./apps/app run preview",
+    "docs:dev": "pnpm -C ./apps/docs run dev",
+    "docs:build": "pnpm -C ./apps/docs run build",
+    "docs:preview": "pnpm -C ./apps/docs run preview",
+    "typecheck": "pnpm -r run typecheck",
+    "scripts:dev": "pnpm -C ./apps/scripts dev --config ./apps/scripts/.npmrc",
+    "scripts:build": "pnpm -C ./apps/scripts build --config ./apps/scripts/.npmrc",
+
+    "packages:build": "pnpm -r run build",
+
+    "build": "pnpm typecheck && pnpm packages:build",
+    "build:win": "pnpm build && electron-builder --win --config",
+    "build:win:only": "pnpm build:only && electron-builder --win --config",
+    "build:mac": "pnpm build && electron-builder --mac --config",
+    "build:linux": "pnpm build && electron-builder --linux --config",
+    "build:all": "pnpm build && electron-builder --win --config && electron-builder --mac --config && electron-builder --linux --config",
+    "put:website": "pnpm website:build && pnpm -C ./put run put:website",
+    "put:docs": "pnpm docs:build && pnpm -C ./put run put:docs",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --cache",
+    "test": "jest -o",
+    "test:all": "jest"
+  }
+}
