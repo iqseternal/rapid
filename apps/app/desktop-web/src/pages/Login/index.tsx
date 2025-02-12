@@ -13,16 +13,30 @@ import { commonStyles, animationStyles, useAnimationClassSelector } from '@scss/
 import { menus } from '@/menus';
 import { useCallback, useEffect, memo } from 'react';
 import { Subfield } from '@rapid/libs-web/components';
+import { UserAddOutlined } from '@ant-design/icons';
 import { ThemeExtension } from '@/plugins';
+import { defineMessages, useTranslation } from '@rapid/i18n';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
 import Logo from '@components/Logo';
+import Widget from '@components/Widget';
 
 enum Step {
   Login,
   Register
 }
+
+const messages = defineMessages({
+  loginText: {
+    'ch-ZN': "登录",
+    'en-US': 'login',
+  },
+  registerText: {
+    'ch-ZN': "注册",
+    'en-US': 'register',
+  },
+})
 
 export const Login = memo(() => {
   const navigate = useNavigate();
@@ -31,10 +45,11 @@ export const Login = memo(() => {
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
 
   const { message } = App.useApp();
+  const { t } = useTranslation();
 
-  const [shallowState] = useShallowReactive({
+  const [shallowState] = useShallowReactive(() => ({
     step: Step.Login
-  })
+  }))
 
   const [loginPending, login] = useTransition(async () => {
     const [loginErr] = await toNil(userActions.userLogin({
@@ -66,44 +81,55 @@ export const Login = memo(() => {
     if (IS_PROD) await ipcActions.windowSetPosition({ x: 'center', y: 'center' });
   });
 
-  return <FullSize>
-    <Header isPane />
+  return (
+    <FullSize>
+      <Header isPane />
 
-    <Subfield
-      className='flex space-around'
-      style={{
-        height: `calc(100% - ${cssVars.captionBarHeight})`
-      }}
-    >
       <Subfield
-        className={classnames(commonStyles.flexRowCenter)}
+        className='flex space-around'
         style={{
-
+          height: `calc(100% - ${cssVars.captionBarHeight})`
         }}
       >
-        <Logo
-          src={lockUrl}
-        />
-      </Subfield>
+        <Subfield
+          className={classnames(commonStyles.flexRowCenter)}
+          style={{
 
-      <Subfield
-        className={classnames(commonStyles.flexRowCenter)}
-      >
-        <Button
-          onClick={login}
-          loading={loginPending.isPending}
+          }}
         >
-          登录
-        </Button>
-        <Button
-          onClick={register}
-          loading={registerPending.isPending}
+          <Logo
+            src={lockUrl}
+          />
+        </Subfield>
+
+        <Subfield
+          className={classnames(commonStyles.flexRowCenter)}
         >
-          注册
-        </Button>
+          <Button
+            onClick={login}
+            loading={loginPending.isPending}
+          >
+            {t(messages.loginText)}
+          </Button>
+          <Button
+            onClick={register}
+            loading={registerPending.isPending}
+          >
+            {t(messages.registerText)}
+          </Button>
+          <Widget
+            tipText='切换语言包'
+            icon={'UserAddOutlined'}
+            onClick={() => {
+              const lang = window.i18n.getLanguage();
+              if (lang === 'en-US') window.i18n.changeLanguage('ch-ZN');
+              else window.i18n.changeLanguage('en-US');
+            }}
+          />
+        </Subfield>
       </Subfield>
-    </Subfield>
-  </FullSize>
+    </FullSize>
+  )
 });
 
 export default Login;

@@ -2,7 +2,7 @@
 import type { RdSKin } from '@/skin';
 
 const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) => {
-  cssVariablesDeclaration['--rapid-caption-bar-background-color'] = '#0F0';
+  // cssVariablesDeclaration['--rapid-caption-bar-background-color'] = '#0F0';
 
   return cssVariablesDeclaration;
 }

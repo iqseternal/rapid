@@ -13,6 +13,10 @@ export class I18n implements I18nInterface {
   private language: Language = 'ch-ZN';
   private effects: EffectCallback[] = [];
 
+  public getLanguage(): Language {
+    return this.language;
+  }
+
   public changeLanguage(language: Language): void {
     if (this.language !== language) {
       this.language = language;
