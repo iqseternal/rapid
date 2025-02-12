@@ -26,3 +26,8 @@
 
 # Scss 声明文件, 会在运行时由 rsbuild 插件自动生成
 /**/*.module.scss.d.ts
+
+
+
+.nx/cache
+.nx/workspace-data
