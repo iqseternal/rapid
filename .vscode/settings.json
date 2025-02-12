@@ -718,5 +718,6 @@
   "gitlens.proxy": {
 
   },
-  "testing.automaticallyOpenTestResults": "openOnTestFailure"
+  "testing.automaticallyOpenTestResults": "openOnTestFailure",
+  "nxConsole.nxWorkspacePath": ""
 }
