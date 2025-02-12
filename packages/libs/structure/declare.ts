@@ -1,4 +1,6 @@
 
+export type ComparatorResultTag = number;
+
 /**
  * 比较器
  */
@@ -9,7 +11,7 @@ export interface Comparator<V> {
    * 正数: v1 > v2,
    * 负数: v1 < v2
    */
-  (v1: V, v2: V): number;
+  (v1: V, v2: V): ComparatorResultTag;
 }
 
 /**
@@ -30,10 +32,13 @@ export abstract class Vessel<V> {
    */
   protected comparator: Comparator<V> = (v1, v2) => {
     if (v1 === v2) return 0;
-    if (typeof v1 !== 'number' && typeof v1 !== 'string') return 1;
-    if (typeof v2 !== 'number' && typeof v2 !== 'string') return 1;
-    if (v1 > v2) return 1;
-    return -1;
+    const t1 = typeof v1;
+    const t2 = typeof v2;
+    if (t1 !== t2) return -1;
+    if (t1 !== 'number' && t1 !== 'string') return -1;
+    if (t2 !== 'number' && t2 !== 'string') return -1;
+    if (v1 < v2) return -1;
+    return 1;
   };
 
   /**
