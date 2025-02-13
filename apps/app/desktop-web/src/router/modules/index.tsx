@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { makeRoute } from '@rapid/libs-web/router';
-import type { RequiredRouteConfig } from '@rapid/libs-web/router';
+import type { CompletiveRouteConfig } from '@rapid/libs-web/router';
 import { loginRoute, registerRoute, notFoundRoute, notRoleRoute } from './basic';
 
 import RootLayout from '@/layout/RootLayout';
@@ -22,7 +22,7 @@ export const workbenchesToolRoute = makeRoute({
 })
 export const [
   workbenchesToolbarRoute
-] = (workbenchesToolRoute as Required<RequiredRouteConfig>).children;
+] = (workbenchesToolRoute as Required<CompletiveRouteConfig>).children;
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
@@ -55,7 +55,7 @@ export const [
   workbenchesHomeRoute,
   workbenchesWorkstationRoute,
   WorkbenchesSkinRoute
-] = (workbenchesRoute as Required<RequiredRouteConfig>).children;
+] = (workbenchesRoute as Required<CompletiveRouteConfig>).children;
 
 export const rootRoute = makeRoute({
   name: 'Root',

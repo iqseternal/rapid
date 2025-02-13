@@ -1,17 +1,30 @@
 import { isString } from '@rapid/libs';
 import { printError } from '@suey/printer';
 
-type NotHasChildrenRouteConfig = Omit<RouteConfig, 'children'>;
+/**
+ * 补全后的 RouteMeta
+ */
+export type CompletiveRouteMeta = RouteMeta & Pick<Required<RouteMeta>, 'fullPath' | 'title'>;
 
-export type RequiredRouteConfig = Omit<Required<NotHasChildrenRouteConfig>, 'meta'>
-  & { meta: Required<RouteMeta> }
-  & { children?: RequiredRouteConfig[]; };
+/**
+ * 补全后的 RouteConfig
+ */
+export type CompletiveRouteConfig<RConfig extends RouteConfig = RouteConfig> = Omit<Omit<RConfig, 'children'>, 'meta'> & {
+  meta: CompletiveRouteMeta;
+  children: CompletiveRouteConfig<RConfig>[];
+}
+
+type PathJson<S1 extends string, S2 extends string> = (
+  S1 extends `${infer P1}/`
+  ? (S2 extends `/${infer P2}` ? `${P1}/${P2}` : `${S1}${S2}`)
+  : (S2 extends `/${string}` ? `${S1}${S2}` : `${S1}/${S2}`)
+);
 
 const path = {
-  joinTwo(path1: string, path2: string) {
-    if (path1.endsWith('/')) path1 = path1.replaceAll(/\/+$/g, '');
-    if (path2.startsWith('/')) path2 = path2.replaceAll(/^\/+/g, '');
-    return path1 + '/' + path2;
+  joinTwo<P1 extends string, P2 extends string>(path1: P1, path2: P2): PathJson<P1, P2> {
+    if (path1.endsWith('/')) path1 = path1.replaceAll(/\/+$/g, '') as P1;
+    if (path2.startsWith('/')) path2 = path2.replaceAll(/^\/+/g, '') as P2;
+    return path1 + '/' + path2 as PathJson<P1, P2>;
   },
   join(...args: string[]) {
     return args.reduce((pre, cur) => path.joinTwo(pre, cur), '');
@@ -40,7 +53,7 @@ const path = {
  * });
  * @returns
  */
-export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): RequiredRouteConfig {
+export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): CompletiveRouteConfig<RouteConfig> {
   if (!route.meta) route.meta = {} as RouteMeta;
   if (!route.meta.title) route.meta.title = '';
 
@@ -79,7 +92,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
     return makeRequireRouteConfig(child, route.meta?.fullPath, false);
   }) : [];
 
-  return route as RequiredRouteConfig;
+  return route as CompletiveRouteConfig;
 }
 
 export const makeRoute = makeRequireRouteConfig;

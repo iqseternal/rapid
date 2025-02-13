@@ -1,5 +1,3 @@
-import type { RequiredRouteConfig } from './makeRequireRouteConfig';
-import {  } from './makeRequireRouteConfig';
 import type { FC, ReactElement, ReactNode, LazyExoticComponent, MemoExoticComponent } from 'react';
 import { Suspense, isValidElement, useMemo } from 'react';
 import { isString } from '@rapid/libs';
@@ -9,7 +7,6 @@ import { Route } from 'react-router-dom';
 import type { RedirectProps } from '../components';
 import { Redirect } from '../components';
 import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
-import { printWarn } from '@suey/printer';
 
 export * from './makeRequireRouteConfig';
 
@@ -27,9 +24,9 @@ export interface CreateRoutesChildrenOptions {
 /**
  * 通过路由表创建符合要求的 ReactDomRouter 子元素
  */
-export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: CreateRoutesChildrenOptions) => {
+export const createRoutesChildren = <RouteConfigArr extends RouteConfig[]>(routeArr: RouteConfigArr, options: CreateRoutesChildrenOptions) => {
   return routeArr.map((route, index) => {
-    const { redirect, name, meta, children = [], component, ...realRoute } = route;
+    const { redirect, meta, children = [], component, ...realRoute } = route;
 
     // 渲染自定义组件
     let Component = component as FC<any>;
@@ -40,16 +37,10 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: C
       Component = Redirect;
 
       let from: string | RegExp = '', to = '';
-      if (isString(redirect)) {
-        printWarn(`createRoutesChildren: route 对象 redirect 没有被处理, route 应该由 makeRoute 函数创建`);
-        from = meta.fullPath;
-        to = redirect;
-      }
-      else {
-        from = redirect.from;
-        to = redirect.to;
-      }
+      if (isString(redirect)) throw new Error(`createRoutesChildren: route 对象 redirect 没有被处理, route 应该由 makeRoute 函数创建`);
 
+      from = redirect.from;
+      to = redirect.to;
       componentsProps = { from, to, element: component } as RedirectProps;
     }
 
@@ -77,7 +68,7 @@ export const createRoutesChildren = (routeArr: RequiredRouteConfig[], options: C
       realRoute.element = <></>;
     }
 
-    return <Route {...(realRoute as PathRouteProps)} key={(name ?? meta.fullPath ?? index)}>
+    return <Route {...(realRoute as PathRouteProps)} key={(route.name ?? route?.meta?.fullPath ?? index)}>
       {children && createRoutesChildren(children, options)}
     </Route>
   });

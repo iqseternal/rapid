@@ -6,13 +6,13 @@ import type { FC, ReactNode } from 'react';
 import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDocStore } from '@/features';
+import { ThemeExtension } from '../../../plugins';
 import { produce } from 'immer';
 
 import IMessage from '@components/IMessage';
 import AutoDropdownMenu from '@components/AutoMenu';
 
 import styles from './index.module.scss';
-import { ThemeExtension } from '../../../plugins';
 
 interface StyleBlockProps {
   title?: string;

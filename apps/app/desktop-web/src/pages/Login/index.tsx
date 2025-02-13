@@ -22,11 +22,6 @@ import Header from '@components/Header';
 import Logo from '@components/Logo';
 import Widget from '@components/Widget';
 
-enum Step {
-  Login,
-  Register
-}
-
 const messages = defineMessages({
   loginText: {
     'ch-ZN': "登录",
@@ -46,10 +41,6 @@ export const Login = memo(() => {
 
   const { message } = App.useApp();
   const { t } = useTranslation();
-
-  const [shallowState] = useShallowReactive(() => ({
-    step: Step.Login
-  }))
 
   const [loginPending, login] = useTransition(async () => {
     const [loginErr] = await toNil(userActions.userLogin({
