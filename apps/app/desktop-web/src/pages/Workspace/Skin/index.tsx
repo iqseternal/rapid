@@ -88,14 +88,14 @@ export const Skin = memo(() => {
           rApp.extension.activatedExtension(ThemeExtension.name);
         }}
       >
-        启用插件
+        启用主题插件
       </Button>
       <Button
         onClick={() => {
           rApp.extension.deactivatedExtension(ThemeExtension.name);
         }}
       >
-        禁用插件
+        禁用主题插件
       </Button>
     </div>
 

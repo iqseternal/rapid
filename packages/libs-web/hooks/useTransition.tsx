@@ -28,9 +28,6 @@ export type StartTransitionFunction = (...args: any[]) => Promise<void>;
  *
  */
 export function useTransition<StartTransitionFn extends StartTransitionFunction>(callback: StartTransitionFn, deps: DependencyList) {
-  const [normalState] = useNormalState({
-    times: 0
-  })
   const [shallowState] = useShallowReactive({
     isPending: false
   })

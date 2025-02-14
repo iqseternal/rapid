@@ -8,6 +8,7 @@ import { RdSKin } from '@/skin';
 export namespace Bus {
   export type BusEvent = {
 
+    'test': never;
 
 
   }

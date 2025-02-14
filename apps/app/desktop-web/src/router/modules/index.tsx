@@ -63,8 +63,10 @@ export const rootRoute = makeRoute({
   redirect: workbenchesRoute.meta.fullPath,
   component: <RootLayout />,
   children: [
-    loginRoute, registerRoute,
-    notFoundRoute, notRoleRoute,
+    loginRoute,
+    registerRoute,
+    notFoundRoute,
+    notRoleRoute,
     workbenchesRoute,
     workbenchesToolRoute
   ]

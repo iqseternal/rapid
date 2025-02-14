@@ -1,5 +1,14 @@
-/** @type {import("prettier").Config} */
-module.exports = {
+
+/**
+ * @type {import('prettier').Config}
+ */
+module.exports = ({
+
+	experimentalTernaries: false,
+
+
+
+
 	// 指定每个缩进级别的空格数
 	tabWidth: 2,
 	// 使用制表符而不是空格缩进行
@@ -36,4 +45,4 @@ module.exports = {
 	//对应的控制字符为 "\n" (LF) 和 "\r\n"(CRLF)。auto意为保持现有的行尾
 	// 换行符使用 lf 结尾是 可选值"<auto|lf|crlf|cr>"
 	endOfLine: 'auto',
-};
+})

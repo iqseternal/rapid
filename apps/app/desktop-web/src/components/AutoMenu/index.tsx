@@ -1,4 +1,4 @@
-import { classnames , getFirstScrollContainer } from '@rapid/libs-web/common';
+import { classnames, getFirstScrollContainer } from '@rapid/libs-web/common';
 import { useEventListener, useReactive, useThrottleHook, useShallowReactive, useThrottle } from '@rapid/libs-web/hooks';
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps, MenuProps } from 'antd';
@@ -90,34 +90,36 @@ const AutoContextMenu = memo((props: AutoMenuProps) => {
     // 'blur': close
   }, []);
 
-  return (<DropdownMenuOpenContext.Provider value={state.open}>
-    <Dropdown
-      open={state.open}
-      arrow={false}
-      trigger={['click']}
-      autoAdjustOverflow
-      mouseEnterDelay={0}
-      mouseLeaveDelay={0}
-      destroyPopupOnHide={false}
-      getPopupContainer={() => document.body}
-      onOpenChange={(value, info) => {
-        state.open = value;
-      }}
-      dropdownRender={() => <ContextMenu
-        menu={menu}
-        menuAttrs={menuAttrs}
-      />}
-      {...dropdownAttrs}
-      rootClassName={classnames(
-        styles.dropdownMenuRootWrapper,
-        dropdownAttrs.rootClassName
-      )}
-    >
-      <div>
-        {children}
-      </div>
-    </Dropdown>
-  </DropdownMenuOpenContext.Provider>)
+  return (
+    <DropdownMenuOpenContext.Provider value={state.open}>
+      <Dropdown
+        open={state.open}
+        arrow={false}
+        trigger={['click']}
+        autoAdjustOverflow
+        mouseEnterDelay={0}
+        mouseLeaveDelay={0}
+        destroyPopupOnHide={false}
+        getPopupContainer={() => document.body}
+        onOpenChange={(value, info) => {
+          state.open = value;
+        }}
+        dropdownRender={() => <ContextMenu
+          menu={menu}
+          menuAttrs={menuAttrs}
+        />}
+        {...dropdownAttrs}
+        rootClassName={classnames(
+          styles.dropdownMenuRootWrapper,
+          dropdownAttrs.rootClassName
+        )}
+      >
+        <div>
+          {children}
+        </div>
+      </Dropdown>
+    </DropdownMenuOpenContext.Provider>
+  )
 })
 
 export type AutoMenuType = typeof AutoContextMenu & {

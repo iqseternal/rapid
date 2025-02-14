@@ -1,6 +1,6 @@
 import type { ESLint } from 'eslint';
 
-const config: ESLint.ConfigData = {
+export default (<ESLint.ConfigData>{
   root: true,
   env: {
     es6: true,
@@ -1399,6 +1399,4 @@ const config: ESLint.ConfigData = {
      */
     'unicode-bom': 'off',
   }
-}
-
-export default config;
+});

@@ -71,9 +71,9 @@ export const Widget = memo((props: WidgetProps) => {
     loading: false,
     disabled: false,
 
-    onClick: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
-    onDoubleClick: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
-    onContextMenu: (() => {}) as (MouseEventHandler<HTMLDivElement> | undefined),
+    onClick: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
+    onDoubleClick: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
+    onContextMenu: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
   })
 
   if (normalState.loading !== loading) normalState.loading = loading;

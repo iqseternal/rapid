@@ -1,6 +1,5 @@
-import type { ESLint } from 'eslint';
-
-const config: ESLint.ConfigData = {
+/** @type {import('eslint').Linter.Config} */
+module.exports = ({
   root: true,
   env: {
     es6: true,
@@ -14,12 +13,10 @@ const config: ESLint.ConfigData = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-
     "plugin:react/recommended",
-
     'plugin:import/recommended',
-    // 'plugin:prettier/recommended',
-    // 'prettier',
+    'plugin:prettier/recommended',
+    'prettier',
   ],
   parserOptions: {
     ecmaVersion: 12,
@@ -36,73 +33,255 @@ const config: ESLint.ConfigData = {
     },
   },
   rules: {
-    'react/jsx-uses-react': 'error',
-    'react/jsx-uses-vars': 'error',
-    'react/react-in-jsx-scope': 'off',
+    // 'comma-dangle': 'off',
+    // 'arrow-parens': 'off',
+    // "function-paren-newline": 'off',
+    // "no-multiple-empty-lines": 'off',
+    // 'no-return-await': 'error',
+    // 'multiline-ternary': 'off',
+    // 'non-nullis': 'off',
+    // 'no-ignore': 'off',
+    // 'no-confirm': 'off',
+    'prettier/prettier': 'error',
+    // 'import/first': 'off',
+    // 'import/no-duplicates': 'warn',
+    // 'import/no-unresolved': 'off',
+    // 'import/namespace': 'off',
+    // 'import/default': 'off',
+    // 'import/no-named-as-default': 'off',
+    // 'import/no-named-as-default-member': 'off',
+    // 'import/named': 'off',
 
-    'comma-dangle': 'off',
-    'arrow-parens': 'off',
-    "function-paren-newline": 'off',
-    "no-multiple-empty-lines": 'off',
 
-    // js/ts
-    'no-return-await': 'error',
+    // =================================================================
+    // ================== ESLint-plugin-React Rules ====================
+    // =================================================================
+    'react/boolean-prop-naming': 'off',
+    'react/button-has-type': 'off',
+    'react/default-props-match-prop-types': 'off',
+    'react/destructuring-assignment': 'off',
+    'react/display-name': 'off',
+    'react/forbid-component-props': 'off',
+    'react/forbid-dom-props': 'off',
+    'react/forbid-elements': 'off',
+    'react/forbid-prop-types': 'off',
+    'react/forbid-foreign-prop-types': 'off',
+    'react/no-access-state-in-setstate': 'off',
+    'react/no-array-index-key': 'off',
+    'react/no-children-prop': 'off',
+    'react/no-danger': 'off',
+    'react/no-danger-with-children': 'off',
+    'react/no-deprecated': 'off',
+    'react/no-did-mount-set-state': 'off',
+    'react/no-did-mount-set-state': 'off',
+    'react/no-did-update-set-state': 'off',
+    'react/no-direct-mutation-state': 'off',
+    'react/no-find-dom-node': 'warn',
+    'react/no-is-mounted': 'warn',
+    'react/no-multi-comp': 'off',
+    'react/no-redundant-should-component-update': 'off',
+    'react/no-render-return-value': 'off',
+    'react/no-set-state': 'off',
+    'react/no-typos': 'off',
+    'react/no-string-refs': 'off',
+    'react/no-this-in-sfc': 'warn',
+    'react/no-unescaped-entities': 'off',
+    'react/no-unknown-property': 'off',
+    'react/no-unsafe': 'off',
+    'react/no-unused-prop-types': 'off',
+    'react/no-unused-state': 'off',
+    'react/no-will-update-set-state': 'off',
+    'react/prefer-es6-class': 'off',
+    'react/prefer-stateless-function': 'off',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'warn',
+    'react/require-default-props': 'off',
+    'react/require-optimization': 'off',
+    'react/require-render-return': 'off',
+    'react/self-closing-comp': 'off',
+    'react/sort-comp': 'off',
+    'react/sort-prop-types': 'off',
+    'react/style-prop-object': 'off',
+    'react/void-dom-elements-no-children': 'off',
+    'react/jsx-boolean-value': 'off',
+    'react/jsx-child-element-spacing': 'off',
+    'react/jsx-closing-bracket-location': 'off',
+    'react/jsx-closing-tag-location': 'off',
+    'react/jsx-curly-spacing': 'off',
+    'react/jsx-equals-spacing': 'off',
+    'react/jsx-filename-extension': 'off',
+    'react/jsx-first-prop-new-line': 'off',
+    'react/jsx-handler-names': 'off',
+    'react/jsx-indent': 'off',
+    'react/jsx-indent-props': 'off',
+    'react/jsx-key': 'off',
+    'react/jsx-max-depth': 'off',
+    'react/jsx-max-props-per-line': 'off',
+    'react/jsx-no-bind': 'off',
+    'react/jsx-no-comment-textnodes': 'off',
+    'react/jsx-no-construct': 'off',
+    'react/jsx-no-duplicate-props': 'off',
+    'react/jsx-no-literals': 'off',
+    'react/jsx-no-target-blank': 'off',
+    'react/jsx-no-undef': 'off',
+    'react/jsx-one-expression-per-line': 'off',
+    'react/jsx-curly-brace-presence': 'off',
+    'react/jsx-fragments': 'off',
+    'react/jsx-pascal-case': 'off',
+    'react/jsx-props-no-multi-spaces': 'off',
+    'react/jsx-sort-default-props': 'off',
+    'react/jsx-sort-props': 'off',
+    'react/jsx-space-before-closing': 'off',
+    'react/jsx-tag-spacing': 'off',
+    'react/jsx-uses-react': 'off',
+    'react/jsx-uses-vars': 'off',
+    'react/jsx-wrap-multilines': 'warn',
 
-    '@typescript-eslint/no-redeclare': 'error',
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-namespace': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/triple-slash-reference': 'off',
 
-    'multiline-ternary': 'off',
-    '@typescript-eslint/no-unnecessary-type-constraint': 'off',
-    'non-nullis': 'off',
-    '@typescript-eslint/ban-types': 'off',
-    '@typescript-eslint/prefer-as-const': 'off',
+    // =================================================================
+    // ==================== typescript-eslint Rules ====================
+    // =================================================================
+    '@typescript-eslint/adjacent-overload-signatures': 'error',
+    '@typescript-eslint/array-type': 'off',
+    '@typescript-eslint/await-thenable': 'off',
+    '@typescript-eslint/ban-ts-comment': ['error', {
+      'ts-expect-error': 'allow-with-description',
+      'ts-ignore': 'allow-with-description',
+      'ts-check': 'allow-with-description',
+      'ts-nocheck': 'allow-with-description'
+    }],
+    '@typescript-eslint/ban-tslint-comment': 'off',
+    '@typescript-eslint/class-literal-property-style': 'off',
+    '@typescript-eslint/class-methods-use-this': 'off',
+    '@typescript-eslint/consistent-generic-constructors': 'off',
+    '@typescript-eslint/consistent-indexed-object-style': 'off',
+    '@typescript-eslint/consistent-return': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/consistent-type-definitions': 'off',
+    '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/consistent-type-imports': 'off',
-    'no-ignore': 'off',
-
-    // best-practice
-    'no-confirm': 'off',
-
-    // ts
+    '@typescript-eslint/default-param-last': 'off',
+    '@typescript-eslint/dot-notation': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-member-accessibility': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/init-declarations': 'off',
+    '@typescript-eslint/max-params': 'off',
+    '@typescript-eslint/member-ordering': 'off',
+    '@typescript-eslint/method-signature-style': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/no-array-constructor': 'off',
+    '@typescript-eslint/no-array-delete': 'error',
+    '@typescript-eslint/no-base-to-string': 'warn',
+    '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/no-deprecated': 'warn',
+    '@typescript-eslint/no-dupe-class-members': 'off',
+    '@typescript-eslint/no-duplicate-enum-values': 'warn',
+    '@typescript-eslint/no-duplicate-type-constituents': 'warn',
+    '@typescript-eslint/no-dynamic-delete': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
+    '@typescript-eslint/no-empty-object-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-extra-non-null-assertion': 'error',
+    '@typescript-eslint/no-extraneous-class': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
+    '@typescript-eslint/no-for-in-array': 'off',
+    '@typescript-eslint/no-implied-eval': 'off',
+    '@typescript-eslint/no-import-type-side-effects': 'warn',
+    '@typescript-eslint/no-inferrable-types': 'off',
+    '@typescript-eslint/no-invalid-this': 'off',
+    '@typescript-eslint/no-invalid-void-type': 'off',
+    '@typescript-eslint/no-loop-func': 'off',
+    '@typescript-eslint/no-loss-of-precision': 'error',
+    '@typescript-eslint/no-magic-numbers': 'off',
+    '@typescript-eslint/no-meaningless-void-operator': 'off',
+    '@typescript-eslint/no-misused-new': 'off',
+    '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-misused-spread': 'off',
+    '@typescript-eslint/no-mixed-enums': 'off',
+    '@typescript-eslint/no-namespace': 'off',
+    '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
-    '@typescript-eslint/ban-ts-comment': ['off', { 'ts-ignore': false }],
-
-    // prettier
-    'prettier/prettier': 'off',
-
-    // import
-    'import/first': 'off',
-    'import/no-duplicates': 'warn',
-    'import/no-unresolved': 'off',
-    'import/namespace': 'off',
-    'import/default': 'off',
-    'import/no-named-as-default': 'off',
-    'import/no-named-as-default-member': 'off',
-    'import/named': 'off',
-
-    "@typescript-eslint/no-this-alias": [
+    '@typescript-eslint/no-non-null-assertion': 'warn',
+    '@typescript-eslint/no-redeclare': 'off',
+    '@typescript-eslint/no-redundant-type-constituents': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
+    '@typescript-eslint/no-restricted-imports': 'off',
+    '@typescript-eslint/no-restricted-types': 'off',
+    '@typescript-eslint/no-shadow': 'off',
+    '@typescript-eslint/no-this-alias': [
       "error",
       {
-        "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
-        "allowedNames": ["self", 'that']
+        "allowDestructuring": true,
+        "allowedNames": ["that", "self", "_this", "_that"]
       }
     ],
-    '@typescript-eslint/no-empty-object-type': 'off',
-
-
-
-
-
-
-
-
-
-
+    '@typescript-eslint/no-type-alias': 'off',
+    '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
+    '@typescript-eslint/no-unnecessary-condition': 'warn',
+    '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'off',
+    '@typescript-eslint/no-unnecessary-qualifier': 'off',
+    '@typescript-eslint/no-unnecessary-template-expression': 'off',
+    '@typescript-eslint/no-unnecessary-type-arguments': 'off',
+    '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+    '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-declaration-merging': 'off',
+    '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+    '@typescript-eslint/no-unsafe-function-type': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-type-assertion': 'off',
+    '@typescript-eslint/no-unsafe-unary-minus': 'error',
+    '@typescript-eslint/no-unused-expressions': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/no-useless-constructor': 'off',
+    '@typescript-eslint/no-useless-empty-export': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/no-wrapper-object-types': 'off',
+    '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+    '@typescript-eslint/only-throw-error': 'off',
+    '@typescript-eslint/parameter-properties': 'off',
+    '@typescript-eslint/prefer-as-const': 'warn',
+    '@typescript-eslint/prefer-destructuring': 'off',
+    '@typescript-eslint/prefer-enum-initializers': 'off',
+    '@typescript-eslint/prefer-find': 'off',
+    '@typescript-eslint/prefer-for-of': 'off',
+    '@typescript-eslint/prefer-function-type': 'off',
+    '@typescript-eslint/prefer-includes': 'off',
+    '@typescript-eslint/prefer-literal-enum-member': 'off',
+    '@typescript-eslint/prefer-namespace-keyword': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/prefer-optional-chain': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/prefer-readonly': 'off',
+    '@typescript-eslint/prefer-readonly-parameter-types': 'off',
+    '@typescript-eslint/prefer-reduce-type-parameter': 'off',
+    '@typescript-eslint/prefer-regexp-exec': 'off',
+    '@typescript-eslint/prefer-return-this-type': 'off',
+    '@typescript-eslint/prefer-string-starts-ends-with': 'off',
+    '@typescript-eslint/prefer-ts-expect-error': 'off',
+    '@typescript-eslint/promise-function-async': 'off',
+    '@typescript-eslint/related-getter-setter-pairs': 'off',
+    '@typescript-eslint/require-array-sort-compare': 'off',
+    '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    '@typescript-eslint/return-await': 'off',
+    '@typescript-eslint/sort-type-constituents': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/switch-exhaustiveness-check': 'off',
+    '@typescript-eslint/triple-slash-reference': 'off',
+    '@typescript-eslint/typedef': 'off',
+    '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/unified-signatures': 'off',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
 
     // =================================================================
     // ============================ Inner Rules ========================
@@ -1010,9 +1189,10 @@ const config: ESLint.ConfigData = {
 
     /**
      * 这条规则的目的是消除在同一范围内有多个声明的变量。
+     * @description 关闭, 因为此选项会与 ts 函数重载发生冲突.
      * @see https://eslint.org/docs/v8.x/rules/no-redeclare
      */
-    'no-redeclare': 'warn',
+    'no-redeclare': 'off',
 
     /**
      * 这条规则不允许在正则表达式字面上有多个空格。
@@ -1399,6 +1579,4 @@ const config: ESLint.ConfigData = {
      */
     'unicode-bom': 'off',
   }
-}
-
-export default config;
+});

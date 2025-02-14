@@ -25,6 +25,22 @@ type ExtractVectorEntries<Entries> = {
   [Key in keyof Entries as (Entries[Key] extends (infer U)[] ? Key : never)]: Entries[Key];
 }
 
+/**
+ * 提取列表的 entries, 在 interface {} 中, 只有值不为数组类型 U[], 时会被保留, 否则不在此类型中
+ * @description 与上一个 `ExtractVectorEntries` 相反
+ * @example
+ * type A = {
+ *    name: string;
+ *    age: number;
+ *    friends: any[];
+ * }
+ *
+ * type B = ExtractSingleEntries<A>; // { name: string;age: number; }
+ */
+type ExtractSingleEntries<Entries> = {
+  [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
+}
+
 interface MetadataManagerInnerStore {
   update: {}
 }
@@ -112,6 +128,14 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
     super.__setStore(() => {
       this.metadataMap.delete(metadataKey);
     })
+  }
+
+  /**
+   * 语义化方法, 作用与 defineMetadata 一致. 但是在此基础上排除了数据值类型
+   * @description 意为: 定义覆盖式的元数据
+   */
+  public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
+    this.defineMetadata(metadataKey, metadata);
   }
 
   /**
