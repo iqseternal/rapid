@@ -114,7 +114,9 @@ const AutoContextMenu = memo((props: AutoMenuProps) => {
           dropdownAttrs.rootClassName
         )}
       >
-        <div>
+        <div
+          className={commonStyles.appRegionNo}
+        >
           {children}
         </div>
       </Dropdown>

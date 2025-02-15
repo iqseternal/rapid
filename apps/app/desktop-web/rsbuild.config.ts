@@ -19,134 +19,123 @@ const envBuilder = new EnvBuilder({
 
 const { IS_PROD, IS_DEV } = envBuilder.toEnvs();
 
-const rsbuildConfig = defineConfig(({ env, envMode, command }) => {
-
-  return {
-    source: {
-      entry: {
-        index: join(__dirname, './src/index.tsx')
-      },
-      alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths),
-      tsconfigPath: join(__dirname, './tsconfig.web.json')
+const rsbuildConfig = defineConfig({
+  source: {
+    entry: {
+      index: join(__dirname, './src/index.tsx')
     },
-    html: {
-      meta: {
+    alias: envBuilder.defineAlias(__dirname, tsConfigJson.compilerOptions.paths),
+    tsconfigPath: join(__dirname, './tsconfig.web.json')
+  },
+  html: {
+    meta: {
 
+    }
+  },
+  plugins: [
+    pluginSass(),
+    pluginStyledComponents(),
+    pluginTypedCSSModules(),
+    pluginReact(),
+    pluginSourceBuild(),
+    IS_PROD && pluginTailwindCSS()
+  ],
+  server: {
+    port: 3002,
+    proxy: {
+      '/rapi': {
+        pathRewrite: (pathname, req) => {
+          if (pathname.startsWith('/rapi')) return pathname.replace('/rapi', '/api');
+          return pathname;
+        },
+        changeOrigin: true,
+
+        target: 'http://localhost:3000',
       }
-    },
-    plugins: [
-      pluginSass(),
-      pluginStyledComponents(),
-      pluginTypedCSSModules(),
-      pluginReact(),
-      pluginSourceBuild(),
-      IS_PROD && pluginTailwindCSS()
+    }
+  },
+  output: {
+    assetPrefix: '.',
+    charset: 'utf8',
+    cleanDistPath: true,
+    copy: [
+
     ],
-    server: {
-      port: 3002,
-      proxy: {
-        '/rapi': {
-          pathRewrite: (pathname, req) => {
-            if (pathname.startsWith('/rapi')) return pathname.replace('/rapi', '/api');
-            return pathname;
+    cssModules: {
+      auto: true,
+      exportLocalsConvention: 'asIs',
+      exportGlobals: false,
+      mode: 'local',
+      namedExport: false,
+    },
+    distPath: {
+      root: join(__dirname, '../out/renderer'),
+    },
+
+    emitAssets: true,
+    externals: {
+
+    },
+    filenameHash: true,
+    injectStyles: IS_DEV,
+    legalComments: 'linked',
+    manifest: true,
+
+    minify: {
+      js: IS_PROD,
+      jsOptions: {
+        extractComments: false,
+        minimizerOptions: {
+          minify: IS_PROD,
+          compress: {
+            drop_console: IS_PROD,
+            drop_debugger: IS_PROD
           },
-          changeOrigin: true,
-
-          target: 'http://localhost:3000',
-        }
-      }
-    },
-    output: {
-      assetPrefix: '.',
-      charset: 'utf8',
-      cleanDistPath: true,
-      copy: [
-
-      ],
-      cssModules: {
-        auto: true,
-        exportLocalsConvention: 'asIs',
-        exportGlobals: false,
-        mode: 'local',
-        namedExport: false,
-      },
-      defaultDatUriLimit: {
-        svg: 4096,
-        font: 4096,
-        image: 4096,
-        media: 4096,
-        assets: 4096,
-      },
-      distPath: {
-        root: join(__dirname, '../out/renderer'),
-      },
-
-      emitAssets: true,
-      emitCss: true,
-      externals: {
-
-      },
-      filenameHash: true,
-      injectStyles: IS_DEV,
-      legalComments: 'linked',
-      manifest: true,
-
-      minify: {
-        js: IS_PROD,
-        jsOptions: {
-          extractComments: false,
-          minimizerOptions: {
-            minify: IS_PROD,
-            compress: {
-              drop_console: IS_PROD,
-              drop_debugger: IS_PROD
-            },
-            mangle: {
-              keep_classnames: IS_DEV,
-              keep_fnames: IS_DEV,
-              keep_private_props: IS_DEV,
-              reserved: []
-            },
-            format: {
-              comments: IS_DEV ? 'all' : false,
-              ecma: 2016
-            }
-          }
-        },
-        css: IS_PROD,
-        cssOptions: {
-          minimizerOptions: {
-
+          mangle: {
+            keep_classnames: IS_DEV,
+            keep_fnames: IS_DEV,
+            keep_private_props: IS_DEV,
+            reserved: []
+          },
+          format: {
+            comments: IS_DEV ? 'all' : false,
+            ecma: 2016
           }
         }
       },
-      polyfill: 'off',
-      sourceMap: {
-        js: IS_DEV ? void 0 : false,
-        css: IS_DEV,
+      css: IS_PROD,
+      cssOptions: {
+        minimizerOptions: {
+
+        }
       }
     },
-    performance: {
-      removeMomentLocale: true,
-    },
-    tools: {
-      postcss: {
-        postcssOptions: {
-          plugins: [
-            // 为什么配置了 tailwind.config.ts 还需要在这里配置
-            // 因为项目 cwd 为 /apps/app 并非 /apps/app/desktop-web
-            // 所以为了修正路径, 需要在这里配置
-            // tailwind.config.ts 文件是为了让编辑器读取配置, 从而进行类名提示
-            tailwindcss({
-              content: [
-                './desktop-web/src/**/*.{html,js,ts,jsx,tsx}'
-              ],
-            }),
-          ],
-        },
+    polyfill: 'off',
+    sourceMap: {
+      js: IS_DEV ? void 0 : false,
+      css: IS_DEV,
+    }
+  },
+  performance: {
+    removeMomentLocale: true,
+  },
+  tools: {
+    postcss: {
+      postcssOptions: {
+        plugins: [
+          // 为什么配置了 tailwind.config.ts 还需要在这里配置
+          // 因为项目 cwd 为 /apps/app 并非 /apps/app/desktop-web
+          // 所以为了修正路径, 需要在这里配置
+          // tailwind.config.ts 文件是为了让编辑器读取配置, 从而进行类名提示
+          tailwindcss({
+            content: [
+              './desktop-web/src/**/*.{html,js,ts,jsx,tsx}'
+            ],
+          }),
+        ],
       },
     },
-  }
+  },
 })
 
 export default rsbuildConfig;

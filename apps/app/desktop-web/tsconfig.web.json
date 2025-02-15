@@ -46,7 +46,6 @@
       "@views/*": ["src/views/*"],
       "@pages/*": ["src/pages/*"],
       "@libs/*": ["src/libs/*"],
-      "@meta/*": ["src/meta/*"],
       "@scss/*": ["src/scss/*"],
       "@/*": ["src/*", "../desktop-node/src/*"]
     }

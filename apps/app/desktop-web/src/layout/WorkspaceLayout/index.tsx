@@ -1,15 +1,163 @@
-import { useRef, memo } from 'react';
+import { useRef, memo, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { FullSize } from '@rapid/libs-web/styled';
+import { FlexRowStart, FullSize } from '@rapid/libs-web/styled';
 import { useFadeIn } from '../../libs/hooks';
 import { NavigationBar } from './cpts';
-import { useAnimationClassSelector } from '@scss/common';
+import { commonStyles, useAnimationClassSelector } from '@scss/common';
 import { Guards } from '@/guards';
-import { classnames } from '@rapid/libs-web';
+import { classnames, useMaintenanceStack, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
+import { menus } from '@/menus';
+import { isUndefined } from '@rapid/libs';
 
 import Header from '@components/Header';
+import AutoMenu from '@components/AutoMenu';
+import IconFont from '@components/IconFont';
+
+/**
+ * 左侧收纳的文件菜单
+ * @returns
+ */
+const MaintenanceMenus = memo(() => {
+  const headerFileMenu = useZustandHijack(menus.headerFileMenu);
+  const headerEditMenu = useZustandHijack(menus.headerEditMenu);
+  const headerViewMenu = useZustandHijack(menus.headerViewMenu);
+  const headerHelpMenu = useZustandHijack(menus.headerHelpMenu);
+
+  // 菜单
+  const { maintenanceStack, storageStack, otherStack, pushMaintenanceStack, popMaintenanceStack } = useMaintenanceStack({
+    maintenanceStack: [
+      headerFileMenu, headerEditMenu, headerViewMenu, headerHelpMenu
+    ],
+    otherStack: [] as ({ sourceWidth: number; calcWidth: number; } | undefined)[],
+  });
+  // 菜单容器
+  const menusContainerRef = useRef<HTMLDivElement>(null);
+
+  //
+  const [statusState] = useShallowReactive({
+    isCalcDone: false
+  })
+
+  // resizeObserver
+  const [resizeObserver] = useResizeObserver(menusContainerRef, () => {
+    const menusContainer = menusContainerRef.current;
+    if (!menusContainer) return;
+
+    // 什么条件添加到展示栈中
+    pushMaintenanceStack((_, other) => {
+      if (!other) return false;
+      return menusContainer.clientWidth >= other.calcWidth;
+    });
+
+    popMaintenanceStack((_, other) => {
+      if (!other) return false;
+      return menusContainer.clientWidth < other.calcWidth;
+    });
+  }, []);
+
+  useEffect(() => {
+
+    return () => {
+      resizeObserver.disconnect();
+    }
+  }, []);
+
+  // 计算元素宽度 以及 它距离最作放的距离
+  useEffect(() => {
+    if (!menusContainerRef.current) return;
+
+    let columnGap = parseInt(getComputedStyle(menusContainerRef.current).columnGap);
+    if (isNaN(columnGap)) columnGap = 0;
+
+    for (let i = 0; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
+      const child = menusContainerRef.current.children[i];
+      if (!(child instanceof HTMLElement)) continue;
+      if (!otherStack[i]) otherStack[i] = { sourceWidth: child.clientWidth, calcWidth: 0 };
+    }
+    if (otherStack.length) {
+      if (otherStack[0]) otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
+    }
+
+    for (let i = 1; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
+      if (otherStack.length === 0) continue;
+
+      if (isUndefined(otherStack)) continue;
+      if (isUndefined(otherStack?.[i])) continue;
+      if (isUndefined(otherStack?.[i - 1])) continue;
+
+      otherStack[i]!.calcWidth = otherStack[i - 1]!.calcWidth + columnGap + otherStack[i]!.sourceWidth;
+    }
+
+    statusState.isCalcDone = true;
+
+    return () => {
+      otherStack.fill(void 0);
+      statusState.isCalcDone = false;
+    }
+  }, []);
+
+  return (
+    <FlexRowStart
+      ref={menusContainerRef}
+      className={classnames(
+        'py-0.5 h-full',
+        !statusState.isCalcDone && 'opacity-0'
+      )}
+    >
+      {maintenanceStack.map((menu, index) => {
+        return <AutoMenu
+          key={`menu.key ${index}`}
+          menu={menu.children}
+          dropdownAttrs={{
+            className: 'h-full'
+          }}
+        >
+          <div
+            className={classnames(
+              commonStyles.appRegionNo,
+              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
+            )}
+          >
+            {menu.label}
+          </div>
+        </AutoMenu>
+      })}
+      {storageStack.length > 0 && (
+        <AutoMenu
+          menu={storageStack.map(menu => {
+            return {
+              key: menu.key,
+              label: <AutoMenu.SubMenu
+                icon={menu.icon}
+                label={menu.label}
+              />,
+              children: menu.children
+            }
+          })}
+          dropdownAttrs={{
+            className: 'h-full'
+          }}
+        >
+          <div
+            className={classnames(
+              commonStyles.appRegionNo,
+              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
+            )}
+          >
+            <IconFont
+              icon='MenuOutlined'
+              className={classnames(
+                commonStyles.appRegionNo
+              )}
+            />
+          </div>
+        </AutoMenu>
+      )}
+    </FlexRowStart>
+  )
+})
 
 /**
  * 工作区视图隔离
@@ -51,6 +199,14 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
   });
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
+
+  useEffect(() => {
+    rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+
+    return () => {
+      rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+    }
+  }, []);
 
   return (
     <FullSize>

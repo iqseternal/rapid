@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactElement, ReactNode } from 'react';
 import type { ExtensionManager, MetadataManager, Extension } from '@rapid/extensions';
 import { RdSKin } from '@/skin';
 
@@ -25,8 +25,14 @@ export namespace Metadata {
      */
     'functional.theme.variables.transformer': ((variables: RdSKin.CssVariablesDeclaration) => RdSKin.CssVariablesDeclaration)[];
 
+    /**
+     * ui - 布局-header-控制 控件
+     */
+    'ui.layout.header.controller.widgets': ComponentType[];
 
-
+    'ui.layout.header.menu.before': ComponentType[];
+    'ui.layout.header.menu.content': ComponentType[];
+    'ui.layout.header.menu.after': ComponentType[];
   }
 }
 
