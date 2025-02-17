@@ -61,7 +61,7 @@ export const Header = memo((props: HeaderProps) => {
         </div>
 
         <div
-          className={'cursor-default w-max h-full flex items-center flex-auto max-w-full overflow-hidden select-none'}
+          className={'cursor-default w-full h-full flex items-center flex-auto max-w-full overflow-hidden select-none'}
         >
           <div
             className={classnames(
@@ -98,7 +98,7 @@ export const Header = memo((props: HeaderProps) => {
         )}
       >
         <div
-          className='w-full flex items-center'
+          className='w-full flex flex-auto items-center'
         >
           {controllerBeforeContents && (controllerBeforeContents.map((BeforeContent, index) => (<BeforeContent key={index} />)))}
         </div>
