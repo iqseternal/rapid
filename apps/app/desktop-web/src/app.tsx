@@ -1,6 +1,7 @@
 import { ConfigProvider, App } from 'antd';
 import { memo, useLayoutEffect } from 'react';
 import { RdSKin } from './skin';
+import { Toaster } from 'react-hot-toast';
 
 import RouterContext from './router';
 import REmpty from '@components/Empty';
@@ -52,7 +53,6 @@ const RapidAppContext = memo(() => {
       card={{
         style: {
 
-
         }
       }}
       message={{
@@ -62,6 +62,15 @@ const RapidAppContext = memo(() => {
     >
       <App
         className='w-full h-full'
+        message={{
+          maxCount: 5,
+          getContainer: () => document.body
+        }}
+        notification={{
+          maxCount: 5,
+          getContainer: () => document.body,
+          placement: 'bottomRight'
+        }}
         style={{
           color: cssVars.primaryTextColor,
           backgroundColor: cssVars.thirdBackgroundColor
@@ -69,6 +78,10 @@ const RapidAppContext = memo(() => {
       >
         <RouterContext />
       </App>
+
+      <Toaster
+        position='bottom-right'
+      />
     </ConfigProvider>
   )
 })

@@ -10,20 +10,22 @@ import { authHasAuthorizedSync, useUserStore, userActions } from '@/features';
 import { rApi } from '@/api';
 import { useRetrieveRoute } from '@/router';
 import { commonStyles } from '@scss/common';
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useLayoutEffect } from 'react';
 import { Subfield } from '@rapid/libs-web/components';
+import { WindowsCloseWindowWidget, WindowsMinWindowWidget } from '@components/Header/components';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@components/Header';
 import Logo from '@components/Logo';
 import Widget from '@components/Widget';
+import toast from 'react-hot-toast';
 
 export const Login = memo(() => {
   const navigate = useNavigate();
 
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
 
-  const { message } = App.useApp();
+  const { message, notification } = App.useApp();
 
   const [loginPending, login] = useTransition(async () => {
     const [loginErr] = await toNil(userActions.userLogin({
@@ -53,6 +55,17 @@ export const Login = memo(() => {
     await ipcActions.windowSetSize({ width: 850, height: 550 });
     await ipcActions.windowResizeAble({ resizeAble: false });
   });
+
+  useLayoutEffect(() => {
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+
+    return () => {
+
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
+    }
+  }, []);
 
   return (
     <FullSize>
@@ -90,9 +103,19 @@ export const Login = memo(() => {
           >
             注册
           </Button>
+
           <Widget
             tipText='切换语言包'
             icon={'UserAddOutlined'}
+            onClick={() => {
+              // toast.success('Hello');
+
+              notification.success({
+                message: '欢迎',
+                description: 'Welcome',
+                placement: 'bottomRight'
+              });
+            }}
           />
         </Subfield>
       </Subfield>

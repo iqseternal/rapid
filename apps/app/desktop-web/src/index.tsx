@@ -12,14 +12,11 @@ import './tailwind.css';
 
 // TODO: 建议动态获取 KEY
 ;(async () => {
-
-
   requestAnimationFrame(() => {
 
     rApp.extension.registerExtension(ThemeExtension);
   })
 })();
-
 
 // ===========================================================================================
 const rootContainer = document.getElementById('root')!;

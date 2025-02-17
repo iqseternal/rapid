@@ -292,7 +292,7 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
   /**
    * 使用最后一次注册的元数据
    */
-  public useLastMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
+  public useLatestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
     const metadata = this.useMetadata(metadataKey);
     if (metadata && Array.isArray(metadata)) return metadata[metadata.length - 1] ?? null;
     return null;

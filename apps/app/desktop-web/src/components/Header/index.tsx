@@ -27,10 +27,9 @@ export const Header = memo((props: HeaderProps) => {
   const menuContents = rApp.metadata.useMetadata('ui.layout.header.menu.content');
   const menuAfterContents = rApp.metadata.useMetadata('ui.layout.header.menu.after');
 
-  const HeaderMainContent = rApp.metadata.useLastMetadataInVector('ui.layout.header.main.content');
+  const HeaderMainContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
 
   const controllerBeforeContents = rApp.metadata.useMetadata('ui.layout.header.controller.before');
-
 
   const controllerOtherWidgets = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.others');
   const MinWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.min');
