@@ -56,7 +56,7 @@ export const Login = memo(() => {
 
   return (
     <FullSize>
-      <Header isPane />
+      <Header />
 
       <Subfield
         className='flex space-around'

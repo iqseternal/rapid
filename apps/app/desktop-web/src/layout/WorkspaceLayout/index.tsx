@@ -1,4 +1,4 @@
-import { useRef, memo, useEffect } from 'react';
+import { useRef, memo, useEffect, useLayoutEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { FlexRowStart, FullSize } from '@rapid/libs-web/styled';
@@ -11,9 +11,13 @@ import { useThemeStore } from '@/features';
 import { menus } from '@/menus';
 import { isUndefined } from '@rapid/libs';
 
+import { WindowsCloseWindowWidget, WindowsDebugWidget, WindowsMinWindowWidget, WindowsReductionWindowWidget } from '@components/Header/components';
+
 import Header from '@components/Header';
 import AutoMenu from '@components/AutoMenu';
 import IconFont from '@components/IconFont';
+import Logo from '@components/Logo';
+import Widget from '@components/Widget';
 
 /**
  * 左侧收纳的文件菜单
@@ -200,10 +204,38 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    rApp.metadata.defineMetadata('ui.layout.header.icon', Logo);
+
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+
+    const A = () => <Widget icon='UserAddOutlined' />;
+    const B = () => <Widget icon='BugTwoTone' />;
+    const C = () => <Widget icon='CarTwoTone' />;
+
+
+    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', A);
+    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', B);
+    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', C);
+
     rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
 
     return () => {
+      rApp.metadata.delMetadata('ui.layout.header.icon');
+
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.reduction');
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
+
+
+      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', A);
+      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', B);
+      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', C);
+
       rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
     }
   }, []);

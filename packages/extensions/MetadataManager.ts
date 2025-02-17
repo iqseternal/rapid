@@ -288,6 +288,16 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
     return normalState.data;
   }
 
+
+  /**
+   * 使用最后一次注册的元数据
+   */
+  public useLastMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
+    const metadata = this.useMetadata(metadataKey);
+    if (metadata && Array.isArray(metadata)) return metadata[metadata.length - 1] ?? null;
+    return null;
+  }
+
   /**
    * 获取到所有定义的元数据
    */

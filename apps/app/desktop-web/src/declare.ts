@@ -25,14 +25,31 @@ export namespace Metadata {
      */
     'functional.theme.variables.transformer': ((variables: RdSKin.CssVariablesDeclaration) => RdSKin.CssVariablesDeclaration)[];
 
-    /**
-     * ui - 布局-header-控制 控件
-     */
-    'ui.layout.header.controller.widgets': ComponentType[];
+
+
+
+    'ui.layout.header.icon': ComponentType;
 
     'ui.layout.header.menu.before': ComponentType[];
     'ui.layout.header.menu.content': ComponentType[];
     'ui.layout.header.menu.after': ComponentType[];
+
+    'ui.layout.header.main.content': ComponentType[];
+
+
+
+    'ui.layout.header.controller.before': ComponentType[];
+
+    /**
+     * ui - 布局-header-控制 控件
+     */
+    'ui.layout.header.controller.widgets.others': ComponentType[];
+
+    'ui.layout.header.controller.widgets.min': ComponentType;
+    'ui.layout.header.controller.widgets.reduction': ComponentType;
+    'ui.layout.header.controller.widgets.close': ComponentType;
+
+    'ui.layout.header.controller.after': ComponentType[];
   }
 }
 
