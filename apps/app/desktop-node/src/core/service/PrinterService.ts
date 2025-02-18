@@ -54,7 +54,7 @@ export class PrinterService {
    * 打印
    */
   public print(...message: unknown[]) {
-    print(...this.getPrintInfoMessageStyleArr(...message));
+    print(...message);
   }
 
   /**

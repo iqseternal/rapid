@@ -1,88 +1,10 @@
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { MetadataInnerZustandStoreManager } from './MetadataInnerZustandStoreManager';
+import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } from './declare';
 
-/**
- * 从数组中提取出元素的类型
- * @example
- * type A = number[];
- * type B = ExtractElInArray<A>; // number
- */
-type ExtractElInArray<T> = T extends (infer U)[] ? U : never;
 
-/**
- * 提取列表的 entries, 在 interface {} 中, 只有值为数组类型 U[], 时会被保留, 否则不在此类型中
- * @example
- * type A = {
- *    name: string;
- *    age: number;
- *    friends: any[];
- * }
- *
- * type B = ExtractVectorEntries<A>; // { friends: any[]; }
- */
-type ExtractVectorEntries<Entries> = {
-  [Key in keyof Entries as (Entries[Key] extends (infer U)[] ? Key : never)]: Entries[Key];
-}
-
-/**
- * 提取列表的 entries, 在 interface {} 中, 只有值不为数组类型 U[], 时会被保留, 否则不在此类型中
- * @description 与上一个 `ExtractVectorEntries` 相反
- * @example
- * type A = {
- *    name: string;
- *    age: number;
- *    friends: any[];
- * }
- *
- * type B = ExtractSingleEntries<A>; // { name: string;age: number; }
- */
-type ExtractSingleEntries<Entries> = {
-  [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
-}
-
-interface MetadataManagerInnerStore {
-  update: {}
-}
-
-class MetadataInnerZustandStoreManager {
-  private readonly store = create<MetadataManagerInnerStore>()(
-    immer(() => {
-      return {
-        update: {}
-      }
-    })
-  )
-
-  /**
-   * 更新当前的 store, 会导致状态库的组件更新触发
-   */
-  protected __updateStore() {
-    this.store.setState({ update: {} });
-  }
-
-  /**
-   * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
-   */
-  protected __useStore() {
-    return this.store(store => store.update);
-  }
-
-  /**
-   * 添加订阅函数
-   */
-  protected __subscribe(listener: () => void): (() => void) {
-    return this.store.subscribe(listener);
-  }
-
-  /**
-   * set Store, 在一个会触发状态库组件更新的回调函数中进行操作
-   */
-  protected __setStore(setStoreFunction: () => void) {
-    setStoreFunction();
-    this.__updateStore();
-  }
-}
 
 /**
  * 元数据, 在页面中组件的变化可能相距甚远
@@ -96,6 +18,8 @@ class MetadataInnerZustandStoreManager {
 export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
 
+
+
   /**
    * 定义 store 元数据, 元数据可以是任何东西
    * @example
@@ -107,6 +31,12 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     super.__setStore(() => {
       this.metadataMap.set(metadataKey, metadata);
+      super.__noticeMetadataStoreChangeEffects({
+        action: 'Define',
+        type: 'All',
+        metadataKey: metadataKey,
+        metadata: metadata
+      })
     })
   }
 
@@ -125,8 +55,16 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    * metadata.delMetadata('example-key');
    */
   public delMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): void {
+    if (!this.hasMetadata(metadataKey)) return;
+
     super.__setStore(() => {
       this.metadataMap.delete(metadataKey);
+      super.__noticeMetadataStoreChangeEffects({
+        action: 'Remove',
+        type: 'All',
+        metadataKey: metadataKey,
+        metadata: this.metadataMap.get(metadataKey)
+      })
     })
   }
 
@@ -135,7 +73,15 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    * @description 意为: 定义覆盖式的元数据
    */
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
-    this.defineMetadata(metadataKey, metadata);
+    super.__setStore(() => {
+      this.metadataMap.set(metadataKey, metadata);
+      super.__noticeMetadataStoreChangeEffects({
+        action: 'Define',
+        type: 'Single',
+        metadataKey: metadataKey,
+        metadata: metadata
+      })
+    })
   }
 
   /**
@@ -148,7 +94,15 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    */
   public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
     if (!this.hasMetadata(metadataKey)) {
-      this.defineMetadata(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
+      super.__setStore(() => {
+        this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
+        super.__noticeMetadataStoreChangeEffects({
+          action: 'Define',
+          type: 'Vector',
+          metadataKey: metadataKey,
+          metadata: [metadata] as MetadataEntries[MetadataKey]
+        })
+      })
       return;
     }
 
@@ -157,12 +111,25 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
       throw new Error(`defineMetadataInVector: current metadata value is not an array`);
     }
 
-    // 已经注册
-    if (vector.some(v => v === metadata)) return;
+    const vectorSet = new Set(vector);
+    if (vectorSet.has(metadata)) return;
+    vectorSet.add(metadata);
 
-    vector.push(metadata);
-    this.defineMetadata(metadataKey, vector as MetadataEntries[MetadataKey]);
-    super.__updateStore();
+    // 已经注册
+    // if (vector.some(v => v === metadata)) return;
+    // vector.push(metadata);
+
+    super.__setStore(() => {
+      const metadata = Array.from(vectorSet) as MetadataEntries[MetadataKey];
+
+      this.metadataMap.set(metadataKey, metadata);
+      super.__noticeMetadataStoreChangeEffects({
+        action: 'Define',
+        type: 'Vector',
+        metadataKey: metadataKey,
+        metadata: metadata
+      })
+    })
   }
 
   /**
@@ -182,17 +149,33 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
     }
 
     if (vector.length === 0) {
-      this.delMetadata(metadataKey);
+      this.metadataMap.delete(metadataKey);
       return;
     }
 
     const fVector = vector.filter(v => v !== metadata);
     if (fVector.length === 0) {
-      this.delMetadata(metadataKey);
+      super.__setStore(() => {
+        this.metadataMap.delete(metadataKey);
+        super.__noticeMetadataStoreChangeEffects({
+          action: 'Remove',
+          type: 'Vector',
+          metadataKey: metadataKey,
+          metadata: [] as MetadataEntries[MetadataKey]
+        })
+      })
       return;
     }
 
-    this.defineMetadata(metadataKey, fVector as MetadataEntries[MetadataKey]);
+    super.__setStore(() => {
+      this.metadataMap.delete(metadataKey);
+      super.__noticeMetadataStoreChangeEffects({
+        action: 'Remove',
+        type: 'Vector',
+        metadataKey: metadataKey,
+        metadata: fVector as MetadataEntries[MetadataKey]
+      })
+    })
   }
 
   /**
@@ -287,7 +270,6 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
 
     return normalState.data;
   }
-
 
   /**
    * 使用最后一次注册的元数据

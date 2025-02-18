@@ -25,9 +25,6 @@ export namespace Metadata {
      */
     'functional.theme.variables.transformer': ((variables: RdSKin.CssVariablesDeclaration) => RdSKin.CssVariablesDeclaration)[];
 
-
-
-
     'ui.layout.header.icon': ComponentType;
 
     'ui.layout.header.menu.before': ComponentType[];
@@ -35,8 +32,6 @@ export namespace Metadata {
     'ui.layout.header.menu.after': ComponentType[];
 
     'ui.layout.header.main.content': ComponentType[];
-
-
 
     'ui.layout.header.controller.before': ComponentType[];
 

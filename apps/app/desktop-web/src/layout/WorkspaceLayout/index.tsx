@@ -215,7 +215,6 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
     const B = () => <Widget icon='BugTwoTone' />;
     const C = () => <Widget icon='CarTwoTone' />;
 
-
     rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
     rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', A);
     rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', B);

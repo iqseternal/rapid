@@ -1,7 +1,8 @@
 import { ConfigProvider, App } from 'antd';
-import { memo, useLayoutEffect } from 'react';
+import { memo, useEffect, useLayoutEffect } from 'react';
 import { RdSKin } from './skin';
 import { Toaster } from 'react-hot-toast';
+import { useAsyncEffect } from '@rapid/libs-web';
 
 import RouterContext from './router';
 import REmpty from '@components/Empty';
