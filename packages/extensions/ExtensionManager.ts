@@ -232,13 +232,9 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
 
     // 激活扩展
     useAsyncLayoutEffect(async () => {
-
-      requestIdleCallback(() => {
-        for (const extension of normalState.extensions) {
-
-          extension?.onActivated?.();
-        }
-      })
+      for (const extension of normalState.extensions) {
+        extension?.onActivated?.();
+      }
     }, [normalState.extensions.length]);
 
     return [normalState];
