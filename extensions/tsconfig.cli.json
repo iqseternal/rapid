@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+
+    "types": [
+      "@types/node"
+    ]
+  },
+  "include": [
+    "./rapid-extension-cli.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

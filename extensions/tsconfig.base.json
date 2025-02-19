@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "baseUrl": ".",
+
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+
+    "jsx": "react-jsx",
+    "lib": [
+			"DOM",
+			"ESNext",
+			"ScriptHost",
+			"WebWorker",
+			"ESNext.WeakRef",
+			"ESNext.Disposable",
+			"ESNext.Symbol",
+			"ESNext.BigInt",
+			"ESNext.Array",
+			"ESNext.Collection"
+		],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    "esModuleInterop": true,
+    "isolatedModules": true,
+
+    "strict": false,
+    "strictNullChecks": true,
+
+    "experimentalDecorators": true,
+
+    "noEmitOnError": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowUnusedLabels": true
+  }
+}

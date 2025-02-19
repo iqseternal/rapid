@@ -1,0 +1,12 @@
+{
+  "name": "extensions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cli": "ts-node ./rapid-extension-cli.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

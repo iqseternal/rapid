@@ -2,8 +2,8 @@ import './inject';
 
 import { useState, StrictMode } from 'react';
 import { ThemeExtension } from '@/plugins/modules/theme';
-import { toColor, Ansi } from '@suey/printer';
 import type { MetadataStoreChangedPayload } from '@rapid/extensions';
+import { Ansi } from '@rapid/libs';
 
 import ReactDOM from 'react-dom/client';
 import RapidApp from './app';
@@ -31,11 +31,11 @@ import './tailwind.css';
     if (timer) clearTimeout(timer);
 
     timer = setTimeout(() => {
-      console.group(`${Ansi.AnsiTransformer.magenta}[Metadata Host${Ansi.AnsiTransformer.normal}${Ansi.AnsiTransformer.magenta}]${Ansi.AnsiTransformer.normal} ${Ansi.AnsiTransformer.grey}metadata store changed.`);
+      console.group(`${Ansi.magenta}[Metadata Host${Ansi.normal}${Ansi.magenta}]${Ansi.normal} ${Ansi.grey}metadata store changed.`);
 
       for (let i = 0;i < cached.length;i ++) {
         const temp = cached[i];
-        printer.print(`[${temp.action}] [${temp.type}] [${Ansi.AnsiTransformer.green}${String(temp.metadataKey)}${Ansi.AnsiTransformer.normal}]`);
+        printer.print(`[${temp.action}] [${temp.type}] [${Ansi.green}${String(temp.metadataKey)}${Ansi.normal}]`);
       }
 
       console.groupEnd();
@@ -54,7 +54,7 @@ import './tailwind.css';
 ;(async () => {
 
 
-  console.group(`${Ansi.AnsiTransformer.magenta}[Extension Host${Ansi.AnsiTransformer.normal}${Ansi.AnsiTransformer.magenta}]${Ansi.AnsiTransformer.normal} xxx activated`);
+  console.group(`${Ansi.magenta}[Extension Host${Ansi.normal}${Ansi.magenta}]${Ansi.normal} xxx activated`);
 })();
 
 // ===========================================================================================

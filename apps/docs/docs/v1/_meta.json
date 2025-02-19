@@ -5,6 +5,11 @@
     "activeMatch": "^/learn/"
   },
   {
+    "text": "拓展包",
+    "link": "/packages/typescript",
+    "activeMatch": "^/packages/"
+  },
+  {
     "text": "规范",
     "link": "/specification/typescript",
     "activeMatch": "^/specification/"
