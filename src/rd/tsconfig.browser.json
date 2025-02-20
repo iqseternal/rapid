@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "baseUrl": ".",
+
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    "esModuleInterop": true,
+    "isolatedModules": true,
+
+    "strict": false,
+    "strictNullChecks": true,
+
+    "experimentalDecorators": true,
+
+    "noEmitOnError": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowUnusedLabels": true,
+
+    "types": [
+      "@rapid/config/@types-web",
+      "@rapid/libs-web/@types",
+      "reflect-metadata"
+    ],
+
+    "paths": {
+      "rd/*": ["./*"],
+      "@components/*": ["code/browser/components/*"],
+      "@router/*": ["code/browser/router/*"],
+      "@views/*": ["code/browser/views/*"],
+      "@pages/*": ["code/browser/pages/*"],
+      "@libs/*": ["code/browser/libs/*"],
+      "@scss/*": ["code/browser/scss/*"],
+      "@/*": ["code/browser/*", "../desktop-node/src/*"]
+    }
+  },
+  "include": [
+    "./base/common/**/*.ts",
+    "./code/browser/**/*.ts",
+    "./code/browser/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "./**/*.test.ts"
+  ]
+}

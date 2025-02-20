@@ -1,0 +1,20 @@
+
+@use '@scss/mixin/index' as *;
+
+.styleBlock {
+
+  @include FlexCol;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+
+
+.workbenches {
+  width: 100%;
+
+}
+
+

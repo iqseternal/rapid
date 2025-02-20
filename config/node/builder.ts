@@ -1,9 +1,18 @@
-import { PlatformsOnDesktop, Env, RuntimePlatforms } from '../enums';
+import { PlatformsOnDesktop, Env, RuntimePlatforms, PlatformsOnBrowser, PlatformsOnMobile } from '../enums';
 import { join } from 'path';
 import { DIRS } from './dirs';
 import { EnvChecker } from './checker';
 
 export * from './index';
+
+/**
+ * 注入变量的接口, 用于创建注入变量集合
+ */
+export interface InjectionVariables {
+  CURRENT_PLATFORM: PlatformsOnDesktop | PlatformsOnMobile | PlatformsOnBrowser;
+  CURRENT_RUNTIME_PLATFORM: RuntimePlatforms;
+  CURRENT_ENV: Env;
+}
 
 export interface BuilderOptions {
   /**

@@ -1,0 +1,36 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Monorepo for Electron Program",
+  "private": true,
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "cross-env COMMAND=dev ts-node --project tsconfig.json ./rspack.ts",
+    "dev-vite": "electron-vite dev",
+    "dev:app": "cross-env COMMAND=dev DEV_SERVER_MODE=all ts-node --project tsconfig.json ./rspack.ts",
+    "dev-vite:app": "electron-vite dev --watch",
+    "builder": "cross-env COMMAND=build ts-node --project tsconfig.json ./rspack.ts",
+    "builder-vite": "electron-vite build",
+    "preview": "cross-env COMMAND=preview ts-node --project tsconfig.json ./rspack.ts",
+    "preview-vite": "electron-vite preview",
+    "build": "pnpm build:win",
+    "build:win": "pnpm builder && electron-builder --win --config",
+    "build-vite:win": "pnpm builder-vite && electron-builder --win --config",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rapid/config": "workspace:^",
+    "@rapid/desktop-preload": "workspace:^"
+  },
+  "dependencies": {
+    "@rapid/extensions": "workspace:^",
+    "@rapid/libs": "workspace:^",
+    "@rapid/libs-web": "workspace:^",
+    "@tldraw/assets": "3.5.0",
+    "@tldraw/sync": "3.5.0",
+    "tldraw": "3.5.0"
+  }
+}

@@ -7,3 +7,6 @@ packages:
   - config
   - apps/app/*
   - apps/*
+  - src/*
+  - src
+  - .rd-cache

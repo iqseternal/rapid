@@ -1,0 +1,7 @@
+{
+  "references": [
+    { "path": "./tsconfig.browser.json" },
+    { "path": "./tsconfig.main.json" },
+    { "path": "./tsconfig.sandbox.json" }
+  ]
+}

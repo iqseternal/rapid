@@ -4,9 +4,19 @@ import { FileService } from './FileService';
 import { TypeException } from '../exceptions';
 import { statSync } from 'fs';
 import { ConvertDataType, ConvertService } from './ConvertService';
-import { validateLocalPathHasDriveLetter } from '@rapid/validates';
 
 import * as fs from 'fs';
+
+/**
+ * 验证一个本地路径字符串是否带有盘符
+ * @param val
+ */
+export const validateLocalPathHasDriveLetter = (val: string) => {
+  const regex = /^[a-zA-Z]:.*$/;
+
+  return regex.test(val);
+}
+
 
 /** 内置目录的名称 */
 export type AppDirectoryName = Parameters<typeof app.getPath>[0];

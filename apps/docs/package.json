@@ -13,8 +13,7 @@
   "keywords": [],
   "author": "",
   "dependencies": {
-    "@rapid/libs-web": "workspace:^",
-    "@rapid/validates": "workspace:^"
+    "@rapid/libs-web": "workspace:^"
   },
   "devDependencies": {
     "@rapid/config": "workspace:^"

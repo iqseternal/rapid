@@ -1,0 +1,76 @@
+
+@mixin Flex {
+  display: flex;
+  align-items: center;
+  @content;
+}
+@mixin FlexFixed {
+  flex: 0 0 auto;
+}
+@mixin FlexAuto {
+  flex: 1 1 auto;
+}
+
+
+@mixin FlexRowStart {
+  @include Flex() {
+    justify-content: flex-start;
+  }
+  @content;
+}
+@mixin FlexRowEnd {
+  @include Flex() {
+    justify-content: flex-end;
+  }
+  @content;
+}
+@mixin FlexRowCenter {
+  @include Flex {
+    justify-content: center;
+  }
+  @content;
+}
+@mixin FlexRowSpaceBetween {
+  @include Flex {
+    justify-content: space-between;
+  }
+  @content;
+}
+@mixin FlexRowSpaceAround {
+  @include Flex {
+    justify-content: space-around;
+  }
+  @content;
+}
+
+
+@mixin FlexCol {
+  @include Flex {
+    flex-direction: column;
+  }
+  @content;
+}
+@mixin FlexColStart {
+  @include FlexCol() {
+    justify-content: flex-start;
+  }
+  @content;
+}
+@mixin FlexColEnd {
+  @include FlexCol() {
+    justify-content: flex-end;
+  }
+  @content;
+}
+@mixin FlexColSpaceBetween {
+  @include FlexCol {
+    justify-content: space-between;
+  }
+  @content;
+}
+@mixin FlexColSpaceAround {
+  @include FlexCol {
+    justify-content: space-around;
+  }
+  @content;
+}

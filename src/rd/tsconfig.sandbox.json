@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "composite": true,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "paths": {
+      "rd/*": ["./*"]
+    },
+    "target": "ES2020",
+    "noEmitOnError": true,
+    "module": "ES2020",
+    "lib": ["ESNext", "DOM"],
+    "experimentalDecorators": true,
+    "sourceMap": false,
+
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleResolution": "Node",
+    "types": [
+      "@rapid/config/@types"
+    ]
+  },
+  "include": [
+    "./index.ts",
+    "./server/**/*.ts",
+    "./actions/**/*.ts",
+    "./core/**/*.ts",
+    "../desktop-node/src"
+  ],
+  "exclude": [
+    "node_modules",
+    "../**/*.test.ts"
+  ]
+}
+

@@ -1,0 +1,84 @@
+/**
+ * ==========================================
+ * 用于编写动画, 多用于 transition 组件
+ * ==========================================
+ */
+
+// 主窗口路由切换的动画
+// ================================================================================
+.rootRouteSwitchAppear {
+  opacity: 0;
+}
+.rootRouteSwitchAppearActive {
+  opacity: 1;
+  transition: all 0.3s ease-out;
+}
+.rootRouteSwitchAppearDone {
+  opacity: 1;
+}
+
+.rootRouteSwitchEnter {
+  opacity: 0;
+}
+.rootRouteSwitchEnterActive {
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+.rootRouteSwitchEnterDone {
+  opacity: 1;
+}
+
+.rootRouteSwitchExit {
+  opacity: 1;
+}
+.rootRouteSwitchExitActive {
+  transition: all 0.1s ease-out;
+  opacity: 0;
+}
+
+.rootRouteSwitchExitDone {
+  opacity: 1;
+}
+
+
+// 工作区路由切换的动画
+// ================================================================================
+.workbenchesRouteSwitchAppear {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.workbenchesRouteSwitchAppearActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.3s ease-out;
+}
+.workbenchesRouteSwitchAppearDone {
+  opacity: 1;
+}
+
+.workbenchesRouteSwitchEnter {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.workbenchesRouteSwitchEnterActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 0.2s ease-out;
+}
+.workbenchesRouteSwitchEnterDone {
+  opacity: 1;
+}
+
+.workbenchesRouteSwitchExit {
+  transform: translateX(0);
+  opacity: 1;
+}
+.workbenchesRouteSwitchExitActive {
+  transform: translateX(30px);
+  transition: all 0.1s ease-out;
+  opacity: 0;
+}
+
+.workbenchesRouteSwitchExitDone {
+  opacity: 1;
+}

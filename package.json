@@ -34,7 +34,7 @@
     "directory": ""
   },
   "scripts": {
-    "app:dev": "pnpm -C ./apps/app run dev",
+    "app:dev": "pnpm -C ./src/rd run dev",
     "app:build": "pnpm -C ./apps/app run build",
     "app:preview": "pnpm -C ./apps/app run preview",
     "docs:dev": "pnpm -C ./apps/docs run dev",
@@ -65,6 +65,7 @@
     "test": "jest -o",
     "test:all": "jest",
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"
   },
   "config": {},
@@ -144,6 +145,7 @@
     "@typescript-eslint/parser": "8.23.0",
     "@vitejs/plugin-react": "4.3.1",
     "atomically": "2.0.3",
+    "bytenode": "1.5.6",
     "commander": "13.1.0",
     "concurrently": "8.2.2",
     "cross-env": "7.0.3",

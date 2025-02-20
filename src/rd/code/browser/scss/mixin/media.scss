@@ -1,0 +1,13 @@
+@use '../var.scss';
+
+@mixin ForMobile {
+  @media screen and (max-width: ($mobileSize - 1px)) { @content; }
+}
+
+@mixin ForPad {
+  @media screen and (min-width: $mobileSize) and (max-width: ($padSize - 1)) { @content; }
+}
+
+@mixin ForPc {
+  @media screen and (min-width: $pcSize) { @content; }
+}
