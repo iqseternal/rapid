@@ -19,8 +19,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@rapid/config": "workspace:^",
-    "@rapid/desktop-preload": "workspace:^"
+    "@rapid/config": "workspace:^"
   },
   "dependencies": {
     "@rapid/extensions": "workspace:^",
