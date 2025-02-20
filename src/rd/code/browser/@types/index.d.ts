@@ -1,3 +1,5 @@
+/// <reference types="./override.d.ts" />
+/// <reference types="./sandbox.d.ts" />
 import type * as RA from '../declare';
 import type { RdSKin } from '@/skin';
 
