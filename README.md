@@ -40,10 +40,10 @@ $ pnpm install
 # 默认在 .npmrc 中配置了代理地址, 请检查代理地址是否一致.
 
 # 开发
-$ pnpm app:dev
+$ pnpm dev
 
 # 构建
-$ pnpm app:build
+$ pnpm builder-win
 
 # 本程序还包括其他项目, 例如 doc, website
 
