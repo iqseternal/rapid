@@ -40,8 +40,6 @@
     "app.ts"
   ],
   "exclude": [
-    "src/**/*.d.ts",
-    "node_modules",
-    "./**/*.test.ts"
+    "node_modules"
   ]
 }

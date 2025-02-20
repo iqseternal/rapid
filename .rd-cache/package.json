@@ -5,18 +5,7 @@
   "private": true,
   "main": "out/main/index.js",
   "scripts": {
-    "dev": "cross-env COMMAND=dev ts-node --project tsconfig.rspack.json ./rspack.ts",
-    "dev-vite": "electron-vite dev",
-    "dev:app": "cross-env COMMAND=dev DEV_SERVER_MODE=all ts-node --project tsconfig.node.json ./rspack.ts",
-    "dev-vite:app": "electron-vite dev --watch",
-    "builder": "cross-env COMMAND=build ts-node --project tsconfig.node.json ./rspack.ts",
-    "builder-vite": "electron-vite build",
-    "preview": "cross-env COMMAND=preview ts-node --project tsconfig.node.json ./rspack.ts",
-    "preview-vite": "electron-vite preview",
-    "build": "pnpm build:win",
-    "build:win": "pnpm builder && electron-builder --win --config",
-    "build-vite:win": "pnpm builder-vite && electron-builder --win --config",
-    "typecheck": "tsc --noEmit -p tsconfig.node.json"
+    "builder-win": "electron-builder --win --config"
   },
   "keywords": [],
   "author": "",

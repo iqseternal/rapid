@@ -5,7 +5,7 @@ import { UnlockTwoTone, UserAddOutlined } from '@ant-design/icons';
 
 import { Button, Popover } from 'antd';
 
-import Widget from '@components/Widget';
+import Widget from '@/components/Widget';
 
 const I18nChangeLanguageWidget = memo(() => {
 

@@ -1,5 +1,5 @@
 
-import type { AppStoreType as RAppStoreType } from '../../desktop-node/src/store';
+import type { AppStoreType as RAppStoreType } from 'rd/base/node/store';
 
 import { makeInvokeActions } from '../actions/makeActionApi';
 import type { HandleHandlers } from './electron';

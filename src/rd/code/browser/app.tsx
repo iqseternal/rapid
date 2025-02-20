@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { useAsyncEffect } from '@rapid/libs-web';
 
 import RouterContext from './router';
-import REmpty from '@components/Empty';
+import REmpty from '@/components/Empty';
 
 /**
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
@@ -110,7 +110,6 @@ const RapidApp = memo(() => {
       RdSKin.uninstall();
     }
   }, [themePayloadTransformers]);
-
 
   return (<RapidAppContext />)
 })

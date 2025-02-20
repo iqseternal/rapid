@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import { join } from 'path';
 import { FileService } from './FileService';
-import { TypeException } from 'rd/base/node/core/exceptions';
+import { TypeException } from 'rd/base/plats/exceptions';
 import { statSync } from 'fs';
 import { ConvertDataType, ConvertService } from './ConvertService';
 

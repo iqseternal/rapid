@@ -6,12 +6,11 @@ import { useFadeOut } from '@/libs/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { useTransition } from '@rapid/libs-web';
-import type { WidgetProps } from '@components/Widget';
+import type { WidgetProps } from '@/components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useUserStore } from '@/features';
 
-import IMessage from '@components/IMessage';
-import Widget from '@components/Widget';
+import Widget from '@/components/Widget';
 import AutoMenu from '@/components/AutoMenu';
 
 interface SideBarItemProps extends WidgetProps {

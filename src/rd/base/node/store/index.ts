@@ -1,4 +1,4 @@
-import { AppStore } from 'rd/base/node/core/service/AppStoreService';
+import { AppStore } from 'rd/base/plats/service/AppStoreService';
 import { EXTENSIONS } from '@rapid/config/constants';
 
 export interface AppStoreType {

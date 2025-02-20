@@ -7,7 +7,7 @@ import { Printer, print, printWarn } from '@suey/printer';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-import { join } from 'path';
+import path, { join } from 'path';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
@@ -54,8 +54,9 @@ const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
 
 const bin = join(__dirname, '../node_modules/.bin/electron');
 
-const rendererRootDir = join(__dirname, './rd/core/browser');
-const rendererEntry = join(rendererRootDir, './rd/index.tsx');
+const rendererRootDir = join(__dirname, './rd/code/browser');
+const rendererEntry = join(rendererRootDir, './index.tsx');
+
 const mainEntry = join(__dirname, './rd/app.ts');
 const preloadEntry = join(__dirname, './rd/code/electron-sandbox/index.ts');
 
@@ -256,7 +257,7 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
     },
     resolve: {
       extensions: ['.ts', '.cts', '.js', '.cjs'],
-      alias: envBuilder.defineAlias(__dirname, tsconfigMainJson.compilerOptions.paths),
+      alias: envBuilder.defineAlias(join(__dirname, 'rd'), tsconfigMainJson.compilerOptions.paths),
     },
     plugins: [
       new node.NodeTargetPlugin(),
@@ -300,6 +301,7 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
     },
     resolve: {
       extensions: ['.ts', '.cts', '.js', '.cjs'],
+      alias: envBuilder.defineAlias(join(__dirname, 'rd'), tsconfigSandboxJson.compilerOptions.paths),
     },
 
     plugins: [
@@ -337,8 +339,8 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       entry: {
         index: rendererEntry
       },
-      alias: envBuilder.defineAlias(__dirname, tsconfigBrowserJson.compilerOptions.paths),
-      tsconfigPath: join(__dirname, './tsconfig.browser.json'),
+      alias: envBuilder.defineAlias(join(__dirname, 'rd'), tsconfigBrowserJson.compilerOptions.paths),
+      tsconfigPath: join(__dirname, './rd/tsconfig.browser.json'),
       define: {
         // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         ...vars
@@ -435,6 +437,10 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
     },
     performance: {
       removeMomentLocale: true,
+      buildCache: {
+        cacheDirectory: join(DIRS.ROOT_DIR, '/.rd-cache/.cache/'),
+      },
+      bundleAnalyze: IS_BUILD ? {} : void 0,
     },
     tools: {
       postcss: {
@@ -442,7 +448,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
           plugins: [
             tailwindcss({
               content: [
-                './desktop-web/src/**/*.{html,js,ts,jsx,tsx}'
+                join(rendererRootDir, `/**/*.{html,js,ts,jsx,tsx}`)
               ],
             }),
           ],

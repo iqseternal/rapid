@@ -1,9 +1,9 @@
 import { WindowService } from 'rd/base/plats/service/WindowService';
-import { IpcActionMiddleware, IpcActionEvent } from 'rd/base/node/core/ipc';
-import { Catch, RuntimeException, isException } from 'rd/base/node/core';
+import { IpcActionMiddleware, IpcActionEvent } from '../framework';
+import { Catch, RuntimeException, isException } from 'rd/base/plats/exceptions';
+import type { Exception, ExceptionErrorMsgData } from 'rd/base/plats/exceptions';
 import type { RPromiseLike } from '@rapid/libs';
 import { toNil, asynced } from '@rapid/libs';
-import type { Exception, ExceptionErrorMsgData } from 'rd/base/node/core';
 
 /**
  * ipc 全局中间件, 用于处理异常和日志行为

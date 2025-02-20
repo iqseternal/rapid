@@ -4,20 +4,20 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { FlexRowStart, FullSize } from '@rapid/libs-web/styled';
 import { useFadeIn } from '../../libs/hooks';
 import { NavigationBar } from './cpts';
-import { commonStyles, useAnimationClassSelector } from '@scss/common';
+import { commonStyles, useAnimationClassSelector } from '@/scss/common';
 import { Guards } from '@/guards';
 import { classnames, useMaintenanceStack, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
 import { menus } from '@/menus';
 import { isUndefined } from '@rapid/libs';
 
-import { WindowsCloseWindowWidget, WindowsDebugWidget, WindowsMinWindowWidget, WindowsReductionWindowWidget } from '@components/Header/components';
+import { WindowsCloseWindowWidget, WindowsDebugWidget, WindowsMinWindowWidget, WindowsReductionWindowWidget } from '@/components/Header/components';
 
-import Header from '@components/Header';
-import AutoMenu from '@components/AutoMenu';
-import IconFont from '@components/IconFont';
-import Logo from '@components/Logo';
-import Widget from '@components/Widget';
+import Header from '@/components/Header';
+import AutoMenu from '@/components/AutoMenu';
+import IconFont from '@/components/IconFont';
+import Logo from '@/components/Logo';
+import Widget from '@/components/Widget';
 
 /**
  * 左侧收纳的文件菜单

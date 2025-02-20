@@ -34,19 +34,19 @@ export const workbenchesRoute = makeRoute({
       name:  'WorkbenchesWorkstation',
       path: '/workstation',
       meta: { title: '工作区', icon: 'FileWordOutlined' },
-      component: lazy(() => import('@pages/Workspace/Workbenches'))
+      component: lazy(() => import('@/pages/Workspace/Workbenches'))
     },
     {
       name: 'WorkbenchesHome',
       path: '/home',
       meta: { title: '首页', icon: 'HomeOutlined', hiddenInMenu: true },
-      component: lazy(() => import('@pages/Workspace/Home'))
+      component: lazy(() => import('@/pages/Workspace/Home'))
     },
     {
       name: 'Skin',
       path: '/skin',
       meta: { title: '皮肤', icon: 'SkinOutlined', hiddenInMenu: false },
-      component: lazy(() => import('@pages/Workspace/Skin'))
+      component: lazy(() => import('@/pages/Workspace/Skin'))
     }
   ]
 } as const);

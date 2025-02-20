@@ -2,7 +2,7 @@ import { join } from 'path';
 import { BrowserWindow, type BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { CONFIG, IS_DEV, IS_LINUX } from '@rapid/config/constants';
 import { isString, isNumber, isNull } from '@rapid/libs';
-import { Catch, Exception, RuntimeException } from 'rd/base/node/core';
+import { Catch, Exception, RuntimeException } from 'rd/base/plats/exceptions';
 
 /**
  * 通过ipc事件获得一个window对象

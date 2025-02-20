@@ -1,12 +1,10 @@
-import type { IconKey } from '@components/IconFont';
 import { classnames, isReactFC } from '@rapid/libs-web/common';
 import type { FC, ReactNode } from 'react';
 import type { MenuInstanceType, MenuItemType, SubMenuType } from './declare';
 import { isValidElement, useMemo, memo } from 'react';
 import { isString } from '@rapid/libs';
-import { commonStyles } from '@scss/common';
 
-import IconFont from '@components/IconFont';
+import IconFont from '@/components/IconFont';
 
 export interface MenuItemProps {
   /**

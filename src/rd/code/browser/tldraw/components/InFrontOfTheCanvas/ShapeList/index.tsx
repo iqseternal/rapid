@@ -3,7 +3,7 @@ import { memo, useMemo, useRef, useState } from 'react';
 import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue } from 'tldraw';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { StringFilters, useShallowReactive, classnames } from '@rapid/libs-web';
-import { commonStyles } from '@scss/common';
+import { commonStyles } from '@/scss/common';
 
 import styles from './index.module.scss';
 

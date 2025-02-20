@@ -1,9 +1,7 @@
 import 'reflect-metadata';
 import './process';
 
-import { registerGlobalMiddleware, registerIpcHandle, registerIpcOn, IpcActionEvent } from 'rd/base/node/core/ipc';
 import { setupTrayMenu, setupMainWindow } from 'rd/base/node/setupService';
-import { setupApp } from 'rd/base/node/setupApp';
 import { IpcMainManager } from 'rd/base/plats/ipc';
 import { app, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';

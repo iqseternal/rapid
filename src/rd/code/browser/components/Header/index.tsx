@@ -3,13 +3,8 @@ import { Subfield } from '@rapid/libs-web/components';
 import { ReactNode, memo, useState, CSSProperties } from 'react';
 import { useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useWindowInnerSize } from '@rapid/libs-web';
 import { isFunction, toNil } from '@rapid/libs';
-import { commonStyles } from '@scss/common';
+import { commonStyles } from '@/scss/common';
 import { cssVars } from '../../skin';
-
-import Widget from '@components/Widget';
-import AutoMenu from '../AutoMenu';
-import IconFont from '@components/IconFont';
-import Logo from '@components/Logo';
 
 export interface HeaderProps {
   className?: string;

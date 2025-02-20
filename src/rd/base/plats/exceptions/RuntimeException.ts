@@ -1,6 +1,6 @@
 import type { ExceptionErrorMsgData } from './declare';
 import { Exception, ExceptionFilter } from './declare';
-import { Catch } from '../decorators';
+import { Catch } from './Catch';
 
 import { PrinterService } from '../service/PrinterService';
 import { Logger } from '../service/LoggerService';

@@ -1,11 +1,11 @@
-import { toMakeIpcAction } from 'rd/base/node/core/ipc';
+import { toMakeIpcAction } from '../framework';
 import { WindowService } from 'rd/base/plats/service/WindowService';
 import { dialog } from 'electron';
 import { FileService } from 'rd/base/plats/service/FileService';
 import { ConvertService } from 'rd/base/plats/service/ConvertService';
 import { EXTENSIONS, ExportsExtensions, ExtensionType } from '@rapid/config/constants';
 import { AppFileStorageService } from 'rd/base/plats/service/AppStorageService';
-import { RuntimeException, TypeException } from 'rd/base/node/core';
+import { RuntimeException, TypeException } from 'rd/base/plats/exceptions';
 import { PrinterService } from 'rd/base/plats/service/PrinterService';
 import { convertWindowServiceMiddleware } from '../middlewares';
 

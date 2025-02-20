@@ -1,14 +1,14 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { classnames } from '@rapid/libs-web/common';
 import { theme, Tooltip, TooltipProps } from 'antd';
-import type { IconKey } from '@components/IconFont';
+import type { IconKey } from '@/components/IconFont';
 import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'react';
 import { memo, useCallback, useState, useMemo } from 'react';
 import { CONFIG } from '@rapid/config/constants';
-import { commonStyles } from '@scss/common';
+import { commonStyles } from '@/scss/common';
 import { FullSize } from '@rapid/libs-web';
 
-import IconFont from '@components/IconFont';
+import IconFont from '@/components/IconFont';
 import styles from './index.module.scss';
 
 export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {

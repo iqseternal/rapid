@@ -5,7 +5,7 @@ import type { DropDownProps, MenuProps } from 'antd';
 import { createContext, useContext, forwardRef, useMemo, useCallback, memo } from 'react';
 import type { ReactNode, FC } from 'react';
 import { FullSize, MaxContent } from '@rapid/libs-web/styled';
-import { commonStyles } from '@scss/common';
+import { commonStyles } from '@/scss/common';
 import { convertMenuDivider, convertMenuInstance, convertMenuItem, convertMenuItemGroupType, convertSubMenu } from './declare';
 import type {
   AntdItemType, AntdMenuDividerType, AntdMenuInstanceType, AntdMenuItemGroupType, AntdMenuItemType, AntdSubMenuType,

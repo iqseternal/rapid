@@ -3,7 +3,7 @@ import type { MenuInstanceType, AntdMenuInstanceType } from '../../components/Au
 import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
 import { toMakeZustandHijack } from '@rapid/libs-web';
 
-import AutoMenu from '@components/AutoMenu';
+import AutoMenu from '@/components/AutoMenu';
 
 const { makeZustandHijack } = toMakeZustandHijack({
   beforeHijackCovert<T extends MenuInstanceType>(target: T) {

@@ -1,7 +1,7 @@
-import { WindowService, WindowServiceStateMachine } from 'rd/base/node/core/service/WindowService';
+import { WindowService, WindowServiceStateMachine } from 'rd/base/plats/service/WindowService';
 import { CONFIG, IS_DEV } from '@rapid/config/constants';
-import { AppConfigService } from 'rd/base/node/core/service/AppConfigService';
-import { PrinterService } from 'rd/base/node/core/service/PrinterService';
+import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
+import { PrinterService } from 'rd/base/plats/service/PrinterService';
 import { PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from 'rd/base/node/config';
 import { Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCross, setWindowOpenHandler } from 'rd/base/node/core/common/window';

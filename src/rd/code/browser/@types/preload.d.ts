@@ -1,5 +1,5 @@
 import type { ExposeApi } from '@rapid/desktop-preload';
-import type * as RPreload from 'node_modules/@rapid/desktop-preload';
+import type * as RPreload from 'rd/code/electron-sandbox';
 
 declare global {
   /**

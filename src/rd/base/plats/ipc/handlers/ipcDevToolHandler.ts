@@ -1,6 +1,6 @@
 import type { OpenDevToolsOptions } from 'electron';
 import { WindowService } from 'rd/base/plats/service/WindowService';
-import { toMakeIpcAction } from 'rd/base/node/core/ipc';
+import { toMakeIpcAction } from '../framework';
 
 const { makeIpcHandleAction } = toMakeIpcAction();
 

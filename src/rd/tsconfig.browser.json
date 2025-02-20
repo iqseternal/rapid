@@ -41,13 +41,7 @@
 
     "paths": {
       "rd/*": ["./*"],
-      "@components/*": ["code/browser/components/*"],
-      "@router/*": ["code/browser/router/*"],
-      "@views/*": ["code/browser/views/*"],
-      "@pages/*": ["code/browser/pages/*"],
-      "@libs/*": ["code/browser/libs/*"],
-      "@scss/*": ["code/browser/scss/*"],
-      "@/*": ["code/browser/*", "../desktop-node/src/*"]
+      "@/*": ["code/browser/*"]
     }
   },
   "include": [

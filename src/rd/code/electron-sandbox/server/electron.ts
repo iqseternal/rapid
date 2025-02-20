@@ -5,9 +5,11 @@
  */
 import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener } from '@electron-toolkit/preload';
 import type { CutHead, ExtractNever, RPromiseLike } from '@rapid/libs';
-import type { Exception, ExceptionErrorMsgData, IpcActionEvent, IpcActionType } from '../../desktop-node/src/core';
+import type { IpcActionEvent, IpcActionType } from 'rd/base/plats/ipc/framework';
+import type { Exception, ExceptionErrorMsgData } from 'rd/base/plats/exceptions';
+
 import { electronAPI } from '@electron-toolkit/preload';
-import type * as actions from '../../desktop-node/src/ipc';
+import type * as actions from 'rd/base/plats/ipc/handlers';
 
 export const electron = electronAPI as ElectronAPI;
 

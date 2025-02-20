@@ -8,7 +8,7 @@ import { Ansi } from '@rapid/libs';
 import ReactDOM from 'react-dom/client';
 import RapidApp from './app';
 
-import '@scss/index.scss';
+import '@/scss/index.scss';
 
 import './tailwind.css';
 

@@ -1,10 +1,10 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { isSameWindowService, WindowService, WindowServiceStateMachine } from 'rd/base/plats/service/WindowService';
-import { RuntimeException, TypeException } from 'rd/base/node/core';
+import { RuntimeException, TypeException } from 'rd/base/plats/exceptions';
 import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
 import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
-import { toMakeIpcAction } from 'rd/base/node/core/ipc';
+import { toMakeIpcAction } from '../framework';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { PAGES_WINDOW_MAIN } from 'rd/base/node/config';
 import { posix } from 'path';

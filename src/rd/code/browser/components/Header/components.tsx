@@ -3,7 +3,7 @@ import { memo, useState } from 'react';
 import { toNil } from '@rapid/libs';
 import { useAsyncLayoutEffect, useRefresh, useWindowInnerSize } from '@rapid/libs-web';
 
-import Widget from '@components/Widget';
+import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
 
 export const WindowsDebugWidget = memo(() => {

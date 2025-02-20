@@ -23,15 +23,14 @@
     "isolatedModules": true,
     "moduleResolution": "Node",
     "types": [
-      "@rapid/config/@types"
+
     ]
   },
   "include": [
-    "./index.ts",
-    "./server/**/*.ts",
-    "./actions/**/*.ts",
-    "./core/**/*.ts",
-    "../desktop-node/src"
+    "./code/electron-sandbox/**/*.ts",
+    "./base/common/**/*.ts",
+    "./base/node/**/*.ts",
+    "./base/plats/**/*.ts"
   ],
   "exclude": [
     "node_modules",

@@ -1,6 +1,6 @@
 import { rApiPost } from '../declare/rApi';
 import type { RApiPromiseLike } from '../declare/rApi';
-import { rRsaEncrypt } from '@libs/crypto';
+import { rRsaEncrypt } from '@/libs/crypto';
 
 // ==================================================================================
 

@@ -1,7 +1,7 @@
-import { LoggerService } from 'rd/base/node/core/service/LoggerService';
+import { LoggerService } from 'rd/base/plats/service/LoggerService';
 import { IS_DEV } from '@rapid/config/constants';
-import { Catch, Exception, ExceptionErrorMsgData, isException } from 'rd/base/node/core';
-import { PrinterService } from 'rd/base/node/core/service/PrinterService';
+import { Catch, Exception, ExceptionErrorMsgData, isException } from 'rd/base/plats/exceptions';
+import { PrinterService } from 'rd/base/plats/service/PrinterService';
 
 // 关闭渲染进程安全警告
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';

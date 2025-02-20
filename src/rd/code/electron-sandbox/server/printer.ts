@@ -1,5 +1,5 @@
 import { CONFIG } from '@rapid/config/constants';
-import { PrinterService } from '../../desktop-node/src/core/service/PrinterService';
+import { PrinterService } from 'rd/base/plats/service/PrinterService';
 
 const appName = CONFIG.PROJECT.toUpperCase();
 

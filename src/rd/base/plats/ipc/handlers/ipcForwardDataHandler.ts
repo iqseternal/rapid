@@ -7,9 +7,9 @@
  * ==============================================================
  */
 import { WindowService } from 'rd/base/plats/service/WindowService';
-import { RuntimeException } from 'rd/base/node/core';
+import { RuntimeException } from 'rd/base/plats/exceptions';
 import { isString } from '@rapid/libs';
-import { toMakeIpcAction } from 'rd/base/node/core/ipc';
+import { toMakeIpcAction } from '../framework';
 import { convertWindowServiceMiddleware } from '../middlewares';
 
 const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({

@@ -1,9 +1,8 @@
 import { FullSize, FullSizeWidth, classnames, useAsyncEffect } from '@rapid/libs-web';
-import { commonStyles } from '@scss/common';
+import { commonStyles } from '@/scss/common';
 import { memo } from 'react';
 
-import Header from '@components/Header';
-import Widget from '@components/Widget';
+import Widget from '@/components/Widget';
 
 export const WorkbenchesToolbar = memo(() => {
   const onDragStart = async () => {

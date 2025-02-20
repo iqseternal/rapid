@@ -9,15 +9,15 @@ import { toNil } from '@rapid/libs';
 import { authHasAuthorizedSync, useUserStore, userActions } from '@/features';
 import { rApi } from '@/api';
 import { useRetrieveRoute } from '@/router';
-import { commonStyles } from '@scss/common';
+import { commonStyles } from '@/scss/common';
 import { memo, useEffect, useLayoutEffect } from 'react';
 import { Subfield } from '@rapid/libs-web/components';
-import { WindowsCloseWindowWidget, WindowsMinWindowWidget } from '@components/Header/components';
+import { WindowsCloseWindowWidget, WindowsMinWindowWidget } from '@/components/Header/components';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
-import Header from '@components/Header';
-import Logo from '@components/Logo';
-import Widget from '@components/Widget';
+import Header from '@/components/Header';
+import Logo from '@/components/Logo';
+import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
 
 export const Login = memo(() => {
