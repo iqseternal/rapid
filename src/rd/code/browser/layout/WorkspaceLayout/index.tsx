@@ -73,7 +73,7 @@ const MaintenanceMenus = memo(() => {
     if (!menusContainerRef.current) return;
 
     let columnGap = parseInt(getComputedStyle(menusContainerRef.current).columnGap);
-    if (isNaN(columnGap)) columnGap = 0;
+    if (Number.isNaN(columnGap)) columnGap = 0;
 
     for (let i = 0; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
       const child = menusContainerRef.current.children[i];
@@ -91,7 +91,11 @@ const MaintenanceMenus = memo(() => {
       if (isUndefined(otherStack?.[i])) continue;
       if (isUndefined(otherStack?.[i - 1])) continue;
 
-      otherStack[i]!.calcWidth = otherStack[i - 1]!.calcWidth + columnGap + otherStack[i]!.sourceWidth;
+      const tOther = otherStack[i], ptOther = otherStack[i - 1];
+      if (isUndefined(tOther)) continue;
+      if (isUndefined(ptOther)) continue;
+
+      tOther.calcWidth = ptOther.calcWidth + columnGap + tOther.sourceWidth;
     }
 
     statusState.isCalcDone = true;
@@ -111,22 +115,24 @@ const MaintenanceMenus = memo(() => {
       )}
     >
       {maintenanceStack.map((menu, index) => {
-        return <AutoMenu
-          key={`menu.key ${index}`}
-          menu={menu.children}
-          dropdownAttrs={{
-            className: 'h-full'
-          }}
-        >
-          <div
-            className={classnames(
-              commonStyles.appRegionNo,
-              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
-            )}
+        return (
+          <AutoMenu
+            key={`menu.key ${index}`}
+            menu={menu.children}
+            dropdownAttrs={{
+              className: 'h-full'
+            }}
           >
-            {menu.label}
-          </div>
-        </AutoMenu>
+            <div
+              className={classnames(
+                commonStyles.appRegionNo,
+                'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
+              )}
+            >
+              {menu.label}
+            </div>
+          </AutoMenu>
+        )
       })}
       {storageStack.length > 0 && (
         <AutoMenu

@@ -67,9 +67,11 @@ export const heavyDutyGuard = <GFC extends ReactComponent>(Component: GFC): Heav
       return memo(((props: any) => {
         const F = Cpt as ReactComponent;
 
-        return <Component {...props} children={<F />}>
+        return (
+          <Component {...props} children={<F />}>
 
-        </Component>;
+          </Component>
+        )
       })) as unknown as ReactComponent;
     }
 

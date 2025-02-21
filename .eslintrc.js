@@ -859,7 +859,7 @@ module.exports = ({
      * 要求构造函数名称以大写字母开头
      * @see https://eslint.org/docs/v8.x/rules/new-cap
      */
-    'new-cap': 'warn',
+    'new-cap': 'off',
 
     /**
      * 禁止使用 alert、confirm 和prompt

@@ -13,7 +13,7 @@ import '@/scss/index.scss';
 import './tailwind.css';
 
 // TODO: 建议动态获取 KEY
-;(async () => {
+; (async () => {
   requestAnimationFrame(() => {
 
     rApp.extension.registerExtension(ThemeExtension);
@@ -21,10 +21,12 @@ import './tailwind.css';
 })();
 
 // ===========================================================================================
-const rootContainer = document.getElementById('root')!;
+const rootContainer = document.getElementById('root');
 
-ReactDOM.createRoot(rootContainer).render(
-  <StrictMode>
-    <RapidApp />
-  </StrictMode>
-);
+if (rootContainer) {
+  ReactDOM.createRoot(rootContainer).render(
+    <StrictMode>
+      <RapidApp />
+    </StrictMode>
+  );
+}
