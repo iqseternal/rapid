@@ -11,7 +11,7 @@ export class Bus<BEvent extends BusEvent> extends BusManager {
    * 异步发射一个事件
    */
   public async emit<BKey extends keyof BEvent>(busName: BKey, data: BEvent[BKey]) {
-    super.notice(busName, data);
+    await super.notice(busName, data);
   }
 
   /**

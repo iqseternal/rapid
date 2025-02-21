@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { memo, useEffect } from 'react';
 import { UnlockTwoTone, UserAddOutlined } from '@ant-design/icons';
 
+import { useWindowInnerSize } from '@rapid/libs-web';
 import { Button, Popover } from 'antd';
 
 import Widget from '@/components/Widget';
@@ -89,6 +90,16 @@ const I18nChangeLanguageWidget = memo(() => {
  * 可以利用本组件为整个 App 添加动画等.
  */
 const RootLayout = memo(() => {
+
+  useEffect(() => {
+
+    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
+
+    return () => {
+      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
+    }
+  }, []);
+
   return <Outlet />
 })
 

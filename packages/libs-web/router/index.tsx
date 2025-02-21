@@ -16,8 +16,8 @@ export interface CreateRoutesChildrenOptions {
    * @returns
    */
   onLazyComponent:
-    | MemoExoticComponent<FC<{ children: ReactElement<{}> }>>
-    | FC<{ children: ReactElement<{}> }>;
+  | MemoExoticComponent<FC<{ children: ReactElement<{}> }>>
+  | FC<{ children: ReactElement<{}> }>;
 }
 
 /**
@@ -47,9 +47,11 @@ export const createRoutesChildren = <RouteConfigArr extends RouteConfig[]>(route
     if (isReactLazyFC(Component)) {
       const OnLazyComponent = options.onLazyComponent;
 
-      realRoute.element = <OnLazyComponent>
-        <Component {...componentsProps} />
-      </OnLazyComponent>;
+      realRoute.element = (
+        <OnLazyComponent>
+          <Component {...componentsProps} />
+        </OnLazyComponent>
+      );
     }
     // 放入的是一个 FC
     else if (
@@ -67,9 +69,14 @@ export const createRoutesChildren = <RouteConfigArr extends RouteConfig[]>(route
       realRoute.element = <></>;
     }
 
-    return <Route {...(realRoute as PathRouteProps)} key={(route.name ?? route?.meta?.fullPath ?? index)}>
-      {children && createRoutesChildren(children, options)}
-    </Route>
+    return (
+      <Route
+        {...(realRoute as PathRouteProps)}
+        key={(route.name ?? route?.meta?.fullPath ?? index)}
+      >
+        {children && createRoutesChildren(children, options)}
+      </Route>
+    )
   });
 }
 

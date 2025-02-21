@@ -13,36 +13,35 @@ import { Ansi } from '@rapid/libs';
  * @returns
  */
 export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement | null> | TElement, callback: ResizeObserverCallback, deps: DependencyList) {
-  const [normalState] = useNormalState({
+  const [normalState] = useNormalState(() => ({
     resizeCallback: callback,
-  })
+  }))
+
   const [resizeObserver] = useState(() => {
     return new ResizeObserver((entries, observer) => {
       normalState.resizeCallback?.(entries, observer);
     });
   })
 
-  const tDom = useMemo(() => {
+  const tDomRef = useMemo(() => {
     if (dom instanceof HTMLElement) return { current: dom };
     if (Reflect.has(dom, 'current')) return dom;
     Ansi.print(Ansi.red, `useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
     return dom;
-  }, []);
+  }, [dom]);
 
   useLayoutEffect(() => {
     normalState.resizeCallback = callback;
   }, [deps]);
 
   useEffect(() => {
-    if (!tDom.current) return () => {};
-
-    resizeObserver.observe(tDom.current);
+    if (tDomRef.current) resizeObserver.observe(tDomRef.current);
 
     return () => {
-      if (!tDom.current) return;
-      resizeObserver.unobserve(tDom.current);
+      if (!tDomRef.current) return;
+      resizeObserver.unobserve(tDomRef.current);
     }
-  }, [tDom.current]);
+  }, [tDomRef.current]);
 
   useEffect(() => {
 

@@ -17,11 +17,11 @@ import { useReactive as useAHookReactive } from 'ahooks';
  */
 export function useDeepReactive<S extends object>(initValue: S | (() => S)) {
   const initialState = useMemo(() => {
+
     return (typeof initValue === 'function') ? initValue() : initValue;
   }, []);
 
   const state = useAHookReactive(initialState);
-
   return [state] as const;
 }
 
@@ -61,13 +61,9 @@ export function useShallowReactive<S extends object>(initValue: S): readonly [S]
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
 
-  const isInitFunction = useMemo(() => {
-    return typeof initValue === 'function';
-  }, []);
+  const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
 
-  const [normalState] = useNormalState({
-    initValue
-  })
+  const [normalState] = useNormalState({ initValue });
   normalState.initValue = initValue;
 
   const [state] = useState(() => {
@@ -75,6 +71,7 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
 
     return new Proxy(initialState, {
       get(target, p, receiver) {
+
         return Reflect.get(target, p, receiver);
       },
       set(target, p, newValue, receiver) {
@@ -82,11 +79,9 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
         if (oldValue === newValue) return true;
 
         const setResult = Reflect.set(target, p, newValue, receiver);
-        if (setResult) {
-          refresh();
-          return true;
-        }
-        return false;
+        if (setResult) refresh();
+
+        return setResult;
       },
       deleteProperty(target, p) {
         refresh();
@@ -107,8 +102,7 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
     for (const key in initialState) state[key] = initialState[key];
   }, []);
 
-  if (isInitFunction) return [state, resetState] as const;
-
+  if (isInitStateFunction) return [state, resetState] as const;
   return [state] as const;
 }
 

@@ -21,7 +21,7 @@ const state = {
 /**
  * 生成一个叠加的菜单 key
  */
-const generatorStackingKey = () => `${CONFIG.PROJECT}-stacking-${state.stackingKey ++}`;
+const generatorStackingKey = () => `${CONFIG.PROJECT}-stacking-${state.stackingKey++}`;
 
 /**
  * 自定义菜单项的类型, 继承自 AntdMenuItemType, 但同时具有自定义扩展的类型
@@ -69,11 +69,13 @@ export function convertMenuItem<Item extends MenuItemType>(item: Item): AntdMenu
     ...realItem,
     key: generatorStackingKey(),
     disabled: disabled as unknown as boolean,
-    label: <MenuItem
-      icon={icon}
-      label={label}
-      shortcut={shortcut}
-    />
+    label: (
+      <MenuItem
+        icon={icon}
+        label={label}
+        shortcut={shortcut}
+      />
+    )
   }
 }
 
@@ -111,10 +113,12 @@ export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): A
     key: generatorStackingKey(),
     children: antdSubMenuChildren,
     type,
-    label: <SubMenu
-      icon={icon}
-      label={label}
-    />
+    label: (
+      <SubMenu
+        icon={icon}
+        label={label}
+      />
+    )
   };
 }
 

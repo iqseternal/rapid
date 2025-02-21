@@ -3,9 +3,7 @@ import type { RdSKin } from 'rd/code/browser/skin';
 import type { ExposeApi } from 'rd/code/electron-sandbox'
 import type * as RSandbox from 'rd/code/electron-sandbox';
 
-/**
- * Browser: rApp
- */
+// Browser: rApp
 declare global {
   declare namespace Rapid { export = RA; }
 
@@ -18,13 +16,9 @@ declare global {
   declare const cssVars: RdSKin.CssVarsSheet;
 }
 
-/**
- * Sandbox
- */
+// Sandbox
 declare global {
-  /**
-   * 声明 preload 线程的类型, 它向 renderer 线程暴露的 api, 以及部分扩展的类型接口
-   */
+  // 声明 preload 线程的类型, 它向 renderer 线程暴露的 api, 以及部分扩展的类型接口
   declare namespace RdSandbox { export = RSandbox; }
 
   /**

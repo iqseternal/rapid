@@ -114,7 +114,7 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
     if (!define.version) {
       throw new Error('Extension version is required');
     }
-    // @ts-ignore
+    // @ts-ignore: 禁用 readonly __isActivated 的改变检查
     if (define.__isActivated) {
       throw new Error('Extension __isActivated is not allow defined');
     }
@@ -129,27 +129,27 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
         if (extension.__isActivated) return;
 
         define.onActivated?.();
-        // @ts-ignore
+        // @ts-ignore: 禁用 readonly __isActivated 的改变检查
         extension.__isActivated = true;
       },
       onDeactivated: () => {
         if (!extension.__isActivated) return;
 
         define.onDeactivated?.();
-        // @ts-ignore
+        // @ts-ignore: 禁用 readonly __isActivated 的改变检查
         extension.__isActivated = false;
       },
 
       onRegistered: () => {
         if (extension.__isRegistered) return;
         define.onRegistered?.();
-        // @ts-ignore
+        // @ts-ignore: 禁用 readonly __isRegistered 的改变检查
         extension.__isRegistered = true;
       },
       onUnregistered: () => {
         if (!extension.__isRegistered) return;
         define.onUnregistered?.();
-        // @ts-ignore
+        // @ts-ignore: 禁用 readonly __isRegistered 的改变检查
         extension.__isRegistered = false;
       },
     } as const;

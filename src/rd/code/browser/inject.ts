@@ -2,6 +2,7 @@ import type { RApp } from './declare';
 import { cssVars, RdSKin } from './skin';
 import { Extension, ExtensionManager, MetadataManager } from '@rapid/extensions';
 import { inject } from '@rapid/libs/inject';
+import { bus } from '@/libs/bus';
 
 const extensionManager = new ExtensionManager();
 
@@ -14,7 +15,7 @@ const rApp: RApp = Object.freeze({
 
   RdSKin: RdSKin,
 
-  cssVars: cssVars
+  bus: bus
 });
 
 inject(window, 'cssVars', cssVars);

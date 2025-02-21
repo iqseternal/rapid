@@ -1,10 +1,7 @@
 import { classnames } from '@rapid/libs-web/common';
 import { Subfield } from '@rapid/libs-web/components';
-import { ReactNode, memo, useState, CSSProperties } from 'react';
-import { useAsyncLayoutEffect, useMaintenanceStack, useRefresh, useWindowInnerSize } from '@rapid/libs-web';
-import { isFunction, toNil } from '@rapid/libs';
+import { memo } from 'react';
 import { commonStyles } from '@/scss/common';
-import { cssVars } from '../../skin';
 
 export interface HeaderProps {
   className?: string;
@@ -25,12 +22,10 @@ export const Header = memo((props: HeaderProps) => {
   const HeaderMainContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
 
   const controllerBeforeContents = rApp.metadata.useMetadata('ui.layout.header.controller.before');
-
   const controllerOtherWidgets = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.others');
   const MinWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.min');
   const ReductionWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.reduction');
   const CloseWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.close');
-
   const controllerAfterContents = rApp.metadata.useMetadata('ui.layout.header.controller.after');
 
   return (

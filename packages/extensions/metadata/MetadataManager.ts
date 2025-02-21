@@ -106,7 +106,7 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
       return;
     }
 
-    const vector = this.metadataMap.get(metadataKey)!;
+    const vector = this.metadataMap.get(metadataKey);
     if (!Array.isArray(vector)) {
       throw new Error(`defineMetadataInVector: current metadata value is not an array`);
     }
@@ -143,7 +143,7 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
   public delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void {
     if (!this.hasMetadata(metadataKey)) return;
 
-    const vector = this.metadataMap.get(metadataKey)!;
+    const vector = this.metadataMap.get(metadataKey);
     if (!Array.isArray(vector)) {
       throw new Error(`delMetadataInVector: current metadata value is not an array`);
     }

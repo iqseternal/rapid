@@ -69,7 +69,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
 
       // 重新向组件 props
       route.redirect = {
-        from: route.meta.fullPath!,
+        from: route.meta.fullPath,
         to: redirect
       }
     }

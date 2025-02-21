@@ -5,11 +5,13 @@ import Header from '@/components/Header';
 
 
 const NotRole = memo(forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
-  return <div ref={ref} {...props}>
-    <Header />
+  return (
+    <div ref={ref} {...props}>
+      <Header />
 
-    NotRole
-  </div>;
+      NotRole
+    </div>
+  );
 }))
 
 export default NotRole;

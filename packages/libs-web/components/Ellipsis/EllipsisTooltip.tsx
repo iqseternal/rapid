@@ -1,10 +1,5 @@
-import { Popover, PopoverProps, Tooltip, TooltipProps } from 'antd';
-import type { ReactElement, ReactNode } from 'react';
-import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
-import { classnames } from '../../common';
-import { useDebounceHook, useResizeObserver, useShallowReactive } from '../../hooks';
-import { isRawObject, isString, isUndefined, isUnDef } from '@rapid/libs';
-import { StringFilters } from '../../filters';
+import { Tooltip, TooltipProps } from 'antd';
+import { memo } from 'react';
 
 import { EllipsisBase } from './EllipsisBase';
 import type { EllipsisProps } from './EllipsisBase';

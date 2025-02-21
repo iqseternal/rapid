@@ -104,10 +104,12 @@ const AutoContextMenu = memo((props: AutoMenuProps) => {
         onOpenChange={(value, info) => {
           state.open = value;
         }}
-        dropdownRender={() => <ContextMenu
-          menu={menu}
-          menuAttrs={menuAttrs}
-        />}
+        dropdownRender={() => (
+          <ContextMenu
+            menu={menu}
+            menuAttrs={menuAttrs}
+          />
+        )}
         {...dropdownAttrs}
         rootClassName={classnames(
           styles.dropdownMenuRootWrapper,

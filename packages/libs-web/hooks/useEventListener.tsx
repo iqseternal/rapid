@@ -1,6 +1,5 @@
-import { isDef } from '@rapid/libs';
 import type { RefObject, DependencyList } from 'react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, Key } from 'react';
 
 /**
  * 为 Ref 添加某个事件的监听
@@ -44,53 +43,69 @@ export function useEventListener<T extends HTMLElement | Window, Key extends key
   callback?: EventListenerOrEventListenerObject | DependencyList,
   deps?: DependencyList
 ) {
-  // 判断第一个参数是否是一个 Ref 对象
-  const isRef = useMemo(() => {
-    return (
-      targetRef !== null &&
-      (!(targetRef instanceof HTMLElement) && !(targetRef instanceof Window)) &&
-      Reflect.has(targetRef, 'current')
-    );
+  /**
+   * 第1个重载
+   */
+  const overrideOne = (typeof type === 'string') && (typeof callback === 'function') && (typeof deps === 'undefined');
+
+  /**
+   * Dom
+   */
+  const tRef = useMemo(() => {
+    if (targetRef === null) return { current: null };
+
+    if ((targetRef instanceof HTMLElement) || (targetRef instanceof Window)) return { current: targetRef };
+
+    if (Reflect.has(targetRef, 'current')) return targetRef as RefObject<T | null>;
+
+    return { current: null };
   }, [targetRef]);
 
-  // 依赖项
-  const dependencies = useMemo(() => {
-    const dependencies: any[] = [targetRef];
+  /**
+   * 副作用列表
+   */
+  const dependencies = (overrideOne ? [] : ((callback as DependencyList) ?? []));
 
-    // 第一个重载
-    if (!Array.isArray(callback)) dependencies.push(...(deps ?? []));
+  /**
+   * 监听函数
+   */
+  const listeners = useMemo(() => {
+    const listeners: [Key, EventListenerOrEventListenerObject][] = [];
 
-    // 第二个重载
-    if (typeof type === 'object' && Array.isArray(callback)) dependencies.push(...callback);
+    if (overrideOne) listeners.push([type, callback]);
+    else {
+      if (typeof type === 'object') {
 
-    return dependencies;
-  }, [targetRef, callback, deps]);
+        const keys = Object.keys(type) as Key[];
+        for (let i = 0;i < keys.length;i ++) {
+          const key = keys[i];
+          listeners.push([key, type[key] as EventListenerOrEventListenerObject]);
+        }
+      }
+
+    }
+    return listeners;
+  }, [overrideOne, dependencies]);
 
   useEffect(() => {
-    if (!isDef(targetRef)) return () => { };
+    if (!tRef.current) return () => {};
 
     // 获取 targetDom, 目标 Dom
-    const targetDom = isRef ? targetRef?.current as T : targetRef as T;
+    const targetDom = tRef.current;
 
     // 如果 targetDom 不是一个 Dom, 那么不满足添加事件的条件
     if (!(targetDom instanceof HTMLElement) && !(targetDom instanceof Window)) return () => { };
 
-    if (typeof type === 'object') {
-      (Object.keys(type) as Key[]).forEach((key) => {
-        targetDom.addEventListener(key, type[key]);
-      });
-
-      return () => {
-        (Object.keys(type) as Key[]).forEach((key) => {
-          targetDom.removeEventListener(key, type[key]);
-        });
-      }
+    for (let i = 0;i < listeners.length;i += 2) {
+      const [key, listener] = listeners[i];
+      targetDom.addEventListener(key, listener);
     }
-
-    targetDom.addEventListener(type, callback as EventListenerOrEventListenerObject);
 
     return () => {
-      targetDom.removeEventListener(type, callback as EventListenerOrEventListenerObject);
+      for (let i = 0; i < listeners.length; i += 2) {
+        const [key, listener] = listeners[i];
+        targetDom.removeEventListener(key, listener);
+      }
     }
-  }, dependencies);
+  }, [tRef.current, listeners]);
 }

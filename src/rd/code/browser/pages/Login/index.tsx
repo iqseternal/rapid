@@ -93,13 +93,13 @@ export const Login = memo(() => {
         >
           <Button
             onClick={login}
-            loading={loginPending.isPending}
+            loading={loginPending.pending}
           >
             登录
           </Button>
           <Button
             onClick={register}
-            loading={registerPending.isPending}
+            loading={registerPending.pending}
           >
             注册
           </Button>

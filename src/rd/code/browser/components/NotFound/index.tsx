@@ -8,11 +8,13 @@ export const NotFound = memo(forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivEl
 
 
 
-  return <div ref={ref} {...props}>
-    <Header />
+  return (
+    <div ref={ref} {...props}>
+      <Header />
 
-    NotFound
-  </div>;
+      NotFound
+    </div>
+  );
 }))
 
 export default NotFound;

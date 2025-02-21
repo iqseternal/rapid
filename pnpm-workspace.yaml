@@ -6,6 +6,5 @@ packages:
   - extensions/*
   - config
   - apps/*
-  - src/*
   - src
   - .rd-cache

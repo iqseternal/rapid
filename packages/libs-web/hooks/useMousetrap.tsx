@@ -45,7 +45,7 @@ export type KeyboardSampleCompose =
   >
 ;
 
-
+// TODO: 添加剩余的类型
 type Join<T extends readonly string[], D extends string = " "> =
   T extends readonly [infer F extends string, ...infer R extends readonly string[]]
     ? `${F}${R['length'] extends 0 ? '' : `${D}${Join<R, D>}`}`
@@ -69,7 +69,9 @@ export function useMousetrap<TDom extends HTMLElement>(target: TDom, key: readon
 
 export function useMousetrap<TDom extends HTMLElement>(target: RefObject<TDom>, keys: readonly KeyboardSampleCompose[], callback: () => void): void;
 
-
+/**
+ * TODO: 编写函数实现
+ */
 export function useMousetrap() {
 
 }

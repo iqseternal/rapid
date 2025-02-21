@@ -29,7 +29,12 @@ export const IconFont = memo((props: IconFontProps) => {
   }
 
   const Icon = icons[props.icon];
-  return <Icon {...iconProps} />
+
+  if (!Icon) return null;
+
+  return (
+    <Icon {...iconProps} />
+  )
 });
 
 export default IconFont;

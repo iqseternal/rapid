@@ -29,20 +29,26 @@ export type StartTransitionFunction = (...args: any[]) => Promise<void>;
  */
 export function useTransition<StartTransitionFn extends StartTransitionFunction>(callback: StartTransitionFn, deps: DependencyList) {
   const [shallowState] = useShallowReactive({
-    isPending: false
+    pending: false
   })
 
   /**
-   * 执行本次异步任务
+   * 执行本次异步任务, 应该在本函数（callback）中处理好异步错误
    */
   const startWithTransition = useCallback<StartTransitionFn>((async (...args: Parameters<StartTransitionFn>) => {
-    if (shallowState.isPending) return;
+    if (shallowState.pending) return;
 
-    shallowState.isPending = true;
+    let error: any = void 0;
 
-    await callback();
+    shallowState.pending = true;
 
-    shallowState.isPending = false;
+    await callback(...args).catch(err => {
+      error = err;
+    });
+
+    shallowState.pending = false;
+
+    if (error) return Promise.reject(error);
   }) as StartTransitionFn, deps);
 
   return [

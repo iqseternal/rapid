@@ -88,26 +88,28 @@ export const SubMenu = memo<SubMenuProps>((props) => {
     return <Label />;
   }, [Label]);
 
-  return <div
-    className='px-2 py-1 text-sm text-center rounded hover:bg-gray-100 flex items-center gap-x-2'
-  >
+  return (
     <div
-      className='min-w-[14px] inline-block flex-none'
+      className='px-2 py-1 text-sm text-center rounded hover:bg-gray-100 flex items-center gap-x-2'
     >
-      {icon && <>
-        <IconFont
-          icon={icon}
-          className='drop-shadow-lg'
-        />
-      </>}
+      <div
+        className='min-w-[14px] inline-block flex-none'
+      >
+        {icon && <>
+          <IconFont
+            icon={icon}
+            className='drop-shadow-lg'
+          />
+        </>}
+      </div>
+      <div
+        className='flex-auto mr-2 flex justify-start items-center'
+      >
+        {content}
+      </div>
+      <span
+        className='flex-none text-gray-500'
+      />
     </div>
-    <div
-      className='flex-auto mr-2 flex justify-start items-center'
-    >
-      {content}
-    </div>
-    <span
-      className='flex-none text-gray-500'
-    />
-  </div>
+  )
 })

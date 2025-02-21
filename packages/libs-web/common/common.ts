@@ -26,8 +26,6 @@ export const classnames = (...args: (string | undefined | boolean | null | numbe
   const classNameList: string[] = [];
 
   for (const arg of args) {
-    if (isUnDef(arg) || isBoolean(arg) || isNumber(arg)) continue;
-
     if (isString(arg)) {
       if (arg.trim() !== '') classNameList.push(arg);
       continue;
@@ -35,7 +33,7 @@ export const classnames = (...args: (string | undefined | boolean | null | numbe
 
     if (isRawObject(arg)) {
       for (const key in arg) {
-        if (arg[key]) classNameList.push(key);
+        if (arg[key] && key.trim() !== '') classNameList.push(key);
       }
     }
   }

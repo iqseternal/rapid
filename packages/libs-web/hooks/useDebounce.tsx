@@ -1,6 +1,5 @@
-import { isUndefined } from '@rapid/libs';
 import type { DependencyList } from 'react';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useLayoutEffect, useMemo, useRef } from 'react';
 
 /**
  * 防抖函数的配置
@@ -10,6 +9,7 @@ export interface DebounceOptions {
    * 等待时间
    */
   readonly wait: number;
+
   /**
    * 最大等待时间
    * @description > 0
@@ -22,6 +22,7 @@ export interface DebounceOptions {
  */
 export interface DebounceTarget<Fn extends (...args: any[]) => void> {
   (this: ThisParameterType<Fn>, ...args: Parameters<Fn>): ReturnType<Fn>;
+
   /**
    * 取消防抖
    */
@@ -84,13 +85,11 @@ export function useDebounce<T extends (...args: any[]) => void>(callback: T, opt
     targetFn.current = callback;
   }, deps);
 
-  const debounce = useMemo(() => {
-    return useDebounceHook<T>(((...args) => {
-      targetFn.current(...args);
+  return useMemo(() => {
+    return useDebounceHook<T>(((... args) => {
+      targetFn.current(... args);
     }) as T, options);
   }, []);
-
-  return debounce;
 }
 
 
@@ -123,7 +122,7 @@ export function useThrottleHook<T extends (...args: unknown[]) => void>(callback
   let timer: number | NodeJS.Timeout | undefined = void 0;
   const that: ThisParameterType<T> = this;
 
-  const throttle = ((...args: Parameters<T>): void => {
+  return ((...args: Parameters<T>): void => {
     if (timer) return;
 
     callback.call(that, ...args);
@@ -132,8 +131,6 @@ export function useThrottleHook<T extends (...args: unknown[]) => void>(callback
       timer = void 0;
     }, wait);
   }) as ThrottleTarget<T>;
-
-  return throttle;
 }
 
 /**
@@ -155,11 +152,9 @@ export function useThrottle<T extends (...args: any[]) => void>(callback: T, opt
     targetFn.current = callback;
   }, deps);
 
-  const throttle = useMemo(() => {
+  return useMemo(() => {
     return useThrottleHook<T>(((...args) => {
       targetFn.current(...args);
     }) as T, options);
   }, []);
-
-  return throttle;
 }

@@ -1,9 +1,18 @@
 
+/**
+ * @deprecated
+ */
 export type AppendDepFn<DepType> = (...deps: DepType[]) => void;
+
+/**
+ * @deprecated
+ */
 export type RemoveDepFn<DepType> = (...deps: DepType[]) => void;
 
 /**
  * 使用一个依赖列表
+ *
+ * @deprecated
  *
  * @example
  * // 创建一个副作用函数列表

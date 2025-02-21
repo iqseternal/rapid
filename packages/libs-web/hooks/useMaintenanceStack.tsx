@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
  *
  * T: 维护的元素类型
  * Other: 辅助判断元素是否可以被操作的数组类型
- *
+ * @deprecated
  */
 export interface MaintenanceStackOptions<T, Other> {
   /**
@@ -28,6 +28,7 @@ export interface MaintenanceStackOptions<T, Other> {
 
 /**
  * 条件判断函数, 判断当前状况是否可以控制当前元素的压栈或者出栈
+ * @deprecated
  */
 export type JudgeIsCanBeControlStack<T, Other> = (item: T, other: Other | undefined, index: number) => boolean;
 
@@ -45,7 +46,7 @@ export type JudgeIsCanBeControlStack<T, Other> = (item: T, other: Other | undefi
  *
  * 运行中, 顺序一定是固定的
  *
- *
+ * @deprecated
  * @returns
  */
 export function useMaintenanceStack<T, Other>(options: MaintenanceStackOptions<T, Other>) {
