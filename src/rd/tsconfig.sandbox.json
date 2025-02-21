@@ -5,36 +5,36 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "rd/*": ["./*"]
+      "rd/*": [
+        "./*"
+      ]
     },
     "target": "ES2020",
     "noEmitOnError": true,
     "module": "ES2020",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "experimentalDecorators": true,
     "sourceMap": false,
-
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-
     "strictNullChecks": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleResolution": "Node",
     "types": [
-
+      "@rapid/config/@types-node"
     ]
   },
   "include": [
     "./code/electron-sandbox/**/*.ts",
-    "./base/common/**/*.ts",
-    "./base/node/**/*.ts",
-    "./base/plats/**/*.ts"
+    "./base/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     "../**/*.test.ts"
   ]
 }
-

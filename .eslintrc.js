@@ -1,4 +1,7 @@
-/** @type {import('eslint').Linter.Config} */
+
+/**
+ * @type {import('eslint').Linter.Config}
+ */
 module.exports = ({
   root: true,
   env: {
@@ -12,15 +15,15 @@ module.exports = ({
   ],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
     "plugin:react/recommended",
-    'plugin:import/recommended',
     'plugin:prettier/recommended',
     'prettier',
   ],
   parserOptions: {
     ecmaVersion: 12,
     parser: '@typescript-eslint/parser',
+    projectService: true,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
@@ -33,25 +36,7 @@ module.exports = ({
     },
   },
   rules: {
-    // 'comma-dangle': 'off',
-    // 'arrow-parens': 'off',
-    // "function-paren-newline": 'off',
-    // "no-multiple-empty-lines": 'off',
-    // 'no-return-await': 'error',
-    // 'multiline-ternary': 'off',
-    // 'non-nullis': 'off',
-    // 'no-ignore': 'off',
-    // 'no-confirm': 'off',
-    'prettier/prettier': 'error',
-    // 'import/first': 'off',
-    // 'import/no-duplicates': 'warn',
-    // 'import/no-unresolved': 'off',
-    // 'import/namespace': 'off',
-    // 'import/default': 'off',
-    // 'import/no-named-as-default': 'off',
-    // 'import/no-named-as-default-member': 'off',
-    // 'import/named': 'off',
-
+    'prettier/prettier': 'off',
 
     // =================================================================
     // ================== ESLint-plugin-React Rules ====================
@@ -94,7 +79,7 @@ module.exports = ({
     'react/prefer-es6-class': 'off',
     'react/prefer-stateless-function': 'off',
     'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'warn',
+    'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'off',
     'react/require-optimization': 'off',
     'react/require-render-return': 'off',
@@ -171,14 +156,14 @@ module.exports = ({
     '@typescript-eslint/method-signature-style': 'off',
     '@typescript-eslint/naming-convention': 'off',
     '@typescript-eslint/no-array-constructor': 'off',
-    '@typescript-eslint/no-array-delete': 'error',
-    '@typescript-eslint/no-base-to-string': 'warn',
+    '@typescript-eslint/no-array-delete': 'off',
+    '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'off',
-    '@typescript-eslint/no-deprecated': 'warn',
+    '@typescript-eslint/no-deprecated': 'off',
     '@typescript-eslint/no-dupe-class-members': 'off',
     '@typescript-eslint/no-duplicate-enum-values': 'warn',
-    '@typescript-eslint/no-duplicate-type-constituents': 'warn',
+    '@typescript-eslint/no-duplicate-type-constituents': 'off',
     '@typescript-eslint/no-dynamic-delete': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
@@ -198,7 +183,7 @@ module.exports = ({
     '@typescript-eslint/no-magic-numbers': 'off',
     '@typescript-eslint/no-meaningless-void-operator': 'off',
     '@typescript-eslint/no-misused-new': 'off',
-    '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/no-misused-spread': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
     '@typescript-eslint/no-namespace': 'off',
@@ -220,7 +205,7 @@ module.exports = ({
     ],
     '@typescript-eslint/no-type-alias': 'off',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
-    '@typescript-eslint/no-unnecessary-condition': 'warn',
+    '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'off',
     '@typescript-eslint/no-unnecessary-qualifier': 'off',
     '@typescript-eslint/no-unnecessary-template-expression': 'off',

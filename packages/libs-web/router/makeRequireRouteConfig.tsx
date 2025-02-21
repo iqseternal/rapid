@@ -1,5 +1,4 @@
-import { isString } from '@rapid/libs';
-import { printError } from '@suey/printer';
+import { isString, Ansi } from '@rapid/libs';
 
 /**
  * 补全后的 RouteMeta
@@ -84,9 +83,8 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
   }
 
   if (route.children && route.children.length !== 0 && !route.redirect) {
-    printError(`路由对象含有 children, 但是不存在 redirect ?`, route);
+    Ansi.print(Ansi.red, '路由对象含有 children, 但是不存在 redirect ?');
   }
-
 
   route.children = route.children ? route.children.map(child => {
     return makeRequireRouteConfig(child, route.meta?.fullPath, false);

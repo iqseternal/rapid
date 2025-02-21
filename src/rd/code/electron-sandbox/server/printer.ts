@@ -1,12 +1,9 @@
-import { CONFIG } from '@rapid/config/constants';
-import { PrinterService } from 'rd/base/plats/service/PrinterService';
-
-const appName = CONFIG.PROJECT.toUpperCase();
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 /**
  * renderer 线程打印器
  */
-const printer = new PrinterService(appName, 'RENDER');
+const printer = PrinterService.getInstance();
 
 /**
  * renderer 线程打印器类型

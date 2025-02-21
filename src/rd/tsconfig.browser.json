@@ -26,6 +26,7 @@
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "noImplicitOverride": true,
+
     "noImplicitReturns": true,
 
     "allowSyntheticDefaultImports": true,
@@ -45,9 +46,12 @@
     }
   },
   "include": [
-    "./base/common/**/*.ts",
     "./code/browser/**/*.ts",
-    "./code/browser/**/*.tsx"
+    "./code/browser/**/*.tsx",
+    "./code/browser/**/rd-browser.d.ts",
+
+    "./base/**/*.ts",
+    "./code/electron-sandbox/**/*.ts"
   ],
   "exclude": [
     "node_modules",

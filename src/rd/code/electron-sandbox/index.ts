@@ -3,7 +3,7 @@
  * preload 注入变量 Api
  * ==========================================
  */
-import { autoExpose } from './core';
+import { ExposeService } from 'rd/base/sandbox/service/ExposeService';
 
 import type { ElectronAPI } from './server/electron';
 import { electron } from './server/electron';
@@ -14,7 +14,7 @@ import { printerServer } from './server/printer';
 import type { AppStoreType } from './server/stores';
 import { appStore } from './server/stores';
 
-import * as ipcActions from './actions';
+import * as ipcActions from './server/ipcActions';
 
 export type { ElectronAPI };
 
@@ -52,15 +52,15 @@ export interface ExposeApi {
   }
 }
 
-autoExpose<ExposeApi>({
+const exposeService = new ExposeService<ExposeApi>();
+
+exposeService.autoExpose({
   electron,
   printer: printerServer,
   ipcActions,
   stores: {
     appStore
   }
-});
-
-
+})
 
 

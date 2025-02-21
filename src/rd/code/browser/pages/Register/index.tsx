@@ -10,39 +10,47 @@ export interface RegisterProps {
 export const RegisterUsername = memo(() => {
 
 
-  return <>
+  return (
+    <>
 
-  </>
+    </>
+  )
 })
 
 export const RegisterPassword = memo(() => {
 
 
-  return <>
+  return (
+    <>
 
 
-  </>
+    </>
+  )
 })
 
 export const RegisterEmail = memo(() => {
 
-  return <>
+  return (
+    <>
 
-  </>
+    </>
+  )
 })
 
 
 export const Register = memo((props: RegisterProps) => {
 
 
-  return <>
+  return (
+    <>
 
-    <RegisterUsername />
+      <RegisterUsername />
 
-    <RegisterPassword />
+      <RegisterPassword />
 
-    <RegisterEmail />
-  </>
+      <RegisterEmail />
+    </>
+  )
 })
 
 export default Register;

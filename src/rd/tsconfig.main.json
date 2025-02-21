@@ -28,7 +28,7 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "types": [
-
+      "@rapid/config/@types-node"
     ],
     "paths": {
       "rd/*": ["./*"]
@@ -40,6 +40,7 @@
     "app.ts"
   ],
   "exclude": [
+    "./base/sandbox/**/*",
     "node_modules"
   ]
 }

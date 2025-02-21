@@ -1,6 +1,5 @@
 import { CustomSingleInstanceService } from './SingleInstanceService';
 import { ConvertService } from './ConvertService';
-import type { ExtensionType } from '@rapid/config/constants';
 
 import ElectronStore from 'electron-store';
 
@@ -9,7 +8,7 @@ import ElectronStore from 'electron-store';
  */
 export interface AppStoreOptions {
   fileName: string,
-  fileExtension: ExtensionType;
+  fileExtension: string;
 }
 
 /** store 存储服务 */

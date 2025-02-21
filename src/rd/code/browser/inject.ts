@@ -12,7 +12,9 @@ const rApp: RApp = Object.freeze({
 
   metadata: metadataManager,
 
-  RdSKin: RdSKin
+  RdSKin: RdSKin,
+
+  cssVars: cssVars
 });
 
 inject(window, 'cssVars', cssVars);

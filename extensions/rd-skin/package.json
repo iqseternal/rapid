@@ -1,8 +1,0 @@
-{
-  "name": "@rapid/extension-rd-skin",
-  "version": "0.0.0",
-  "description": "A rapid extension for rd-skin",
-  "scripts": {
-    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.web.json\"  \"tsc --noEmit -p tsconfig.node.json\""
-  }
-}

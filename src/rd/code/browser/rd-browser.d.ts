@@ -1,6 +1,26 @@
+import type * as RA from 'rd/code/browser/declare';
+import type { RdSKin } from 'rd/code/browser/skin';
 import type { ExposeApi } from 'rd/code/electron-sandbox'
 import type * as RSandbox from 'rd/code/electron-sandbox';
 
+/**
+ * Browser: rApp
+ */
+declare global {
+  declare namespace Rapid { export = RA; }
+
+  interface Window {
+    readonly rApp: RA.RApp;
+    readonly cssVars: RdSKin.CssVarsSheet;
+  }
+
+  declare const rApp: RA.RApp;
+  declare const cssVars: RdSKin.CssVarsSheet;
+}
+
+/**
+ * Sandbox
+ */
 declare global {
   /**
    * 声明 preload 线程的类型, 它向 renderer 线程暴露的 api, 以及部分扩展的类型接口

@@ -20,31 +20,33 @@ export const WorkbenchesToolbar = memo(() => {
     // await windowDevtool(true, { mode: 'detach' });
   }, []);
 
-  return <FullSize
-    className={classnames(
-      commonStyles.appRegion,
-      'min-w-8 min-h-[400px]'
-    )}
-  >
-
-    <FullSizeWidth
+  return (
+    <FullSize
       className={classnames(
-        commonStyles.flexCol
+        commonStyles.appRegion,
+        'min-w-8 min-h-[400px]'
       )}
     >
-      <Widget
-        draggable
-        onDragStart={onDragStart}
-        icon='SelectOutlined'
-      />
 
-      <Widget
-        draggable
-        icon='ReconciliationOutlined'
-      />
+      <FullSizeWidth
+        className={classnames(
+          commonStyles.flexCol
+        )}
+      >
+        <Widget
+          draggable
+          onDragStart={onDragStart}
+          icon='SelectOutlined'
+        />
 
-    </FullSizeWidth>
-  </FullSize>
+        <Widget
+          draggable
+          icon='ReconciliationOutlined'
+        />
+
+      </FullSizeWidth>
+    </FullSize>
+  )
 });
 
 export default WorkbenchesToolbar;

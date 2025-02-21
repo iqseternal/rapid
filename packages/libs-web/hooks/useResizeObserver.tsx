@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { DependencyList, Ref, RefObject } from 'react';
-import { printError } from '@suey/printer';
 import { useNormalState } from './useReactive';
+import { Ansi } from '@rapid/libs';
 
 /**
  * resizeObserver, 利用 Hook 的方式创建该对象, 传递 Ref, 自动添加 callback 注册
@@ -25,7 +25,7 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
   const tDom = useMemo(() => {
     if (dom instanceof HTMLElement) return { current: dom };
     if (Reflect.has(dom, 'current')) return dom;
-    printError(`useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
+    Ansi.print(Ansi.red, `useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
     return dom;
   }, []);
 

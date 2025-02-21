@@ -61,4 +61,6 @@ export declare interface RApp {
   readonly metadata: MetadataManager<Metadata.MetadataEntries>;
 
   readonly RdSKin: typeof RdSKin;
+
+  readonly cssVars: RdSKin.CssVarsSheet;
 }

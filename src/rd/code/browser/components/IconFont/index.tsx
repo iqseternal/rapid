@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { printError } from '@suey/printer';
+import { Ansi } from '@rapid/libs';
 
 import type { default as iconInstance } from '@ant-design/icons';
 import * as icons from '@ant-design/icons';
@@ -24,8 +24,8 @@ export const IconFont = memo((props: IconFontProps) => {
   const { icon, ...iconProps } = props;
 
   if (!icon) {
-    printError(`IconFont 组件 icon 参数传递错误`);
-    return <></>;
+    Ansi.print(Ansi.red, `IconFont 组件 icon 参数传递错误`);
+    return null;
   }
 
   const Icon = icons[props.icon];

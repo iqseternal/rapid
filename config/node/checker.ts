@@ -1,5 +1,4 @@
 import { NodeCommand, NodeEnv, Env } from '../enums';
-import { Printer } from '@suey/printer';
 
 declare global {
   namespace NodeJS {
@@ -62,13 +61,11 @@ export class EnvChecker {
     EnvChecker.checkedCommand = true;
 
     if (!process.env.COMMAND) {
-      Printer.printError(`运行脚本前请先设置 COMMAND 环境变量`);
-      process.exit(1);
+      throw new Error('运行脚本前请先设置 COMMAND 环境变量');
     }
 
     if (!EnvChecker.COMMANDS.includes(process.env.COMMAND)) {
-      Printer.printError(`未定义的 COMMAND 环境变量`);
-      process.exit(1);
+      throw new Error('未定义的 COMMAND 环境变量');
     }
   }
 
@@ -95,16 +92,14 @@ export class EnvChecker {
     }
 
     if (process.env.COMMAND === NodeCommand.Dev && process.env.NODE_ENV === NodeEnv.Production) {
-      Printer.printError(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 不能为 production`);
-      process.exit(1);
+      throw new Error(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 不能为 production`);
     }
 
     if (
       (process.env.COMMAND === NodeCommand.Build || process.env.COMMAND === NodeCommand.Preview) &&
       process.env.NODE_ENV !== NodeEnv.Production
     ) {
-      Printer.printError(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 只能是 production`);
-      process.exit(1);
+      throw new Error(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 只能是 production`);
     }
   }
 }

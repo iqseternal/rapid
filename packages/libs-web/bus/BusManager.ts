@@ -1,4 +1,3 @@
-import { Printer } from '@suey/printer';
 import type { DoubleLinkedNode } from '@rapid/libs';
 import { DoubleLinkedList } from '@rapid/libs';
 
@@ -86,10 +85,7 @@ export abstract class BusManager {
    */
   protected noticeSync(busName: Exclude<BusKey, '*'>, ...args: any[]) {
     // not allowed
-    if (busName === '*') {
-      Printer.printError('不应该通知所有事件进行回调');
-      return;
-    }
+    if (busName === '*') return;
 
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;

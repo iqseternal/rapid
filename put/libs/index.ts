@@ -1,5 +1,4 @@
 import { spawn } from 'child_process';
-import { Printer } from '@suey/printer';
 
 export type PutArgs = Parameters<typeof spawn> extends [...infer Rest, infer U] ? Rest : never;
 
@@ -11,20 +10,20 @@ export function putContent(args: PutArgs) {
   const executor = spawn(...args);
 
   executor.stderr?.on('data', (data) => {
-    Printer.printError(data.toString());
+    console.error(data.toString());
   })
 
   executor.stdout?.on('data', (data) => {
-    Printer.printInfo(data.toString());
+    console.log(data.toString());
   })
 
   executor.stdout?.on('end', () => {
-    // Printer.printInfo('publish success!');
+    // console.log('publish success!');
   })
 
   executor.on('close', (code) => {
     if (code !== 0) {
-      Printer.printError('publish error!');
+      console.error('publish error!');
     }
   });
 }

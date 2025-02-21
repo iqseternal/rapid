@@ -13,7 +13,7 @@
     "build:mac": "electron-builder --mac --config",
     "build:linux": "electron-builder --linux --config",
     "build:all": "electron-builder --win --config && electron-builder --mac --config && electron-builder --linux --config",
-    "typecheck": "tsc --noEmit -p tsconfig.json"
+    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.json\" \"tsc --noEmit -p ./rd/tsconfig.main.json\" \"tsc --noEmit -p ./rd/tsconfig.sandbox.json\" \"tsc --noEmit -p ./rd/tsconfig.browser.json\""
   },
   "keywords": [],
   "author": "",

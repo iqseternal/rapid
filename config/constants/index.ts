@@ -4,15 +4,8 @@
  * ==========================================
  */
 import { PlatformsOnDesktop, Env, RuntimePlatforms } from '../enums';
-import { CONFIG } from './config';
-
-export { SystemInformation } from './systemInfo';
 
 export * from './config';
-
-// export * from './store';
-
-export * from './others';
 
 export { PlatformsOnDesktop, Env };
 
@@ -48,10 +41,3 @@ export const EXTENSIONS = {
   //   EXTENSIONS: ['rd']
   // }
 } as const;
-export type ExtensionType = typeof EXTENSIONS[keyof typeof EXTENSIONS];
-
-export enum ExportsExtensions {
-  Svg = 'svg',
-  Png = 'png',
-  Json = 'json'
-}

@@ -1,17 +1,18 @@
 
 import type { AppStoreType as RAppStoreType } from 'rd/base/node/store';
-
-import { makeInvokeActions } from '../actions/makeActionApi';
+import { IpcActionService } from 'rd/base/sandbox/service/IpcActionService';
 import type { HandleHandlers } from './electron';
 
+const ipcActionService = new IpcActionService<HandleHandlers>();
+
 const appStoreActions = {
-  getStore: makeInvokeActions('IpcStore/appStore/getStore'),
-  get: makeInvokeActions('IpcStore/appStore/get'),
-  set: makeInvokeActions('IpcStore/appStore/set'),
-  delete: makeInvokeActions('IpcStore/appStore/delete'),
-  has: makeInvokeActions('IpcStore/appStore/has'),
-  reset: makeInvokeActions('IpcStore/appStore/reset'),
-  clear: makeInvokeActions('IpcStore/appStore/clear'),
+  getStore: ipcActionService.makeInvokeAction('IpcStore/appStore/getStore'),
+  get: ipcActionService.makeInvokeAction('IpcStore/appStore/get'),
+  set: ipcActionService.makeInvokeAction('IpcStore/appStore/set'),
+  delete: ipcActionService.makeInvokeAction('IpcStore/appStore/delete'),
+  has: ipcActionService.makeInvokeAction('IpcStore/appStore/has'),
+  reset: ipcActionService.makeInvokeAction('IpcStore/appStore/reset'),
+  clear: ipcActionService.makeInvokeAction('IpcStore/appStore/clear'),
 } as const;
 
 /**
