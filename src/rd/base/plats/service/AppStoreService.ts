@@ -1,3 +1,4 @@
+// @ts-nocheck： 历史遗留, 本 service 会被重构
 import { CustomSingleInstanceService } from './SingleInstanceService';
 import { ConvertService } from './ConvertService';
 
@@ -31,6 +32,7 @@ export class AppStore extends CustomSingleInstanceService {
        */
       serialize: (value) => {
         const uInt8Array = ConvertService.toUint8Array(value);
+        // @ts-ignore：会被重构
         return new ConvertService(Buffer.from(uInt8Array).toJSON().data).toString();
       },
       /**

@@ -68,7 +68,7 @@ export class FileService {
    * 向文件中新增数据
    * @returns
    */
-  public static async appendToFile(filePath: string, content: string | Buffer): Promise<void> {
+  public static async appendToFile(filePath: string, content: string | Uint8Array): Promise<void> {
     return new Promise((resolve, reject) => {
 
       fs.appendFile(filePath, content, err => {

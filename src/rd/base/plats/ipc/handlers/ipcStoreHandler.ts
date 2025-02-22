@@ -1,7 +1,7 @@
 import { WindowService } from 'rd/base/plats/service/WindowService';
 import { toMakeIpcAction } from '../framework';
 import { convertWindowServiceMiddleware } from '../middlewares';
-import { appStore, AppStoreType } from 'rd/base/node/store';
+import { appStore, AppStoreType } from '../../stores';
 
 const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]

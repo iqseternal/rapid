@@ -1,10 +1,8 @@
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { MetadataInnerZustandStoreManager } from './MetadataInnerZustandStoreManager';
-import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } from './declare';
-
-
+import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload} from './declare';
+import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
 /**
  * 元数据, 在页面中组件的变化可能相距甚远
@@ -15,10 +13,27 @@ import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } fro
  * 2. 在特殊时机, 注册槽点数据, 从而响应式自动更新到子孙或者兄弟级甚远的组件进行渲染
  *
  */
-export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZustandStoreManager {
+export class MetadataManager<MetadataEntries extends {}> extends InnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
+  private readonly metadataChangeListeners = new Set<MetadataStoreChangeListener>();
 
+  /**
+   * 触发元数据更改监听函数
+   */
+  protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload) {
+    this.metadataChangeListeners.forEach(listener => listener(payload));
+  }
 
+  /**
+   * 订阅元数据更改
+   */
+  public subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener) {
+    this.metadataChangeListeners.add(listener);
+
+    return () => {
+      this.metadataChangeListeners.delete(listener);
+    }
+  }
 
   /**
    * 定义 store 元数据, 元数据可以是任何东西
@@ -29,9 +44,9 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    * metadata.defineMetadata('example-key', () => { return (<div />) });
    */
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
-    super.__setStore(() => {
+    super.setStore(() => {
       this.metadataMap.set(metadataKey, metadata);
-      super.__noticeMetadataStoreChangeEffects({
+      this.triggerMetadataChangeListeners({
         action: 'Define',
         type: 'All',
         metadataKey: metadataKey,
@@ -57,9 +72,9 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
   public delMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): void {
     if (!this.hasMetadata(metadataKey)) return;
 
-    super.__setStore(() => {
+    super.setStore(() => {
       this.metadataMap.delete(metadataKey);
-      super.__noticeMetadataStoreChangeEffects({
+      this.triggerMetadataChangeListeners({
         action: 'Remove',
         type: 'All',
         metadataKey: metadataKey,
@@ -73,9 +88,9 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    * @description 意为: 定义覆盖式的元数据
    */
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
-    super.__setStore(() => {
+    super.setStore(() => {
       this.metadataMap.set(metadataKey, metadata);
-      super.__noticeMetadataStoreChangeEffects({
+      this.triggerMetadataChangeListeners({
         action: 'Define',
         type: 'Single',
         metadataKey: metadataKey,
@@ -94,9 +109,9 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    */
   public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
     if (!this.hasMetadata(metadataKey)) {
-      super.__setStore(() => {
+      super.setStore(() => {
         this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
-        super.__noticeMetadataStoreChangeEffects({
+        this.triggerMetadataChangeListeners({
           action: 'Define',
           type: 'Vector',
           metadataKey: metadataKey,
@@ -119,11 +134,11 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
     // if (vector.some(v => v === metadata)) return;
     // vector.push(metadata);
 
-    super.__setStore(() => {
+    super.setStore(() => {
       const metadata = Array.from(vectorSet) as MetadataEntries[MetadataKey];
 
       this.metadataMap.set(metadataKey, metadata);
-      super.__noticeMetadataStoreChangeEffects({
+      this.triggerMetadataChangeListeners({
         action: 'Define',
         type: 'Vector',
         metadataKey: metadataKey,
@@ -155,9 +170,9 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
 
     const fVector = vector.filter(v => v !== metadata);
     if (fVector.length === 0) {
-      super.__setStore(() => {
+      super.setStore(() => {
         this.metadataMap.delete(metadataKey);
-        super.__noticeMetadataStoreChangeEffects({
+        this.triggerMetadataChangeListeners({
           action: 'Remove',
           type: 'Vector',
           metadataKey: metadataKey,
@@ -167,9 +182,9 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
       return;
     }
 
-    super.__setStore(() => {
+    super.setStore(() => {
       this.metadataMap.delete(metadataKey);
-      super.__noticeMetadataStoreChangeEffects({
+      this.triggerMetadataChangeListeners({
         action: 'Remove',
         type: 'Vector',
         metadataKey: metadataKey,
@@ -246,7 +261,7 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
     }, []);
 
     if (!normalState.__unsubscribe) {
-      normalState.__unsubscribe = super.__subscribe(() => {
+      normalState.__unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
         if (data !== normalState.data) {
           normalState.data = data;
@@ -284,7 +299,7 @@ export class MetadataManager<MetadataEntries extends {}> extends MetadataInnerZu
    * 获取到所有定义的元数据
    */
   public useAllMetadata() {
-    super.__useStore();
+    super.useStore();
     return this.metadataMap;
   }
 

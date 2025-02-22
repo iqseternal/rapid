@@ -71,13 +71,15 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
     children, defaultContent = '-',
     tipAttrs = {},
     overlayRender = (realContent) => {
-      return <Tooltip
-        autoAdjustOverflow
-        overlay={<>{children}</>}
-        {...tipAttrs}
-      >
-        {realContent}
-      </Tooltip>;
+      return (
+        <Tooltip
+          autoAdjustOverflow
+          overlay={<>{children}</>}
+          {...tipAttrs}
+        >
+          {realContent}
+        </Tooltip>
+      )
     }
   } = props;
 
@@ -124,12 +126,14 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
   }, []);
 
   return useMemo(() => {
-    const element = <div
-      ref={textContainerRef}
-      className={classnames(styles.wFullSize, styles.textOverflow, className)}
-    >
-      {realContent}
-    </div>
+    const element = (
+      <div
+        ref={textContainerRef}
+        className={classnames(styles.wFullSize, styles.textOverflow, className)}
+      >
+        {realContent}
+      </div>
+    );
 
     if (!state.isOverflow) return element;
 

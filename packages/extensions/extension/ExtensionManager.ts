@@ -1,82 +1,10 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { useLayoutEffect, type PropsWithChildren, type ReactNode } from 'react';
-import { DoubleLinkedList } from '@rapid/libs';
-import { useAsyncLayoutEffect, useNormalState, useUnmount } from '@rapid/libs-web/hooks';
+import { useAsyncLayoutEffect, useNormalState } from '@rapid/libs-web/hooks';
+import type { Extension } from './declare';
+import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
-export interface Extension {
-  /**
-   * 插件的唯一标识 name
-   */
-  readonly name: string | symbol;
-
-  /**
-   * 插件版本
-   */
-  readonly version: string;
-
-  /**
-   * 当前是否处于激活状态
-   */
-  readonly __isActivated: boolean;
-  /**
-   * 当前是否处于注册状态
-   */
-  readonly __isRegistered: boolean;
-
-  /**
-   * 插件被激活, 被使用的状态
-   */
-  readonly onActivated?: () => void;
-
-  /**
-   * 插件被去活, 被禁用的状态
-   */
-  readonly onDeactivated?: () => void;
-
-  /**
-   * 插件被注册
-   */
-  readonly onRegistered?: () => void;
-
-  /**
-   * 插件被卸载
-   */
-  readonly onUnregistered?: () => void;
-}
-
-export interface ExtensionManagerInnerStore {
-  update: {}
-}
-
-export abstract class ExtensionInnerZustandStoreManager {
-  private readonly store = create<ExtensionManagerInnerStore>()(
-    immer(() => {
-      return {
-        update: {}
-      }
-    })
-  )
-
-  protected __updateStore() {
-    this.store.setState({ update: {} });
-  }
-
-  /**
-   * store hook
-   */
-  protected __useStore() {
-    return this.store(store => store.update);
-  }
-
-  protected __setStore(setStoreFunction: () => void) {
-    setStoreFunction();
-    this.__updateStore();
-  }
-}
-
-
-export class ExtensionManager extends ExtensionInnerZustandStoreManager {
+export class ExtensionManager extends InnerZustandStoreManager {
   private readonly extNameMap = new Map<string | symbol, Extension>();
   // private readonly extNameSet = new Set<string | symbol>();
 
@@ -101,7 +29,7 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
       }
     })
 
-    if (unregisterSuccess) super.__updateStore();
+    if (unregisterSuccess) super.updateStore();
   }
 
   /**
@@ -163,7 +91,7 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
   public registerExtension(...extensions: Extension[]) {
     if (extensions.length === 0) return;
 
-    super.__setStore(() => {
+    super.setStore(() => {
       extensions.forEach(extension => {
         extension.onRegistered?.();
         this.extNameMap.set(extension.name, extension);
@@ -198,7 +126,7 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
    * 获取扩展列表
    */
   public useExtensionsList(): [{ readonly extensions: Extension[] }] {
-    const value = this.__useStore();
+    const value = this.useStore();
 
     const [statusState] = useNormalState(() => ({
       value: void 0 as (undefined | typeof value)
@@ -246,7 +174,7 @@ export class ExtensionManager extends ExtensionInnerZustandStoreManager {
   public unregisterAllExtension() {
     if (this.extNameMap.size === 0) return;
 
-    super.__setStore(() => {
+    super.setStore(() => {
       this.extNameMap.clear();
     });
   }

@@ -2,7 +2,6 @@ import './inject';
 
 import { useState, StrictMode } from 'react';
 import { ThemeExtension } from '@/plugins/modules/theme';
-import type { MetadataStoreChangedPayload } from '@rapid/extensions';
 import { Ansi } from '@rapid/libs';
 
 import ReactDOM from 'react-dom/client';

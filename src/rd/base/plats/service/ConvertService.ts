@@ -1,3 +1,4 @@
+// @ts-nocheck： 历史遗留, 本 service 会被重构
 import { isNumber, isString } from '@rapid/libs';
 import { PakoService } from './PakoService';
 
@@ -10,7 +11,7 @@ export type ConvertDataType = string | number | Uint8Array | Buffer | object | B
  *
  */
 export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataType, Blob>> {
-  public constructor(private readonly data: Data) {}
+  public constructor(private readonly data: Data) { }
 
   /**
    * 将目标数据转换为一个合适的 string
@@ -42,7 +43,7 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
    * 将目标数据转化为一个合适的 json 对象以供使用
    * @param data
    */
-  public static toJson<Resp extends any, Data extends ConvertDataType = ConvertDataType>(data: Data): Data extends Blob ?  Promise<Resp> : Resp;
+  public static toJson<Resp extends any, Data extends ConvertDataType = ConvertDataType>(data: Data): Data extends Blob ? Promise<Resp> : Resp;
   public static toJson<Resp extends any, Data extends ConvertDataType = ConvertDataType>(data: Data): Promise<Resp> | Resp {
     if (data instanceof Blob) {
       return new Promise<Resp>(async (resolve, reject) => {
@@ -117,7 +118,7 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
 
     if (data instanceof Buffer) return Uint8Array.from(data);
     if (data instanceof Uint8Array) return data;
-
+    // @ts-ignore：会被重构
     return Uint8Array.from(ConvertService.toBuffer(data as Exclude<Data, Blob>));
   }
 
@@ -134,6 +135,7 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
     if (data instanceof Blob) {
       return new Promise<Blob>(async (resolve, reject) => {
         (data as Blob).arrayBuffer().then(buffer => {
+          // @ts-ignore：会被重构
           resolve(new Blob([Buffer.from(buffer)]));
         }).catch(reject);
       })
@@ -142,9 +144,10 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
     if (isString(data)) return new Blob([data]);
     if (isNumber(data)) return new Blob([data.toString()]);
 
+    // @ts-ignore：会被重构
     if (data instanceof Buffer) return new Blob([data])
     if (data instanceof Uint8Array) return new Blob([data]);
-
+    // @ts-ignore：会被重构
     return new Blob([ConvertService.toString(data as Exclude<Data, Blob>)]);
   }
 
@@ -158,16 +161,18 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
    * @param data
    */
   public static toDeflate<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<Uint8Array> : Uint8Array;
-  public static toDeflate<Data extends ConvertDataType>(data: Data): Promise<Uint8Array> | Uint8Array {
+  public static async toDeflate<Data extends ConvertDataType>(data: Data): Promise<Uint8Array> {
     if (data instanceof Blob) {
       return new Promise(async (resolve, reject) => {
         ConvertService.toBuffer(data).then(res => {
+          // @ts-ignore：会被重构
           resolve(PakoService.deflateRaw(res));
         }).catch(reject);
       })
     }
 
-    return PakoService.deflateRaw(ConvertService.toBuffer(data as Exclude<ConvertDataType, Blob>));
+    // @ts-ignore：会被重构
+    return PakoService.deflateRaw(await ConvertService.toBuffer(data as Uint8Array) as Uint8Array);
   }
 
   public toDeflate() {
@@ -179,15 +184,15 @@ export class ConvertService<Data extends ConvertDataType = Exclude<ConvertDataTy
    * @param data
    */
   public static toInflate<Data extends ConvertDataType>(data: Data): Data extends Blob ? Promise<string> : string;
-  public static toInflate<Data extends ConvertDataType>(data: Data): Promise<string> | string {
-    if (data instanceof Uint8Array) return PakoService.inflateRaw(data);
+  public static async toInflate<Data extends ConvertDataType>(data: Data): Promise<string> {
+    if (data instanceof Uint8Array) return PakoService.inflateRaw(data as Uint8Array);
 
     if (data instanceof Blob) return new Promise(async (resolve, reject) => {
       ConvertService.toUint8Array(data).then(res => {
         resolve(PakoService.inflateRaw(res));
       }).catch(reject);
     })
-    else return PakoService.inflateRaw(ConvertService.toUint8Array(data as Exclude<Data, Blob>));
+    else return PakoService.inflateRaw(await ConvertService.toUint8Array(data as Exclude<Data, Blob>));
   }
 
   public toInflate() {

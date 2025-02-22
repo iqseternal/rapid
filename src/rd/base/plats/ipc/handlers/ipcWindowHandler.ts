@@ -8,7 +8,7 @@ import { toMakeIpcAction } from '../framework';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { PAGES_WINDOW_MAIN } from 'rd/base/node/config';
 import { posix } from 'path';
-import { userConfigStore } from 'rd/base/node/store';
+import { userConfigStore } from '../../stores';
 
 const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]

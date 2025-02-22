@@ -1,7 +1,3 @@
-import type { ComponentType } from 'react';
-import { useSyncExternalStore, useCallback } from 'react';
-import { DoubleLinkedList } from '@rapid/libs';
-import { useRefresh } from '@rapid/libs-web/hooks';
 
 export const Commands = {
   Ctrl: ['ctrl'],

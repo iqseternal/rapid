@@ -1,25 +1,26 @@
-import type * as RA from 'rd/code/browser/declare';
 import type { RdSKin } from 'rd/code/browser/skin';
-import type { ExposeApi } from 'rd/code/electron-sandbox'
+import type { ExposeApi } from 'rd/code/electron-sandbox';
+
 import type * as RSandbox from 'rd/code/electron-sandbox';
+import type * as RA from 'rd/code/browser/declare';
 
 // Browser: rApp
 declare global {
-  declare namespace Rapid { export = RA; }
+  namespace Rapid { export = RA; }
 
   interface Window {
     readonly rApp: RA.RApp;
     readonly cssVars: RdSKin.CssVarsSheet;
   }
 
-  declare const rApp: RA.RApp;
-  declare const cssVars: RdSKin.CssVarsSheet;
+  const rApp: RA.RApp;
+  const cssVars: RdSKin.CssVarsSheet;
 }
 
 // Sandbox
 declare global {
   // 声明 preload 线程的类型, 它向 renderer 线程暴露的 api, 以及部分扩展的类型接口
-  declare namespace RdSandbox { export = RSandbox; }
+  namespace RdSandbox { export = RSandbox; }
 
   /**
    * 扩展 Window 含有 Electron Api 声明规则
@@ -28,22 +29,22 @@ declare global {
    * window.electron.ipcRenderer.invoke('xxx');
    * ```
    */
-  declare interface Window extends ExposeApi { }
+  interface Window extends ExposeApi { }
 
   /**
    * 注入的 electron 对象
    */
-  declare const electron: RdSandbox.ElectronAPI;
+  const electron: RdSandbox.ElectronAPI;
 
   /**
    * 注入的 printer 打印日志对象
    */
-  declare const printer: RdSandbox.PrinterServer;
+  const printer: RdSandbox.PrinterServer;
 
   /**
    * 注入的 ipc 对象
    */
-  declare const ipcActions: RdSandbox.IpcActions;
+  const ipcActions: RdSandbox.IpcActions;
 }
 
 export {};

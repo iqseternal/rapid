@@ -38,7 +38,6 @@ export type ExtractSingleEntries<Entries> = {
   [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
 }
 
-
 export type MetadataAction =
   | 'Define'
   | 'Remove'
@@ -50,7 +49,7 @@ export type MetadataType =
   | 'All'
 ;
 
-export interface MetadataStoreChangedPayload {
+export interface MetadataStoreListenerPayload {
   action: MetadataAction;
 
   type: MetadataType;
@@ -60,4 +59,4 @@ export interface MetadataStoreChangedPayload {
   metadata: unknown;
 };
 
-export type MetadataStoreChangedEffect = (payload: MetadataStoreChangedPayload) => void;
+export type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;

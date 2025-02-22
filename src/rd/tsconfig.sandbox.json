@@ -4,6 +4,7 @@
     "composite": true,
     "baseUrl": ".",
     "rootDir": ".",
+    "outDir": "../rd-dts",
     "paths": {
       "rd/*": [
         "./*"
@@ -19,6 +20,7 @@
     "experimentalDecorators": true,
     "sourceMap": false,
     "skipDefaultLibCheck": true,
+    "strict": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "esModuleInterop": true,

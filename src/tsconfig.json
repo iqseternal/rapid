@@ -4,6 +4,7 @@
     "incremental": true,
     "baseUrl": ".",
     "rootDir": "../",
+    "outDir": "./rd-dts",
     "lib": [
       "ESNext"
     ],
@@ -17,7 +18,9 @@
   },
   "include": [
     "./rspack.ts",
-    "../config/**/*.ts"
+    "../config/**/*.ts",
+    "./rd/*.json",
+    "../package.json"
   ],
   "exclude": ["node_modules"]
 }

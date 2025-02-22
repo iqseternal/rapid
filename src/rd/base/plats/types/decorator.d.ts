@@ -5,11 +5,6 @@
  */
 export interface Decorator {
   /**
-   * 自身装饰器具有多样性
-   */
-  (this: any, ...args: any[]): ClassDecorator | MethodDecorator | PropertyDecorator | ParameterDecorator;
-
-  /**
    * 唯一标识
    */
   readonly symbol: Symbol;

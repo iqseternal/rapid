@@ -2,56 +2,59 @@
   "compilerOptions": {
     "composite": true,
     "incremental": true,
-    "baseUrl": ".",
-
+    "baseUrl": "./",
+    "outDir": "../rd-dts",
+    "declarationDir": "../rd-dts",
+    "target": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-
     "jsx": "react-jsx",
-    "lib": ["DOM", "ESNext"],
-    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-
     "esModuleInterop": true,
     "isolatedModules": true,
-
+    "preserveSymlinks": false,
+    "declaration": true,
     "strict": false,
     "strictNullChecks": true,
-
     "experimentalDecorators": true,
-
-    "noEmitOnError": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": false,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "noImplicitOverride": true,
-
     "noImplicitReturns": true,
-
     "allowSyntheticDefaultImports": true,
     "allowUmdGlobalAccess": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
-
     "types": [
       "@rapid/config/@types-web",
       "@rapid/libs-web/@types",
-      "reflect-metadata"
+      "reflect-metadata",
+      "./code/browser/types"
     ],
-
     "paths": {
-      "rd/*": ["./*"],
-      "@/*": ["code/browser/*"]
+      "rd/*": [
+        "./*"
+      ],
+      "@/*": [
+        "code/browser/*"
+      ]
     }
   },
   "include": [
     "./code/browser/**/*.ts",
     "./code/browser/**/*.tsx",
-    "./code/browser/**/rd-browser.d.ts",
 
     "./base/**/*.ts",
-    "./code/electron-sandbox/**/*.ts"
+    "./code/electron-sandbox/**/*.ts",
+    "../../package.json"
   ],
   "exclude": [
     "node_modules",

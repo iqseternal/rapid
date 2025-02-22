@@ -1,3 +1,3 @@
 
 export { MetadataManager } from './MetadataManager';
-export type { MetadataStoreChangedPayload, MetadataStoreChangedEffect, MetadataAction, MetadataType } from './declare';
+export type { MetadataAction, MetadataType, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';

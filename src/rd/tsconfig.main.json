@@ -3,32 +3,28 @@
     "composite": true,
     "incremental": true,
     "baseUrl": ".",
-
+    "outDir": "../rd-dts",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
     "lib": ["ESNext"],
     "experimentalDecorators": true,
-
     "strict": false,
     "strictNullChecks": true,
-
     "noEmitOnError": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,
-
     "allowUnusedLabels": true,
     "allowSyntheticDefaultImports": true,
-
-    "isolatedModules": true,
+    "isolatedModules": false,
     "esModuleInterop": true,
-
-    "resolveJsonModule": true,
-    "module": "NodeNext",
-
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "types": [
-      "@rapid/config/@types-node"
+      "@rapid/config/@types-node",
+      "node"
     ],
     "paths": {
       "rd/*": ["./*"]
@@ -37,7 +33,8 @@
   "include": [
     "./base/**/*.ts",
     "./code/electron-main/**/*.ts",
-    "app.ts"
+    "app.ts",
+    "../../package.json"
   ],
   "exclude": [
     "./base/sandbox/**/*",

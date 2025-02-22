@@ -35,7 +35,7 @@ export abstract class LinkedList<V, Node extends LinkedNode<V>> extends Vessel<V
    *    // value: number
    * }
    */
-  public abstract [Symbol.iterator](): Iterator<Readonly<V>>;
+  public abstract override [Symbol.iterator](): Iterator<Readonly<V>>;
 
   /**
    * 通过 value 初始化一个节点
