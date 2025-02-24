@@ -70,6 +70,13 @@ export const convertWindowServiceMiddleware: IpcActionMiddleware<IpcActionEvent>
   transformArgs: async (e, ...args) => {
     const windowService = WindowService.findWindowService(e);
 
+    if (!windowService) {
+      throw new RuntimeException(`transformArgs 转换 WindowService 失败`, {
+        label: 'convertWindowServiceMiddleware',
+        level: 'ERROR'
+      });
+    }
+
     return [windowService, ...args];
   }
 }

@@ -1,6 +1,6 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
-import { isSameWindowService, WindowService, WindowServiceStateMachine } from 'rd/base/plats/service/WindowService';
+import { WindowService } from 'rd/base/plats/service/WindowService';
 import { RuntimeException, TypeException } from 'rd/base/plats/exceptions';
 import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
 import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
@@ -9,6 +9,7 @@ import { convertWindowServiceMiddleware } from '../middlewares';
 import { PAGES_WINDOW_MAIN } from 'rd/base/node/config';
 import { posix } from 'path';
 import { userConfigStore } from '../../stores';
+import { WindowServiceStateMachine } from 'rd/base/plats/service/WindowServiceStateMachine';
 
 const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]
@@ -294,7 +295,7 @@ export const ipcWindowClose = makeIpcHandleAction(
 
     const mainWindowService = WindowService.findWindowService(PAGES_WINDOW_MAIN);
     // 主窗口只能隐藏
-    if (isSameWindowService(mainWindowService, windowService)) {
+    if (WindowService.isSameWindowService(mainWindowService, windowService)) {
       windowService.window.hide();
       return;
     }

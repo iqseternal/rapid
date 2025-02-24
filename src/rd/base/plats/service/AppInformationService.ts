@@ -1,12 +1,12 @@
 
-import { SingleInstanceService } from './SingleInstanceService';
+import { SingleInstanceService } from 'rd/base/common/service/SingleInstanceService';
 
 import * as rootPackageJson from 'rd/../../package.json';
 
 /**
  * AppInformationService
  */
-export class AppInformationService extends SingleInstanceService<AppInformationService> {
+export class AppInformationService extends SingleInstanceService {
   public readonly information = {
     // 系统名称
     name: rootPackageJson.name,
@@ -35,13 +35,4 @@ export class AppInformationService extends SingleInstanceService<AppInformationS
     dependencies: rootPackageJson.dependencies
   } as const;
 
-
-
-  public static override getInstance<T = AppInformationService>() {
-    return super.getInstance<T>();
-  }
-
-  protected override destroy(): void {
-
-  }
 }

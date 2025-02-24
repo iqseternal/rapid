@@ -1,5 +1,5 @@
 import { IS_DEV } from '@rapid/config/constants';
-import { PrinterService } from '../service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { ExceptionFilter, Exception } from '../exceptions';
 import type { Decorator, DescendantClass } from 'rd/base/plats/types';
 

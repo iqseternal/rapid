@@ -1,7 +1,7 @@
 import { LoggerService } from 'rd/base/plats/service/LoggerService';
 import { IS_DEV } from '@rapid/config/constants';
 import { Catch, Exception, ExceptionErrorMsgData, isException } from 'rd/base/plats/exceptions';
-import { PrinterService } from 'rd/base/plats/service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 // 关闭渲染进程安全警告
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -12,8 +12,13 @@ if (IS_DEV) {
     try {
       Catch.parser(reason as unknown as Exception<ExceptionErrorMsgData>);
     } catch (err) {
+      console.error(reason, origin);
+      console.dir(err);
+
+
       if (err && err === reason) {
         LoggerService.error(`未捕获的异常`, err, origin);
+
         return;
       }
 

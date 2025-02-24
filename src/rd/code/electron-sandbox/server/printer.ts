@@ -3,7 +3,7 @@ import { PrinterService } from 'rd/base/common/service/PrinterService';
 /**
  * renderer 线程打印器
  */
-const printer = PrinterService.getInstance();
+const printer = new PrinterService();
 
 /**
  * renderer 线程打印器类型

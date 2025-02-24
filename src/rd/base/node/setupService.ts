@@ -1,11 +1,13 @@
-import { WindowService, WindowServiceStateMachine } from 'rd/base/plats/service/WindowService';
+import { WindowService } from 'rd/base/plats/service/WindowService';
+import { WindowServiceStateMachine } from 'rd/base/plats/service/WindowServiceStateMachine';
 import { CONFIG, IS_DEV } from '@rapid/config/constants';
 import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
-import { PrinterService } from 'rd/base/plats/service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { PAGES_WINDOW_MAIN, PAGES_WINDOW_SETTING } from 'rd/base/node/config';
 import { Menu, Tray, app, nativeImage } from 'electron';
 import { setWindowCross, setWindowOpenHandler } from 'rd/base/node/core/common/window';
 import { join } from 'path';
+
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
 
@@ -19,6 +21,7 @@ export async function setupMainWindow() {
 
   PrinterService.printInfo('窗口开始构建');
   const appConfigService = AppConfigService.getInstance();
+
   const windowService = new WindowService(appConfigService.config.windows.mainWindow, {
     url: PAGES_WINDOW_MAIN,
     autoLoad: true,

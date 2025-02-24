@@ -3,7 +3,9 @@ import { join } from 'path';
 import { FileService } from './FileService';
 import { TypeException } from 'rd/base/plats/exceptions';
 import { statSync } from 'fs';
-import { ConvertDataType, ConvertService } from './ConvertService';
+
+
+import Pako from 'pako';
 
 import * as fs from 'fs';
 
@@ -31,15 +33,17 @@ export class AppFileStorageService {
   ) {}
 
   /** 按照指定格式保存当前想要的文件 */
-  public async save<T extends ConvertDataType>(content: T) {
-    const data = await ConvertService.toDeflate(content);
-    return FileService.saveFileAsStream(this.filePath, data);
+  public async save<T>(content: T) {
+    const data = Pako.deflate(JSON.stringify(content));
+    return fs.writeFileSync(this.filePath, Buffer.from(data).toString('binary'));
   }
 
   /** 按照指定格式读取当前想要的文件 */
   public async read() {
-    const content = await FileService.readFile(this.filePath);
-    return new ConvertService<Exclude<ConvertDataType, Blob>>(ConvertService.toInflate(content));
+    const text = fs.readFileSync(this.filePath, 'binary');
+    const compressed = Buffer.from(text, 'binary');
+    const tData = Pako.inflate(compressed, { to: 'string' });
+    return JSON.parse(tData);
   }
 }
 
@@ -112,7 +116,7 @@ export class AppDirStorageService {
    * @param content
    * @returns
    */
-  public async saveFile(filePath: string, content: ConvertDataType) {
+  public async saveFile(filePath: string, content: any) {
     if (validateLocalPathHasDriveLetter(filePath)) {
       throw new TypeException(`the filePath is not absolute path`, { label: `AppStorageService:save` });
     }

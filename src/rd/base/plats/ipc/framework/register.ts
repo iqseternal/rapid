@@ -2,7 +2,7 @@ import { ipcMain } from 'electron';
 
 import type { IpcActionType, IpcActionMiddleware } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
-import { PrinterService } from 'rd/base/plats/service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 const ipcRuntimeContext = getIpcRuntimeContext();
 

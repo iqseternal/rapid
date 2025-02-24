@@ -1,4 +1,4 @@
-import { AppStore } from 'rd/base/plats/service/AppStoreService';
+import { RdStoreService } from '../service/RdStoreService';
 import { EXTENSIONS } from '@rapid/config/constants';
 
 export interface AppStoreType {
@@ -8,7 +8,8 @@ export interface AppStoreType {
   accessToken: string;
 }
 
-export const appStore = AppStore.getInstance<AppStoreType>('APP_STORE', {
-  fileName: 'app',
+export const appStore = RdStoreService.getInstance<AppStoreType>('APP_STORE', {
+  name: 'app',
+
   fileExtension: EXTENSIONS.APP_STORE
 });

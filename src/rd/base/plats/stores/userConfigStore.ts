@@ -1,4 +1,4 @@
-import { AppStore } from 'rd/base/plats/service/AppStoreService';
+import { RdStoreService } from '../service/RdStoreService';
 import { EXTENSIONS } from '@rapid/config/constants';
 
 export interface UserConfigStoreType {
@@ -6,7 +6,8 @@ export interface UserConfigStoreType {
   mainWindowMemoryHeight: number;
 }
 
-export const userConfigStore = AppStore.getInstance<UserConfigStoreType>('USER_CONFIG', {
-  fileName: 'userConfig',
+export const userConfigStore = RdStoreService.getInstance<UserConfigStoreType>('USER_CONFIG', {
+  name: 'userConfig',
+
   fileExtension: EXTENSIONS.USER_CONFIG_STORE
 });

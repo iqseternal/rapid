@@ -1,6 +1,3 @@
-import { PrinterService } from './PrinterService';
-import { Printer } from '@suey/printer';
-
 import * as path from 'path';
 import * as fs from 'fs';
 

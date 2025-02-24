@@ -1,40 +1,33 @@
 
 
-/**
- * 单实例基类, 与 CustomSingleInstanceService 区别:
- *
- * 只允许返回当前类的实例
- */
-export class SingleInstanceService<T extends SingleInstanceService<T>> {
-  private static instanceMap: Record<string, SingleInstanceService<any>> = {};
+export class SingleInstanceService {
+  private static instanceMap = new WeakMap<Function, SingleInstanceService>();
   private static isCanNew = false;
 
   public constructor() {
     if (!SingleInstanceService.isCanNew) {
-      throw new Error(`请不要使用 New 操作符手动实例化 SingleInstanceService 对象, 请使用 SingleInstanceService 对象.getInstance().`);
+      throw new Error(
+        `请不要使用 new 操作符手动实例化 ${this.constructor.name} 对象, 请使用 ${this.constructor.name}.getInstance()。`
+      );
     }
   }
 
   /**
-   * 采用单实例做法, 这样可以保持应用程序数据的统一, 保持数据的一致性
-   * @returns
+   * 获取单例实例
+   * @returns {T}
    */
-  public static getInstance<T>(): T {
-    const className = this.name;
-
-    if (!SingleInstanceService.instanceMap[className]) {
+  public static getInstance<T extends SingleInstanceService>(this: { new(): T }): T {
+    if (!SingleInstanceService.instanceMap.has(this)) {
       SingleInstanceService.isCanNew = true;
-      SingleInstanceService.instanceMap[className] = new this();
+      SingleInstanceService.instanceMap.set(this, new this());
       SingleInstanceService.isCanNew = false;
     }
 
-    return SingleInstanceService.instanceMap[className] as T;
+    return SingleInstanceService.instanceMap.get(this) as T;
   }
 
   /**
-   * 单一实例才应用程序即将退出时做的事情
+   * 单一实例在应用程序即将退出时做的事情
    */
-  protected destroy(): void {
-
-  }
+  protected destroy(): void { }
 }

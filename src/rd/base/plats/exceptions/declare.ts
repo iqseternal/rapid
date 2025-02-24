@@ -1,5 +1,5 @@
 import { IS_DEV } from '@rapid/config/constants';
-import { PrinterService } from '../service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 /**
  * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等

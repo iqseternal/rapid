@@ -5,8 +5,10 @@ import { setupTrayMenu, setupMainWindow } from 'rd/base/node/setupService';
 import { IpcMainManager } from 'rd/base/plats/ipc';
 import { app, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
-import { PrinterService } from 'rd/base/plats/service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { IS_DEV } from '@rapid/config/constants';
+
+
 
 export class CodeMain {
   private readonly ipcManager = new IpcMainManager();
