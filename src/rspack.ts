@@ -282,6 +282,9 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
         // 将结果写入到磁盘
         writeToDisk: true
       }
+    },
+    optimization: {
+      minimize: IS_PROD,
     }
   });
 
@@ -326,6 +329,9 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
         writeToDisk: true
       },
     },
+    optimization: {
+      minimize: IS_PROD,
+    }
   });
 
   return preloadRspackConfig;
@@ -431,7 +437,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       },
       polyfill: 'off',
       sourceMap: {
-        js: IS_DEV ? void 0 : false,
+        js: IS_DEV ? 'source-map' : false,
         css: IS_DEV,
       }
     },
