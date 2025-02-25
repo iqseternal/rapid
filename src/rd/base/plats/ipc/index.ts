@@ -1,21 +1,21 @@
 import { IpcActionEvent, registerGlobalMiddleware, registerIpcHandle, registerIpcOn } from './framework';
 import { ipcExceptionFilterMiddleware, ipcResponseMiddleware } from './middlewares';
 
-import { ipcAppStoreClear, ipcAppStoreDelete, ipcAppStoreGet, ipcAppStoreGetStore, ipcAppStoreHas, ipcAppStoreReset, ipcAppStoreSet } from './handlers/ipcStoreHandler';
+import { ipcAppStoreClear, ipcAppStoreDelete, ipcAppStoreGet, ipcAppStoreGetStore, ipcAppStoreHas, ipcAppStoreReset, ipcAppStoreSet } from './handlers';
 import {
   ipcWindowResizeAble, ipcWindowWorkAreaSize, ipcWindowShow, ipcWindowSetSize,
   ipcWindowSetPosition, ipcWindowSetMinimumSize, ipcWindowResetCustomSize, ipcWindowRelaunch,
   ipcWindowReductionSize, ipcWindowProperties, ipcWindowMinimize, ipcWindowMaximize, ipcWindowClose
-} from './handlers/ipcWindowHandler';
-import { ipcOnBroadcast } from './handlers/ipcBroadcast';
-import { ipcOpenDevTool } from './handlers/ipcDevToolHandler';
-import { ipcForwardDataTakeIn, ipcForwardDataTakeOut } from './handlers/ipcForwardDataHandler';
+} from "./handlers";
+import { ipcOnBroadcast } from './handlers';
+import { ipcOpenDevTool } from './handlers';
+import { ipcForwardDataTakeIn, ipcForwardDataTakeOut } from './handlers';
 
 
 export class IpcMainManager {
 
 
-  public async startUp() {
+  public async start() {
 
     registerIpcHandle([
       ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,

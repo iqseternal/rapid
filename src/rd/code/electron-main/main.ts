@@ -8,20 +8,18 @@ import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { IS_DEV } from '@rapid/config/constants';
 
-
-
 export class CodeMain {
   private readonly ipcManager = new IpcMainManager();
 
   public async main() {
 
-    await this.ipcManager.startUp();
+    await this.ipcManager.start();
 
-    await this.startUpApp();
+    await this.startApp();
   }
 
 
-  private async startUpApp() {
+  private async startApp() {
     app.on('window-all-closed', async () => {
       if (process.platform !== 'darwin') {
         PrinterService.printInfo('窗口已关闭, 应用程序即将退出');
@@ -29,7 +27,6 @@ export class CodeMain {
       }
     });
 
-    // app.disableHardwareAcceleration();
     await app.whenReady();
 
     electronApp.setAppUserModelId(`com.electron`);

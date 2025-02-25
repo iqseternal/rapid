@@ -1,13 +1,22 @@
 import { StrictMode } from 'react';
+
 import ReactDOM from 'react-dom/client';
-import App from './App';
 
-import '@scss/index.scss';
+function App() {
+  return (
+    <div>
+      App
+    </div>
+  )
+}
 
-ReactDOM.createRoot(
-  document.getElementById('root')!
-).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+// ===========================================================================================
+const rootContainer = document.getElementById('root');
+
+if (rootContainer) {
+  ReactDOM.createRoot(rootContainer).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}

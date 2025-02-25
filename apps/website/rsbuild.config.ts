@@ -1,82 +1,25 @@
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
-import { pluginSass } from '@rsbuild/plugin-sass';
-import { pluginLess } from '@rsbuild/plugin-less';
-import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
-import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 
-import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
-import { ECMAVersion } from '@rsdoctor/utils/ruleUtils';
+import { defineConfig } from '@rsbuild/core';
+
+import { EnvBuilder } from '../../config/node';
+import { DIRS } from '../../config/node';
 import { join } from 'path';
 
-import { EnvBuilder, DIRS } from '../../config/node';
-
 const envBuilder = new EnvBuilder({
-  checker: false
+  checker: true
 });
 
-export default defineConfig(({ env, command }) => ({
+export default defineConfig({
   source: {
-    include: [
-
-    ],
     entry: {
-      index: './src/index.tsx'
+      index: join(__dirname, './src/index.tsx')
     },
-    define: envBuilder.defineVars(),
-  },
-  plugins: [
-    pluginStyledComponents(),
-    pluginSass(),
-    pluginLess(),
-    pluginTypedCSSModules(),
-    pluginReact(),
-  ],
-  server: {
-    port: 3000,
-    strictPort: true
+    define: envBuilder.defineVars()
   },
   output: {
     distPath: {
-      root: DIRS.DIST_WEB_DIR,
+      root: join(DIRS.DIST_DIR, './website'),
     },
-    cleanDistPath: true
-  },
-  tools: {
-    rspack: {
-
-      plugins: [
-        // new RsdoctorRspackPlugin({
-        //   features: [
-        //     'resolver',
-        //     'treeShaking'
-        //   ],
-        //   linter: {
-        //     level: 'Error',
-        //     extends: [],
-        //     rules: {
-        //       'default-import-check': 'off',
-        //       'duplicate-package': [
-        //         'Warn',
-        //         {
-        //           checkVersion: 'minor',
-        //           ignore: [
-        //             '@bable/runtime'
-        //           ]
-        //         }
-        //       ],
-        //       'ecma-version-check': [
-        //         'off',
-        //         {
-        //           highestVersion: ECMAVersion.ES7P,
-        //           ignore: []
-        //         }
-        //       ]
-        //     }
-        //   }
-        // })
-      ]
-    }
+    cleanDistPath: true,
   }
-}));
-
+})

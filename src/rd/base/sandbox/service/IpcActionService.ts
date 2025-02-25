@@ -32,9 +32,7 @@ export class IpcActionService<IpcHandlers extends Record<string, (...args: unkno
     const data = err.message.match(/Error invoking remote method .*?:/);
 
     if (data) {
-      const expStr = err.message.replace(data[0], '').trim();
-
-      return expStr;
+      return err.message.replace(data[0], '').trim();
     }
 
     return null;

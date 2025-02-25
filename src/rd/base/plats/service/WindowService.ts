@@ -4,6 +4,7 @@ import { IS_DEV } from '@rapid/config/constants';
 import { isString } from '@rapid/libs';
 import { WindowServiceStateMachine } from './WindowServiceStateMachine';
 import { RuntimeException } from '../exceptions';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 /**
  * 创建 windowService 的选项
@@ -43,8 +44,17 @@ export class WindowService {
 
     WindowServiceStateMachine.addWindowService(this);
 
-    if (IS_DEV) this.window.loadURL(this.options.url);
-    else this.window.loadFile(this.options.url);
+    if (IS_DEV) {
+      this.window.loadURL(this.options.url).then(r => r).catch(e => {
+        // TODO: 处理加载错误
+        PrinterService.printError('加载URL失败');
+      });
+    }
+    else {
+      this.window.loadFile(this.options.url).then(r => r).catch(e => {
+        // TODO: 处理加载错误
+      });
+    }
   }
 
   /**

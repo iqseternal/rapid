@@ -1520,9 +1520,10 @@ module.exports = ({
 
     /**
      * 这条规则将强制执行注释 // 或 /* 开始后的间距的一致性。它还为各种文档风格提供了一些例外情况。
+     * @description 此规则会 typescript 的三斜线指令, 所以禁止
      * @see https://eslint.org/docs/v8.x/rules/spaced-comment
      */
-    'spaced-comment': ['warn', 'always'],
+    'spaced-comment': 'off',
 
     /**
      * 这条规则要求或不允许严格模式指令。

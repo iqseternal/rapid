@@ -2,7 +2,7 @@ import { Ansi } from '@rapid/libs';
 
 export type PrintMessagesTypeArr = Parameters<typeof Ansi.print>;
 
-export class PrinterService  {
+export class PrinterService {
   private static readonly printer = new PrinterService();
 
   /**

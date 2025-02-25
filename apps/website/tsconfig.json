@@ -1,49 +1,50 @@
 {
   "compilerOptions": {
-    "moduleResolution": "Node",
-    "module": "ESNext",
+    "composite": true,
+    "incremental": true,
+    "baseUrl": "./",
     "target": "ESNext",
-    "skipDefaultLibCheck": true,
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": false,
-    "composite": false,
-    "declaration": false,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "allowArbitraryExtensions": true,
-    "baseUrl": ".",
-    "jsx": "react-jsx",
-    "lib": ["DOM", "ESNext", "WebWorker"],
-    "types": ["./src/@types"],
-    "paths": {
-      "@scss/*": ["src/scss/*"],
-      "@components/*": ["src/components/*"],
-      "@features/*": ["src/features/*"],
-      "@views/*": ["src/views/*"],
-      "@libs/*": ["src/libs/*"],
-      "@/*": ["src/*"]
-    },
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
     "skipLibCheck": true,
-    "allowUnusedLabels": true,
-    "noImplicitAny": false,
-    "allowUmdGlobalAccess": true,
+    "skipDefaultLibCheck": true,
+    "jsx": "react-jsx",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "noEmit": true
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveSymlinks": false,
+    "declaration": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowUnusedLabels": true,
+    "types": [
+      "@rapid/config/@types-web",
+      "@rapid/libs-web/@types"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx"
   ],
-  "exclude": [
-    "src/**/*.d.ts",
-    "node_modules",
-    "dist",
-    ".git",
-    ".ignore"
-  ]
+  "exclude": ["node_modules"]
 }
 
