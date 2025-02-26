@@ -6,7 +6,7 @@ import { SingleInstanceService } from 'rd/base/common/service/SingleInstanceServ
  *
  * 只允许返回当前类的实例
  */
-export class RdAppSingleInstanceService extends SingleInstanceService {
+export abstract class RdAppSingleInstanceService extends SingleInstanceService {
   public constructor() {
     super();
     app.on('will-quit', () => this.destroy());
