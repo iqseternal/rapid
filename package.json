@@ -65,10 +65,13 @@
   "config": {},
   "dependencies": {
     "@ant-design/icons": "5.2.6",
+    "@codemirror/lang-javascript": "6.2.3",
     "@react-spring/web": "9.7.5",
     "@suey/pkg-web": "0.0.3",
     "@suey/printer": "1.1.11",
     "@types/pako": "2.0.3",
+    "@uiw/codemirror-theme-androidstudio": "4.23.8",
+    "@uiw/react-codemirror": "4.23.8",
     "animate.css": "4.1.1",
     "animejs": "3.2.2",
     "antd": "5.21.0",

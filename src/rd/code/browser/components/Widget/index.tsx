@@ -3,7 +3,7 @@ import { classnames } from '@rapid/libs-web/common';
 import { theme, Tooltip, TooltipProps } from 'antd';
 import type { IconKey } from '@/components/IconFont';
 import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'react';
-import { memo, useCallback, useState, useMemo } from 'react';
+import { memo, useCallback, useState, useMemo, forwardRef } from 'react';
 import { CONFIG } from '@rapid/config/constants';
 import { commonStyles } from '@/scss/common';
 import { FullSize } from '@rapid/libs-web';
@@ -50,7 +50,7 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * 展示一个控件, 控件: 图标, 附带功能提示信息和事件
  */
-export const Widget = memo((props: WidgetProps) => {
+export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) => {
   const {
     className,
     hasHoverStyle = true,
@@ -119,6 +119,7 @@ export const Widget = memo((props: WidgetProps) => {
           [styles.widgetHasHover]: !loading && hasHoverStyle,
         }
       )}
+      ref={ref}
     >
       <Tooltip
         title={tipText}
@@ -149,6 +150,6 @@ export const Widget = memo((props: WidgetProps) => {
       </Tooltip>
     </div>
   )
-})
+}))
 
 export default Widget;

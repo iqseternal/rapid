@@ -1,21 +1,27 @@
-import { useEffect, useRef } from 'react';
-
-import { AfterFeatures } from '../src/components/Home';
-import Footer from '../src/components/Footer';
+import { memo } from 'react';
 
 import Theme from 'rspress/theme';
 
+import BeforeHero from '../src/view/beforeHero';
+import AfterHero from '../src/view/afterHero';
+import BeforeFeatures from '../src/view/beforeFeatures';
+import AfterFeatures from '../src/view/afterFeatures';
+
+import Bottom from '../src/view/bottom';
+
+
+
 // 以下展示所有的 Props
-const Layout = () => {
+const Layout = memo(() => {
 
   return (
     <Theme.Layout
       /* Home 页 Hero 部分之前 */
-      beforeHero={<div />}
+      beforeHero={<BeforeHero />}
       /* Home 页 Hero 部分之后 */
-      afterHero={<div />}
+      afterHero={<AfterHero />}
       /* Home 页 Features 部分之前 */
-      beforeFeatures={<div />}
+      beforeFeatures={<BeforeFeatures />}
       /* Home 页 Features 部分之后 */
       afterFeatures={<AfterFeatures />}
 
@@ -53,10 +59,10 @@ const Layout = () => {
       /* 整个页面最顶部 */
       top={<div />}
       /* 整个页面最底部 */
-      bottom={<Footer />}
+      bottom={<Bottom />}
     />
   );
-}
+})
 
 export default {
   ...Theme,

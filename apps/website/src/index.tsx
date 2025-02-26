@@ -1,14 +1,18 @@
-import { StrictMode } from 'react';
+import { StrictMode, memo } from 'react';
 
 import ReactDOM from 'react-dom/client';
 
-function App() {
+import './index.css';
+
+export const App = memo(() => {
   return (
-    <div>
+    <div
+      className={'w-full h-full text-center'}
+    >
       App
     </div>
   )
-}
+})
 
 // ===========================================================================================
 const rootContainer = document.getElementById('root');
@@ -20,3 +24,4 @@ if (rootContainer) {
     </StrictMode>
   );
 }
+

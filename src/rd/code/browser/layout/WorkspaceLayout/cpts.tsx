@@ -23,16 +23,18 @@ interface SideBarItemProps extends WidgetProps {
 const SideBarItem = memo<SideBarItemProps>((props) => {
   const { className, tipAttrs = {} } = props;
 
-  return <Widget
-    {...props}
-    className={classnames('text-base h-[unset] aspect-square', className)}
-    tipAttrs={{
-      ...tipAttrs,
-      placement: 'right',
-      trigger: 'hover',
-      mouseEnterDelay: 1
-    }}
-  />;
+  return (
+    <Widget
+      {...props}
+      className={classnames('text-base h-[unset] aspect-square', className)}
+      tipAttrs={{
+        ...tipAttrs,
+        placement: 'right',
+        trigger: 'hover',
+        mouseEnterDelay: 1
+      }}
+    />
+  )
 })
 
 export interface NavigationBarProps {
@@ -62,66 +64,68 @@ export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
     })
   }, []);
 
-  return <div
-    className={classnames(
-      'h-full gap-1 flex-auto flex flex-col justify-between items-center',
-      className
-    )}
-    style={{
-      width: cssVars.navigationBarWidth,
-      minWidth: cssVars.navigationBarWidth,
-      maxWidth: cssVars.navigationBarWidth,
-      backgroundColor: cssVars.navigationBarBackgroundColor
-    }}
-  >
-    <FullSizeWidth
-      className='mt-[2px] h-max flex justify-center flex-col'
+  return (
+    <div
+      className={classnames(
+        'h-full gap-1 flex-auto flex flex-col justify-between items-center',
+        className
+      )}
+      style={{
+        width: cssVars.navigationBarWidth,
+        minWidth: cssVars.navigationBarWidth,
+        maxWidth: cssVars.navigationBarWidth,
+        backgroundColor: cssVars.navigationBarBackgroundColor
+      }}
     >
-      {workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {
-        return (
-          <SideBarItem
-            key={routeItem.meta.fullPath}
-            icon={routeItem.meta.icon}
-            tipText={routeItem.meta.title}
-            onClick={() => {
-              navigate(routeItem.meta.fullPath);
-            }}
-          />
-        )
-      })}
-    </FullSizeWidth>
-
-    <FullSizeWidth
-      className='mb-8 flex justify-center'
-    >
-      <div />
-
-      <AutoMenu
-        dropdownAttrs={{
-          trigger: ['click'],
-          placement: 'topRight',
-          autoAdjustOverflow: true
-        }}
-        menu={[
-          {
-            key: 'setting-logout',
-            label: '退出登录',
-            icon: <LogoutOutlined />,
-            onClick: logout
-          }
-        ]}
+      <FullSizeWidth
+        className='mt-[2px] h-max flex justify-center flex-col'
       >
-        <SideBarItem
-          icon='SettingOutlined'
-          tipText='设置'
-        />
-      </AutoMenu>
+        {workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {
+          return (
+            <SideBarItem
+              key={routeItem.meta.fullPath}
+              icon={routeItem.meta.icon}
+              tipText={routeItem.meta.title}
+              onClick={() => {
+                navigate(routeItem.meta.fullPath);
+              }}
+            />
+          )
+        })}
+      </FullSizeWidth>
 
-      {/*<SideBarItem*/}
-      {/*  icon='LogoutOutlined'*/}
-      {/*  tipText='退出登录'*/}
-      {/*  onClick={logout}*/}
-      {/*/>*/}
-    </FullSizeWidth>
-  </div>
+      <FullSizeWidth
+        className='mb-8 flex justify-center'
+      >
+        <div />
+
+        <AutoMenu
+          dropdownAttrs={{
+            trigger: ['click'],
+            placement: 'topRight',
+            autoAdjustOverflow: true
+          }}
+          menu={[
+            {
+              key: 'setting-logout',
+              label: '退出登录',
+              icon: <LogoutOutlined />,
+              onClick: logout
+            }
+          ]}
+        >
+          <SideBarItem
+            icon='SettingOutlined'
+            tipText='设置'
+          />
+        </AutoMenu>
+
+        {/*<SideBarItem*/}
+        {/*  icon='LogoutOutlined'*/}
+        {/*  tipText='退出登录'*/}
+        {/*  onClick={logout}*/}
+        {/*/>*/}
+      </FullSizeWidth>
+    </div>
+  )
 })

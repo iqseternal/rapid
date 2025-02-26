@@ -4,7 +4,7 @@
     "target": "ES2020",
     "lib": ["DOM", "ES2020"],
     "module": "ESNext",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
@@ -18,10 +18,13 @@
   "include": [
     "theme",
     "./env.d.ts",
+
+    "src/**/*.ts",
+    "src/**/*.tsx",
     "rspress.config.ts"
   ],
   "exclude": [
-    "src/**/*.d.ts"
+    "node_modules"
   ],
   "mdx": {
     "checkMdx": true

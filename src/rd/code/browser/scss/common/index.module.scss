@@ -5,44 +5,120 @@
  */
 @use '../mixin/index.scss' as *;
 
-.flex { @include Flex; }
-.flexRow { @include Flex; }
+.flex {
+  @include Flex;
+}
 
-.flexRowReverse { flex-direction: row-reverse; }
-.flexColReverse { flex-direction: column-reverse; }
+.flexRow {
+  @include Flex;
+}
 
-.flexRowCenter { @include FlexRowCenter; }
-.flexRowSpaceBetween { @include FlexRowSpaceBetween; }
-.flexRowSpaceAround { @include FlexRowSpaceAround; }
-.flexRowStart { @include FlexRowStart; }
-.flexRowEnd { @include FlexRowEnd; }
+.flexRowReverse {
+  flex-direction: row-reverse;
+}
 
-.flexCol { @include FlexCol; }
+.flexColReverse {
+  flex-direction: column-reverse;
+}
 
-.flexColCenter { @include FlexColStart; }
-.flexColSpaceBetween { @include FlexColSpaceBetween; }
-.flexColSpaceAround { @include FlexColSpaceAround; }
-.flexColStart { @include FlexColStart; }
-.flexColEnd { @include FlexColEnd; }
+.flexRowCenter {
+  @include FlexRowCenter;
+}
 
-.flexAutoFit { flex: 1 1 auto };
-.flexFixed { flex: 0 0 auto; }
+.flexRowSpaceBetween {
+  @include FlexRowSpaceBetween;
+}
 
-.transparent { opacity: 0 !important; }
-.hidden { display: none !important; }
+.flexRowSpaceAround {
+  @include FlexRowSpaceAround;
+}
 
-.overflowXHidden { overflow-x: hidden; }
-.overflowYHidden { overflow-y: hidden }
-.overflowHidden { @include Overflow(hidden); }
+.flexRowStart {
+  @include FlexRowStart;
+}
 
-.userSelectNone { user-select: none; }
+.flexRowEnd {
+  @include FlexRowEnd;
+}
 
-.wFullSize { width: 100%; }
-.hFullSize { height: 100%; }
-.fullSize { width: 100%;height: 100%; }
+.flexCol {
+  @include FlexCol;
+}
 
-.appRegion { @include AppRegion; }
-.appRegionNo { @include AppRegionNo; }
+.flexColCenter {
+  @include FlexColStart;
+}
+
+.flexColSpaceBetween {
+  @include FlexColSpaceBetween;
+}
+
+.flexColSpaceAround {
+  @include FlexColSpaceAround;
+}
+
+.flexColStart {
+  @include FlexColStart;
+}
+
+.flexColEnd {
+  @include FlexColEnd;
+}
+
+.flexAutoFit {
+  flex: 1 1 auto
+}
+
+;
+
+.flexFixed {
+  flex: 0 0 auto;
+}
+
+.transparent {
+  opacity: 0 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.overflowXHidden {
+  overflow-x: hidden;
+}
+
+.overflowYHidden {
+  overflow-y: hidden
+}
+
+.overflowHidden {
+  @include Overflow(hidden);
+}
+
+.userSelectNone {
+  user-select: none;
+}
+
+.wFullSize {
+  width: 100%;
+}
+
+.hFullSize {
+  height: 100%;
+}
+
+.fullSize {
+  width: 100%;
+  height: 100%;
+}
+
+.appRegion {
+  @include AppRegion;
+}
+
+.appRegionNo {
+  @include AppRegionNo;
+}
 
 .textOverflow {
   white-space: nowrap;
@@ -59,3 +135,47 @@
   pointer-events: none;
 }
 
+.beautifulBar {
+
+  @media screen and (orientation:portrait) and (max-device-width:768px) and (max-device-height:1024px),
+  screen and (orientation:landscape) and (max-device-width:1024px) and (max-device-height:768px) {
+    &::-webkit-scrollbar {
+      width: 4px !important;
+    }
+  }
+
+  &::-webkit-scrollbar {
+    width: 9px;
+    // background-color: rgba(200, 200, 200, 0);
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    border: 2px solid transparent;
+    //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+    background-clip: content-box;
+    background-color: #2225;
+    //滚动条的颜色
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -ms-border-radius: 100px;
+    -o-border-radius: 100px;
+  }
+}
+
+.miniBar {
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+}
+
+.zeroBar {
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

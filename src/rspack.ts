@@ -437,7 +437,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       },
       polyfill: 'off',
       sourceMap: {
-        js: IS_DEV ? 'source-map' : false,
+        js: IS_DEV ? void 0 : false,
         css: IS_DEV,
       }
     },

@@ -10,7 +10,6 @@ import { classnames, useMaintenanceStack, useResizeObserver, useShallowReactive,
 import { useThemeStore } from '@/features';
 import { menus } from '@/menus';
 import { isUndefined } from '@rapid/libs';
-
 import { WindowsCloseWindowWidget, WindowsDebugWidget, WindowsMinWindowWidget, WindowsReductionWindowWidget } from '@/components/Header/components';
 
 import Header from '@/components/Header';
@@ -261,7 +260,10 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
         {mainSidebarStatus !== 'none' && <NavigationBar />}
 
         <main
-          className='w-full h-full px-1 py-1 rounded-md overflow-x-hidden overflow-y-auto'
+          className={classnames(
+            'w-full h-full pl-1 py-1 rounded-md overflow-x-hidden overflow-y-auto',
+            commonStyles.beautifulBar
+          )}
         >
           <WorkbenchesView />
         </main>

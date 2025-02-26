@@ -5,9 +5,14 @@ import { tldrawStoreMutations, useTldrawStore } from '@/features';
 import { ErrorShapeUtil, StickerTool, tools, Brush, Scribble, SnapIndicator, Toolbar, InFrontOfTheCanvas, KeyboardShortcutsDialog, MainMenu, PageMenu } from '@/tldraw';
 import { getAssetUrls } from '@tldraw/assets/selfHosted';
 
+import { androidstudio } from '@uiw/codemirror-theme-androidstudio';
+import { javascript } from '@codemirror/lang-javascript';
+
+import ReactCodemirror from '@uiw/react-codemirror';
+
 import './tldraw.scss';
 
-export const Workbenches = memo(() => {
+const TlDrawWorkbenches = memo(() => {
 	const tlShapes = useTldrawStore(store => store.tlShapeUtils);
 	const tlTools = useTldrawStore(store => store.tlTools);
 	const tlUiOverrides = useTldrawStore(store => store.tlUiOverrides);
@@ -60,6 +65,23 @@ export const Workbenches = memo(() => {
 				isShapeHidden={(s) => !!s.meta.hidden}
 			/>
 		</FullSize>
+	)
+})
+
+export const Workbenches = memo(() => {
+
+
+	return (
+		<ReactCodemirror
+
+			minHeight='100%'
+			className='h-full min-h-full'
+			extensions={[javascript()]}
+			theme={androidstudio}
+		>
+
+
+		</ReactCodemirror>
 	)
 })
 
