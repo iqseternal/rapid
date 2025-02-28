@@ -79,7 +79,10 @@ export namespace ZustandHijack {
 /** zustand store map, 拿到对应的存储副作用的对象 */
 const zustandStoreMap = new WeakMap<UseBoundStore<StoreApi<any>>, ZustandHijack.ZustandStoreEffect>();
 
-/** 建立 map 关系 */
+/**
+ * 建立 map 关系
+ * @deprecated
+ * */
 const setupZustandStoreMap = <TStore extends UseBoundStore<StoreApi<any>>>(store: TStore) => {
   if (zustandStoreMap.has(store)) return zustandStoreMap.get(store);
 
@@ -106,7 +109,10 @@ const setupZustandStoreMap = <TStore extends UseBoundStore<StoreApi<any>>>(store
   return target;
 }
 
-/** zustand 属性选择器 */
+/**
+ * zustand 属性选择器
+ * @deprecated
+ */
 const zustandSelector = <TStore extends UseBoundStore<StoreApi<any>>, TState extends ReturnType<TStore['getState']>, TResult,>(store: TStore, selector: (state: TState) => TResult): ZustandHijack.ZustandSelectorTarget<TResult> => {
   const { appendEffect } = setupZustandStoreMap(store)!;
 
@@ -151,6 +157,10 @@ export interface ToMakeZustandHijackOptions {
   beforeHijackCovert?: (target: any) => any;
 }
 
+/**
+ *
+ * @deprecated
+ */
 export const toMakeZustandHijack = (options?: ToMakeZustandHijackOptions) => {
   const {
     beforeHijackCovert = <T>(e: T) => e
@@ -252,6 +262,7 @@ export const toMakeZustandHijack = (options?: ToMakeZustandHijackOptions) => {
  *
  *
  * @param target
+ * @deprecated
  * @returns
  */
 export const useZustandHijack = <Target extends {}, ZustandHijackTarget extends ZustandHijack.ZustandHijackTarget<Target>>(target: ZustandHijackTarget): ZustandHijackTarget => {

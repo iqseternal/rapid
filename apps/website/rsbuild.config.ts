@@ -8,7 +8,6 @@ import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
-import tailwindcss from 'tailwindcss';
 
 const envBuilder = new EnvBuilder({
   checker: true

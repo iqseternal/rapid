@@ -50,13 +50,18 @@ export function useDebounceHook<T extends (...args: any[]) => void>(callback: T,
     const now = Date.now();
     const remaining = maxWait && maxWait - (now - lastCallTime);
 
-    if (timer) clearTimeout(timer);
+    if (timer) {
+      clearTimeout(timer);
+      timer = void 0;
+    }
 
     timer = setTimeout(() => {
       callback.call(that, ...args);
     }, remaining || wait);
 
-    lastCallTime = now;
+    if (remaining) {
+      lastCallTime = now;
+    }
   }) as DebounceTarget<T>;
 
   debounce.cancel = () => {
