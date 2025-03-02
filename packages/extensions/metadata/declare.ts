@@ -12,7 +12,7 @@ export type ExtractElInArray<T> = T extends (infer U)[] ? U : never;
  * @example
  * type A = {
  *    name: string;
- *    age: number;
+ *    age: number;w
  *    friends: any[];
  * }
  *

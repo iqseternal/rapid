@@ -15,7 +15,7 @@ import { ipcForwardDataTakeIn, ipcForwardDataTakeOut } from './handlers';
 export class IpcMainManager {
 
 
-  public async start() {
+  public static async start() {
 
     registerIpcHandle([
       ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,

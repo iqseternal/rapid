@@ -671,6 +671,7 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "cSpell.words": [
     "ahooks",
+    "androidstudio",
     "animejs",
     "Antd",
     "anticon",

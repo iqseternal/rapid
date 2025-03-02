@@ -61,10 +61,6 @@ export class WindowServiceStateMachine {
   /**
    * 通过名字或者 id 查找一个 Service
    */
-  public static findWindowService(key: string): WindowService | null;
-
-  public static findWindowService(id: number): WindowService | null;
-
   public static findWindowService(key: string | number): WindowService | null {
     let windowService: WindowService | undefined = void 0;
 

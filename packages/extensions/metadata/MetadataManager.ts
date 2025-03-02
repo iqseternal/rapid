@@ -229,7 +229,7 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
     const [normalState] = useState(() => ({
       isMounted: false,
       data: this.getMetadata(metadataKey),
-      __unsubscribe: void 0 as ((() => void) | undefined)
+      unsubscribe: void 0 as ((() => void) | undefined)
     }))
 
     const [syncState] = useState(() => ({
@@ -260,8 +260,8 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
       }
     }, []);
 
-    if (!normalState.__unsubscribe) {
-      normalState.__unsubscribe = super.subscribe(() => {
+    if (!normalState.unsubscribe) {
+      normalState.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
         if (data !== normalState.data) {
           normalState.data = data;
@@ -278,8 +278,8 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
 
       return () => {
         normalState.isMounted = false;
-        if (normalState.__unsubscribe) normalState.__unsubscribe();
-        normalState.__unsubscribe = void 0;
+        if (normalState.unsubscribe) normalState.unsubscribe();
+        normalState.unsubscribe = void 0;
       }
     }, []);
 

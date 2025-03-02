@@ -1,19 +1,16 @@
-import 'reflect-metadata';
-import './process';
-
-import { setupTrayMenu, setupMainWindow } from 'rd/base/node/setupService';
 import { IpcMainManager } from 'rd/base/plats/ipc';
 import { app, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { IS_DEV } from '@rapid/config/constants';
+import { WindowFlowService } from 'rd/base/plats/flow/WindowFlowService';
+import { TrayMenuFlowService } from 'rd/base/plats/flow/TrayMenuFlowService';
 
 export class CodeMain {
-  private readonly ipcManager = new IpcMainManager();
 
   public async main() {
 
-    await this.ipcManager.start();
+    await IpcMainManager.start();
 
     await this.startApp();
   }
@@ -39,8 +36,8 @@ export class CodeMain {
 
     // 已经具有实例, 那么找个窗口获得焦点
     if (BrowserWindow.getAllWindows().length === 0) {
-      await setupMainWindow();
-      await setupTrayMenu();
+      await WindowFlowService.setupMainWindowService();
+      await TrayMenuFlowService.setupTrayMenu();
     }
     else {
       BrowserWindow.getAllWindows()[0].focus();
@@ -49,8 +46,8 @@ export class CodeMain {
     app.on('activate', async () => {
       // 活跃状态时, 如果没有窗口那么就创建
       if (BrowserWindow.getAllWindows().length === 0) {
-        await setupMainWindow();
-        await setupTrayMenu();
+        await WindowFlowService.setupMainWindowService();
+        await TrayMenuFlowService.setupTrayMenu();
       }
     });
   }

@@ -31,7 +31,7 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * @default 'base'
    */
-  size?: 'base' | 'md' | 'large';
+  size?: 'base' | 'small' | 'large';
 
   /**
    * 控件 Hover 之后展示的提示文本
@@ -140,7 +140,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
               [commonStyles.disabledPointerEvents]: loading || disabled
             },
             size === 'large' && '!w-8 !h-8 text-[110%]',
-            size === 'md' && '!w-6 !h-6 text-[90%]'
+            size === 'small' && '!w-6 !h-6 text-[90%]'
           )}
         >
           {loading ? loadingContent : <>

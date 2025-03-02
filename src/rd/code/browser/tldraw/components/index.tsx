@@ -75,7 +75,7 @@ export const KeyboardShortcutsDialog: TLComponents['KeyboardShortcutsDialog'] = 
 	return (
 		<DefaultKeyboardShortcutsDialog {...props}>
 			<DefaultKeyboardShortcutsDialogContent />
-				{/* Ideally, we'd interleave this into the tools group */}
+			{/* Ideally, we'd interleave this into the tools group */}
 			<TldrawUiMenuItem {...tools['sticker']} />
 		</DefaultKeyboardShortcutsDialog>
 	)
@@ -87,13 +87,18 @@ export const KeyboardShortcutsDialog: TLComponents['KeyboardShortcutsDialog'] = 
 export const MainMenu: TLComponents['MainMenu'] = memo((props) => {
 
 
-	return <div>
+	return (
+		<div>
 
 
-	</div>
+		</div>
+	)
 })
 
 export const PageMenu: TLComponents['PageMenu'] = memo((props) => {
-	return <div></div>
+	return (
+
+		<div></div>
+	)
 })
 
