@@ -12,6 +12,11 @@ import IconFont from '@/components/IconFont';
 import styles from './index.module.scss';
 
 export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * 内部的 className
+   */
+  innerClassName?: string;
+
   /** 当前控件是否具有 hover 背景特性 */
   hasHoverStyle?: boolean;
 
@@ -53,6 +58,7 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
 export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) => {
   const {
     className,
+    innerClassName,
     hasHoverStyle = true,
     icon,
     size = 'base',
@@ -140,7 +146,8 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
               [commonStyles.disabledPointerEvents]: loading || disabled
             },
             size === 'large' && '!w-8 !h-8 text-[110%]',
-            size === 'small' && '!w-6 !h-6 text-[90%]'
+            size === 'small' && '!w-6 !h-6 text-[90%]',
+            innerClassName
           )}
         >
           {loading ? loadingContent : <>
