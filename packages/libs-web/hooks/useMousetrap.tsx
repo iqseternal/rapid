@@ -58,7 +58,10 @@ export function makeFlowKeys<FlowKeys extends readonly KeyboardSampleCompose[]>(
   return keys.join(' ') as Join<FlowKeys>;
 }
 
-
+/**
+ *
+ * @todo 需要实现
+ */
 export function useMousetrap(keys: readonly KeyboardSampleCompose[], callback: () => void): void;
 
 export function useMousetrap(keys: readonly [KeyboardSampleCompose[], (() => void)][]): void;
@@ -75,4 +78,3 @@ export function useMousetrap<TDom extends HTMLElement>(target: RefObject<TDom>, 
 export function useMousetrap() {
 
 }
-

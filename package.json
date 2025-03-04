@@ -36,7 +36,7 @@
   "scripts": {
     "dev": "pnpm -C ./src run dev",
     "build": "pnpm -C ./src run build",
-    "preview": "pnpm build && pnpm -C ./src run preview",
+    "preview": "pnpm -C ./src run preview",
     "builder-win": "pnpm build && pnpm -C ./src run builder-win",
     "docs:dev": "pnpm -C ./apps/docs run dev",
     "docs:build": "pnpm -C ./apps/docs run build",

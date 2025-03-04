@@ -1,4 +1,3 @@
-import { CONFIG } from '@rapid/config/constants';
 import type {
   MenuItemType as AntdMenuItemType,
   SubMenuType as AntdSubMenuType,
@@ -21,7 +20,7 @@ const state = {
 /**
  * 生成一个叠加的菜单 key
  */
-const generatorStackingKey = () => `${CONFIG.PROJECT}-stacking-${state.stackingKey++}`;
+const generatorStackingKey = () => `rapid-stacking-${state.stackingKey++}`;
 
 /**
  * 自定义菜单项的类型, 继承自 AntdMenuItemType, 但同时具有自定义扩展的类型

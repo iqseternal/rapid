@@ -1,5 +1,4 @@
 import { RdStoreService } from '../service/RdStoreService';
-import { EXTENSIONS } from '@rapid/config/constants';
 
 export interface UserConfigStoreType {
   mainWindowMemoryWidth: number;
@@ -9,5 +8,5 @@ export interface UserConfigStoreType {
 export const userConfigStore = RdStoreService.getInstance<UserConfigStoreType>('USER_CONFIG', {
   name: 'userConfig',
 
-  fileExtension: EXTENSIONS.USER_CONFIG_STORE
+  fileExtension: 'json'
 });

@@ -5,8 +5,6 @@
  */
 import { PlatformsOnDesktop, Env, RuntimePlatforms } from '../enums';
 
-export * from './config';
-
 export { PlatformsOnDesktop, Env };
 
 // 运行的操做系统环境
@@ -22,22 +20,3 @@ export const IS_BROWSER = CURRENT_RUNTIME_PLATFORM === RuntimePlatforms.Browser;
 // 当前的开发环境
 export const IS_DEV = CURRENT_ENV === Env.Dev;
 export const IS_PROD = CURRENT_ENV === Env.Prod;
-
-/** 自定义文件的扩展名 */
-export const EXTENSIONS = {
-  DOC: 'rd',
-
-  APP_STORE: 'rdc',
-  APP_CONFIG_STORE: 'json',
-  USER_CONFIG_STORE: 'json',
-
-  /** 自定义图纸数据文档的扩展名属性 */
-  // DOCS: {
-  //   /** 文档名称 */
-  //   NAME: `${CONFIG.PROJECT}文档`,
-  //   /** 文档的默认扩展名 */
-  //   EXTENSION: 'rd',
-  //   /** 视为文档的所有扩展名类型 */
-  //   EXTENSIONS: ['rd']
-  // }
-} as const;

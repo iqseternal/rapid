@@ -23,6 +23,9 @@
     "strict": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
+
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,

@@ -11,6 +11,8 @@
     "experimentalDecorators": true,
     "strict": false,
     "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,

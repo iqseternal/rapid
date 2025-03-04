@@ -12,15 +12,6 @@ export interface Extension {
   readonly version: string;
 
   /**
-   * 当前是否处于激活状态
-   */
-  readonly __isActivated: boolean;
-  /**
-   * 当前是否处于注册状态
-   */
-  readonly __isRegistered: boolean;
-
-  /**
    * 插件被激活, 被使用的状态
    */
   readonly onActivated?: () => void;
@@ -39,4 +30,15 @@ export interface Extension {
    * 插件被卸载
    */
   readonly onUnregistered?: () => void;
+
+  // ===============================================================================
+
+  /**
+   * 当前是否处于激活状态
+   */
+  readonly __isActivated: boolean;
+  /**
+   * 当前是否处于注册状态
+   */
+  readonly __isRegistered: boolean;
 }

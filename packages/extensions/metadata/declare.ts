@@ -57,6 +57,6 @@ export interface MetadataStoreListenerPayload {
   metadataKey: number | string | symbol;
 
   metadata: unknown;
-};
+}
 
 export type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;

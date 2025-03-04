@@ -1,12 +1,9 @@
 import { WindowServiceStateMachine } from 'rd/base/plats/service/WindowServiceStateMachine';
-import { PAGES_WINDOW_MAIN } from 'rd/base/node/config';
-import { PrinterService } from 'rd/base/common/service/PrinterService';
-import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
-import { WindowService } from 'rd/base/plats/service/WindowService';
-import { CONFIG, IS_DEV } from '@rapid/config/constants';
 import { join } from 'path';
 import { Menu, Tray, app, nativeImage } from 'electron';
 import { WindowFlowService } from './WindowFlowService';
+import { AppInformationService } from '../../common/service/AppInformationService';
+import { AppRouterService } from '../service/AppRouterService';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
 
@@ -19,10 +16,11 @@ export class TrayMenuFlowService {
    * 创建托盘
    */
   public static async setupTrayMenu() {
+    const appInformation = AppInformationService.getInstance();
     const tray = new Tray(nativeImage.createFromPath(iconUrl));
 
     tray.on('click', async () => {
-      const mainWindowService = WindowServiceStateMachine.findWindowService(PAGES_WINDOW_MAIN);
+      const mainWindowService = WindowServiceStateMachine.findWindowService(AppRouterService.Routes.MainWindow);
       if (!mainWindowService) {
         await WindowFlowService.setupMainWindowService();
         return;
@@ -34,8 +32,8 @@ export class TrayMenuFlowService {
       else mainWindowService.window.show();
     });
 
-    tray.setTitle(CONFIG.PROJECT);
-    tray.setToolTip(CONFIG.PROJECT);
+    tray.setTitle(appInformation.information.appName);
+    tray.setToolTip(appInformation.information.appName);
 
     const contextMenu = Menu.buildFromTemplate([
       {

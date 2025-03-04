@@ -3,8 +3,8 @@ import { NodeCommand, NodeEnv, Env } from '../enums';
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      readonly NODE_ENV: NodeEnv;
-      readonly COMMAND: NodeCommand;
+      NODE_ENV: NodeEnv;
+      COMMAND: NodeCommand;
     }
   }
 }
@@ -80,11 +80,9 @@ export class EnvChecker {
     if (!process.env.NODE_ENV) {
 
       if (process.env.COMMAND === NodeCommand.Dev) {
-        // @ts-ignore
         process.env.NODE_ENV = NodeEnv.Development;
       }
       else if (process.env.COMMAND === NodeCommand.Build || process.env.COMMAND === NodeCommand.Preview) {
-        // @ts-ignore
         process.env.NODE_ENV = NodeEnv.Production;
       }
 

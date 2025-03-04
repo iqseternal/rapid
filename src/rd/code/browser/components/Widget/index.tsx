@@ -4,9 +4,7 @@ import { theme, Tooltip, TooltipProps } from 'antd';
 import type { IconKey } from '@/components/IconFont';
 import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'react';
 import { memo, useCallback, useState, useMemo, forwardRef } from 'react';
-import { CONFIG } from '@rapid/config/constants';
 import { commonStyles } from '@/scss/common';
-import { FullSize } from '@rapid/libs-web';
 
 import IconFont from '@/components/IconFont';
 import styles from './index.module.scss';

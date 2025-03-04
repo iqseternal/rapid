@@ -1,6 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload} from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
@@ -44,14 +42,13 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
    * metadata.defineMetadata('example-key', () => { return (<div />) });
    */
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
-    super.setStore(() => {
-      this.metadataMap.set(metadataKey, metadata);
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'All',
-        metadataKey: metadataKey,
-        metadata: metadata
-      })
+    this.metadataMap.set(metadataKey, metadata);
+    super.updateStore();
+    this.triggerMetadataChangeListeners({
+      action: 'Define',
+      type: 'All',
+      metadataKey: metadataKey,
+      metadata: metadata
     })
   }
 
@@ -72,14 +69,13 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
   public delMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): void {
     if (!this.hasMetadata(metadataKey)) return;
 
-    super.setStore(() => {
-      this.metadataMap.delete(metadataKey);
-      this.triggerMetadataChangeListeners({
-        action: 'Remove',
-        type: 'All',
-        metadataKey: metadataKey,
-        metadata: this.metadataMap.get(metadataKey)
-      })
+    this.metadataMap.delete(metadataKey);
+    super.updateStore();
+    this.triggerMetadataChangeListeners({
+      action: 'Remove',
+      type: 'All',
+      metadataKey: metadataKey,
+      metadata: this.metadataMap.get(metadataKey)
     })
   }
 
@@ -88,14 +84,13 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
    * @description 意为: 定义覆盖式的元数据
    */
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
-    super.setStore(() => {
-      this.metadataMap.set(metadataKey, metadata);
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Single',
-        metadataKey: metadataKey,
-        metadata: metadata
-      })
+    this.metadataMap.set(metadataKey, metadata);
+    super.updateStore();
+    this.triggerMetadataChangeListeners({
+      action: 'Define',
+      type: 'Single',
+      metadataKey: metadataKey,
+      metadata: metadata
     })
   }
 
@@ -109,22 +104,19 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
    */
   public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
     if (!this.hasMetadata(metadataKey)) {
-      super.setStore(() => {
-        this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
-        this.triggerMetadataChangeListeners({
-          action: 'Define',
-          type: 'Vector',
-          metadataKey: metadataKey,
-          metadata: [metadata] as MetadataEntries[MetadataKey]
-        })
+      this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
+      super.updateStore();
+      this.triggerMetadataChangeListeners({
+        action: 'Define',
+        type: 'Vector',
+        metadataKey: metadataKey,
+        metadata: [metadata] as MetadataEntries[MetadataKey]
       })
       return;
     }
 
     const vector = this.metadataMap.get(metadataKey);
-    if (!Array.isArray(vector)) {
-      throw new Error(`defineMetadataInVector: current metadata value is not an array`);
-    }
+    if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
     const vectorSet = new Set(vector);
     if (vectorSet.has(metadata)) return;
@@ -134,16 +126,15 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
     // if (vector.some(v => v === metadata)) return;
     // vector.push(metadata);
 
-    super.setStore(() => {
-      const metadata = Array.from(vectorSet) as MetadataEntries[MetadataKey];
+    const newMetadata = Array.from(vectorSet) as MetadataEntries[MetadataKey];
 
-      this.metadataMap.set(metadataKey, metadata);
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: metadata
-      })
+    this.metadataMap.set(metadataKey, newMetadata);
+    super.updateStore();
+    this.triggerMetadataChangeListeners({
+      action: 'Define',
+      type: 'Vector',
+      metadataKey: metadataKey,
+      metadata: newMetadata
     })
   }
 
@@ -159,10 +150,7 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
     if (!this.hasMetadata(metadataKey)) return;
 
     const vector = this.metadataMap.get(metadataKey);
-    if (!Array.isArray(vector)) {
-      throw new Error(`delMetadataInVector: current metadata value is not an array`);
-    }
-
+    if (!Array.isArray(vector)) throw new Error(`delMetadataInVector: current metadata value is not an array`);
     if (vector.length === 0) {
       this.metadataMap.delete(metadataKey);
       return;
@@ -170,26 +158,24 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
 
     const fVector = vector.filter(v => v !== metadata);
     if (fVector.length === 0) {
-      super.setStore(() => {
-        this.metadataMap.delete(metadataKey);
-        this.triggerMetadataChangeListeners({
-          action: 'Remove',
-          type: 'Vector',
-          metadataKey: metadataKey,
-          metadata: [] as MetadataEntries[MetadataKey]
-        })
-      })
-      return;
-    }
-
-    super.setStore(() => {
       this.metadataMap.delete(metadataKey);
+      super.updateStore();
       this.triggerMetadataChangeListeners({
         action: 'Remove',
         type: 'Vector',
         metadataKey: metadataKey,
-        metadata: fVector as MetadataEntries[MetadataKey]
+        metadata: [] as MetadataEntries[MetadataKey]
       })
+      return;
+    }
+
+    this.metadataMap.delete(metadataKey);
+    super.updateStore();
+    this.triggerMetadataChangeListeners({
+      action: 'Remove',
+      type: 'Vector',
+      metadataKey: metadataKey,
+      metadata: fVector as MetadataEntries[MetadataKey]
     })
   }
 
@@ -246,8 +232,10 @@ export class MetadataManager<MetadataEntries extends {}> extends InnerZustandSto
       let timer: number | undefined | NodeJS.Timeout = void 0;
 
       return () => {
-        clearTimeout(timer);
+        if (timer) clearTimeout(timer);
         timer = setTimeout(() => {
+          timer = void 0;
+
           if (!normalState.isMounted) {
             // 标记需要同步
             syncState.needSync = true;

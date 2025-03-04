@@ -1,6 +1,7 @@
-
-import { CONFIG } from '@rapid/config/constants';
 import { Notification } from 'electron';
+import { AppInformationService } from 'rd/base/common/service/AppInformationService';
+
+const appInformation = AppInformationService.getInstance();
 
 /**
  * 系统通知
@@ -9,7 +10,7 @@ export class NotificationService {
   public static showNotificationInfo() {
     return new Promise((resolve, reject) => {
       const notification = new Notification({
-        title: CONFIG.PROJECT,
+        title: appInformation.information.appName,
 
         subtitle: '通知',
         body: '这是一则通知',

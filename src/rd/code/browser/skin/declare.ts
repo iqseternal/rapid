@@ -1,10 +1,9 @@
-import type { CONFIG } from '@rapid/config/constants';
 
 export namespace SKin {
   /**
    * CSS 变量的名称
    */
-  export type CssVariable = `--${Lowercase<typeof CONFIG['PROJECT']>}-${string}`;
+  export type CssVariable = `--rapid-${string}`;
 
   /**
    * CSS 变量的值

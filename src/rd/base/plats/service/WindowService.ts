@@ -53,6 +53,7 @@ export class WindowService {
     else {
       this.window.loadFile(this.options.url).then(r => r).catch(e => {
         // TODO: 处理加载错误
+        PrinterService.printError('加载URL失败');
       });
     }
   }

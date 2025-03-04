@@ -1,15 +1,15 @@
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { RdAppSingleInstanceService } from './RdAppSingleInstanceService';
-import { AppInformationService } from './AppInformationService';
+import { PackInformationService } from '../../common/service/PackInformationService';
 
-const appInfo = AppInformationService.getInstance();
+const packInformation = PackInformationService.getInstance();
 
 /**
  * AppConfigJson的维护类
  */
 export class AppConfigService extends RdAppSingleInstanceService {
   public readonly config = {
-    appName: appInfo.information.name,
+    appName: packInformation.information.name,
     appVersion: 'v1.0.0',
     author: 'suey',
     email: 'sueyeternal@163.com',

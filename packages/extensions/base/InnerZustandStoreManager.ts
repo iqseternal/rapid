@@ -1,32 +1,45 @@
-
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
+/**
+ * 内部的 store, 用于更新状态来通知更新 UI
+ */
 export interface InnerStore {
+  /**
+   * 对应的更新数据
+   */
   update: {}
 }
 
+/**
+ * 监听 store 的触发回调函数
+ */
 export type InnerStoreListener = () => void;
+
+/**
+ * 销毁 store 的触发回调函数
+ */
 export type InnerStoreDestroyListener = () => void;
 
-export class InnerZustandStoreManager {
+/**
+ * 内部 store manager
+ */
+export abstract class InnerZustandStoreManager {
+  /**
+   * zustand
+   */
   private readonly store = create<InnerStore>()(
     immer(() => {
       return {
         update: {}
       }
     })
-  )
+  );
 
   private readonly listeners = new Set<InnerStoreListener>();
-  private unsubscribe = () => {};
-
-  public constructor() {
-    this.unsubscribe = this.store.subscribe(() => {
-      this.listeners.forEach(listener => listener());
-    })
-  }
+  private readonly unsubscribe = this.store.subscribe(() => {
+    this.listeners.forEach(listener => listener());
+  });
 
   /**
    * 更新当前的 store, 会导致状态库的组件更新触发
@@ -51,14 +64,6 @@ export class InnerZustandStoreManager {
     return () => {
       this.listeners.delete(listener);
     }
-  }
-
-  /**
-   * set Store, 在一个会触发状态库组件更新的回调函数中进行操作
-   */
-  protected setStore(setStoreFunction: () => void) {
-    setStoreFunction();
-    this.updateStore();
   }
 
   protected destroy() {

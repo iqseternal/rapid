@@ -5,7 +5,7 @@ import { StateNode } from 'tldraw'
 const OFFSET = 12;
 
 export class StickerTool extends StateNode {
-	static override id = 'sticker'
+	public static override id = 'sticker';
 
 	public override onEnter() {
 		this.editor.setCursor({ type: 'cross', rotation: 0 })

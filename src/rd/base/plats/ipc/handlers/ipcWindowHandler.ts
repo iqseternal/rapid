@@ -6,10 +6,10 @@ import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
 import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
 import { toMakeIpcAction } from '../framework';
 import { convertWindowServiceMiddleware } from '../middlewares';
-import { PAGES_WINDOW_MAIN } from 'rd/base/node/config';
 import { posix } from 'path';
-import { userConfigStore } from '../../stores';
+import { userConfigStore } from 'rd/base/plats/stores';
 import { WindowServiceStateMachine } from 'rd/base/plats/service/WindowServiceStateMachine';
+import { AppRouterService } from 'rd/base/plats/service/AppRouterService';
 
 const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
   handleMiddlewares: [convertWindowServiceMiddleware]
@@ -263,7 +263,8 @@ export const ipcOpenWindow = makeIpcHandleAction(
     if (isUnDef(targetWindowService)) {
       targetWindowService = new WindowService(browserWindowOptions, {
         windowKey,
-        url: posix.join(PAGES_WINDOW_MAIN, subUrl),
+        // url: posix.join(PAGES_WINDOW_MAIN, subUrl),
+        url: subUrl,
         autoLoad: true
       })
     }
@@ -293,7 +294,7 @@ export const ipcWindowClose = makeIpcHandleAction(
       windowService = WindowService.findWindowService(targetKey);
     }
 
-    const mainWindowService = WindowService.findWindowService(PAGES_WINDOW_MAIN);
+    const mainWindowService = WindowService.findWindowService(AppRouterService.Routes.MainWindow);
     // 主窗口只能隐藏
     if (WindowService.isSameWindowService(mainWindowService, windowService)) {
       windowService.window.hide();

@@ -1,7 +1,7 @@
-import { CONFIG } from '@rapid/config/constants';
 import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError } from '@rapid/libs';
 import { StringFilters } from '@rapid/libs-web';
 import { getAccessToken } from '@/features';
+import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
 /** 请求 hConfig 配置 */
 export interface RApiHConfig {
@@ -90,7 +90,9 @@ export interface RApiFailResponse extends RApiBasicResponse {
  */
 export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
-const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(CONFIG.API.URL, {
+const appInformation = AppInformationService.getInstance();
+
+const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(appInformation.information.appApiUrls.rApi, {
   timeout: 5000
 }, {
   async onFulfilled(config) {

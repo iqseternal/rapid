@@ -4,9 +4,9 @@ import { SingleInstanceService } from 'rd/base/common/service/SingleInstanceServ
 import * as rootPackageJson from 'rd/../../package.json';
 
 /**
- * AppInformationService
+ * PackInformationService
  */
-export class AppInformationService extends SingleInstanceService {
+export class PackInformationService extends SingleInstanceService {
   public readonly information = {
     // 系统名称
     name: rootPackageJson.name,

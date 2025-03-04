@@ -1,5 +1,5 @@
 
 
 export { PriorityQueue } from './PriorityQueue';
-export { Dequeue } from './Dequeue';
+export { Dequeue, LinkedDequeue } from './Dequeue';
 export { Queue } from './Queue';

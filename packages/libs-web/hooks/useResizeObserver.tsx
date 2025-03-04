@@ -14,14 +14,11 @@ import { Ansi } from '@rapid/libs';
  */
 export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement | null> | TElement, callback: ResizeObserverCallback, deps: DependencyList) {
   const [normalState] = useNormalState(() => ({
+    resizeObserver: new ResizeObserver((entries, observer) => {
+      normalState.resizeCallback?.(entries, observer);
+    }),
     resizeCallback: callback,
   }))
-
-  const [resizeObserver] = useState(() => {
-    return new ResizeObserver((entries, observer) => {
-      normalState.resizeCallback?.(entries, observer);
-    });
-  })
 
   const tDomRef = useMemo(() => {
     if (dom instanceof HTMLElement) return { current: dom };
@@ -35,20 +32,20 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
   }, [deps]);
 
   useEffect(() => {
-    if (tDomRef.current) resizeObserver.observe(tDomRef.current);
+    if (tDomRef.current) normalState.resizeObserver.observe(tDomRef.current);
 
     return () => {
       if (!tDomRef.current) return;
-      resizeObserver.unobserve(tDomRef.current);
+      normalState.resizeObserver.unobserve(tDomRef.current);
     }
   }, [tDomRef.current]);
 
   useEffect(() => {
 
     return () => {
-      resizeObserver.disconnect();
+      normalState.resizeObserver.disconnect();
     }
   }, []);
 
-  return [resizeObserver] as const;
+  return [normalState.resizeObserver] as const;
 }

@@ -1,8 +1,6 @@
-import { useDebounceHook, useDebounce } from './useDebounce';
+import { useDebounce } from './useDebounce';
 import { useEventListener } from './useEventListener';
-import { useWindowScreenSizeHook, useWindowInnerSizeHook } from './useWindowSize';
-import { useReactive, useShallowReactive } from './useReactive';
-import { useState } from 'react';
+import { useShallowReactive } from './useReactive';
 
 export interface WindowOverScreenSize {
   /**
@@ -24,26 +22,19 @@ export interface WindowOverScreenSize {
  * if (overScreen.overflowWidth) {
  *   console.log('超出了屏幕的宽度尺寸');
  * }
- *
- * @return
  */
 export function useWindowOverScreenSize() {
-  const [windowScreenSize] = useState(useWindowScreenSizeHook);
-  const [windowInnerSize] = useState(useWindowInnerSizeHook);
-
   const [state] = useShallowReactive<WindowOverScreenSize>(() => ({
-    overflowScreenWidth: windowInnerSize.innerWidth > windowScreenSize.screenWidth,
-    overflowScreenHeight: windowInnerSize.innerHeight > windowScreenSize.screenHeight
+    overflowScreenWidth: window.innerWidth > window.screen.width,
+    overflowScreenHeight: window.innerHeight > window.screen.height
   }));
 
   const judgeStatus = useDebounce(() => {
-    const overflowWidth = windowInnerSize.innerWidth > windowScreenSize.screenWidth;
-    const overflowHeight = windowInnerSize.innerHeight > windowScreenSize.screenHeight;
+    const overflowWidth = window.innerWidth > window.screen.width;
+    const overflowHeight = window.innerHeight > window.screen.height;
 
-    if (overflowWidth !== state.overflowScreenWidth || overflowHeight !== state.overflowScreenHeight) {
-      state.overflowScreenWidth = overflowWidth;
-      state.overflowScreenHeight = overflowHeight;
-    }
+    state.overflowScreenWidth = overflowWidth;
+    state.overflowScreenHeight = overflowHeight;
   }, { wait: 20 }, []);
 
   useEventListener(window, 'resize', judgeStatus, []);

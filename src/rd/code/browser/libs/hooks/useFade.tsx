@@ -1,7 +1,6 @@
-import { CONFIG, IS_BROWSER } from '@rapid/config/constants';
+import { IS_BROWSER } from '@rapid/config/constants';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toNil } from '@rapid/libs';
-import { useEffect, useState } from 'react';
 
 export interface FadeOptions {
   waitTimer?: number;
@@ -26,7 +25,7 @@ export interface FadeOptions {
  */
 export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?: FadeOptions) {
   const {
-    waitTimer = CONFIG.FADE.FADE_IN.TIMER,
+    waitTimer = 50,
     onError = (err: any) => {
       console.error(err);
     }
@@ -56,7 +55,7 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
  */
 export async function useFadeOut(callback?: () => (void | Promise<any>), options?: FadeOptions) {
   const {
-    waitTimer = CONFIG.FADE.FADE_OUT.TIMER,
+    waitTimer = 50,
     onError = (err: any) => {
       console.error(err);
     }
