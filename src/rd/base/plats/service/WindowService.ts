@@ -75,7 +75,7 @@ export class WindowService {
    */
   public destroy(): void {
     if (this.window.isDestroyed()) return;
-    WindowServiceStateMachine.removeService(this);
+    WindowServiceStateMachine.removeWindowService(this);
     this.window.close();
     this.window.destroy();
   }

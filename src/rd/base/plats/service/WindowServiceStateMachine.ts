@@ -19,8 +19,7 @@ export class WindowServiceStateMachine {
     if (!service) return false;
 
     if (service === windowService) return true;
-    if (service.window.id === windowService.window.id) return true;
-    return false;
+    return service.window.id === windowService.window.id;
   }
 
   /**
@@ -53,7 +52,7 @@ export class WindowServiceStateMachine {
   /**
    * 删除制定的 service 服务
    */
-  public static removeService(windowService: WindowService) {
+  public static removeWindowService(windowService: WindowService) {
     this.removeId(windowService.window.id);
     if (windowService.options.windowKey) this.removeKey(windowService.options.windowKey);
   }
@@ -81,7 +80,7 @@ export class WindowServiceStateMachine {
       })
     }
 
-    this.removeService(windowService);
+    this.removeWindowService(windowService);
     windowService.destroy();
   }
 

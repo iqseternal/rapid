@@ -17,7 +17,7 @@ export class ExtensionManager extends InnerZustandStoreManager {
     let unregisterSuccess = false;
 
     const extractExtensionName = (item: ExtensionName | Extension) => {
-      if (typeof item === 'symbol' || typeof item === 'string') return item;
+      if ((typeof item === 'symbol') || (typeof item === 'string')) return item;
       return item.name;
     }
 
