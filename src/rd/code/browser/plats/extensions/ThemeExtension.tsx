@@ -1,4 +1,5 @@
 
+
 import type { RdSKin } from '@/skin';
 
 const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) => {
@@ -21,3 +22,5 @@ export const ThemeExtension = rApp.extension.defineExtension({
     rApp.metadata.delMetadataInVector('functional.theme.variables.transformer', transformer);
   }
 })
+
+export default ThemeExtension;

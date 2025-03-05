@@ -63,6 +63,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
     disabled = false,
     loading = false,
     loadingContent = <LoadingOutlined />,
+    children,
     tipText,
     tipAttrs = {},
     onClick,
@@ -149,7 +150,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
           )}
         >
           {loading ? loadingContent : <>
-            {icon && <IconFont icon={icon}></IconFont>}
+            {icon ? <IconFont icon={icon} /> : children}
           </>}
         </div>
       </Tooltip>

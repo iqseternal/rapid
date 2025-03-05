@@ -1,34 +1,13 @@
-
 import { memo, useState } from 'react';
 import { toNil } from '@rapid/libs';
 import { useAsyncLayoutEffect, useRefresh, useWindowInnerSize } from '@rapid/libs-web';
+import { uiControllerMaxSvg, uiControllerReductionSvg } from 'rd/assets';
 
 import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
 
-export const WindowsDebugWidget = memo(() => {
-  return (
-    <Widget
-      icon='BugOutlined'
-      tipText='打开开发者工具'
-      onClick={() => {
-        toast.success('打开开发者工具');
-
-        ipcActions.windowDevtool(true, { mode: 'detach' });
-      }}
-    />
-  )
-})
-
-export const WindowsMinWindowWidget = memo(() => {
-  return (
-    <Widget
-      icon='LineOutlined'
-      tipText='最小化'
-      onClick={() => ipcActions.windowMin()}
-    />
-  )
-})
+const WindowMaxSvg = <img src={uiControllerMaxSvg} />;
+const WindowReductionSvg = <img src={uiControllerReductionSvg} />;
 
 export const WindowsReductionWindowWidget = memo(() => {
   const refresh = useRefresh();
@@ -52,23 +31,12 @@ export const WindowsReductionWindowWidget = memo(() => {
 
   return (
     <Widget
-      icon={isFullSize ? 'SwitcherOutlined' : 'BorderOutlined'}
       tipText='还原'
       onClick={() => ipcActions.windowReduction()}
-    />
+    >
+      {isFullSize ? WindowReductionSvg : WindowMaxSvg}
+    </Widget>
   )
 })
 
-export const WindowsCloseWindowWidget = memo(() => {
-
-  return (
-    <Widget
-      icon='CloseOutlined'
-      tipText='关闭'
-      tipAttrs={{
-        placement: 'leftBottom'
-      }}
-      onClick={() => ipcActions.windowClose()}
-    />
-  )
-})
+export default WindowsReductionWindowWidget;

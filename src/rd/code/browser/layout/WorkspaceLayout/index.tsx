@@ -10,13 +10,16 @@ import { classnames, useMaintenanceStack, useResizeObserver, useShallowReactive,
 import { useThemeStore } from '@/features';
 import { menus } from '@/menus';
 import { isUndefined } from '@rapid/libs';
-import { WindowsCloseWindowWidget, WindowsDebugWidget, WindowsMinWindowWidget, WindowsReductionWindowWidget } from '@/components/Header/components';
 
 import Header from '@/components/Header';
 import AutoMenu from '@/components/AutoMenu';
 import IconFont from '@/components/IconFont';
 import Logo from '@/components/Logo';
 import Widget from '@/components/Widget';
+import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';
+import WindowsDebugWidget from '@/plats/components/WindowsDebugWidget';
+import WindowsMinWindowWidget from '@/plats/components/WindowsMinWindowWidget';
+import WindowsReductionWindowWidget from '@/plats/components/WindowsReductionWindowWidget';
 
 /**
  * 左侧收纳的文件菜单
@@ -138,10 +141,12 @@ const MaintenanceMenus = memo(() => {
           menu={storageStack.map(menu => {
             return {
               key: menu.key,
-              label: <AutoMenu.SubMenu
-                icon={menu.icon}
-                label={menu.label}
-              />,
+              label: (
+                <AutoMenu.SubMenu
+                  icon={menu.icon}
+                  label={menu.label}
+                />
+              ),
               children: menu.children
             }
           })}

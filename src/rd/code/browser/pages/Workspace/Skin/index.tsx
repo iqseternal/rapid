@@ -6,9 +6,9 @@ import type { FC, ReactNode } from 'react';
 import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDocStore } from '@/features';
-import { ThemeExtension } from '../../../plugins';
 import { produce } from 'immer';
 
+import ThemeExtension from '@/plats/extensions/ThemeExtension';
 import IMessage from '@/components/IMessage';
 
 import styles from './index.module.scss';

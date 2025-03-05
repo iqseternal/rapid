@@ -7,6 +7,8 @@ declare module "*.module.scss" {
 }
 
 declare module "*.scss";
+declare module "*.css";
+declare module "*.less";
 
 /**
  * 导入资源 URL 定位

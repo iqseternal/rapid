@@ -12,13 +12,14 @@ import { useRetrieveRoute } from '@/router';
 import { commonStyles } from '@/scss/common';
 import { memo, useEffect, useLayoutEffect } from 'react';
 import { Subfield } from '@rapid/libs-web/components';
-import { WindowsCloseWindowWidget, WindowsMinWindowWidget } from '@/components/Header/components';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@/components/Header';
 import Logo from '@/components/Logo';
 import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
+import WindowsMinWindowWidget from '@/plats/components/WindowsMinWindowWidget';
+import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';
 
 export const Login = memo(() => {
   const navigate = useNavigate();

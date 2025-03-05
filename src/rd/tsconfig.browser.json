@@ -53,6 +53,7 @@
   "include": [
     "./code/browser/**/*.ts",
     "./code/browser/**/*.tsx",
+    "./assets/**/*.ts",
 
     "./base/**/*.ts",
     "./code/electron-sandbox/**/*.ts",

@@ -1,11 +1,11 @@
 import './inject';
 
 import { useState, StrictMode } from 'react';
-import { ThemeExtension } from '@/plugins/modules/theme';
 import { Ansi } from '@rapid/libs';
 
 import ReactDOM from 'react-dom/client';
 import RapidApp from './app';
+import ThemeExtension from './plats/extensions/ThemeExtension';
 
 import '@/scss/index.scss';
 

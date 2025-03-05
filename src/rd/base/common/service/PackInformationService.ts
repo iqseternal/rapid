@@ -17,6 +17,7 @@ export class PackInformationService extends SingleInstanceService {
       name: rootPackageJson.author.name,
       email: rootPackageJson.author.email
     },
+    homePage: rootPackageJson.homepage,
 
     // 仓库信息
     repository: {
