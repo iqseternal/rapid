@@ -110,32 +110,35 @@ export const userActions = {
    * 用户登录
    */
   userLogin: asynced<typeof rApi.loginApi>(async (loginPayload) => {
-    const [loginErr, loginRes] = await toNil(rApi.loginApi(loginPayload));
-    if (loginErr) {
-      // return Promise.reject(loginErr.reason);
-      await setAccessToken('虚假的 TOKEN');
-      const res = {
-        data: {
-          userinfo: {
-            id: 1,
-            username: 'Apache'
-          }
-        }
-      }
-      useUserStore.setState({
-        userinfo: res.data.userinfo
-      })
-      return res;
-    }
+    // const [loginErr, loginRes] = await toNil(rApi.loginApi(loginPayload));
+    // if (loginErr) {
+    //   // return Promise.reject(loginErr.reason);
+    //   await setAccessToken('虚假的 TOKEN');
+    //   const res = {
+    //     data: {
+    //       userinfo: {
+    //         id: 1,
+    //         username: 'Apache'
+    //       }
+    //     }
+    //   }
+    //   useUserStore.setState({
+    //     userinfo: res.data.userinfo
+    //   })
+    //   return res;
+    // }
 
-    await setAccessToken(loginRes.data.userinfo.token);
-    useUserStore.setState({
-      userinfo: {
-        id: 1,
-        username: 'Apache'
-      }
-    })
-    return loginRes;
+    // await setAccessToken(loginRes.data.userinfo.token);
+    // useUserStore.setState({
+    //   userinfo: {
+    //     id: 1,
+    //     username: 'Apache'
+    //   }
+    // })
+    // return loginRes;
+
+    await setAccessToken('虚假的 TOKEN');
+    return {};
   }),
 
   /**
