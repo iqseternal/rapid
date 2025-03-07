@@ -1,8 +1,3 @@
-/**
- * ==========================================
- * 项目常量的编写, 不要通过路径别名或者导入包的方式创建这个常量
- * ==========================================
- */
 import { PlatformsOnDesktop, Env, RuntimePlatforms } from '../enums';
 
 export { PlatformsOnDesktop, Env };
