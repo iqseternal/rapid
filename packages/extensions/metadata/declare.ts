@@ -1,11 +1,14 @@
 
+type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
+type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
+
 /**
  * 从数组中提取出元素的类型
  * @example
  * type A = number[];
  * type B = ExtractElInArray<A>; // number
  */
-export type ExtractElInArray<T> = T extends (infer U)[] ? U : never;
+export type ExtractElInArray<T> = IsAny<T, never, T extends (infer U)[] ? U : never>;
 
 /**
  * 提取列表的 entries, 在 interface {} 中, 只有值为数组类型 U[], 时会被保留, 否则不在此类型中
@@ -19,7 +22,7 @@ export type ExtractElInArray<T> = T extends (infer U)[] ? U : never;
  * type B = ExtractVectorEntries<A>; // { friends: any[]; }
  */
 export type ExtractVectorEntries<Entries> = {
-  [Key in keyof Entries as (Entries[Key] extends (infer U)[] ? Key : never)]: Entries[Key];
+  [Key in keyof Entries as (IsAny<Entries[Key], never, Entries[Key] extends unknown[] ? Key : never>)]: Entries[Key];
 }
 
 /**
