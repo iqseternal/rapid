@@ -71,24 +71,26 @@ const SubfieldBase = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTyp
 
   const [colGap, rowGap] = gap;
 
-  return <div
-    ref={ref}
-    className={classnames(
-      className,
-      styles.subfield,
-      {
-        [styles.flexRow]: direction === 'horizontal',
-        [styles.flexCol]: direction === 'vertical'
-      }
-    )}
-    style={{
-      rowGap,
-      columnGap: colGap,
-      justifyContent,
-      alignItems
-    }}
-    {...realProps}
-  />
+  return (
+    <div
+      ref={ref}
+      className={classnames(
+        className,
+        styles.subfield,
+        {
+          [styles.flexRow]: direction === 'horizontal',
+          [styles.flexCol]: direction === 'vertical'
+        }
+      )}
+      style={{
+        rowGap,
+        columnGap: colGap,
+        justifyContent,
+        alignItems
+      }}
+      {...realProps}
+    />
+  )
 }));
 
 /**
@@ -97,11 +99,13 @@ const SubfieldBase = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTyp
 const SubfieldFixed = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTypes.SubfieldProps>((props, ref) => {
   const { className, ...realProps } = props;
 
-  return <Subfield
-    ref={ref}
-    className={classnames(className, styles.subfieldFixed)}
-    {...realProps}
-  />
+  return (
+    <Subfield
+      ref={ref}
+      className={classnames(className, styles.subfieldFixed)}
+      {...realProps}
+    />
+  )
 }));
 
 /**
@@ -111,11 +115,13 @@ const SubfieldFixed = memo(forwardRef<SubfieldTypes.SubfieldInstance, SubfieldTy
 const Fixed = memo(forwardRef<HTMLDivElement, SubfieldTypes.FixedProps>((props, ref) => {
   const { className, ...realProps } = props;
 
-  return <div
-    ref={ref}
-    className={classnames(className, styles.flexFixed)}
-    {...realProps}
-  />
+  return (
+    <div
+      ref={ref}
+      className={classnames(className, styles.flexFixed)}
+      {...realProps}
+    />
+  )
 }))
 
 /**
@@ -124,14 +130,16 @@ const Fixed = memo(forwardRef<HTMLDivElement, SubfieldTypes.FixedProps>((props, 
 const Auto = memo(forwardRef<HTMLDivElement, SubfieldTypes.AutoProps>((props, ref) => {
   const { className, flex, ...realProps } = props;
 
-  return <div
-    ref={ref}
-    className={classnames(className, styles.flexAuto)}
-    style={{
-      flex
-    }}
-    {...realProps}
-  />
+  return (
+    <div
+      ref={ref}
+      className={classnames(className, styles.flexAuto)}
+      style={{
+        flex
+      }}
+      {...realProps}
+    />
+  )
 }))
 
 export type SubfieldType = typeof SubfieldBase & {

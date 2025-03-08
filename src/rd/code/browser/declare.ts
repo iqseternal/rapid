@@ -81,7 +81,6 @@ export namespace Metadata {
   }
 }
 
-
 export declare interface RApp {
   /**
    * 插件管理器

@@ -681,6 +681,8 @@
     "commitlint",
     "Completive",
     "cpts",
+    "glsl",
+    "highp",
     "immer",
     "ipcs",
     "jsrsasign",

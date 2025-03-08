@@ -16,6 +16,6 @@ export abstract class RdAppSingleInstanceService extends SingleInstanceService {
    * 单一实例才应用程序即将退出时做的事情
    */
   protected override destroy(): void {
-
+    super.destroy();
   }
 }

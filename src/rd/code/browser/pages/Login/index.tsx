@@ -69,7 +69,7 @@ export const Login = memo(() => {
   }, []);
 
   return (
-    <FullSize>
+    <div className='w-full h-full relative'>
       <Header />
 
       <Subfield
@@ -120,7 +120,7 @@ export const Login = memo(() => {
           />
         </Subfield>
       </Subfield>
-    </FullSize>
+    </div>
   )
 });
 
