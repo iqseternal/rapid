@@ -254,6 +254,7 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
       path: mainOutput,
       filename: 'index.js',
       clean: true,
+
     },
     resolve: {
       extensions: ['.ts', '.cts', '.js', '.cjs'],
@@ -275,17 +276,23 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
       }))
     ],
     module: {
-      rules: [rules.supportImportRaw, rules.supportTypescript],
+      rules: [
+        rules.supportImportRaw,
+        rules.supportTypescript
+      ],
     },
     devServer: {
       devMiddleware: {
         // 将结果写入到磁盘
-        writeToDisk: true
-      }
+        writeToDisk: true,
+
+      },
     },
     optimization: {
       minimize: IS_PROD,
-    }
+
+
+    },
   });
 
   return mainRspackConfig;
