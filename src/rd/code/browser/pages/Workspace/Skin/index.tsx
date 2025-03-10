@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDocStore } from '@/features';
 import { produce } from 'immer';
 
-import ThemeExtension from '@/plats/extensions/ThemeExtension';
+import ThemeExtension from '../../../plats/extensions/RdThemeExtension';
 import IMessage from '@/components/IMessage';
 
 import styles from './index.module.scss';

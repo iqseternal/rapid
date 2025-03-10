@@ -8,7 +8,7 @@ import * as presetRoutes from './modules';
 
 export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
-export const RouterContext = memo(() => {
+export const RdRouterWrapper = memo(() => {
 
   return (
     <HashRouter>
@@ -45,4 +45,4 @@ export const RouterContext = memo(() => {
   )
 })
 
-export default RouterContext;
+export default RdRouterWrapper;

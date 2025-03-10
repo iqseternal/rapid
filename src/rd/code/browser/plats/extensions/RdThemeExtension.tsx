@@ -8,7 +8,7 @@ const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) =>
   return cssVariablesDeclaration;
 }
 
-export const ThemeExtension = rApp.extension.defineExtension({
+export const RdThemeExtension = rApp.extension.defineExtension({
   name: 'INNER_THEME_EXTENSION',
   version: '0.0.0',
 
@@ -23,4 +23,4 @@ export const ThemeExtension = rApp.extension.defineExtension({
   }
 })
 
-export default ThemeExtension;
+export default RdThemeExtension;

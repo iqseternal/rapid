@@ -4,13 +4,13 @@ import { RdSKin } from './skin';
 import { Toaster } from 'react-hot-toast';
 import { useAsyncEffect } from '@rapid/libs-web';
 
-import RouterContext from './router';
+import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
 
 /**
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
  */
-const RapidAppContext = memo(() => {
+const RdApp = memo(() => {
 
   return (
     <ConfigProvider
@@ -77,7 +77,7 @@ const RapidAppContext = memo(() => {
           backgroundColor: cssVars.thirdBackgroundColor
         }}
       >
-        <RouterContext />
+        <RdRouterWrapper />
       </App>
 
       <Toaster
@@ -91,7 +91,7 @@ const RapidAppContext = memo(() => {
 /**
  * App component, 这里做各种功能的插入：例如 插件等等
  */
-const RapidApp = memo(() => {
+const RdAppWrapper = memo(() => {
   rApp.extension.useExtensions();
 
   const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transformer');
@@ -111,7 +111,7 @@ const RapidApp = memo(() => {
     }
   }, [themePayloadTransformers]);
 
-  return (<RapidAppContext />)
+  return (<RdApp />)
 })
 
-export default RapidApp;
+export default RdAppWrapper;
