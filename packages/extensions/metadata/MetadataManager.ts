@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useState } from 'react';
-import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload} from './declare';
+import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
 /**
