@@ -35,7 +35,7 @@ export const Login = memo(() => {
     }));
 
     if (loginErr) {
-      message.error(loginErr.reason.descriptor);
+      message.error(loginErr.reason.message);
       return;
     }
 
@@ -47,7 +47,7 @@ export const Login = memo(() => {
   const [registerPending, register] = useTransition(async () => {
     const [registerErr] = await toNil(rApi.registerApi({}));
     if (registerErr) {
-      message.error(registerErr.reason.descriptor);
+      message.error(registerErr.reason.message);
       return;
     }
   }, []);

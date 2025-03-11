@@ -1,9 +1,11 @@
-import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError } from '@rapid/libs';
+import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig } from '@rapid/libs';
 import { StringFilters } from '@rapid/libs-web';
 import { getAccessToken } from '@/features';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
-/** 请求 hConfig 配置 */
+/**
+ * 请求 hConfig 配置
+ */
 export interface RApiHConfig {
   /**
    * 默认都需要认证
@@ -12,17 +14,14 @@ export interface RApiHConfig {
   readonly needAuth?: boolean;
 }
 
-/** 基本响应结构体的内容 */
+/**
+ * 基本响应结构体的内容
+ */
 export interface RApiBasicResponse {
   /**
    * 状态码
    */
-  readonly status: number;
-
-  /**
-   * 标志
-   */
-  readonly flag: 'ApiResponseOk' | 'ApiResponseFal';
+  readonly code: number;
 
   /**
    * 返回数据, 具有 data 定义
@@ -43,7 +42,7 @@ export interface RApiBasicResponse {
   /**
    * 响应描述
    */
-  readonly descriptor: string;
+  readonly message: string;
 
   /**
    * 响应服务器 响应时时间戳
@@ -52,12 +51,10 @@ export interface RApiBasicResponse {
 }
 
 export interface RApiSuccessResponse extends RApiBasicResponse {
-  readonly flag: 'ApiResponseOk';
+
 }
 
 export interface RApiFailResponse extends RApiBasicResponse {
-  readonly flag: 'ApiResponseFal';
-
   /**
    * 更多的错误信息
    */
@@ -66,9 +63,13 @@ export interface RApiFailResponse extends RApiBasicResponse {
      * 栈信息
      */
     readonly stack: string;
+
     readonly name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
+
     readonly config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];
+
     readonly request: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['request'];
+
     readonly response: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['response'];
   }
 }
@@ -92,9 +93,11 @@ export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RA
 
 const appInformation = AppInformationService.getInstance();
 
-const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(appInformation.information.appApiUrls.rApi, {
-  timeout: 5000
-}, {
+const rApiConfig: RequestConfig<RApiHConfig> = {
+  timeout: 5000,
+};
+
+const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(appInformation.information.appApiUrls.rApi, rApiConfig, {
   async onFulfilled(config) {
     if (!config.hConfig) config.hConfig = { needAuth: true };
 
@@ -103,27 +106,26 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
     if (needAuth && config.headers) {
       // TODO:
       const accessToken = await getAccessToken();
+
       if (accessToken) config.headers.authorization = `Bearer ${accessToken}`;
-      // config.headers['_t'] = `${+new Date()}`;
     }
   },
 }, {
   onFulfilled(response) {
-    // nestjs server response.
-    if (response.data && response.data.flag && response.data.status) {
-      if (response.data.flag === 'ApiResponseOk') return Promise.resolve(response.data);
-      if (response.data.flag === 'ApiResponseFal') return Promise.reject(response.data);
 
-      return response;
+    if (response.data && Reflect.has(response.data, 'code') && Reflect.has(response.data, 'data')) {
+      const data = response.data;
+      if (data.code === 0) return Promise.resolve(data);
+      return Promise.reject(data);
     }
+
     return response;
   },
   onRejected(err) {
     return Promise.reject<RApiFailResponse>({
-      status: +(err.response?.status ?? 0),
-      flag: 'ApiResponseFal',
+      code: -1,
       data: err.response?.data,
-      descriptor: StringFilters.toValidStr(err.message, '未知错误'),
+      message: StringFilters.toValidStr(err.message, '未知错误'),
       _t: +new Date(),
       INNER: {
         stack: err.stack,
@@ -131,6 +133,9 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
         request: err.request,
         response: err.response,
         name: err.name
+      },
+      more: {
+        pako: false
       }
     } as RApiFailResponse);
   }
