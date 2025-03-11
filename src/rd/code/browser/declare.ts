@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import type { ExtensionManager, MetadataManager } from '@rapid/extensions';
 import { RdSKin } from '@/skin';
 import { Bus } from '@rapid/libs-web';
+import { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 
 // 总线
 export namespace Bus {
@@ -101,4 +102,18 @@ export declare interface RApp {
    * 事件总线
    */
   readonly bus: Bus<Bus.BusEvent>;
+
+  /**
+   * 全局的状态管理
+   */
+  readonly stores: {
+
+    useUserStore: typeof useUserStore;
+
+    useTldrawStore: typeof useTldrawStore;
+
+    useThemeStore: typeof useThemeStore;
+
+    useDocStore: typeof useDocStore;
+  }
 }
