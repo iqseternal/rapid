@@ -11,11 +11,9 @@
 
 当前构建了基本架构, 能够创建基本的应用程序。
 
+能够简要使用插件化开发自身项目, 但还未实现文件加载或者远程加载方式。
+
 正在编写插件化开发流【本地文件】、插件化脚手架、独立子插件编写脚手架
-
-调整项目文件架构与分离。
-
-
 
 ## ✨ Features
 
@@ -74,23 +72,9 @@ $ pnpm website:dev
 TypeScript 遵循编写规范
 
 ```typescript
-// 0,
-import './xxx';
-// 1，先引入具名导入, 如果引入类型则添加 type 引入
-import { name, Name } from 'xxx';
-import type { Name } from 'xxx';
-import { type Name } from 'xxx';
-// 2，引入默认导入，如果默认导出是一个类，那么对于大驼峰
-import name from 'xxx';
-import Name from 'xxx';
-// 3，最后引入 import * 类型
-import * as xxx from 'xxx';
-
 // 类型书写采用大驼峰
 type Name = number;
-interface Name {
-
-}
+interface Name {}
 
 // 函数书写采用小驼峰
 // 尽可能地利用 TS 类型推导，而不是直接书写类型注释(如果有这种切实需求)
@@ -118,14 +102,16 @@ else xxx;
 // 当然，这是一个不应该存在的错误示例
 const a: number = '1' as unknown as number;
 
+// 如果使用了 ts 指令忽略错误, 请添加随后的释义解释
+// @ts-ignore: 忽略这个错误
+const a: number = '1';
+
 // 禁止使用 any 编程(但并非是不能使用 any)
 // 如下被禁止
 const f = (a: any, b: any, c: any): any => {
   const res = a + b + c;
-
   return res;
 }
-
 
 // 禁止出现 try catch 不处理错误
 try {
@@ -135,13 +121,5 @@ try {
 }
 
 // Promise: 除非在逻辑上一定成功或者不影响业务, 否则也需要处理异常。
-
-
-
 // 不允许使用 compilerOptions types 选项加载以根为首的类型目录
-
 ```
-
-Scss 编写规范
-
-组件中严格使用 scss module 方式引入方式, 不允许使用显式字符串作为 class 类名
