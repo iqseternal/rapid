@@ -108,12 +108,12 @@ export declare interface RApp {
    */
   readonly stores: {
 
-    useUserStore: typeof useUserStore;
+    readonly useUserStore: typeof useUserStore;
 
-    useTldrawStore: typeof useTldrawStore;
+    readonly useTldrawStore: typeof useTldrawStore;
 
-    useThemeStore: typeof useThemeStore;
+    readonly useThemeStore: typeof useThemeStore;
 
-    useDocStore: typeof useDocStore;
+    readonly useDocStore: typeof useDocStore;
   }
 }
