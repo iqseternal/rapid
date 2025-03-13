@@ -19,9 +19,13 @@
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "strictNullChecks": true,
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "types": [
+      "../../builder/@types-web"
+    ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.test.ts"
   ]
 }
