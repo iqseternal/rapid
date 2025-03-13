@@ -1,13 +1,13 @@
 import { loadConfig, createRsbuild, mergeRsbuildConfig, RsbuildConfig, CreateRsbuildOptions } from '@rsbuild/core';
-import { EnvBuilder, DIRS, rules } from '../config/node';
-import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack } from '@rspack/core';
+import { EnvBuilder, DIRS, rules } from '../builder';
+import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import { defineConfig as defineRspackConfig } from '@rspack/cli';
 import { defineConfig as defineRsbuildConfig } from '@rsbuild/core';
 import { Printer, print, printWarn } from '@suey/printer';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-import path, { join } from 'path';
+import { join } from 'path';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
@@ -60,10 +60,22 @@ const rendererEntry = join(rendererRootDir, './index.tsx');
 const mainEntry = join(__dirname, './rd/app.ts');
 const preloadEntry = join(__dirname, './rd/code/electron-sandbox/index.ts');
 
-
 const mainOutput = join(DIRS.ROOT_DIR, './.rd-cache/out/main');
 const preloadOutput = join(DIRS.ROOT_DIR, './.rd-cache/out/preload');
 const rendererOutput = join(DIRS.ROOT_DIR, './.rd-cache/out/renderer');
+
+const defineVars = {
+  IS_DEV: IS_DEV,
+  IS_PROD: IS_PROD,
+
+  IS_WINDOWS: true,
+  IS_MAC: false,
+  IS_LINUX: false,
+
+  IS_DESKTOP: true,
+  IS_MOBILE: false,
+  IS_BROWSER: false,
+} as const;
 
 // =====================================================================================
 // 加载启动流
@@ -250,6 +262,7 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
   const mainRspackConfig = defineRspackConfig({
     target: 'electron-main',
     entry: mainEntry,
+    mode: IS_DEV ? 'development' : 'production',
     output: {
       path: mainOutput,
       filename: 'index.js',
@@ -264,7 +277,10 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
       new node.NodeTargetPlugin(),
       new node.NodeTemplatePlugin(),
       new HotModuleReplacementPlugin(),
-      new DefinePlugin(vars as Record<string, any>),
+      new DefinePlugin({
+        ...vars,
+        ...defineVars
+      }),
 
       IS_BUILD && (new ProgressPlugin({
         prefix: 'rapid',
@@ -290,8 +306,19 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
     },
     optimization: {
       minimize: IS_PROD,
-
-
+      minimizer: [
+        new SwcJsMinimizerRspackPlugin({
+          minimizerOptions: {
+            minify: IS_PROD,
+          }
+        })
+      ],
+      usedExports: true,
+      sideEffects: true,
+      providedExports: true,
+      innerGraph: true,
+      moduleIds: 'deterministic',
+      concatenateModules: true,
     },
   });
 
@@ -304,6 +331,7 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
   const preloadRspackConfig = defineRspackConfig({
     target: 'electron-preload',
     entry: preloadEntry,
+    mode: IS_DEV ? 'development' : 'production',
     output: {
       path: preloadOutput,
       filename: 'index.js',
@@ -317,7 +345,10 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
     plugins: [
       new node.NodeTargetPlugin(),
       new node.NodeTemplatePlugin(),
-      new DefinePlugin(vars as Record<string, any>),
+      new DefinePlugin({
+        ...vars,
+        ...defineVars
+      }),
 
       IS_BUILD && (new ProgressPlugin({
         prefix: 'rapid',
@@ -338,6 +369,20 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
     },
     optimization: {
       minimize: IS_PROD,
+      minimizer: [
+        new SwcJsMinimizerRspackPlugin({
+          minimizerOptions: {
+            minify: IS_PROD,
+
+          }
+        })
+      ],
+      usedExports: true,
+      sideEffects: true,
+      providedExports: true,
+      innerGraph: true,
+      moduleIds: 'deterministic',
+      concatenateModules: true,
     }
   });
 
@@ -356,9 +401,11 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       tsconfigPath: join(__dirname, './rd/tsconfig.browser.json'),
       define: {
         // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        ...vars
+        ...vars,
+        ...defineVars
       }
     },
+    mode: IS_DEV ? 'development' : 'production',
     html: {
       meta: {
 

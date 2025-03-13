@@ -25,7 +25,7 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "types": [
-      "@rapid/config/@types-node",
+      "@rapid/builder/@types-node",
       "node"
     ],
     "paths": {

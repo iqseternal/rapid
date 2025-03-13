@@ -2,7 +2,6 @@ import { WindowServiceStateMachine } from 'rd/base/plats/service/WindowServiceSt
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { AppConfigService } from 'rd/base/plats/service/AppConfigService';
 import { WindowService } from 'rd/base/plats/service/WindowService';
-import { IS_DEV } from '@rapid/config/constants';
 import { join } from 'path';
 import { Menu, Tray, app, nativeImage } from 'electron';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';

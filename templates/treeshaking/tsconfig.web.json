@@ -2,9 +2,8 @@
   "compilerOptions": {
     "composite": true,
     "incremental": true,
-    "baseUrl": "./",
-    "outDir": "../rd-dts",
-    "declarationDir": "../rd-dts",
+    "baseUrl": ".",
+    "rootDir": ".",
     "target": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -22,8 +21,6 @@
     "declaration": true,
     "strict": false,
     "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "strictBindCallApply": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noEmitOnError": false,
@@ -36,31 +33,13 @@
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
     "types": [
-      "@rapid/builder/@types-web",
-      "@rapid/libs-web/@types",
-      "reflect-metadata",
-      "./code/browser/types"
-    ],
-    "paths": {
-      "rd/*": [
-        "./*"
-      ],
-      "@/*": [
-        "code/browser/*"
-      ]
-    }
+      "./@types"
+    ]
   },
   "include": [
-    "./code/browser/**/*.ts",
-    "./code/browser/**/*.tsx",
-    "./assets/**/*.ts",
-
-    "./base/**/*.ts",
-    "./code/electron-sandbox/**/*.ts",
-    "../../package.json"
+    "./web/src/**/*.ts",
+    "./web/src/**/*.tsx"
   ],
-  "exclude": [
-    "node_modules",
-    "./**/*.test.ts"
-  ]
+  "exclude": ["node_modules"]
 }
+

@@ -1,5 +1,4 @@
 import { LoggerService } from 'rd/base/plats/service/LoggerService';
-import { IS_DEV } from '@rapid/config/constants';
 import { Catch, Exception, ExceptionErrorMsgData, isException } from 'rd/base/plats/exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 

@@ -7,6 +7,9 @@ import { Route } from 'react-router-dom';
 import type { RedirectProps } from '../components';
 import { Redirect } from '../components';
 import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
+import type { RouteMeta, RouteConfig } from './declare';
+
+export type * from './declare';
 
 export * from './makeRequireRouteConfig';
 

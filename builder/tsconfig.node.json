@@ -12,9 +12,8 @@
     "noImplicitAny": true
   },
   "include": [
-    "./node/**/*.ts",
-    "./enums.ts",
-    "./constants"
+    "builder/**/*.ts",
+    "builder/enums.ts"
   ],
   "exclude": ["node_modules"]
 }

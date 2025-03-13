@@ -1,4 +1,4 @@
-import { NodeCommand, NodeEnv, Env } from '../enums';
+import { NodeCommand, NodeEnv, Env } from './enums';
 
 declare global {
   namespace NodeJS {

@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { BrowserWindow, type BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { IS_DEV } from '@rapid/config/constants';
 import { isString } from '@rapid/libs';
 import { WindowServiceStateMachine } from './WindowServiceStateMachine';
 import { RuntimeException } from '../exceptions';

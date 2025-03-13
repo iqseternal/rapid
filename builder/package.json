@@ -1,5 +1,5 @@
 {
-  "name": "@rapid/config",
+  "name": "@rapid/builder",
   "scripts": {
     "typecheck": "concurrently \"tsc --noEmit -p tsconfig.node.json\""
   }

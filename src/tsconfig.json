@@ -13,14 +13,20 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "strictNullChecks": true,
-    "types": ["../config/@types"]
+    "strictNullChecks": true
   },
   "include": [
     "./rspack.ts",
-    "../config/**/*.ts",
+
+    "../builder/**/*.ts",
+
     "./rd/*.json",
     "../package.json"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "../builder/@types/**/*.d.ts",
+    "../builder/@types-node/**/*.d.ts",
+    "../builder/@types-web/**/*.d.ts"
+  ]
 }

@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@rapid/config": "workspace:^"
+    "@rapid/builder": "workspace:^"
   },
   "dependencies": {
     "@rapid/extensions": "workspace:^",

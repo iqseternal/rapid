@@ -1,4 +1,3 @@
-import { IS_PROD } from '@rapid/config/constants';
 import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/libs/hooks';

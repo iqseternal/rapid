@@ -1,4 +1,4 @@
-import { PlatformsOnDesktop, Env, RuntimePlatforms, PlatformsOnBrowser, PlatformsOnMobile } from '../enums';
+import { PlatformsOnDesktop, Env, RuntimePlatforms, PlatformsOnBrowser, PlatformsOnMobile } from './enums';
 import { join } from 'path';
 import { DIRS } from './dirs';
 import { EnvChecker } from './checker';
@@ -8,10 +8,10 @@ export * from './index';
 /**
  * 注入变量的接口, 用于创建注入变量集合
  */
-export interface InjectionVariables {
-  CURRENT_PLATFORM: PlatformsOnDesktop | PlatformsOnMobile | PlatformsOnBrowser;
-  CURRENT_RUNTIME_PLATFORM: RuntimePlatforms;
-  CURRENT_ENV: Env;
+export type InjectionVariables = {
+  readonly IS_DEV: boolean;
+  readonly IS_PROD: boolean;
+  [key: string]: any;
 }
 
 export interface BuilderOptions {
@@ -69,17 +69,14 @@ export class EnvBuilder {
    * @example
    * const IS_DEV = CURRENT_ENV === Env.Dev;
    */
-  public defineVars<Variables extends Partial<Omit<InjectionVariables, 'CURRENT_ENV'>>>(variables?: Variables): InjectionVariables {
+  public defineVars<Variables extends InjectionVariables>(variables?: Variables): InjectionVariables {
+    const { IS_DEV, IS_PROD } = EnvChecker.toEnvs();
+
     const vars: InjectionVariables = {
-      CURRENT_PLATFORM: PlatformsOnDesktop.Windows,
-      CURRENT_RUNTIME_PLATFORM: RuntimePlatforms.Desktop,
-      CURRENT_ENV: Env.Dev,
+      IS_DEV: IS_DEV,
+      IS_PROD: IS_PROD,
       ...(variables ?? {})
     }
-
-    const { IS_DEV, IS_PROD } = EnvChecker.toEnvs();
-    if (IS_DEV) vars.CURRENT_ENV = Env.Dev;
-    if (IS_PROD) vars.CURRENT_ENV = Env.Prod;
 
     return vars;
   }

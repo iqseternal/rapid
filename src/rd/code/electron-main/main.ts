@@ -2,7 +2,6 @@ import { IpcMainManager } from 'rd/base/plats/ipc';
 import { app, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
-import { IS_DEV } from '@rapid/config/constants';
 import { WindowFlowService } from 'rd/base/plats/flow/WindowFlowService';
 import { TrayMenuFlowService } from 'rd/base/plats/flow/TrayMenuFlowService';
 

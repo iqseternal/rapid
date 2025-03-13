@@ -1,9 +1,10 @@
 import { isString, Ansi } from '@rapid/libs';
+import type { RouteMeta, RouteConfig } from './declare';
 
 /**
  * 补全后的 RouteMeta
  */
-export type CompletiveRouteMeta = RouteMeta & Pick<Required<RouteMeta>, 'fullPath' | 'title'>;
+export type CompletiveRouteMeta = RouteMeta & Pick<Required<RouteMeta>, 'fullPath'>;
 
 /**
  * 补全后的 RouteConfig
@@ -54,7 +55,6 @@ const path = {
  */
 export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): CompletiveRouteConfig<RouteConfig> {
   if (!route.meta) route.meta = {} as RouteMeta;
-  if (!route.meta.title) route.meta.title = '';
 
   // path 是相对路径, 但是允许填写 /, 自动将这个 / 去除
   if (route.path.startsWith('/') && !isRoot) route.path = route.path.substring(1);

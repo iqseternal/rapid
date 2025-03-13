@@ -16,6 +16,6 @@
     "@rapid/libs-web": "workspace:^"
   },
   "devDependencies": {
-    "@rapid/config": "workspace:^"
+    "@rapid/builder": "workspace:^"
   }
 }

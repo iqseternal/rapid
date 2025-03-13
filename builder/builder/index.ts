@@ -12,6 +12,6 @@ export {
   Env,
 
   NodeCommand, NodeEnv
-} from '../enums';
+} from './enums';
 
 export * as rules from './rules';

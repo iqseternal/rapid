@@ -1,6 +1,5 @@
 import { is } from '@electron-toolkit/utils';
 import { join } from 'path';
-import { IS_DEV } from '@rapid/config/constants';
 
 declare global {
   namespace NodeJS {

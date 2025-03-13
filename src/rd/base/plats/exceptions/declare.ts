@@ -1,4 +1,3 @@
-import { IS_DEV } from '@rapid/config/constants';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 /**

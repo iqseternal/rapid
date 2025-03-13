@@ -1,4 +1,3 @@
-import { IS_BROWSER } from '@rapid/config/constants';
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toNil } from '@rapid/libs';
 

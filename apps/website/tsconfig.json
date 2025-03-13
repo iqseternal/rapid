@@ -32,7 +32,7 @@
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
     "types": [
-      "@rapid/config/@types-web",
+      "@rapid/builder/@types-web",
       "@rapid/libs-web/@types"
     ],
     "paths": {

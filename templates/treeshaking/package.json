@@ -1,0 +1,14 @@
+{
+  "name": "treeshaking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "web:dev": "rsbuild dev",
+    "web:build": "rsbuild build",
+    "web:preview": "rsbuild preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
