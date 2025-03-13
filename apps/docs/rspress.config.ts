@@ -1,5 +1,5 @@
 import { defineConfig } from 'rspress/config';
-import { DIRS } from '../../config/builder';
+import { DIRS } from '../../builder';
 import { join } from 'path';
 
 export default defineConfig({

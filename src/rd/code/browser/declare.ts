@@ -4,10 +4,12 @@ import { RdSKin } from '@/skin';
 import { Bus } from '@rapid/libs-web';
 import { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 
-// 总线
 export namespace Bus {
-  export type BusEvent = {
+  export interface BusEvent {
 
+    /**
+     * 测试构建类型
+     */
     'test': never;
 
 

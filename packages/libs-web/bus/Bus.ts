@@ -1,11 +1,6 @@
-import type { BusKey, BusListener } from './BusManager';
 import { BusManager } from './BusManager';
 
-export interface BusEvent {
-  [Key: BusKey]: unknown;
-}
-
-export class Bus<BEvent extends BusEvent> extends BusManager {
+export class Bus<BEvent extends Record<string | symbol | number, any>> extends BusManager {
 
   /**
    * 异步发射一个事件

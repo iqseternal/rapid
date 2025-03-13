@@ -27,7 +27,9 @@ export class EnvChecker {
 
   /**
    * 获取运行环境
-   * @returns
+   * @example
+   *
+   * const { IS_DEV, IS_PROD, IS_BUILD, IS_PRIVATE } = EnvChecker.toEnvs();
    */
   public static toEnvs() {
     const IS_DEV = process.env.NODE_ENV === NodeEnv.Development;

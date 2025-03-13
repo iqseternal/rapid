@@ -1,6 +1,6 @@
 import { defineConfig } from '@rsbuild/core';
-import { EnvBuilder } from '../../config/builder';
-import { DIRS } from '../../config/builder';
+import { EnvBuilder } from '../../builder';
+import { DIRS } from '../../builder';
 import { join } from 'path';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
