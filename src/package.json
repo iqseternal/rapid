@@ -9,7 +9,7 @@
     "build": "cross-env COMMAND=build ts-node --project tsconfig.json ./rspack.ts",
     "preview": "cross-env COMMAND=preview ts-node --project tsconfig.json ./rspack.ts",
     "builder": "pnpm builder-win",
-    "builder-win": "pnpm -C ../.rd-cache run builder-win",
+    "builder-win": "pnpm -C ../.rd-builder run builder-win",
     "build:mac": "electron-builder --mac --config",
     "build:linux": "electron-builder --linux --config",
     "build:all": "electron-builder --win --config && electron-builder --mac --config && electron-builder --linux --config",
