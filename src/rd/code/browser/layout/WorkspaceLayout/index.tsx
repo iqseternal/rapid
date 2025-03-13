@@ -221,14 +221,8 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
     rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
     rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
 
-    const A = () => <Widget icon='UserAddOutlined' />;
-    const B = () => <Widget icon='BugTwoTone' />;
-    const C = () => <Widget icon='CarTwoTone' />;
 
     rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', A);
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', B);
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', C);
 
     rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
 
@@ -241,9 +235,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
 
       rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', A);
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', B);
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', C);
+
 
       rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
     }
