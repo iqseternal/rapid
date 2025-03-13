@@ -37,7 +37,6 @@
     "allowUnusedLabels": true,
     "types": [
       "@rapid/builder/@types-web",
-      "@rapid/libs-web/@types",
       "reflect-metadata",
       "./code/browser/types"
     ],
