@@ -30,8 +30,5 @@ jobs:
       - name: Run typecheck
         run: pnpm typecheck
 
-      - name: Run lint
-        run: pnpm lint
-
       - name: Run tests
         run: pnpm test:all

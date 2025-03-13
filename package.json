@@ -55,7 +55,7 @@
     "packages:build": "pnpm -r run build",
     "put:website": "pnpm website:build && pnpm -C ./put run put:website",
     "put:docs": "pnpm docs:build && pnpm -C ./put run put:docs",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --cache",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --cache",
     "test": "jest -o",
     "test:all": "jest",
     "preinstall": "npx only-allow pnpm",

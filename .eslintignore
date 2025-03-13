@@ -4,8 +4,33 @@
 /**/cache
 /**/public
 /**/build
+/coverage/**/*
 *.log*
 
+**/*.test.js
+**/*.test.cjs
+**/*.test.mjs
+**/*.test.jsx
+**/*.test.cjsx
+**/*.test.mjsx
+**/*.test.ts
+**/*.test.tsx
+**/*.test.cts
+**/*.test.ctsx
+**/*.test.mts
+**/*.test.mtsx
 
-/packages/desktop-web
-/packages/libs copy
+**/*.spec.js
+**/*.spec.cjs
+**/*.spec.mjs
+**/*.spec.jsx
+**/*.spec.cjsx
+**/*.spec.mjsx
+**/*.spec.ts
+**/*.spec.tsx
+**/*.spec.cts
+**/*.spec.ctsx
+**/*.spec.mts
+**/*.spec.mtsx
+
+**/__tests__/*

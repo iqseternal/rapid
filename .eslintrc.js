@@ -28,6 +28,8 @@ module.exports = ({
     ecmaFeatures: {
       jsx: true,
     },
+    allowDefaultProject: true,
+    project: null
   },
   settings: {
     react: {
