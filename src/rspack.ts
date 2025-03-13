@@ -60,6 +60,7 @@ const rendererEntry = join(rendererRootDir, './index.tsx');
 const mainEntry = join(__dirname, './rd/app.ts');
 const preloadEntry = join(__dirname, './rd/code/electron-sandbox/index.ts');
 
+
 const mainOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/main');
 const preloadOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/preload');
 const rendererOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/renderer');
