@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": true, // 生成声明文件
+    "emitDeclarationOnly": true, // 只生成声明文件，不输出 JS 文件
+    "outDir": "./dist", // 输出目录
+    "moduleResolution": "Node", // 模块解析策略
+    "skipLibCheck": false, // 跳过库的类型检查
+    "baseUrl": ".",
+    "rootDir": "../../",
+    "paths": {
+      "@rapid/libs": ["../../packages/*"] // 路径别名配置
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
