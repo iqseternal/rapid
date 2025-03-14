@@ -41,8 +41,8 @@ export const ipcWindowMinimize = makeIpcHandleAction(
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
     if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
+      const targetKey = windowKey || id;
+      if (targetKey) windowService = WindowService.findWindowService(targetKey);
     }
     if (windowService.window.isMinimizable()) windowService.window.minimize();
   }

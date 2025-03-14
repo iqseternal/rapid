@@ -2,10 +2,10 @@ import 'reflect-metadata';
 import 'rd/code/electron-main/process';
 
 import { CodeMain } from 'rd/code/electron-main/main';
-import { Printer } from '@suey/printer';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 const code = new CodeMain();
 
 code.main().catch((err) => {
-  Printer.printError(`Error: ${err.message}`);
+  PrinterService.printError(`Error: ${err.message}`);
 });

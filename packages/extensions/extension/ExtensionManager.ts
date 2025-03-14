@@ -1,8 +1,6 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
-import { useAsyncLayoutEffect, useNormalState } from '@rapid/libs-web/hooks';
 import type { Extension } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
+import { useEffect, useState } from 'react';
 
 export type ExtensionName = symbol | string;
 
@@ -121,11 +119,11 @@ export class ExtensionManager extends InnerZustandStoreManager {
   public useExtensionsList(): [{ readonly extensions: Extension[] }] {
     const value = this.useStore();
 
-    const [statusState] = useNormalState(() => ({
+    const [statusState] = useState(() => ({
       value: void 0 as (undefined | typeof value)
     }))
 
-    const [normalState] = useNormalState({
+    const [normalState] = useState({
       extensions: [] as Extension[],
     })
 
@@ -152,7 +150,7 @@ export class ExtensionManager extends InnerZustandStoreManager {
     const [normalState] = this.useExtensionsList();
 
     // 激活扩展
-    useAsyncLayoutEffect(async () => {
+    useEffect(() => {
       for (const extension of normalState.extensions) extension?.onActivated?.();
     }, [normalState.extensions.length]);
 
