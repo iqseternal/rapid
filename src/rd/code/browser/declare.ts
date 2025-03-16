@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 import type { ExtensionManager, MetadataManager } from '@rapid/extensions';
 import { RdSKin } from '@/skin';
-import { Bus } from '@rapid/libs-web';
+import { Bus as RBus } from '@rapid/libs-web';
 import { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 
 export namespace Bus {
@@ -103,7 +103,7 @@ export declare interface RApp {
   /**
    * 事件总线
    */
-  readonly bus: Bus<Bus.BusEvent>;
+  readonly bus: RBus<Bus.BusEvent>;
 
   /**
    * 全局的状态管理
