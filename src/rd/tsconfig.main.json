@@ -25,7 +25,7 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "types": [
-      "@rapid/builder/@types-node",
+      "../rd-builder/@types-node",
       "node"
     ],
     "paths": {
