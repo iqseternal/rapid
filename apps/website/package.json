@@ -9,9 +9,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@rapid/builder": "workspace:^"
-  },
   "dependencies": {
     "@rapid/extensions": "workspace:^",
     "@rapid/libs": "workspace:^",

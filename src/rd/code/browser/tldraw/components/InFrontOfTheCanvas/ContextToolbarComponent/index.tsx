@@ -1,5 +1,5 @@
-import { memo, useRef, useState } from 'react'
-import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue, type TLUiAssetUrlOverrides } from 'tldraw'
+import { memo, useRef, useState } from 'react';
+import { DefaultSizeStyle, Editor, TLShapeId, TldrawUiIcon, track, useEditor, useValue, type TLUiAssetUrlOverrides } from 'tldraw';
 import { EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 
 export const customAssetUrls: TLUiAssetUrlOverrides = {

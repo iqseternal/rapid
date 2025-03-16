@@ -1,6 +1,4 @@
 import { defineConfig } from '@rsbuild/core';
-import { EnvBuilder } from '../../builder';
-import { DIRS } from '../../builder';
 import { join } from 'path';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
@@ -9,33 +7,32 @@ import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 
-const envBuilder = new EnvBuilder({
-  checker: true
-});
+const rootDir = join(__dirname, '../../');
+const distPath = join(rootDir, './dist/website');
 
-const { IS_PROD } = envBuilder.toEnvs();
+export default defineConfig(({ env, command, envMode }) => {
 
-export default defineConfig({
-  source: {
-    entry: {
-      index: join(__dirname, './src/index.tsx')
+  const IS_PROD = (env === 'production');
+
+  return {
+    source: {
+      entry: {
+        index: join(__dirname, './src/index.tsx')
+      }
     },
-    define: {
-      ...envBuilder.defineVars()
+    plugins: [
+      pluginSass(),
+      pluginStyledComponents(),
+      pluginTypedCSSModules(),
+      pluginReact(),
+      IS_PROD && pluginSourceBuild(),
+      IS_PROD && pluginTailwindCSS()
+    ],
+    output: {
+      distPath: {
+        root: distPath,
+      },
+      cleanDistPath: true,
     }
-  },
-  plugins: [
-    pluginSass(),
-    pluginStyledComponents(),
-    pluginTypedCSSModules(),
-    pluginReact(),
-    IS_PROD && pluginSourceBuild(),
-    IS_PROD && pluginTailwindCSS()
-  ],
-  output: {
-    distPath: {
-      root: join(DIRS.DIST_DIR, './website'),
-    },
-    cleanDistPath: true,
   }
 })

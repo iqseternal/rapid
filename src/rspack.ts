@@ -1,5 +1,5 @@
 import { loadConfig, createRsbuild, mergeRsbuildConfig, RsbuildConfig, CreateRsbuildOptions } from '@rsbuild/core';
-import { EnvBuilder, DIRS, rules } from '../builder';
+import { EnvBuilder, DIRS, rules } from './rd-builder';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import { defineConfig as defineRspackConfig } from '@rspack/cli';
 import { defineConfig as defineRsbuildConfig } from '@rsbuild/core';
@@ -61,9 +61,9 @@ const mainEntry = join(__dirname, './rd/app.ts');
 const preloadEntry = join(__dirname, './rd/code/electron-sandbox/index.ts');
 
 
-const mainOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/main');
-const preloadOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/preload');
-const rendererOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/renderer');
+const mainOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/main');
+const preloadOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/preload');
+const rendererOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/renderer');
 
 const defineVars = {
   IS_DEV: IS_DEV,

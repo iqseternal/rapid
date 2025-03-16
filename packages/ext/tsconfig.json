@@ -1,17 +1,64 @@
 {
   "compilerOptions": {
-    "declaration": true, // 生成声明文件
-    "emitDeclarationOnly": true, // 只生成声明文件，不输出 JS 文件
-    "outDir": "./dist", // 输出目录
-    "moduleResolution": "Node", // 模块解析策略
-    "skipLibCheck": false, // 跳过库的类型检查
+    "declaration": true,
+    "noEmit": false,
+    "outDir": "./dist",
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext",
+    "skipLibCheck": true,
     "baseUrl": ".",
     "rootDir": "../../",
+    "skipDefaultLibCheck": true,
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"],
+    "esModuleInterop": false,
+    "isolatedModules": true,
+    "preserveSymlinks": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "types": [
+      "reflect-metadata",
+      "../../builder/@types",
+      "../../builder/@types-web",
+      "../../src/rd/code/browser/types",
+      "node"
+    ],
+    "jsx": "react-jsx",
     "paths": {
-      "@rapid/libs": ["../../packages/*"] // 路径别名配置
+      "@rapid/libs": ["../libs"],
+      "@rapid/libs-web": ["../libs-web"],
+      "@rapid/extensions": ["../extensions"],
+      "@rapid/libs/*": ["../libs/*"],
+      "@rapid/libs-web/*": ["../libs-web/*"],
+      "@rapid/extensions/*": ["../extensions/*"],
+      "rd/*": ["../../src/rd/*"],
+      "@/*": ["../../src/rd/code/browser/*"]
     }
   },
   "include": [
-    "src/**/*.ts"
+    "../../packages/**/*.ts",
+    "../../packages/**/*.tsx",
+    "../../src/**/*.ts",
+    "../../src/**/*.tsx"
+  ],
+  "exclude": [
+    "../../**/node_modules/**/*",
+    "../../**/*.test.ts",
+    "../../**/rspack.config.ts",
+    "../../**/rsbuild.config.ts",
+    "../../**/rspress.config.ts",
+    "../../src/rspack.ts"
   ]
 }

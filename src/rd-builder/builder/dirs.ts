@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 /** 项目根目录 */
-export const ROOT_DIR = path.join(__dirname, '../../');
+export const ROOT_DIR = path.join(__dirname, '../../../');
 
 /** 打包根目录 */
 export const DIST_DIR = path.join(ROOT_DIR, './dist');

@@ -1,6 +1,4 @@
-import { PlatformsOnDesktop, Env, RuntimePlatforms, PlatformsOnBrowser, PlatformsOnMobile } from './enums';
 import { join } from 'path';
-import { DIRS } from './dirs';
 import { EnvChecker } from './checker';
 
 export * from './index';

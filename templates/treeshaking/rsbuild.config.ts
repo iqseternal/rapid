@@ -1,5 +1,4 @@
 import { defineConfig } from '@rsbuild/core';
-import { EnvBuilder } from '../../config/builder';
 import { join } from 'path';
 
 const CURRENT_ENV = 1;
