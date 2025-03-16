@@ -1,6 +1,6 @@
 import { defineConfig } from 'tsup';
-import { DIRS } from '../../builder';
 import { join } from 'path';
+import { DIRS } from '../../src/rd-builder';
 
 import alias from '@rollup/plugin-alias';
 
@@ -18,9 +18,9 @@ export default defineConfig({
   plugins: [
 
   ],
-  // tsconfig: join(__dirname, './tsconfig.json'),
-
+  tsconfig: join(__dirname, './tsconfig.json'),
   dts: true,
+
   // dts: {
   //   only: true,
 
