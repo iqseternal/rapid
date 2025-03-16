@@ -464,6 +464,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       minify: {
         js: IS_PROD,
         jsOptions: {
+
           extractComments: false,
           minimizerOptions: {
             minify: IS_PROD,
