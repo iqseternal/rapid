@@ -3,7 +3,7 @@ export * from './common';
 
 export * from './filters';
 
-export * from './bus';
+export * from './emitter';
 
 export * from './hooks';
 

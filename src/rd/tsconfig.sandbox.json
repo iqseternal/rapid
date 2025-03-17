@@ -31,7 +31,7 @@
     "isolatedModules": true,
     "moduleResolution": "Node",
     "types": [
-      "@rapid/builder/@types-node"
+      "../rd-builder/@types-node"
     ]
   },
   "include": [

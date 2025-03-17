@@ -1,6 +1,6 @@
-import { BusManager } from './BusManager';
+import { EmitterManager } from './EmitterManager';
 
-export class Bus<BEvent extends Record<string | symbol | number, any>> extends BusManager {
+export class Emitter<BEvent extends Record<string | symbol | number, any>> extends EmitterManager {
 
   /**
    * 异步发射一个事件

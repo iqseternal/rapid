@@ -416,7 +416,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/libs-web
 
-  packages/ext: {}
+  cli/rxc: {}
 
   packages/extensions: {}
 

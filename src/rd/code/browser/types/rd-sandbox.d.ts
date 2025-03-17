@@ -1,11 +1,11 @@
 import type { ExposeApi } from 'rd/code/electron-sandbox';
 
-import type * as RSandbox from 'rd/code/electron-sandbox';
+import type * as RdSandbox from 'rd/code/electron-sandbox';
 
 // Sandbox
 declare global {
   // 声明 preload 线程的类型, 它向 renderer 线程暴露的 api, 以及部分扩展的类型接口
-  namespace RdSandbox { export = RSandbox; }
+  // namespace RdSandbox { export = RSandbox; }
 
   /**
    * 扩展 Window 含有 Electron Api 声明规则

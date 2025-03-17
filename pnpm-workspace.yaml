@@ -3,6 +3,7 @@ packages:
   - '!**/test/**'
   # 选择 packages 目录下的所有首层子目录的包
   - packages/*
+  - cli/*
   - extensions/*
   - apps/*
   - src

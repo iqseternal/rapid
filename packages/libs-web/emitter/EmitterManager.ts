@@ -1,40 +1,40 @@
 import type { DoubleLinkedNode } from '@rapid/libs';
 import { DoubleLinkedList } from '@rapid/libs';
 
-export type BusKey = '*' | string | symbol | number;
+export type EmitterKey = '*' | string | symbol | number;
 
-export type BusListener = (...args: unknown[]) => Promise<any> | any;
+export type EmitterListener = (...args: unknown[]) => Promise<any> | any;
 
 /**
  * 停止监听事件的函数回调
  */
-export type BusListenerOffCallback = () => void;
+export type EmitterListenerOffCallback = () => void;
 
-export type BusListenerSlice = {
+export type EmitterListenerSlice = {
   /** 监听是否只生效一次 */
   readonly once?: boolean;
 
-  readonly listener: BusListener;
+  readonly listener: EmitterListener;
 }
 
 export type BusListenerHybrid = {
   // 预留：可做函数到链表节点的快速映射
-  readonly listenerMap: WeakMap<BusListener, DoubleLinkedNode<BusListenerSlice>>;
+  readonly listenerMap: WeakMap<EmitterListener, DoubleLinkedNode<EmitterListenerSlice>>;
 
-  readonly linkedList: DoubleLinkedList<BusListenerSlice>;
+  readonly linkedList: DoubleLinkedList<EmitterListenerSlice>;
 }
 
-export abstract class BusManager {
-  private readonly eventMap = new Map<Exclude<BusKey, '*'>, BusListenerHybrid>();
+export abstract class EmitterManager {
+  private readonly eventMap = new Map<Exclude<EmitterKey, '*'>, BusListenerHybrid>();
 
   /**
    * 获取一个事件监听的混合存储对象
    */
-  private getBusListenerHybrid(busName: BusKey): BusListenerHybrid {
+  private getBusListenerHybrid(busName: EmitterKey): BusListenerHybrid {
     if (this.eventMap.has(busName)) return this.eventMap.get(busName)!;
 
-    const listenerMap = new WeakMap<BusListener, DoubleLinkedNode<BusListenerSlice>>();
-    const linkedList = new DoubleLinkedList<BusListenerSlice>();
+    const listenerMap = new WeakMap<EmitterListener, DoubleLinkedNode<EmitterListenerSlice>>();
+    const linkedList = new DoubleLinkedList<EmitterListenerSlice>();
 
     this.eventMap.set(busName, { listenerMap, linkedList });
     return this.eventMap.get(busName)!;
@@ -44,7 +44,7 @@ export abstract class BusManager {
    * 订阅
    * @returns
    */
-  protected subscribe<Listener extends BusListener>(busName: BusKey, listener: Listener, options?: { once?: boolean }) {
+  protected subscribe<Listener extends EmitterListener>(busName: EmitterKey, listener: Listener, options?: { once?: boolean }) {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
@@ -64,7 +64,7 @@ export abstract class BusManager {
    * 取消订阅
    * @returns
    */
-  protected unsubscribe<Listener extends BusListener>(busName: BusKey, listener: Listener) {
+  protected unsubscribe<Listener extends EmitterListener>(busName: EmitterKey, listener: Listener) {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
@@ -74,7 +74,7 @@ export abstract class BusManager {
   /**
    * 通知处理事件
    */
-  protected async notice(busName: Exclude<BusKey, '*'>, ...args: any[]) {
+  protected async notice(busName: Exclude<EmitterKey, '*'>, ...args: any[]) {
     requestIdleCallback(() => {
       this.noticeSync(busName, ...args);
     })
@@ -83,14 +83,14 @@ export abstract class BusManager {
   /**
    * 同步通知处理事件
    */
-  protected noticeSync(busName: Exclude<BusKey, '*'>, ...args: any[]) {
+  protected noticeSync(busName: Exclude<EmitterKey, '*'>, ...args: any[]) {
     // not allowed
     if (busName === '*') return;
 
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
-    const usedOnceSlices: BusListenerSlice[] = [];
+    const usedOnceSlices: EmitterListenerSlice[] = [];
 
     hybridLinkedList.forEach(slice => {
       slice.listener(...args);
@@ -108,7 +108,7 @@ export abstract class BusManager {
   /**
    * 删除所有事件订阅
    */
-  protected clear(busName: Exclude<BusKey, '*'>) {
+  protected clear(busName: Exclude<EmitterKey, '*'>) {
     const busListenerHybrid = this.getBusListenerHybrid(busName);
     const hybridLinkedList = busListenerHybrid.linkedList;
 
