@@ -1,0 +1,15 @@
+{
+  "name": "ext",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./ext/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "exec": "api-extractor run --local --verbose",
+    "tsup": "tsup",
+    "typecheck": "tsc --noEmit -p tsconfig.main.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
