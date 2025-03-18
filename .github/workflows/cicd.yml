@@ -38,7 +38,22 @@ jobs:
     needs: ci  # 依赖 CI 任务完成
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'  # 核心条件
     steps:
-#      - name: setup dist of website
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      #      - name: setup dist of website
 #        run: pnpm website:build
 #
 #      - name: Deploy via rsync of website
