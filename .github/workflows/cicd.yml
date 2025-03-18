@@ -77,4 +77,4 @@ jobs:
           SOURCE: "./dist/docs"
           REMOTE_HOST: ${{ secrets.SERVER_IP }}
           REMOTE_USER: ${{ secrets.SERVER_USER }}
-          TARGET: "/www/wwwroot/docs"  # 服务器目标路径
+          TARGET: "/www/wwwroot/rapid_doc"  # 服务器目标路径
