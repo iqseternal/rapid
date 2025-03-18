@@ -73,8 +73,8 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.6
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "./dist/docs"
+          ARGS: "-rltgoDzvO --delete --mkpath"
+          SOURCE: "./dist/docs/"
           REMOTE_HOST: ${{ secrets.SERVER_IP }}
           REMOTE_USER: ${{ secrets.SERVER_USER }}
-          TARGET: "/www/wwwroot/rapid_doc"  # 服务器目标路径
+          TARGET: "/www/wwwroot/rapid_doc/dist"  # 服务器目标路径
