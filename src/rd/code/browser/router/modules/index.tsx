@@ -29,6 +29,20 @@ export const workbenchesRoute = makeRoute({
   path: `/workbenches`,
   redirect: 'workstation',
   component: <WorkspaceLayout />,
+  hasErrorBoundary: true,
+  errorElement: (
+    <div>
+
+    </div>
+  ),
+  ErrorBoundary: () => {
+
+    return (
+      <div>
+        工作区出现错误
+      </div>
+    )
+  },
   children: [
     {
       name:  'WorkbenchesWorkstation',

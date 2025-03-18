@@ -1,15 +1,16 @@
-import { Bus } from '@rapid/libs-web';
+import { Emitter } from '@rapid/libs-web';
 import type { RApp } from './declare';
 import { cssVars, RdSKin } from './skin';
 import { Extension, ExtensionManager, MetadataManager } from '@rapid/extensions';
 import { inject } from '@rapid/libs/inject';
 import { useUserStore, useDocStore, useThemeStore, useTldrawStore } from './features';
+import { Metadata, Bus } from './declare';
 
 const extensionManager = new ExtensionManager();
 
-const metadataManager = new MetadataManager<Rapid.Metadata.MetadataEntries>();
+const metadataManager = new MetadataManager<Metadata.MetadataEntries>();
 
-const bus = new Bus<Rapid.Bus.BusEvent>();
+const emitter = new Emitter<Bus.BusEvent>();
 
 const rApp = Object.freeze<RApp>({
   extension: extensionManager,
@@ -18,7 +19,7 @@ const rApp = Object.freeze<RApp>({
 
   RdSKin: RdSKin,
 
-  bus: bus,
+  emitter: emitter,
 
   stores: {
     useUserStore,

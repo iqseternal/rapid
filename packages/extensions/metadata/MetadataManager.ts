@@ -11,7 +11,7 @@ import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
  * 2. 在特殊时机, 注册槽点数据, 从而响应式自动更新到子孙或者兄弟级甚远的组件进行渲染
  *
  */
-export class MetadataManager<MetadataEntries extends {}> extends InnerZustandStoreManager {
+export class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
   private readonly metadataChangeListeners = new Set<MetadataStoreChangeListener>();
 

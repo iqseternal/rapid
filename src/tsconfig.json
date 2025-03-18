@@ -18,15 +18,15 @@
   "include": [
     "./rspack.ts",
 
-    "../builder/**/*.ts",
+    "./rd-builder/**/*",
 
     "./rd/*.json",
     "../package.json"
   ],
   "exclude": [
     "node_modules",
-    "../builder/@types/**/*.d.ts",
-    "../builder/@types-node/**/*.d.ts",
-    "../builder/@types-web/**/*.d.ts"
+    "./rd-builder/@types/**/*.d.ts",
+    "./rd-builder/@types-node/**/*.d.ts",
+    "./rd-builder/@types-web/**/*.d.ts"
   ]
 }

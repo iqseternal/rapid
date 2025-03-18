@@ -39,7 +39,7 @@ export class CssValueConverts {
 
   public static toPixel(value: number | string): CSSTypes.PixelValue {
     if (!isNumber(value)) value = parseInt(value);
-    if (isNaN(value)) value = 0;
+    if (Number.isNaN(value)) value = 0;
     return `${value}px`;
   }
 }

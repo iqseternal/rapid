@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "rootDir": "../../",
+    "skipDefaultLibCheck": true,
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "ESNext",
+      "DOM.Iterable",
+      "ESNext.WeakRef"
+    ],
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveSymlinks": false,
+    "strict": false,
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+    "strictBindCallApply": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "traceResolution": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowJs": true,
+    "noEmitOnError": false,
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "./tsup.config.ts"
+  ],
+  "exclude": [
+    "../../**/node_modules/**/*",
+    "../../**/*.test.ts"
+  ]
+}

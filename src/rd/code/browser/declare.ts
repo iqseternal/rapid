@@ -1,13 +1,15 @@
 import type { ComponentType } from 'react';
 import type { ExtensionManager, MetadataManager } from '@rapid/extensions';
-import { RdSKin } from '@/skin';
-import { Bus } from '@rapid/libs-web';
-import { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
+import type { RdSKin } from '@/skin';
+import type { Emitter } from '@rapid/libs-web';
+import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 
-// 总线
 export namespace Bus {
-  export type BusEvent = {
+  export interface BusEvent {
 
+    /**
+     * 测试构建类型
+     */
     'test': never;
 
 
@@ -101,7 +103,7 @@ export declare interface RApp {
   /**
    * 事件总线
    */
-  readonly bus: Bus<Bus.BusEvent>;
+  readonly emitter: Emitter<Bus.BusEvent>;
 
   /**
    * 全局的状态管理

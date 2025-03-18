@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "source": "./index.ts",
+  "private": true,
   "main": "./index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.json"
@@ -11,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@suey/pkg-utils": "0.3.1"
+
   }
 }

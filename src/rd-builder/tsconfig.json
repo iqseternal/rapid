@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "isolatedModules": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "rootDir": "../",
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "include": [
+    "builder/**/*.ts",
+    "./index.ts"
+  ],
+  "exclude": ["node_modules"]
+}

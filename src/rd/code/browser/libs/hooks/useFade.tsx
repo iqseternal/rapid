@@ -31,8 +31,6 @@ export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?
   } = options ?? {};
 
   useAsyncEffect(async () => {
-    if (IS_BROWSER) return;
-
     if (beforeCallback) {
       const [err] = await toNil(Promise.resolve(beforeCallback()));
 
@@ -60,6 +58,6 @@ export async function useFadeOut(callback?: () => (void | Promise<any>), options
     }
   } = options ?? {};
 
-  if (!IS_BROWSER) await window.ipcActions.windowShow({ show: false }).catch(onError);
+  await window.ipcActions.windowShow({ show: false }).catch(onError);
   callback && Promise.resolve(callback())?.catch(onError);
 }

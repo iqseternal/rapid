@@ -20,9 +20,7 @@
     "module": "NodeNext",
     "strictNullChecks": true,
     "noImplicitReturns": true,
-    "types": [
-      "../../builder/@types-web"
-    ]
+    "types": ["./types"]
   },
   "exclude": [
     "node_modules",

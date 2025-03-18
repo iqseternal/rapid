@@ -118,7 +118,9 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
 
   // 启动 observer
   useEffect(() => {
-    resizeObserver.observe(textContainerRef.current!);
+    if (!textContainerRef.current) return;
+
+    resizeObserver.observe(textContainerRef.current);
 
     return () => {
       resizeObserver.disconnect();

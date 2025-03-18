@@ -36,7 +36,7 @@
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
     "types": [
-      "@rapid/builder/@types-web",
+      "../rd-builder/@types-web",
       "reflect-metadata",
       "./code/browser/types"
     ],

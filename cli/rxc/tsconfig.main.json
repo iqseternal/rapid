@@ -1,0 +1,75 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "rootDir": "../../",
+    "skipDefaultLibCheck": true,
+    "jsx": "react-jsx",
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "ESNext",
+      "DOM.Iterable",
+      "ESNext.WeakRef"
+    ],
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveSymlinks": false,
+    "strict": false,
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+    "strictBindCallApply": false,
+    "emitDecoratorMetadata": true,
+    "allowUnusedLabels": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "traceResolution": false,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowJs": true,
+    "types": [
+      "reflect-metadata",
+      "../../src/rd-builder/@types",
+      "../../src/rd-builder/@types-web",
+      "../../src/rd/code/browser/types",
+      "node"
+    ],
+    "paths": {
+      "@rapid/libs": ["../../packages/libs"],
+      "@rapid/libs-web": ["../../packages/libs-web"],
+      "@rapid/extensions": ["../../packages/extensions"],
+      "@rapid/libs/*": ["../../packages/libs/*"],
+      "@rapid/libs-web/*": ["../../packages/libs-web/*"],
+      "@rapid/extensions/*": ["../../packages/extensions/*"],
+      "rd/*": ["../../src/rd/*"],
+      "@/*": ["../../src/rd/code/browser/*"]
+    }
+  },
+  "include": [
+    "../../packages/**/*.ts",
+    "../../packages/**/*.tsx",
+    "../../src/**/*.ts",
+    "../../src/**/*.tsx",
+    "../../package.json",
+    "./src/**/*"
+  ],
+  "exclude": [
+    "../../**/node_modules/**/*",
+    "../../**/*.test.ts",
+    "../../**/rspack.config.ts",
+    "../../**/rsbuild.config.ts",
+    "../../**/rspress.config.ts",
+    "../../src/rspack.ts"
+  ]
+}

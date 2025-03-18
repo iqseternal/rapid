@@ -1,9 +1,9 @@
-import { loadConfig, createRsbuild, mergeRsbuildConfig, RsbuildConfig, CreateRsbuildOptions } from '@rsbuild/core';
-import { EnvBuilder, DIRS, rules } from '../builder';
+import { createRsbuild, CreateRsbuildOptions } from '@rsbuild/core';
+import { EnvBuilder, DIRS, rules } from './rd-builder';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import { defineConfig as defineRspackConfig } from '@rspack/cli';
 import { defineConfig as defineRsbuildConfig } from '@rsbuild/core';
-import { Printer, print, printWarn } from '@suey/printer';
+import { Printer, printWarn } from '@suey/printer';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
@@ -14,7 +14,6 @@ import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
-import { writeFile, writeFileSync } from 'fs';
 
 import treeKill from 'tree-kill';
 import tailwindcss from 'tailwindcss';
@@ -61,9 +60,9 @@ const mainEntry = join(__dirname, './rd/app.ts');
 const preloadEntry = join(__dirname, './rd/code/electron-sandbox/index.ts');
 
 
-const mainOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/main');
-const preloadOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/preload');
-const rendererOutput = join(DIRS.ROOT_DIR, './.rd-builder/out/renderer');
+const mainOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/main');
+const preloadOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/preload');
+const rendererOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/renderer');
 
 const defineVars = {
   IS_DEV: IS_DEV,
@@ -236,7 +235,7 @@ async function transform() {
   }
 
   const compilerRenderer = () => {
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<void>(async (resolve) => {
       await rendererRsbuilder.build();
       Printer.printInfo(`Compiler: web`);
       resolve();
@@ -424,7 +423,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       port: 3002,
       proxy: {
         '/rapi': {
-          pathRewrite: (pathname, req) => {
+          pathRewrite: (pathname) => {
             if (pathname.startsWith('/rapi')) return pathname.replace('/rapi', '/api');
             return pathname;
           },
@@ -464,6 +463,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       minify: {
         js: IS_PROD,
         jsOptions: {
+
           extractComments: false,
           minimizerOptions: {
             minify: IS_PROD,
@@ -522,7 +522,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
     cwd: rendererRootDir,
     rsbuildConfig: rsbuildConfig
   }
-};
+}
 
 
 

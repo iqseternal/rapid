@@ -2,6 +2,7 @@
   <dictionary name="default.user">
     <words>
       <w>tldraw</w>
+      <w>typecheck</w>
     </words>
   </dictionary>
 </component>
