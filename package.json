@@ -41,23 +41,16 @@
     "docs:dev": "pnpm -C ./apps/docs run dev",
     "docs:build": "pnpm -C ./apps/docs run build",
     "docs:preview": "pnpm -C ./apps/docs run preview",
-    "useUtf8": "chcp 65001",
-    "typecheck": "pnpm -r run typecheck",
-    "start": "pnpm useUtf8 && electron-vite preview",
-    "dev:app": "pnpm useUtf8 && electron-vite dev --watch",
-    "dev:desktop": "pnpm useUtf8 && electron-vite dev",
-    "dev:web": "pnpm useUtf8 && pnpm -C ./packages/desktop-web run dev",
-    "dev:web:build": "pnpm useUtf8 && pnpm -C ./packages/desktop-web run build",
     "website:dev": "pnpm -C ./apps/website run dev",
     "website:build": "pnpm -C ./apps/website run build",
-    "scripts:dev": "pnpm -C ./apps/scripts dev --config ./apps/scripts/.npmrc",
-    "scripts:build": "pnpm -C ./apps/scripts build --config ./apps/scripts/.npmrc",
-    "packages:build": "pnpm -r run build",
-    "put:website": "pnpm website:build && pnpm -C ./put run put:website",
-    "put:docs": "pnpm docs:build && pnpm -C ./put run put:docs",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --cache",
+    "website:preview": "pnpm -C ./apps/website run preview",
+    "scripts:dev": "pnpm -C ./apps/scripts dev",
+    "scripts:build": "pnpm -C ./apps/scripts build",
+    "scripts:preview": "pnpm -C ./apps/scripts preview",
+    "typecheck": "pnpm -r run typecheck",
     "test": "jest -o",
-    "test:all": "jest",
+    "test-all": "jest",
+    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --cache",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"
@@ -202,11 +195,5 @@
     "win32",
     "linux"
   ],
-  "private": true,
-  "lint-staged": {
-    "*.{ts,jsx,tsx,json}": "eslint --no-ignore --cache",
-    "*.md": [
-      "prettier --write"
-    ]
-  }
+  "private": true
 }

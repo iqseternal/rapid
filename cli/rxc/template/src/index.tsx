@@ -11,7 +11,7 @@ const Widget = memo(() => {
 
 const extension = rApp.extension.defineExtension({
 
-  name: 'example-1',
+  name: 'example-11',
   version: '0.0.1',
 
   onActivated() {
@@ -26,3 +26,4 @@ const extension = rApp.extension.defineExtension({
   },
 })
 
+export default extension;

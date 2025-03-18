@@ -5,7 +5,7 @@ import * as zustand from 'zustand';
 import * as tldraw from 'tldraw';
 import { TLStateNodeConstructor, TLAnyShapeUtilConstructor, TLUiOverrides, TLComponents } from 'tldraw';
 
-interface Extension {
+export interface Extension {
     /**
      * 插件的唯一标识 name
      */

@@ -1,7 +1,6 @@
 import { defineConfig } from '@rspack/cli';
 import type { RuleSetRule } from '@rspack/core';
 import { resolve } from 'path';
-import { SwcJsMinimizerRspackPlugin } from '@rspack/core';
 
 declare global {
   namespace NodeJS {
@@ -25,86 +24,69 @@ const supportTypescript: RuleSetRule = {
       loose: true,
       parser: {
         syntax: 'typescript',
+        dynamicImport: false,
         decorators: true,
-
+        importAssertions: false
       },
       transform: {
         legacyDecorator: true,
-        decoratorMetadata: true
+        decoratorMetadata: true,
+        optimizer: {
+          simplify: true,
+        }
       },
+      target: 'es5'
     },
   },
   type: 'javascript/auto',
 } as const;
 
-export default defineConfig(() => {
-
-
-  return {
-    entry: './src/index.tsx',
-    mode: process.env.NODE_ENV,
-    output: {
-      path: resolve(__dirname, 'dist'),
-      filename: 'bundle.js',
-      clean: true,
-      asyncChunks: true,
-      chunkFilename: '[name].js',
-      iife: true,
+export default defineConfig({
+  entry: './src/index.tsx',
+  mode: process.env.NODE_ENV,
+  output: {
+    path: resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    clean: true,
+    iife: true,
+    library: {
+      type: 'umd2',
     },
-    plugins: [
+  },
+  plugins: [
 
+  ],
+  module: {
+
+    rules: [
+      supportImportRaw,
+      supportTypescript
     ],
-    module: {
-      rules: [
-        supportImportRaw,
-        supportTypescript
-      ],
-    },
-    resolve: {
-      extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    },
-    cache: true,
-
-    watch: true,
-    watchOptions: {
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+  cache: false,
+  watchOptions: {
 
 
-    },
-    devServer: {
+  },
+  devServer: {
+    devMiddleware: {
+      writeToDisk: true
+    }
+  },
+  devtool: false,
+  optimization: {
+    runtimeChunk: false,
+    splitChunks: false,
 
-    },
-    optimization: {
+    minimize: true,
 
-      chunkIds: 'named' as const,
-      moduleIds: 'named' as const,
-      sideEffects: 'flag' as const,
 
-      minimize: true,
-      minimizer: [
-        new SwcJsMinimizerRspackPlugin({
-          minimizerOptions: {
-            minify: true,
-            mangle: false,
-            compress: false,
-
-            format: {
-              keep_quoted_props: true,
-              beautify: true,
-              braces: true,
-              indent_level: 2,
-              semicolons: true,
-              ecma: 2016
-            },
-            module: true,
-          }
-        })
-      ],
-      usedExports: true,
-      providedExports: true,
-      mangleExports: 'deterministic' as const,
-      innerGraph: true,
-      concatenateModules: true,
-    },
-    externals: ['react']
-  }
+    // chunkIds: "deterministic",
+  },
+  externals: {
+    react: 'React',
+  },
 });

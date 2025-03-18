@@ -64,7 +64,10 @@ export const Redirect = memo((props: RedirectProps) => {
     if (isValidElement(element)) return element;
 
     const Element = element as FC;
-    return <Element />;
+
+    return (
+      <Element />
+    );
   }, [shallowState.isMatched, element]);
 })
 

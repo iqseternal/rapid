@@ -13,7 +13,7 @@ hvcDZhJI/YiPgbRW9wIDAQAB
 /**
  * RSA 加密
  */
-export const rRsaEncrypt = <V extends string>(value: string) => {
+export const rRsaEncrypt = <V extends string>(value: V) => {
   const publicKey = forge.pki.publicKeyFromPem(RSA_PUBLIC_KEY);
   return publicKey.encrypt(value);
 }

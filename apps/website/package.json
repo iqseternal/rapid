@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env COMMAND=dev rsbuild dev"
+    "dev": "cross-env rsbuild dev",
+    "build": "cross-env rsbuild build",
+    "preview": "cross-env rsbuild preview"
   },
   "keywords": [],
   "author": "",

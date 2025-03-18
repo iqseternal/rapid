@@ -41,6 +41,7 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
+
     "../pst"
   ],
   "exclude": [
