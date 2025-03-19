@@ -1,4 +1,4 @@
-import { FullSize, FullSizeWidth, classnames, useAsyncEffect } from '@rapid/libs-web';
+import { classnames, useAsyncEffect } from '@rapid/libs-web';
 import { commonStyles } from '@/scss/common';
 import { memo } from 'react';
 
@@ -21,16 +21,17 @@ export const WorkbenchesToolbar = memo(() => {
   }, []);
 
   return (
-    <FullSize
+    <div
       className={classnames(
         commonStyles.appRegion,
-        'min-w-8 min-h-[400px]'
+        'min-w-8 min-h-[400px] w-full h-full'
       )}
     >
 
-      <FullSizeWidth
+      <div
         className={classnames(
-          commonStyles.flexCol
+          commonStyles.flexCol,
+          'w-full'
         )}
       >
         <Widget
@@ -44,8 +45,8 @@ export const WorkbenchesToolbar = memo(() => {
           icon='ReconciliationOutlined'
         />
 
-      </FullSizeWidth>
-    </FullSize>
+      </div>
+    </div>
   )
 });
 

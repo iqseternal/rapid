@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
 import { useDebounceHook, useResizeObserver, useShallowReactive } from '../../hooks';
 import { isRawObject, isUnDef } from '@rapid/libs';
-import { StringFilters } from '../../filters';
+import { StringFilters } from '../../common';
 
 import styles from './ellipsis.module.scss';
 

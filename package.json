@@ -79,6 +79,7 @@
     "i18next-browser-languagedetector": "8.0.3",
     "i18next-http-backend": "3.0.2",
     "immer": "10.0.2",
+    "js-cookie": "3.0.5",
     "jsrsasign": "11.1.0",
     "mousetrap": "1.6.5",
     "ogl": "1.0.11",

@@ -9,7 +9,7 @@ const Widget = memo(() => {
   )
 })
 
-const extension = rApp.extension.defineExtension({
+export default rApp.extension.defineExtension({
 
   name: 'example-11',
   version: '0.0.1',
@@ -24,6 +24,4 @@ const extension = rApp.extension.defineExtension({
 
     rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', Widget);
   },
-})
-
-export default extension;
+});

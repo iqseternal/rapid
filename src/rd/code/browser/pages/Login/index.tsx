@@ -1,4 +1,3 @@
-import { FullSize } from '@rapid/libs-web/styled';
 import { classnames } from '@rapid/libs-web/common';
 import { useFadeIn, useFadeOut } from '@/libs/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,6 @@ import { rApi } from '@/api';
 import { useRetrieveRoute } from '@/router';
 import { commonStyles } from '@/scss/common';
 import { memo, useEffect, useLayoutEffect } from 'react';
-import { Subfield } from '@rapid/libs-web/components';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@/components/Header';
@@ -71,13 +69,13 @@ export const Login = memo(() => {
     <div className='w-full h-full relative'>
       <Header />
 
-      <Subfield
+      <div
         className='flex space-around'
         style={{
           height: `calc(100% - ${cssVars.captionBarHeight})`
         }}
       >
-        <Subfield
+        <div
           className={classnames(commonStyles.flexRowCenter)}
           style={{
 
@@ -86,9 +84,9 @@ export const Login = memo(() => {
           <Logo
             src={lockUrl}
           />
-        </Subfield>
+        </div>
 
-        <Subfield
+        <div
           className={classnames(commonStyles.flexRowCenter)}
         >
           <Button
@@ -117,8 +115,8 @@ export const Login = memo(() => {
               });
             }}
           />
-        </Subfield>
-      </Subfield>
+        </div>
+      </div>
     </div>
   )
 });

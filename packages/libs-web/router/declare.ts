@@ -2,7 +2,7 @@
 
 import type { FC, ReactElement, LazyExoticComponent, JSX, MemoExoticComponent } from 'react';
 import type { PathRouteProps } from 'react-router-dom';
-import type { RedirectProps } from '../components';
+import type { RedirectProps } from './Redirect';
 
 /**
  * RouteMeta 用户表示一个路由对象的元数据

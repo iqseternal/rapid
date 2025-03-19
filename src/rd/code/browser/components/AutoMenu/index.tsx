@@ -1,10 +1,9 @@
-import { classnames, getFirstScrollContainer } from '@rapid/libs-web/common';
+import { classnames } from '@rapid/libs-web/common';
 import { useEventListener, useReactive, useThrottleHook, useShallowReactive, useThrottle } from '@rapid/libs-web/hooks';
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps, MenuProps } from 'antd';
 import { createContext, useContext, forwardRef, useMemo, useCallback, memo } from 'react';
 import type { ReactNode, FC } from 'react';
-import { FullSize, MaxContent } from '@rapid/libs-web/styled';
 import { commonStyles } from '@/scss/common';
 import { convertMenuDivider, convertMenuInstance, convertMenuItem, convertMenuItemGroupType, convertSubMenu } from './declare';
 import type {

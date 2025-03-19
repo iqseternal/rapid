@@ -1,5 +1,4 @@
 import { classnames } from '@rapid/libs-web/common';
-import { FullSizeWidth } from '@rapid/libs-web/styled';
 import { toNil } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { useFadeOut } from '@/libs/hooks';
@@ -77,8 +76,8 @@ export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
         backgroundColor: cssVars.navigationBarBackgroundColor
       }}
     >
-      <FullSizeWidth
-        className='mt-[2px] h-max flex justify-center flex-col'
+      <div
+        className='mt-[2px] h-max flex justify-center flex-col w-full'
       >
         {workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {
           return (
@@ -92,10 +91,10 @@ export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
             />
           )
         })}
-      </FullSizeWidth>
+      </div>
 
-      <FullSizeWidth
-        className='mb-8 flex justify-center'
+      <div
+        className='mb-8 flex justify-center w-full'
       >
         <div />
 
@@ -125,7 +124,7 @@ export const NavigationBar = memo<NavigationBarProps>(({ className }) => {
         {/*  tipText='退出登录'*/}
         {/*  onClick={logout}*/}
         {/*/>*/}
-      </FullSizeWidth>
+      </div>
     </div>
   )
 })

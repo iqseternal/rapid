@@ -15,6 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+
       - name: Install pnpm
         run: npm install -g pnpm
 
@@ -50,21 +51,23 @@ jobs:
           node-version: 20
           cache: pnpm
 
+
+
       - name: Install dependencies
         run: pnpm install
 
-      #      - name: setup dist of website
-#        run: pnpm website:build
-#
-#      - name: Deploy via rsync of website
-#        uses: easingthemes/ssh-deploy@v2.1.6
-#        env:
-#          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-#          ARGS: "-rltgoDzvO"
-#          SOURCE: "./dist/website"
-#          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-#          REMOTE_USER: ${{ secrets.SERVER_USER }}
-#          TARGET: "/www/wwwroot/oupro"  # 服务器目标路径
+      - name: setup dist of website
+        run: pnpm website:build
+
+      - name: Deploy via rsync of website
+        uses: easingthemes/ssh-deploy@v2.1.6
+        env:
+         SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+         ARGS: "-rltgoDzvO"
+         SOURCE: "./dist/website"
+         REMOTE_HOST: ${{ secrets.SERVER_IP }}
+         REMOTE_USER: ${{ secrets.SERVER_USER }}
+         TARGET: "/www/wwwroot/oupro"  # 服务器目标路径
 
       - name: setup dist of rapid docs
         run: pnpm docs:build
