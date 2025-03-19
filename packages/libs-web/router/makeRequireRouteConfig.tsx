@@ -4,14 +4,14 @@ import type { RouteMeta, RouteConfig } from './declare';
 /**
  * 补全后的 RouteMeta
  */
-export type CompletiveRouteMeta = RouteMeta & Pick<Required<RouteMeta>, 'fullPath'>;
+export type CompleteRouteMeta = RouteMeta & Pick<Required<RouteMeta>, 'fullPath'>;
 
 /**
  * 补全后的 RouteConfig
  */
-export type CompletiveRouteConfig<RConfig extends RouteConfig = RouteConfig> = Omit<Omit<RConfig, 'children'>, 'meta'> & {
-  meta: CompletiveRouteMeta;
-  children: CompletiveRouteConfig<RConfig>[];
+export type CompleteRouteConfig<RConfig extends RouteConfig = RouteConfig> = Omit<Omit<RConfig, 'children'>, 'meta'> & {
+  meta: CompleteRouteMeta;
+  children: CompleteRouteConfig<RConfig>[];
 }
 
 type PathJson<S1 extends string, S2 extends string> = (
@@ -53,7 +53,7 @@ const path = {
  * });
  * @returns
  */
-export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): CompletiveRouteConfig<RouteConfig> {
+export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): CompleteRouteConfig<RouteConfig> {
   if (!route.meta) route.meta = {} as RouteMeta;
 
   // path 是相对路径, 但是允许填写 /, 自动将这个 / 去除
@@ -90,7 +90,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
     return makeRequireRouteConfig(child, route.meta?.fullPath, false);
   }) : [];
 
-  return route as CompletiveRouteConfig;
+  return route as CompleteRouteConfig;
 }
 
 export const makeRoute = makeRequireRouteConfig;
