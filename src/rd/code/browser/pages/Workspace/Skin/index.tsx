@@ -1,6 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
-import { FlexRowCenter, FullSize, FullSizeWidth } from '@rapid/libs-web/styled';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
 import type { FC, ReactNode } from 'react';
 import { useEffect, memo } from 'react';
@@ -12,6 +11,10 @@ import ThemeExtension from '../../../plats/extensions/RdThemeExtension';
 import IMessage from '@/components/IMessage';
 
 import styles from './index.module.scss';
+
+const FlexRowCenter = (props) => <div {...props} className={classnames('w-full h-full flex justify-center', props.className)} />;
+const FullSize = (props) => <div {...props} className={classnames('w-full h-full', props.className)} />;
+const FullSizeWidth = (props) => <div {...props} className={classnames('w-full', props.className)} />;
 
 interface StyleBlockProps {
   title?: string;

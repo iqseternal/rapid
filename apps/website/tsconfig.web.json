@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "baseUrl": "./",
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "jsx": "react-jsx",
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowUnusedLabels": true,
+    "types": [
+      "./src/@types"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
+

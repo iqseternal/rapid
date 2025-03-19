@@ -1,7 +1,6 @@
 import { useRef, memo, useEffect, useLayoutEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { FlexRowStart, FullSize } from '@rapid/libs-web/styled';
 import { useFadeIn } from '../../libs/hooks';
 import { NavigationBar } from './cpts';
 import { commonStyles, useAnimationClassSelector } from '@/scss/common';
@@ -109,10 +108,10 @@ const MaintenanceMenus = memo(() => {
   }, []);
 
   return (
-    <FlexRowStart
+    <div
       ref={menusContainerRef}
       className={classnames(
-        'py-0.5 h-full',
+        'py-0.5 h-full w-full flex items-center justify-start',
         !statusState.isCalcDone && 'opacity-0'
       )}
     >
@@ -169,7 +168,7 @@ const MaintenanceMenus = memo(() => {
           </div>
         </AutoMenu>
       )}
-    </FlexRowStart>
+    </div>
   )
 })
 
@@ -192,9 +191,12 @@ const WorkbenchesView = memo(() => {
         appear={true}
         unmountOnExit={false}
       >
-        <FullSize ref={nodeRef}>
+        <div
+          className='w-full h-full'
+          ref={nodeRef}
+        >
           <Outlet />
-        </FullSize>
+        </div>
       </CSSTransition>
     </SwitchTransition>
   )
@@ -242,12 +244,12 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
   }, []);
 
   return (
-    <FullSize>
+    <div className='w-full h-full'>
       <Header />
 
-      <FullSize
+      <div
         className={classnames(
-          'flex justify-between flex-nowrap items-center',
+          'flex justify-between flex-nowrap items-center w-full h-full',
           mainSidebarStatus === 'right' && 'flex-row-reverse'
         )}
         style={{
@@ -264,8 +266,8 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
         >
           <WorkbenchesView />
         </main>
-      </FullSize>
-    </FullSize>
+      </div>
+    </div>
   )
 }));
 

@@ -4,8 +4,8 @@ import { isString } from '@rapid/libs';
 import { Skeleton } from 'antd';
 import type { PathRouteProps } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import type { RedirectProps } from '../components';
-import { Redirect } from '../components';
+import type { RedirectProps } from './Redirect';
+import { Redirect } from './Redirect';
 import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
 import type { RouteMeta, RouteConfig } from './declare';
 

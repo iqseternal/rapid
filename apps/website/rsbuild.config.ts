@@ -7,8 +7,24 @@ import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 
+import tailwindcss from 'tailwindcss';
+import tsconfigJson from './tsconfig.web.json';
+
 const rootDir = join(__dirname, '../../');
 const distPath = join(rootDir, './dist/website');
+
+const defineAlias = (basePath: string, paths: Record<string, string[]>) => {
+  const alias: Record<string, string> = {};
+
+  const aliasMaps: [string, string][] = Object.keys(paths).filter((key) => paths[key].length > 0).map((key) => {
+    return [key.replace(/\/\*$/, ''), join(basePath, paths[key][0].replace('/*', ''))] as const;
+  });
+
+  aliasMaps.forEach(([aliasKey, aliasPath]) => {
+    alias[aliasKey] = aliasPath;
+  })
+  return alias;
+}
 
 export default defineConfig(({ env, command, envMode }) => {
 
@@ -18,7 +34,8 @@ export default defineConfig(({ env, command, envMode }) => {
     source: {
       entry: {
         index: join(__dirname, './src/index.tsx')
-      }
+      },
+      alias: defineAlias(__dirname, tsconfigJson.compilerOptions.paths)
     },
     plugins: [
       pluginSass(),
@@ -33,6 +50,19 @@ export default defineConfig(({ env, command, envMode }) => {
         root: distPath,
       },
       cleanDistPath: true,
-    }
+    },
+    tools: {
+      postcss: {
+        postcssOptions: {
+          plugins: [
+            tailwindcss({
+              content: [
+                join(__dirname, `/src/**/*.{html,js,ts,jsx,tsx}`)
+              ],
+            }),
+          ],
+        },
+      },
+    },
   }
 })
