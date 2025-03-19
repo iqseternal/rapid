@@ -67,7 +67,7 @@ jobs:
          SOURCE: "./dist/website/"
          REMOTE_HOST: ${{ secrets.SERVER_IP }}
          REMOTE_USER: ${{ secrets.SERVER_USER }}
-         TARGET: "/www/wwwroot/oupro"  # 服务器目标路径
+         TARGET: "/www/wwwroot/oupro/dist"  # 服务器目标路径
 
       - name: setup dist of rapid docs
         run: pnpm docs:build
