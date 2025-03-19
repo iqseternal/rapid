@@ -41,9 +41,7 @@ export default defineConfig(({ env, command, envMode }) => {
       pluginSass(),
       pluginStyledComponents(),
       pluginTypedCSSModules(),
-      pluginReact(),
-      IS_PROD && pluginSourceBuild(),
-      IS_PROD && pluginTailwindCSS()
+      pluginReact()
     ],
     output: {
       distPath: {
