@@ -14,8 +14,8 @@ declare global {
    * 当前的对标平台是否为 Windows
    */
   const IS_WINDOWS: boolean;
-  const IS_MAC: boolean;
-  const IS_LINUX: boolean;
+  // const IS_MAC: boolean;
+  // const IS_LINUX: boolean;
 
   /**
    * 当前产品的输出平台是否为 桌面端

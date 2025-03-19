@@ -60,7 +60,6 @@ module.exports = ({
     'react/no-danger-with-children': 'off',
     'react/no-deprecated': 'off',
     'react/no-did-mount-set-state': 'off',
-    'react/no-did-mount-set-state': 'off',
     'react/no-did-update-set-state': 'off',
     'react/no-direct-mutation-state': 'off',
     'react/no-find-dom-node': 'warn',
