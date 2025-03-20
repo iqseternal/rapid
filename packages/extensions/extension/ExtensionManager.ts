@@ -4,6 +4,13 @@ import { useEffect, useState, Ref } from 'react';
 
 const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
 
+/**
+ * 定义一个插件, 这里所抽象得插件只是一个携带数据得对象、以及具有特殊时机执行得函数
+ *
+ * 1. 插件件可以有自己的生命周期函数, 例如 onActivated, onDeactivated
+ * 2. 插件可以调动 metadataManager 从而实现插件化开发
+ * 3. 调动 emitter 实现事件触发
+ */
 export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
   private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle>();
 
@@ -91,6 +98,14 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   }
 
   /**
+   * 获取一个扩展
+   */
+  public getExtension(extensionName: ExtensionName) {
+    if (!this.hasExtension(extensionName)) return null;
+    return this.extNameMapStore.get(extensionName)?.extension ?? null;
+  }
+
+  /**
    * 注册一个扩展
    */
   public registerExtension<DExt extends Ext>(extension: DExt) {
@@ -121,6 +136,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     }
 
     if (lifecycle.extension.onActivated) await lifecycle.extension.onActivated(context);
+    lifecycle.isActivated = true;
   }
 
   /**
@@ -136,6 +152,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     }
 
     if (lifecycle.extension.onDeactivated) await lifecycle.extension.onDeactivated(context);
+    lifecycle.isActivated = false;
   }
 
   /**
@@ -151,7 +168,9 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
       }
     }
 
-    this.extNameMapStore.delete(name);
+    if (!lifecycle.isActivated) {
+      this.extNameMapStore.delete(name);
+    }
   }
 
   /**

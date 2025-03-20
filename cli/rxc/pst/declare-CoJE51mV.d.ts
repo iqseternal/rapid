@@ -63,6 +63,13 @@ declare abstract class InnerZustandStoreManager {
     protected destroy(): void;
 }
 
+/**
+ * 定义一个插件, 这里所抽象得插件只是一个携带数据得对象、以及具有特殊时机执行得函数
+ *
+ * 1. 插件件可以有自己的生命周期函数, 例如 onActivated, onDeactivated
+ * 2. 插件可以调动 metadataManager 从而实现插件化开发
+ * 3. 调动 emitter 实现事件触发
+ */
 declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
     private readonly extNameMapStore;
     /**
@@ -77,6 +84,10 @@ declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreM
      * 判断是否含有当前扩展：即是否已经注册
      */
     hasExtension(extensionName: ExtensionName): boolean;
+    /**
+     * 获取一个扩展
+     */
+    getExtension(extensionName: ExtensionName): Extension<any>;
     /**
      * 注册一个扩展
      */

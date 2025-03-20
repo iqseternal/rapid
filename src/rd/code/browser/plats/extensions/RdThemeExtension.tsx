@@ -11,8 +11,6 @@ export const RdThemeExtension = rApp.extension.defineExtension({
 
   onActivated(context) {
 
-
-
     rApp.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
   },
 
@@ -20,11 +18,6 @@ export const RdThemeExtension = rApp.extension.defineExtension({
 
     rApp.metadata.delMetadataInVector('functional.theme.variables.transformer', transformer);
   }
-})
-
-rApp.extension.defineExtension({
-  name: 'INNER_THEME_EXTENSION',
-  version: '0.0.0',
 })
 
 export default RdThemeExtension;
