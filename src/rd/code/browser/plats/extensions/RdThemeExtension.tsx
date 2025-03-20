@@ -1,9 +1,6 @@
-
-
 import type { RdSKin } from '@/skin';
 
 const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) => {
-  // cssVariablesDeclaration['--rapid-caption-bar-background-color'] = '#0F0';
 
   return cssVariablesDeclaration;
 }
@@ -12,7 +9,9 @@ export const RdThemeExtension = rApp.extension.defineExtension({
   name: 'INNER_THEME_EXTENSION',
   version: '0.0.0',
 
-  onActivated() {
+  onActivated(context) {
+
+
 
     rApp.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
   },
@@ -21,6 +20,11 @@ export const RdThemeExtension = rApp.extension.defineExtension({
 
     rApp.metadata.delMetadataInVector('functional.theme.variables.transformer', transformer);
   }
+})
+
+rApp.extension.defineExtension({
+  name: 'INNER_THEME_EXTENSION',
+  version: '0.0.0',
 })
 
 export default RdThemeExtension;

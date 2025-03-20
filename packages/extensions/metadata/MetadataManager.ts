@@ -287,7 +287,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * 获取到所有定义的元数据
    */
   public useAllMetadata() {
-    super.useStore();
+    super.useStoreValue();
     return this.metadataMap;
   }
 

@@ -5,40 +5,30 @@ import * as zustand from 'zustand';
 import * as tldraw from 'tldraw';
 import { TLStateNodeConstructor, TLAnyShapeUtilConstructor, TLUiOverrides, TLComponents } from 'tldraw';
 
-export interface Extension {
+type ExtensionName = string | symbol;
+interface Extension<Context = any> {
     /**
      * 插件的唯一标识 name
      */
-    readonly name: string | symbol;
+    readonly name: ExtensionName;
     /**
      * 插件版本
      */
-    readonly version: string;
+    readonly version: string | number;
+    /**
+     * 插件数据, 由项目自主决定插件附带携带的数据
+     */
+    readonly meta?: any;
     /**
      * 插件被激活, 被使用的状态
      */
-    readonly onActivated?: () => void;
+    readonly onActivated?: (this: this, context: Context) => (void | Promise<void>);
     /**
      * 插件被去活, 被禁用的状态
      */
-    readonly onDeactivated?: () => void;
-    /**
-     * 插件被注册
-     */
-    readonly onRegistered?: () => void;
-    /**
-     * 插件被卸载
-     */
-    readonly onUnregistered?: () => void;
-    /**
-     * 当前是否处于激活状态
-     */
-    readonly __isActivated: boolean;
-    /**
-     * 当前是否处于注册状态
-     */
-    readonly __isRegistered: boolean;
+    readonly onDeactivated?: (this: this, context: Context) => (void | Promise<void>);
 }
+type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[1];
 
 /**
  * 监听 store 的触发回调函数
@@ -65,7 +55,7 @@ declare abstract class InnerZustandStoreManager {
     /**
      * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
      */
-    protected useStore(): {};
+    protected useStoreValue(): {};
     /**
      * 添加订阅函数
      */
@@ -73,45 +63,40 @@ declare abstract class InnerZustandStoreManager {
     protected destroy(): void;
 }
 
-type ExtensionName = symbol | string;
-declare class ExtensionManager extends InnerZustandStoreManager {
-    private readonly extNameMap;
+declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
+    private readonly extNameMapStore;
     /**
-     * 某个插件
+     * Define extension, 定义插件, 那么插件会被存储到 Map 中.
      */
-    unregisterExtension(...extensions: (ExtensionName | Extension)[]): void;
+    defineExtension<DExt extends Ext>(define: DExt): DExt;
     /**
-     * Defines extension
+     * 判断一个对象是否是一个 扩展对象
      */
-    defineExtension(define: Omit<Extension, '__isActivated' | '__isRegistered'>): Extension;
+    isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt;
     /**
-     * 注册插件
+     * 判断是否含有当前扩展：即是否已经注册
      */
-    registerExtension(...extensions: Extension[]): void;
+    hasExtension(extensionName: ExtensionName): boolean;
+    /**
+     * 注册一个扩展
+     */
+    registerExtension<DExt extends Ext>(extension: DExt): void;
     /**
      * Activated extension
      */
-    activatedExtension(name: string | symbol): void;
+    activatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context: Context): Promise<void>;
     /**
      * 去活某个插件
      */
-    deactivatedExtension(name: string | symbol): void;
+    deactivatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context: Context): Promise<void>;
+    /**
+     * 删除扩展
+     */
+    delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context: Context): Promise<void>;
     /**
      * 获取扩展列表
      */
-    useExtensionsList(): [{
-        readonly extensions: Extension[];
-    }];
-    /**
-     * extensions hooks,
-     */
-    useExtensions(): {
-        readonly extensions: Extension[];
-    }[];
-    /**
-     * 取消所有插件的注册
-     */
-    unregisterAllExtension(): void;
+    useExtensionsList(): readonly [Extension[]];
 }
 
 type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
@@ -778,11 +763,15 @@ declare namespace Metadata {
         'ui.layout.header.controller.after': ComponentType[];
     }
 }
+interface RExtensionContext {
+}
+interface RExtension extends Extension<RExtensionContext> {
+}
 declare interface RApp {
     /**
      * 插件管理器
      */
-    readonly extension: ExtensionManager;
+    readonly extension: ExtensionManager<RExtension>;
     /**
      * 元数据管理器
      */
@@ -806,4 +795,4 @@ declare interface RApp {
     };
 }
 
-export { Bus as B, Metadata as M, type RApp as R, RdSKin as a };
+export { Bus as B, Metadata as M, type RApp as R, RdSKin as a, type RExtensionContext as b, type RExtension as c };

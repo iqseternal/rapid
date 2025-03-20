@@ -8,7 +8,7 @@ export interface InnerStore {
   /**
    * 对应的更新数据
    */
-  update: {}
+  value: {}
 }
 
 /**
@@ -31,12 +31,13 @@ export abstract class InnerZustandStoreManager {
   private readonly store = create<InnerStore>()(
     immer(() => {
       return {
-        update: {}
+        value: {}
       }
     })
   );
 
   private readonly listeners = new Set<InnerStoreListener>();
+
   private readonly unsubscribe = this.store.subscribe(() => {
     this.listeners.forEach(listener => listener());
   });
@@ -45,14 +46,14 @@ export abstract class InnerZustandStoreManager {
    * 更新当前的 store, 会导致状态库的组件更新触发
    */
   protected updateStore() {
-    this.store.setState({ update: {} });
+    this.store.setState({ value: {} });
   }
 
   /**
    * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
    */
-  protected useStore() {
-    return this.store(store => store.update);
+  protected useStoreValue() {
+    return this.store(store => store.value);
   }
 
   /**

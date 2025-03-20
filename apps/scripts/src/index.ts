@@ -1,2 +1,7 @@
-import * as fs from 'fs';
-import * as path from 'path';
+
+const data = (() => {
+
+  return eval(`() => { return 1 }`);
+})();
+
+console.log(data);

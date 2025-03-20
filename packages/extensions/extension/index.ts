@@ -1,4 +1,3 @@
 
-export type { Extension } from './declare';
+export type { Extension, ExtensionName, ExtensionWithLifecycle, ExtractExtensionContext } from './declare';
 export { ExtensionManager } from './ExtensionManager';
-export type { ExtensionName } from './ExtensionManager';
