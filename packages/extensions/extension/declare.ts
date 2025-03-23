@@ -36,4 +36,4 @@ export interface ExtensionWithLifecycle {
   isActivated: boolean;
 }
 
-export type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[1];
+export type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];

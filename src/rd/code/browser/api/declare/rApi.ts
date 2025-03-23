@@ -99,20 +99,10 @@ const rApiConfig: RequestConfig<RApiHConfig> = {
 
 const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(appInformation.information.appApiUrls.rApi, rApiConfig, {
   async onFulfilled(config) {
-    if (!config.hConfig) config.hConfig = { needAuth: true };
 
-    const needAuth = config.hConfig.needAuth ?? true;
-
-    if (needAuth && config.headers) {
-      // TODO:
-      const accessToken = await getAccessToken();
-
-      if (accessToken) config.headers.authorization = `Bearer ${accessToken}`;
-    }
   },
 }, {
   onFulfilled(response) {
-
     if (response.data && Reflect.has(response.data, 'code') && Reflect.has(response.data, 'data')) {
       const data = response.data;
       if (data.code === 0) return Promise.resolve(data);

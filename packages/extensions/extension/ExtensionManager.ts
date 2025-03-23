@@ -130,11 +130,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     const lifecycle = this.extNameMapStore.get(name);
     if (!lifecycle) throw new Error(`试图激活一个不存在得扩展`);
 
-    if (lifecycle.isActivated) {
-      console.error(`试图已激活一个已激活得扩展`);
-      return;
-    }
-
+    if (lifecycle.isActivated) return;
     if (lifecycle.extension.onActivated) await lifecycle.extension.onActivated(context);
     lifecycle.isActivated = true;
   }
@@ -146,11 +142,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     const lifecycle = this.extNameMapStore.get(name);
     if (!lifecycle) throw new Error(`试图去活一个不存在得扩展`);
 
-    if (!lifecycle.isActivated) {
-      console.error(`试图去活一个未被激活得扩展`);
-      return;
-    }
-
+    if (!lifecycle.isActivated) return;
     if (lifecycle.extension.onDeactivated) await lifecycle.extension.onDeactivated(context);
     lifecycle.isActivated = false;
   }

@@ -1,7 +1,7 @@
 import './inject';
 
 import { useState, StrictMode, memo, useLayoutEffect } from 'react';
-import { Ansi } from '@rapid/libs';
+import { Ansi, toNil } from '@rapid/libs';
 import type { RExtensionContext } from './declare';
 import { RdSKin } from './skin';
 
@@ -25,7 +25,7 @@ const RdAppWrapper = memo(() => {
     const context: RExtensionContext = {}
 
     extensionList.forEach(extension => {
-      extension.onActivated?.(context);
+      rApp.extension.activatedExtension(extension.name, context);
     })
   }, [extensionList]);
 
