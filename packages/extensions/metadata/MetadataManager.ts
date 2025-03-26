@@ -275,6 +275,15 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   }
 
   /**
+   * 使用最先注册的元数据
+   */
+  public useOldestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
+    const metadata = this.useMetadata(metadataKey);
+    if (metadata && Array.isArray(metadata)) return metadata[0] ?? null;
+    return null;
+  }
+
+  /**
    * 使用最后一次注册的元数据
    */
   public useLatestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
