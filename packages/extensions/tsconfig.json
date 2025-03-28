@@ -7,17 +7,16 @@
     "incremental": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "composite": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
+    "declaration": true,
     "target": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strictNullChecks": true,
     "resolveJsonModule": true,
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext"
+    "moduleResolution": "node"
   },
   "exclude": [
     "node_modules"

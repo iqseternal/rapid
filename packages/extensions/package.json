@@ -1,13 +1,27 @@
 {
-  "name": "@rapid/extensions",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "@suey/rxp-meta",
+  "version": "0.0.1",
+  "author": "suey",
+  "private": false,
+  "description": "扩展包",
+  "main": "./dist/esm/index.js",
+  "types": "./dist/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/commonjs/index.js",
+      "types": "./dist/lib/index.d.ts"
+    }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "pnpm build-commonjs && pnpm build-esm && pnpm build-types",
+    "build-commonjs": "tsc -p . --outDir ./dist/commonjs --module commonjs --declaration false --removeComments true",
+    "build-esm": "tsc -p . --outDir ./dist/esm --module ESNext --declaration false --removeComments true",
+    "build-types": "tsc -p . --outDir ./dist/lib --emitDeclarationOnly --removeComments false"
+  },
+  "keywords": []
 }
