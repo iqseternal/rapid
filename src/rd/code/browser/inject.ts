@@ -1,7 +1,7 @@
 import { Emitter } from '@rapid/libs-web';
 import type { RApp } from './declare';
 import { cssVars, RdSKin } from './skin';
-import { Extension, ExtensionManager, MetadataManager } from '@rapid/extensions';
+import { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import { inject } from '@rapid/libs/inject';
 import { useUserStore, useDocStore, useThemeStore, useTldrawStore } from './features';
 import { Metadata, Bus } from './declare';

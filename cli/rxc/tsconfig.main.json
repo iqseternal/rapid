@@ -48,10 +48,10 @@
     "paths": {
       "@rapid/libs": ["../../packages/libs"],
       "@rapid/libs-web": ["../../packages/libs-web"],
-      "@rapid/extensions": ["../../packages/extensions"],
+      "@suey/rxp-meta": ["../../packages/extensions"],
       "@rapid/libs/*": ["../../packages/libs/*"],
       "@rapid/libs-web/*": ["../../packages/libs-web/*"],
-      "@rapid/extensions/*": ["../../packages/extensions/*"],
+      "@suey/rxp-meta/*": ["../../packages/extensions/*"],
       "rd/*": ["../../src/rd/*"],
       "@/*": ["../../src/rd/code/browser/*"]
     }

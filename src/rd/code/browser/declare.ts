@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { Extension, ExtensionManager, MetadataManager } from '@rapid/extensions';
+import type { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import type { RdSKin } from '@/skin';
 import type { Emitter } from '@rapid/libs-web';
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';

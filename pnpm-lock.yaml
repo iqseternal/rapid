@@ -23,6 +23,9 @@ importers:
       '@suey/printer':
         specifier: 1.1.11
         version: 1.1.11
+      '@suey/rxp-meta':
+        specifier: workspace:^
+        version: link:packages/extensions
       '@tldraw/assets':
         specifier: 3.5.0
         version: 3.5.0
@@ -436,9 +439,6 @@ importers:
 
   apps/website:
     dependencies:
-      '@rapid/extensions':
-        specifier: workspace:^
-        version: link:../../packages/extensions
       '@rapid/libs':
         specifier: workspace:^
         version: link:../../packages/libs
@@ -463,9 +463,6 @@ importers:
 
   src:
     dependencies:
-      '@rapid/extensions':
-        specifier: workspace:^
-        version: link:../packages/extensions
       '@rapid/libs':
         specifier: workspace:^
         version: link:../packages/libs
