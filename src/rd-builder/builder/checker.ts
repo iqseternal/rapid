@@ -3,8 +3,8 @@ import { NodeCommand, NodeEnv, Env } from './enums';
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: NodeEnv;
-      COMMAND: NodeCommand;
+      NODE_ENV: NodeEnv.Development | NodeEnv.Production;
+      COMMAND: NodeCommand.Dev | NodeCommand.Preview | NodeCommand.Build;
     }
   }
 }

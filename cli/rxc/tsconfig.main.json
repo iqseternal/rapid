@@ -48,10 +48,7 @@
     "paths": {
       "@rapid/libs": ["../../packages/libs"],
       "@rapid/libs-web": ["../../packages/libs-web"],
-      "@suey/rxp-meta": ["../../packages/extensions"],
-      "@rapid/libs/*": ["../../packages/libs/*"],
-      "@rapid/libs-web/*": ["../../packages/libs-web/*"],
-      "@suey/rxp-meta/*": ["../../packages/extensions/*"],
+      "@suey/rxp-meta": ["../../libs/rxp-meta"],
       "rd/*": ["../../src/rd/*"],
       "@/*": ["../../src/rd/code/browser/*"]
     }
@@ -59,8 +56,10 @@
   "include": [
     "../../packages/**/*.ts",
     "../../packages/**/*.tsx",
-    "../../src/**/*.ts",
-    "../../src/**/*.tsx",
+    "../../libs/**/*.ts",
+    "../../libs/**/*.tsx",
+    "../../src/rd/**/*.ts",
+    "../../src/rd/**/*.tsx",
     "../../package.json",
     "./src/**/*"
   ],

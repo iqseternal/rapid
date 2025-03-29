@@ -2,11 +2,8 @@
 /.vscode
 /coverage
 /**/node_modules
-/base
-/extension
-/metadata
+/src
 index.ts
-/rApp.tsx
 /jest.config.ts
 /tsconfig.json
 /pnpm-lock.yaml
