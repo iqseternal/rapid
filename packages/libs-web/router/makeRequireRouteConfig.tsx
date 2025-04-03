@@ -56,11 +56,18 @@ const path = {
 export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): CompleteRouteConfig<RouteConfig> {
   if (!route.meta) route.meta = {} as RouteMeta;
 
-  // path 是相对路径, 但是允许填写 /, 自动将这个 / 去除
-  if (route.path.startsWith('/') && !isRoot) route.path = route.path.substring(1);
+  // 绝对路径
+  if (route.path.startsWith('/')) {
+    if (!route.path.startsWith(basePath)) {
+      throw new Error(`route's path must be startWith parent route's path`);
+    }
 
-  // 如果没有处理 fullPath, 那么自动填充
-  if (!route.meta.fullPath) route.meta.fullPath = path.join(basePath, route.path);
+    // 如果没有处理 fullPath, 那么自动填充
+    if (!route.meta.fullPath) route.meta.fullPath = path.join(basePath, route.path);
+  }
+  else {
+    if (!route.meta.fullPath) route.meta.fullPath = route.path;
+  }
 
   // 解决重定向
   if (route.redirect) {

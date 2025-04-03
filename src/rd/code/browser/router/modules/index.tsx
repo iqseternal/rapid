@@ -15,7 +15,7 @@ export const workbenchesToolRoute = makeRoute({
   children: [
     {
       name: 'WorkbenchesToolbar',
-      path: '/toolbar',
+      path: '/workbenchesTool/toolbar',
       component: lazy(() => import('@/pages/Workbenches/Toolbar'))
     }
   ]
@@ -46,19 +46,19 @@ export const workbenchesRoute = makeRoute({
   children: [
     {
       name:  'WorkbenchesWorkstation',
-      path: '/workstation',
+      path: '/workbenches/workstation',
       meta: { title: '工作区', icon: 'FileWordOutlined' },
       component: lazy(() => import('@/pages/Workspace/Workbenches'))
     },
     {
       name: 'WorkbenchesHome',
-      path: '/home',
+      path: '/workbenches/home',
       meta: { title: '首页', icon: 'HomeOutlined', hiddenInMenu: true },
       component: lazy(() => import('@/pages/Workspace/Home'))
     },
     {
       name: 'Skin',
-      path: '/skin',
+      path: '/workbenches/skin',
       meta: { title: '皮肤', icon: 'SkinOutlined', hiddenInMenu: false },
       component: lazy(() => import('@/pages/Workspace/Skin'))
     }
