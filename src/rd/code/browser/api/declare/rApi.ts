@@ -3,6 +3,8 @@ import { StringFilters } from '@rapid/libs-web';
 import { getAccessToken } from '@/features';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
+const appInformation = AppInformationService.getInstance();
+
 /**
  * 请求 hConfig 配置
  */
@@ -21,7 +23,12 @@ export interface RApiBasicResponse {
   /**
    * 状态码
    */
-  readonly code: number;
+  readonly code: 0 | number;
+
+  /**
+   * 响应描述
+   */
+  readonly message: string;
 
   /**
    * 返回数据, 具有 data 定义
@@ -38,16 +45,6 @@ export interface RApiBasicResponse {
      */
     readonly pako?: boolean;
   }
-
-  /**
-   * 响应描述
-   */
-  readonly message: string;
-
-  /**
-   * 响应服务器 响应时时间戳
-   */
-  readonly _t: number;
 }
 
 export interface RApiSuccessResponse extends RApiBasicResponse {
@@ -91,29 +88,21 @@ export interface RApiFailResponse extends RApiBasicResponse {
  */
 export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
-const appInformation = AppInformationService.getInstance();
-
 const rApiConfig: RequestConfig<RApiHConfig> = {
   timeout: 5000,
 };
 
 const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(appInformation.information.appApiUrls.rApi, rApiConfig, {
   async onFulfilled(config) {
-    if (!config.hConfig) config.hConfig = { needAuth: true };
 
-    const needAuth = config.hConfig.needAuth ?? true;
-
-    if (needAuth && config.headers) {
-      // TODO:
-      const accessToken = await getAccessToken();
-
-      if (accessToken) config.headers.authorization = `Bearer ${accessToken}`;
-    }
   },
 }, {
   onFulfilled(response) {
-
-    if (response.data && Reflect.has(response.data, 'code') && Reflect.has(response.data, 'data')) {
+    if (
+      response.data &&
+      Reflect.has(response.data, 'code') &&
+      Reflect.has(response.data, 'data')
+    ) {
       const data = response.data;
       if (data.code === 0) return Promise.resolve(data);
       return Promise.reject(data);
@@ -126,7 +115,6 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
       code: -1,
       data: err.response?.data,
       message: StringFilters.toValidStr(err.message, '未知错误'),
-      _t: +new Date(),
       INNER: {
         stack: err.stack,
         config: err.config,
@@ -134,9 +122,6 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
         response: err.response,
         name: err.name
       },
-      more: {
-        pako: false
-      }
     } as RApiFailResponse);
   }
 })

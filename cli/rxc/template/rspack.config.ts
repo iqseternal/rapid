@@ -1,5 +1,5 @@
 import { defineConfig } from '@rspack/cli';
-import type { RuleSetRule } from '@rspack/core';
+import { RuleSetRule, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import { resolve } from 'path';
 
 declare global {
@@ -69,7 +69,6 @@ export default defineConfig({
   cache: false,
   watchOptions: {
 
-
   },
   devServer: {
     devMiddleware: {
@@ -81,12 +80,27 @@ export default defineConfig({
     runtimeChunk: false,
     splitChunks: false,
 
+    sideEffects: 'flag',
+    mangleExports: false,
+    usedExports: true,
+    removeEmptyChunks: true,
+
     minimize: true,
-
-
-    // chunkIds: "deterministic",
+    minimizer: [
+      new SwcJsMinimizerRspackPlugin({
+        minimizerOptions: {
+          compress: false,
+          mangle: false,
+          format: {
+            beautify: true,
+            indentLevel: 2
+          }
+        }
+      })
+    ]
   },
   externals: {
     react: 'React',
+    'react-dom': 'react-dom',
   },
-});
+})

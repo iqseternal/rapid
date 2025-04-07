@@ -3,8 +3,8 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
-#pnpm typecheck
+# pnpm typecheck
 
 # pnpm lint
 
-#pnpm test
+# pnpm test

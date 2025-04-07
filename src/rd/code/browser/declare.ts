@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { ExtensionManager, MetadataManager } from '@rapid/extensions';
+import type { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import type { RdSKin } from '@/skin';
 import type { Emitter } from '@rapid/libs-web';
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
@@ -84,11 +84,19 @@ export namespace Metadata {
   }
 }
 
+export interface RExtensionContext {
+
+}
+
+export interface RExtension extends Extension<RExtensionContext> {
+
+}
+
 export declare interface RApp {
   /**
    * 插件管理器
    */
-  readonly extension: ExtensionManager;
+  readonly extension: ExtensionManager<RExtension>;
 
   /**
    * 元数据管理器

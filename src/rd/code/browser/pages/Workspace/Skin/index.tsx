@@ -90,14 +90,14 @@ export const Skin = memo(() => {
       <div>
         <Button
           onClick={() => {
-            rApp.extension.activatedExtension(ThemeExtension.name);
+            rApp.extension.activatedExtension(ThemeExtension.name, {});
           }}
         >
           启用主题插件
         </Button>
         <Button
           onClick={() => {
-            rApp.extension.deactivatedExtension(ThemeExtension.name);
+            rApp.extension.deactivatedExtension(ThemeExtension.name, {});
           }}
         >
           禁用主题插件

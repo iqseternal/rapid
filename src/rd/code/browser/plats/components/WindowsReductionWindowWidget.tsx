@@ -6,8 +6,8 @@ import { uiControllerMaxSvg, uiControllerReductionSvg } from 'rd/assets';
 import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
 
-const WindowMaxSvg = <img src={uiControllerMaxSvg} />;
-const WindowReductionSvg = <img src={uiControllerReductionSvg} />;
+const WindowMaxSvg = <img src={uiControllerMaxSvg} alt='' />;
+const WindowReductionSvg = <img src={uiControllerReductionSvg} alt='' />;
 
 export const WindowsReductionWindowWidget = memo(() => {
   const refresh = useRefresh();

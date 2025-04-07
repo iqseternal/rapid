@@ -754,7 +754,7 @@ declare const windowSetPosition: (options: {
     id?: number;
     windowKey?: string;
     x: number | "left" | "right" | "center";
-    y: number | "bottom" | "top" | "center";
+    y: number | "top" | "center" | "bottom";
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
 /**
  * 重启应用

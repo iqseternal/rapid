@@ -223,7 +223,7 @@ const Home = memo(() => {
                         window.open(`http://rapid-doc.oupro.cn/`);
                       }}
                     >
-                      DOCUMENTS
+                      点击查看文档
                     </Button>
                   </div>
                 </div>

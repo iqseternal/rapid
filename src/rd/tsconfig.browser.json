@@ -3,6 +3,7 @@
     "composite": true,
     "incremental": true,
     "baseUrl": "./",
+    "rootDir": "../../",
     "outDir": "../rd-dts",
     "declarationDir": "../rd-dts",
     "target": "ESNext",
@@ -36,8 +37,8 @@
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
     "types": [
-      "../rd-builder/@types-web",
       "reflect-metadata",
+      "../rd-builder/@types-web",
       "./code/browser/types"
     ],
     "paths": {
@@ -45,8 +46,9 @@
         "./*"
       ],
       "@/*": [
-        "code/browser/*"
-      ]
+        "./code/browser/*"
+      ],
+      "@suey/rxp-meta": ["../../libs/rxp-meta"]
     }
   },
   "include": [
@@ -56,7 +58,10 @@
 
     "./base/**/*.ts",
     "./code/electron-sandbox/**/*.ts",
-    "../../package.json"
+    "../../package.json",
+
+    "../../libs/rxp-meta/**/*.ts",
+    "../../libs/rxp-meta/**/*.tsx"
   ],
   "exclude": [
     "node_modules",

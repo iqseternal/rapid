@@ -5,7 +5,7 @@ export default async (): Promise<Config> => {
 
   return {
     transform: {
-      "^.+.tsx?$": ["ts-jest",{}],
+      "^.+.tsx?$": ["ts-jest", {}],
     },
 
     // 定义全局变量
@@ -25,7 +25,7 @@ export default async (): Promise<Config> => {
     collectCoverage: true,
 
     // Jest 在撰写报道报告时使用的报告者姓名列表
-    coverageReporters: ['clover', 'json', 'lcov', ['text', {skipFull: true}]],
+    coverageReporters: ['clover', 'json', 'lcov', ['text', { skipFull: true }]],
 
     // 本测试展示的项目名
     displayName: 'rapid-test',
