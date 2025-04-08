@@ -1,17 +1,25 @@
 import type { ComponentType } from 'react';
 import type { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import type { RdSKin } from '@/skin';
-import type { Emitter } from '@rapid/libs-web';
+import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-web';
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 
 export namespace Bus {
-  export interface BusEvent {
+  export type BusEmitterEntries = {
 
     /**
      * 测试构建类型
      */
     'test': never;
 
+  }
+
+  export type BusInvokerEntries = {
+
+    /**
+     * 测试构建类型
+     */
+    'test': () => number;
 
   }
 }
@@ -111,7 +119,12 @@ export declare interface RApp {
   /**
    * 事件总线
    */
-  readonly emitter: Emitter<Bus.BusEvent>;
+  readonly emitter: Emitter<Bus.BusEmitterEntries>;
+
+  /**
+   * 带有函数返回值的事件总线功能
+   */
+  readonly invoker: Invoker<Bus.BusInvokerEntries>;
 
   /**
    * 全局的状态管理
