@@ -54,12 +54,19 @@ const path = {
  * @returns
  */
 export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot = true): CompleteRouteConfig<RouteConfig> {
+  if (basePath.endsWith('/')) basePath = basePath.replaceAll(/\/+$/g, '');
+
   if (!route.meta) route.meta = {} as RouteMeta;
 
   // path 是相对路径, 但是允许填写 /, 自动将这个 / 去除
   if (route.path.startsWith('/') && !isRoot) {
-    if (!new RegExp(`^${basePath}(/.*|$)`).test(route.path)) {
-      throw new Error(`子路由必须由父级路径前缀开始, ${route.path}`);
+    if (route.path !== '*') {
+      console.log(basePath, route.path);
+
+
+      if (!new RegExp(`^${basePath}(/.*|$)`).test(route.path)) {
+        throw new Error(`子路由必须由父级路径前缀开始, ${route.path}`);
+      }
     }
   }
 
