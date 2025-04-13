@@ -28,7 +28,7 @@ interface Extension<Context = any> {
      */
     readonly onDeactivated?: (this: this, context: Context) => (void | Promise<void>);
 }
-type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[1];
+type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];
 
 /**
  * 监听 store 的触发回调函数
@@ -254,6 +254,10 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      */
     useMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
     /**
+     * 使用最先注册的元数据
+     */
+    useOldestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
+    /**
      * 使用最后一次注册的元数据
      */
     useLatestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
@@ -474,60 +478,96 @@ declare namespace RdSKin {
     const uninstall: () => void;
 }
 
-type EmitterKey = '*' | string | symbol | number;
-type EmitterListener = (...args: unknown[]) => Promise<any> | any;
-declare abstract class EmitterManager {
-    private readonly eventMap;
-    /**
-     * 获取一个事件监听的混合存储对象
-     */
-    private getBusListenerHybrid;
+type EmitterListener<T> = (data: T) => void | Promise<void>;
+/**
+ * 停止监听事件的函数回调
+ */
+type EmitterListenerOffCallback = () => void;
+/**
+ * 总线事件管理
+ */
+declare abstract class EmitterManager<Entries extends Record<string | symbol, any>> {
+    private readonly effectManager;
+    constructor();
     /**
      * 订阅
      * @returns
      */
-    protected subscribe<Listener extends EmitterListener>(busName: EmitterKey, listener: Listener, options?: {
+    protected subscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>, options?: {
         once?: boolean;
-    }): () => void;
+    }): EmitterListenerOffCallback;
     /**
      * 取消订阅
      * @returns
      */
-    protected unsubscribe<Listener extends EmitterListener>(busName: EmitterKey, listener: Listener): void;
+    protected unsubscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>): void;
     /**
      * 通知处理事件
      */
-    protected notice(busName: Exclude<EmitterKey, '*'>, ...args: any[]): Promise<void>;
+    protected notice<K extends keyof Entries>(busName: K, data: Entries[K]): Promise<void>;
     /**
-     * 同步通知处理事件
+     * 清空所有事件
      */
-    protected noticeSync(busName: Exclude<EmitterKey, '*'>, ...args: any[]): void;
-    /**
-     * 删除所有事件订阅
-     */
-    protected clear(busName: Exclude<EmitterKey, '*'>): void;
+    protected clear(): void;
 }
 
-declare class Emitter<BEvent extends Record<string | symbol | number, any>> extends EmitterManager {
+declare class Emitter<Entries extends Record<string | symbol, any>> extends EmitterManager<Entries> {
     /**
      * 异步发射一个事件
      */
-    emit<BKey extends keyof BEvent>(busName: BKey, data: BEvent[BKey]): Promise<void>;
+    emit<K extends keyof Entries>(busName: K, data: Entries[K]): Promise<void>;
     /**
      * 监听一个事件
      */
-    on<BKey extends keyof BEvent>(busName: BKey, listener: (data: BEvent[BKey]) => (void | Promise<void>), options?: {
+    on<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>, options?: {
         once?: boolean;
-    }): () => void;
-    once<BKey extends keyof BEvent>(busName: BKey, listener: (data: BEvent[BKey]) => (void | Promise<void>)): () => void;
+    }): EmitterListenerOffCallback;
+    /**
+     * 监听一个事件（只触发一次）
+     */
+    once<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): EmitterListenerOffCallback;
     /**
      * 移除监听某个事件
      */
-    off<BKey extends keyof BEvent>(busName: BKey, listener: (data: BEvent[BKey]) => (void | Promise<void>)): void;
+    off<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): void;
     /**
      * 移除所有监听
      */
-    clear<BKey extends keyof BEvent>(busName: BKey): void;
+    clear(): void;
+}
+
+type InvokerKey = '*' | string | symbol | number;
+type InvokerHandler = (...args: any[]) => any;
+type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
+type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+type ExtractInvokerHandler<T extends (...args: any[]) => any> = (...args: ExtractParameters<T>) => ExtractReturnType<T>;
+/**
+ * 总线事件管理 (等待函数执行获得返回结果
+ */
+declare abstract class InvokerManager<Entries extends Record<InvokerKey, InvokerHandler>> {
+    private readonly effectManager;
+    /**
+     * 注册一个事件的执行函数
+     */
+    protected handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
+    /**
+     * 发送事件, 并获取执行的返回结果
+     */
+    protected invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
+}
+
+/**
+ * 总线事件管理 (等待函数执行获得返回结果
+ */
+declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends InvokerManager<Entries> {
+    /**
+     * 注册一个事件的执行函数
+     */
+    handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
+    /**
+     * 发送事件, 并获取执行的返回结果
+     */
+    invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
 }
 
 interface UserStore {
@@ -712,12 +752,18 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
 }>;
 
 declare namespace Bus {
-    interface BusEvent {
+    type BusEmitterEntries = {
         /**
          * 测试构建类型
          */
         'test': never;
-    }
+    };
+    type BusInvokerEntries = {
+        /**
+         * 测试构建类型
+         */
+        'test': () => number;
+    };
 }
 declare namespace Metadata {
     /**
@@ -794,7 +840,11 @@ declare interface RApp {
     /**
      * 事件总线
      */
-    readonly emitter: Emitter<Bus.BusEvent>;
+    readonly emitter: Emitter<Bus.BusEmitterEntries>;
+    /**
+     * 带有函数返回值的事件总线功能
+     */
+    readonly invoker: Invoker<Bus.BusInvokerEntries>;
     /**
      * 全局的状态管理
      */

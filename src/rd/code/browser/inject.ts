@@ -1,4 +1,4 @@
-import { Emitter } from '@rapid/libs-web';
+import { Emitter, Invoker } from '@rapid/libs-web';
 import type { RApp } from './declare';
 import { cssVars, RdSKin } from './skin';
 import { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
@@ -10,7 +10,9 @@ const extensionManager = new ExtensionManager();
 
 const metadataManager = new MetadataManager<Metadata.MetadataEntries>();
 
-const emitter = new Emitter<Bus.BusEvent>();
+const emitter = new Emitter<Bus.BusEmitterEntries>();
+
+const invoker = new Invoker<Bus.BusInvokerEntries>();
 
 const rApp = Object.freeze<RApp>({
   extension: extensionManager,
@@ -20,6 +22,8 @@ const rApp = Object.freeze<RApp>({
   RdSKin: RdSKin,
 
   emitter: emitter,
+
+  invoker: invoker,
 
   stores: {
     useUserStore,
