@@ -233,7 +233,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
         syncState.needSync = true;
         return;
       }
-
       // 刷新组件 (在组件挂载时才 setState)
       setState({});
     }, []);
@@ -246,7 +245,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
           updateState();
         }
       })
-    }
+    } 
 
     useLayoutEffect(() => {
       normalState.isMounted = true;
