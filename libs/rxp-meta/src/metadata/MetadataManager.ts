@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
@@ -227,25 +227,15 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
      * @description 用于更新 state, 让视图进行刷新, 但是由于 setState 需要组件已经挂载, 所以有额外的挂载判断
      * @description 改更新是有 20ms 延迟的
      */
-    const updateState = useMemo(() => {
-      const timeout = 20;
-      let timer: number | undefined | NodeJS.Timeout = void 0;
-
-      return () => {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => {
-          timer = void 0;
-
-          if (!normalState.isMounted) {
-            // 标记需要同步
-            syncState.needSync = true;
-            return;
-          }
-
-          // 刷新组件 (在组件挂载时才 setState)
-          setState({});
-        }, timeout);
+    const updateState = useCallback(() => {
+      if (!normalState.isMounted) {
+        // 标记需要同步
+        syncState.needSync = true;
+        return;
       }
+
+      // 刷新组件 (在组件挂载时才 setState)
+      setState({});
     }, []);
 
     if (!normalState.unsubscribe) {
