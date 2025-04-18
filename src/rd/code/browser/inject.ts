@@ -2,7 +2,7 @@ import { Emitter, Invoker } from '@rapid/libs-web';
 import type { RApp } from './declare';
 import { cssVars, RdSKin } from './skin';
 import { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
-import { inject } from '@rapid/libs/inject';
+import { injectReadonlyVariable } from '@rapid/libs';
 import { useUserStore, useDocStore, useThemeStore, useTldrawStore } from './features';
 import { Metadata, Bus } from './declare';
 
@@ -36,5 +36,5 @@ const rApp = Object.freeze<RApp>({
   }
 });
 
-inject(window, 'cssVars', cssVars);
-inject(window, 'rApp', rApp);
+injectReadonlyVariable(window, 'cssVars', cssVars);
+injectReadonlyVariable(window, 'rApp', rApp);

@@ -169,7 +169,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
       return;
     }
 
-    this.metadataMap.delete(metadataKey);
+    this.metadataMap.set(metadataKey, fVector);
     super.updateStore();
     this.triggerMetadataChangeListeners({
       action: 'Remove',
