@@ -1,7 +1,8 @@
 import { WindowService } from '../../service/WindowService';
 import { IpcActionMiddleware, IpcActionEvent } from '../framework';
-import { Catch, RuntimeException, isException } from '../../exceptions';
-import type { Exception, ExceptionErrorMsgData } from '../../exceptions';
+import { Catch, RuntimeException } from '../../exceptions';
+import { isException } from 'rd/base/common/exceptions';
+import type { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import type { RPromiseLike } from '@rapid/libs';
 import { toNil, asynced } from '@rapid/libs';
 

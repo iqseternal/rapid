@@ -40,6 +40,7 @@
   ],
   "exclude": [
     "./base/sandbox/**/*",
+    "./base/browser/**/*",
     "node_modules"
   ]
 }

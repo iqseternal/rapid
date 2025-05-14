@@ -9,14 +9,14 @@ export class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends
   /**
    * 注册一个事件的执行函数
    */
-  public handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>) {
+  public override handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>) {
     super.handle(key, handler);
   }
 
   /**
    * 发送事件, 并获取执行的返回结果
    */
-  public invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]> {
+  public override invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]> {
     return super.invoke(key, ...args);
   }
 }

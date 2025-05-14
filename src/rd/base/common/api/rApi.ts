@@ -1,5 +1,5 @@
-import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig, type AxiosResponse } from '@rapid/libs';
-import { StringFilters } from '@rapid/libs-web';
+import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig } from '@suey/pkg-utils';
+import type { AxiosResponse } from '@suey/pkg-utils';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
 const appInformation = AppInformationService.getInstance();
@@ -87,7 +87,7 @@ export interface RApiFailResponse extends RApiBasicResponse {
  */
 export type RApiPromiseLike<Success, Fail = {}> = ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, Success, Fail>;
 
-export const isRApiResponse = (response: AxiosResponse<any>): response is AxiosResponse<RApiBasicResponse> => response.data && Reflect.has(response.data, 'code');
+export const isRApiResponse = (response: AxiosResponse<any>): response is AxiosResponse<RApiSuccessResponse, RApiFailResponse> => response.data && Reflect.has(response.data, 'code');
 
 const rApiConfig: RequestConfig<RApiHConfig> = {
   timeout: 5000,
@@ -104,21 +104,26 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
 
       if (data.code === 0) return Promise.resolve(data);
 
+      const globalThat = globalThis as any;
+
       // 获取当前环境是否存在 rApp
       // 如果存在, 则寻找存在的 invoker 分发器
-      if (globalThis.rApp && Reflect.has(globalThis.rApp, 'invoker')) {
-
-        return globalThis.rApp.invoker.handle('r-api-err-distributor', response);
+      if (
+        Reflect.has(globalThat, 'rApp') &&
+        Reflect.has(globalThat.rApp, 'invoker')
+      ) {
+        return globalThat.rApp.invoker.handle('r-api-err-distributor', response);
       }
     }
 
     return response;
   },
   onRejected(err) {
+
     return Promise.reject<RApiFailResponse>({
       code: -1,
       data: err.response?.data,
-      message: StringFilters.toValidStr(err.message, '未知错误'),
+      message: err.message || '未知错误',
       INNER: {
         stack: err.stack,
         config: err.config,

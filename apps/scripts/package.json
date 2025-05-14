@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsnd --respawn ./src/index.ts",
-    "lint": "eslint ./src --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --cache"
+    "lint": "eslint ./src --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.vue --cache",
+    "typecheck": "tsc --noEmit -p ./tsconfig.json"
   },
   "keywords": [],
   "author": "",

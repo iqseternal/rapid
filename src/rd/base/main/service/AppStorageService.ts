@@ -41,7 +41,7 @@ export class AppFileStorageService {
   /** 按照指定格式读取当前想要的文件 */
   public async read() {
     const text = fs.readFileSync(this.filePath, 'binary');
-    const compressed = Buffer.from(text, 'binary');
+    const compressed = Uint8Array.from(Buffer.from(text, 'binary'));
     const tData = Pako.inflate(compressed, { to: 'string' });
     return JSON.parse(tData);
   }

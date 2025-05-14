@@ -1,8 +1,8 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { Exception, isException } from '../../exceptions';
 import { toNil, Nil } from '@rapid/libs';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
+import { Exception, isException } from 'rd/base/common/exceptions';
 
 /**
  * 获得制作 ipc 句柄的函数

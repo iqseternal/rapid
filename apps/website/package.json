@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env rsbuild dev",
     "build": "cross-env rsbuild build",
-    "preview": "cross-env rsbuild preview"
+    "preview": "cross-env rsbuild preview",
+    "typecheck": "concurrently \"tsc --noEmit -p ./tsconfig.node.json\" \"tsc --noEmit -p ./tsconfig.web.json\""
   },
   "keywords": [],
   "author": "",

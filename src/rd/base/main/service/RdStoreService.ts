@@ -39,7 +39,7 @@ export class RdStoreService {
       deserialize: (text: string) => {
         if (text.trim() === '') return {};
 
-        const compressed = Buffer.from(text, 'binary');
+        const compressed = Uint8Array.from(Buffer.from(text, 'binary'));
 
         try {
           const decompressed = Pako.inflate(compressed, { to: 'string' });

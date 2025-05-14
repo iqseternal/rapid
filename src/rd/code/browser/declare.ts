@@ -4,7 +4,7 @@ import type { RdSKin } from '@/skin';
 import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-web';
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
-import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/api';
+import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
 
 export namespace Bus {
   export type BusEmitterEntries = {
