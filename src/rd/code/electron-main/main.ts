@@ -1,9 +1,9 @@
-import { IpcMainManager } from 'rd/base/plats/ipc';
+import { IpcMainManager } from 'rd/base/main/ipc';
 import { app, BrowserWindow } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
-import { WindowFlowService } from 'rd/base/plats/flow/WindowFlowService';
-import { TrayMenuFlowService } from 'rd/base/plats/flow/TrayMenuFlowService';
+import { WindowFlowService } from './flow/WindowFlowService';
+import { TrayMenuFlowService } from './flow/TrayMenuFlowService';
 
 export class CodeMain {
 

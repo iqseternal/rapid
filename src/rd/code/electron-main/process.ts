@@ -1,5 +1,5 @@
-import { LoggerService } from 'rd/base/plats/service/LoggerService';
-import { Catch, Exception, ExceptionErrorMsgData, isException } from 'rd/base/plats/exceptions';
+import { LoggerService } from '../../base/main/service/LoggerService';
+import { Catch, Exception, ExceptionErrorMsgData, isException } from '../../base/main/exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 // 关闭渲染进程安全警告

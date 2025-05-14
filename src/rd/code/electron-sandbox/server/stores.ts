@@ -1,5 +1,5 @@
 
-import type { AppStoreType as RAppStoreType } from 'rd/base/plats/stores';
+import type { AppStoreType as RAppStoreType } from '../../../base/main/stores';
 import { IpcActionService } from 'rd/base/sandbox/service/IpcActionService';
 import type { HandleHandlers } from './electron';
 

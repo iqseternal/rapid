@@ -127,19 +127,16 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
     };
   }, []);
 
-  return useMemo(() => {
-    const element = (
-      <div
-        ref={textContainerRef}
-        className={classnames(styles.wFullSize, styles.textOverflow, className)}
-      >
-        {realContent}
-      </div>
-    );
+  const element = (
+    <div
+      ref={textContainerRef}
+      className={classnames(styles.wFullSize, styles.textOverflow, className)}
+    >
+      {realContent}
+    </div>
+  );
 
-    if (!state.isOverflow) return element;
-
-    return overlayRender(element);
-  }, [state.isOverflow, realContent, className]);
+  if (!state.isOverflow) return element;
+  return overlayRender(element);
 })
 

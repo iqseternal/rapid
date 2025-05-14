@@ -3,6 +3,8 @@ import type { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-met
 import type { RdSKin } from '@/skin';
 import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-web';
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
+import type { AxiosResponse } from '@suey/pkg-utils';
+import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/api';
 
 export namespace Bus {
   export type BusEmitterEntries = {
@@ -15,12 +17,32 @@ export namespace Bus {
   }
 
   export type BusInvokerEntries = {
+    /**
+     * api-err 分发器
+     */
+    'r-api-err-distributor': (response: AxiosResponse<RApiSuccessResponse, RApiFailResponse>) => Promise<RApiBasicResponse>;
 
     /**
-     * 测试构建类型
+     * rx-api-err: 资源访问没有权限
      */
-    'test': () => number;
+    'r-api-err:unauthorized-resource': (response: AxiosResponse<RApiSuccessResponse, RApiFailResponse>) => Promise<RApiBasicResponse>;
 
+    /**
+     * rx-api-err: 用户凭证访问没有权限
+     */
+    'r-api-err:unauthorized-credential': (response: AxiosResponse<RApiSuccessResponse, RApiFailResponse>) => Promise<RApiBasicResponse>;
+
+
+
+    /**
+     * invoker: 获取 store access_token
+     */
+    'data-getter:from-store:access-token': () => Promise<string | null>;
+
+    /**
+     * invoker: 获取 store refresh_token
+     */
+    'data-getter:from-store:refresh-token': () => Promise<string | null>;
   }
 }
 

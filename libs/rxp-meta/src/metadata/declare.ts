@@ -15,7 +15,7 @@ export type ExtractElInArray<T> = IsAny<T, never, T extends (infer U)[] ? U : ne
  * @example
  * type A = {
  *    name: string;
- *    age: number;w
+ *    age: number;
  *    friends: any[];
  * }
  *

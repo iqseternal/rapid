@@ -1,6 +1,8 @@
 import { isString, Ansi } from '@rapid/libs';
 import type { RouteMeta, RouteConfig } from './declare';
 
+import path from 'path-browserify';
+
 /**
  * 补全后的 RouteMeta
  */
@@ -12,23 +14,6 @@ export type CompleteRouteMeta = RouteMeta & Pick<Required<RouteMeta>, 'fullPath'
 export type CompleteRouteConfig<RConfig extends RouteConfig = RouteConfig> = Omit<Omit<RConfig, 'children'>, 'meta'> & {
   meta: CompleteRouteMeta;
   children: CompleteRouteConfig<RConfig>[];
-}
-
-type PathJson<S1 extends string, S2 extends string> = (
-  S1 extends `${infer P1}/`
-  ? (S2 extends `/${infer P2}` ? `${P1}/${P2}` : `${S1}${S2}`)
-  : (S2 extends `/${string}` ? `${S1}${S2}` : `${S1}/${S2}`)
-);
-
-const path = {
-  joinTwo<P1 extends string, P2 extends string>(path1: P1, path2: P2): PathJson<P1, P2> {
-    if (path1.endsWith('/')) path1 = path1.replaceAll(/\/+$/g, '') as P1;
-    if (path2.startsWith('/')) path2 = path2.replaceAll(/^\/+/g, '') as P2;
-    return path1 + '/' + path2 as PathJson<P1, P2>;
-  },
-  join(...args: string[]) {
-    return args.reduce((pre, cur) => path.joinTwo(pre, cur), '');
-  }
 }
 
 /**
@@ -57,13 +42,8 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
   if (basePath.endsWith('/')) basePath = basePath.replaceAll(/\/+$/g, '');
 
   if (!route.meta) route.meta = {} as RouteMeta;
-
-  // path 是相对路径, 但是允许填写 /, 自动将这个 / 去除
   if (route.path.startsWith('/') && !isRoot) {
     if (route.path !== '*') {
-      console.log(basePath, route.path);
-
-
       if (!new RegExp(`^${basePath}(/.*|$)`).test(route.path)) {
         throw new Error(`子路由必须由父级路径前缀开始, ${route.path}`);
       }

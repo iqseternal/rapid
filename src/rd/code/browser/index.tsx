@@ -1,4 +1,5 @@
 import './inject';
+import './discrete';
 
 import { StrictMode } from 'react';
 import { RdAppWrapper } from './app';
