@@ -70,7 +70,8 @@ export const Catch = (function(...Exceptions: DescendantClass<Exception<any>>[])
 
       if (!hasExp) Catch.context.mapper.set(Exception, []);
 
-      const filters = Catch.context.mapper.get(Exception)!;
+      const filters = Catch.context.mapper.get(Exception);
+      if (!filters) return;
 
       if (IS_DEV) {
         if (filters.some(filter => filter instanceof ExceptionFilter)) {

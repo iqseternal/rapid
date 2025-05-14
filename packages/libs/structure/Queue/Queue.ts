@@ -65,7 +65,7 @@ export class Queue<V> extends Vessel<V> {
    */
   public front(): V | null {
     if (this.queueArr.length === 0) return null;
-    return this.queueArr[0]!;
+    return this.queueArr[0];
   }
 
   /**
@@ -73,6 +73,6 @@ export class Queue<V> extends Vessel<V> {
    */
   public back(): V | null {
     if (this.queueArr.length === 0) return null;
-    return this.queueArr[this.queueArr.length - 1]!;
+    return this.queueArr[this.queueArr.length - 1];
   }
 }

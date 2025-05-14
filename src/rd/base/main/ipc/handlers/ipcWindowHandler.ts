@@ -23,11 +23,8 @@ export const ipcWindowMaximize = makeIpcHandleAction(
   [],
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
-
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
     if (windowService.window.isMaximizable()) windowService.window.maximize();
   }
 );
@@ -40,10 +37,8 @@ export const ipcWindowMinimize = makeIpcHandleAction(
   [],
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id;
-      if (targetKey) windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
     if (windowService.window.isMinimizable()) windowService.window.minimize();
   }
 );
@@ -56,10 +51,8 @@ export const ipcWindowReductionSize = makeIpcHandleAction(
   [],
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
     // 如果窗口最大化状态, 那么还原他
     if (windowService.window.isMaximized()) {
       windowService.window.restore();
@@ -78,10 +71,8 @@ export const ipcWindowResizeAble = makeIpcHandleAction(
   [],
   async (windowService, options?: { id?: number;windowKey?: string;resizeAble: boolean; }) => {
     const { id, windowKey, resizeAble = true } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     windowService.window.setResizable(resizeAble);
   }
@@ -95,10 +86,8 @@ export const ipcWindowRelaunch = makeIpcHandleAction(
   [],
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
     windowService.window.reload();
   }
 );
@@ -116,10 +105,8 @@ export const ipcWindowSetMinimumSize = makeIpcHandleAction(
     height: number;
   }) => {
     const { id, windowKey, width, height } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     windowService.window.setMinimumSize(width, height);
   }
@@ -138,10 +125,8 @@ export const ipcWindowSetSize = makeIpcHandleAction(
     height: number
   }) => {
     const { id, windowKey, width, height } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     if (windowService.window.isMaximized()) windowService.window.restore();
     windowService.window.setSize(width, height);
@@ -160,10 +145,8 @@ export const ipcWindowResetCustomSize = makeIpcHandleAction(
     type: 'mainWindow'
   }) => {
     const { id, windowKey } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     const appConfigService = AppConfigService.getInstance();
 
@@ -217,10 +200,8 @@ export const ipcWindowSetPosition = makeIpcHandleAction(
     y: 'center' | 'top' | 'bottom' | number
   }) => {
     const { id, windowKey } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     const { x, y } = options;
 
@@ -269,7 +250,7 @@ export const ipcOpenWindow = makeIpcHandleAction(
       })
     }
 
-    if (!targetWindowService!.window.isVisible()) targetWindowService!.show();
+    if (!targetWindowService.window.isVisible()) targetWindowService.show();
   }
 );
 
@@ -289,10 +270,8 @@ export const ipcWindowClose = makeIpcHandleAction(
   }) => {
 
     const { id, windowKey, fictitious = false } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     const mainWindowService = WindowService.findWindowService(AppRouterService.Routes.MainWindow);
     // 主窗口只能隐藏
@@ -323,10 +302,8 @@ export const ipcWindowShow = makeIpcHandleAction(
     show: boolean
   }) => {
     const { id, windowKey, show } = options ?? {};
-    if (isDef(id) || isDef(windowKey)) {
-      const targetKey = windowKey || id!;
-      windowService = WindowService.findWindowService(targetKey);
-    }
+    const targetKey = windowKey ?? id;
+    if (targetKey) windowService = WindowService.findWindowService(targetKey);
 
     const isVisible = windowService.window.isVisible();
     if (show) {

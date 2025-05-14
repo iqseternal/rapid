@@ -114,7 +114,7 @@ const setupZustandStoreMap = <TStore extends UseBoundStore<StoreApi<any>>>(store
  * @deprecated
  */
 const zustandSelector = <TStore extends UseBoundStore<StoreApi<any>>, TState extends ReturnType<TStore['getState']>, TResult,>(store: TStore, selector: (state: TState) => TResult): ZustandHijack.ZustandSelectorTarget<TResult> => {
-  const { appendEffect } = setupZustandStoreMap(store)!;
+  const { appendEffect } = setupZustandStoreMap(store) ?? {};
 
   const { dependenciesList, appendDep, removeDep } = useDependenciesListHook<() => void>();
 
@@ -128,7 +128,7 @@ const zustandSelector = <TStore extends UseBoundStore<StoreApi<any>>, TState ext
   }
 
   // zustand 发生变化时, 更新自身的值
-  appendEffect((state) => {
+  appendEffect && appendEffect((state) => {
     const targetValue = selector(state);
     const oldValue = target.value;
 
@@ -270,7 +270,7 @@ export const useZustandHijack = <Target extends {}, ZustandHijackTarget extends 
    * 减少 map get
    */
   const { appendEffect, removeEffect } = useMemo(() => {
-    return zustandHijackMap.get(target)!;
+    return zustandHijackMap.get(target) as ZustandHijack.ZustandHijackTargetEffect;
   }, []);
 
   /**

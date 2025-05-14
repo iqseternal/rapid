@@ -15,7 +15,10 @@ export class PriorityStack<V> extends Stack<V> {
         return;
       }
 
-      if (this.comparator(this.top()!, value) > 0) {
+      const element = this.top();
+      if (!element) return;
+
+      if (this.comparator(element, value) > 0) {
         this.pop();
         super.push(value);
         return;
@@ -40,7 +43,10 @@ export class PriorityLinkedStack<V> extends LinkedStack<V> {
         return;
       }
 
-      if (this.comparator(this.top()!, value) > 0) {
+      const element = this.top();
+      if (!element) return;
+
+      if (this.comparator(element, value) > 0) {
         this.pop();
         super.push(value);
         return;

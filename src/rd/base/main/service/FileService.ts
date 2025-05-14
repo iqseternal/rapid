@@ -94,7 +94,7 @@ export class FileService {
 
 
 
-  static folderList(filePath: string, options?: {
+  public static folderList(filePath: string, options?: {
     /**
      * 是否递归
      */

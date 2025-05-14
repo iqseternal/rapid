@@ -11,15 +11,15 @@ export class ErrorShapeUtil extends BaseBoxShapeUtil<ErrorShape> {
 	public type = 'error' as const;
 	public typeName = 'Error';
 
-	getDefaultProps() {
+	public getDefaultProps() {
 		return { message: 'Error!', w: 100, h: 100 }
 	}
 
-	component(shape: ErrorShape) {
+	public component(shape: ErrorShape) {
 		throw new Error(shape.props.message)
 	}
 
-	indicator() {
+	public indicator() {
 		throw new Error(`Error shape indicator!`)
 	}
 }
