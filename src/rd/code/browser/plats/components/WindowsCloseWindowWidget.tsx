@@ -3,7 +3,7 @@ import { uiControllerCloseSvg } from 'rd/assets';
 
 import Widget from '@/components/Widget';
 
-const WindowsCloseSvg = <img src={uiControllerCloseSvg} />;
+const WindowsCloseSvg = <img src={uiControllerCloseSvg} alt='' />;
 
 export const WindowsCloseWindowWidget = memo(() => {
 

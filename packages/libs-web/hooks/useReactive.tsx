@@ -1,6 +1,36 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
+import { shallowProxy } from '@rapid/libs';
+
+/**
+ * 普通 state, 不自动刷新组件
+ *
+ * @example
+ * const [state] = useNormalState({
+ *  a: 1,
+ *  b: 2
+ * });
+ *
+ * state.a = 2; // 不会自动刷新组件
+ */
+export function useNormalState<S extends {}>(initValue: S | (() => S)) {
+  const [state] = useState(initValue);
+  return [state] as const;
+}
+
+
+/**
+ * 每次组件刷新都会执行初始化函数的 state
+ */
+export function useSyncNormalState<S extends {}>(initValue: () => S) {
+  const initState = initValue();
+  const [state] = useNormalState(() => initState);
+
+  for (const key in initState) state[key] = initState[key];
+  return [state] as const;
+}
+
 
 /**
  * 修改 state 自动刷新组件
@@ -63,42 +93,21 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
 
   const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
 
-  const [normalState] = useNormalState({ initValue });
-  normalState.initValue = initValue;
+  const [syncNormalState] = useSyncNormalState(() => ({
+    initValue: initValue
+  }))
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-
-    return new Proxy(initialState, {
-      get(target, p, receiver) {
-
-        return Reflect.get(target, p, receiver);
-      },
-      set(target, p, newValue, receiver) {
-        const oldValue = Reflect.get(target, p, receiver);
-        if (oldValue === newValue) return true;
-
-        const setResult = Reflect.set(target, p, newValue, receiver);
-        if (setResult) refresh();
-
-        return setResult;
-      },
-      deleteProperty(target, p) {
-        refresh();
-        return Reflect.deleteProperty(target, p);
-      },
-    })
+    return shallowProxy(initialState, refresh);
   });
 
   /**
    * 重置 state
    */
   const resetState = useCallback(() => {
-    const initValue = normalState.initValue;
-    if (typeof initValue !== 'function') return;
-    const initialState = initValue();
-    // why ? 为了保持 shallowState 的引用地址不变
-    // 如何保证能够重置数据 ? 利用 TS 检测, 不允许动态添加属性, 需要先提前定义才行
+    const initValue = syncNormalState.initValue;
+    const initialState = (typeof initValue === 'function') ? initValue() : initValue;
     for (const key in initialState) state[key] = initialState[key];
   }, []);
 
@@ -128,19 +137,3 @@ export function useReactive<S extends object>(initValue: S | (() => S), options?
   return useShallowReactive(initValue) as readonly [S];
 }
 
-
-/**
- * 普通 state, 不自动刷新组件
- *
- * @example
- * const [state] = useNormalState({
- *  a: 1,
- *  b: 2
- * });
- *
- * state.a = 2; // 不会自动刷新组件
- */
-export function useNormalState<S extends {}>(initValue: S | (() => S)) {
-  const [state] = useState(initValue);
-  return [state] as const;
-}

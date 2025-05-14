@@ -2,7 +2,7 @@
 import { memo } from 'react';
 import { Empty } from 'antd';
 
-import { inject } from '@rapid/libs';
+import { injectReadonlyVariable } from '@rapid/libs';
 
 import { NotHasAnyData } from './NotHasAnyData';
 import { Wrong } from './Wrong';
@@ -28,7 +28,7 @@ export type EmptyType = (typeof REmptyInstance) & {
 
 export const REmpty: EmptyType = REmptyInstance as EmptyType;
 
-inject(REmpty, 'NotHasAnyData', NotHasAnyData);
-inject(REmpty, 'Wrong', Wrong);
+injectReadonlyVariable(REmpty, 'NotHasAnyData', NotHasAnyData);
+injectReadonlyVariable(REmpty, 'Wrong', Wrong);
 
 export default REmpty;

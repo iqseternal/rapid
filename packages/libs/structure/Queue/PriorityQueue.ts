@@ -14,8 +14,8 @@ export class PriorityQueue<V> extends Vessel<V> {
    */
   protected override *[Symbol.iterator](): Iterator<V> {
     while (this.length) {
-      const v = this.pop()!;
-      yield v;
+      const v = this.pop();
+      if (v) yield v;
     }
   }
 
@@ -42,7 +42,7 @@ export class PriorityQueue<V> extends Vessel<V> {
    */
   public pop(): V | null {
     if (this.length === 0) return null;
-    const value = this.priorityQueueArr[1]!;
+    const value = this.priorityQueueArr[1];
     this.swap(1, this.length);
     this.length --;
     this.sink(1);
@@ -53,7 +53,13 @@ export class PriorityQueue<V> extends Vessel<V> {
    * 上浮
    */
   private swim(index: number) {
-    while (index > 1 && this.comparator(this.priorityQueueArr[index]!, this.priorityQueueArr[index >> 1]!) < 0) {
+    while (index > 1) {
+      const cur = this.priorityQueueArr[index];
+      const parent = this.priorityQueueArr[index >> 1];
+
+      if (!cur || !parent) return;
+      if (this.comparator(cur, parent) >= 0) return;
+
       this.swap(index, index >> 1);
 
       index = index >> 1;
@@ -69,11 +75,22 @@ export class PriorityQueue<V> extends Vessel<V> {
     while (2 * index <= this.length) {
       let k = index * 2;
 
-      if (k + 1 <= this.length && this.comparator(this.priorityQueueArr[k + 1]!, this.priorityQueueArr[k]!) < 0) {
-        k ++;
+      if (k + 1 <= this.length) {
+        const left = this.priorityQueueArr[k];
+        const right = this.priorityQueueArr[k + 1];
+
+        if (!left || !right) return;
+
+        if (this.comparator(left, right) < 0) {
+          k ++;
+        }
       }
 
-      if (this.comparator(this.priorityQueueArr[index]!, this.priorityQueueArr[k]!) > 0) {
+      const current = this.priorityQueueArr[index];
+      const child = this.priorityQueueArr[k];
+      if (!current || !child) return;
+
+      if (this.comparator(current, child) > 0) {
         this.swap(index, k);
         index = k;
         continue;

@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "rspress dev",
     "build": "rspress build",
-    "preview": "rspress preview"
+    "preview": "rspress preview",
+    "typecheck": "tsc --noEmit -p ./tsconfig.json"
   },
   "keywords": [],
   "author": "",

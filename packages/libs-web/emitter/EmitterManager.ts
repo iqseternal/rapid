@@ -1,62 +1,52 @@
-import type { DoubleLinkedNode } from '@rapid/libs';
-import { DoubleLinkedList } from '@rapid/libs';
+
+import { EffectManager } from './EffectManager';
 
 export type EmitterKey = '*' | string | symbol | number;
 
-export type EmitterListener = (...args: unknown[]) => Promise<any> | any;
+export type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
+export type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+export type EmitterListener<T> = (data: T) => void | Promise<void>;
 
 /**
  * 停止监听事件的函数回调
  */
 export type EmitterListenerOffCallback = () => void;
 
-export type EmitterListenerSlice = {
+export type EmitterListenerSlice<T> = {
   /** 监听是否只生效一次 */
   readonly once?: boolean;
 
-  readonly listener: EmitterListener;
+  readonly listener: EmitterListener<T>;
 }
 
-export type BusListenerHybrid = {
-  // 预留：可做函数到链表节点的快速映射
-  readonly listenerMap: WeakMap<EmitterListener, DoubleLinkedNode<EmitterListenerSlice>>;
+/**
+ * 总线事件管理
+ */
+export abstract class EmitterManager<Entries extends Record<string | symbol, any>> {
+  private readonly effectManager = new EffectManager<{
+    [Key in keyof Entries]: EmitterListenerSlice<Entries[Key]>;
+  }>();
 
-  readonly linkedList: DoubleLinkedList<EmitterListenerSlice>;
-}
-
-export abstract class EmitterManager {
-  private readonly eventMap = new Map<Exclude<EmitterKey, '*'>, BusListenerHybrid>();
-
-  /**
-   * 获取一个事件监听的混合存储对象
-   */
-  private getBusListenerHybrid(busName: EmitterKey): BusListenerHybrid {
-    if (this.eventMap.has(busName)) return this.eventMap.get(busName)!;
-
-    const listenerMap = new WeakMap<EmitterListener, DoubleLinkedNode<EmitterListenerSlice>>();
-    const linkedList = new DoubleLinkedList<EmitterListenerSlice>();
-
-    this.eventMap.set(busName, { listenerMap, linkedList });
-    return this.eventMap.get(busName)!;
+  public constructor() {
+    this.effectManager.setComparator((a, b) => {
+      return a.listener === b.listener;
+    })
   }
 
   /**
    * 订阅
    * @returns
    */
-  protected subscribe<Listener extends EmitterListener>(busName: EmitterKey, listener: Listener, options?: { once?: boolean }) {
-    const busListenerHybrid = this.getBusListenerHybrid(busName);
-    const hybridLinkedList = busListenerHybrid.linkedList;
-
-    const v = {
+  protected subscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>, options?: { once?: boolean }): EmitterListenerOffCallback {
+    const slice: EmitterListenerSlice<Entries[K]> = {
       once: options?.once,
       listener
     };
-
-    hybridLinkedList.insertAtHead(v);
+    this.effectManager.combine(busName, slice);
 
     return () => {
-      hybridLinkedList.deleteWhere(li => li === v);
+      this.effectManager.eliminate(busName, slice);
     }
   }
 
@@ -64,54 +54,52 @@ export abstract class EmitterManager {
    * 取消订阅
    * @returns
    */
-  protected unsubscribe<Listener extends EmitterListener>(busName: EmitterKey, listener: Listener) {
-    const busListenerHybrid = this.getBusListenerHybrid(busName);
-    const hybridLinkedList = busListenerHybrid.linkedList;
-
-    hybridLinkedList.deleteWhere((slice) => slice.listener === listener);
+  protected unsubscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>) {
+    this.effectManager.eliminate(busName, { listener });
   }
 
   /**
    * 通知处理事件
    */
-  protected async notice(busName: Exclude<EmitterKey, '*'>, ...args: any[]) {
-    requestIdleCallback(() => {
-      this.noticeSync(busName, ...args);
-    })
-  }
+  protected async notice<K extends keyof Entries>(busName: K, data: Entries[K]) {
+    if (busName === '*') {
+      console.error('不允许通知所有事件');
+      return;
+    }
 
-  /**
-   * 同步通知处理事件
-   */
-  protected noticeSync(busName: Exclude<EmitterKey, '*'>, ...args: any[]) {
-    // not allowed
-    if (busName === '*') return;
+    const listeners = this.effectManager.getEffects(busName);
+    if (listeners.length === 0) return;
 
-    const busListenerHybrid = this.getBusListenerHybrid(busName);
-    const hybridLinkedList = busListenerHybrid.linkedList;
+    // 使用 Set 来存储需要删除的 once 监听器，提高查找效率
+    const onceListenersToRemove = new Set<EmitterListenerSlice<Entries[K]>>();
+    const promises: Promise<void>[] = [];
 
-    const usedOnceSlices: EmitterListenerSlice[] = [];
-
-    hybridLinkedList.forEach(slice => {
-      slice.listener(...args);
+    // 遍历执行监听器
+    for (const slice of listeners) {
+      const result = slice.listener(data);
+      if (result instanceof Promise) {
+        promises.push(result);
+      }
 
       if (slice.once) {
-        usedOnceSlices.push(slice);
+        onceListenersToRemove.add(slice);
       }
-    })
+    }
 
-    usedOnceSlices.forEach(slice => {
-      hybridLinkedList.delete(slice);
-    })
+    // 批量删除 once 监听器
+    if (onceListenersToRemove.size > 0) {
+      const newListeners = listeners.filter(slice => !onceListenersToRemove.has(slice));
+      this.effectManager.setEffects(busName, newListeners);
+    }
+
+    // 等待所有异步监听器完成
+    if (promises.length > 0) await Promise.allSettled(promises);
   }
 
   /**
-   * 删除所有事件订阅
+   * 清空所有事件
    */
-  protected clear(busName: Exclude<EmitterKey, '*'>) {
-    const busListenerHybrid = this.getBusListenerHybrid(busName);
-    const hybridLinkedList = busListenerHybrid.linkedList;
-
-    hybridLinkedList.clear();
+  protected clear() {
+    this.effectManager.clear();
   }
 }

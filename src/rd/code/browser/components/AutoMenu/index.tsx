@@ -13,7 +13,7 @@ import type {
 
 import { MenuItem, SubMenu } from './cpts';
 import type { MenuItemProps, SubMenuProps } from './cpts';
-import { inject } from '@rapid/libs';
+import { injectReadonlyVariable } from '@rapid/libs';
 
 import styles from './index.module.scss';
 
@@ -143,12 +143,12 @@ export type AutoMenuType = typeof AutoContextMenu & {
 
 export const AutoMenu: AutoMenuType = AutoContextMenu as AutoMenuType;
 
-inject(AutoMenu, 'convertMenuDivider', convertMenuDivider);
-inject(AutoMenu, 'convertMenuInstance', convertMenuInstance);
-inject(AutoMenu, 'convertMenuItem', convertMenuItem);
-inject(AutoMenu, 'convertMenuItemGroupType', convertMenuItemGroupType);
-inject(AutoMenu, 'convertSubMenu', convertSubMenu);
-inject(AutoMenu, 'MenuItem', MenuItem);
-inject(AutoMenu, 'SubMenu', SubMenu);
+injectReadonlyVariable(AutoMenu, 'convertMenuDivider', convertMenuDivider);
+injectReadonlyVariable(AutoMenu, 'convertMenuInstance', convertMenuInstance);
+injectReadonlyVariable(AutoMenu, 'convertMenuItem', convertMenuItem);
+injectReadonlyVariable(AutoMenu, 'convertMenuItemGroupType', convertMenuItemGroupType);
+injectReadonlyVariable(AutoMenu, 'convertSubMenu', convertSubMenu);
+injectReadonlyVariable(AutoMenu, 'MenuItem', MenuItem);
+injectReadonlyVariable(AutoMenu, 'SubMenu', SubMenu);
 
 export default AutoMenu;

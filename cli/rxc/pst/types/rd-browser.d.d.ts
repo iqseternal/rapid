@@ -1,4 +1,4 @@
-import { R as RApp, a as RdSKin } from '../declare-B7m5-E3M.js';
+import { R as RApp, a as RdSKin } from '../declare-CfNTAUrH.js';
 import 'react';
 import 'zustand/middleware';
 import 'zustand';

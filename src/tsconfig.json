@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "rootDir": "../",
     "outDir": "./rd-dts",
+    "jsx": "react-jsx",
     "lib": [
       "ESNext"
     ],

@@ -5,7 +5,7 @@ import { useAsyncEffect, useTransition } from '@rapid/libs-web';
 import { App, Button } from 'antd';
 import { toNil } from '@rapid/libs';
 import { authHasAuthorizedSync, useUserStore, userActions } from '@/features';
-import { rApi } from '@/api';
+import { registerApi, loginApi } from '@/api';
 import { useRetrieveRoute } from '@/router';
 import { commonStyles } from '@/scss/common';
 import { memo, useEffect, useLayoutEffect } from 'react';
@@ -42,7 +42,7 @@ export const Login = memo(() => {
   }, []);
 
   const [registerPending, register] = useTransition(async () => {
-    const [registerErr] = await toNil(rApi.registerApi({}));
+    const [registerErr] = await toNil(registerApi({}));
     if (registerErr) {
       message.error(registerErr.reason.message);
       return;

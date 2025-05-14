@@ -1,6 +1,7 @@
-import { LoggerService } from 'rd/base/plats/service/LoggerService';
-import { Catch, Exception, ExceptionErrorMsgData, isException } from 'rd/base/plats/exceptions';
+import { LoggerService } from '../../base/main/service/LoggerService';
+import { Exception, isException, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
+import { Catch } from 'rd/base/main/exceptions';
 
 // 关闭渲染进程安全警告
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';

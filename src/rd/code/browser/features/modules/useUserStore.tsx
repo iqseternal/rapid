@@ -1,4 +1,4 @@
-import { rApi } from '@/api';
+import { registerApi, loginApi, logoutApi } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
 import { toNil, asynced, RPromiseLike } from '@rapid/libs';
 import { useEffect, useLayoutEffect } from 'react';
@@ -109,7 +109,7 @@ export const userActions = {
   /**
    * 用户登录
    */
-  userLogin: asynced<typeof rApi.loginApi>(async (loginPayload) => {
+  userLogin: asynced<typeof loginApi>(async (loginPayload) => {
     // const [loginErr, loginRes] = await toNil(rApi.loginApi(loginPayload));
     // if (loginErr) {
     //   // return Promise.reject(loginErr.reason);
@@ -144,7 +144,7 @@ export const userActions = {
   /**
    * 更新用户信息
    */
-  userUpdateInfo: asynced<typeof rApi.registerApi>(async () => {
+  userUpdateInfo: asynced<typeof registerApi>(async () => {
     const [infoErr, infoRes] = await toNil(Promise.resolve({
       data: {
 
@@ -161,8 +161,8 @@ export const userActions = {
   /**
    * 用户退出登录
    */
-  useLogout: asynced<typeof rApi.logoutApi>(async (payload) => {
-    const [err, res] = await toNil(rApi.logoutApi(payload));
+  useLogout: asynced<typeof logoutApi>(async (payload) => {
+    const [err, res] = await toNil(logoutApi(payload));
 
     if (err) return Promise.reject();
     return Promise.resolve();

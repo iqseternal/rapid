@@ -1,8 +1,8 @@
-import { Emitter } from '@rapid/libs-web';
+import { Emitter, Invoker } from '@rapid/libs-web';
 import type { RApp } from './declare';
 import { cssVars, RdSKin } from './skin';
-import { Extension, ExtensionManager, MetadataManager } from '@rapid/extensions';
-import { inject } from '@rapid/libs/inject';
+import { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
+import { injectReadonlyVariable } from '@rapid/libs';
 import { useUserStore, useDocStore, useThemeStore, useTldrawStore } from './features';
 import { Metadata, Bus } from './declare';
 
@@ -10,7 +10,9 @@ const extensionManager = new ExtensionManager();
 
 const metadataManager = new MetadataManager<Metadata.MetadataEntries>();
 
-const emitter = new Emitter<Bus.BusEvent>();
+const emitter = new Emitter<Bus.BusEmitterEntries>();
+
+const invoker = new Invoker<Bus.BusInvokerEntries>();
 
 const rApp = Object.freeze<RApp>({
   extension: extensionManager,
@@ -20,6 +22,8 @@ const rApp = Object.freeze<RApp>({
   RdSKin: RdSKin,
 
   emitter: emitter,
+
+  invoker: invoker,
 
   stores: {
     useUserStore,
@@ -32,5 +36,5 @@ const rApp = Object.freeze<RApp>({
   }
 });
 
-inject(window, 'cssVars', cssVars);
-inject(window, 'rApp', rApp);
+injectReadonlyVariable(window, 'cssVars', cssVars);
+injectReadonlyVariable(window, 'rApp', rApp);

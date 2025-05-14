@@ -27,6 +27,6 @@ export default defineConfig({
     'cjs',
   ],
 
-  treeshake: false,
+  treeshake: true,
   minify: false
 });
