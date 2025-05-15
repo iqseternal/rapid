@@ -29,7 +29,7 @@
     "emitDecoratorMetadata": true,
     "noEmitOnError": false,
     "noUnusedParameters": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,

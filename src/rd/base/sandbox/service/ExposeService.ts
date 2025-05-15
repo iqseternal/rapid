@@ -20,7 +20,7 @@ export class ExposeService<ExposeEntries extends Record<string, any>> {
       contextBridge.exposeInMainWorld(exposeKey, api);
     }
     else {
-      window[exposeKey as string] = api;
+      Reflect.set(window, exposeKey, api);
     }
   }
 }

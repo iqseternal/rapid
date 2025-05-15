@@ -22,6 +22,9 @@
     "skipDefaultLibCheck": true,
     "strict": false,
     "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "strictNullChecks": true,
 
     "strictPropertyInitialization": true,

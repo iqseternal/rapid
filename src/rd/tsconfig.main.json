@@ -14,7 +14,7 @@
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
     "noEmitOnError": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,

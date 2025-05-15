@@ -18,9 +18,7 @@ export interface CreateRoutesChildrenOptions {
    * 处理异步组件的展示
    * @returns
    */
-  onLazyComponent:
-  | MemoExoticComponent<FC<{ children: ReactElement<{}> }>>
-  | FC<{ children: ReactElement<{}> }>;
+  onLazyComponent: FC<{ children: ReactElement<{}> }>;
 }
 
 /**
