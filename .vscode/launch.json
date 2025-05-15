@@ -12,18 +12,6 @@
         "<node_internals>/**"
       ],
       "type": "node"
-    },
-    {
-      "name": "桌面:热更新",
-      "request": "launch",
-      "runtimeArgs": [
-        "dev:app"
-      ],
-      "runtimeExecutable": "pnpm",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "node"
     }
   ]
 }
