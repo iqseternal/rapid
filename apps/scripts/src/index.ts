@@ -1,16 +1,24 @@
 
-import moment from 'moment';
+import * as path from 'path';
+import * as xlsx from 'xlsx';
+import * as fs from 'fs';
 
-const start_time = 1747017361.931454;
-const end_time = 1747017363.34105;
+const workbook = xlsx.readFile(path.join(__dirname, './12133.xlsx'));
 
-const usage_time = 1.4095959663391113;
+const sheetName = workbook.SheetNames[0];
 
-const printTime = (time: number) => {
+const sheet = workbook.Sheets[sheetName];
 
-  const date = moment(time * 1000);
+const data = xlsx.utils.sheet_to_json(sheet);
 
-  console.log(date.format('YYYY-MM-DD hh:mm:ss'));
-}
+data.map((item: any) => {
 
-console.log(printTime(start_time), printTime(end_time));
+  console.log(item.contents.length)
+});
+
+const dataList = data;
+const exposeWorkbook = xlsx.utils.book_new();
+const exposeSheet = xlsx.utils.json_to_sheet(dataList);
+
+xlsx.utils.book_append_sheet(exposeWorkbook, exposeSheet, sheetName);
+xlsx.writeFile(exposeWorkbook, path.join(__dirname, './expose.xlsx'));

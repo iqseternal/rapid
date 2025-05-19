@@ -13,10 +13,12 @@
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "esModuleInterop": true
   },
   "include": [
     "./builder/**/*.ts",
+    "./service/**/*.ts",
     "./index.ts"
   ],
   "exclude": ["node_modules"]

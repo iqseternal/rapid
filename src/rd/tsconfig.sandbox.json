@@ -4,7 +4,7 @@
     "composite": true,
     "baseUrl": ".",
     "rootDir": ".",
-    "outDir": "../rd-dts",
+    "outDir": "../../.rd-cache",
     "paths": {
       "rd/*": [
         "./*"
@@ -34,7 +34,7 @@
     "isolatedModules": true,
     "moduleResolution": "Node",
     "types": [
-      "../rd-builder/@types-node"
+      "../rd-dts/@types-node"
     ]
   },
   "include": [

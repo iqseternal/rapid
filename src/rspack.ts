@@ -15,6 +15,8 @@ import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 
+import { ElectronService } from './rd-builder/service';
+
 import treeKill from 'tree-kill';
 import tailwindcss from 'tailwindcss';
 import bytenode from 'bytenode';
@@ -50,9 +52,6 @@ const IS_DEV_SERVER_WEB_ONLY = process.env.DEV_SERVER_MODE === 'dev:web:only';
 
 // =====================================================================================
 // 变量定义
-
-const bin = join(__dirname, '../node_modules/.bin/electron');
-
 const rendererRootDir = join(__dirname, './rd/code/browser');
 const rendererEntry = join(rendererRootDir, './index.tsx');
 
@@ -92,7 +91,9 @@ const defineVars = {
   printWarn(`  IS_DEV_SERVER_WEB_ONLY=${IS_DEV_SERVER_WEB_ONLY}`);
 
   const { mainCompiler, preloadCompiler, rendererRsbuilder, compilerMain, compilerPreload, compilerRenderer } = await transform();
-  const { exit, restartElectron } = await initElectronServer();
+  // const { exit, restartElectron } = await initElectronServer();
+
+  const electronService = new ElectronService();
 
   // 开发模式, 配置热更新
   if (IS_DEV) {
@@ -103,7 +104,7 @@ const defineVars = {
     const rendererServerUrl = rendererServer.urls[0];
     if (!rendererServerUrl) {
       Printer.printError(`renderer 服务启动失败`);
-      return exit(1);
+      process.exit(1);
     }
 
     // 环境变量
@@ -114,7 +115,7 @@ const defineVars = {
     // 只有 web 热更新
     if (IS_DEV_SERVER_WEB_ONLY) {
       await Promise.all([compilerMain(), compilerPreload()]);
-      restartElectron(envs, mainCompiler.outputPath);
+      await electronService.restart(envs, mainCompiler.outputPath);
       return;
     }
 
@@ -134,11 +135,14 @@ const defineVars = {
     // })
     await compilerPreload();
 
-    mainCompiler.watch({ aggregateTimeout: 2000 }, (err, stats) => {
-      if (err) return exit(1);
+    mainCompiler.watch({ aggregateTimeout: 2000 }, async (err, stats) => {
+      if (err) {
+        process.exit(1);
+      }
       if (stats) Printer.print(stats.toString());
+
       // if (preloadCompiler.running) return;
-      restartElectron(envs, mainCompiler.outputPath);
+      await electronService.restart(envs, mainCompiler.outputPath);
     })
     return;
   }
@@ -178,7 +182,7 @@ const defineVars = {
     if (IS_BUILD) await Promise.all([bytenodeMain(), bytenodePreload()]);
 
     // 检查是否需要预览
-    if (IS_PREVIEW) restartElectron([], mainCompiler.outputPath);
+    if (IS_PREVIEW) await electronService.restart([], mainCompiler.outputPath);
     return;
   }
 })();
@@ -523,119 +527,3 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
     rsbuildConfig: rsbuildConfig
   }
 }
-
-
-
-
-// =====================================================================================
-// 服务
-
-declare interface State {
-  /**
-   * 存储启动的 electron 子进程
-   */
-  electronProcess?: ChildProcess;
-  /**
-   * 当前是否 kill 完成子进程
-   */
-  isKillDone: boolean;
-}
-
-async function initElectronServer() {
-  const state: State = {
-    electronProcess: void 0,
-    isKillDone: true,
-  }
-
-  /**
-   * 退出当前进程
-   */
-  const exit = (code: number = 0): never => process.exit(code);
-
-  /**
-   * 事件: 当当前进程即将结束时, 去结束 electron 进程
-   */
-  const onCurrentProcessBeforeExit = () => exit();
-
-  /**
-   * 退出在子进程运行的 electron 进程
-   */
-  const exitElectronProcess = (callback = () => { }) => {
-    if (!state.electronProcess) return;
-
-    if (typeof state.electronProcess.pid === 'undefined') {
-      Printer.printError(`electron 进程 pid 丢失`);
-      process.exit(1);
-    }
-    if (state.electronProcess.killed) return;
-
-    // 重启过快, 上一次 kill 还没结束
-    if (!state.isKillDone) return;
-
-    Printer.printInfo(`进行结束 electron 进程`);
-
-    // 开始 kill
-    state.isKillDone = false;
-
-    state.electronProcess.removeListener('exit', exit);
-
-    // kill 上一次的 electron 进程
-    treeKill(state.electronProcess.pid, 'SIGTERM', err => {
-      if (err) {
-        Printer.printError(`没有kill成功子进程, Electron重启失败`);
-        Printer.printError(err);
-        process.exit(1);
-      }
-
-      // 结束 kill
-      state.isKillDone = true;
-      Printer.printError(`electron 进程 kill 结束`);
-
-      callback();
-    })
-  }
-
-  /**
-   * 初始化并启动 electron 进程
-   */
-  const initAndStartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
-    Printer.printInfo('启动程序');
-
-    const envs = `cross-env ${envArgs.join(' ')}`;
-
-    // 设置环境变量并启动 electron
-    state.electronProcess = exec(`${envs} ${bin} ${startPath}`);
-
-    state.electronProcess?.stdout?.on('data', (data) => {
-      process.stdout.write(data.toString());
-    });
-    state.electronProcess.on('error', (err) => {
-      process.stderr.write(err.toString());
-    });
-    state.electronProcess.on('message', (message) => {
-      process.stderr.write(message.toString());
-    });
-    state.electronProcess.addListener('exit', exit);
-
-    process.removeListener('beforeExit', onCurrentProcessBeforeExit);
-    process.addListener('beforeExit', onCurrentProcessBeforeExit);
-  }
-
-  /**
-   * 重启 electron 进程
-   */
-  const restartElectron = (envArgs: readonly `${string}=${string | number}`[], startPath: string) => {
-    if (!state.electronProcess) return initAndStartElectron(envArgs, startPath);
-
-    exitElectronProcess(() => {
-      initAndStartElectron(envArgs, startPath);
-    })
-  };
-
-  return {
-    exit,
-    restartElectron
-  }
-}
-
-
