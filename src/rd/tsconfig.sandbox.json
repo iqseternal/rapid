@@ -42,6 +42,7 @@
     "./base/**/*.ts"
   ],
   "exclude": [
+    "./base/browser/**/*",
     "node_modules",
     "../**/*.test.ts"
   ]
