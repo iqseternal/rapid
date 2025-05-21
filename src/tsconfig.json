@@ -4,7 +4,7 @@
     "incremental": true,
     "baseUrl": ".",
     "rootDir": "../",
-    "outDir": "../.rd-cache/src",
+    "outDir": "../.rd-cache/",
     "jsx": "react-jsx",
     "lib": [
       "ESNext"

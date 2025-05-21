@@ -17,7 +17,7 @@
 
 # 项目自定义缓存产物输出文件夹
 /.rd-cache/*
-
+/.rd-cache
 
 
 # Scss 声明文件, 会在运行时由 rsbuild 插件自动生成
