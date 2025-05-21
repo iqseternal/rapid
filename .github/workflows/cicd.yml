@@ -33,7 +33,7 @@ jobs:
         run: pnpm lint
 
       - name: Run tests
-        run: pnpm test:all
+        run: pnpm test-all
 
   cd:
     runs-on: ubuntu-latest
