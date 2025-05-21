@@ -4,8 +4,7 @@
     "incremental": true,
     "baseUrl": "./",
     "rootDir": "../../",
-    "outDir": "../rd-dts",
-    "declarationDir": "../rd-dts",
+    "outDir": "../../.rd-cache/",
     "target": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -29,7 +28,7 @@
     "emitDecoratorMetadata": true,
     "noEmitOnError": false,
     "noUnusedParameters": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
@@ -38,7 +37,7 @@
     "allowUnusedLabels": true,
     "types": [
       "reflect-metadata",
-      "../rd-builder/@types-web",
+      "../rd-dts/@types-web",
       "./code/browser/types"
     ],
     "paths": {

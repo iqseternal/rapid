@@ -6,6 +6,7 @@
   "compilerOptions": {
     "incremental": true,
     "jsx": "react-jsx",
+    "outDir": "../../.rd-cache/packages/libs-web",
     "baseUrl": ".",
     "composite": true,
     "isolatedModules": true,

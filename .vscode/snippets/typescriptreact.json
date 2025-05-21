@@ -5,22 +5,5 @@
 			"console.log($1)"
 		],
 		"description": "Log output to console"
-	},
-	"rfc": {
-		"prefix": "rfc",
-		"body": [
-			"",
-			"",
-			"export default function $1() {",
-			"",
-			"",
-			"  return <>",
-			"",
-			"",
-			"  </>;",
-			"}",
-			""
-		],
-		"description": ""
 	}
 }

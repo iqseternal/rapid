@@ -46,7 +46,7 @@ export const toBizErrorMsg = (data: RApiBasicResponse, msg?: string) => {
   if (typeof data !== 'object') return '';
   if (!Reflect.has(data, 'code')) return '';
 
-  const definitionMsg = BizMessage[data.code];
+  const definitionMsg = BizMessage[data.code as keyof typeof BizMessage];
 
   if (definitionMsg) return definitionMsg;
   return msg ?? data.message;

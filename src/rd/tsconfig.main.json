@@ -3,7 +3,7 @@
     "composite": true,
     "incremental": true,
     "baseUrl": ".",
-    "outDir": "../rd-dts",
+    "outDir": "../../.rd-cache/src/rd/",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,
@@ -14,7 +14,7 @@
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
     "noEmitOnError": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,
@@ -25,7 +25,7 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "types": [
-      "../rd-builder/@types-node",
+      "../rd-dts/@types-node",
       "node"
     ],
     "paths": {

@@ -1,8 +1,7 @@
-# 依赖产物
+# ============================= 依赖产物
 /**/node_modules
 
-# 构建产物输出文件夹
-/**/dist
+# ============================= 缓存产物
 
 # 缓存文件
 /**/cache
@@ -16,6 +15,25 @@
 # ts 编译增量文件, tsc 自动生成
 /**/*.tsbuildinfo
 
+# 项目自定义缓存产物输出文件夹
+/.rd-cache/*
+/.rd-cache
+
+
+# Scss 声明文件, 会在运行时由 rsbuild 插件自动生成
+/**/*.module.scss.d.ts
+
+
+
+# 构建产物输出文件夹
+/**/dist
+
+
+.nx/cache
+.nx/workspace-data
+
+
+
 # 测试输出文件, jest 生成
 /coverage/
 # /**/test/
@@ -24,11 +42,9 @@
 # /**/*.test.ts
 # /**/*.test.tsx
 
-# Scss 声明文件, 会在运行时由 rsbuild 插件自动生成
-/**/*.module.scss.d.ts
 
 
 
-.nx/cache
-.nx/workspace-data
+
+
 # /pnpm-lock.yaml

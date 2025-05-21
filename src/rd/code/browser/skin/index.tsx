@@ -79,7 +79,10 @@ export namespace RdSKin {
    */
   export function toCssVars(): CssVarsSheet {
     const cssVars = {} as CssVarsSheet;
-    for (const key in cssVariablesPayloadSheet) cssVars[key] = toCssVar((sheet) => sheet[key]);
+    for (const key in cssVariablesPayloadSheet) {
+      const cssKey = key as keyof CssVarsSheet;
+      Reflect.set(cssVars, cssKey, toCssVar((sheet) => sheet[cssKey]));
+    }
     return cssVars;
   }
 

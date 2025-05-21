@@ -8,7 +8,7 @@ export interface SinglyLinkedNode<V> extends LinkedNode<V> {
   /**
    * 下一个节点的指针
    */
-  next: this | null;
+  next: SinglyLinkedNode<V> | null;
 }
 
 /**
@@ -209,13 +209,15 @@ export class SinglyLinkedList<V> extends LinkedList<V, SinglyLinkedNode<V>> {
   protected override deleteNodeAtTail(): SinglyLinkedNode<V> | null {
     let node: SinglyLinkedNode<V> | null = this.head;
     while (node) {
-      const nextNode = node.next;
-      if (nextNode) {
+      if (node.next) {
+        const nextNode = node.next;
+
         if (nextNode === this.tail) {
           break;
         }
       }
-      node = nextNode;
+
+      node = node.next;
     }
 
     if (node) {

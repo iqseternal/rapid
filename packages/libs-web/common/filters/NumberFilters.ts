@@ -12,7 +12,7 @@
  */
 export const toFixed = (value: number | `${number}` | undefined | null, position = 2) => {
   if (!(typeof value === 'number')) value = Number(value);
-  if (Number.isNaN(value)) return NaN;
+  if (Number.isNaN(value)) return 0;
   return Number(value.toFixed(position));
 }
 

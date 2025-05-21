@@ -40,8 +40,8 @@
     "allowJs": true,
     "types": [
       "reflect-metadata",
-      "../../src/rd-builder/@types",
-      "../../src/rd-builder/@types-web",
+      "../../src/rd-dts/@types",
+      "../../src/rd-dts/@types-web",
       "../../src/rd/code/browser/types",
       "node"
     ],

@@ -1,7 +1,7 @@
 import { classnames } from '@rapid/libs-web/common';
 import { useRefresh, useReactive } from '@rapid/libs-web/hooks';
 import { Button, Input, Space, Card, Dropdown, message } from 'antd';
-import type { FC, ReactNode } from 'react';
+import type { FC, HTMLAttributes, ReactNode } from 'react';
 import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDocStore } from '@/features';
@@ -12,9 +12,9 @@ import IMessage from '@/components/IMessage';
 
 import styles from './index.module.scss';
 
-const FlexRowCenter = (props) => <div {...props} className={classnames('w-full h-full flex justify-center', props.className)} />;
-const FullSize = (props) => <div {...props} className={classnames('w-full h-full', props.className)} />;
-const FullSizeWidth = (props) => <div {...props} className={classnames('w-full', props.className)} />;
+const FlexRowCenter = (props: HTMLAttributes<HTMLDivElement>) => <div {...props} className={classnames('w-full h-full flex justify-center', props.className)} />;
+const FullSize = (props: HTMLAttributes<HTMLDivElement>) => <div {...props} className={classnames('w-full h-full', props.className)} />;
+const FullSizeWidth = (props: HTMLAttributes<HTMLDivElement>) => <div {...props} className={classnames('w-full', props.className)} />;
 
 interface StyleBlockProps {
   title?: string;

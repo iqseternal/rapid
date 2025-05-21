@@ -8,6 +8,8 @@
     "baseUrl": ".",
     "composite": true,
     "isolatedModules": true,
+    "outDir": "../../.rd-cache/libs",
+    "declarationDir": "../../.rd-cache/packages/libs",
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "allowUnusedLabels": true,

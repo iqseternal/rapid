@@ -4,7 +4,7 @@
     "composite": true,
     "baseUrl": ".",
     "rootDir": ".",
-    "outDir": "../rd-dts",
+    "outDir": "../../.rd-cache/src/rd",
     "paths": {
       "rd/*": [
         "./*"
@@ -22,6 +22,9 @@
     "skipDefaultLibCheck": true,
     "strict": false,
     "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
     "strictNullChecks": true,
 
     "strictPropertyInitialization": true,
@@ -31,7 +34,7 @@
     "isolatedModules": true,
     "moduleResolution": "Node",
     "types": [
-      "../rd-builder/@types-node"
+      "../rd-dts/@types-node"
     ]
   },
   "include": [
@@ -39,6 +42,7 @@
     "./base/**/*.ts"
   ],
   "exclude": [
+    "./base/browser/**/*",
     "node_modules",
     "../**/*.test.ts"
   ]

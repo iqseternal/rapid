@@ -2,6 +2,7 @@ import './inject';
 import './discrete';
 
 import { StrictMode } from 'react';
+import { Thread } from 'rd/base/browser';
 import { RdAppWrapper } from './app';
 
 import ReactDOM from 'react-dom/client';
