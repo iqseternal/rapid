@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  ci:
+  ci-base:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,9 +35,9 @@ jobs:
       - name: Run tests
         run: pnpm test-all
 
-  cd:
+  deploy-app-website:
     runs-on: ubuntu-latest
-    needs: ci  # 依赖 CI 任务完成
+    needs: ci-base  # 依赖 CI 任务完成
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'  # 核心条件
     steps:
       - name: Checkout code
@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: setup dist of website
+      - name: 构建website
         run: pnpm website:build
 
       - name: Deploy via rsync of website
@@ -67,7 +67,26 @@ jobs:
          REMOTE_USER: ${{ secrets.SERVER_USER }}
          TARGET: "/www/wwwroot/oupro/dist"  # 服务器目标路径
 
-      - name: setup dist of rapid docs
+  deploy-app-docs:
+    runs-on: ubuntu-latest
+    needs: ci-base  # 依赖 CI 任务完成
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'  # 核心条件
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: 构建rapid docs
         run: pnpm docs:build
 
       - name: Deploy via rsync of docs

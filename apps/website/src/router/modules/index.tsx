@@ -13,7 +13,7 @@ export const receptionRoute = makeRoute({
   children: [
     {
       name: 'Home',
-      path: '/home',
+      path: '/recp/home',
       component: lazy(() => import('@/pages/recp/Home'))
     }
   ]
