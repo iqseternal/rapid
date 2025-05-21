@@ -3,7 +3,7 @@
     "composite": true,
     "incremental": true,
     "baseUrl": ".",
-    "outDir": "../../.rd-cache",
+    "outDir": "../../.rd-cache/src/rd",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "resolveJsonModule": true,

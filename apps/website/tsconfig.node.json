@@ -3,6 +3,7 @@
     "composite": true,
     "incremental": true,
     "baseUrl": "./",
+    "outDir": "../../.rd-cache/app-website",
     "target": "ESNext",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -35,7 +36,8 @@
     ]
   },
   "include": [
-    "./rsbuild.config.ts"
+    "./rsbuild.config.ts",
+    "./tsconfig.web.json"
   ],
   "exclude": ["node_modules"]
 }

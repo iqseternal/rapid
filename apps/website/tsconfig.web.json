@@ -4,6 +4,7 @@
     "incremental": true,
     "baseUrl": "./",
     "target": "ESNext",
+    "outDir": "../../.rd-cache/app-website",
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "jsx": "react-jsx",

@@ -5,6 +5,10 @@ import { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import { injectReadonlyVariable } from '@rapid/libs';
 import { useUserStore, useDocStore, useThemeStore, useTldrawStore } from './features';
 import { Metadata, Bus } from './declare';
+import { Thread } from 'rd/base/browser';
+import { rxcThread } from './workers';
+
+import type * as Rapid from './declare';
 
 const extensionManager = new ExtensionManager();
 
@@ -33,6 +37,10 @@ const rApp = Object.freeze<RApp>({
     useThemeStore,
 
     useTldrawStore
+  },
+
+  threads: {
+    rxcThread: rxcThread
   }
 });
 

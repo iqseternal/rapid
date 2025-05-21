@@ -1,3 +1,5 @@
 
 
-export {};
+export { };
+
+export * from './Thread';

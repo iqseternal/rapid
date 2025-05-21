@@ -21,7 +21,8 @@
     "build": "pnpm build-commonjs && pnpm build-esm && pnpm build-types",
     "build-commonjs": "tsc -p . --outDir ./dist/commonjs --module commonjs --declaration false --removeComments true",
     "build-esm": "tsc -p . --outDir ./dist/esm --module ESNext --declaration false --removeComments true",
-    "build-types": "tsc -p . --outDir ./dist/lib --emitDeclarationOnly --removeComments false"
+    "build-types": "tsc -p . --outDir ./dist/lib --emitDeclarationOnly --removeComments false",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "keywords": []
 }

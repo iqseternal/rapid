@@ -5,6 +5,21 @@ import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-w
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
+import type { Thread } from 'rd/base/browser';
+
+export namespace Thread {
+
+  export type MainThreadEntries = {
+    'log': (data: any) => void;
+  }
+
+
+  export type ExtensionThreadEntries = {
+    'log': (data: any) => void;
+  }
+
+
+}
 
 export namespace Bus {
   export type BusEmitterEntries = {
@@ -160,5 +175,16 @@ export declare interface RApp {
     readonly useThemeStore: typeof useThemeStore;
 
     readonly useDocStore: typeof useDocStore;
+  }
+
+  /**
+   * 全局的线程管理
+   */
+  readonly threads: {
+    /**
+     * 插件的线程化版本管理
+     */
+    readonly rxcThread: Thread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
+
   }
 }

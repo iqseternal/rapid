@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "rootDir": "../../",
     "resolveJsonModule": true,
+    "outDir": "../../.rd-cache/app-scripts",
     "jsx": "react-jsx",
     "module": "NodeNext",
     "esModuleInterop": true,
