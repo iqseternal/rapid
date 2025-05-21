@@ -1,4 +1,5 @@
 import type { Config } from 'jest';
+import { join } from 'path';
 
 export default async (): Promise<Config> => {
 
@@ -8,6 +9,7 @@ export default async (): Promise<Config> => {
       "^.+.tsx?$": ["ts-jest", {}],
     },
 
+    coverageDirectory: join(__dirname, './.rd-cache/coverage'),
     // 定义全局变量
     globals: {
       CURRENT_PLATFORM: 0,

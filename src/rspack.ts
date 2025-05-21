@@ -425,17 +425,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
     ],
     server: {
       port: 3002,
-      proxy: {
-        '/rapi': {
-          pathRewrite: (pathname) => {
-            if (pathname.startsWith('/rapi')) return pathname.replace('/rapi', '/api');
-            return pathname;
-          },
-          changeOrigin: true,
-
-          target: 'http://localhost:3000',
-        }
-      }
     },
     output: {
       assetPrefix: '.',
@@ -454,7 +443,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       distPath: {
         root: rendererOutput,
       },
-
       emitAssets: true,
       externals: {
 
@@ -463,7 +451,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       injectStyles: IS_DEV,
       legalComments: 'linked',
       manifest: true,
-
       minify: {
         js: IS_PROD,
         jsOptions: {
@@ -502,9 +489,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
     },
     performance: {
       removeMomentLocale: true,
-      buildCache: {
-        cacheDirectory: join(DIRS.ROOT_DIR, '/.rd-cache/.cache/'),
-      },
       bundleAnalyze: IS_BUILD ? {} : void 0,
     },
     tools: {
@@ -519,6 +503,13 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
           ],
         },
       },
+      swc: {
+        jsc: {
+          experimental: {
+            cacheRoot: join(DIRS.ROOT_DIR, './.rd-cache/src/rd/browser/swc')
+          }
+        }
+      }
     },
   })
 

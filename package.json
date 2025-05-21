@@ -62,7 +62,7 @@
     "typecheck": "pnpm -r run typecheck",
     "test": "jest -o",
     "test-all": "jest",
-    "lint": "eslint . --ext .ts,.tsx,.cts,.mts --cache",
+    "lint": "eslint . --ext .ts,.tsx,.cts,.mts --cache --cache-location ./.rd-cache/.eslintcache",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "electron-builder install-app-deps",
     "prepare": "husky install"
