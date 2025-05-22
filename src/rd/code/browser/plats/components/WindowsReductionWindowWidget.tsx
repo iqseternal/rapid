@@ -13,19 +13,25 @@ export const WindowsReductionWindowWidget = memo(() => {
   const refresh = useRefresh();
 
   const [windowInnerSize] = useWindowInnerSize();
-  const [normalState] = useState({
+  const [normalState] = useState(() => ({
     workAreaSize: {
       width: window.innerWidth,
       height: window.innerHeight,
     }
-  })
+  }))
 
-  const isFullSize = windowInnerSize.innerWidth === normalState.workAreaSize.width && windowInnerSize.innerHeight === normalState.workAreaSize.height;
+  const isFullSize = (
+    windowInnerSize.innerWidth === normalState.workAreaSize.width &&
+    windowInnerSize.innerHeight === normalState.workAreaSize.height
+  );
 
   useAsyncLayoutEffect(async () => {
     const [err, res] = await toNil(window.ipcActions.windowWorkAreaSize());
     if (err) return;
-    normalState.workAreaSize = res;
+    normalState.workAreaSize = {
+      width: res.width,
+      height: res.height,
+    };
     refresh();
   }, []);
 

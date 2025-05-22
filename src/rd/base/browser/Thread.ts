@@ -23,7 +23,7 @@ export class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThrea
    * 自身线程事件句柄
    */
   private readonly selfHandlers = new Map<string, ThreadHandler>();
-  private readonly isInWebWorker  = typeof globalThis.window === 'undefined' && typeof globalThis.self !== 'undefined'
+  private readonly isInWebWorker  = typeof globalThis.window === 'undefined' && typeof globalThis.self !== 'undefined';
 
   private readonly worker?: Worker;
 
