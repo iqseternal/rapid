@@ -1,4 +1,5 @@
 import { NodeCommand, NodeEnv, Env } from './enums';
+import * as process from 'node:process';
 
 declare global {
   namespace NodeJS {
@@ -24,6 +25,11 @@ export class EnvChecker {
    * 是否检查过运行环境
    */
   private static checkedNodeEnv = false;
+
+  /**
+   * 是否检查过运行有效性
+   */
+  private static checkedValidity = false;
 
   /**
    * 获取运行环境
@@ -52,6 +58,7 @@ export class EnvChecker {
   public static checkerAll() {
     EnvChecker.checkerRuntimeCommand();
     EnvChecker.checkerRuntimeNodeEnv();
+    EnvChecker.checkerRuntimeValidity();
   }
 
   /**
@@ -60,15 +67,11 @@ export class EnvChecker {
    */
   public static checkerRuntimeCommand() {
     if (EnvChecker.checkedCommand) return;
+
+    if (!process.env.COMMAND || process.env.COMMAND.trim() === '') throw new Error('运行脚本前请先设置 COMMAND 环境变量');
+    if (!EnvChecker.COMMANDS.includes(process.env.COMMAND)) throw new Error('未定义的 COMMAND 环境变量');
+
     EnvChecker.checkedCommand = true;
-
-    if (!process.env.COMMAND) {
-      throw new Error('运行脚本前请先设置 COMMAND 环境变量');
-    }
-
-    if (!EnvChecker.COMMANDS.includes(process.env.COMMAND)) {
-      throw new Error('未定义的 COMMAND 环境变量');
-    }
   }
 
   /**
@@ -77,29 +80,29 @@ export class EnvChecker {
    */
   public static checkerRuntimeNodeEnv() {
     if (EnvChecker.checkedNodeEnv) return;
-    EnvChecker.checkedNodeEnv = true;
 
     if (!process.env.NODE_ENV) {
+      const command = process.env.COMMAND;
 
-      if (process.env.COMMAND === NodeCommand.Dev) {
-        process.env.NODE_ENV = NodeEnv.Development;
-      }
-      else if (process.env.COMMAND === NodeCommand.Build || process.env.COMMAND === NodeCommand.Preview) {
-        process.env.NODE_ENV = NodeEnv.Production;
-      }
-
-      return;
+      if (command === NodeCommand.Dev) process.env.NODE_ENV = NodeEnv.Development;
+      else if (command === NodeCommand.Build || command === NodeCommand.Preview) process.env.NODE_ENV = NodeEnv.Production;
     }
 
-    if (process.env.COMMAND === NodeCommand.Dev && process.env.NODE_ENV === NodeEnv.Production) {
-      throw new Error(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 不能为 production`);
-    }
+    EnvChecker.checkedNodeEnv = true;
+  }
 
-    if (
-      (process.env.COMMAND === NodeCommand.Build || process.env.COMMAND === NodeCommand.Preview) &&
-      process.env.NODE_ENV !== NodeEnv.Production
-    ) {
-      throw new Error(`错误的环境变量设置, 当前为 ${process.env.COMMAND} 环境, 那么 NODE_ENV 只能是 production`);
-    }
+  /**
+   * 检查运行时的有效性
+   */
+  public static checkerRuntimeValidity() {
+    if (EnvChecker.checkedValidity) return;
+
+    const command = process.env.COMMAND;
+    const nodeEnv = process.env.NODE_ENV;
+
+    if (command === NodeCommand.Dev && nodeEnv === NodeEnv.Production) throw new Error(`错误的环境变量设置, 当前为 ${command} 环境, 那么 NODE_ENV 不能为 production`);
+    if ((command === NodeCommand.Build || command === NodeCommand.Preview) && nodeEnv !== NodeEnv.Production) throw new Error(`错误的环境变量设置, 当前为 ${command} 环境, 那么 NODE_ENV 只能是 production`);
+
+    EnvChecker.checkedValidity = true;
   }
 }

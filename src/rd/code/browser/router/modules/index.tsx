@@ -4,7 +4,7 @@ import type { CompleteRouteConfig } from '@rapid/libs-web/router';
 import { loginRoute, registerRoute, notFoundRoute, notRoleRoute } from './basic';
 
 import RootLayout from '@/layout/RootLayout';
-import WorkspaceLayout from '@/layout/WorkspaceLayout';
+import WorkspaceLayoutWrapper from '@/layout/WorkspaceLayout';
 
 export * from './basic';
 
@@ -28,7 +28,7 @@ export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
   path: `/workbenches`,
   redirect: 'workstation',
-  component: <WorkspaceLayout />,
+  component: <WorkspaceLayoutWrapper />,
   hasErrorBoundary: true,
   errorElement: (
     <div>
@@ -45,21 +45,31 @@ export const workbenchesRoute = makeRoute({
   },
   children: [
     {
-      name:  'WorkbenchesWorkstation',
-      path: '/workbenches/workstation',
-      meta: { title: '工作区', icon: 'FileWordOutlined' },
-      component: lazy(() => import('@/pages/Workspace/Workbenches'))
-    },
-    {
       name: 'WorkbenchesHome',
       path: '/workbenches/home',
-      meta: { title: '首页', icon: 'HomeOutlined', hiddenInMenu: true },
+      meta: {
+        title: '首页',
+        icon: 'HomeOutlined',
+      },
       component: lazy(() => import('@/pages/Workspace/Home'))
+    },
+    {
+      name:  'WorkbenchesWorkstation',
+      path: '/workbenches/workstation',
+      meta: {
+        title: '工作区',
+        icon: 'FileWordOutlined'
+      },
+      component: lazy(() => import('@/pages/Workspace/Workbenches'))
     },
     {
       name: 'Skin',
       path: '/workbenches/skin',
-      meta: { title: '皮肤', icon: 'SkinOutlined', hiddenInMenu: false },
+      meta: {
+        title: '皮肤',
+        icon: 'SkinOutlined',
+        hiddenInMenu: false
+      },
       component: lazy(() => import('@/pages/Workspace/Skin'))
     }
   ]

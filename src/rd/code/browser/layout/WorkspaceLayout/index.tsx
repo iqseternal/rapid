@@ -1,176 +1,20 @@
-import { useRef, memo, useEffect, useLayoutEffect } from 'react';
+import { useRef, memo, useLayoutEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { useFadeIn } from '../../libs/hooks';
-import { NavigationBar } from './cpts';
+import { useFadeIn } from '@/libs/hooks';
+import { NavigationBar } from './plats/NavigationBar';
 import { commonStyles, useAnimationClassSelector } from '@/scss/common';
 import { Guards } from '@/guards';
-import { classnames, useMaintenanceStack, useResizeObserver, useShallowReactive, useZustandHijack } from '@rapid/libs-web';
+import { classnames } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
-import { menus } from '@/menus';
-import { isUndefined } from '@rapid/libs';
+import { MaintenanceMenus } from './plats/MaintenanceMenus';
 
 import Header from '@/components/Header';
-import AutoMenu from '@/components/AutoMenu';
-import IconFont from '@/components/IconFont';
 import Logo from '@/components/Logo';
-import Widget from '@/components/Widget';
 import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';
 import WindowsDebugWidget from '@/plats/components/WindowsDebugWidget';
 import WindowsMinWindowWidget from '@/plats/components/WindowsMinWindowWidget';
 import WindowsReductionWindowWidget from '@/plats/components/WindowsReductionWindowWidget';
-
-/**
- * 左侧收纳的文件菜单
- * @returns
- */
-const MaintenanceMenus = memo(() => {
-  const headerFileMenu = useZustandHijack(menus.headerFileMenu);
-  const headerEditMenu = useZustandHijack(menus.headerEditMenu);
-  const headerViewMenu = useZustandHijack(menus.headerViewMenu);
-  const headerHelpMenu = useZustandHijack(menus.headerHelpMenu);
-
-  // 菜单
-  const { maintenanceStack, storageStack, otherStack, pushMaintenanceStack, popMaintenanceStack } = useMaintenanceStack({
-    maintenanceStack: [
-      headerFileMenu, headerEditMenu, headerViewMenu, headerHelpMenu
-    ],
-    otherStack: [] as ({ sourceWidth: number; calcWidth: number; } | undefined)[],
-  });
-  // 菜单容器
-  const menusContainerRef = useRef<HTMLDivElement>(null);
-
-  //
-  const [statusState] = useShallowReactive({
-    isCalcDone: false
-  })
-
-  // resizeObserver
-  const [resizeObserver] = useResizeObserver(menusContainerRef, () => {
-    const menusContainer = menusContainerRef.current;
-    if (!menusContainer) return;
-
-    // 什么条件添加到展示栈中
-    pushMaintenanceStack((_, other) => {
-      if (!other) return false;
-      return menusContainer.clientWidth >= other.calcWidth;
-    });
-
-    popMaintenanceStack((_, other) => {
-      if (!other) return false;
-      return menusContainer.clientWidth < other.calcWidth;
-    });
-  }, []);
-
-  useEffect(() => {
-
-    return () => {
-      resizeObserver.disconnect();
-    }
-  }, []);
-
-  // 计算元素宽度 以及 它距离最作放的距离
-  useEffect(() => {
-    if (!menusContainerRef.current) return;
-
-    let columnGap = parseInt(getComputedStyle(menusContainerRef.current).columnGap);
-    if (Number.isNaN(columnGap)) columnGap = 0;
-
-    for (let i = 0; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
-      const child = menusContainerRef.current.children[i];
-      if (!(child instanceof HTMLElement)) continue;
-      if (!otherStack[i]) otherStack[i] = { sourceWidth: child.clientWidth, calcWidth: 0 };
-    }
-    if (otherStack.length) {
-      if (otherStack[0]) otherStack[0].calcWidth = otherStack[0].sourceWidth + 50;
-    }
-
-    for (let i = 1; i < maintenanceStack.length && i < menusContainerRef.current.children.length; i++) {
-      if (otherStack.length === 0) continue;
-
-      if (isUndefined(otherStack)) continue;
-      if (isUndefined(otherStack?.[i])) continue;
-      if (isUndefined(otherStack?.[i - 1])) continue;
-
-      const tOther = otherStack[i], ptOther = otherStack[i - 1];
-      if (isUndefined(tOther)) continue;
-      if (isUndefined(ptOther)) continue;
-
-      tOther.calcWidth = ptOther.calcWidth + columnGap + tOther.sourceWidth;
-    }
-
-    statusState.isCalcDone = true;
-
-    return () => {
-      otherStack.fill(void 0);
-      statusState.isCalcDone = false;
-    }
-  }, []);
-
-  return (
-    <div
-      ref={menusContainerRef}
-      className={classnames(
-        'py-0.5 h-full w-full flex items-center justify-start',
-        !statusState.isCalcDone && 'opacity-0'
-      )}
-    >
-      {maintenanceStack.map((menu, index) => {
-        return (
-          <AutoMenu
-            key={`menu.key ${index}`}
-            menu={menu.children}
-            dropdownAttrs={{
-              className: 'h-full'
-            }}
-          >
-            <div
-              className={classnames(
-                commonStyles.appRegionNo,
-                'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
-              )}
-            >
-              {menu.label}
-            </div>
-          </AutoMenu>
-        )
-      })}
-      {storageStack.length > 0 && (
-        <AutoMenu
-          menu={storageStack.map(menu => {
-            return {
-              key: menu.key,
-              label: (
-                <AutoMenu.SubMenu
-                  icon={menu.icon}
-                  label={menu.label}
-                />
-              ),
-              children: menu.children
-            }
-          })}
-          dropdownAttrs={{
-            className: 'h-full'
-          }}
-        >
-          <div
-            className={classnames(
-              commonStyles.appRegionNo,
-              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
-            )}
-          >
-            <IconFont
-              icon='MenuOutlined'
-              className={classnames(
-                commonStyles.appRegionNo
-              )}
-            />
-          </div>
-        </AutoMenu>
-      )}
-    </div>
-  )
-})
 
 /**
  * 工作区视图隔离
@@ -216,32 +60,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
 
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  useLayoutEffect(() => {
-    rApp.metadata.defineMetadata('ui.layout.header.icon', Logo);
-
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
-
-
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-
-    rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
-
-    return () => {
-      rApp.metadata.delMetadata('ui.layout.header.icon');
-
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.reduction');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
-
-
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-
-
-      rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
-    }
-  }, []);
+  const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
 
   return (
     <div className='w-full h-full'>
@@ -256,7 +75,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
           height: `calc(100% - ${cssVars.captionBarHeight})`,
         }}
       >
-        {mainSidebarStatus !== 'none' && <NavigationBar />}
+        {mainSidebarStatus !== 'none' && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
 
         <main
           className={classnames(
@@ -269,6 +88,39 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
       </div>
     </div>
   )
-}));
+}))
 
-export default WorkspaceLayout;
+const WorkspaceLayoutWrapper = memo(() => {
+
+  useLayoutEffect(() => {
+    rApp.metadata.defineMetadata('ui.layout.header.icon', Logo);
+
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
+    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+
+    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+    rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+
+    rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+
+    return () => {
+      rApp.metadata.delMetadata('ui.layout.header.icon');
+
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.reduction');
+      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
+
+      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+      rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+
+      rApp.metadata.delMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+    }
+  }, []);
+
+  return (
+    <WorkspaceLayout />
+  )
+})
+
+export default WorkspaceLayoutWrapper;

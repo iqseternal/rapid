@@ -126,6 +126,11 @@ export namespace Metadata {
      * ui-header控件后插槽
      */
     'ui.layout.header.controller.after': ComponentType[];
+
+    /**
+     * ui-navigation 导航条
+     */
+    'ui.layout.navigation.bar.content': ComponentType[];
   }
 }
 

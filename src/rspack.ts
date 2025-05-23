@@ -26,6 +26,7 @@ import packageJson from '../package.json';
 import tsconfigMainJson from './rd/tsconfig.main.json';
 import tsconfigSandboxJson from './rd/tsconfig.sandbox.json';
 import tsconfigBrowserJson from './rd/tsconfig.browser.json';
+import { Ansi } from '@suey/pkg-utils';
 
 // =====================================================================================
 // 环境变量定义
@@ -103,7 +104,7 @@ const defineVars = {
     // 服务启动地址
     const rendererServerUrl = rendererServer.urls[0];
     if (!rendererServerUrl) {
-      Printer.printError(`renderer 服务启动失败`);
+      Ansi.print(Ansi.red, 'renderer 服务启动失败');
       process.exit(1);
     }
 

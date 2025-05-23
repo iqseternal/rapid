@@ -17,9 +17,6 @@ export type { WindowOverScreenSize } from './useOverScreenSize';
 
 export { useResizeObserver } from './useResizeObserver';
 
-export { useMaintenanceStack } from './useMaintenanceStack';
-export type { MaintenanceStackOptions, JudgeIsCanBeControlStack } from './useMaintenanceStack';
-
 export { useAsyncEffect, useAsyncLayoutEffect } from './useAsyncEffect';
 export type { AsyncEffectCallback } from './useAsyncEffect';
 

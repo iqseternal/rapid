@@ -1,178 +1,179 @@
-import type { MenuInstanceType, AntdMenuInstanceType } from '../../components/AutoMenu';
-
+import type { MenuInstanceType, AntdMenuInstanceType } from '@/components/AutoMenu';
 import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
-import { toMakeZustandHijack } from '@rapid/libs-web';
+import { useSyncNormalState } from '@rapid/libs-web/hooks/useReactive';
 
 import AutoMenu from '@/components/AutoMenu';
 
-const { makeZustandHijack } = toMakeZustandHijack({
-  beforeHijackCovert<T extends MenuInstanceType>(target: T) {
-    return AutoMenu.convertMenuInstance(target);
-  },
-})
+export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
+  const isInDocWorkbenches = useDocStore(state => state.isWork);
 
-export const headerFileMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstanceType>((selector) => ({
-  label: '文件',
-  children: [
-    {
-      type: 'item',
-      icon: 'WindowsOutlined',
-      label: '新建窗口',
-      shortcut: 'Ctrl+N'
-    },
-    {
-      type: 'submenu',
-      icon: 'FileDoneOutlined',
-      label: '新建文档',
-      children: [
-        {
-          type: 'item',
-          label: '空白文档',
-        },
-        {
-          type: 'item',
-          label: '模板文档',
-        }
-      ]
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'item',
-      icon: 'FolderOpenOutlined',
-      label: '打开',
-      shortcut: ['Ctrl+O'],
-      disabled: selector(useDocStore, state => state.isWork),
+  const [fileMenu] = useSyncNormalState<MenuInstanceType>(() => ({
+    label: '文件',
+    children: [
+      {
+        type: 'item',
+        icon: 'WindowsOutlined',
+        label: '新建窗口',
+        shortcut: 'Ctrl+N'
+      },
+      {
+        type: 'submenu',
+        icon: 'FileDoneOutlined',
+        label: '新建文档',
+        children: [
+          {
+            type: 'item',
+            label: '空白文档',
+          },
+          {
+            type: 'item',
+            label: '模板文档',
+          }
+        ]
+      },
+      {
+        type: 'divider'
+      },
+      {
+        type: 'item',
+        icon: 'FolderOpenOutlined',
+        label: '打开',
+        shortcut: ['Ctrl+O'],
+        disabled: isInDocWorkbenches,
+      },
+      {
+        type: 'item',
+        label: '打开最近文档',
+        shortcut: []
+      },
+      {
+        type: 'divider'
+      },
+      {
+        type: 'item',
+        icon: 'SaveOutlined',
+        label: '保存',
+        shortcut: ['Ctrl+S'],
+        disabled: isInDocWorkbenches
+      },
+      {
+        type: 'item',
+        icon: 'SaveOutlined',
+        label: '另存为',
+        shortcut: ['Ctrl+Shift+S'],
+        disabled: isInDocWorkbenches
+      },
+      {
+        type: 'submenu',
+        icon: 'ExportOutlined',
+        label: '导出',
+        children: [
+          {
+            type: 'item',
+            icon: 'FileTextOutlined',
+            label: 'JSON'
+          },
+          {
+            type: 'item',
+            icon: 'FileJpgOutlined',
+            label: 'PNG'
+          }
+        ]
+      },
+      {
+        type: 'divider'
+      },
+      {
+        type: 'item',
+        label: '自动保存'
+      },
+      {
+        type: 'submenu',
+        label: '首选项',
+        children: [
+          {
+            type: 'item',
+            icon: 'SettingOutlined',
+            label: '设置',
+          }
+        ]
+      },
+      {
+        type: 'divider'
+      },
+      {
+        type: 'item',
+        icon: 'PrinterOutlined',
+        label: '打印'
+      }
+    ]
+  }))
 
-    },
-    {
-      type: 'item',
-      label: '打开最近文档',
-      shortcut: []
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'item',
-      icon: 'SaveOutlined',
-      label: '保存',
-      shortcut: ['Ctrl+S'],
-      disabled: selector(useDocStore, state => state.isWork)
-    },
-    {
-      type: 'item',
-      icon: 'SaveOutlined',
-      label: '另存为',
-      shortcut: ['Ctrl+Shift+S'],
-      disabled: selector(useDocStore, state => state.isWork)
-    },
-    {
-      type: 'submenu',
-      icon: 'ExportOutlined',
-      label: '导出',
-      children: [
-        {
-          type: 'item',
-          icon: 'FileTextOutlined',
-          label: 'JSON'
-        },
-        {
-          type: 'item',
-          icon: 'FileJpgOutlined',
-          label: 'PNG'
-        }
-      ]
-    },
-    {
-      type: 'divider'
-    },
+  return useSyncNormalState(() => AutoMenu.convertMenuInstance(fileMenu));
+}
 
-    {
-      type: 'item',
-      label: '自动保存'
-    },
-    {
-      type: 'submenu',
-      label: '首选项',
+export function useHeaderEditMenu(): readonly [AntdMenuInstanceType] {
+  const isInDocWorkbenches = useDocStore(state => state.isWork);
 
-      children: [
-        {
-          type: 'item',
-          icon: 'SettingOutlined',
-          label: '设置',
+  const [editMenu] = useSyncNormalState<MenuInstanceType>(() => ({
+    label: '编辑',
+    children: [
+      {
+        type: 'item',
+        icon: 'RedoOutlined',
+        label: '撤销',
+        disabled: !isInDocWorkbenches
+      },
+      {
+        type: 'item',
+        label: '恢复',
+        disabled: !isInDocWorkbenches,
+      },
+      {
+        type: 'divider'
+      },
+      {
+        type: 'item',
+        label: '剪切',
+        disabled: !isInDocWorkbenches,
+      },
+      {
+        type: 'item',
+        icon: 'CopyOutlined',
+        label: '复制',
+        disabled: !isInDocWorkbenches,
+      },
+      {
+        type: 'item',
+        icon: 'PauseOutlined',
+        label: '粘贴',
+        disabled: !isInDocWorkbenches,
+      },
+      {
+        type: 'divider'
+      },
+      {
+        type: 'item',
+        icon: 'SelectOutlined',
+        label: '全选',
+        disabled: !isInDocWorkbenches,
+      },
+      {
+        type: 'item',
+        icon: 'DeleteOutlined',
+        label: '删除',
+        disabled: !isInDocWorkbenches
+      }
+    ]
+  }))
 
-        }
-      ]
-    },
+  return useSyncNormalState(() => AutoMenu.convertMenuInstance(editMenu));
+}
 
-    {
-      type: 'divider'
-    },
-    {
-      type: 'item',
-      icon: 'PrinterOutlined',
-      label: '打印'
-    }
-  ]
-}));
+export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
+  const layout = useThemeStore(store => store.layout);
 
-export const headerEditMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstanceType>((selector) => ({
-  label: '编辑',
-  children: [
-    {
-      type: 'item',
-      icon: 'RedoOutlined',
-      label: '撤销',
-      disabled: selector(useDocStore, (state) => !state.isWork)
-    },
-    {
-      type: 'item',
-      label: '恢复',
-      disabled: selector(useDocStore, state => !state.isWork),
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'item',
-      label: '剪切',
-      disabled: selector(useDocStore, state => !state.isWork),
-    },
-    {
-      type: 'item',
-      icon: 'CopyOutlined',
-      label: '复制',
-      disabled: selector(useDocStore, state => !state.isWork),
-    },
-    {
-      type: 'item',
-      icon: 'PauseOutlined',
-      label: '粘贴',
-      disabled: selector(useDocStore, state => !state.isWork),
-    },
-    {
-      type: 'divider'
-    },
-    {
-      type: 'item',
-      icon: 'SelectOutlined',
-      label: '全选',
-      disabled: selector(useDocStore, state => !state.isWork),
-    },
-    {
-      type: 'item',
-      icon: 'DeleteOutlined',
-      label: '删除',
-      disabled: selector(useDocStore, state => !state.isWork)
-    }
-  ]
-}));
-
-export const headerViewMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstanceType>((selector) => {
-
-  return {
+  const [viewMenu] = useSyncNormalState<MenuInstanceType>(() => ({
     label: '查看',
 
     children: [
@@ -231,7 +232,7 @@ export const headerViewMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
               {
                 type: 'item',
                 label: '展示',
-                disabled: selector(useThemeStore, store => store.layout.mainSidebar !== 'none'),
+                disabled: layout.mainSidebar !== 'none',
                 onClick: () => {
                   setMainSideBarStatus('left');
                 }
@@ -240,7 +241,7 @@ export const headerViewMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
 
                 type: 'item',
                 label: '隐藏',
-                disabled: selector(useThemeStore, store => store.layout.mainSidebar === 'none'),
+                disabled: layout.mainSidebar === 'none',
                 onClick: () => {
                   setMainSideBarStatus('none')
                 }
@@ -249,12 +250,11 @@ export const headerViewMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
               {
                 type: 'divider',
               },
-
               {
                 type: 'item',
                 icon: 'LeftOutlined',
                 label: '左侧',
-                disabled: selector(useThemeStore, store => store.layout.mainSidebar === 'left'),
+                disabled: layout.mainSidebar === 'left',
                 onClick: () => {
                   setMainSideBarStatus('left');
                 }
@@ -263,20 +263,14 @@ export const headerViewMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
                 type: 'item',
                 icon: 'RightOutlined',
                 label: '右侧',
-                disabled: selector(useThemeStore, store => store.layout.mainSidebar === 'right'),
+                disabled: layout.mainSidebar === 'right',
                 onClick: () => {
                   setMainSideBarStatus('right');
-
                 }
               }
-
             ]
-
           }
-
-
         ]
-
       },
       {
         type: 'divider'
@@ -284,19 +278,17 @@ export const headerViewMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
       {
         type: 'item',
         icon: 'ExceptionOutlined',
-
         label: '扩展'
       }
-
-
-
     ]
-  }
-})
+  }))
 
-export const headerHelpMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstanceType>((selector) => {
+  return useSyncNormalState(() => AutoMenu.convertMenuInstance(viewMenu));
+}
 
-  return {
+export function useHeaderHelpMenu(): readonly [AntdMenuInstanceType] {
+
+  const [helpMenu] = useSyncNormalState<MenuInstanceType>(() => ({
     label: '帮助',
     icon: 'HeatMapOutlined',
     children: [
@@ -360,5 +352,7 @@ export const headerHelpMenu = makeZustandHijack<MenuInstanceType, AntdMenuInstan
         label: '关于'
       }
     ]
-  }
-})
+  }))
+
+  return useSyncNormalState(() => AutoMenu.convertMenuInstance(helpMenu));
+}
