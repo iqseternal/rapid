@@ -1,9 +1,7 @@
-
-
-
 export type ThreadHandler = (data: any) => (void | any);
 
 export type ExtractThreadHandlerData<Handler extends ThreadHandler> = Parameters<Handler>[0];
+
 export type ExtractThreadHandlerReturn<Handler extends ThreadHandler> = ReturnType<Handler>;
 
 export interface ThreadEvent<Data> {

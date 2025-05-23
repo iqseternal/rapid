@@ -8,7 +8,6 @@ import type {
 import type { FC, Key, ReactElement, ReactNode } from 'react';
 import { MenuItem, SubMenu } from './cpts';
 import { IconKey, IconRealKey } from '../IconFont';
-import type { ZustandHijack } from '@rapid/libs-web';
 
 const state = {
   /**
@@ -27,14 +26,14 @@ const generatorStackingKey = () => `rapid-stacking-${state.stackingKey++}`;
  */
 export type MenuItemType = Omit<AntdMenuItemType, 'disabled' | 'icon' | 'key'> & {
   /**
-   * 当前菜单项是否隐藏, 该项可以返回一个 zustand 选择器
+   * 当前菜单项是否隐藏
    */
-  hidden?: boolean | ZustandHijack.ZustandSelectorTarget<boolean>;
+  hidden?: boolean;
 
   /**
-   * 当前菜单项是否禁用, 该项可以返回一个 zustand 选择器
+   * 当前菜单项是否禁用
    */
-  disabled?: boolean | ZustandHijack.ZustandSelectorTarget<boolean>;
+  disabled?: boolean;
 
   /**
    * icon 的选择 key
@@ -174,9 +173,9 @@ export { AntdItemType };
  * 定义一个菜单实例对象的类型, 通过菜单实例和组件 AutoMenu 来生成一个上下文菜单
  */
 export type MenuInstanceType = {
-  label: ReactNode;
-  trigger?: ('click' | 'hover' | 'contextMenu')[];
-  icon?: IconKey;
+  readonly label: ReactNode;
+  readonly trigger?: ('click' | 'hover' | 'contextMenu')[];
+  readonly icon?: IconKey;
   children: ItemType[];
 }
 export type AntdMenuInstanceType = Omit<MenuInstanceType, 'children'> & {
