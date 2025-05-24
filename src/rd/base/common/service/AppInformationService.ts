@@ -15,8 +15,8 @@ export class AppInformationService extends SingleInstanceService {
 
     appApiUrls: {
 
-      rApi: 'http://oupro.cn:3000',
-      rxApi: 'http://oupro.cn:3000'
+      rApi: 'http://oupro.cn/api/v1/',
+      rxApi: 'http://oupro.cn'
 
 
 

@@ -15,20 +15,34 @@ export namespace Thread {
 
 
   export type ExtensionThreadEntries = {
-    'log': (data: any) => void;
+    /**
+     * 启动线程任务、开启插件的心跳检查
+     */
+    'rxc-thread-start-extension-heartbeat': () => void;
+
+    /**
+     * 终止线程任务、关闭插件的心跳检查
+     */
+    'rxc-thread-terminate-extension-heartbeat': () => void;
+
+    /**
+     * 向线程中同步插件的信息
+     */
+    'rxc-thread-sync-extensions-info': () => void;
   }
-
-
 }
 
 export namespace Bus {
   export type BusEmitterEntries = {
+    /**
+     * 启动任务 - rxc 插件心跳检查
+     */
+    'task:start-rxc-extension-heartbeat': () => void;
 
     /**
-     * 测试构建类型
+     * 终止任务 - rxc 插件心跳检查
      */
-    'test': never;
-
+    'task:terminate-rxc-extension-heartbeat': () => void;
   }
 
   export type BusInvokerEntries = {
@@ -46,8 +60,6 @@ export namespace Bus {
      * rx-api-err: 用户凭证访问没有权限
      */
     'r-api-err:unauthorized-credential': (response: AxiosResponse<RApiSuccessResponse, RApiFailResponse>) => Promise<RApiBasicResponse>;
-
-
 
     /**
      * invoker: 获取 store access_token
