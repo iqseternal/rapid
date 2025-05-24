@@ -7,8 +7,10 @@ directories:
 files:
   - 'out/**'
   - 'resources/**'
+afterPack: ./.scripts/afterPack.js
 asarUnpack:
   - resources/**
+  - .scripts/**
 win:
   executableName: rapid
 nsis:
