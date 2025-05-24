@@ -4,23 +4,14 @@ import './discrete';
 import { StrictMode } from 'react';
 import { Thread } from 'rd/base/browser';
 import { RdAppWrapper } from './app';
+import { Application } from './app';
 
-import ReactDOM from 'react-dom/client';
-import RdThemeExtension from './plats/extensions/RdThemeExtension';
 
-import '@/scss/index.scss';
+const application = new Application();
 
-import './tailwind.css';
+await application.registerInnerExtensions();
 
-// ===========================================================================================
-rApp.extension.registerExtension(RdThemeExtension);
+application.registerLocalExtensions();
+application.registerOnlineExtensions();
 
-const rootContainer = document.getElementById('root');
-
-if (rootContainer) {
-  ReactDOM.createRoot(rootContainer).render(
-    <StrictMode>
-      <RdAppWrapper />
-    </StrictMode>
-  );
-}
+application.renderReactApp();

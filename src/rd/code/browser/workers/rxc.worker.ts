@@ -4,10 +4,37 @@ import { Thread } from 'rd/base/browser';
 
 import type * as Rapid from '../declare';
 
-const mainThread = new Thread<Rapid.Thread.MainThreadEntries, Rapid.Thread.ExtensionThreadEntries>();
+const selfThread = new Thread<Rapid.Thread.MainThreadEntries, Rapid.Thread.ExtensionThreadEntries>();
 
-mainThread.handle('log', async data => {
+const state = {
 
-  console.log(data);
+}
+
+/**
+ * 开始心跳任务
+ */
+selfThread.handle('rxc-thread-start-extension-heartbeat', async () => {
+
+
+
 })
+
+
+/**
+ * 终止心跳任务
+ *
+ */
+selfThread.handle('rxc-thread-terminate-extension-heartbeat', async () => {
+
+})
+
+
+
+selfThread.handle('rxc-thread-sync-extensions-info', async () => {
+
+
+
+})
+
+
 

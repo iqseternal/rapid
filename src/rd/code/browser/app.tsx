@@ -1,11 +1,19 @@
 import { ConfigProvider, App } from 'antd';
 import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { RdSKin } from './skin';
+import type { RExtensionContext } from './declare';
+import { StrictMode } from 'react';
+import { toNil } from '@suey/pkg-utils';
+import { useExtensionsApi } from './api/extension';
 
 import RdRouterWrapper from './router';
+import RdThemeExtension from './plats/extensions/RdThemeExtension';
+import ReactDOM from 'react-dom/client';
 import REmpty from '@/components/Empty';
-import type { RExtensionContext } from './declare';
-import { RdSKin } from './skin';
+
+import '@/scss/index.scss';
+import './tailwind.css';
 
 /**
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
@@ -119,3 +127,57 @@ export const RdAppWrapper = memo(() => {
 
   return (<RdApp />)
 })
+
+export class Application {
+
+
+
+
+
+  public async registerLocalExtensions() {
+
+
+
+  }
+
+  public async registerInnerExtensions() {
+
+    rApp.extension.registerExtension(RdThemeExtension);
+
+  }
+
+
+
+  public async registerOnlineExtensions() {
+    const extensionGroupId = 42;
+    const extensionGroupUuid = 'fb024456-2f71-4f79-99e9-c3f5b7e2553c';
+
+    const [err, res] = await toNil(useExtensionsApi({
+      extension_group_id: extensionGroupId,
+      extension_group_uuid: extensionGroupUuid
+    }));
+
+    if (err) return;
+
+    if (res) {
+      const extensions = res.data;
+
+      extensions.forEach(extensionStruct => {
+
+        console.log(extensionStruct);
+      })
+    }
+  }
+
+  public renderReactApp() {
+    const rootContainer = document.getElementById('root');
+
+    if (rootContainer) {
+      ReactDOM.createRoot(rootContainer).render(
+        <StrictMode>
+          <RdAppWrapper />
+        </StrictMode>
+      );
+    }
+  }
+}
