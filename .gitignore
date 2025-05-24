@@ -19,32 +19,16 @@
 /.rd-cache/*
 /.rd-cache
 
+/.nx/cache
+/.nx/workspace-data
 
 # Scss 声明文件, 会在运行时由 rsbuild 插件自动生成
 /**/*.module.scss.d.ts
 
-
+# ============================= 构建输出产物
 
 # 构建产物输出文件夹
 /**/dist
 
-
-.nx/cache
-.nx/workspace-data
-
-
-
-# 测试输出文件, jest 生成
-/coverage/
-# /**/test/
-# /**/*.test.js
-# /**/*.test.jsx
-# /**/*.test.ts
-# /**/*.test.tsx
-
-
-
-
-
-
-# /pnpm-lock.yaml
+# ============================= JS依赖版本
+/pnpm-lock.yaml
