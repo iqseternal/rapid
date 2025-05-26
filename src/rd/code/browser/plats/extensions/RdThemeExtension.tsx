@@ -1,4 +1,5 @@
 import type { RdSKin } from '@/skin';
+import { InnerExtensionNames } from './innerExtensionNames';
 
 const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) => {
 
@@ -6,7 +7,7 @@ const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) =>
 }
 
 export const RdThemeExtension = rApp.extension.defineExtension({
-  name: 'INNER_THEME_EXTENSION',
+  name: InnerExtensionNames.ThemeExtension,
   version: '0.0.0',
 
   onActivated(context) {

@@ -6,8 +6,8 @@ import { useEffect, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDocStore } from '@/features';
 import { produce } from 'immer';
+import { InnerExtensionNames } from '@/plats/extensions';
 
-import ThemeExtension from '../../../plats/extensions/RdThemeExtension';
 import IMessage from '@/components/IMessage';
 
 import styles from './index.module.scss';
@@ -90,14 +90,14 @@ export const Skin = memo(() => {
       <div>
         <Button
           onClick={() => {
-            rApp.extension.activatedExtension(ThemeExtension.name, {});
+            rApp.extension.activatedExtension(InnerExtensionNames.ThemeExtension, {});
           }}
         >
           启用主题插件
         </Button>
         <Button
           onClick={() => {
-            rApp.extension.deactivatedExtension(ThemeExtension.name, {});
+            rApp.extension.deactivatedExtension(InnerExtensionNames.ThemeExtension, {});
           }}
         >
           禁用主题插件

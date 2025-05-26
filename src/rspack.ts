@@ -5,19 +5,16 @@ import { defineConfig as defineRspackConfig } from '@rspack/cli';
 import { defineConfig as defineRsbuildConfig } from '@rsbuild/core';
 import { Printer, printWarn } from '@suey/printer';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
-import type { ChildProcess } from 'child_process';
-import { exec } from 'child_process';
 import { join } from 'path';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
+import { Ansi } from '@suey/pkg-utils';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
-
 import { ElectronService } from './rd-builder/service';
 
-import treeKill from 'tree-kill';
 import tailwindcss from 'tailwindcss';
 import bytenode from 'bytenode';
 
@@ -26,7 +23,6 @@ import packageJson from '../package.json';
 import tsconfigMainJson from './rd/tsconfig.main.json';
 import tsconfigSandboxJson from './rd/tsconfig.sandbox.json';
 import tsconfigBrowserJson from './rd/tsconfig.browser.json';
-import { Ansi } from '@suey/pkg-utils';
 
 // =====================================================================================
 // 环境变量定义
