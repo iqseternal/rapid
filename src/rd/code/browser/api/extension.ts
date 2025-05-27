@@ -9,22 +9,18 @@ export interface UseExtensionsApiPayload {
 }
 
 export interface UseExtensionsApiStruct {
-  extension_id: number;
   extension_group_id: number;
+  extension_group_uuid: string;
+  extension_group_name: string;
+  extension_id: number;
   extension_uuid: string;
   extension_name: string;
-  use_version: number;
+  extension_version_id: number;
+  metadata: {} | null;
+  script_content: string;
   script_hash: string;
-  metadata: {};
-  description?: string;
-  enabled: 0 | 1;
-  status: {
-    is_deleted?: boolean;
-  }
-  creator_id: number;
-  updater_id: number;
-  created_time: string;
-  updated_time: string;
+  use_version: number;
+  version: number;
 }
 
 export type UseExtensionsApiResponse = UseExtensionsApiStruct[];

@@ -1,6 +1,6 @@
-import type { ExposeApi } from 'rd/code/electron-sandbox';
+import type { ExposeApi } from 'rd/code/sandbox';
 
-import type * as RdSandbox from 'rd/code/electron-sandbox';
+import type * as RdSandbox from 'rd/code/sandbox';
 
 // Sandbox
 declare global {

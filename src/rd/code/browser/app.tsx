@@ -130,10 +130,6 @@ export const RdAppWrapper = memo(() => {
 
 export class Application {
 
-
-
-
-
   public async registerLocalExtensions() {
 
 
@@ -145,8 +141,6 @@ export class Application {
     rApp.extension.registerExtension(RdThemeExtension);
 
   }
-
-
 
   public async registerOnlineExtensions() {
     const extensionGroupId = 42;
@@ -163,8 +157,31 @@ export class Application {
       const extensions = res.data;
 
       extensions.forEach(extensionStruct => {
+        const extensionId = extensionStruct.extension_id;
+        const extensionName = extensionStruct.extension_name;
+        const extensionUuid = extensionStruct.extension_uuid;
 
-        console.log(extensionStruct);
+        const scriptContent = extensionStruct.script_content;
+        const scriptHash = extensionStruct.script_hash;
+
+        try {
+          const func = Function(scriptContent);
+
+          console.log(scriptContent);
+
+          const extension = func();
+
+          console.log(extension);
+        } catch (e) {
+
+          console.error(e);
+          return;
+        }
+
+
+
+
+        console.log(scriptContent, scriptHash);
       })
     }
   }

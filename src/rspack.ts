@@ -13,6 +13,7 @@ import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { Ansi } from '@suey/pkg-utils';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
+import { DllPlugin } from '@rspack/core';
 import { ElectronService } from './rd-builder/service';
 
 import tailwindcss from 'tailwindcss';
@@ -53,7 +54,7 @@ const rendererRootDir = join(__dirname, './rd/code/browser');
 const rendererEntry = join(rendererRootDir, './index.tsx');
 
 const mainEntry = join(__dirname, './rd/app.ts');
-const preloadEntry = join(__dirname, './rd/code/electron-sandbox/index.ts');
+const preloadEntry = join(__dirname, './rd/code/sandbox/index.ts');
 
 
 const mainOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/main');
@@ -363,6 +364,7 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
     module: {
       rules: [rules.supportImportRaw, rules.supportTypescript],
     },
+    devtool: IS_DEV ? 'source-map' : false,
     devServer: {
       devMiddleware: {
         writeToDisk: true
@@ -404,7 +406,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
         // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         ...vars,
         ...defineVars
-      }
+      },
     },
     mode: IS_DEV ? 'development' : 'production',
     html: {
@@ -418,7 +420,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       pluginTypedCSSModules(),
       pluginReact(),
       pluginSourceBuild(),
-      IS_PROD && pluginTailwindCSS()
+      IS_PROD && pluginTailwindCSS(),
     ],
     server: {
       port: 3002,
@@ -441,9 +443,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
         root: rendererOutput,
       },
       emitAssets: true,
-      externals: {
-
-      },
       filenameHash: true,
       injectStyles: IS_DEV,
       legalComments: 'linked',
@@ -480,7 +479,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       },
       polyfill: 'off',
       sourceMap: {
-        js: IS_DEV ? void 0 : false,
+        js: IS_DEV ? 'source-map': false,
         css: IS_DEV,
       }
     },

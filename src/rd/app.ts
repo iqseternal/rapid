@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import 'rd/code/electron-main/process';
+import 'rd/code/main/process';
 
-import { CodeMain } from 'rd/code/electron-main/main';
+import { CodeMain } from './code/main';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 const code = new CodeMain();
