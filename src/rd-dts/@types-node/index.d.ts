@@ -19,8 +19,8 @@ declare global {
 
       readonly NODE_ENV: 'development' | 'production';
 
-      ELECTRON_RUN_AS_NODE?: boolean;
-      ELECTRON_NO_ASAR?: boolean;
+      ELECTRON_RUN_AS_NODE?: 'true' | 'false';
+      ELECTRON_NO_ASAR?: 'true' | 'false';
       GOOGLE_API_KEY?: string;
       NODE_OPTIONS?: string;
 
@@ -32,41 +32,41 @@ declare global {
       /**
        * 输出 Chromium 内部日志到控制台，用于调试渲染进程或底层行为
        */
-      ELECTRON_ENABLE_LOGGING?: boolean;
+      ELECTRON_ENABLE_LOGGING?: 'true' | 'false';
 
       /**
        * 创建或激活新通知时，将显示额外的日志记录。在执行常见作时，也会显示这些通知：显示通知、关闭通知、单击通知按钮或回复通知。
        * @see https://www.electronjs.org/docs/latest/api/environment-variables#electron_debug_notifications
        */
-      ELECTRON_DEBUG_NOTIFICATIONS?: boolean;
+      ELECTRON_DEBUG_NOTIFICATIONS?: 'true' | 'false';
 
       /**
        * 当 Electron 从 ASAR 文件中读取时，将读取偏移量和文件路径记录到 tmpdir 系统 .生成的文件可以提供给 ASAR 模块 以优化文件排序。
        * @see https://www.electronjs.org/docs/latest/api/environment-variables#electron_log_asar_reads
        */
-      ELECTRON_LOG_ASAR_READS?: boolean;
+      ELECTRON_LOG_ASAR_READS?: 'true' | 'false';
 
       /**
        * 当 Electron 崩溃时，将堆栈跟踪打印到控制台。
        * 如果 crashReporter 已启动，则此环境变量将不起作用。
        * @see https://www.electronjs.org/docs/latest/api/environment-variables#electron_enable_stack_dumping
        */
-      ELECTRON_ENABLE_STACK_DUMPING?: boolean;
+      ELECTRON_ENABLE_STACK_DUMPING?: 'true' | 'false';
 
       /**
        * 崩溃时显示系统原生错误对话框，而非静默退出(仅 Windows)
        */
-      ELECTRON_DEFAULT_ERROR_MODE?: boolean;
+      ELECTRON_DEFAULT_ERROR_MODE?: 'true' | 'false';
 
       /**
        * 禁用全局菜单栏，强制使用窗口内菜单栏(仅 linux)
        */
-      ELECTRON_FORCE_WINDOW_MENU_BAR?: boolean;
+      ELECTRON_FORCE_WINDOW_MENU_BAR?: 'true' | 'false';
 
       /**
        * 禁止附加到当前控制台会话，避免日志输出冲突(仅 Windows)
        */
-      ELECTRON_NO_ATTACH_CONSOLE?: boolean;
+      ELECTRON_NO_ATTACH_CONSOLE?: 'true' | 'false';
 
       /**
        * 设置文件删除的底层实现，可选 gio（默认）、gvfs-trash 等 (仅 Linux)
@@ -78,7 +78,7 @@ declare global {
        */
       ELECTRON_OVERRIDE_DIST_PATH?: string;
 
-      ELECTRON_DISABLE_SECURITY_WARNINGS?: boolean;
+      ELECTRON_DISABLE_SECURITY_WARNINGS?: 'true' | 'false';
     }
   }
 }

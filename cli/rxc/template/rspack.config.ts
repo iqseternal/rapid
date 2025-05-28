@@ -48,10 +48,12 @@ export default defineConfig({
     path: resolve(__dirname, 'dist'),
     filename: 'bundle.js',
     clean: true,
-    iife: true,
     library: {
-      type: 'umd2',
+      type: 'umd',
+      name: '__define_extension__',
+      export: 'default'
     },
+    globalObject: 'window'
   },
   plugins: [
 
@@ -66,7 +68,7 @@ export default defineConfig({
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
-  cache: false,
+  cache: true,
   watchOptions: {
 
   },
@@ -85,7 +87,7 @@ export default defineConfig({
     usedExports: true,
     removeEmptyChunks: true,
 
-    minimize: true,
+    minimize: false,
     minimizer: [
       new SwcJsMinimizerRspackPlugin({
         minimizerOptions: {
@@ -93,6 +95,8 @@ export default defineConfig({
           mangle: false,
           format: {
             beautify: true,
+            comments: false,
+            ecma: 5,
             indentLevel: 2
           }
         }

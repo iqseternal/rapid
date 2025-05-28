@@ -6,7 +6,9 @@ import type { RExtensionContext } from './declare';
 import { StrictMode } from 'react';
 import { toNil } from '@suey/pkg-utils';
 import { useExtensionsApi } from './api/extension';
+import type { Extension } from '@suey/rxp-meta';
 
+import React from 'react';
 import RdRouterWrapper from './router';
 import RdThemeExtension from './plats/extensions/RdThemeExtension';
 import ReactDOM from 'react-dom/client';
@@ -146,6 +148,8 @@ export class Application {
     const extensionGroupId = 42;
     const extensionGroupUuid = 'fb024456-2f71-4f79-99e9-c3f5b7e2553c';
 
+    window.React = React;
+
     const [err, res] = await toNil(useExtensionsApi({
       extension_group_id: extensionGroupId,
       extension_group_uuid: extensionGroupUuid
@@ -165,23 +169,20 @@ export class Application {
         const scriptHash = extensionStruct.script_hash;
 
         try {
-          const func = Function(scriptContent);
+          eval(scriptContent);
 
-          console.log(scriptContent);
+          if (window.__define_extension__) {
+            const extension = window.__define_extension__() as Extension;
 
-          const extension = func();
-
-          console.log(extension);
+            rApp.extension.registerExtension(extension);
+            rApp.extension.activatedExtension(extension.name, {});
+          }
         } catch (e) {
 
           console.error(e);
           return;
         }
-
-
-
-
-        console.log(scriptContent, scriptHash);
+        // console.log(scriptContent, scriptHash);
       })
     }
   }
