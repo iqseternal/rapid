@@ -31,7 +31,7 @@ declare abstract class Exception<ErrMessageData extends ExceptionErrorMsgData> {
 }
 
 /** Ipc 事件类型 */
-declare enum IpcActionEvent {
+declare const enum IpcActionEvent {
     Handle = 0,
     On = 1
 }

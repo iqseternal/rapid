@@ -1,5 +1,5 @@
 import { isString, isNumber, isNull } from '@rapid/libs';
-import { RuntimeException } from '../exceptions';
+import { RuntimeException, TypeException } from '../exceptions';
 import type { WindowService } from './WindowService';
 
 /**
@@ -65,6 +65,11 @@ export class WindowServiceStateMachine {
 
     if (isString(key)) windowService = WindowServiceStateMachine.keyToServiceMap.get(key);
     else if (isNumber(key)) windowService = WindowServiceStateMachine.idToServiceMap.get(key);
+    else {
+      throw new TypeException('传入了未指定类型 type', {
+        label: 'WindowServiceStateMachine:findWindowService'
+      })
+    }
 
     if (!windowService) return null;
     return windowService;

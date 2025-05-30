@@ -194,4 +194,17 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
 
     return [normalState.extensions];
   }
+
+  /**
+   * 获得所有的插件
+   */
+  public getExtensions(): readonly Extension[] {
+    const extensions: Extension[] = [];
+
+    for (const ext of this.extNameMapStore.values()) {
+      extensions.push(ext.extension);
+    }
+
+    return extensions;
+  }
 }

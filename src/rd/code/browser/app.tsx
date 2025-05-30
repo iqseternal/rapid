@@ -5,8 +5,10 @@ import { RdSKin } from './skin';
 import type { RExtensionContext } from './declare';
 import { StrictMode } from 'react';
 import { toNil } from '@suey/pkg-utils';
-import { useExtensionsApi } from './api/extension';
+import { useExtensionsApi, type UseExtensionHeartbeatVoucher } from './api/extension';
+import type { Extension } from '@suey/rxp-meta';
 
+import React from 'react';
 import RdRouterWrapper from './router';
 import RdThemeExtension from './plats/extensions/RdThemeExtension';
 import ReactDOM from 'react-dom/client';
@@ -130,10 +132,6 @@ export const RdAppWrapper = memo(() => {
 
 export class Application {
 
-
-
-
-
   public async registerLocalExtensions() {
 
 
@@ -146,11 +144,11 @@ export class Application {
 
   }
 
-
-
   public async registerOnlineExtensions() {
     const extensionGroupId = 42;
     const extensionGroupUuid = 'fb024456-2f71-4f79-99e9-c3f5b7e2553c';
+
+    window.React = React;
 
     const [err, res] = await toNil(useExtensionsApi({
       extension_group_id: extensionGroupId,
@@ -160,12 +158,44 @@ export class Application {
     if (err) return;
 
     if (res) {
-      const extensions = res.data;
+      const extensions = res.data.data;
 
       extensions.forEach(extensionStruct => {
+        const extensionId = extensionStruct.extension_id;
+        const extensionName = extensionStruct.extension_name;
+        const extensionUuid = extensionStruct.extension_uuid;
 
-        console.log(extensionStruct);
+        const scriptContent = extensionStruct.script_content;
+        const scriptHash = extensionStruct.script_hash;
+
+        try {
+          eval(scriptContent);
+
+          if (window.__define_extension__) {
+            const extension = window.__define_extension__() as Extension;
+
+            rApp.extension.registerExtension(extension);
+            rApp.extension.activatedExtension(extension.name, {});
+          }
+        } catch (e) {
+
+          console.error(e);
+          return;
+        }
+        // console.log(scriptContent, scriptHash);
       })
+
+      const vouchers: UseExtensionHeartbeatVoucher[] = extensions.map((extension) => {
+
+        return {
+          extension_id: extension.extension_id,
+          extension_uuid: extension.extension_uuid,
+          script_hash: extension.script_hash
+        }
+      });
+
+      rApp.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
+      rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
     }
   }
 

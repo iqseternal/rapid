@@ -5,14 +5,14 @@ import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-w
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
-import type { Thread } from 'rd/base/browser';
+import type { Thread } from 'rd/base/browser/service/Thread';
+import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
 
 export namespace Thread {
 
   export type MainThreadEntries = {
-    'log': (data: any) => void;
+    'rxc:extension-changed': (data: number[]) => void;
   }
-
 
   export type ExtensionThreadEntries = {
     /**
@@ -28,7 +28,7 @@ export namespace Thread {
     /**
      * 向线程中同步插件的信息
      */
-    'rxc-thread-sync-extensions-info': () => void;
+    'rxc-thread-sync-extensions-info': (voucher: UseExtensionHeartbeatVoucher[]) => void;
   }
 }
 

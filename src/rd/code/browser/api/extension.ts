@@ -9,22 +9,18 @@ export interface UseExtensionsApiPayload {
 }
 
 export interface UseExtensionsApiStruct {
-  extension_id: number;
   extension_group_id: number;
+  extension_group_uuid: string;
+  extension_group_name: string;
+  extension_id: number;
   extension_uuid: string;
   extension_name: string;
-  use_version: number;
+  extension_version_id: number;
+  metadata: {} | null;
+  script_content: string;
   script_hash: string;
-  metadata: {};
-  description?: string;
-  enabled: 0 | 1;
-  status: {
-    is_deleted?: boolean;
-  }
-  creator_id: number;
-  updater_id: number;
-  created_time: string;
-  updated_time: string;
+  use_version: number;
+  version: number;
 }
 
 export type UseExtensionsApiResponse = UseExtensionsApiStruct[];
@@ -34,5 +30,27 @@ export type UseExtensionsApi = (payload: UseExtensionsApiPayload) => RApiPromise
 export const useExtensionsApi = asynced<UseExtensionsApi>(async payload => {
   return rApiGet('/rx/ext/use_group', {
     params: payload
+  })
+})
+
+
+export interface UseExtensionHeartbeatVoucher {
+  extension_id: number;
+  extension_uuid: string;
+  script_hash: string;
+}
+
+
+export interface UseExtensionHeartbeatApiPayload {
+  vouchers: UseExtensionHeartbeatVoucher[];
+}
+
+export type UseExtensionHeartbeatApiResponse = number[];
+
+export type UseExtensionHeartbeatApi = (payload: UseExtensionHeartbeatApiPayload) => RApiPromiseLike<UseExtensionHeartbeatApiResponse>;
+
+export const useExtensionHeartbeatApi = asynced<UseExtensionHeartbeatApi>(async payload => {
+  return rApiPost('/rx/ext/heartbeat', {
+    data: payload
   })
 })

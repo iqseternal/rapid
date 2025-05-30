@@ -1,17 +1,6 @@
 import { is } from '@electron-toolkit/utils';
 import { join } from 'path';
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      /**
-       * 注入的变量, 用于在 NodeJs 中获取启动的 Web URL
-       */
-      readonly ELECTRON_RENDERER_URL: string;
-    }
-  }
-}
-
 /**
  * 根据当前的环境获取URL
  *

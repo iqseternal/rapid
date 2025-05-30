@@ -18,7 +18,7 @@ export interface CreateRoutesChildrenOptions {
    * 处理异步组件的展示
    * @returns
    */
-  onLazyComponent: FC<{ children: ReactElement<{}> }>;
+  onLazyComponent: FC<{ children: ReactNode }>;
 }
 
 /**

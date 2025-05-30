@@ -1,6 +1,6 @@
 import type { RApiBasicResponse } from '../api/rApi';
 
-export enum Biz {
+export const enum Biz {
   Success = 0,
   Failure = -1,
 

@@ -56,7 +56,7 @@
     "./assets/**/*.ts",
 
     "./base/**/*.ts",
-    "./code/electron-sandbox/**/*.ts",
+    "./code/sandbox/**/*.ts",
     "../../package.json",
 
     "../../libs/rxp-meta/**/*.ts",

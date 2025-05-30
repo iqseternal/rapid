@@ -1,5 +1,5 @@
 import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig } from '@suey/pkg-utils';
-import type { AxiosResponse } from '@suey/pkg-utils';
+import type { AxiosRequestConfig, AxiosResponse } from '@suey/pkg-utils';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
 const appInformation = AppInformationService.getInstance();
@@ -99,22 +99,18 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
   },
 }, {
   onFulfilled(response) {
-    if (isRApiResponse(response)) {
-      const data = response.data;
+    if (!isRApiResponse(response)) return response;
 
-      if (data.code === 0) return Promise.resolve(data);
+    if (response.data.code === 0) return response;
 
-      const globalThat = globalThis as any;
+    const globalThat = globalThis as any;
 
-      // 获取当前环境是否存在 rApp
-      // 如果存在, 则寻找存在的 invoker 分发器
-      if (
-        Reflect.has(globalThat, 'rApp') &&
-        Reflect.has(globalThat.rApp, 'invoker')
-      ) {
-        return globalThat.rApp.invoker.handle('r-api-err-distributor', response);
-      }
-    }
+    // 获取当前环境是否存在 rApp
+    // 如果存在, 则寻找存在的 invoker 分发器
+    if (
+      Reflect.has(globalThat, 'rApp') &&
+      Reflect.has(globalThat.rApp, 'invoker')
+    ) return globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
 
     return response;
   },
@@ -125,13 +121,13 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
       data: err.response?.data,
       message: err.message || '未知错误',
       INNER: {
-        stack: err.stack,
+        stack: err.stack || '',
         config: err.config,
         request: err.request,
-        response: err.response,
+        response: err.response as any,
         name: err.name
       },
-    } as RApiFailResponse);
+    });
   }
 })
 

@@ -56,7 +56,9 @@ Omit<
   BaseIcpRenderer,
   'invoke' | 'send' | 'sendSync'
 > & {
-  // 向主进程发送事件
+  /**
+   * 向主进程发送事件, 并等待回复
+   */
   invoke<T extends keyof HandleHandlers>(channel: T, ...args: Parameters<HandleHandlers[T]>): ReturnType<HandleHandlers[T]>;
 
   send<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;

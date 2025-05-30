@@ -38,7 +38,7 @@
     ]
   },
   "include": [
-    "./code/electron-sandbox/**/*.ts",
+    "./code/sandbox/**/*.ts",
     "./base/**/*.ts"
   ],
   "exclude": [

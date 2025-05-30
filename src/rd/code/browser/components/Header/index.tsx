@@ -79,7 +79,7 @@ export const Header = memo((props: HeaderProps) => {
         <div
           className={classnames(
             commonStyles.appRegionNo,
-            'flex justify-end gap-x-0.5 flex-none'
+            'flex justify-end gap-x-0.5 flex-none items-center'
           )}
         >
           {controllerOtherWidgets && controllerOtherWidgets.toReversed().map((OtherWidget, index) => (<OtherWidget key={index} />))}

@@ -34,7 +34,7 @@
   },
   "include": [
     "./base/**/*.ts",
-    "./code/electron-main/**/*.ts",
+    "./code/main/**/*.ts",
     "app.ts",
     "../../package.json"
   ],

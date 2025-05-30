@@ -42,6 +42,7 @@
       "reflect-metadata",
       "../../src/rd-dts/@types",
       "../../src/rd-dts/@types-web",
+      "../../src/rd-dts/@types-node",
       "../../src/rd/code/browser/types",
       "node"
     ],
@@ -59,7 +60,7 @@
     "../../libs/**/*.ts",
     "../../libs/**/*.tsx",
     "../../src/rd/**/*.ts",
-    "../../src/rd/**/*.tsx",
+    "../../src/rd/code/browser/**/*.tsx",
     "../../package.json",
     "./src/**/*"
   ],

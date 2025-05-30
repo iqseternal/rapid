@@ -7,9 +7,6 @@ import { useDocStore } from 'rd/code/browser/features';
 
 import Guards from '@/guards';
 
-
-
-
 export const Home = memo(() => {
 
 	const docStore = useDocStore(store => store);

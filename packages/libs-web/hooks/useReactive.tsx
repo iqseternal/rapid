@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
-import { shallowProxy } from '@rapid/libs';
+import { createSallowProxy } from '@rapid/libs';
 
 /**
  * 普通 state, 不自动刷新组件
@@ -99,7 +99,7 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    return shallowProxy(initialState, refresh);
+    return createSallowProxy(initialState, refresh);
   });
 
   /**

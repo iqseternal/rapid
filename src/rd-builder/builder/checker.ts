@@ -1,5 +1,4 @@
 import { NodeCommand, NodeEnv, Env } from './enums';
-import * as process from 'node:process';
 
 declare global {
   namespace NodeJS {
