@@ -5,7 +5,7 @@ import { RdSKin } from './skin';
 import type { RExtensionContext } from './declare';
 import { StrictMode } from 'react';
 import { toNil } from '@suey/pkg-utils';
-import { useExtensionsApi } from './api/extension';
+import { useExtensionsApi, type UseExtensionHeartbeatVoucher } from './api/extension';
 import type { Extension } from '@suey/rxp-meta';
 
 import React from 'react';
@@ -158,7 +158,7 @@ export class Application {
     if (err) return;
 
     if (res) {
-      const extensions = res.data;
+      const extensions = res.data.data;
 
       extensions.forEach(extensionStruct => {
         const extensionId = extensionStruct.extension_id;
@@ -184,6 +184,18 @@ export class Application {
         }
         // console.log(scriptContent, scriptHash);
       })
+
+      const vouchers: UseExtensionHeartbeatVoucher[] = extensions.map((extension) => {
+
+        return {
+          extension_id: extension.extension_id,
+          extension_uuid: extension.extension_uuid,
+          script_hash: extension.script_hash
+        }
+      });
+
+      rApp.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
+      rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
     }
   }
 

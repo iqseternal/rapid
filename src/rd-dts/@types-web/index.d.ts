@@ -7,13 +7,7 @@ import type { Extension } from '@suey/rxp-meta';
 declare global {
 
 
-  interface Window {
 
-
-    __define_extension__?: () => Extension;
-
-
-  }
 }
 
 export {};

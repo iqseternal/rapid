@@ -32,3 +32,25 @@ export const useExtensionsApi = asynced<UseExtensionsApi>(async payload => {
     params: payload
   })
 })
+
+
+export interface UseExtensionHeartbeatVoucher {
+  extension_id: number;
+  extension_uuid: string;
+  script_hash: string;
+}
+
+
+export interface UseExtensionHeartbeatApiPayload {
+  vouchers: UseExtensionHeartbeatVoucher[];
+}
+
+export type UseExtensionHeartbeatApiResponse = number[];
+
+export type UseExtensionHeartbeatApi = (payload: UseExtensionHeartbeatApiPayload) => RApiPromiseLike<UseExtensionHeartbeatApiResponse>;
+
+export const useExtensionHeartbeatApi = asynced<UseExtensionHeartbeatApi>(async payload => {
+  return rApiPost('/rx/ext/heartbeat', {
+    data: payload
+  })
+})
