@@ -103,8 +103,6 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
 
     if (response.data.code === 0) return response;
 
-    if (isRApiResponse(response) && response.data.code === 0) return Promise.resolve(response);
-
     const globalThat = globalThis as any;
 
     // 获取当前环境是否存在 rApp
@@ -112,7 +110,9 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
     if (
       Reflect.has(globalThat, 'rApp') &&
       Reflect.has(globalThat.rApp, 'invoker')
-    ) return globalThat.rApp.invoker.handle('r-api-err-distributor', response);
+    ) return globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
+
+    return response;
   },
   onRejected(err) {
 
