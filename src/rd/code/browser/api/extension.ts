@@ -68,7 +68,6 @@ export const useExtensionsApi = asynced<UseExtensionsApi>(async payload => {
   })
 })
 
-
 export interface UseExtensionHeartbeatVoucher {
   extension_id: number;
   extension_uuid: string;

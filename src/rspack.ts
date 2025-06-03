@@ -479,7 +479,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       },
       polyfill: 'off',
       sourceMap: {
-        js: IS_DEV ? 'source-map': false,
+        js: IS_DEV ? 'source-map' : false,
         css: IS_DEV,
       }
     },
@@ -505,7 +505,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
             cacheRoot: join(DIRS.ROOT_DIR, './.rd-cache/src/rd/browser/swc')
           }
         }
-      }
+      },
     },
   })
 
