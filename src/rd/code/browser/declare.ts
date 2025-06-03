@@ -150,8 +150,14 @@ export interface RExtensionContext {
 
 }
 
-export interface RExtension extends Extension<RExtensionContext> {
-
+export interface RExtension extends Extension<never> {
+  meta?: {
+    extension_id: number;
+    extension_name: string;
+    extension_uuid: string;
+    extension_version_id: number;
+    script_hash: string;
+  }
 }
 
 export declare interface RApp {

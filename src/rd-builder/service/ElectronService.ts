@@ -35,6 +35,7 @@ export class ElectronService {
 
   public constructor() {
     process.addListener('beforeExit', this.bindThisExitElectronProcess);
+    process.addListener('exit', this.bindThisExitCurrentProcess);
   }
 
   /**

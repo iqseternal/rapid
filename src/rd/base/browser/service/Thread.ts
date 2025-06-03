@@ -23,7 +23,7 @@ export class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThrea
   private readonly selfHandlers = new Map<string, ThreadHandler>();
   private readonly isInWebWorker  = typeof globalThis.window === 'undefined' && typeof globalThis.self !== 'undefined';
 
-  private readonly worker?: Worker;
+  public readonly worker?: Worker;
 
   public constructor(worker?: Worker) {
     if (this.isInWebWorker) {
@@ -43,7 +43,7 @@ export class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThrea
 
       }
 
-      globalThis.self.onmessage = (e) => {
+      globalThis.self.onmessage = async (e) => {
         const event = e.data as ThreadEvent<unknown>;
 
         const { channel, data } = event;
@@ -51,7 +51,7 @@ export class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThrea
         const handler = this.selfHandlers.get(channel);
 
         if (handler) {
-          const result = handler(data);
+          const result = await handler(data);
           this.worker?.postMessage({ channel, data: result });
         }
       }
@@ -59,18 +59,24 @@ export class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThrea
       globalThis.self.onmessageerror = (event) => {
 
       }
-
     }
     else {
       if (this.worker) {
-        this.worker.onerror = (event) => {
+        this.worker.onerror = async (event) => {
 
         }
 
-        this.worker.onmessage = (e) => {
+        this.worker.onmessage = async (e) => {
           const event = e.data as ThreadEvent<unknown>;
 
           const { channel, data } = event;
+
+          const handler = this.selfHandlers.get(channel);
+
+          if (handler) {
+            const result = await handler(data);
+            this.worker?.postMessage({ channel, data: result });
+          }
         }
 
         this.worker.onmessageerror = (event) => {

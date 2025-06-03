@@ -12,7 +12,7 @@ const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
  * 3. 调动 emitter 实现事件触发
  */
 export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
-  private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle>();
+  private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle<Ext>>();
 
   /**
    * Define extension, 定义插件, 那么插件会被存储到 Map 中.
@@ -116,7 +116,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
       console.error(`试图重新注册一个已存在得扩展：应该先移除再注册`);
       return;
     }
-    const extensionLifecycle: ExtensionWithLifecycle = {
+    const extensionLifecycle: ExtensionWithLifecycle<Ext> = {
       extension: extension,
       isActivated: false,
     };
@@ -126,7 +126,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * Activated extension
    */
-  public async activatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context: Context) {
+  public async activatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context) {
     const lifecycle = this.extNameMapStore.get(name);
     if (!lifecycle) throw new Error(`试图激活一个不存在得扩展`);
 
@@ -138,7 +138,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 去活某个插件
    */
-  public async deactivatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context: Context) {
+  public async deactivatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context) {
     const lifecycle = this.extNameMapStore.get(name);
     if (!lifecycle) throw new Error(`试图去活一个不存在得扩展`);
 
@@ -150,7 +150,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 删除扩展
    */
-  public async delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context: Context) {
+  public async delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context) {
     const lifecycle = this.extNameMapStore.get(name);
     if (!lifecycle) throw new Error(`试图删除一个不存在得扩展`);
 
@@ -168,7 +168,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 获取扩展列表
    */
-  public useExtensionsList(): readonly [Extension[]] {
+  public useExtensionsList(): readonly [Ext[]] {
     const value = this.useStoreValue();
 
     const [statusState] = useState(() => ({
@@ -176,14 +176,14 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     }))
 
     const [normalState] = useState({
-      extensions: [] as Extension[],
+      extensions: [] as Ext[],
     })
 
     if (statusState.value !== value) {
       statusState.value = value;
 
       // 如果 store 被更新了, 那么替换最新的 extension
-      const extensions: Extension[] = [];
+      const extensions: Ext[] = [];
 
       for (const ext of this.extNameMapStore.values()) {
         extensions.push(ext.extension);
@@ -198,8 +198,8 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 获得所有的插件
    */
-  public getExtensions(): readonly Extension[] {
-    const extensions: Extension[] = [];
+  public getExtensions(): readonly Ext[] {
+    const extensions: Ext[] = [];
 
     for (const ext of this.extNameMapStore.values()) {
       extensions.push(ext.extension);

@@ -1,9 +1,9 @@
 import type * as SKIN from 'rd/code/browser/skin';
-import type * as RA from 'rd/code/browser/declare';
+import type * as Rapid from 'rd/code/browser/declare';
 
 declare global {
   interface Window {
-    readonly rApp: RA.RApp;
+    readonly rApp: Rapid.RApp;
     readonly cssVars: SKIN.RdSKin.CssVarsSheet;
   }
 
@@ -12,10 +12,10 @@ declare global {
     /**
      * extension sdk
      */
-    readonly __define_extension__?: () => Extension;
+    readonly __define_extension__?: Rapid.RExtension;
   }
 
-  const rApp: RA.RApp;
+  const rApp: Rapid.RApp;
 
   const cssVars: SKIN.RdSKin.CssVarsSheet;
 }
