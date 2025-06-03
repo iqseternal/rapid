@@ -68,7 +68,8 @@
     "lint": "eslint . --ext .ts,.tsx,.cts,.mts --cache --cache-location ./.rd-cache/.eslintcache",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "electron-builder install-app-deps",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "node-modules-inspector": "node-modules-inspector"
   },
   "dependencies": {
     "@ant-design/icons": "5.2.6",
@@ -180,6 +181,7 @@
     "husky": "9.0.11",
     "jest": "29.7.0",
     "lint-staged": "15.2.2",
+    "node-modules-inspector": "0.6.8",
     "nx": "20.4.2",
     "only-allow": "1.2.1",
     "prettier": "3.2.5",
