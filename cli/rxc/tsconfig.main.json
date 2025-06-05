@@ -61,6 +61,7 @@
     "../../libs/**/*.tsx",
     "../../src/rd/**/*.ts",
     "../../src/rd/code/browser/**/*.tsx",
+    "../../src/rd/code/browser/**/*.json",
     "../../package.json",
     "./src/**/*"
   ],

@@ -53,6 +53,7 @@
   "include": [
     "./code/browser/**/*.ts",
     "./code/browser/**/*.tsx",
+    "./code/browser/**/*.json",
     "./assets/**/*.ts",
 
     "./base/**/*.ts",

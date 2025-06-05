@@ -1,11 +1,11 @@
-import { WindowServiceStateMachine } from '../../../base/main/service/WindowServiceStateMachine';
+import { WindowServiceStateMachine } from 'rd/base/main/service/WindowServiceStateMachine';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
-import { AppConfigService } from '../../../base/main/service/AppConfigService';
-import { WindowService } from '../../../base/main/service/WindowService';
+import { AppConfigService } from 'rd/base/main/service/AppConfigService';
+import { WindowService } from 'rd/base/main/service/WindowService';
 import { join } from 'path';
 import { Menu, Tray, app, nativeImage } from 'electron';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
-import { AppRouterService } from '../../../base/main/service/AppRouterService';
+import { AppRouterService } from 'rd/base/main/service/AppRouterService';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
 

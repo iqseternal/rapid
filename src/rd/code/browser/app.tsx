@@ -2,6 +2,7 @@ import { ConfigProvider, App } from 'antd';
 import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { RdSKin } from './skin';
+import { ClickToComponent } from 'click-to-react-component';
 import type { RExtensionContext } from './declare';
 
 import RdRouterWrapper from './router';
@@ -117,5 +118,12 @@ export const RdAppWrapper = memo(() => {
     }
   }, [themePayloadTransformers]);
 
-  return (<RdApp />)
+  return (
+    <>
+      {IS_DEV && (
+        <ClickToComponent />
+      )}
+      <RdApp />
+    </>
+  )
 })

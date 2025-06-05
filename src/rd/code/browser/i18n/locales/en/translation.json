@@ -1,0 +1,8 @@
+{
+  "login": {
+    "txs": "s",
+    "login": "Login",
+    "register": "Register",
+    "language": "Change language"
+  }
+}

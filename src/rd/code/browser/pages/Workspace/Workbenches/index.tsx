@@ -1,45 +1,38 @@
-import { memo, useCallback } from 'react';
-import {
-  ReactFlow,
-  MiniMap,
-  Controls,
-  Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-	BackgroundVariant
-} from '@xyflow/react';
+import { memo, useCallback, useEffect } from 'react';
+import { Options, Meta2d } from '@meta2d/core';
+import { flowPens } from '@meta2d/flow-diagram';
+import { activityDiagram } from '@meta2d/activity-diagram';
+import { classPens } from '@meta2d/class-diagram';
+import { sequencePens, sequencePensbyCtx } from '@meta2d/sequence-diagram';
+import { formPens } from '@meta2d/form-diagram';
 
-import '@xyflow/react/dist/style.css';
+const Meta2dContainer = () => {
+  useEffect(() => {
 
-const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+    rApp.meta2d = new Meta2d('meta2d');
+
+    rApp.meta2d.register(flowPens());
+    rApp.meta2d.register(activityDiagram());
+    rApp.meta2d.register(classPens());
+    rApp.meta2d.register(sequencePens());
+    rApp.meta2d.registerCanvasDraw(sequencePensbyCtx());
+    rApp.meta2d.registerCanvasDraw(formPens());
+  }, []);
+
+
+  return (
+    <div className="main">
+      <div className="meta2d w-full h-full" id="meta2d"></div>
+    </div>
+  );
+};
 
 export const Workbenches = memo(() => {
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges],
-  );
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-      >
-        <Controls />
-        <MiniMap />
-        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-      </ReactFlow>
+      <Meta2dContainer />
     </div>
   );
 })

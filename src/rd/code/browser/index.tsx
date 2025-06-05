@@ -11,6 +11,7 @@ import { RdThemeExtension } from './plats/extensions';
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 
+import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
 

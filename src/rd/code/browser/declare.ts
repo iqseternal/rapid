@@ -7,6 +7,7 @@ import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
 import type { Thread } from 'rd/base/browser/service/Thread';
 import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
+import type { Meta2d } from '@meta2d/core';
 
 export namespace Thread {
 
@@ -210,4 +211,6 @@ export declare interface RApp {
     readonly rxcThread: Thread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
 
   }
+
+  meta2d?: Meta2d;
 }

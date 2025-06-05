@@ -695,6 +695,7 @@
     "nonoctal",
     "nullis",
     "pako",
+    "Pensby",
     "Polotno",
     "preinstall",
     "rsbuild",
@@ -728,5 +729,9 @@
 
   },
   "testing.automaticallyOpenTestResults": "openOnTestFailure",
-  "nxConsole.nxWorkspacePath": ""
+  "nxConsole.nxWorkspacePath": "",
+  "i18n-ally.localesPaths": [
+    "src/rd/code/browser/i18n/locales",
+  ],
+  "i18n-ally.displayLanguage": "zh"
 }

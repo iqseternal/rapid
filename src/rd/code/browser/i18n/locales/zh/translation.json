@@ -1,0 +1,8 @@
+{
+  "login": {
+    "txs": "s",
+    "login": "登录",
+    "register": "注册",
+    "language": "切换语言包"
+  }
+}
