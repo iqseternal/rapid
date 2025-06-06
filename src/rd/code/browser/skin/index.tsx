@@ -1,5 +1,6 @@
-import { SKin } from './declare';
 import { cssVariablesPayloadSheet } from './payload';
+
+import * as SKin from 'rd/base/browser/service/Skin';
 
 type CssVariablesPayloadSheetType = typeof cssVariablesPayloadSheet;
 

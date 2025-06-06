@@ -41,13 +41,9 @@
       "./code/browser/types"
     ],
     "paths": {
-      "rd/*": [
-        "./*"
-      ],
-      "@/*": [
-        "./code/browser/*"
-      ],
-      "@suey/rxp-meta": ["../../libs/rxp-meta"]
+      "rd/*": ["./*"],
+      "@/*": ["./code/browser/*"],
+      "@suey/rxp-meta": ["../../libs/rxp-meta/index.ts"]
     }
   },
   "include": [

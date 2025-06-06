@@ -103,6 +103,7 @@ export const Login = memo(() => {
           >
             {t('login.login', '登录')}
           </Button>
+
           <Button
             onClick={register}
             loading={registerPending.pending}

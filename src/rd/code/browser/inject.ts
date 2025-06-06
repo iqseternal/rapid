@@ -5,6 +5,8 @@ import { Extension, ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import { injectReadonlyVariable } from '@rapid/libs';
 import { useUserStore, useDocStore, useThemeStore, useTldrawStore } from './features';
 import { Metadata, Bus } from './declare';
+import type { Meta2d } from '@meta2d/core';
+
 import { rxcThread } from './workers';
 
 import type * as Rapid from './declare';
@@ -17,30 +19,24 @@ const emitter = new Emitter<Bus.BusEmitterEntries>();
 
 const invoker = new Invoker<Bus.BusInvokerEntries>();
 
-const rApp = Object.freeze<RApp>({
+const rApp: Rapid.RApp = ({
   extension: extensionManager,
-
   metadata: metadataManager,
-
   RdSKin: RdSKin,
-
   emitter: emitter,
-
   invoker: invoker,
 
   stores: {
     useUserStore,
-
     useDocStore,
-
     useThemeStore,
-
     useTldrawStore
   },
-
   threads: {
     rxcThread: rxcThread
-  }
+  },
+
+  meta2d: void 0
 });
 
 injectReadonlyVariable(window, 'cssVars', cssVars);

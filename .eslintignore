@@ -36,3 +36,5 @@
 **/*.spec.mtsx
 
 **/__tests__/*
+
+.eslintrc.js
