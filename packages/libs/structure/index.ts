@@ -7,6 +7,6 @@ export { SinglyLinkedList, DoubleLinkedList } from './LinkedList';
 export type { StackType } from './Stack';
 export { Stack, LinkedStack, PriorityStack, PriorityLinkedStack } from './Stack';
 
-export { Queue, LinkedDequeue, PriorityQueue } from './Queue';
+export { Queue, LinkedDequeue, PriorityQueue, Dequeue } from './Queue';
 
 export { Vector } from './Vector';

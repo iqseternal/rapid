@@ -9,6 +9,7 @@ import { registerApi, loginApi } from '@/api';
 import { useRetrieveRoute } from '@/router';
 import { commonStyles } from '@/scss/common';
 import { memo, useEffect, useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import lockUrl from '@/assets/images/login__lock.png?raw';
 import Header from '@/components/Header';
@@ -17,9 +18,12 @@ import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
 import WindowsMinWindowWidget from '@/plats/components/WindowsMinWindowWidget';
 import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';
+import i18n from '@/i18n';
 
 export const Login = memo(() => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
 
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
 
@@ -86,6 +90,10 @@ export const Login = memo(() => {
           />
         </div>
 
+        <div>
+          {t('login.txs', 's')}
+        </div>
+
         <div
           className={classnames(commonStyles.flexRowCenter)}
         >
@@ -93,26 +101,21 @@ export const Login = memo(() => {
             onClick={login}
             loading={loginPending.pending}
           >
-            登录
+            {t('login.login', '登录')}
           </Button>
+
           <Button
             onClick={register}
             loading={registerPending.pending}
           >
-            注册
+            {t('login.register', '注册')}
           </Button>
 
           <Widget
-            tipText='切换语言包'
+            tipText={t('login.language', '切换语言包')}
             icon={'UserAddOutlined'}
             onClick={() => {
-              // toast.success('Hello');
-
-              notification.success({
-                message: '欢迎',
-                description: 'Welcome',
-                placement: 'bottomRight'
-              });
+              i18n.changeLanguage('en');
             }}
           />
         </div>

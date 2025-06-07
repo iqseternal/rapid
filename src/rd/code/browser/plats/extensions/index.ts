@@ -1,4 +1,4 @@
 
 export * from './innerExtensionNames';
-export * from './RdThemeExtension';
 
+export * from './RdThemeExtension';

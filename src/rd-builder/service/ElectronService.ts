@@ -35,12 +35,14 @@ export class ElectronService {
 
   public constructor() {
     process.addListener('beforeExit', this.bindThisExitElectronProcess);
+    process.addListener('exit', this.bindThisExitElectronProcess);
   }
 
   /**
    * 退出当前进程
    */
-  private exitCurrentProcess() {
+  private async exitCurrentProcess() {
+    await this.exitElectronProcess();
     process.exit(0);
   }
 
@@ -121,7 +123,10 @@ export class ElectronService {
   /**
    * 销毁服务
    */
-  public destroy() {
+  public async destroy() {
+    await this.exitElectronProcess();
+
     process.removeListener('beforeExit', this.bindThisExitElectronProcess);
+    process.removeListener('exit', this.bindThisExitElectronProcess);
   }
 }

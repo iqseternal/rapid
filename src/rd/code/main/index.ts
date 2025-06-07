@@ -1,5 +1,5 @@
 import { IpcMainManager } from 'rd/base/main/ipc';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, session } from 'electron';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { WindowFlowService } from './flow/WindowFlowService';

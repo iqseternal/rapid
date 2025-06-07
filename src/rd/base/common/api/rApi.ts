@@ -93,43 +93,51 @@ const rApiConfig: RequestConfig<RApiHConfig> = {
   timeout: 5000,
 };
 
-const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(appInformation.information.appApiUrls.rApi, rApiConfig, {
-  async onFulfilled(config) {
+const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(
+  appInformation.information.appApiUrls.rApi,
+  rApiConfig,
+  {
+    async onFulfilled(config) {
 
+    },
+    async onRejected(config) {
+
+    },
   },
-}, {
-  onFulfilled(response) {
-    if (!isRApiResponse(response)) return response;
+  {
+    async onFulfilled(response) {
+      if (!isRApiResponse(response)) return response;
 
-    if (response.data.code === 0) return response;
+      if (response.data.code === 0) return response;
 
-    const globalThat = globalThis as any;
+      const globalThat = globalThis as any;
 
-    // 获取当前环境是否存在 rApp
-    // 如果存在, 则寻找存在的 invoker 分发器
-    if (
-      Reflect.has(globalThat, 'rApp') &&
-      Reflect.has(globalThat.rApp, 'invoker')
-    ) return globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
+      // 获取当前环境是否存在 rApp
+      // 如果存在, 则寻找存在的 invoker 分发器
+      if (
+        Reflect.has(globalThat, 'rApp') &&
+        Reflect.has(globalThat.rApp, 'invoker')
+      ) return await globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
 
-    return response;
-  },
-  onRejected(err) {
+      return response;
+    },
+    async onRejected(err) {
 
-    return Promise.reject<RApiFailResponse>({
-      code: -1,
-      data: err.response?.data,
-      message: err.message || '未知错误',
-      INNER: {
-        stack: err.stack || '',
-        config: err.config,
-        request: err.request,
-        response: err.response as any,
-        name: err.name
-      },
-    });
+      return Promise.reject<RApiFailResponse>({
+        code: -9999,
+        data: err.response?.data,
+        message: err.message || '未知错误',
+        INNER: {
+          stack: err.stack || '',
+          config: err.config,
+          request: err.request,
+          response: err.response as any,
+          name: err.name
+        },
+      });
+    }
   }
-})
+)
 
 export const { apiGet: rApiGet, apiPost: rApiPost, request: rRequest, createApi: rCreateApi } = rApiRequest;
 

@@ -26,8 +26,8 @@ export const [
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
-  path: `/workbenches`,
-  redirect: 'workstation',
+  path: `/workspace`,
+  redirect: '/workspace/home',
   component: <WorkspaceLayoutWrapper />,
   hasErrorBoundary: true,
   errorElement: (
@@ -45,8 +45,8 @@ export const workbenchesRoute = makeRoute({
   },
   children: [
     {
-      name: 'WorkbenchesHome',
-      path: '/workbenches/home',
+      name: 'WorkspaceHome',
+      path: '/workspace/home',
       meta: {
         title: '首页',
         icon: 'HomeOutlined',
@@ -54,17 +54,17 @@ export const workbenchesRoute = makeRoute({
       component: lazy(() => import('@/pages/Workspace/Home'))
     },
     {
-      name:  'WorkbenchesWorkstation',
-      path: '/workbenches/workstation',
+      name:  'WorkspaceWorkstation',
+      path: '/workspace/workstation',
       meta: {
         title: '工作区',
         icon: 'FileWordOutlined'
       },
-      component: lazy(() => import('@/pages/Workspace/Workbenches'))
+      component: lazy(() => import('../../pages/Workspace/Wrokstation'))
     },
     {
-      name: 'Skin',
-      path: '/workbenches/skin',
+      name: 'WorkspaceSkin',
+      path: '/workspace/skin',
       meta: {
         title: '皮肤',
         icon: 'SkinOutlined',

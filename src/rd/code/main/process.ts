@@ -1,4 +1,4 @@
-import { LoggerService } from '../../base/main/service/LoggerService';
+import { LoggerService } from 'rd/base/main/service/LoggerService';
 import { Exception, isException, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { Catch } from 'rd/base/main/exceptions';

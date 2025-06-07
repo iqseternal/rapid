@@ -14,21 +14,21 @@ export interface Extension<Context = any> {
   /**
    * 插件数据, 由项目自主决定插件附带携带的数据
    */
-  readonly meta?: any;
+  meta?: any;
 
   /**
    * 插件被激活, 被使用的状态
    */
-  readonly onActivated?: (this: this, context: Context) => (void | Promise<void>);
+  readonly onActivated?: (this: this, context?: Context) => (void | Promise<void>);
 
   /**
    * 插件被去活, 被禁用的状态
    */
-  readonly onDeactivated?: (this: this, context: Context) => (void | Promise<void>);
+  readonly onDeactivated?: (this: this, context?: Context) => (void | Promise<void>);
 }
 
-export interface ExtensionWithLifecycle {
-  readonly extension: Extension;
+export interface ExtensionWithLifecycle<Ext extends Extension> {
+  readonly extension: Ext;
 
   /**
    * 插件是否被激活

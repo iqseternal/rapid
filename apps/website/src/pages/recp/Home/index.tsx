@@ -220,7 +220,7 @@ const Home = memo(() => {
                       size='large'
                       className='h-12 px-8 text-lg bg-white/10 backdrop-blur border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105'
                       onClick={() => {
-                        window.open(`http://rapid-doc.oupro.cn/`);
+                        window.open('http://rapid-doc.oupro.cn/');
                       }}
                     >
                       点击查看文档

@@ -5,7 +5,7 @@ export type { BuilderOptions } from './builder';
 export { EnvBuilder } from './builder';
 
 export {
-  RuntimePlatforms,
+  Platforms,
 
   PlatformsOnDesktop, PlatformsOnBrowser, PlatformsOnMobile,
 

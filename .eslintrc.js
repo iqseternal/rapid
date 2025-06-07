@@ -1,4 +1,3 @@
-
 /**
  * @type {import('eslint').Linter.Config}
  */
@@ -16,7 +15,7 @@ module.exports = ({
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
-    "plugin:react/recommended",
+    'plugin:react/recommended',
     'plugin:prettier/recommended',
     'prettier',
   ],
@@ -28,7 +27,7 @@ module.exports = ({
     ecmaFeatures: {
       jsx: true,
     },
-    allowDefaultProject: true,
+    allowDefaultProject: false,
     project: null
   },
   settings: {
@@ -198,10 +197,10 @@ module.exports = ({
     '@typescript-eslint/no-restricted-types': 'off',
     '@typescript-eslint/no-shadow': 'off',
     '@typescript-eslint/no-this-alias': [
-      "error",
+      'error',
       {
-        "allowDestructuring": true,
-        "allowedNames": ["that", "self", "_this", "_that"]
+        'allowDestructuring': true,
+        'allowedNames': ['that', 'self', '_this', '_that']
       }
     ],
     '@typescript-eslint/no-type-alias': 'off',
@@ -272,6 +271,9 @@ module.exports = ({
     // =================================================================
     // ============================ Inner Rules ========================
     // =================================================================
+
+    'quotes': 'off',
+
     /**
      * 要求数组方法需要具有返回值, typescript 能够检查
      * @see https://eslint.org/docs/v8.x/rules/array-callback-return
@@ -714,7 +716,7 @@ module.exports = ({
      * 在捕获当前执行上下文时强制执行一致的命名
      * @see https://eslint.org/docs/v8.x/rules/consistent-this
      */
-    'consistent-this': ["error", "that", "self", "_this", "_that"],
+    'consistent-this': ['error', 'that', 'self', '_this', '_that'],
 
     /**
      * 对所有控制语句强制执行一致的大括号样式
@@ -897,8 +899,8 @@ module.exports = ({
      * @see https://eslint.org/docs/v8.x/rules/no-confusing-arrow
      */
     'no-confusing-arrow': ['warn', {
-      "allowParens": true,
-      "onlyOneSimpleParam": false
+      'allowParens': true,
+      'onlyOneSimpleParam': false
     }],
 
     /**
@@ -1015,7 +1017,7 @@ module.exports = ({
     'no-implicit-coercion': 'off',
 
     /**
-     * 最好避免用本应属于脚本的局部变量"污染"全局范围。
+     * 最好避免用本应属于脚本的局部变量'污染'全局范围。
      * @see https://eslint.org/docs/v8.x/rules/no-implicit-globals
      */
     'no-implicit-globals': 'off',

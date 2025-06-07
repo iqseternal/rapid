@@ -1,9 +1,9 @@
-import { WindowServiceStateMachine } from '../../../base/main/service/WindowServiceStateMachine';
+import { WindowServiceStateMachine } from 'rd/base/main/service/WindowServiceStateMachine';
 import { join } from 'path';
 import { Menu, Tray, app, nativeImage } from 'electron';
 import { WindowFlowService } from './WindowFlowService';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
-import { AppRouterService } from '../../../base/main/service/AppRouterService';
+import { AppRouterService } from 'rd/base/main/service/AppRouterService';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
 

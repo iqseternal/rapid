@@ -6,7 +6,7 @@ export default async (): Promise<Config> => {
 
   return {
     transform: {
-      "^.+.tsx?$": ["ts-jest", {}],
+      '^.+.tsx?$': ['ts-jest', {}],
     },
 
     coverageDirectory: join(__dirname, './.rd-cache/coverage'),
@@ -45,7 +45,7 @@ export default async (): Promise<Config> => {
     // maxWorkers: '50%',
 
     // 模块使用的文件扩展名数组。如果你需要模块而没有指定文件扩展名，这些是 Jest 将按照从左到右的顺序查找的扩展。
-    moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
 
     // 打印一条警告，指示如果 Jest 在完成后的这个毫秒数内没有干净地退出，则可能存在打开的句柄。
     openHandlesTimeout: 1000,
@@ -81,13 +81,13 @@ export default async (): Promise<Config> => {
 
     // Jest 用来检测测试文件的 glob 模式
     testMatch: [
-      "**/__tests__/**/*.[jt]s?(x)",
-      "**/?(*.)+(spec|test).[jt]s?(x)"
+      '**/__tests__/**/*.[jt]s?(x)',
+      '**/?(*.)+(spec|test).[jt]s?(x)'
     ],
 
     // 如果测试路径与任何模式匹配，则将跳过该路径。
     testPathIgnorePatterns: [
-      "/node_modules/"
+      '/node_modules/'
     ],
 
     // 测试超时时间

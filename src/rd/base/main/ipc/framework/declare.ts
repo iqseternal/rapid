@@ -2,7 +2,7 @@ import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { Exception, isException, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 
 /** Ipc 事件类型 */
-export enum IpcActionEvent {
+export const enum IpcActionEvent {
   Handle,
   On
 }

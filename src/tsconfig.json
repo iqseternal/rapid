@@ -14,12 +14,15 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true
   },
   "include": [
     "./rspack.ts",
 
     "./rd-builder/**/*",
+    "./scripts/**/*",
 
     "./rd/*.json",
     "../package.json"

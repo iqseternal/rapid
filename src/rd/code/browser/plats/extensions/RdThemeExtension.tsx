@@ -1,7 +1,8 @@
-import type { RdSKin } from '@/skin';
 import { InnerExtensionNames } from './innerExtensionNames';
 
-const transformer = (cssVariablesDeclaration: RdSKin.CssVariablesDeclaration) => {
+const transformer = (cssVariablesDeclaration: Rapid.SKin.CssVariablesDeclaration) => {
+
+  // cssVariablesDeclaration['--rd-caption-bar-background-color'] = '#00F';
 
   return cssVariablesDeclaration;
 }

@@ -18,6 +18,9 @@ export interface LoginApiPayload {
 
 export type LoginApiPromise = RApiPromiseLike<LoginResponse, null>;
 
+/**
+ * 登录
+ */
 export const loginApi = (payload: LoginApiPayload) => {
   return rApiPost<LoginResponse, {}>('/user/login', {
     hConfig: {
@@ -41,6 +44,9 @@ export interface RegisterApiPayload {
 
 export type RegisterApiPromise = RApiPromiseLike<RegisterResponse, null>;
 
+/**
+ * 注册
+ */
 export const registerApi = (payload: RegisterApiPayload) => {
   return rApiPost<RegisterResponse, null>('/user/register', {
 
@@ -59,6 +65,9 @@ export interface LogoutApiPayload {
 
 export type LogoutApiPromise = RApiPromiseLike<LogoutResponse, null>;
 
+/**
+ * 登出
+ */
 export const logoutApi = (payload: LogoutApiPayload) => {
   return rApiPost<LogoutResponse, null>('/user/logout', {
 

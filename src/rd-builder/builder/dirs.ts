@@ -1,18 +1,28 @@
 import * as path from 'path';
 
-/** 项目根目录 */
+/**
+ * 项目根目录
+ */
 export const ROOT_DIR = path.join(__dirname, '../../../');
 
-/** 打包根目录 */
+/**
+ * 打包根目录
+ */
 export const DIST_DIR = path.join(ROOT_DIR, './dist');
 
-/** 打包 website 的输出目录 */
+/**
+ * 打包 website 的输出目录
+ */
 export const DIST_WEBSITE_DIR = path.join(DIST_DIR, './website');
 
-/** 打包 Web 平台的输出目录 */
+/**
+ * 打包 Web 平台的输出目录
+ */
 export const DIST_WEB_DIR = path.join(DIST_DIR, './web');
 
-/** 打包 desktop 的输出目录 */
+/**
+ * 打包 desktop 的输出目录
+ */
 export const DIST_DESKTOP_DIR = path.join(DIST_DIR, './app');
 
 /**

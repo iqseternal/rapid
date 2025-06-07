@@ -28,8 +28,6 @@ const defineAlias = (basePath: string, paths: Record<string, string[]>) => {
 
 export default defineConfig(({ env, command, envMode }) => {
 
-  const IS_PROD = (env === 'production');
-
   return {
     source: {
       entry: {
@@ -55,7 +53,7 @@ export default defineConfig(({ env, command, envMode }) => {
           plugins: [
             tailwindcss({
               content: [
-                join(__dirname, `/src/**/*.{html,js,ts,jsx,tsx}`)
+                join(__dirname, '/src/**/*.{html,js,ts,jsx,tsx}')
               ],
             }),
           ],

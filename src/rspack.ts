@@ -18,9 +18,7 @@ import { ElectronService } from './rd-builder/service';
 
 import tailwindcss from 'tailwindcss';
 import bytenode from 'bytenode';
-
 import packageJson from '../package.json';
-
 import tsconfigMainJson from './rd/tsconfig.main.json';
 import tsconfigSandboxJson from './rd/tsconfig.sandbox.json';
 import tsconfigBrowserJson from './rd/tsconfig.browser.json';
@@ -420,7 +418,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       pluginTypedCSSModules(),
       pluginReact(),
       pluginSourceBuild(),
-      IS_PROD && pluginTailwindCSS(),
+      IS_PROD && pluginTailwindCSS()
     ],
     server: {
       port: 3002,
@@ -479,7 +477,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       },
       polyfill: 'off',
       sourceMap: {
-        js: IS_DEV ? 'source-map': false,
+        js: IS_DEV ? 'source-map' : false,
         css: IS_DEV,
       }
     },
@@ -505,7 +503,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
             cacheRoot: join(DIRS.ROOT_DIR, './.rd-cache/src/rd/browser/swc')
           }
         }
-      }
+      },
     },
   })
 

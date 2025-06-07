@@ -1,7 +1,8 @@
 import * as iconInstance from '@ant-design/icons';
 
 type IconRealKey = Exclude<keyof typeof iconInstance, 'createFromIconfontCN' | 'default' | 'IconProvider' | 'setTwoToneColor' | 'getTwoToneColor'>;
-type IconKey = IconRealKey | `icon-${string}`;
+type IconCustomKey = `icon-${string}`;
+type IconKey = IconRealKey | IconCustomKey;
 
 declare module '@rapid/libs-web' {
 
