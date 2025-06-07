@@ -3,13 +3,32 @@ import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-w
 import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
-import type { Thread } from 'rd/base/browser/service/Thread';
+import type { Thread, ThreadHandler } from 'rd/base/browser/service/Thread';
 import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
 import type { Meta2d } from '@meta2d/core';
 import type { CssVariablesDeclaration, Skin } from 'rd/base/browser/service/Skin';
 import type { RdCssVariablePayloadSheet } from './skin';
+import type { Extension } from '@suey/rxp-meta';
 
-import type * as RxpMeta from '@suey/rxp-meta';
+// ==================================================================================================
+// ===== WHY TO THIS
+// ===== 对已有的类型进行别名定义 - 如果不别名定义会导致 Rapid 域中具有重复的标识符, 会导致 tsup 解析声明出现冲突错误
+// ==================================================================================================
+interface RdExtension extends Extension<never> {
+  meta?: {
+    extension_id: number;
+    extension_name: string;
+    extension_uuid: string;
+    extension_version_id: number;
+    script_hash: string;
+  }
+}
+
+type RdCssVariablesDeclaration = import('rd/base/browser/service/Skin').CssVariablesDeclaration<RdCssVariablePayloadSheet>;
+type RdCssVars = import('rd/base/browser/service/Skin').CssVars<RdCssVariablePayloadSheet>;
+type RdThread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntries extends Record<string, ThreadHandler> = {}> = import('rd/base/browser/service/Thread').Thread<TThreadEntries, SThreadEntries>;
+
+// ==================================================================================================
 
 declare global {
   interface Window {
@@ -122,12 +141,12 @@ declare global {
       /**
        * 皮肤变量声明
        */
-      export type CssVariablesDeclaration = import('rd/base/browser/service/Skin').CssVariablesDeclaration<RdCssVariablePayloadSheet>;
+      export type CssVariablesDeclaration = RdCssVariablesDeclaration;
 
       /**
        * 皮肤变量
        */
-      export type CssVars = import('rd/base/browser/service/Skin').CssVars<RdCssVariablePayloadSheet>;
+      export type CssVars = RdCssVars;
     }
 
     /**
@@ -220,15 +239,7 @@ declare global {
       /**
        * 扩展
        */
-      export interface Extension extends RxpMeta.Extension<never> {
-        meta?: {
-          extension_id: number;
-          extension_name: string;
-          extension_uuid: string;
-          extension_version_id: number;
-          script_hash: string;
-        }
-      }
+      export interface Extension extends RdExtension { }
     }
 
     /**
@@ -238,12 +249,12 @@ declare global {
       /**
        * 插件管理器
        */
-      readonly extension: RxpMeta.ExtensionManager<Extend.Extension>;
+      readonly extension: import('@suey/rxp-meta').ExtensionManager<Extend.Extension>;
 
       /**
        * 元数据管理器
        */
-      readonly metadata: RxpMeta.MetadataManager<Extend.Metadata.MetadataEntries>;
+      readonly metadata: import('@suey/rxp-meta').MetadataManager<Extend.Metadata.MetadataEntries>;
 
       /**
        * 事件总线
@@ -262,7 +273,7 @@ declare global {
         /**
          * 插件的线程化版本管理
          */
-        readonly rxcThread: Thread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
+        readonly rxcThread: RdThread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
 
       }
 
@@ -328,8 +339,8 @@ declare global {
         readonly Emitter: typeof Emitter;
         readonly Invoker: typeof Invoker;
 
-        readonly ExtensionManager: typeof RxpMeta.ExtensionManager;
-        readonly MetadataManager: typeof RxpMeta.MetadataManager;
+        readonly ExtensionManager: typeof import('@suey/rxp-meta').ExtensionManager;
+        readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
       }
     }
   }

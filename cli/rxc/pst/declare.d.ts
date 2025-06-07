@@ -167,6 +167,302 @@ declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value
  */
 declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
+type ExtensionName = string | symbol;
+interface Extension<Context = any> {
+    /**
+     * 插件的唯一标识 name
+     */
+    readonly name: ExtensionName;
+    /**
+     * 插件版本
+     */
+    readonly version: string | number;
+    /**
+     * 插件数据, 由项目自主决定插件附带携带的数据
+     */
+    meta?: any;
+    /**
+     * 插件被激活, 被使用的状态
+     */
+    readonly onActivated?: (this: this, context?: Context) => (void | Promise<void>);
+    /**
+     * 插件被去活, 被禁用的状态
+     */
+    readonly onDeactivated?: (this: this, context?: Context) => (void | Promise<void>);
+}
+type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];
+
+/**
+ * 监听 store 的触发回调函数
+ */
+type InnerStoreListener = () => void;
+/**
+ * 销毁 store 的触发回调函数
+ */
+type InnerStoreDestroyListener = () => void;
+/**
+ * 内部 store manager
+ */
+declare abstract class InnerZustandStoreManager {
+    /**
+     * zustand
+     */
+    private readonly store;
+    private readonly listeners;
+    private readonly unsubscribe;
+    /**
+     * 更新当前的 store, 会导致状态库的组件更新触发
+     */
+    protected updateStore(): void;
+    /**
+     * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
+     */
+    protected useStoreValue(): {};
+    /**
+     * 添加订阅函数
+     */
+    protected subscribe(listener: InnerStoreListener): InnerStoreDestroyListener;
+    protected destroy(): void;
+}
+
+/**
+ * 定义一个插件, 这里所抽象得插件只是一个携带数据得对象、以及具有特殊时机执行得函数
+ *
+ * 1. 插件件可以有自己的生命周期函数, 例如 onActivated, onDeactivated
+ * 2. 插件可以调动 metadataManager 从而实现插件化开发
+ * 3. 调动 emitter 实现事件触发
+ */
+declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
+    private readonly extNameMapStore;
+    /**
+     * Define extension, 定义插件, 那么插件会被存储到 Map 中.
+     */
+    defineExtension<DExt extends Ext>(define: DExt): DExt;
+    /**
+     * 判断一个对象是否是一个 扩展对象
+     */
+    isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt;
+    /**
+     * 判断是否含有当前扩展：即是否已经注册
+     */
+    hasExtension(extensionName: ExtensionName): boolean;
+    /**
+     * 获取一个扩展
+     */
+    getExtension(extensionName: ExtensionName): Ext | null;
+    /**
+     * 注册一个扩展
+     */
+    registerExtension<DExt extends Ext>(extension: DExt): void;
+    /**
+     * Activated extension
+     */
+    activatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
+    /**
+     * 去活某个插件
+     */
+    deactivatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
+    /**
+     * 删除扩展
+     */
+    delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
+    /**
+     * 获取扩展列表
+     */
+    useExtensionsList(): readonly [Ext[]];
+    /**
+     * 获得所有的插件
+     */
+    getExtensions(): readonly Ext[];
+}
+
+type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
+type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
+/**
+ * 从数组中提取出元素的类型
+ * @example
+ * type A = number[];
+ * type B = ExtractElInArray<A>; // number
+ */
+type ExtractElInArray<T> = IsAny<T, never, T extends (infer U)[] ? U : never>;
+/**
+ * 提取列表的 entries, 在 interface {} 中, 只有值为数组类型 U[], 时会被保留, 否则不在此类型中
+ * @example
+ * type A = {
+ *    name: string;
+ *    age: number;
+ *    friends: any[];
+ * }
+ *
+ * type B = ExtractVectorEntries<A>; // { friends: any[]; }
+ */
+type ExtractVectorEntries<Entries> = {
+    [Key in keyof Entries as (IsAny<Entries[Key], never, Entries[Key] extends unknown[] ? Key : never>)]: Entries[Key];
+};
+/**
+ * 提取列表的 entries, 在 interface {} 中, 只有值不为数组类型 U[], 时会被保留, 否则不在此类型中
+ * @description 与上一个 `ExtractVectorEntries` 相反
+ * @example
+ * type A = {
+ *    name: string;
+ *    age: number;
+ *    friends: any[];
+ * }
+ *
+ * type B = ExtractSingleEntries<A>; // { name: string;age: number; }
+ */
+type ExtractSingleEntries<Entries> = {
+    [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
+};
+type MetadataAction = 'Define' | 'Remove';
+type MetadataType = 'Vector' | 'Single' | 'All';
+interface MetadataStoreListenerPayload {
+    action: MetadataAction;
+    type: MetadataType;
+    metadataKey: number | string | symbol;
+    metadata: unknown;
+}
+type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;
+
+/**
+ * 元数据, 在页面中组件的变化可能相距甚远
+ * 进入到某一个页面, 可能其他大组件下的某处地方可能发生元素更改, 那么使用本 store 进行连携
+ *
+ * 1. 在可能变化的地方获取槽点数据, 可能是字符也有可能是其他的
+ *
+ * 2. 在特殊时机, 注册槽点数据, 从而响应式自动更新到子孙或者兄弟级甚远的组件进行渲染
+ *
+ */
+declare class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
+    private readonly metadataMap;
+    private readonly metadataChangeListeners;
+    /**
+     * 触发元数据更改监听函数
+     */
+    protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload): void;
+    /**
+     * 订阅元数据更改
+     */
+    subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener): () => void;
+    /**
+     * 定义 store 元数据, 元数据可以是任何东西
+     * @example
+     * metadata.defineMetadata('example-key', 1);
+     * metadata.defineMetadata('example-key', 'a');
+     * metadata.defineMetadata('example-key', {});
+     * metadata.defineMetadata('example-key', () => { return (<div />) });
+     */
+    defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    /**
+     * 获取定义的元数据
+     * @example
+     * metadata.getMetadata('example-key');
+     */
+    getMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
+    /**
+     * 删除定义的元数据
+     * @example
+     * metadata.delMetadata('example-key');
+     */
+    delMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): void;
+    /**
+     * 语义化方法, 作用与 defineMetadata 一致. 但是在此基础上排除了数据值类型
+     * @description 意为: 定义覆盖式的元数据
+     */
+    defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    /**
+     * 定义多个元数据组合的容器型元数据列表, 顾名思义, 也就是某个元数据的定义是数组时使用, 能够自动从数组中添加单个该元数据, 而不是全部覆盖
+     * @example
+     * metadata.defineMetadataInVector('example-key', 1);
+     * metadata.defineMetadataInVector('example-key', 'a');
+     * metadata.defineMetadataInVector('example-key', {});
+     * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
+     */
+    defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
+    /**
+     * 在一组元数据集合列表中删除具体的某一个, 通常与 `defineMetadataInVector` 配套使用
+     * @example
+     * const data = {};
+     * metadata.defineMetadataInVector('example-key', data);
+     *
+     * metadata.delMetadataInVector('example-key', data);
+     */
+    delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
+    /**
+     * 组件 hook, 观察元数据变化
+     * @description 返回数据是注册的元数据, 如果是非 react 组件, 而是普通数据, 所以外部要监听使用变化时应当加入 effect 副作用列表
+     * @example
+     * const Fc = () => {
+     *   const data = metadata.useMetadata('example-key');
+     *   useEffect(() => {
+     *     // use data
+     *     // some code...
+     *     return () => {
+     *        // clear data use.
+     *        // some code...
+     *     }
+     *   }, [data]);
+     *   return (<div />)
+     * }
+     *
+     * @description 使用的元数据也有可能是 react 组件
+     * @example
+     * const Fc = () => {
+     *   const Component = metadata.useMetadata('example-key');
+     *
+     *   return (
+     *    <div>
+     *      {Component && (<Component />)}
+     *    </div>
+     *   )
+     * }
+     *
+     */
+    useMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
+    /**
+     * 使用最先注册的元数据
+     */
+    useOldestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
+    /**
+     * 使用最后一次注册的元数据
+     */
+    useLatestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
+    /**
+     * 获取到所有定义的元数据
+     */
+    useAllMetadata(): Map<string | number | symbol, any>;
+    /**
+     * 查看是否定义了元数据
+     */
+    hasMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): boolean;
+}
+
+type ThreadHandler = (data: any) => (void | any);
+type ExtractThreadHandlerData<Handler extends ThreadHandler> = Parameters<Handler>[0];
+declare class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntries extends Record<string, ThreadHandler> = {}> {
+    /**
+     * 自身线程事件句柄
+     */
+    private readonly selfHandlers;
+    private readonly isInWebWorker;
+    readonly worker?: Worker;
+    constructor(worker?: Worker);
+    init(): void;
+    /**
+     * 结束、终止 worker 的运行
+     */
+    terminate(): void;
+    send<Channel extends keyof TThreadEntries>(channel: Channel, data: ExtractThreadHandlerData<TThreadEntries[Channel]>): void;
+    /**
+     * 添加事件句柄
+     */
+    handle<Channel extends keyof SThreadEntries>(channel: Channel, handler: SThreadEntries[Channel]): void;
+    /**
+     * 删除事件句柄
+     */
+    offHandle<Channel extends keyof SThreadEntries>(channel: Channel): void;
+}
+
 /**
 import { Key } from 'react';
    * CSS 变量的名称
@@ -600,276 +896,18 @@ declare const cssVariablesPayloadSheet: {
 
 type RdCssVariablePayloadSheet = typeof cssVariablesPayloadSheet;
 
-type ExtensionName = string | symbol;
-interface Extension<Context = any> {
-    /**
-     * 插件的唯一标识 name
-     */
-    readonly name: ExtensionName;
-    /**
-     * 插件版本
-     */
-    readonly version: string | number;
-    /**
-     * 插件数据, 由项目自主决定插件附带携带的数据
-     */
-    meta?: any;
-    /**
-     * 插件被激活, 被使用的状态
-     */
-    readonly onActivated?: (this: this, context?: Context) => (void | Promise<void>);
-    /**
-     * 插件被去活, 被禁用的状态
-     */
-    readonly onDeactivated?: (this: this, context?: Context) => (void | Promise<void>);
+interface RdExtension extends Extension<never> {
+    meta?: {
+        extension_id: number;
+        extension_name: string;
+        extension_uuid: string;
+        extension_version_id: number;
+        script_hash: string;
+    };
 }
-type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];
-
-/**
- * 监听 store 的触发回调函数
- */
-type InnerStoreListener = () => void;
-/**
- * 销毁 store 的触发回调函数
- */
-type InnerStoreDestroyListener = () => void;
-/**
- * 内部 store manager
- */
-declare abstract class InnerZustandStoreManager {
-    /**
-     * zustand
-     */
-    private readonly store;
-    private readonly listeners;
-    private readonly unsubscribe;
-    /**
-     * 更新当前的 store, 会导致状态库的组件更新触发
-     */
-    protected updateStore(): void;
-    /**
-     * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
-     */
-    protected useStoreValue(): {};
-    /**
-     * 添加订阅函数
-     */
-    protected subscribe(listener: InnerStoreListener): InnerStoreDestroyListener;
-    protected destroy(): void;
-}
-
-/**
- * 定义一个插件, 这里所抽象得插件只是一个携带数据得对象、以及具有特殊时机执行得函数
- *
- * 1. 插件件可以有自己的生命周期函数, 例如 onActivated, onDeactivated
- * 2. 插件可以调动 metadataManager 从而实现插件化开发
- * 3. 调动 emitter 实现事件触发
- */
-declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
-    private readonly extNameMapStore;
-    /**
-     * Define extension, 定义插件, 那么插件会被存储到 Map 中.
-     */
-    defineExtension<DExt extends Ext>(define: DExt): DExt;
-    /**
-     * 判断一个对象是否是一个 扩展对象
-     */
-    isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt;
-    /**
-     * 判断是否含有当前扩展：即是否已经注册
-     */
-    hasExtension(extensionName: ExtensionName): boolean;
-    /**
-     * 获取一个扩展
-     */
-    getExtension(extensionName: ExtensionName): Ext | null;
-    /**
-     * 注册一个扩展
-     */
-    registerExtension<DExt extends Ext>(extension: DExt): void;
-    /**
-     * Activated extension
-     */
-    activatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
-    /**
-     * 去活某个插件
-     */
-    deactivatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
-    /**
-     * 删除扩展
-     */
-    delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
-    /**
-     * 获取扩展列表
-     */
-    useExtensionsList(): readonly [Ext[]];
-    /**
-     * 获得所有的插件
-     */
-    getExtensions(): readonly Ext[];
-}
-
-type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
-type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
-/**
- * 从数组中提取出元素的类型
- * @example
- * type A = number[];
- * type B = ExtractElInArray<A>; // number
- */
-type ExtractElInArray<T> = IsAny<T, never, T extends (infer U)[] ? U : never>;
-/**
- * 提取列表的 entries, 在 interface {} 中, 只有值为数组类型 U[], 时会被保留, 否则不在此类型中
- * @example
- * type A = {
- *    name: string;
- *    age: number;
- *    friends: any[];
- * }
- *
- * type B = ExtractVectorEntries<A>; // { friends: any[]; }
- */
-type ExtractVectorEntries<Entries> = {
-    [Key in keyof Entries as (IsAny<Entries[Key], never, Entries[Key] extends unknown[] ? Key : never>)]: Entries[Key];
-};
-/**
- * 提取列表的 entries, 在 interface {} 中, 只有值不为数组类型 U[], 时会被保留, 否则不在此类型中
- * @description 与上一个 `ExtractVectorEntries` 相反
- * @example
- * type A = {
- *    name: string;
- *    age: number;
- *    friends: any[];
- * }
- *
- * type B = ExtractSingleEntries<A>; // { name: string;age: number; }
- */
-type ExtractSingleEntries<Entries> = {
-    [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
-};
-type MetadataAction = 'Define' | 'Remove';
-type MetadataType = 'Vector' | 'Single' | 'All';
-interface MetadataStoreListenerPayload {
-    action: MetadataAction;
-    type: MetadataType;
-    metadataKey: number | string | symbol;
-    metadata: unknown;
-}
-type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;
-
-/**
- * 元数据, 在页面中组件的变化可能相距甚远
- * 进入到某一个页面, 可能其他大组件下的某处地方可能发生元素更改, 那么使用本 store 进行连携
- *
- * 1. 在可能变化的地方获取槽点数据, 可能是字符也有可能是其他的
- *
- * 2. 在特殊时机, 注册槽点数据, 从而响应式自动更新到子孙或者兄弟级甚远的组件进行渲染
- *
- */
-declare class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
-    private readonly metadataMap;
-    private readonly metadataChangeListeners;
-    /**
-     * 触发元数据更改监听函数
-     */
-    protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload): void;
-    /**
-     * 订阅元数据更改
-     */
-    subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener): () => void;
-    /**
-     * 定义 store 元数据, 元数据可以是任何东西
-     * @example
-     * metadata.defineMetadata('example-key', 1);
-     * metadata.defineMetadata('example-key', 'a');
-     * metadata.defineMetadata('example-key', {});
-     * metadata.defineMetadata('example-key', () => { return (<div />) });
-     */
-    defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
-    /**
-     * 获取定义的元数据
-     * @example
-     * metadata.getMetadata('example-key');
-     */
-    getMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
-    /**
-     * 删除定义的元数据
-     * @example
-     * metadata.delMetadata('example-key');
-     */
-    delMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): void;
-    /**
-     * 语义化方法, 作用与 defineMetadata 一致. 但是在此基础上排除了数据值类型
-     * @description 意为: 定义覆盖式的元数据
-     */
-    defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
-    /**
-     * 定义多个元数据组合的容器型元数据列表, 顾名思义, 也就是某个元数据的定义是数组时使用, 能够自动从数组中添加单个该元数据, 而不是全部覆盖
-     * @example
-     * metadata.defineMetadataInVector('example-key', 1);
-     * metadata.defineMetadataInVector('example-key', 'a');
-     * metadata.defineMetadataInVector('example-key', {});
-     * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
-     */
-    defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
-    /**
-     * 在一组元数据集合列表中删除具体的某一个, 通常与 `defineMetadataInVector` 配套使用
-     * @example
-     * const data = {};
-     * metadata.defineMetadataInVector('example-key', data);
-     *
-     * metadata.delMetadataInVector('example-key', data);
-     */
-    delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
-    /**
-     * 组件 hook, 观察元数据变化
-     * @description 返回数据是注册的元数据, 如果是非 react 组件, 而是普通数据, 所以外部要监听使用变化时应当加入 effect 副作用列表
-     * @example
-     * const Fc = () => {
-     *   const data = metadata.useMetadata('example-key');
-     *   useEffect(() => {
-     *     // use data
-     *     // some code...
-     *     return () => {
-     *        // clear data use.
-     *        // some code...
-     *     }
-     *   }, [data]);
-     *   return (<div />)
-     * }
-     *
-     * @description 使用的元数据也有可能是 react 组件
-     * @example
-     * const Fc = () => {
-     *   const Component = metadata.useMetadata('example-key');
-     *
-     *   return (
-     *    <div>
-     *      {Component && (<Component />)}
-     *    </div>
-     *   )
-     * }
-     *
-     */
-    useMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
-    /**
-     * 使用最先注册的元数据
-     */
-    useOldestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
-    /**
-     * 使用最后一次注册的元数据
-     */
-    useLatestMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
-    /**
-     * 获取到所有定义的元数据
-     */
-    useAllMetadata(): Map<string | number | symbol, any>;
-    /**
-     * 查看是否定义了元数据
-     */
-    hasMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): boolean;
-}
-
+type RdCssVariablesDeclaration = CssVariablesDeclaration<RdCssVariablePayloadSheet>;
+type RdCssVars = CssVars<RdCssVariablePayloadSheet>;
+type RdThread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntries extends Record<string, ThreadHandler> = {}> = Thread<TThreadEntries, SThreadEntries>;
 declare global {
     interface Window {
         readonly rApp: Rapid.RApp;
@@ -964,11 +1002,11 @@ declare global {
             /**
              * 皮肤变量声明
              */
-            type CssVariablesDeclaration = CssVariablesDeclaration<RdCssVariablePayloadSheet>;
+            type CssVariablesDeclaration = RdCssVariablesDeclaration;
             /**
              * 皮肤变量
              */
-            type CssVars = CssVars<RdCssVariablePayloadSheet>;
+            type CssVars = RdCssVars;
         }
         /**
          * 扩展相关的类型定义
@@ -1044,14 +1082,7 @@ declare global {
             /**
              * 扩展
              */
-            interface Extension extends Extension<never> {
-                meta?: {
-                    extension_id: number;
-                    extension_name: string;
-                    extension_uuid: string;
-                    extension_version_id: number;
-                    script_hash: string;
-                };
+            interface Extension extends RdExtension {
             }
         }
         /**
@@ -1081,7 +1112,7 @@ declare global {
                 /**
                  * 插件的线程化版本管理
                  */
-                readonly rxcThread: Thread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
+                readonly rxcThread: RdThread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
             };
             meta2d?: Meta2d;
             /**
