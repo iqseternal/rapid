@@ -18,7 +18,7 @@ export const enum PlatformsOnDesktop {
 export const enum PlatformsOnMobile {}
 export const enum PlatformsOnBrowser {}
 
-export const enum RuntimePlatforms { Desktop, Mobile, Browser }
+export const enum Platforms { Desktop, Mobile, Browser }
 
 /** 当前构建环境 */
 export const enum Env { Dev, Prod }

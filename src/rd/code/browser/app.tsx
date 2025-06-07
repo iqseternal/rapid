@@ -1,9 +1,7 @@
 import { ConfigProvider, App } from 'antd';
 import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { RdSKin } from './skin';
 import { ClickToComponent } from 'click-to-react-component';
-import type { RExtensionContext } from './declare';
 
 import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
@@ -94,7 +92,7 @@ export const RdApp = memo(() => {
 export const RdAppWrapper = memo(() => {
   const [extensionList] = rApp.extension.useExtensionsList();
   useLayoutEffect(() => {
-    const context: RExtensionContext = {}
+    const context: Rapid.Extend.ExtensionContext = {}
 
     extensionList.forEach(extension => {
       rApp.extension.activatedExtension(extension.name);
@@ -106,15 +104,16 @@ export const RdAppWrapper = memo(() => {
   useLayoutEffect(() => {
     if (!themePayloadTransformers) return;
 
-    let declaration = RdSKin.toCssVariablesDeclaration();
+    let declaration = rApp.skin.toCssVariablesDeclaration();
     themePayloadTransformers.forEach(transform => {
       declaration = transform(declaration);
     })
 
-    RdSKin.install(declaration);
+    rApp.skin.install();
 
     return () => {
-      RdSKin.uninstall();
+
+      rApp.skin.uninstall();
     }
   }, [themePayloadTransformers]);
 

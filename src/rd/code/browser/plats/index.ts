@@ -1,11 +1,9 @@
 import { toNil } from '@suey/pkg-utils';
 
-import * as Rapid from '@/declare';
-
 /**
  * 从加载的插件源中提取出插件
  */
-export async function analysisExtensionSource<ExtensionTemplate extends { script_content: string }>(extensionTemplate: ExtensionTemplate): Promise<Rapid.RExtension | null> {
+export async function analysisExtensionSource<ExtensionTemplate extends { script_content: string }>(extensionTemplate: ExtensionTemplate): Promise<Rapid.Extend.Extension | null> {
   const scriptContent = extensionTemplate.script_content;
 
   eval(scriptContent);
@@ -34,8 +32,8 @@ export interface ExtensionSource {
 /**
  * 转换插件源为 RD 所使用的标准插件
  */
-export async function transformerExtensionsSourceToRdExtension(extensionsSource: ExtensionSource[]): Promise<Rapid.RExtension[]> {
-  const extensions: Rapid.RExtension[] = [];
+export async function transformerExtensionsSourceToRdExtension(extensionsSource: ExtensionSource[]): Promise<Rapid.Extend.Extension[]> {
+  const extensions: Rapid.Extend.Extension[] = [];
 
   for (const extensionSource of extensionsSource) {
     const extensionId = extensionSource.extension_id;
@@ -73,7 +71,7 @@ export async function transformerExtensionsSourceToRdExtension(extensionsSource:
 /**
  * 注册或者替换一批插件
  */
-export async function registerAndReplaceExtensions(nextExtensions: Rapid.RExtension[]) {
+export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.Extension[]) {
   for (const nextExtension of nextExtensions) {
     const extension = rApp.extension.getExtension(nextExtension.name);
 

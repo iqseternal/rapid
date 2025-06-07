@@ -7,8 +7,6 @@ import { ClockTaskService } from 'rd/base/common/service/ClockTaskService';
 import type { ClockTaskServiceOptions } from 'rd/base/common/service/ClockTaskService';
 import { useExtensionHeartbeatApi, type UseExtensionHeartbeatVoucher } from '../api/extension';
 
-import type * as Rapid from '../declare';
-
 const selfThread = new Thread<Rapid.Thread.MainThreadEntries, Rapid.Thread.ExtensionThreadEntries>();
 
 const state = {

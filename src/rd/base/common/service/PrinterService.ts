@@ -1,4 +1,7 @@
 import { Ansi } from '@rapid/libs';
+import { AppInformationService } from './AppInformationService';
+
+const appInfo = AppInformationService.getInstance();
 
 export type PrintMessagesTypeArr = Parameters<typeof Ansi.print>;
 
@@ -23,14 +26,14 @@ export class PrinterService {
    * 日志信息
    */
   public printInfo(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[RD Host]`, ' ', Ansi.blue, Ansi.underline, '[INFO]')}`, ' ', ...messages);
+    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.blue, Ansi.underline, '[INFO]')}`, ' ', ...messages);
   }
 
   /**
    * 错误信息
    */
   public printError(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[RD Host]`, ' ', Ansi.red, Ansi.underline, '[ERR ]')}`, ' ', ...messages);
+    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.red, Ansi.underline, '[ERR ]')}`, ' ', ...messages);
 
   }
 
@@ -38,14 +41,14 @@ export class PrinterService {
    * 警告信息
    */
   public printWarn(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[RD Host]`, ' ', Ansi.yellow, Ansi.underline, '[WARN]')}`, ' ', ...messages);
+    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.yellow, Ansi.underline, '[WARN]')}`, ' ', ...messages);
   }
 
   /**
    * 成功信息
    */
   public printSuccess(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[RD Host]`, ' ', Ansi.green, Ansi.underline, '[SUC ]')}`, ' ', ...messages);
+    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.green, Ansi.underline, '[SUC ]')}`, ' ', ...messages);
   }
 
   /**

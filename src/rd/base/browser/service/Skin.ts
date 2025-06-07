@@ -63,6 +63,15 @@ export type CssVars<Sheet extends CssVariablePayloadSheet> = {
 }
 
 /**
+ * 主题变量的声明表: 例如: { '--rapid-xx-xx': '#FFF' }
+ */
+export type CssVariablesDeclaration<PayloadSheet extends CssVariablePayloadSheet> = {
+  [Key in (keyof PayloadSheet) as ExtractCssVariableFromPayload<PayloadSheet[Key]>]: (
+    ExtractCssVariableValueFromPayload<PayloadSheet[Key]> extends number ? number : string
+  );
+}
+
+/**
  * 创建一个预设的 Css 样式
  *
  * @example
@@ -83,3 +92,87 @@ export const makeRdCssVarPayload = <CssVar extends CssVariable, CssVarValue exte
  * @alias makeRdCssVarPayload
  */
 export const mrcvp = makeRdCssVarPayload;
+
+export class Skin<PayloadSheet extends CssVariablePayloadSheet> {
+  private readonly runtimeContext = {
+    styleTag: void 0 as (undefined | HTMLStyleElement)
+  }
+
+  public constructor(
+    public readonly cssVariablesPayloadSheet: PayloadSheet
+  ) { }
+
+  /**
+   * 生成当前皮肤的 CSS 变量声明
+   */
+  public toCssVariablesDeclaration(): CssVariablesDeclaration<PayloadSheet> {
+    const cssVariablesDeclaration = {} as Record<string, string>;
+    const payloadKeys = Object.keys(this.cssVariablesPayloadSheet) as (keyof PayloadSheet)[];
+
+    payloadKeys.forEach(key => {
+      const { variable, value } = this.cssVariablesPayloadSheet[key];
+
+      cssVariablesDeclaration[variable] = value;
+    });
+
+    return cssVariablesDeclaration as unknown as CssVariablesDeclaration<PayloadSheet>;
+  }
+
+  /**
+   * 将 CssVariablePayload 转换为 CSS 变量字符串
+   * @param selector 用于选择 CssVariablePayload 的函数
+   */
+  public toCssVar<Payload extends CssVariablePayload>(selector: (sheet: CssVariablePayloadSheet) => Payload): CssVar<Payload> {
+    const cssVar = selector(this.cssVariablesPayloadSheet);
+    return `var(${cssVar.variable}, ${cssVar.value})` as CssVar<Payload>;
+  }
+
+  /**
+   * 将当前皮肤的 CSS 变量转换为 CssVars 类型
+   * @returns CssVars<PayloadSheet>
+   */
+  public toCssVars(): CssVars<PayloadSheet> {
+    const cssVars = {} as CssVars<PayloadSheet>;
+    for (const cssKey in this.cssVariablesPayloadSheet) {
+      Reflect.set(cssVars, cssKey, this.toCssVar((sheet) => sheet[cssKey]));
+    }
+    return cssVars;
+  }
+
+  /**
+   * 安装当前皮肤，将 CSS 变量注入到页面中
+   */
+  public install() {
+    // 移除已经创建的 style 标签
+    if (this.runtimeContext.styleTag) this.runtimeContext.styleTag.remove();
+
+    // 创建新的 style 标签
+    const styleTag = document.createElement('style');
+
+    // 获取 CSS 变量声明
+    const cssVariablesDeclaration = this.toCssVariablesDeclaration();
+
+    const cssVariablesString = Object.entries(cssVariablesDeclaration)
+      .map(([key, value]) => `${key}: ${value};`)
+      .join('\n');
+
+    // 设置样式内容
+    styleTag.innerHTML = `:root {\n${cssVariablesString}\n}`;
+
+    // 将样式标签添加到文档头部
+    document.head.appendChild(styleTag);
+
+    // 记录 style 标签
+    this.runtimeContext.styleTag = styleTag;
+  }
+
+  /**
+   * 卸载当前皮肤，移除 CSS 变量样式
+   */
+  public uninstall() {
+    if (this.runtimeContext.styleTag) {
+      this.runtimeContext.styleTag.remove();
+      this.runtimeContext.styleTag = void 0; // 置空, 防止多次 remove
+    }
+  }
+}

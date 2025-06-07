@@ -21,6 +21,7 @@ export type {
   AntdItemType, AntdMenuDividerType, AntdMenuInstanceType, AntdMenuItemGroupType, AntdMenuItemType, AntdSubMenuType,
   ItemType, MenuItemGroupType, MenuInstanceType, MenuDividerType, MenuItemType, SubMenuType
 }
+
 export type { MenuItemProps, SubMenuProps }
 
 const DropdownMenuOpenContext = createContext(false);

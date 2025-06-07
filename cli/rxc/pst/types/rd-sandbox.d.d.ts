@@ -24,7 +24,7 @@ interface ExceptionErrorMsgData {
 /**
  * 异常基类
  */
-declare abstract class Exception<ErrMessageData extends ExceptionErrorMsgData> {
+declare class Exception<ErrMessageData extends ExceptionErrorMsgData> {
     message: string;
     readonly errMessage: ErrMessageData;
     constructor(message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>);
@@ -580,6 +580,9 @@ type OnHandlers = ExtractNever<AllHandlers<IpcActionEvent.On>>;
  * 需要先 Omit 排除, 然后再编写自己的类型, 否则会覆盖失败
  */
 type IpcRenderer = Omit<IpcRenderer$1, 'invoke' | 'send' | 'sendSync'> & {
+    /**
+     * 向主进程发送事件, 并等待回复
+     */
     invoke<T extends keyof HandleHandlers>(channel: T, ...args: Parameters<HandleHandlers[T]>): ReturnType<HandleHandlers[T]>;
     send<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
     sendSync<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
@@ -778,6 +781,10 @@ declare const windowResetCustomSize: (options: {
  * @returns
  */
 declare const windowMax: (options?: {
+    /**
+     * 恢复窗口为定制化大小
+     * @returns
+     */
     id?: number;
     windowKey?: string;
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
