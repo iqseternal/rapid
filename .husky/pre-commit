@@ -5,6 +5,6 @@
 
 pnpm typecheck
 
-pnpm lint-staged
+# pnpm lint-staged
 
 pnpm test

@@ -1,4 +1,4 @@
-import { print } from '@suey/printer';
+import { Ansi } from '@suey/pkg-utils';
 import { AppFileStorageService, logsDirStorageService } from './AppStorageService';
 
 export namespace LoggerService {
@@ -25,7 +25,7 @@ export class LoggerService {
    * 打印普通日志
    */
   public async info(...message: any[]) {
-    print(...message);
+    Ansi.print(...message);
   }
 
   public static async info(...message: any[]) {
@@ -36,7 +36,7 @@ export class LoggerService {
    * 打印警告日志
    */
   public async warn(...message: any[]) {
-    print(...message);
+    Ansi.print(...message);
   }
 
   public static async warn(...message: any[]) {
@@ -47,7 +47,7 @@ export class LoggerService {
    * 打印成功日志
    */
   public async success(...message: any[]) {
-    print(...message);
+    Ansi.print(...message);
   }
 
   public static async success(...message: any[]) {
@@ -58,7 +58,7 @@ export class LoggerService {
    * 打印错误日志
    */
   public async error(...message: any[]) {
-    print(...message);
+    Ansi.print(...message);
   }
 
   public static async error(...message: any[]) {

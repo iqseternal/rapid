@@ -20,6 +20,7 @@
     "./builder/**/*.ts",
     "./service/**/*.ts",
     "./plugins/**/*.ts",
+    "./printer/**/*.ts",
     "./index.ts"
   ],
   "exclude": ["node_modules"]

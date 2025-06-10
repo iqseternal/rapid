@@ -107,25 +107,6 @@ const dropdownVariablesPayloadSheet = {
   dropdownMenuItemBorderRadius: mrcvp('--rd-dropdown-menu-item-border-radius', '8px', '下拉菜单项圆角大小'),
 } as const;
 
-
-
-const tldrawVariablesPayloadSheet = {
-  tldrawShapeItemParentSelectedBg: mrcvp('--rd-tldraw-shape-item-parent-selected-bg', '#f5f5f5', 'tldraw 图形项父项选中背景色'),
-  tldrawShapeItemChildSelectedBg: mrcvp('--rd-tldraw-shape-item-child-selected-bg', '#f5f5f5', 'tldraw 图形项子项选中背景色'),
-  tldrawShapeItemSelectedBg: mrcvp('--rd-tldraw-shape-item-selected-bg', '#e5e5e5', 'tldraw 图形项选中背景色'),
-
-  tldrawShapeItemPaddingLeft: mrcvp('--rd-tldraw-shape-item-padding-left', '10px', 'tldraw 图形项左侧内边距'),
-
-
-} as const;
-
-
-
-
-
-
-
-
 const sizeVariablesPayloadSheet = {
 
   /* 正文字体大小 */
@@ -224,7 +205,6 @@ export const cssVariablesPayloadSheet = {
   ...messageVariablesPayloadSheet,
   ...cardVariablesPayloadSheet,
   ...dropdownVariablesPayloadSheet,
-  ...tldrawVariablesPayloadSheet,
 
   ...colorsVariablesPayloadSheet,
   ...sizeVariablesPayloadSheet

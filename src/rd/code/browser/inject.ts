@@ -40,7 +40,6 @@ import {
   useUserStore,
   useDocStore,
   useThemeStore,
-  useTldrawStore
 } from './features';
 import { Skin } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin/payload';
@@ -68,7 +67,6 @@ const rApp: Rapid.RApp = ({
     useUserStore,
     useDocStore,
     useThemeStore,
-    useTldrawStore
   },
   threads: {
     rxcThread: rxcThread
