@@ -1,0 +1,269 @@
+:root {
+  /* 全局基础变量 */
+  --g-color-primary: #3498db;
+  --g-color-success: #2ecc71;
+  --g-color-warning: #f39c12;
+  --g-color-error: #e74c3c;
+  --g-color-neutral-50: #fafafa;
+  --g-color-neutral-100: #f5f5f5;
+  --g-color-neutral-200: #eeeeee;
+  --g-color-neutral-300: #e0e0e0;
+  --g-color-neutral-400: #bdbdbd;
+  --g-color-neutral-500: #9e9e9e;
+  --g-color-neutral-600: #757575;
+  --g-color-neutral-700: #616161;
+  --g-color-neutral-800: #424242;
+  --g-color-neutral-900: #212121;
+
+  --g-spacing-unit: 8px;
+  --g-spacing-xs: calc(0.5 * var(--g-spacing-unit));
+  --g-spacing-sm: calc(1 * var(--g-spacing-unit));
+  --g-spacing-md: calc(1.5 * var(--g-spacing-unit));
+  --g-spacing-lg: calc(2 * var(--g-spacing-unit));
+  --g-spacing-xl: calc(3 * var(--g-spacing-unit));
+
+  --g-radius-xs: 2px;
+  --g-radius-sm: 4px;
+  --g-radius-md: 8px;
+  --g-radius-lg: 12px;
+  --g-radius-xl: 16px;
+  --g-radius-full: 9999px;
+
+  --g-shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --g-shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+  --g-shadow-md: 0 4px 8px rgba(0,0,0,0.12);
+  --g-shadow-lg: 0 8px 16px rgba(0,0,0,0.16);
+  --g-shadow-xl: 0 12px 24px rgba(0,0,0,0.2);
+
+  --g-font-family-base: 'Segoe UI', system-ui, sans-serif;
+  --g-font-family-mono: 'SF Mono', 'Fira Code', monospace;
+  --g-font-size-xs: 0.75rem;
+  --g-font-size-sm: 0.875rem;
+  --g-font-size-md: 1rem;
+  --g-font-size-lg: 1.125rem;
+  --g-font-size-xl: 1.25rem;
+  --g-font-size-2xl: 1.5rem;
+  --g-font-weight-light: 300;
+  --g-font-weight-regular: 400;
+  --g-font-weight-medium: 500;
+  --g-font-weight-bold: 700;
+  --g-line-height-dense: 1.25;
+  --g-line-height-normal: 1.5;
+  --g-line-height-loose: 1.75;
+
+  --g-transition-duration-fast: 0.15s;
+  --g-transition-duration-normal: 0.3s;
+  --g-transition-duration-slow: 0.45s;
+  --g-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --g-zindex-base: 0;
+  --g-zindex-dropdown: 10;
+  --g-zindex-sticky: 20;
+  --g-zindex-fixed: 30;
+  --g-zindex-modal: 40;
+  --g-zindex-toast: 50;
+  --g-zindex-tooltip: 60;
+
+  /* 主题语义变量 */
+  --color-text-primary: var(--g-color-neutral-900);
+  --color-text-secondary: var(--g-color-neutral-700);
+  --color-text-tertiary: var(--g-color-neutral-500);
+  --color-text-disabled: var(--g-color-neutral-400);
+  --color-text-inverse: var(--g-color-neutral-50);
+  --color-text-link: var(--g-color-primary);
+  --color-text-success: var(--g-color-success);
+  --color-text-warning: var(--g-color-warning);
+  --color-text-error: var(--g-color-error);
+
+  --surface-primary: var(--g-color-neutral-100);
+  --surface-secondary: var(--g-color-neutral-50);
+  --surface-tertiary: var(--g-color-neutral-200);
+  --surface-card: var(--g-color-neutral-50);
+  --surface-modal: var(--g-color-neutral-50);
+  --surface-tooltip: var(--g-color-neutral-800);
+  --surface-header: var(--g-color-neutral-50);
+  --surface-footer: var(--g-color-neutral-50);
+
+  --border-primary: 1px solid var(--g-color-neutral-300);
+  --border-secondary: 1px solid var(--g-color-neutral-200);
+  --border-tertiary: 1px solid var(--g-color-neutral-100);
+  --border-focus: 2px solid var(--g-color-primary);
+  --border-error: 1px solid var(--g-color-error);
+
+  --interactive-primary: var(--g-color-primary);
+  --interactive-primary-hover: #2980b9;
+  --interactive-primary-active: #1d6fa5;
+  --interactive-primary-disabled: var(--g-color-neutral-300);
+
+  --interactive-secondary: var(--g-color-neutral-400);
+  --interactive-secondary-hover: var(--g-color-neutral-500);
+  --interactive-secondary-active: var(--g-color-neutral-600);
+  --interactive-secondary-disabled: var(--g-color-neutral-200);
+
+  /* 标题栏区域 */
+  --uiHeader-bg: var(--surface-header);
+  --uiHeader-height: 64px;
+  --uiHeader-padding: 0 var(--g-spacing-md);
+  --uiHeader-shadow: var(--g-shadow-sm);
+  --uiHeader-border: var(--border-primary);
+  --uiHeader-title-color: var(--color-text-primary);
+  --uiHeader-title-size: var(--g-font-size-xl);
+  --uiHeader-title-weight: var(--g-font-weight-bold);
+  --uiHeader-subtitle-color: var(--color-text-secondary);
+  --uiHeader-subtitle-size: var(--g-font-size-md);
+  --uiHeader-icon-color: var(--color-text-secondary);
+  --uiHeader-icon-size: 24px;
+  --uiHeader-icon-hover: var(--interactive-primary-hover);
+  --uiHeader-icon-active: var(--interactive-primary-active);
+
+  /* 工具栏区域 */
+  --uiToolbar-bg: var(--surface-secondary);
+  --uiToolbar-height: 48px;
+  --uiToolbar-padding: 0 var(--g-spacing-md);
+  --uiToolbar-shadow: var(--g-shadow-xs);
+  --uiToolbar-border: var(--border-secondary);
+  --uiToolbar-gap: var(--g-spacing-sm);
+  --uiToolbar-button-size: 36px;
+  --uiToolbar-button-radius: var(--g-radius-sm);
+  --uiToolbar-button-bg: transparent;
+  --uiToolbar-button-bg-hover: var(--g-color-neutral-200);
+  --uiToolbar-button-bg-active: var(--g-color-neutral-300);
+  --uiToolbar-button-icon: var(--color-text-secondary);
+  --uiToolbar-button-icon-active: var(--interactive-primary);
+  --uiToolbar-divider: var(--border-tertiary);
+  --uiToolbar-divider-width: 1px;
+  --uiToolbar-divider-height: 70%;
+
+  /* 工具面板区域 */
+  --uiPanel-bg: var(--surface-card);
+  --uiPanel-width: 280px;
+  --uiPanel-padding: var(--g-spacing-md);
+  --uiPanel-shadow: var(--g-shadow-md);
+  --uiPanel-border: var(--border-primary);
+  --uiPanel-radius: var(--g-radius-md);
+  --uiPanel-heading-color: var(--color-text-primary);
+  --uiPanel-heading-size: var(--g-font-size-lg);
+  --uiPanel-heading-weight: var(--g-font-weight-medium);
+  --uiPanel-heading-padding: 0 0 var(--g-spacing-sm) 0;
+  --uiPanel-group-gap: var(--g-spacing-sm);
+  --uiPanel-control-gap: var(--g-spacing-xs);
+
+  /* 绘图区域 */
+  --uiCanvas-bg: var(--surface-primary);
+  --uiCanvas-grid-color: var(--g-color-neutral-300);
+  --uiCanvas-grid-size: 20px;
+  --uiCanvas-grid-opacity: 0.15;
+  --uiCanvas-border: var(--border-primary);
+  --uiCanvas-selection-stroke: var(--g-color-primary);
+  --uiCanvas-selection-fill: rgba(52, 152, 219, 0.1);
+  --uiCanvas-guide-color: var(--g-color-error);
+  --uiCanvas-guide-dasharray: 4, 4;
+
+  /* 元素通用属性 */
+  --uiElement-stroke-width: 2px;
+  --uiElement-stroke-default: var(--g-color-neutral-800);
+  --uiElement-stroke-selected: var(--g-color-primary);
+  --uiElement-stroke-hover: var(--g-color-warning);
+  --uiElement-fill-default: transparent;
+  --uiElement-fill-selected: rgba(52, 152, 219, 0.15);
+  --uiElement-fill-hover: rgba(243, 156, 18, 0.1);
+  --uiElement-text-color: var(--color-text-primary);
+  --uiElement-text-size: var(--g-font-size-sm);
+  --uiElement-text-font: var(--g-font-family-base);
+  --uiElement-handle-size: 8px;
+  --uiElement-handle-bg: var(--g-color-neutral-50);
+  --uiElement-handle-border: 1px solid var(--g-color-neutral-600);
+  --uiElement-handle-active: var(--g-color-primary);
+
+  /* 属性控件 */
+  --uiControl-label-color: var(--color-text-secondary);
+  --uiControl-label-size: var(--g-font-size-sm);
+  --uiControl-value-color: var(--color-text-primary);
+  --uiControl-value-size: var(--g-font-size-sm);
+  --uiControl-height: 32px;
+  --uiControl-padding: 0 var(--g-spacing-sm);
+  --uiControl-radius: var(--g-radius-sm);
+  --uiControl-bg: var(--g-color-neutral-100);
+  --uiControl-bg-hover: var(--g-color-neutral-200);
+  --uiControl-border: var(--border-tertiary);
+  --uiControl-border-focus: var(--border-focus);
+  --uiControl-border-error: var(--border-error);
+  --uiControl-shadow-focus: 0 0 0 3px rgba(52, 152, 219, 0.2);
+
+  /* 状态栏 */
+  --uiStatusBar-bg: var(--surface-footer);
+  --uiStatusBar-height: 32px;
+  --uiStatusBar-padding: 0 var(--g-spacing-md);
+  --uiStatusBar-border: var(--border-primary);
+  --uiStatusBar-text-color: var(--color-text-secondary);
+  --uiStatusBar-text-size: var(--g-font-size-xs);
+  --uiStatusBar-icon-color: var(--color-text-secondary);
+  --uiStatusBar-icon-size: 16px;
+
+  /* 上下文菜单 */
+  --uiMenu-bg: var(--surface-card);
+  --uiMenu-shadow: var(--g-shadow-md);
+  --uiMenu-radius: var(--g-radius-md);
+  --uiMenu-padding: var(--g-spacing-xs) 0;
+  --uiMenu-item-padding: var(--g-spacing-sm) var(--g-spacing-md);
+  --uiMenu-item-color: var(--color-text-primary);
+  --uiMenu-item-hover: var(--g-color-neutral-100);
+  --uiMenu-item-active: var(--g-color-neutral-200);
+  --uiMenu-item-disabled: var(--color-text-disabled);
+  --uiMenu-icon-size: 18px;
+  --uiMenu-icon-color: var(--color-text-secondary);
+  --uiMenu-divider: var(--border-tertiary);
+
+  /* 模态框 */
+  --uiModal-bg: rgba(0, 0, 0, 0.5);
+  --uiModal-content-bg: var(--surface-modal);
+  --uiModal-content-radius: var(--g-radius-lg);
+  --uiModal-content-shadow: var(--g-shadow-xl);
+  --uiModal-content-padding: var(--g-spacing-lg);
+  --uiModal-header-padding: 0 0 var(--g-spacing-md) 0;
+  --uiModal-body-padding: var(--g-spacing-md) 0;
+  --uiModal-footer-padding: var(--g-spacing-md) 0 0 0;
+  --uiModal-title-color: var(--color-text-primary);
+  --uiModal-title-size: var(--g-font-size-xl);
+  --uiModal-title-weight: var(--g-font-weight-bold);
+
+  /* 工具提示 */
+  --uiTooltip-bg: var(--surface-tooltip);
+  --uiTooltip-text: var(--color-text-inverse);
+  --uiTooltip-padding: var(--g-spacing-sm) var(--g-spacing-md);
+  --uiTooltip-radius: var(--g-radius-sm);
+  --uiTooltip-shadow: var(--g-shadow-md);
+  --uiTooltip-font-size: var(--g-font-size-xs);
+  --uiTooltip-max-width: 240px;
+  --uiTooltip-arrow-size: 6px;
+
+  /* 缩放控制 */
+  --uiZoom-control-bg: var(--surface-card);
+  --uiZoom-control-radius: var(--g-radius-md);
+  --uiZoom-control-padding: var(--g-spacing-xs);
+  --uiZoom-control-shadow: var(--g-shadow-sm);
+  --uiZoom-button-size: 28px;
+  --uiZoom-button-icon: var(--color-text-secondary);
+  --uiZoom-button-hover: var(--g-color-neutral-200);
+  --uiZoom-value-color: var(--color-text-secondary);
+  --uiZoom-value-size: var(--g-font-size-sm);
+
+  /* 颜色选择器 */
+  --uiColorPicker-width: 200px;
+  --uiColorPicker-height: 160px;
+  --uiColorPicker-handle-size: 16px;
+  --uiColorPicker-handle-border: 2px solid white;
+  --uiColorPicker-handle-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+
+  /* 图层面板 */
+  --uiLayer-item-padding: var(--g-spacing-sm) var(--g-spacing-md);
+  --uiLayer-item-height: 36px;
+  --uiLayer-item-bg: transparent;
+  --uiLayer-item-bg-hover: var(--g-color-neutral-100);
+  --uiLayer-item-bg-selected: var(--g-color-neutral-200);
+  --uiLayer-item-icon: var(--color-text-secondary);
+  --uiLayer-item-icon-size: 18px;
+  --uiLayer-item-name-color: var(--color-text-primary);
+  --uiLayer-item-name-size: var(--g-font-size-sm);
+  --uiLayer-visibility-icon: var(--color-text-tertiary);
+}

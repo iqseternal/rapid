@@ -1,9 +1,8 @@
 import { isUndefined } from '@suey/pkg-utils';
 
 /**
-import { Key } from 'react';
-   * CSS 变量的名称
-   */
+ * CSS 变量的名称
+ */
 export type CssVariable = `--rd-${string}`;
 
 /**
