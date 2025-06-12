@@ -1,6 +1,9 @@
-import { cssVariablesPayloadSheet } from './payload';
+// import { cssVariablesPayloadSheet as presetCssVariablesPayloadSheet } from './payload';
 
-export { cssVariablesPayloadSheet }
 
-export type RdCssVariablePayloadSheet = typeof cssVariablesPayloadSheet;
+import * as cssVariablePayloadSheet from './payload';
+
+export const cssVariablesPayloadSheet = cssVariablePayloadSheet;
+
+export type RdCssVariablePayloadSheet = typeof cssVariablePayloadSheet;
 

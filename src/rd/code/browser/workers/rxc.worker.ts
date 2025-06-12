@@ -54,7 +54,7 @@ const extensionHeartbeatTask = async () => {
 }
 
 const options: ClockTaskServiceOptions = {
-  clockTime: Timestamp.Second * 4,
+  clockTime: Timestamp.Minute * 4,
 
   clockTask: extensionHeartbeatTask
 }

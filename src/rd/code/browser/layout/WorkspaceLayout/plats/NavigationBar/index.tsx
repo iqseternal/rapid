@@ -1,7 +1,7 @@
 import { classnames } from '@rapid/libs-web/common';
 import { toNil } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
-import { useFadeOut } from '@/libs/hooks';
+import { fadeOut } from '@/libs/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { useTransition } from '@rapid/libs-web';
@@ -58,7 +58,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
     // }
 
     // await toWaitPromise();
-    await useFadeOut(async () => {
+    await fadeOut(async () => {
       navigate(loginRoute.meta.fullPath);
     })
   }, []);
@@ -67,10 +67,11 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
     <div
       className='h-full gap-1 flex-auto flex flex-col justify-between items-center'
       style={{
-        width: cssVars.navigationBarWidth,
-        minWidth: cssVars.navigationBarWidth,
-        maxWidth: cssVars.navigationBarWidth,
-        backgroundColor: cssVars.navigationBarBackgroundColor
+        width: cssVars.uiNavigationBarWidth,
+        minWidth: cssVars.uiNavigationBarWidth,
+        maxWidth: cssVars.uiNavigationBarWidth,
+        backgroundColor: cssVars.uiNavigationBarBackground,
+        boxShadow: cssVars.shadowXs
       }}
     >
       <div

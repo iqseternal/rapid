@@ -4,10 +4,10 @@ import { theme, Tooltip, TooltipProps } from 'antd';
 import type { IconKey } from '@/components/IconFont';
 import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'react';
 import { memo, useCallback, useState, useMemo, forwardRef } from 'react';
+import { useShallowReactive } from '@rapid/libs-web';
 import { commonStyles } from '@/scss/common';
 
 import IconFont from '@/components/IconFont';
-import styles from './index.module.scss';
 
 export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -81,6 +81,10 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
     onContextMenu: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
   })
 
+  const [shallowState] = useShallowReactive(() => ({
+    hasHover: false
+  }))
+
   if (normalState.loading !== loading) normalState.loading = loading;
   if (normalState.disabled !== disabled) normalState.disabled = disabled;
   if (normalState.onClick !== onClick) normalState.onClick = onClick;
@@ -116,15 +120,24 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
   return (
     <div
       className={classnames(
-        'w-max h-max max-w-full max-h-full rounded-md text-[#636c76] overflow-hidden cursor-pointer select-none flex-none drop-shadow-sm flex justify-center items-center',
+        'w-max h-max max-w-full max-h-full rounded-md overflow-hidden cursor-pointer select-none flex-none drop-shadow-sm flex justify-center items-center',
         className,
         commonStyles.appRegionNo,
-        {
-          [commonStyles.cursorNotAllowed]: loading || disabled,
-          [styles.widgetHasHover]: !loading && hasHoverStyle,
-        }
+        (loading || disabled) && 'cursor-not-allowed'
       )}
+      onMouseEnter={() => {
+        shallowState.hasHover = true;
+      }}
+      onMouseLeave={() => {
+        shallowState.hasHover = false;
+      }}
+      onBlur={() => {
+        shallowState.hasHover = false;
+      }}
       ref={ref}
+      style={{
+        background: shallowState.hasHover ? cssVars.colorNeutral200 : void 0
+      }}
     >
       <Tooltip
         title={tipText}
@@ -141,9 +154,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
           className={classnames(
             'flex items-center justify-center text-[100%] p-[25%] max-w-full max-h-full',
             'w-7 h-7',
-            {
-              [commonStyles.disabledPointerEvents]: loading || disabled
-            },
+            (loading || disabled) && 'pointer-events-none',
             size === 'large' && '!w-8 !h-8 text-[110%]',
             size === 'small' && '!w-6 !h-6 text-[90%]',
             innerClassName

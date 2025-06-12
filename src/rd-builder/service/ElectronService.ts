@@ -1,9 +1,10 @@
 
 import { resolve } from 'path';
 import type { ChildProcess } from 'child_process';
-import { Printer } from '@suey/printer';
 import { exec } from 'child_process';
 import { DIRS } from '../builder';
+import { Ansi } from '@suey/pkg-utils';
+import { printError, printInfo } from '../printer';
 
 import treeKill from 'tree-kill';
 
@@ -73,13 +74,13 @@ export class ElectronService {
     if (!this.state.electronChildProcess) return;
 
     if (typeof this.state.electronChildProcess.pid === 'undefined') {
-      Printer.printError(`electron 进程 pid 丢失`);
+      printError(`electron 进程 pid 丢失`);
       process.exit(1);
     }
 
     if (this.state.isKillDone) return;
 
-    Printer.printInfo(`进行结束 electron 进程`);
+    printInfo(`进行结束 electron 进程`);
 
     // 开始 kill
     this.state.electronChildProcess.removeListener('exit', this.bindThisExitCurrentProcess);
@@ -90,7 +91,7 @@ export class ElectronService {
    * 初始化并启动 electron 进程
    */
   protected async start(envArgs: readonly `${string}=${string | number}`[], startPath: string) {
-    Printer.printInfo('启动程序');
+    printInfo('启动程序');
 
     const envs = `cross-env ${envArgs.join(' ')}`;
 
@@ -116,7 +117,6 @@ export class ElectronService {
     if (!this.state.electronChildProcess) return this.start(envArgs, startPath);
 
     await this.exit();
-    Printer.printError(`electron 进程 kill 结束`);
     await this.start(envArgs, startPath);
   }
 

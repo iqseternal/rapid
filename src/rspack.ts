@@ -3,7 +3,6 @@ import { EnvBuilder, DIRS, rules } from './rd-builder';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import { defineConfig as defineRspackConfig } from '@rspack/cli';
 import { defineConfig as defineRsbuildConfig } from '@rsbuild/core';
-import { Printer, printWarn } from '@suey/printer';
 import { RsdoctorRspackPlugin } from '@rsdoctor/rspack-plugin';
 import { join } from 'path';
 import { pluginReact } from '@rsbuild/plugin-react';
@@ -15,6 +14,7 @@ import { Ansi } from '@suey/pkg-utils';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 import { DllPlugin } from '@rspack/core';
 import { ElectronService } from './rd-builder/service';
+import { print, printError, printWarn, printInfo } from './rd-builder/printer';
 
 import tailwindcss from 'tailwindcss';
 import bytenode from 'bytenode';
@@ -75,10 +75,10 @@ const defineVars = {
 // =====================================================================================
 // 加载启动流
 ; (async () => {
-  Printer.printInfo(`Electron 版本: ${packageJson?.devDependencies?.electron || packageJson?.dependencies?.['electron'] || '未知'}`);
-  Printer.printInfo(`Electron-Builder 版本: ${packageJson?.devDependencies?.['electron-builder'] || packageJson?.dependencies?.['electron-builder'] || '未知'}`);
+  printInfo(`Electron 版本: ${packageJson?.devDependencies?.electron || packageJson?.dependencies?.['electron'] || '未知'}`);
+  printInfo(`Electron-Builder 版本: ${packageJson?.devDependencies?.['electron-builder'] || packageJson?.dependencies?.['electron-builder'] || '未知'}`);
 
-  Printer.printInfo('当前识别环境变量: ');
+  printInfo('当前识别环境变量: ');
 
   printWarn(`  IS_DEV=${IS_DEV}`);
   printWarn(`  IS_PROD=${IS_PROD}`);
@@ -120,11 +120,11 @@ const defineVars = {
     //   aggregateTimeout: 2000
     // }, (err, stats) => {
     //   if (err) {
-    //     Printer.printError(err);
+    //     printError(err);
     //     process.exit(1);
     //   }
-    //   Printer.printInfo(`Compiler: preload`);
-    //   Printer.print(stats.toString());
+    //   printInfo(`Compiler: preload`);
+    //   print(stats.toString());
 
     //   // if (mainCompiler.running) return;
     //   startElectron(envs, mainCompiler.outputPath);
@@ -135,7 +135,7 @@ const defineVars = {
       if (err) {
         process.exit(1);
       }
-      if (stats) Printer.print(stats.toString());
+      if (stats) print(stats.toString());
 
       // if (preloadCompiler.running) return;
       await electronService.restart(envs, mainCompiler.outputPath);
@@ -204,15 +204,15 @@ async function transform() {
   // compiler once
   const compilerMain = () => {
     return new Promise<void>((resolve, reject) => {
-      Printer.printInfo(`Compiler: main`);
+      printInfo(`Compiler: main`);
 
       mainCompiler.run((err, stats) => {
         if (err) {
-          Printer.printError(err);
+          printError(err.message);
           return reject();
         }
-        Printer.printInfo(`Compiler Success: main`);
-        if (stats) Printer.print(stats.toString());
+        printInfo(`Compiler Success: main`);
+        if (stats) print(stats.toString());
         resolve();
       })
     })
@@ -220,15 +220,15 @@ async function transform() {
 
   const compilerPreload = () => {
     return new Promise<void>((resolve, reject) => {
-      Printer.printInfo(`Compiler: preload`);
+      printInfo(`Compiler: preload`);
 
       preloadCompiler.run((err, stats) => {
         if (err) {
-          Printer.printError(err);
+          printError(err.message);
           return reject();
         }
-        Printer.printInfo(`Compiler Success: preload`);
-        if (stats) Printer.print(stats.toString());
+        printInfo(`Compiler Success: preload`);
+        if (stats) print(stats.toString());
         resolve();
       })
     })
@@ -237,7 +237,7 @@ async function transform() {
   const compilerRenderer = () => {
     return new Promise<void>(async (resolve) => {
       await rendererRsbuilder.build();
-      Printer.printInfo(`Compiler: web`);
+      printInfo(`Compiler: web`);
       resolve();
     })
   }

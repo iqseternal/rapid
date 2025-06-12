@@ -31,17 +31,17 @@ export const Header = memo((props: HeaderProps) => {
     <div
       className={classnames('w-full text-sm flex justify-between items-center', commonStyles.appRegion, className)}
       style={{
-        backgroundColor: cssVars.captionBarBackgroundColor,
-        height: cssVars.captionBarHeight,
-        maxHeight: cssVars.captionBarHeight,
+        backgroundColor: cssVars.uiCaptionBarBackground,
+        height: cssVars.uiCaptionBarHeight,
+        maxHeight: cssVars.uiCaptionBarHeight,
       }}
     >
       <div className='w-full h-full z-50 flex justify-between items-center flex-1'>
         <div
           className='flex items-center w-max max-w-full max-h-full aspect-square pl-0.5 flex-none'
           style={{
-            width: cssVars.navigationBarWidth,
-            maxWidth: cssVars.navigationBarWidth
+            width: cssVars.uiNavigationBarWidth,
+            maxWidth: cssVars.uiNavigationBarWidth
           }}
         >
           {HeaderLogoContent && <HeaderLogoContent />}

@@ -1,3 +1,3 @@
 
-export { useFadeIn, useFadeOut } from './useFade';
+export { useFadeInEffect, fadeOut } from './useFade';
 export type { FadeOptions } from './useFade';

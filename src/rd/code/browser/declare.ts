@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-web';
-import type { useUserStore, useTldrawStore, useThemeStore, useDocStore } from './features';
+import type { useUserStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
 import type { Thread, ThreadHandler } from 'rd/base/browser/service/Thread';
@@ -280,13 +280,21 @@ declare global {
       meta2d?: Meta2d;
 
       /**
+       * 国际化
+       */
+      readonly i18n: typeof import('@/i18n').default;
+
+      /**
+       * 国际化
+       */
+      readonly useTranslation: typeof import('react-i18next').useTranslation;
+
+      /**
        * 全局的状态管理
        */
       readonly stores: {
 
         readonly useUserStore: typeof useUserStore;
-
-        readonly useTldrawStore: typeof useTldrawStore;
 
         readonly useThemeStore: typeof useThemeStore;
 

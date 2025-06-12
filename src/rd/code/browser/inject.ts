@@ -40,11 +40,13 @@ import {
   useUserStore,
   useDocStore,
   useThemeStore,
-  useTldrawStore
 } from './features';
 import { Skin } from 'rd/base/browser/service/Skin';
-import { cssVariablesPayloadSheet } from './skin/payload';
+import { cssVariablesPayloadSheet } from './skin';
 import { rxcThread } from './workers';
+import { useTranslation } from 'react-i18next';
+
+import i18n from './i18n';
 
 const extensionManager = new ExtensionManager();
 
@@ -68,13 +70,14 @@ const rApp: Rapid.RApp = ({
     useUserStore,
     useDocStore,
     useThemeStore,
-    useTldrawStore
   },
   threads: {
     rxcThread: rxcThread
   },
 
   meta2d: void 0,
+  i18n: i18n,
+  useTranslation: useTranslation,
 
   skin: skin,
 

@@ -28,6 +28,4 @@ i18n
     }
   });;
 
-console.log(i18n.language);
-
 export default i18n;
