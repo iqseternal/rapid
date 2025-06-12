@@ -44,9 +44,9 @@ export const RdApp = memo(() => {
       }}
       button={{
         style: {
-          borderRadius: cssVars.buttonBorderRadius,
-          backgroundColor: cssVars.buttonBackgroundColor,
-          color: cssVars.buttonTextColor
+          borderRadius: cssVars.uiDefaultButtonRadius,
+          backgroundColor: cssVars.uiDefaultButtonBackground,
+          color: cssVars.uiDefaultButtonTextColor
         }
       }}
       card={{
@@ -71,8 +71,8 @@ export const RdApp = memo(() => {
           placement: 'bottomRight'
         }}
         style={{
-          color: cssVars.primaryTextColor,
-          backgroundColor: cssVars.thirdBackgroundColor
+          color: cssVars.colorNeutral900,
+          backgroundColor: cssVars.colorNeutral50
         }}
       >
         <RdRouterWrapper />

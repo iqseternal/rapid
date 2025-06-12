@@ -13,6 +13,11 @@ declare module "*.module.css" {
   export default classNames;
 }
 
+declare module "*?url" {
+  const url: string;
+  export default url;
+}
+
 declare module "*.scss";
 
 declare module "*.css";

@@ -1,7 +1,7 @@
 import { useRef, memo, useLayoutEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { useFadeIn } from '@/libs/hooks';
+import { useFadeInEffect } from '@/libs/hooks';
 import { NavigationBar } from './plats/NavigationBar';
 import { commonStyles, useAnimationClassSelector } from '@/scss/common';
 import { Guards } from '@/guards';
@@ -51,16 +51,16 @@ const WorkbenchesView = memo(() => {
  * 该工作区需要用户登录后才可以正常使用, 因此使用 Guards.AuthAuthorized 来校验用户是否已经获得了授权
  */
 const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
-  useFadeIn(async () => {
+  const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
+
+  const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
+
+  useFadeInEffect(async () => {
     await Promise.allSettled([
       ipcActions.windowResizeAble({ resizeAble: true }),
       ipcActions.windowResetCustomSize({ type: 'mainWindow' })
     ]);
-  });
-
-  const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
-
-  const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
+  }, []);
 
   return (
     <div className='w-full h-full'>
@@ -72,7 +72,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
           mainSidebarStatus === 'right' && 'flex-row-reverse'
         )}
         style={{
-          height: `calc(100% - ${cssVars.captionBarHeight})`,
+          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`,
         }}
       >
         {mainSidebarStatus !== 'none' && (NavigationBarLatestContent && <NavigationBarLatestContent />)}

@@ -280,6 +280,16 @@ declare global {
       meta2d?: Meta2d;
 
       /**
+       * 国际化
+       */
+      readonly i18n: typeof import('@/i18n').default;
+
+      /**
+       * 国际化
+       */
+      readonly useTranslation: typeof import('react-i18next').useTranslation;
+
+      /**
        * 全局的状态管理
        */
       readonly stores: {

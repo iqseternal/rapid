@@ -1,10 +1,11 @@
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
 import { toNil } from '@rapid/libs';
+import type { DependencyList } from 'react';
 
 export interface FadeOptions {
   waitTimer?: number;
 
-  onError?: (err: any) => void;
+  onError?: (err: unknown) => void;
 }
 
 /**
@@ -13,51 +14,63 @@ export interface FadeOptions {
  *
  * @example
  * const Cpt: FC<any> = () => {
- *   useFadeIn(async () => {
+ *   useFadeInEffect(async () => {
  *     await windowSetSize({ width: 850, height: 550 });
  *     await windowResizeAble({ able: false });
- *   });
+ *   }, []);
  *
  *   return <></>;
  * }
  *
  */
-export function useFadeIn(beforeCallback?: () => (void | Promise<any>), options?: FadeOptions) {
-  const {
-    waitTimer = 50,
-    onError = (err: any) => {
+export function useFadeInEffect(beforeCallback: () => (void | Promise<any>), deps: DependencyList) {
+  useAsyncEffect(async () => {
+    const waitTimer = 50;
+
+    const onError = (err: unknown) => {
       console.error(err);
     }
-  } = options ?? {};
 
-  useAsyncEffect(async () => {
     if (beforeCallback) {
-      const [err] = await toNil(Promise.resolve(beforeCallback()));
-
-      if (err) {
-        console.dir(err.reason);
-        onError(err.reason);
-        return window.ipcActions.windowShow({ show: true }).catch(onError);
-      }
+      const [callbackErr] = await toNil(Promise.resolve(beforeCallback()));
+      if (callbackErr) onError(callbackErr.reason);
     }
 
     setTimeout(async () => {
-      window.ipcActions.windowShow({ show: true }).catch(onError);
+      const [err] = await toNil(ipcActions.windowShow({ show: true }));
+      if (err) {
+        console.dir(err.reason);
+        onError(err.reason);
+        return;
+      }
     }, waitTimer);
-  }, []);
+  }, deps);
 }
 
 /**
  * 页面转出的转场
  */
-export async function useFadeOut(callback?: () => (void | Promise<any>), options?: FadeOptions) {
+export async function fadeOut(callback?: () => (void | Promise<unknown>), options?: FadeOptions) {
   const {
     waitTimer = 50,
-    onError = (err: any) => {
+    onError = (err: unknown) => {
       console.error(err);
     }
   } = options ?? {};
 
-  await window.ipcActions.windowShow({ show: false }).catch(onError);
-  callback && Promise.resolve(callback())?.catch(onError);
+  const [err] = await toNil(window.ipcActions.windowShow({ show: false }));
+  if (err) {
+    console.dir(err.reason);
+    onError(err.reason);
+    return;
+  }
+
+  setTimeout(async () => {
+    const [callbackErr] = await toNil(Promise.resolve(callback?.()));
+    if (callbackErr) {
+      console.dir(callbackErr.reason);
+      onError(callbackErr.reason);
+      return;
+    }
+  }, waitTimer);
 }

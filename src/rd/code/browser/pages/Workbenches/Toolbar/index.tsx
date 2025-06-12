@@ -30,7 +30,6 @@ export const WorkbenchesToolbar = memo(() => {
 
       <div
         className={classnames(
-          commonStyles.flexCol,
           'w-full'
         )}
       >
