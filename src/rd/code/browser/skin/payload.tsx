@@ -115,8 +115,9 @@ export const uiDefaultButtonBackground = mrcvp('--rd-ui-default-button-backgroun
 export const uiDefaultButtonTextColor = mrcvp('--rd-ui-default-button-text-color', `var(${colorNeutral700.variable})`, '默认按钮文本色');
 export const uiDefaultButtonRadius = mrcvp('--rd-ui-default-button-radius', '10px', '默认按钮圆角半径');
 
-
-
+export const uiAutoMenuBackground = mrcvp('--rd-ui-auto-menu-background', `var(${colorNeutral0.variable})`, '自动菜单背景色');
+export const uiAutoMenuTextColor = mrcvp('--rd-ui-auto-menu-text-color', `var(${colorNeutral700.variable})`, '自动菜单文本色');
+export const uiAutoMenuRadius = mrcvp('--rd-ui-auto-menu-radius', '10px', '自动菜单圆角半径');
 
 
 // ==================================================================================

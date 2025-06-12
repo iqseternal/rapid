@@ -2,7 +2,7 @@ import { classnames } from '@rapid/libs-web/common';
 import { useFadeInEffect, fadeOut } from '@/libs/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useAsyncEffect, useTransition } from '@rapid/libs-web';
-import { App, Button, Space } from 'antd';
+import { App, Button, Checkbox, Form, Input, Space } from 'antd';
 import { toNil } from '@rapid/libs';
 import { authHasAuthorizedSync, useUserStore, userActions } from '@/features';
 import { registerApi, loginApi } from '@/api';
@@ -21,9 +21,16 @@ import WindowsMinWindowWidget from '@/plats/components/WindowsMinWindowWidget';
 import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';
 import i18n from '@/i18n';
 
+interface LoginForm {
+  username?: string;
+  password?: string;
+}
+
 export const Login = memo(() => {
   const { t } = useTranslation();
   const { message, notification } = App.useApp();
+
+  const [loginForm] = Form.useForm<LoginForm>();
 
   const navigate = useNavigate();
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
@@ -74,35 +81,64 @@ export const Login = memo(() => {
         <div className='flex-1 max-w-[50%]'>
           <Logo
             src={lockUrl}
+            className='drop-shadow-md'
           />
-        </div>
-
-        <div>
-          {t('login.txs', 's')}
         </div>
 
         <div className='flex-none flex justify-center'>
-          <Button
-            onClick={login}
-            loading={loginPending.pending}
+          <Form
+            layout='horizontal'
+            form={loginForm}
           >
-            {t('login.login', '登录')}
-          </Button>
+            <Form.Item
+              label='用户名'
+              name='username'
+            >
+              <Input
+                placeholder='请输入用户名'
+              />
+            </Form.Item>
 
-          <Button
-            onClick={register}
-            loading={registerPending.pending}
-          >
-            {t('login.register', '注册')}
-          </Button>
+            <Form.Item
+              label='密码'
+              name='password'
+            >
+              <Input
+                placeholder='请输入密码'
+                type='password'
+              />
+            </Form.Item>
 
-          <Widget
-            tipText={t('login.language', '切换语言包')}
-            icon={'UserAddOutlined'}
-            onClick={() => {
-              i18n.changeLanguage('en');
-            }}
-          />
+            <Form.Item
+              label={null}
+            >
+              <Space>
+                <Checkbox>
+                  Remember Me
+                </Checkbox>
+              </Space>
+            </Form.Item>
+
+            <Form.Item
+              label={null}
+            >
+              <Space>
+                <Button
+                  onClick={login}
+                  loading={loginPending.pending}
+                >
+                  {t('login.login', '登录')}
+                </Button>
+
+                <Button
+                  onClick={register}
+                  loading={registerPending.pending}
+                >
+                  {t('login.register', '注册')}
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     </div>

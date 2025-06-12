@@ -49,6 +49,11 @@ export const RdApp = memo(() => {
           color: cssVars.uiDefaultButtonTextColor
         }
       }}
+      dropdown={{
+        style: {
+          background: cssVars.uiAutoMenuBackground,
+        },
+      }}
       card={{
         style: {
 
