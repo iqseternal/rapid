@@ -2,7 +2,7 @@
 /**
  * 时间戳
  */
-export const enum Timestamp {
+export enum Timestamp {
   /**
    * 时间戳单位
    */

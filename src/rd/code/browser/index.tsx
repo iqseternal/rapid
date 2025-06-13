@@ -64,4 +64,3 @@ async function setupExtensionPlats() {
     );
   }
 })());
-

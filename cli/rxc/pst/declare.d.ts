@@ -1,11 +1,199 @@
+import * as _suey_pkg_utils from '@suey/pkg-utils';
+import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, ExtractNever, CutHead, RPromiseLike, Ansi, AxiosResponse, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, AES_DEFAULT_KEY, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
 import * as react from 'react';
-import { Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent, ComponentType } from 'react';
-import { AxiosError, AxiosResponse, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, AES_DEFAULT_KEY, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise, Ansi } from '@suey/pkg-utils';
+import { HTMLAttributes, ReactNode, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent, ReactElement, ComponentType } from 'react';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+import * as antd from 'antd';
+import { TooltipProps, PopoverProps } from 'antd';
+import * as iconInstance from '@ant-design/icons';
+import iconInstance__default from '@ant-design/icons';
+import * as react_i18next from 'react-i18next';
+import i18n from 'i18next';
+import * as moment from 'moment';
+import * as react_transition_group from 'react-transition-group';
+import * as _react_spring_web from '@react-spring/web';
 import * as zustand_middleware from 'zustand/middleware';
 import * as zustand from 'zustand';
-import * as tldraw from 'tldraw';
-import { TLStateNodeConstructor, TLAnyShapeUtilConstructor, TLUiOverrides, TLComponents } from 'tldraw';
 import { Meta2d } from '@meta2d/core';
+import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
+import { IpcMainInvokeEvent, IpcMainEvent, BrowserWindow, BrowserWindowConstructorOptions, OpenDevToolsOptions } from 'electron';
+
+/**
+ * 请求 hConfig 配置
+ */
+interface RApiHConfig {
+    /**
+     * 默认都需要认证
+     * @default true
+     */
+    readonly needAuth?: boolean;
+}
+/**
+ * 基本响应结构体的内容
+ */
+interface RApiBasicResponse {
+    /**
+     * 状态码
+     */
+    readonly code: 0 | number;
+    /**
+     * 响应描述
+     */
+    readonly message: string;
+    /**
+     * 返回数据, 具有 data 定义
+     */
+    readonly data: any;
+    /**
+     * 更多的响应体修饰
+     */
+    readonly more?: {
+        /**
+         * 响应数据是否被压缩了
+         */
+        readonly pako?: boolean;
+    };
+}
+interface RApiSuccessResponse extends RApiBasicResponse {
+}
+interface RApiFailResponse extends RApiBasicResponse {
+    /**
+     * 更多的错误信息
+     */
+    readonly INNER: {
+        /**
+         * 栈信息
+         */
+        readonly stack: string;
+        readonly name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
+        readonly config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];
+        readonly request: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['request'];
+        readonly response: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['response'];
+    };
+}
+declare const rApiGet: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+declare const rApiPost: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+declare const rRequest: _suey_pkg_utils.RequestFunction<RApiHConfig, RApiSuccessResponse, RApiFailResponse, "data">;
+declare const rCreateApi: (method: _suey_pkg_utils.Method) => <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+declare const rApiPut: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+declare const rApiDelete: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+declare const rApiPatch: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+
+/**
+ * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
+ * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
+ */
+declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
+
+/**
+ * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
+ */
+declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
+
+declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
+
+declare const Wrong: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
+
+declare const REmptyInstance: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
+type EmptyType = (typeof REmptyInstance) & {
+    readonly NotHasAnyData: typeof NotHasAnyData;
+    readonly Wrong: typeof Wrong;
+};
+declare const REmpty: EmptyType;
+
+type IconInstance = typeof iconInstance__default;
+type IconProps = Parameters<IconInstance>[0];
+type IconRealKey = Exclude<keyof typeof iconInstance, 'createFromIconfontCN' | 'default' | 'IconProvider' | 'setTwoToneColor' | 'getTwoToneColor'>;
+type IconCustomKey = `icon-${string}`;
+type IconKey = IconRealKey | IconCustomKey;
+interface IconFontProps extends Partial<IconProps> {
+    icon: IconKey;
+}
+/**
+ * antd icon font
+ * @param props
+ * @returns
+ */
+declare const IconFont: react.MemoExoticComponent<(props: IconFontProps) => react_jsx_runtime.JSX.Element>;
+
+interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
+    /**
+     * 内部的 className
+     */
+    innerClassName?: string;
+    /** 当前控件是否具有 hover 背景特性 */
+    hasHoverStyle?: boolean;
+    /** 当前控件展示的图标元素 */
+    icon?: IconKey;
+    /**
+     * 当前控件是否处于 loading 状态
+     */
+    loading?: boolean;
+    /**
+     * 处于 loading 状态时自定义展示 loading 元素
+     */
+    loadingContent?: ReactNode;
+    /**
+     * @default 'base'
+     */
+    size?: 'base' | 'small' | 'large';
+    /**
+     * 控件 Hover 之后展示的提示文本
+     */
+    tipText?: string;
+    /**
+     * 展示提示文本的 tooltip 的 attrs
+     */
+    tipAttrs?: TooltipProps;
+    /** 是否禁用当前控件 */
+    disabled?: boolean;
+}
+/**
+ * 展示一个控件, 控件: 图标, 附带功能提示信息和事件
+ */
+declare const Widget: react.MemoExoticComponent<react.ForwardRefExoticComponent<WidgetProps & react.RefAttributes<HTMLDivElement>>>;
+
+/**
+ * 时间戳
+ */
+declare enum Timestamp {
+    /**
+     * 时间戳单位
+     */
+    Millisecond = 1,
+    /**
+     * 1 秒
+     */
+    Second = 1000,
+    /**
+     * 1 分钟
+     */
+    Minute = 60000,
+    /**
+     * 1 小时
+     */
+    Hour = 3600000,
+    /**
+     * 1 天
+     */
+    Day = 86400000,
+    /**
+     * 1 周
+     */
+    Week = 604800000,
+    /**
+     * 1 月 - 30 天
+     */
+    Month = 2592000000,
+    /**
+     * 1 年 - 365 天
+     */
+    Year = 31536000000,
+    /**
+     * 1 年 - 366 天
+     */
+    LeapYear = 31622400000
+}
 
 /**
  * 合并多个 className 类名,
@@ -157,15 +345,109 @@ declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extend
 }
 
 /**
- * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
- * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
+ * Ellipsis props
  */
-declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
+interface EllipsisProps {
+    children?: ReactNode;
+    className?: string;
+    /**
+     * 如果传递的 children 展示为空时, 展示的默认字符串
+     */
+    defaultContent?: string;
+    /**
+     * 如果 children 字符串的内容超过了父容器, 那么就因该显示省略号, 同时 hover 应该展示完全内容
+     *
+     * 这个函数就是当超出父容器之后, 应该如何展示当前元素. 一般情况下：
+     *
+     * 使用 Tooltip 或者 Popover 来包裹 children 即可.
+     *
+     * 默认是: Tooltip
+     */
+    overlayRender?: (children: ReactNode) => ReactElement;
+    /**
+     * tooltip 的 attrs, 默认为 tooltip
+     */
+    tipAttrs?: TooltipProps;
+}
+/**
+ * 自动检测内容是否溢出, 如果溢出展示 Tooltip
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis>
+ *     hello world ....................
+ *   </Ellipsis>
+ * </div>
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Tooltip>
+ *     hello world ....................
+ *   </Ellipsis.Tooltip>
+ * </div>
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Popover>
+ *     hello world ....................
+ *   </Ellipsis.Popover>
+ * </div>
+ */
+declare const EllipsisBase: react.MemoExoticComponent<(props: EllipsisProps) => react_jsx_runtime.JSX.Element>;
 
 /**
- * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
+ * Ellipsis 以 tooltip 为展示容器的 props
+ *
  */
-declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
+interface EllipsisTooltipProps extends Omit<EllipsisProps, 'overlayRender'> {
+    /**
+     * tooltip 的 attrs
+     */
+    tipAttrs?: TooltipProps;
+}
+/**
+ * 自动检测内容是否溢出, 如果溢出展示 Tooltip
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Tooltip>
+ *     hello world ....................
+ *   </Ellipsis.Tooltip>
+ * </div>
+ */
+declare const EllipsisTooltip: react.MemoExoticComponent<(props: EllipsisTooltipProps) => react_jsx_runtime.JSX.Element>;
+
+/**
+ * Ellipsis 以 popover 为展示容器的 props
+ */
+interface EllipsisPopoverProps extends Omit<EllipsisProps, 'overlayRender'> {
+    /**
+     * popover 的 attrs
+     */
+    tipAttrs?: PopoverProps;
+}
+/**
+ * 自动检测内容是否溢出, 如果溢出展示 Popover
+ *
+ * @example
+ *
+ * <div style={{ width: '100px' }}>
+ *   <Ellipsis.Popover>
+ *     hello world ....................
+ *   </Ellipsis.Popover>
+ * </div>
+ */
+declare const EllipsisPopover: react.MemoExoticComponent<(props: EllipsisPopoverProps) => react_jsx_runtime.JSX.Element>;
+
+type EllipsisType = typeof EllipsisBase & {
+    readonly Tooltip: typeof EllipsisTooltip;
+    readonly Popover: typeof EllipsisPopover;
+};
+declare const Ellipsis: EllipsisType;
 
 type ExtensionName = string | symbol;
 interface Extension<Context = any> {
@@ -464,9 +746,8 @@ declare class Thread<TThreadEntries extends Record<string, ThreadHandler>, SThre
 }
 
 /**
-import { Key } from 'react';
-   * CSS 变量的名称
-   */
+ * CSS 变量的名称
+ */
 type CssVariable = `--rd-${string}`;
 /**
  * CSS 变量的值
@@ -515,6 +796,18 @@ type CssVars<Sheet extends CssVariablePayloadSheet> = {
 type CssVariablesDeclaration<PayloadSheet extends CssVariablePayloadSheet> = {
     [Key in (keyof PayloadSheet) as ExtractCssVariableFromPayload<PayloadSheet[Key]>]: (ExtractCssVariableValueFromPayload<PayloadSheet[Key]> extends number ? number : string);
 };
+/**
+ * 创建一个预设的 Css 样式
+ *
+ * @example
+ * const primaryBackgroundColor = makeRapidCssVarPayload('--rapid-primary-background-color', '#ffffff', '主要背景色'),
+ */
+declare const makeRdCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
+/**
+ * 创建一个预设的 Css 样式, 别名：makeRdCssVarPayload
+ * @alias makeRdCssVarPayload
+ */
+declare const mrcvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
     readonly cssVariablesPayloadSheet: PayloadSheet;
     private readonly runtimeContext;
@@ -541,50 +834,6 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
      * 卸载当前皮肤，移除 CSS 变量样式
      */
     uninstall(): void;
-}
-
-/**
- * 基本响应结构体的内容
- */
-interface RApiBasicResponse {
-    /**
-     * 状态码
-     */
-    readonly code: 0 | number;
-    /**
-     * 响应描述
-     */
-    readonly message: string;
-    /**
-     * 返回数据, 具有 data 定义
-     */
-    readonly data: any;
-    /**
-     * 更多的响应体修饰
-     */
-    readonly more?: {
-        /**
-         * 响应数据是否被压缩了
-         */
-        readonly pako?: boolean;
-    };
-}
-interface RApiSuccessResponse extends RApiBasicResponse {
-}
-interface RApiFailResponse extends RApiBasicResponse {
-    /**
-     * 更多的错误信息
-     */
-    readonly INNER: {
-        /**
-         * 栈信息
-         */
-        readonly stack: string;
-        readonly name: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['name'];
-        readonly config: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['config'];
-        readonly request: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['request'];
-        readonly response: AxiosError<Omit<RApiFailResponse, 'INNER'>, any>['response'];
-    };
 }
 
 /**
@@ -627,116 +876,6 @@ declare const useUserStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Use
             username?: string;
         };
         accessToken: string;
-    }) => void), shouldReplace?: boolean): void;
-}>;
-
-interface TldrawStore {
-    /**
-     * 工具栏
-     */
-    tlTools: TLStateNodeConstructor[];
-    /**
-     * 形状工具
-     */
-    tlShapeUtils: TLAnyShapeUtilConstructor[];
-    /**
-     * UI 覆盖
-     */
-    tlUiOverrides: TLUiOverrides;
-    /**
-     * 组件
-     */
-    tlComponents: Partial<TLComponents>;
-}
-declare const useTldrawStore: zustand.UseBoundStore<Omit<zustand.StoreApi<TldrawStore>, "setState"> & {
-    setState(nextStateOrUpdater: TldrawStore | Partial<TldrawStore> | ((state: {
-        tlTools: TLStateNodeConstructor[];
-        tlShapeUtils: TLAnyShapeUtilConstructor[];
-        tlUiOverrides: {
-            actions?: (editor: tldraw.Editor, actions: tldraw.TLUiActionsContextType, helpers: {
-                addDialog: (dialog: Omit<tldraw.TLUiDialog, "id"> & {
-                    id?: string;
-                }) => string;
-                addToast: (toast: Omit<tldraw.TLUiToast, "id"> & {
-                    id?: string;
-                }) => string;
-                clearDialogs: () => void;
-                clearToasts: () => void;
-                isMobile: boolean;
-                msg: (id?: string) => string;
-                removeDialog: (id: string) => string;
-                removeToast: (id: string) => string;
-            }) => tldraw.TLUiActionsContextType;
-            tools?: (editor: tldraw.Editor, tools: tldraw.TLUiToolsContextType, helpers: {
-                insertMedia(): void;
-            } & {
-                addDialog: (dialog: Omit<tldraw.TLUiDialog, "id"> & {
-                    id?: string;
-                }) => string;
-                addToast: (toast: Omit<tldraw.TLUiToast, "id"> & {
-                    id?: string;
-                }) => string;
-                clearDialogs: () => void;
-                clearToasts: () => void;
-                isMobile: boolean;
-                msg: (id?: string) => string;
-                removeDialog: (id: string) => string;
-                removeToast: (id: string) => string;
-            }) => tldraw.TLUiToolsContextType;
-            translations?: {
-                [x: string]: {
-                    [x: string]: string;
-                };
-            };
-        };
-        tlComponents: {
-            Background?: react.ComponentType;
-            SvgDefs?: react.ComponentType;
-            Brush?: react.ComponentType<tldraw.TLBrushProps>;
-            ZoomBrush?: react.ComponentType<tldraw.TLBrushProps>;
-            ShapeIndicators?: react.ComponentType;
-            ShapeIndicator?: react.ComponentType<tldraw.TLShapeIndicatorProps>;
-            Cursor?: react.ComponentType<tldraw.TLCursorProps>;
-            Canvas?: react.ComponentType<tldraw.TLCanvasComponentProps>;
-            CollaboratorBrush?: react.ComponentType<tldraw.TLBrushProps>;
-            CollaboratorCursor?: react.ComponentType<tldraw.TLCursorProps>;
-            CollaboratorHint?: react.ComponentType<tldraw.TLCollaboratorHintProps>;
-            CollaboratorShapeIndicator?: react.ComponentType<tldraw.TLShapeIndicatorProps>;
-            Grid?: react.ComponentType<tldraw.TLGridProps>;
-            Scribble?: react.ComponentType<tldraw.TLScribbleProps>;
-            CollaboratorScribble?: react.ComponentType<tldraw.TLScribbleProps>;
-            SnapIndicator?: react.ComponentType<tldraw.TLSnapIndicatorProps>;
-            Handles?: react.ComponentType<tldraw.TLHandlesProps>;
-            Handle?: react.ComponentType<tldraw.TLHandleProps>;
-            Spinner?: react.ComponentType;
-            SelectionForeground?: react.ComponentType<tldraw.TLSelectionForegroundProps>;
-            SelectionBackground?: react.ComponentType<tldraw.TLSelectionBackgroundProps>;
-            OnTheCanvas?: react.ComponentType;
-            InFrontOfTheCanvas?: react.ComponentType;
-            LoadingScreen?: react.ComponentType;
-            ErrorFallback?: tldraw.TLErrorFallbackComponent;
-            ShapeErrorFallback?: tldraw.TLShapeErrorFallbackComponent;
-            ShapeIndicatorErrorFallback?: tldraw.TLShapeIndicatorErrorFallbackComponent;
-            ContextMenu?: react.ComponentType<tldraw.TLUiContextMenuProps>;
-            ActionsMenu?: react.ComponentType<tldraw.TLUiActionsMenuProps>;
-            HelpMenu?: react.ComponentType<tldraw.TLUiHelpMenuProps>;
-            ZoomMenu?: react.ComponentType<tldraw.TLUiZoomMenuProps>;
-            MainMenu?: react.ComponentType<tldraw.TLUiMainMenuProps>;
-            Minimap?: react.ComponentType;
-            StylePanel?: react.ComponentType<tldraw.TLUiStylePanelProps>;
-            PageMenu?: react.ComponentType;
-            NavigationPanel?: react.ComponentType;
-            Toolbar?: react.ComponentType;
-            KeyboardShortcutsDialog?: react.ComponentType<tldraw.TLUiKeyboardShortcutsDialogProps>;
-            QuickActions?: react.ComponentType<tldraw.TLUiQuickActionsProps>;
-            HelperButtons?: react.ComponentType<tldraw.TLUiHelperButtonsProps>;
-            DebugPanel?: react.ComponentType;
-            DebugMenu?: react.ComponentType;
-            MenuPanel?: react.ComponentType;
-            TopPanel?: react.ComponentType;
-            SharePanel?: react.ComponentType;
-            CursorChatBubble?: react.ComponentType;
-        };
     }) => void), shouldReplace?: boolean): void;
 }>;
 
@@ -787,114 +926,1013 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
  * 该文件用于创建整个 App 中可以调整的 Css 样式列表
  * ==================================================================================
  */
-declare const cssVariablesPayloadSheet: {
-    readonly bodyFontSize: CssVariablePayload<"--rd-body-font-size", "16px", "正文字体大小">;
-    readonly headingFontSize: CssVariablePayload<"--rd-heading-font-size", "24px", "标题字体大小">;
-    readonly subheadingFontSize: CssVariablePayload<"--rd-subheading-font-size", "20px", "小标题字体大小">;
-    readonly buttonFontSize: CssVariablePayload<"--rd-button-font-size", "14px", "按钮字体大小">;
-    readonly formLabelFontSize: CssVariablePayload<"--rd-form-label-font-size", "14px", "表单标签字体大小">;
-    readonly tooltipFontSize: CssVariablePayload<"--rd-tooltip-font-size", "12px", "工具提示字体大小">;
-    readonly dropdownMenuItemHeight: CssVariablePayload<"--rd-dropdown-menu-item-height", "40px", "下拉菜单项高度">;
-    readonly footerHeight: CssVariablePayload<"--rd-footer-height", "80px", "页脚高度">;
-    readonly buttonPadding: CssVariablePayload<"--rd-button-padding", "10px 20px", "按钮内边距">;
-    readonly inputPadding: CssVariablePayload<"--rd-input-padding", "10px 15px", "输入框内边距">;
-    readonly tooltipPadding: CssVariablePayload<"--rd-tooltip-padding", "8px 12px", "工具提示内边距">;
-    readonly secondaryColor: CssVariablePayload<"--rd-secondary-color", "#6c757d", "辅助色">;
-    readonly linkColor: CssVariablePayload<"--rd-link-color", "#007bff", "链接颜色">;
-    readonly bodyTextColor: CssVariablePayload<"--rd-body-text-color", "#212529", "正文文本颜色">;
-    readonly headingTextColor: CssVariablePayload<"--rd-heading-text-color", "#343a40", "标题文本颜色">;
-    readonly borderColor: CssVariablePayload<"--rd-border-color", "#dee2e6", "边框颜色">;
-    readonly inputBackgroundColor: CssVariablePayload<"--rd-input-background-color", "#ffffff", "输入框背景色">;
-    readonly inputTextColor: CssVariablePayload<"--rd-input-text-color", "#495057", "输入框文本颜色">;
-    readonly placeholderTextColor: CssVariablePayload<"--rd-placeholder-text-color", "#6c757d", "占位符文本颜色">;
-    readonly disabledElementColor: CssVariablePayload<"--rd-disabled-element-color", "#6c757d", "禁用元素颜色">;
-    readonly accentColor: CssVariablePayload<"--rd-accent-color", "#17a2b8", "强调色">;
-    readonly footerBackgroundColor: CssVariablePayload<"--rd-footer-background-color", "#343a40", "页脚背景色">;
-    readonly breadcrumbColor: CssVariablePayload<"--rd-breadcrumb-color", "#6c757d", "面包屑颜色">;
-    readonly dropdownMenuBackgroundColor: CssVariablePayload<"--rd-dropdown-menu-background-color", "#ffffff", "下拉菜单背景色">;
-    readonly dropdownMenuTextColor: CssVariablePayload<"--rd-dropdown-menu-text-color", "#212529", "下拉菜单文本颜色">;
-    readonly tooltipBackgroundColor: CssVariablePayload<"--rd-tooltip-background-color", "#343a40", "工具提示背景色">;
-    readonly tooltipTextColor: CssVariablePayload<"--rd-tooltip-text-color", "#ffffff", "工具提示文本颜色">;
-    readonly formLabelColor: CssVariablePayload<"--rd-form-label-color", "#495057", "表单标签颜色">;
-    readonly cardBackgroundColor: CssVariablePayload<"--rd-card-background-color", "#ffffff", "卡片背景色">;
-    readonly cardBorderColor: CssVariablePayload<"--rd-card-border-color", "#dee2e6", "卡片边框颜色">;
-    readonly buttonHoverColor: CssVariablePayload<"--rd-button-hover-color", "#0056b3", "按钮悬停颜色">;
-    readonly buttonActiveColor: CssVariablePayload<"--rd-button-active-color", "#004085", "按钮激活颜色">;
-    readonly iconColor: CssVariablePayload<"--rd-icon-color", "#6c757d", "图标颜色">;
-    readonly menuItemHoverColor: CssVariablePayload<"--rd-menu-item-hover-color", "#f8f9fa", "菜单项悬停颜色">;
-    readonly menuItemActiveColor: CssVariablePayload<"--rd-menu-item-active-color", "#e9ecef", "菜单项激活颜色">;
-    readonly panelBackgroundColor: CssVariablePayload<"--rd-panel-background-color", "#ffffff", "面板背景色">;
-    readonly panelBorderColor: CssVariablePayload<"--rd-panel-border-color", "#dee2e6", "面板边框颜色">;
-    readonly tldrawShapeItemParentSelectedBg: CssVariablePayload<"--rd-tldraw-shape-item-parent-selected-bg", "#f5f5f5", "tldraw 图形项父项选中背景色">;
-    readonly tldrawShapeItemChildSelectedBg: CssVariablePayload<"--rd-tldraw-shape-item-child-selected-bg", "#f5f5f5", "tldraw 图形项子项选中背景色">;
-    readonly tldrawShapeItemSelectedBg: CssVariablePayload<"--rd-tldraw-shape-item-selected-bg", "#e5e5e5", "tldraw 图形项选中背景色">;
-    readonly tldrawShapeItemPaddingLeft: CssVariablePayload<"--rd-tldraw-shape-item-padding-left", "10px", "tldraw 图形项左侧内边距">;
-    readonly dropdownBackgroundColor: CssVariablePayload<"--rd-dropdown-background-color", "#f7f7f7", "下拉菜单的背景颜色">;
-    readonly dropdownTextColor: CssVariablePayload<"--rd-dropdown-text-color", "#333333", "下拉菜单的文字颜色">;
-    readonly dropdownBorderRadius: CssVariablePayload<"--rd-dropdown-border-radius", "10px", "下拉菜单圆角大小">;
-    readonly dropdownItemBorderRadius: CssVariablePayload<"--rd-dropdown-item-border-radius", "5px", "下拉菜单项圆角大小">;
-    readonly dropdownMenuBorderRadius: CssVariablePayload<"--rd-dropdown-menu-border-radius", "8px", "下拉文件菜单圆角大小">;
-    readonly dropdownMenuItemBorderRadius: CssVariablePayload<"--rd-dropdown-menu-item-border-radius", "8px", "下拉菜单项圆角大小">;
-    readonly cardBorderRadius: CssVariablePayload<"--rd-card-border-radius", "12px", "卡片圆角">;
-    readonly cardPadding: CssVariablePayload<"--rd-card-padding", "16px", "卡片内边距">;
-    readonly messageBorderRadius: CssVariablePayload<"--rd-message-border-radius", "8px", "message圆角">;
-    /** 成功按钮颜色 */
-    readonly successMessageColor: CssVariablePayload<"--rd-success-message-color", "#28a745", "成功按钮颜色">;
-    /** 警告按钮颜色 */
-    readonly warningMessageColor: CssVariablePayload<"--rd-warning-message-color", "#ffc107", "警告按钮颜色">;
-    /** 错误按钮颜色 */
-    readonly errorMessageColor: CssVariablePayload<"--rd-error-message-color", "#dc3545", "错误按钮颜色">;
-    /** 所有按钮 */
-    readonly buttonBackgroundColor: CssVariablePayload<"--rd-button-background-color", "#ffffff", "">;
-    readonly buttonTextColor: CssVariablePayload<"--rd-button-text-color", "#333333", "按钮文字颜色">;
-    readonly buttonBorderRadius: CssVariablePayload<"--rd-button-border-radius", "10px", "按钮的圆角尺寸">;
-    /** 主按钮 */
-    readonly primaryButtonBackgroundColor: CssVariablePayload<"--rd-primary-button-background-color", "#1677ff", "主要按钮颜色">;
-    readonly primaryButtonTextColor: CssVariablePayload<"--rd-primary-button-text-color", "#FFF", "主要按钮文字颜色">;
-    /** 带边线的按钮 */
-    readonly dashedButtonBackgroundColor: CssVariablePayload<"--rd-dashed-button-background-color", "#ffffff", "带边框按钮背景色">;
-    readonly dashedButtonTextColor: CssVariablePayload<"--rd-dashed-button-text-color", "#333333", "带边框按钮文字颜色">;
-    /** 默认的按钮 */
-    readonly defaultButtonBackgroundColor: CssVariablePayload<"--rd-default-button-background-color", "#ffffff", "带边框按钮背景色">;
-    readonly defaultButtonTextColor: CssVariablePayload<"--rd-default-button-text-color", "#333333", "带边框按钮文字颜色">;
-    /** 链接按钮 */
-    readonly linkButtonBackgroundColor: CssVariablePayload<"--rd-link-button-background-color", "unset", "带边框按钮背景色">;
-    readonly linkButtonTextColor: CssVariablePayload<"--rd-link-button-text-color", "#1a73e8", "带边框按钮文字颜色">;
-    /** 文本按钮 */
-    readonly textButtonBackgroundColor: CssVariablePayload<"--rd-text-button-background-color", "#ffffff", "带边框按钮背景色">;
-    readonly textButtonTextColor: CssVariablePayload<"--rd-text-button-text-color", "#333333", "带边框按钮文字颜色">;
-    /** 主要背景色 */
-    readonly primaryBackgroundColor: CssVariablePayload<"--rd-primary-background-color", "#ffffff", "主要背景色">;
-    /** 二级次背景色 */
-    readonly secondaryBackgroundColor: CssVariablePayload<"--rd-secondary-background-color", "#f7f7f7", "二级次背景色">;
-    /** 三级次要背景色 */
-    readonly thirdBackgroundColor: CssVariablePayload<"--rd-third-background-color", "#eeeeee", "三级次要背景色">;
-    /** 四级次要背景色 */
-    readonly fourthBackgroundColor: CssVariablePayload<"--rd-fourth-background-color", "#e5e5e5", "四级次要背景色">;
-    /** 主题色 */
-    readonly primaryColor: CssVariablePayload<"--rd-primary-color", "#007bff", "主题色">;
-    readonly primaryTextColor: CssVariablePayload<"--rd-primary-text-color", "#333333", "主要文本颜色">;
-    readonly secondaryTextColor: CssVariablePayload<"--rd-secondary-text-color", "#666666", "次要文本颜色">;
-    readonly linkTextColor: CssVariablePayload<"--rd-link-text-color", "#1a73e8", "链接文本颜色">;
-    /** 标题栏高度 */
-    readonly captionBarHeight: CssVariablePayload<"--rd-caption-bar-height", "32px", "标题栏高度">;
-    /** 标题栏背景色 */
-    readonly captionBarBackgroundColor: CssVariablePayload<"--rd-caption-bar-background-color", "#f7f7f7", "标题栏背景色">;
-    readonly navigationBarWidth: CssVariablePayload<"--rd-navigation-bar-width", "32px", "纵向导航栏宽度">;
-    readonly navigationBarBackgroundColor: CssVariablePayload<"--rd-navigation-bar-background-color", "#f7f7f7", "导航栏背景色">;
-    /** 控件宽度 */
-    readonly widgetWidth: CssVariablePayload<"--rd-widget-width", "26px", "控件宽度">;
-    /** 控件高度 */
-    readonly widgetHeight: CssVariablePayload<"--rd-widget-height", "26px", "控件高度">;
-    /** 控件颜色 */
-    readonly widgetColor: CssVariablePayload<"--rd-widget-color", "#212529", "控件颜色">;
-    /** 控件Hover */
-    readonly widgetHoverBackgroundColor: CssVariablePayload<"--rd-widget-hover-background-color", "rgba(0, 0, 0, .1)", "控件悬浮背景色">;
-    /** 控件圆角 */
-    readonly widgetBorderRadius: CssVariablePayload<"--rd-widget-border-radius", "4px", "控件圆角">;
+declare const colorPrimary: CssVariablePayload<"--rd-global-color-primary", "#3498db", "全局主题色">;
+declare const colorSuccess: CssVariablePayload<"--rd-global-color-success", "#2ecc71", "全局成功色">;
+declare const colorWarning: CssVariablePayload<"--rd-global-color-warning", "#f1c40f", "全局警告色">;
+declare const colorError: CssVariablePayload<"--rd-global-color-danger", "#e74c3c", "全局危险色">;
+declare const colorNeutral0: CssVariablePayload<"--rd-global-color-neutral-0", "#ffffff", "全局中性色">;
+declare const colorNeutral50: CssVariablePayload<"--rd-global-color-neutral-50", "#fafafa", "全局中性色">;
+declare const colorNeutral100: CssVariablePayload<"--rd-global-color-neutral-100", "#f5f5f5", "全局中性色">;
+declare const colorNeutral200: CssVariablePayload<"--rd-global-color-neutral-200", "#eeeeee", "全局中性色">;
+declare const colorNeutral300: CssVariablePayload<"--rd-global-color-neutral-300", "#e0e0e0", "全局中性色">;
+declare const colorNeutral400: CssVariablePayload<"--rd-global-color-neutral-400", "#bdbdbd", "全局中性色">;
+declare const colorNeutral500: CssVariablePayload<"--rd-global-color-neutral-500", "#9e9e9e", "全局中性色">;
+declare const colorNeutral600: CssVariablePayload<"--rd-global-color-neutral-600", "#757575", "全局中性色">;
+declare const colorNeutral700: CssVariablePayload<"--rd-global-color-neutral-700", "#616161", "全局中性色">;
+declare const colorNeutral800: CssVariablePayload<"--rd-global-color-neutral-800", "#424242", "全局中性色">;
+declare const colorNeutral900: CssVariablePayload<"--rd-global-color-neutral-900", "#212121", "全局中性色">;
+declare const spacingUnit: CssVariablePayload<"--rd-global-spacing-unit", "2px", "全局间距单位">;
+declare const spacingXs: CssVariablePayload<"--rd-global-spacing-xs-unit", "calc(1 * var(--rd-global-spacing-unit))", "全局超小间距">;
+declare const spacingSm: CssVariablePayload<"--rd-global-spacing-sm-unit", "calc(2 * var(--rd-global-spacing-unit))", "全局小间距">;
+declare const spacingMd: CssVariablePayload<"--rd-global-spacing-md-unit", "calc(4 * var(--rd-global-spacing-unit))", "全局中等间距">;
+declare const spacingLg: CssVariablePayload<"--rd-global-spacing-lg-unit", "calc(5 * var(--rd-global-spacing-unit))", "全局大间距">;
+declare const spacingXl: CssVariablePayload<"--rd-global-spacing-xl-unit", "calc(6 * var(--rd-global-spacing-unit))", "全局超大间距">;
+declare const borderRadiusUnit: CssVariablePayload<"--rd-global-border-radius-unit", "4px", "全局圆角单位">;
+declare const borderRadiusXs: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(0.5 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
+declare const borderRadiusSm: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(1 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
+declare const borderRadiusMd: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(2 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
+declare const borderRadiusLg: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(3 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
+declare const borderRadiusXl: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(4 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
+declare const borderRadiusFull: CssVariablePayload<"--rd-global-border-radius-full", "9999px", "全局圆角单位">;
+declare const shadowXs: CssVariablePayload<"--rd-global-shadow-xs", "0 1px 2px rgba(0,0,0,0.05)", "全局阴影">;
+declare const shadowSm: CssVariablePayload<"--rd-global-shadow-sm", "0 2px 4px rgba(0,0,0,0.05)", "全局阴影">;
+declare const shadowMd: CssVariablePayload<"--rd-global-shadow-md", "0 4px 8px rgba(0,0,0,0.05)", "全局阴影">;
+declare const shadowLg: CssVariablePayload<"--rd-global-shadow-lg", "0 8px 16px rgba(0,0,0,0.05)", "全局阴影">;
+declare const shadowXl: CssVariablePayload<"--rd-global-shadow-xl", "0 16px 32px rgba(0,0,0,0.05)", "全局阴影">;
+declare const fontSizeXs: CssVariablePayload<"--rd-global-font-size-xs", "0.75rem", "全局字体大小">;
+declare const fontSizeSm: CssVariablePayload<"--rd-global-font-size-sm", "0.875rem", "全局字体大小">;
+declare const fontSizeMd: CssVariablePayload<"--rd-global-font-size-md", "1rem", "全局字体大小">;
+declare const fontSizeLg: CssVariablePayload<"--rd-global-font-size-lg", "1.125rem", "全局字体大小">;
+declare const fontSizeXl: CssVariablePayload<"--rd-global-font-size-xl", "1.25rem", "全局字体大小">;
+declare const fontSize2Xl: CssVariablePayload<"--rd-global-font-size-xxl", "1.5rem", "全局字体大小">;
+declare const fontWeightLight: CssVariablePayload<"--rd-global-font-weight-light", "300", "全局细体字重">;
+declare const fontWeightRegular: CssVariablePayload<"--rd-global-font-weight-regular", "400", "全局常规字重">;
+declare const fontWeightMedium: CssVariablePayload<"--rd-global-font-weight-medium", "500", "全局中等字重">;
+declare const fontWeightBold: CssVariablePayload<"--rd-global-font-weight-bold", "700", "全局粗体字重">;
+declare const colorTextPrimary: CssVariablePayload<"--rd-global-color-text-primary", "var(--rd-global-color-neutral-900)", "全局主要文本色">;
+declare const colorTextSecondary: CssVariablePayload<"--rd-global-color-text-secondary", "var(--rd-global-color-neutral-700)", "全局次要文本色">;
+declare const colorTextTertiary: CssVariablePayload<"--rd-global-color-text-tertiary", "var(--rd-global-color-neutral-500)", "全局第三文本色">;
+declare const colorTextDisabled: CssVariablePayload<"--rd-global-color-text-disabled", "var(--rd-global-color-neutral-400)", "全局禁用文本色">;
+declare const colorTextInverse: CssVariablePayload<"--rd-global-color-text-inverse", "var(--rd-global-color-neutral-50)", "全局反色文本">;
+declare const colorTextLink: CssVariablePayload<"--rd-global-color-text-link", "var(--rd-global-color-primary)", "全局链接文本色">;
+declare const colorTextSuccess: CssVariablePayload<"--rd-global-color-text-success", "var(--rd-global-color-success)", "全局成功文本色">;
+declare const colorTextWarning: CssVariablePayload<"--rd-global-color-text-warning", "var(--rd-global-color-warning)", "全局警告文本色">;
+declare const colorTextError: CssVariablePayload<"--rd-global-color-text-danger", "var(--rd-global-color-danger)", "全局错误文本色">;
+declare const surfacePrimary: CssVariablePayload<"--rd-global-surface-primary", "var(--rd-global-color-neutral-100)", "全局主要表面色">;
+declare const surfaceSecondary: CssVariablePayload<"--rd-global-surface-secondary", "var(--rd-global-color-neutral-50)", "全局次要表面色">;
+declare const surfaceTertiary: CssVariablePayload<"--rd-global-surface-tertiary", "var(--rd-global-color-neutral-200)", "全局第三表面色">;
+declare const borderPrimary: CssVariablePayload<"--rd-global-border-primary", "1px solid var(--rd-global-color-neutral-300)", "全局主要边框">;
+declare const borderSecondary: CssVariablePayload<"--rd-global-border-secondary", "1px solid var(--rd-global-color-neutral-200)", "全局次要边框">;
+declare const borderTertiary: CssVariablePayload<"--rd-global-border-tertiary", "1px solid var(--rd-global-color-neutral-100)", "全局第三边框">;
+declare const borderFocus: CssVariablePayload<"--rd-global-border-focus", "1px solid var(--rd-global-color-primary)", "全局聚焦边框">;
+declare const borderError: CssVariablePayload<"--rd-global-border-error", "1px solid var(--rd-global-color-danger)", "全局错误边框">;
+declare const interactivePrimary: CssVariablePayload<"--rd-global-interactive-primary", "var(--rd-global-color-primary)", "全局主要交互色">;
+declare const interactivePrimaryHover: CssVariablePayload<"--rd-global-interactive-primary-hover", "#2980b9", "全局主要交互悬停色">;
+declare const interactivePrimaryActive: CssVariablePayload<"--rd-global-interactive-primary-active", "#1d6fa5", "全局主要交互激活色">;
+declare const interactivePrimaryDisabled: CssVariablePayload<"--rd-global-interactive-primary-disabled", "var(--rd-global-color-neutral-300)", "全局主要交互禁用色">;
+declare const interactiveSecondary: CssVariablePayload<"--rd-global-interactive-secondary", "var(--rd-global-color-neutral-400)", "全局次要交互色">;
+declare const interactiveSecondaryHover: CssVariablePayload<"--rd-global-interactive-secondary-hover", "var(--rd-global-color-neutral-500)", "全局次要交互悬停色">;
+declare const interactiveSecondaryActive: CssVariablePayload<"--rd-global-interactive-secondary-active", "var(--rd-global-color-neutral-600)", "全局次要交互激活色">;
+declare const interactiveSecondaryDisabled: CssVariablePayload<"--rd-global-interactive-secondary-disabled", "var(--rd-global-color-neutral-200)", "全局次要交互禁用色">;
+declare const uiWidgetWidth: CssVariablePayload<"--rd-ui-widget-width", "26px", "控件宽度">;
+declare const uiWidgetHeight: CssVariablePayload<"--rd-ui-widget-height", "26px", "控件高度">;
+declare const uiWidgetColorPrimary: CssVariablePayload<"--rd-ui-widget-color-primary", "var(--rd-global-color-neutral-700)", "控件颜色">;
+declare const uiWidgetBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-background-primary", "var(--rd-global-color-neutral-50)", "控件颜色">;
+declare const uiWidgetHoverBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-hover-background-primary", "var(--rd-global-color-neutral-100)", "控件颜色">;
+declare const uiWidgetBorderRadius: CssVariablePayload<"--rd-ui-widget-border-radius", "4px", "控件圆角半径">;
+declare const uiCaptionBarHeight: CssVariablePayload<"--rd-ui-caption-bar-height", "32px", "标题栏高度">;
+declare const uiCaptionBarBackground: CssVariablePayload<"--rd-ui-caption-bar-background", "var(--rd-global-color-neutral-0)", "标题栏背景色">;
+declare const uiNavigationBarWidth: CssVariablePayload<"--rd-ui-navigation-bar-width", "32px", "纵向导航栏宽度">;
+declare const uiNavigationBarBackground: CssVariablePayload<"--rd-ui-navigation-bar-background", "var(--rd-global-color-neutral-0)", "导航栏背景色">;
+declare const uiDefaultButtonBackground: CssVariablePayload<"--rd-ui-default-button-background", "var(--rd-global-color-neutral-50)", "默认按钮背景色">;
+declare const uiDefaultButtonTextColor: CssVariablePayload<"--rd-ui-default-button-text-color", "var(--rd-global-color-neutral-700)", "默认按钮文本色">;
+declare const uiDefaultButtonRadius: CssVariablePayload<"--rd-ui-default-button-radius", "10px", "默认按钮圆角半径">;
+declare const uiAutoMenuBackground: CssVariablePayload<"--rd-ui-auto-menu-background", "var(--rd-global-color-neutral-0)", "自动菜单背景色">;
+declare const uiAutoMenuTextColor: CssVariablePayload<"--rd-ui-auto-menu-text-color", "var(--rd-global-color-neutral-700)", "自动菜单文本色">;
+declare const uiAutoMenuRadius: CssVariablePayload<"--rd-ui-auto-menu-radius", "10px", "自动菜单圆角半径">;
+
+declare const cssVariablePayloadSheet_borderError: typeof borderError;
+declare const cssVariablePayloadSheet_borderFocus: typeof borderFocus;
+declare const cssVariablePayloadSheet_borderPrimary: typeof borderPrimary;
+declare const cssVariablePayloadSheet_borderRadiusFull: typeof borderRadiusFull;
+declare const cssVariablePayloadSheet_borderRadiusLg: typeof borderRadiusLg;
+declare const cssVariablePayloadSheet_borderRadiusMd: typeof borderRadiusMd;
+declare const cssVariablePayloadSheet_borderRadiusSm: typeof borderRadiusSm;
+declare const cssVariablePayloadSheet_borderRadiusUnit: typeof borderRadiusUnit;
+declare const cssVariablePayloadSheet_borderRadiusXl: typeof borderRadiusXl;
+declare const cssVariablePayloadSheet_borderRadiusXs: typeof borderRadiusXs;
+declare const cssVariablePayloadSheet_borderSecondary: typeof borderSecondary;
+declare const cssVariablePayloadSheet_borderTertiary: typeof borderTertiary;
+declare const cssVariablePayloadSheet_colorError: typeof colorError;
+declare const cssVariablePayloadSheet_colorNeutral0: typeof colorNeutral0;
+declare const cssVariablePayloadSheet_colorNeutral100: typeof colorNeutral100;
+declare const cssVariablePayloadSheet_colorNeutral200: typeof colorNeutral200;
+declare const cssVariablePayloadSheet_colorNeutral300: typeof colorNeutral300;
+declare const cssVariablePayloadSheet_colorNeutral400: typeof colorNeutral400;
+declare const cssVariablePayloadSheet_colorNeutral50: typeof colorNeutral50;
+declare const cssVariablePayloadSheet_colorNeutral500: typeof colorNeutral500;
+declare const cssVariablePayloadSheet_colorNeutral600: typeof colorNeutral600;
+declare const cssVariablePayloadSheet_colorNeutral700: typeof colorNeutral700;
+declare const cssVariablePayloadSheet_colorNeutral800: typeof colorNeutral800;
+declare const cssVariablePayloadSheet_colorNeutral900: typeof colorNeutral900;
+declare const cssVariablePayloadSheet_colorPrimary: typeof colorPrimary;
+declare const cssVariablePayloadSheet_colorSuccess: typeof colorSuccess;
+declare const cssVariablePayloadSheet_colorTextDisabled: typeof colorTextDisabled;
+declare const cssVariablePayloadSheet_colorTextError: typeof colorTextError;
+declare const cssVariablePayloadSheet_colorTextInverse: typeof colorTextInverse;
+declare const cssVariablePayloadSheet_colorTextLink: typeof colorTextLink;
+declare const cssVariablePayloadSheet_colorTextPrimary: typeof colorTextPrimary;
+declare const cssVariablePayloadSheet_colorTextSecondary: typeof colorTextSecondary;
+declare const cssVariablePayloadSheet_colorTextSuccess: typeof colorTextSuccess;
+declare const cssVariablePayloadSheet_colorTextTertiary: typeof colorTextTertiary;
+declare const cssVariablePayloadSheet_colorTextWarning: typeof colorTextWarning;
+declare const cssVariablePayloadSheet_colorWarning: typeof colorWarning;
+declare const cssVariablePayloadSheet_fontSize2Xl: typeof fontSize2Xl;
+declare const cssVariablePayloadSheet_fontSizeLg: typeof fontSizeLg;
+declare const cssVariablePayloadSheet_fontSizeMd: typeof fontSizeMd;
+declare const cssVariablePayloadSheet_fontSizeSm: typeof fontSizeSm;
+declare const cssVariablePayloadSheet_fontSizeXl: typeof fontSizeXl;
+declare const cssVariablePayloadSheet_fontSizeXs: typeof fontSizeXs;
+declare const cssVariablePayloadSheet_fontWeightBold: typeof fontWeightBold;
+declare const cssVariablePayloadSheet_fontWeightLight: typeof fontWeightLight;
+declare const cssVariablePayloadSheet_fontWeightMedium: typeof fontWeightMedium;
+declare const cssVariablePayloadSheet_fontWeightRegular: typeof fontWeightRegular;
+declare const cssVariablePayloadSheet_interactivePrimary: typeof interactivePrimary;
+declare const cssVariablePayloadSheet_interactivePrimaryActive: typeof interactivePrimaryActive;
+declare const cssVariablePayloadSheet_interactivePrimaryDisabled: typeof interactivePrimaryDisabled;
+declare const cssVariablePayloadSheet_interactivePrimaryHover: typeof interactivePrimaryHover;
+declare const cssVariablePayloadSheet_interactiveSecondary: typeof interactiveSecondary;
+declare const cssVariablePayloadSheet_interactiveSecondaryActive: typeof interactiveSecondaryActive;
+declare const cssVariablePayloadSheet_interactiveSecondaryDisabled: typeof interactiveSecondaryDisabled;
+declare const cssVariablePayloadSheet_interactiveSecondaryHover: typeof interactiveSecondaryHover;
+declare const cssVariablePayloadSheet_shadowLg: typeof shadowLg;
+declare const cssVariablePayloadSheet_shadowMd: typeof shadowMd;
+declare const cssVariablePayloadSheet_shadowSm: typeof shadowSm;
+declare const cssVariablePayloadSheet_shadowXl: typeof shadowXl;
+declare const cssVariablePayloadSheet_shadowXs: typeof shadowXs;
+declare const cssVariablePayloadSheet_spacingLg: typeof spacingLg;
+declare const cssVariablePayloadSheet_spacingMd: typeof spacingMd;
+declare const cssVariablePayloadSheet_spacingSm: typeof spacingSm;
+declare const cssVariablePayloadSheet_spacingUnit: typeof spacingUnit;
+declare const cssVariablePayloadSheet_spacingXl: typeof spacingXl;
+declare const cssVariablePayloadSheet_spacingXs: typeof spacingXs;
+declare const cssVariablePayloadSheet_surfacePrimary: typeof surfacePrimary;
+declare const cssVariablePayloadSheet_surfaceSecondary: typeof surfaceSecondary;
+declare const cssVariablePayloadSheet_surfaceTertiary: typeof surfaceTertiary;
+declare const cssVariablePayloadSheet_uiAutoMenuBackground: typeof uiAutoMenuBackground;
+declare const cssVariablePayloadSheet_uiAutoMenuRadius: typeof uiAutoMenuRadius;
+declare const cssVariablePayloadSheet_uiAutoMenuTextColor: typeof uiAutoMenuTextColor;
+declare const cssVariablePayloadSheet_uiCaptionBarBackground: typeof uiCaptionBarBackground;
+declare const cssVariablePayloadSheet_uiCaptionBarHeight: typeof uiCaptionBarHeight;
+declare const cssVariablePayloadSheet_uiDefaultButtonBackground: typeof uiDefaultButtonBackground;
+declare const cssVariablePayloadSheet_uiDefaultButtonRadius: typeof uiDefaultButtonRadius;
+declare const cssVariablePayloadSheet_uiDefaultButtonTextColor: typeof uiDefaultButtonTextColor;
+declare const cssVariablePayloadSheet_uiNavigationBarBackground: typeof uiNavigationBarBackground;
+declare const cssVariablePayloadSheet_uiNavigationBarWidth: typeof uiNavigationBarWidth;
+declare const cssVariablePayloadSheet_uiWidgetBackgroundPrimary: typeof uiWidgetBackgroundPrimary;
+declare const cssVariablePayloadSheet_uiWidgetBorderRadius: typeof uiWidgetBorderRadius;
+declare const cssVariablePayloadSheet_uiWidgetColorPrimary: typeof uiWidgetColorPrimary;
+declare const cssVariablePayloadSheet_uiWidgetHeight: typeof uiWidgetHeight;
+declare const cssVariablePayloadSheet_uiWidgetHoverBackgroundPrimary: typeof uiWidgetHoverBackgroundPrimary;
+declare const cssVariablePayloadSheet_uiWidgetWidth: typeof uiWidgetWidth;
+declare namespace cssVariablePayloadSheet {
+  export { cssVariablePayloadSheet_borderError as borderError, cssVariablePayloadSheet_borderFocus as borderFocus, cssVariablePayloadSheet_borderPrimary as borderPrimary, cssVariablePayloadSheet_borderRadiusFull as borderRadiusFull, cssVariablePayloadSheet_borderRadiusLg as borderRadiusLg, cssVariablePayloadSheet_borderRadiusMd as borderRadiusMd, cssVariablePayloadSheet_borderRadiusSm as borderRadiusSm, cssVariablePayloadSheet_borderRadiusUnit as borderRadiusUnit, cssVariablePayloadSheet_borderRadiusXl as borderRadiusXl, cssVariablePayloadSheet_borderRadiusXs as borderRadiusXs, cssVariablePayloadSheet_borderSecondary as borderSecondary, cssVariablePayloadSheet_borderTertiary as borderTertiary, cssVariablePayloadSheet_colorError as colorError, cssVariablePayloadSheet_colorNeutral0 as colorNeutral0, cssVariablePayloadSheet_colorNeutral100 as colorNeutral100, cssVariablePayloadSheet_colorNeutral200 as colorNeutral200, cssVariablePayloadSheet_colorNeutral300 as colorNeutral300, cssVariablePayloadSheet_colorNeutral400 as colorNeutral400, cssVariablePayloadSheet_colorNeutral50 as colorNeutral50, cssVariablePayloadSheet_colorNeutral500 as colorNeutral500, cssVariablePayloadSheet_colorNeutral600 as colorNeutral600, cssVariablePayloadSheet_colorNeutral700 as colorNeutral700, cssVariablePayloadSheet_colorNeutral800 as colorNeutral800, cssVariablePayloadSheet_colorNeutral900 as colorNeutral900, cssVariablePayloadSheet_colorPrimary as colorPrimary, cssVariablePayloadSheet_colorSuccess as colorSuccess, cssVariablePayloadSheet_colorTextDisabled as colorTextDisabled, cssVariablePayloadSheet_colorTextError as colorTextError, cssVariablePayloadSheet_colorTextInverse as colorTextInverse, cssVariablePayloadSheet_colorTextLink as colorTextLink, cssVariablePayloadSheet_colorTextPrimary as colorTextPrimary, cssVariablePayloadSheet_colorTextSecondary as colorTextSecondary, cssVariablePayloadSheet_colorTextSuccess as colorTextSuccess, cssVariablePayloadSheet_colorTextTertiary as colorTextTertiary, cssVariablePayloadSheet_colorTextWarning as colorTextWarning, cssVariablePayloadSheet_colorWarning as colorWarning, cssVariablePayloadSheet_fontSize2Xl as fontSize2Xl, cssVariablePayloadSheet_fontSizeLg as fontSizeLg, cssVariablePayloadSheet_fontSizeMd as fontSizeMd, cssVariablePayloadSheet_fontSizeSm as fontSizeSm, cssVariablePayloadSheet_fontSizeXl as fontSizeXl, cssVariablePayloadSheet_fontSizeXs as fontSizeXs, cssVariablePayloadSheet_fontWeightBold as fontWeightBold, cssVariablePayloadSheet_fontWeightLight as fontWeightLight, cssVariablePayloadSheet_fontWeightMedium as fontWeightMedium, cssVariablePayloadSheet_fontWeightRegular as fontWeightRegular, cssVariablePayloadSheet_interactivePrimary as interactivePrimary, cssVariablePayloadSheet_interactivePrimaryActive as interactivePrimaryActive, cssVariablePayloadSheet_interactivePrimaryDisabled as interactivePrimaryDisabled, cssVariablePayloadSheet_interactivePrimaryHover as interactivePrimaryHover, cssVariablePayloadSheet_interactiveSecondary as interactiveSecondary, cssVariablePayloadSheet_interactiveSecondaryActive as interactiveSecondaryActive, cssVariablePayloadSheet_interactiveSecondaryDisabled as interactiveSecondaryDisabled, cssVariablePayloadSheet_interactiveSecondaryHover as interactiveSecondaryHover, cssVariablePayloadSheet_shadowLg as shadowLg, cssVariablePayloadSheet_shadowMd as shadowMd, cssVariablePayloadSheet_shadowSm as shadowSm, cssVariablePayloadSheet_shadowXl as shadowXl, cssVariablePayloadSheet_shadowXs as shadowXs, cssVariablePayloadSheet_spacingLg as spacingLg, cssVariablePayloadSheet_spacingMd as spacingMd, cssVariablePayloadSheet_spacingSm as spacingSm, cssVariablePayloadSheet_spacingUnit as spacingUnit, cssVariablePayloadSheet_spacingXl as spacingXl, cssVariablePayloadSheet_spacingXs as spacingXs, cssVariablePayloadSheet_surfacePrimary as surfacePrimary, cssVariablePayloadSheet_surfaceSecondary as surfaceSecondary, cssVariablePayloadSheet_surfaceTertiary as surfaceTertiary, cssVariablePayloadSheet_uiAutoMenuBackground as uiAutoMenuBackground, cssVariablePayloadSheet_uiAutoMenuRadius as uiAutoMenuRadius, cssVariablePayloadSheet_uiAutoMenuTextColor as uiAutoMenuTextColor, cssVariablePayloadSheet_uiCaptionBarBackground as uiCaptionBarBackground, cssVariablePayloadSheet_uiCaptionBarHeight as uiCaptionBarHeight, cssVariablePayloadSheet_uiDefaultButtonBackground as uiDefaultButtonBackground, cssVariablePayloadSheet_uiDefaultButtonRadius as uiDefaultButtonRadius, cssVariablePayloadSheet_uiDefaultButtonTextColor as uiDefaultButtonTextColor, cssVariablePayloadSheet_uiNavigationBarBackground as uiNavigationBarBackground, cssVariablePayloadSheet_uiNavigationBarWidth as uiNavigationBarWidth, cssVariablePayloadSheet_uiWidgetBackgroundPrimary as uiWidgetBackgroundPrimary, cssVariablePayloadSheet_uiWidgetBorderRadius as uiWidgetBorderRadius, cssVariablePayloadSheet_uiWidgetColorPrimary as uiWidgetColorPrimary, cssVariablePayloadSheet_uiWidgetHeight as uiWidgetHeight, cssVariablePayloadSheet_uiWidgetHoverBackgroundPrimary as uiWidgetHoverBackgroundPrimary, cssVariablePayloadSheet_uiWidgetWidth as uiWidgetWidth };
+}
+
+type RdCssVariablePayloadSheet = typeof cssVariablePayloadSheet;
+
+/**
+ * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等
+ */
+interface ExceptionErrorMsgData {
+    /**
+     * 异常标签, 通常用于打印服务
+     */
+    readonly label: string;
+    /**
+     * 异常等级
+     */
+    readonly level: 'ERROR' | 'SUCCESS' | 'INFO' | 'WARN';
+    /**
+     * 异常产生时间
+     */
+    readonly time: number;
+    readonly other: Record<string, any>;
+}
+/**
+ * 异常基类
+ */
+declare class Exception<ErrMessageData extends ExceptionErrorMsgData> {
+    message: string;
+    readonly errMessage: ErrMessageData;
+    constructor(message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>);
+}
+
+/** Ipc 事件类型 */
+declare const enum IpcActionEvent {
+    Handle = 0,
+    On = 1
+}
+/** 自定义 ipc action 对象 */
+type IpcActionType<EvtActionType extends IpcActionEvent, Channel extends string = string, Action extends (...args: any[]) => any = (...args: any[]) => any> = {
+    /**
+     * 句柄名称
+     */
+    readonly channel: Channel;
+    /**
+     * 编写的 Action 回调, 可以让其他 Action 进行调用
+     */
+    readonly action: Action;
+    /**
+     * Action Type
+     */
+    readonly actionType: EvtActionType;
+    /**
+     * 中间件列表
+     */
+    readonly middlewares: IpcActionMiddleware<EvtActionType>[];
+    /**
+     * ipc 句柄的处理函数, 该函数会走中间件, 调用 action 对象的 action 方法作为返回值
+     */
+    readonly listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => Promise<any>;
+};
+/** 在中间件中 onSuccess 或者 onError 中获取当前的 action 信息的类型 */
+type IpcActionMessageType<EvtActionType extends IpcActionEvent> = Omit<IpcActionType<EvtActionType>, 'middlewares'> & {
+    readonly event: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent;
+};
+/**
+ * Ipc Action 中间件
+ */
+type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
+    /**
+     * 中间件名称
+     */
+    readonly name: string;
+    /**
+     * 转换参数, 可以利用本函数为每个子项的 action 函数提供统一的参数前缀, 因为默认情况下 electron ipc 第一个参数为 事件 e: IpcMainInvokeEvent | IpcMainEvent
+     * 可能需要转换自定义对象或者 已有的 窗口对象
+     *
+     * @example
+     * export const convertWindowService: IpcActionMiddleware<IpcActionEvent.Handle> = {
+     *   name: 'convertWindowService',
+     *   transformArgs(e, ...args) {
+     *     const windowService = WindowService.findWindowService(e);
+     *     return [windowService, ...args];
+     *   }
+     * }
+     */
+    readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<any[]>;
+    /**
+     * 转换响应
+     */
+    readonly transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
+    /**
+     * 在 action 正式处理之前的回调函数
+     */
+    readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
+    /**
+     * 在 action 处理之后的回调函数
+     */
+    readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
+    /**
+     * 在 action 正确处理 ipc 句柄的成功回调函数
+     * @param res 正确处理的返回数据
+     * @param message 返回处理当前 ipc 句柄的信息
+     */
+    readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => Promise<void>;
+    /**
+     * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
+     * 如果不处理, 那么会在主进程产出一个错误.
+     * @param res 错误处理时产生的异常对象
+     * @param message 返回处理当前 ipc 句柄的信息
+     */
+    readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => Promise<void | Exception<ExceptionErrorMsgData>>;
 };
 
-type RdCssVariablePayloadSheet = typeof cssVariablesPayloadSheet;
+/**
+ * 创建 windowService 的选项
+ */
+interface WindowServiceOptions {
+    url: string;
+    autoLoad: boolean;
+    windowKey?: string;
+}
+/**
+ * 窗口服务对象
+ */
+declare class WindowService {
+    readonly options: WindowServiceOptions;
+    readonly window: BrowserWindow;
+    constructor(windowOptions: Partial<BrowserWindowConstructorOptions>, options: WindowServiceOptions);
+    /**
+     * 打开窗口
+     */
+    show(): Promise<void>;
+    /**
+     * 销毁窗口对象
+     */
+    destroy(): void;
+    /**
+     * 从事件或者窗口id获得一个创建时的 BrowserWindow 对象
+     */
+    static findBrowserWindow(arg: number | IpcMainEvent | IpcMainInvokeEvent): BrowserWindow | null;
+    /**
+     * 从事件或者窗口id获得一个创建时的 Service 对象
+     * @example
+     * // 如果是通过 windowService 创建, 并且设置了 name 属性, 那么可以通过该方法找到
+     * const windowService = WindowService.findWindowService('mainWindow');
+     *
+     * @example
+     * declare const e: IpcMainEvent;
+     * const windowService = WindowService.findWindowService(e);
+     *
+     * @example
+     * declare const id: number;
+     * const windowService = WindowService.findWindowService(id);
+     */
+    static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]): WindowService;
+    /**
+     * 判断是否是同一个 WindowService
+     */
+    static isSameWindowService(tr: WindowService | null, other: WindowService | null): boolean;
+}
+
+/**
+ * 接收 IpcBroadcast 事件, 并且向其他窗口广播, 携带 事件名、参数
+ */
+declare const ipcOnBroadcast: {
+    readonly channel: "IpcBroadcast";
+    readonly action: (windowService: WindowService, evtName: string, data: any) => Promise<void>;
+    readonly actionType: IpcActionEvent.On;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.On>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+
+/**
+ * 渲染进程打开开发者检查工具
+ */
+declare const ipcOpenDevTool: {
+    readonly channel: "IpcDevTool/openDevTool";
+    readonly action: (e: Electron.IpcMainInvokeEvent, status: boolean, options?: OpenDevToolsOptions) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+
+declare namespace DepositService {
+    /**
+     * 存放数据时的函数的 options
+     */
+    type TakeInOptions = {};
+    /**
+     * 取回数据的函数的 options
+     */
+    type TakeOutOptions = {
+        /**
+         * 是否取回数据后, 但是依旧保留
+         */
+        persist?: boolean;
+    };
+}
+/**
+ * 转发数据的寄存器中转站
+ * @example
+ * const depositService = new DepositService<Record<string, any>>();
+ *
+ * // xx.ts
+ * depositService.takeIn('foo', 'bar');
+ *
+ * // xxx.ts 在某个事件中
+ * const value = depositService.takeOut('foo');
+ */
+declare class DepositService<DepositEntries = unknown> {
+    private readonly depositData;
+    /**
+     * 存放数据
+     */
+    takeIn<Key extends keyof DepositEntries, Data extends DepositEntries[Key]>(key: Key, data: Data, _?: DepositService.TakeInOptions): void;
+    /**
+     * 取回数据
+     */
+    takeOut<Key extends keyof DepositEntries, Data extends DepositEntries[Key]>(key: Key, options?: DepositService.TakeOutOptions): Data | null;
+}
+
+/**
+ * ipc 接口, 渲染进程存放转发数据
+ */
+declare const ipcForwardDataTakeIn: {
+    readonly channel: "IpcForwardData/takeIn";
+    readonly action: (_: WindowService, key: string, data: any) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 渲染进程取回数据
+ */
+declare const ipcForwardDataTakeOut: {
+    readonly channel: "IpcForwardData/takeOut";
+    readonly action: (_: WindowService, key: string, options?: DepositService.TakeOutOptions) => Promise<any>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+
+interface AppStoreType {
+    refreshToken: string;
+    accessToken: string;
+}
+
+/**
+ * 为渲染进程提供获得 appStore 的能力
+ */
+declare const ipcAppStoreGetStore: {
+    readonly channel: "IpcStore/appStore/getStore";
+    readonly action: () => Promise<AppStoreType>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 渲染进程通过 key 获得一个存储在 appStore 中的数据
+ */
+declare const ipcAppStoreGet: {
+    readonly channel: "IpcStore/appStore/get";
+    readonly action: <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType>[Key]>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 渲染进程通过 key 设置存储在 appStore 中的数据
+ */
+declare const ipcAppStoreSet: {
+    readonly channel: "IpcStore/appStore/set";
+    readonly action: <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 渲染进程通过 key 重置某些 appStore 中的数据
+ */
+declare const ipcAppStoreReset: {
+    readonly channel: "IpcStore/appStore/reset";
+    readonly action: <Key extends keyof AppStoreType>(_: WindowService, ...keys: Key[]) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 渲染进程通过 key 判断 appStore 中是否含有某个 key
+ */
+declare const ipcAppStoreHas: {
+    readonly channel: "IpcStore/appStore/has";
+    readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<boolean>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 渲染进程通过 key 删除 appStore 中的数据
+ */
+declare const ipcAppStoreDelete: {
+    readonly channel: "IpcStore/appStore/delete";
+    readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 清空 appStore
+ */
+declare const ipcAppStoreClear: {
+    readonly channel: "IpcStore/appStore/clear";
+    readonly action: (_: WindowService) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+
+/**
+ * 窗口最大化, 可以在 options 中传递制定 id 来控制某个窗口
+ */
+declare const ipcWindowMaximize: {
+    readonly channel: "IpcWindow/maxSize";
+    readonly action: (windowService: WindowService, options?: {
+        id?: number;
+        windowKey?: string;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 窗口最小化, 可以在 options 中传递制定 id 来控制某个窗口
+ */
+declare const ipcWindowMinimize: {
+    readonly channel: "IpcWindow/minSize";
+    readonly action: (windowService: WindowService, options?: {
+        id?: number;
+        windowKey?: string;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 窗口还原指令, 还原窗口大小
+ */
+declare const ipcWindowReductionSize: {
+    readonly channel: "IpcWindow/reduction";
+    readonly action: (windowService: WindowService, options?: {
+        id?: number;
+        windowKey?: string;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 设置窗口是否可以调整大小尺寸
+ */
+declare const ipcWindowResizeAble: {
+    readonly channel: "IpcWindow/resizeAble";
+    readonly action: (windowService: WindowService, options?: {
+        id?: number;
+        windowKey?: string;
+        resizeAble: boolean;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 重新加载某个窗口页面
+ */
+declare const ipcWindowRelaunch: {
+    readonly channel: "IpcWindow/relaunch";
+    readonly action: (windowService: WindowService, options?: {
+        id?: number;
+        windowKey?: string;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 设置窗口的最小尺寸大小
+ */
+declare const ipcWindowSetMinimumSize: {
+    readonly channel: "IpcWindow/setMinimumSize";
+    readonly action: (windowService: WindowService, options: {
+        id?: number;
+        windowKey?: string;
+        width: number;
+        height: number;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 设置窗口的当前尺寸
+ */
+declare const ipcWindowSetSize: {
+    readonly channel: "IpcWindow/setSize";
+    readonly action: (windowService: WindowService, options: {
+        id?: number;
+        windowKey?: string;
+        width: number;
+        height: number;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 重置窗口为制定大小, 用于记忆化窗口尺寸
+ */
+declare const ipcWindowResetCustomSize: {
+    readonly channel: "IpcWindow/resetCustomSize";
+    readonly action: (windowService: WindowService, options: {
+        id?: number;
+        windowKey?: string;
+        type: 'mainWindow';
+    }) => Promise<boolean>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 设置窗口的位置
+ */
+declare const ipcWindowSetPosition: {
+    readonly channel: "IpcWindow/setPosition";
+    readonly action: (windowService: WindowService, options: {
+        id?: number;
+        windowKey?: string;
+        x: 'center' | 'left' | 'right' | number;
+        y: 'center' | 'top' | 'bottom' | number;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * TODO: 需要改进
+ */
+declare const ipcOpenWindow: {
+    readonly channel: "IpcWindow/openWindow";
+    readonly action: (_: WindowService, options: {
+        windowKey?: string;
+        subUrl: string;
+    }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 关闭窗口
+ */
+declare const ipcWindowClose: {
+    readonly channel: "IpcWindow/closeWindow";
+    readonly action: (windowService: WindowService, options?: {
+        windowKey?: string;
+        id?: number;
+        /**
+         * 遮掩的。为 true, 那么窗口不会正常地销毁, 而只是隐藏掉
+         */
+        fictitious?: boolean;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 显示窗口, 如果窗口存在, 并且是隐藏地情况下
+ */
+declare const ipcWindowShow: {
+    readonly channel: "IpcWindow/showWindow";
+    readonly action: (windowService: WindowService, options: {
+        id?: number;
+        windowKey?: string;
+        show: boolean;
+    }) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * TODO:
+ */
+declare interface WindowProperties {
+    width: number;
+    height: number;
+    x: number;
+    y: number;
+}
+/**
+ * TODO: 需要改进, 理想作用是通过一个 ipc 设置多个 window 属性
+ */
+declare const ipcWindowProperties: {
+    readonly channel: "IpcWindow/properties";
+    readonly action: (windowService: WindowService, selectedOptions: {
+        windowKey?: string;
+    }, properties: Partial<WindowProperties>) => Promise<void>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+/**
+ * 获取展示窗口的尺寸
+ */
+declare const ipcWindowWorkAreaSize: {
+    readonly channel: "IpcWindow/workAreaSize";
+    readonly action: () => Promise<{
+        readonly width: number;
+        readonly height: number;
+    }>;
+    readonly actionType: IpcActionEvent.Handle;
+    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
+};
+
+type actions_WindowProperties = WindowProperties;
+declare const actions_ipcAppStoreClear: typeof ipcAppStoreClear;
+declare const actions_ipcAppStoreDelete: typeof ipcAppStoreDelete;
+declare const actions_ipcAppStoreGet: typeof ipcAppStoreGet;
+declare const actions_ipcAppStoreGetStore: typeof ipcAppStoreGetStore;
+declare const actions_ipcAppStoreHas: typeof ipcAppStoreHas;
+declare const actions_ipcAppStoreReset: typeof ipcAppStoreReset;
+declare const actions_ipcAppStoreSet: typeof ipcAppStoreSet;
+declare const actions_ipcForwardDataTakeIn: typeof ipcForwardDataTakeIn;
+declare const actions_ipcForwardDataTakeOut: typeof ipcForwardDataTakeOut;
+declare const actions_ipcOnBroadcast: typeof ipcOnBroadcast;
+declare const actions_ipcOpenDevTool: typeof ipcOpenDevTool;
+declare const actions_ipcOpenWindow: typeof ipcOpenWindow;
+declare const actions_ipcWindowClose: typeof ipcWindowClose;
+declare const actions_ipcWindowMaximize: typeof ipcWindowMaximize;
+declare const actions_ipcWindowMinimize: typeof ipcWindowMinimize;
+declare const actions_ipcWindowProperties: typeof ipcWindowProperties;
+declare const actions_ipcWindowReductionSize: typeof ipcWindowReductionSize;
+declare const actions_ipcWindowRelaunch: typeof ipcWindowRelaunch;
+declare const actions_ipcWindowResetCustomSize: typeof ipcWindowResetCustomSize;
+declare const actions_ipcWindowResizeAble: typeof ipcWindowResizeAble;
+declare const actions_ipcWindowSetMinimumSize: typeof ipcWindowSetMinimumSize;
+declare const actions_ipcWindowSetPosition: typeof ipcWindowSetPosition;
+declare const actions_ipcWindowSetSize: typeof ipcWindowSetSize;
+declare const actions_ipcWindowShow: typeof ipcWindowShow;
+declare const actions_ipcWindowWorkAreaSize: typeof ipcWindowWorkAreaSize;
+declare namespace actions {
+  export { type actions_WindowProperties as WindowProperties, actions_ipcAppStoreClear as ipcAppStoreClear, actions_ipcAppStoreDelete as ipcAppStoreDelete, actions_ipcAppStoreGet as ipcAppStoreGet, actions_ipcAppStoreGetStore as ipcAppStoreGetStore, actions_ipcAppStoreHas as ipcAppStoreHas, actions_ipcAppStoreReset as ipcAppStoreReset, actions_ipcAppStoreSet as ipcAppStoreSet, actions_ipcForwardDataTakeIn as ipcForwardDataTakeIn, actions_ipcForwardDataTakeOut as ipcForwardDataTakeOut, actions_ipcOnBroadcast as ipcOnBroadcast, actions_ipcOpenDevTool as ipcOpenDevTool, actions_ipcOpenWindow as ipcOpenWindow, actions_ipcWindowClose as ipcWindowClose, actions_ipcWindowMaximize as ipcWindowMaximize, actions_ipcWindowMinimize as ipcWindowMinimize, actions_ipcWindowProperties as ipcWindowProperties, actions_ipcWindowReductionSize as ipcWindowReductionSize, actions_ipcWindowRelaunch as ipcWindowRelaunch, actions_ipcWindowResetCustomSize as ipcWindowResetCustomSize, actions_ipcWindowResizeAble as ipcWindowResizeAble, actions_ipcWindowSetMinimumSize as ipcWindowSetMinimumSize, actions_ipcWindowSetPosition as ipcWindowSetPosition, actions_ipcWindowSetSize as ipcWindowSetSize, actions_ipcWindowShow as ipcWindowShow, actions_ipcWindowWorkAreaSize as ipcWindowWorkAreaSize };
+}
+
+/**
+ * ==========================================
+ * preload 需要的类型声明
+ * ==========================================
+ */
+
+/**
+ * 将一个值转换为 Promise 值
+ */
+type PromiseWithValue<Value> = Value extends Promise<any> ? Value : Promise<Value>;
+/**
+ * 获取所有的 ipcAction
+ */
+type AllAction = {
+    readonly [Key in keyof typeof actions]: (typeof actions)[Key] extends IpcActionType<IpcActionEvent> ? (typeof actions)[Key] : never;
+};
+/**
+ * 转换 ipcAction, 获取 key -> handler 的类型.
+ * 传递 IpcActionEventType 以获得 HandleHandlers 或者 OnHandlers
+ */
+type AllHandlers<IpcActionEventType extends IpcActionEvent> = {
+    readonly [Key in keyof AllAction as AllAction[Key]['channel']]: AllAction[Key]['actionType'] extends IpcActionEventType ? (...args: CutHead<Parameters<AllAction[Key]['action']>>) => RPromiseLike<Awaited<PromiseWithValue<ReturnType<AllAction[Key]['action']>>>, Exception<ExceptionErrorMsgData>> : never;
+};
+type HandleHandlers = ExtractNever<AllHandlers<IpcActionEvent.Handle>>;
+type OnHandlers = ExtractNever<AllHandlers<IpcActionEvent.On>>;
+/**
+ * 原本的 IcpRenderer 返回类型为 Promise<any>, 所需需要自己重新修改一下返回值
+ * 需要先 Omit 排除, 然后再编写自己的类型, 否则会覆盖失败
+ */
+type IpcRenderer = Omit<IpcRenderer$1, 'invoke' | 'send' | 'sendSync'> & {
+    /**
+     * 向主进程发送事件, 并等待回复
+     */
+    invoke<T extends keyof HandleHandlers>(channel: T, ...args: Parameters<HandleHandlers[T]>): ReturnType<HandleHandlers[T]>;
+    send<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
+    sendSync<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
+};
+/**
+ * 重新创建 ElectronAPI, 来覆盖 window.electron 的类型
+ */
+interface ElectronAPI {
+    readonly ipcRenderer: IpcRenderer;
+    readonly webFrame: WebFrame;
+    readonly process: NodeProcess;
+}
+
+type PrintMessagesTypeArr = Parameters<typeof Ansi.print>;
+declare class PrinterService {
+    private static readonly printer;
+    /**
+     * 格式化文本
+     */
+    format(...messages: PrintMessagesTypeArr): string;
+    /**
+     * print
+     */
+    print(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 日志信息
+     */
+    printInfo(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 错误信息
+     */
+    printError(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 警告信息
+     */
+    printWarn(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 成功信息
+     */
+    printSuccess(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 格式化文本
+     */
+    static format(...messages: PrintMessagesTypeArr): string;
+    /**
+     * 日志信息静态打印
+     */
+    static printInfo(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 警告信息静态打印
+     */
+    static printWarn(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 成功信息静态打印
+     */
+    static printSuccess(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 错误信息静态打印
+     */
+    static printError(...messages: PrintMessagesTypeArr): void;
+}
+
+/**
+ * renderer 线程打印器
+ */
+declare const printer: PrinterService;
+/**
+ * renderer 线程打印器类型
+ */
+interface PrinterServer {
+    /**
+     * 打印日志
+     */
+    readonly print: typeof printer.print;
+    /**
+     * 打印日志
+     */
+    readonly printInfo: typeof printer.printInfo;
+    /**
+     * 打印一条警告信息
+     */
+    readonly printWarn: typeof printer.printWarn;
+    /**
+     * 打印一条错误信息
+     */
+    readonly printError: typeof printer.printError;
+    /**
+     * 打印一条成功信息
+     */
+    readonly printSuccess: typeof printer.printSuccess;
+}
+
+/**
+ * 打开页面
+ * @return
+ */
+declare const openPage: (options: {
+    windowKey?: string;
+    subUrl: string;
+}, browserWindowOptions: Partial<Electron.BrowserWindowConstructorOptions>) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 刷新页面
+ * @returns
+ */
+declare const windowReload: () => void;
+/**
+ * 是否展示页面
+ * @returns
+ */
+declare const windowShow: (options: {
+    id?: number;
+    windowKey?: string;
+    show: boolean;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 窗口是否可以调整大小
+ */
+declare const windowResizeAble: (options?: {
+    id?: number;
+    windowKey?: string;
+    resizeAble: boolean;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 设置窗口的大小
+ * @returns
+ */
+declare const windowSetSize: (options: {
+    id?: number;
+    windowKey?: string;
+    width: number;
+    height: number;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 设置窗口的位置
+ * @returns
+ */
+declare const windowSetPosition: (options: {
+    id?: number;
+    windowKey?: string;
+    x: number | "left" | "right" | "center";
+    y: number | "top" | "center" | "bottom";
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 重启应用
+ * @returns
+ */
+declare const windowRelaunch: (options?: {
+    id?: number;
+    windowKey?: string;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 恢复窗口为定制化大小
+ * @returns
+ */
+declare const windowResetCustomSize: (options: {
+    id?: number;
+    windowKey?: string;
+    type: "mainWindow";
+}) => _suey_pkg_utils.RPromiseLike<boolean, Exception<ExceptionErrorMsgData>>;
+/**
+ * 最大化窗口
+ * @returns
+ */
+declare const windowMax: (options?: {
+    /**
+     * 恢复窗口为定制化大小
+     * @returns
+     */
+    id?: number;
+    windowKey?: string;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 最小化窗口
+ * @returns
+ */
+declare const windowMin: (options?: {
+    id?: number;
+    windowKey?: string;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 还原窗口
+ * @returns
+ */
+declare const windowReduction: (options?: {
+    id?: number;
+    windowKey?: string;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 关闭窗口
+ * @returns
+ */
+declare const windowClose: (options?: {
+    windowKey?: string;
+    id?: number;
+    fictitious?: boolean;
+}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 打开窗口开发者工具
+ * @param args
+ * @returns
+ */
+declare const windowDevtool: (status: boolean, options?: Electron.OpenDevToolsOptions) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+/**
+ * 全屏
+ * @param el
+ * @returns
+ */
+declare const windowEnableFullScreen: (el?: HTMLElement) => Promise<void>;
+/**
+ * 退出全屏
+ * @returns
+ */
+declare const windowExitFullScreen: () => Promise<void>;
+declare const windowWorkAreaSize: () => _suey_pkg_utils.RPromiseLike<{
+    readonly width: number;
+    readonly height: number;
+}, Exception<ExceptionErrorMsgData>>;
+/**
+ * 打开一个子窗口
+ * @returns
+ */
+declare const windowOpen: (options: {
+    windowKey?: string;
+    subUrl: string;
+}, browserWindowOptions: Partial<Electron.BrowserWindowConstructorOptions>) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+declare const windowForwardDataTakeIn: (key: string, data: any) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+declare const windowForWardDataTakeOut: (key: string, options?: DepositService.TakeOutOptions) => _suey_pkg_utils.RPromiseLike<any, Exception<ExceptionErrorMsgData>>;
+
+declare const ipcActions_openPage: typeof openPage;
+declare const ipcActions_windowClose: typeof windowClose;
+declare const ipcActions_windowDevtool: typeof windowDevtool;
+declare const ipcActions_windowEnableFullScreen: typeof windowEnableFullScreen;
+declare const ipcActions_windowExitFullScreen: typeof windowExitFullScreen;
+declare const ipcActions_windowForWardDataTakeOut: typeof windowForWardDataTakeOut;
+declare const ipcActions_windowForwardDataTakeIn: typeof windowForwardDataTakeIn;
+declare const ipcActions_windowMax: typeof windowMax;
+declare const ipcActions_windowMin: typeof windowMin;
+declare const ipcActions_windowOpen: typeof windowOpen;
+declare const ipcActions_windowReduction: typeof windowReduction;
+declare const ipcActions_windowRelaunch: typeof windowRelaunch;
+declare const ipcActions_windowReload: typeof windowReload;
+declare const ipcActions_windowResetCustomSize: typeof windowResetCustomSize;
+declare const ipcActions_windowResizeAble: typeof windowResizeAble;
+declare const ipcActions_windowSetPosition: typeof windowSetPosition;
+declare const ipcActions_windowSetSize: typeof windowSetSize;
+declare const ipcActions_windowShow: typeof windowShow;
+declare const ipcActions_windowWorkAreaSize: typeof windowWorkAreaSize;
+declare namespace ipcActions {
+  export { ipcActions_openPage as openPage, ipcActions_windowClose as windowClose, ipcActions_windowDevtool as windowDevtool, ipcActions_windowEnableFullScreen as windowEnableFullScreen, ipcActions_windowExitFullScreen as windowExitFullScreen, ipcActions_windowForWardDataTakeOut as windowForWardDataTakeOut, ipcActions_windowForwardDataTakeIn as windowForwardDataTakeIn, ipcActions_windowMax as windowMax, ipcActions_windowMin as windowMin, ipcActions_windowOpen as windowOpen, ipcActions_windowReduction as windowReduction, ipcActions_windowRelaunch as windowRelaunch, ipcActions_windowReload as windowReload, ipcActions_windowResetCustomSize as windowResetCustomSize, ipcActions_windowResizeAble as windowResizeAble, ipcActions_windowSetPosition as windowSetPosition, ipcActions_windowSetSize as windowSetSize, ipcActions_windowShow as windowShow, ipcActions_windowWorkAreaSize as windowWorkAreaSize };
+}
+
+type IpcActions = typeof ipcActions;
 
 interface RdExtension extends Extension<never> {
     meta?: {
@@ -1086,9 +2124,22 @@ declare global {
             }
         }
         /**
+         * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
+         */
+        namespace Types {
+        }
+        /**
          * RApp
          */
         interface RApp {
+            meta2d?: Meta2d;
+            readonly Antd: typeof antd;
+            readonly spring: typeof _react_spring_web;
+            readonly transitionGroup: typeof react_transition_group;
+            readonly moment: typeof moment;
+            readonly ipcActions: IpcActions;
+            readonly electron: ElectronAPI;
+            readonly printer: PrinterServer;
             /**
              * 插件管理器
              */
@@ -1100,7 +2151,7 @@ declare global {
             /**
              * 事件总线
              */
-            readonly emitter: Emitter<Bus.BusEmitterEntries>;
+            readonly emitter: Emitter<Rapid.Bus.BusEmitterEntries>;
             /**
              * 带有函数返回值的事件总线功能
              */
@@ -1112,25 +2163,58 @@ declare global {
                 /**
                  * 插件的线程化版本管理
                  */
-                readonly rxcThread: RdThread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
+                readonly rxcThread: RdThread<Rapid.Thread.ExtensionThreadEntries, Rapid.Thread.MainThreadEntries>;
             };
-            meta2d?: Meta2d;
             /**
              * 全局的状态管理
              */
             readonly stores: {
                 readonly useUserStore: typeof useUserStore;
-                readonly useTldrawStore: typeof useTldrawStore;
                 readonly useThemeStore: typeof useThemeStore;
                 readonly useDocStore: typeof useDocStore;
             };
             /**
              * 皮肤
              */
-            readonly skin: Skin<RdCssVariablePayloadSheet>;
+            readonly skin: {
+                readonly skin: Skin<RdCssVariablePayloadSheet>;
+                readonly makeRdCssVarPayload: typeof makeRdCssVarPayload;
+                readonly mrcvp: typeof mrcvp;
+                readonly Skin: typeof Skin;
+            };
+            /**
+             * 国际化
+             */
+            readonly i18n: {
+                readonly i18n: typeof i18n;
+                readonly useTranslation: typeof react_i18next.useTranslation;
+            };
+            readonly constants: {
+                readonly Timestamp: typeof Timestamp;
+            };
+            readonly components: {
+                readonly Ellipsis: typeof Ellipsis;
+                readonly IconFont: typeof IconFont;
+                readonly Widget: typeof Widget;
+                readonly Empty: typeof REmpty;
+            };
+            readonly services: {
+                readonly Skin: typeof Skin;
+                readonly Emitter: typeof Emitter;
+                readonly Invoker: typeof Invoker;
+                readonly ExtensionManager: typeof ExtensionManager;
+                readonly MetadataManager: typeof MetadataManager;
+            };
             readonly libs: {
                 readonly injectReadonlyVariable: typeof injectReadonlyVariable;
                 readonly createSallowProxy: typeof createSallowProxy;
+                readonly rApiGet: typeof rApiGet;
+                readonly rApiPost: typeof rApiPost;
+                readonly rApiPut: typeof rApiPut;
+                readonly rApiDelete: typeof rApiDelete;
+                readonly rRequest: typeof rRequest;
+                readonly rApiPatch: typeof rApiPatch;
+                readonly rCreateApi: typeof rCreateApi;
                 readonly apiGet: typeof apiGet;
                 readonly apiPost: typeof apiPost;
                 readonly apiPut: typeof apiPut;
@@ -1157,11 +2241,6 @@ declare global {
                 readonly isReactMemoFC: typeof isReactMemoFC;
                 readonly isReactFC: typeof isReactFC;
                 readonly isReactLazyFC: typeof isReactLazyFC;
-                readonly Skin: typeof Skin;
-                readonly Emitter: typeof Emitter;
-                readonly Invoker: typeof Invoker;
-                readonly ExtensionManager: typeof ExtensionManager;
-                readonly MetadataManager: typeof MetadataManager;
             };
         }
     }

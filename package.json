@@ -11,7 +11,7 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=18",
+    "node": ">=20.19.2",
     "pnpm": ">=8.9.0"
   },
   "packageManager": "pnpm@9.15.2",
@@ -54,6 +54,7 @@
     "preview": "pnpm -C ./src run preview",
     "packer": "pnpm -C ./src run packer",
     "scripts-i18n-extract": "pnpm -C ./src run scripts-i18n-extract",
+    "release": "pnpm scripts-i18n-extract && pnpm -C ./cli/rxc run tsup && concurrently \"pnpm -C ./src run typecheck\" \"pnpm -C ./cli/rxc run typecheck\" && pnpm run packer",
     "docs:dev": "pnpm -C ./apps/docs run dev",
     "docs:build": "pnpm -C ./apps/docs run build",
     "docs:preview": "pnpm -C ./apps/docs run preview",

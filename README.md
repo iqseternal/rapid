@@ -29,6 +29,14 @@
 
 ### 📦 Install
 
+#### 建议安装 fnm (Windows)
+
+```bash
+$ winget install Schniz.fnm
+```
+
+#### 启动
+
 ```bash
 $ git clone https://github.com/iqseternal/rapid.git
 

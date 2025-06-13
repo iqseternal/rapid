@@ -3,9 +3,7 @@ import { join } from 'path';
 
 export default defineConfig({
   entry: [
-    '../../src/rd/code/browser/declare.ts',
-
-    '../../src/rd/code/browser/types'
+    '../../src/rd/code/browser/declare.ts'
   ],
   plugins: [
 

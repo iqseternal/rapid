@@ -13,6 +13,9 @@ asarUnpack:
   - .scripts/**
 win:
   executableName: rapid
+  target:
+    - nsis
+    - msi
 nsis:
   oneClick: false # 是创建一键式安装程序还是辅助安装程序。
   perMachine: true # 是否为辅助安装程序显示安装模式安装程序页面（选择每台计算机或每个用户
