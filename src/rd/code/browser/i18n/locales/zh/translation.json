@@ -1,8 +1,7 @@
 {
   "login": {
-    "txs": "s",
+    "language": "切换语言包",
     "login": "登录",
-    "register": "注册",
-    "language": "切换语言包"
+    "register": "注册"
   }
 }

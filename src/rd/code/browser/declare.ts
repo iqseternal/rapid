@@ -1,14 +1,17 @@
 import type { ComponentType } from 'react';
-import type { Emitter, Invoker, InvokerHandler, InvokerKey } from '@rapid/libs-web';
 import type { useUserStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
-import type { Thread, ThreadHandler } from 'rd/base/browser/service/Thread';
+import type { ThreadHandler } from 'rd/base/browser/service/Thread';
 import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
 import type { Meta2d } from '@meta2d/core';
 import type { CssVariablesDeclaration, Skin } from 'rd/base/browser/service/Skin';
 import type { RdCssVariablePayloadSheet } from './skin';
 import type { Extension } from '@suey/rxp-meta';
+
+import type * as RdSandbox from 'rd/code/sandbox';
+
+import 'reflect-metadata';
 
 // ==================================================================================================
 // ===== WHY TO THIS
@@ -243,9 +246,27 @@ declare global {
     }
 
     /**
+     * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
+     */
+    export namespace Types {
+
+    }
+
+    /**
      * RApp
      */
     export interface RApp {
+      meta2d?: Meta2d;
+
+      readonly Antd: typeof import('antd');
+      readonly spring: typeof import('@react-spring/web');
+      readonly transitionGroup: typeof import('react-transition-group');
+      readonly moment: typeof import('moment');
+
+      readonly ipcActions: RdSandbox.IpcActions;
+      readonly electron: RdSandbox.ElectronAPI;
+      readonly printer: RdSandbox.PrinterServer;
+
       /**
        * 插件管理器
        */
@@ -259,12 +280,12 @@ declare global {
       /**
        * 事件总线
        */
-      readonly emitter: Emitter<Bus.BusEmitterEntries>;
+      readonly emitter: import('@rapid/libs-web').Emitter<Rapid.Bus.BusEmitterEntries>;
 
       /**
        * 带有函数返回值的事件总线功能
        */
-      readonly invoker: Invoker<Bus.BusInvokerEntries>;
+      readonly invoker: import('@rapid/libs-web').Invoker<Bus.BusInvokerEntries>;
 
       /**
        * 全局的线程管理
@@ -273,42 +294,68 @@ declare global {
         /**
          * 插件的线程化版本管理
          */
-        readonly rxcThread: RdThread<Thread.ExtensionThreadEntries, Thread.MainThreadEntries>;
-
+        readonly rxcThread: RdThread<Rapid.Thread.ExtensionThreadEntries, Rapid.Thread.MainThreadEntries>;
       }
-
-      meta2d?: Meta2d;
-
-      /**
-       * 国际化
-       */
-      readonly i18n: typeof import('@/i18n').default;
-
-      /**
-       * 国际化
-       */
-      readonly useTranslation: typeof import('react-i18next').useTranslation;
 
       /**
        * 全局的状态管理
        */
       readonly stores: {
-
         readonly useUserStore: typeof useUserStore;
-
         readonly useThemeStore: typeof useThemeStore;
-
         readonly useDocStore: typeof useDocStore;
       }
 
       /**
        * 皮肤
        */
-      readonly skin: Skin<RdCssVariablePayloadSheet>;
+      readonly skin: {
+        readonly skin: import('rd/base/browser/service/Skin').Skin<RdCssVariablePayloadSheet>;
+        readonly makeRdCssVarPayload: typeof import('rd/base/browser/service/Skin').makeRdCssVarPayload;
+        readonly mrcvp: typeof import('rd/base/browser/service/Skin').mrcvp;
+        readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
+      };
+
+      /**
+       * 国际化
+       */
+      readonly i18n: {
+        readonly i18n: typeof import('@/i18n').default;
+        readonly useTranslation: typeof import('react-i18next').useTranslation;
+      }
+
+      readonly constants: {
+        readonly Timestamp: typeof import('rd/base/common/constants').Timestamp;
+      }
+
+      readonly components: {
+        readonly Ellipsis: typeof import('@rapid/libs-web').Ellipsis;
+        readonly IconFont: typeof import('@/components/IconFont').default;
+        readonly Widget: typeof import('@/components/Widget').default;
+        readonly Empty: typeof import('@/components/Empty').default;
+      }
+
+      readonly services: {
+        readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
+
+        readonly Emitter: typeof import('@rapid/libs-web').Emitter;
+        readonly Invoker: typeof import('@rapid/libs-web').Invoker;
+
+        readonly ExtensionManager: typeof import('@suey/rxp-meta').ExtensionManager;
+        readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
+      }
 
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
         readonly createSallowProxy: typeof import('@rapid/libs').createSallowProxy;
+
+        readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
+        readonly rApiPost: typeof import('rd/base/common/api').rApiPost;
+        readonly rApiPut: typeof import('rd/base/common/api').rApiPut;
+        readonly rApiDelete: typeof import('rd/base/common/api').rApiDelete;
+        readonly rRequest: typeof import('rd/base/common/api').rRequest;
+        readonly rApiPatch: typeof import('rd/base/common/api').rApiPatch;
+        readonly rCreateApi: typeof import('rd/base/common/api').rCreateApi;
 
         readonly apiGet: typeof import('@rapid/libs').apiGet;
         readonly apiPost: typeof import('@rapid/libs').apiPost;
@@ -341,14 +388,6 @@ declare global {
         readonly isReactMemoFC: typeof import('@rapid/libs-web').isReactMemoFC;
         readonly isReactFC: typeof import('@rapid/libs-web').isReactFC;
         readonly isReactLazyFC: typeof import('@rapid/libs-web').isReactLazyFC;
-
-        readonly Skin: typeof Skin;
-
-        readonly Emitter: typeof Emitter;
-        readonly Invoker: typeof Invoker;
-
-        readonly ExtensionManager: typeof import('@suey/rxp-meta').ExtensionManager;
-        readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
       }
     }
   }

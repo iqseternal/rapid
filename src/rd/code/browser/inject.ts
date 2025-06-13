@@ -41,12 +41,24 @@ import {
   useDocStore,
   useThemeStore,
 } from './features';
-import { Skin } from 'rd/base/browser/service/Skin';
+import { Skin, makeRdCssVarPayload, mrcvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';
 import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
+import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
+import { Ellipsis } from '@rapid/libs-web';
+import { Timestamp } from 'rd/base/common/constants';
+
+import IconFont from './components/IconFont';
+import Empty from './components/Empty';
+import Widget from './components/Widget';
 
 import i18n from './i18n';
+import moment from 'moment';
+
+import * as Antd from 'antd';
+import * as spring from '@react-spring/web';
+import * as transitionGroup from 'react-transition-group';
 
 const extensionManager = new ExtensionManager();
 
@@ -65,25 +77,65 @@ const rApp: Rapid.RApp = ({
   metadata: metadataManager,
   emitter: emitter,
   invoker: invoker,
+  meta2d: void 0,
+
+  Antd: Antd,
+  spring: spring,
+  transitionGroup: transitionGroup,
+  moment: moment,
+
+  electron: window.electron,
+  ipcActions: window.ipcActions,
+  printer: window.printer,
+
+  constants: {
+    Timestamp: Timestamp
+  },
+
+  i18n: {
+    i18n: i18n,
+    useTranslation: useTranslation
+  },
+
+  threads: {
+    rxcThread: rxcThread
+  },
 
   stores: {
     useUserStore,
     useDocStore,
     useThemeStore,
   },
-  threads: {
-    rxcThread: rxcThread
+  components: {
+    Ellipsis: Ellipsis,
+    IconFont: IconFont,
+    Widget: Widget,
+    Empty: Empty
   },
-
-  meta2d: void 0,
-  i18n: i18n,
-  useTranslation: useTranslation,
-
-  skin: skin,
-
+  skin: {
+    skin: skin,
+    mrcvp: mrcvp,
+    makeRdCssVarPayload: makeRdCssVarPayload,
+    Skin: Skin,
+  },
+  services: {
+    Skin: Skin,
+    Emitter: Emitter,
+    Invoker: Invoker,
+    ExtensionManager: ExtensionManager,
+    MetadataManager: MetadataManager,
+  },
   libs: {
     injectReadonlyVariable: injectReadonlyVariable,
     createSallowProxy: createSallowProxy,
+
+    rApiGet: rApiGet,
+    rApiPost: rApiPost,
+    rApiPut: rApiPut,
+    rApiDelete: rApiDelete,
+    rRequest: rRequest,
+    rApiPatch: rApiPatch,
+    rCreateApi: rCreateApi,
 
     apiGet: apiGet,
     apiPost: apiPost,
@@ -118,13 +170,7 @@ const rApp: Rapid.RApp = ({
     isReactForwardFC: isReactForwardFC,
     isReactLazyFC: isReactLazyFC,
     isReactMemoFC: isReactMemoFC,
-
-    Skin: Skin,
-    Emitter: Emitter,
-    Invoker: Invoker,
-    ExtensionManager: ExtensionManager,
-    MetadataManager: MetadataManager
-  }
+  },
 });
 
 injectReadonlyVariable(window, 'cssVars', cssVars);

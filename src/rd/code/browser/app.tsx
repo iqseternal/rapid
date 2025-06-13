@@ -49,6 +49,11 @@ export const RdApp = memo(() => {
           color: cssVars.uiDefaultButtonTextColor
         }
       }}
+      dropdown={{
+        style: {
+          background: cssVars.uiAutoMenuBackground,
+        },
+      }}
       card={{
         style: {
 
@@ -104,16 +109,16 @@ export const RdAppWrapper = memo(() => {
   useLayoutEffect(() => {
     if (!themePayloadTransformers) return;
 
-    let declaration = rApp.skin.toCssVariablesDeclaration();
+    let declaration = rApp.skin.skin.toCssVariablesDeclaration();
     themePayloadTransformers.forEach(transform => {
       declaration = transform(declaration);
     })
 
-    rApp.skin.install();
+    rApp.skin.skin.install();
 
     return () => {
 
-      rApp.skin.uninstall();
+      rApp.skin.skin.uninstall();
     }
   }, [themePayloadTransformers]);
 

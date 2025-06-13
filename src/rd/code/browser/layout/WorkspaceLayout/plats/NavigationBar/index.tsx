@@ -71,11 +71,11 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
         minWidth: cssVars.uiNavigationBarWidth,
         maxWidth: cssVars.uiNavigationBarWidth,
         backgroundColor: cssVars.uiNavigationBarBackground,
-        boxShadow: cssVars.shadowXs
+        boxShadow: cssVars.shadowSm
       }}
     >
       <div
-        className='mt-[2px] h-max flex justify-center flex-col w-full'
+        className='mt-[2px] h-max flex justify-center flex-col w-full items-center'
       >
         {workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {
           return (
@@ -92,7 +92,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
       </div>
 
       <div
-        className='mb-8 flex justify-center w-full'
+        className='mb-8 flex justify-center w-full items-center'
       >
         <div />
 

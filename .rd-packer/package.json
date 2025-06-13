@@ -1,14 +1,19 @@
 {
-  "name": "app",
+  "name": "rapid",
   "version": "1.0.0",
   "description": "Monorepo for Electron Program",
   "private": true,
   "main": "out/main/index.js",
+  "author": {
+    "name": "suey",
+    "email": "sueyeternal@163.com"
+  },
   "scripts": {
-    "packer-win": "electron-builder --win --config"
+    "packer-win:x64": "electron-builder --win --x64 --config",
+    "packer-win:ia32": "electron-builder --win --ia32 --config",
+    "packer-win": "electron-builder --win --x64 --ia32 --config"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "bytenode": "1.5.6",
