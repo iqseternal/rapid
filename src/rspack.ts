@@ -11,8 +11,6 @@ import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
 import { Ansi } from '@suey/pkg-utils';
-import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
-import { DllPlugin } from '@rspack/core';
 import { ElectronService } from './rd-builder/service';
 import { print, printError, printWarn, printInfo } from './rd-builder/printer';
 
@@ -418,7 +416,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       pluginTypedCSSModules(),
       pluginReact(),
       pluginSourceBuild(),
-      IS_PROD && pluginTailwindCSS()
     ],
     server: {
       port: 3002,
