@@ -8,7 +8,7 @@ export interface ThreadEvent<Data> {
   /**
    * 事件句柄
    */
-  channel: string;
+  readonly channel: string;
 
   /**
    * 事件数据, 要求可以被序列化

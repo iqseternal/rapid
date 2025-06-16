@@ -1,9 +1,9 @@
 import { memo } from 'react';
-import { uiControllerCloseSvg } from 'rd/assets';
+import { platControllerCloseImgUrl } from 'rd/assets';
 
 import Widget from '@/components/Widget';
 
-const WindowsCloseSvg = <img src={uiControllerCloseSvg} alt='' />;
+const WindowsCloseSvg = <img src={platControllerCloseImgUrl} alt='' />;
 
 export const WindowsCloseWindowWidget = memo(() => {
 

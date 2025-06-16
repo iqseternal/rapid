@@ -1,13 +1,13 @@
 import { memo, useState } from 'react';
 import { toNil } from '@rapid/libs';
 import { useAsyncLayoutEffect, useRefresh, useWindowInnerSize } from '@rapid/libs-web';
-import { uiControllerMaxSvg, uiControllerReductionSvg } from 'rd/assets';
+import { platControllerMaxImgUrl, platControllerReductionImgUrl } from 'rd/assets';
 
 import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';
 
-const WindowMaxSvg = <img src={uiControllerMaxSvg} alt='' />;
-const WindowReductionSvg = <img src={uiControllerReductionSvg} alt='' />;
+const WindowMaxSvg = <img src={platControllerMaxImgUrl} alt='' />;
+const WindowReductionSvg = <img src={platControllerReductionImgUrl} alt='' />;
 
 export const WindowsReductionWindowWidget = memo(() => {
   const refresh = useRefresh();

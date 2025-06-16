@@ -100,6 +100,7 @@
     "archiver": "7.0.1",
     "click-to-react-component": "1.1.2",
     "dayjs": "1.11.10",
+    "default-passive-events": "4.0.0",
     "framer-motion": "12.4.10",
     "gsap": "3.12.7",
     "i18next": "24.2.2",
