@@ -9,119 +9,18 @@ import { formPens } from '@meta2d/form-diagram';
 import { mindBoxPlugin } from '@meta2d/plugin-mind-core';
 import { collapseChildPlugin } from '@meta2d/plugin-mind-collapse';
 import { chartsPens } from '@meta2d/le5le-charts';
+import { useMeta2dEffect } from 'rd/code/browser/meta2d';
 import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
 import { MouseEventButton } from 'rd/base/browser/constants';
 
-function setMeta2dCanvasData() {
-  if (!rApp.meta2d) return;
-
-  // console.log(rApp.meta2d);
-
-  // const data = rApp.meta2d.data?.();
-
-  // console.log(data);
-
-  // localStorage.setItem('meta2d-data', JSON.stringify(data));
-
-  // const options = rApp.meta2d.getOptions();
-
-  // localStorage.setItem('meta2d-options', JSON.stringify(options));
-}
+import Widget from '@/components/Widget';
+import IconFont from 'rd/code/browser/components/IconFont';
 
 const Meta2dContainer = () => {
 
   const meta2dHtmlElementRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!meta2dHtmlElementRef.current) return;
-
-    rApp.meta2d = new Meta2d(meta2dHtmlElementRef.current, {
-      rule: true,
-      grid: true,
-    });
-
-    // 注册注册活动图元
-    register(activityDiagram());
-    registerCanvasDraw(activityDiagramByCtx());
-
-    // 注册时序图
-    register(sequencePens());
-    registerCanvasDraw(sequencePensbyCtx());
-
-    rApp.meta2d.installPenPlugins({ name: 'mindNode2' }, [
-      { plugin: mindBoxPlugin },
-      { plugin: collapseChildPlugin }
-    ]);
-
-
-    // 注册类图
-    register(classPens());
-
-    // 注册表单图元
-    registerCanvasDraw(formPens());
-    // 直接调用Echarts的注册函数
-    registerEcharts();
-    // 直接调用HighCharts的注册函数
-    registerHighcharts();
-    // 直接调用LightningChart的注册函数
-    registerLightningChart();
-
-    register(flowPens());
-    registerAnchors(flowAnchors());
-    registerCanvasDraw(chartsPens());
-    register(ftaPens());
-    registerCanvasDraw(ftaPensbyCtx());
-    registerAnchors(ftaAnchors());
-
-    rApp.meta2d.on('scale', setMeta2dCanvasData);
-    rApp.meta2d.on('add', setMeta2dCanvasData);
-    rApp.meta2d.on('opened', setMeta2dCanvasData);
-    rApp.meta2d.on('undo', setMeta2dCanvasData);
-    rApp.meta2d.on('redo', setMeta2dCanvasData);
-    rApp.meta2d.on('add', setMeta2dCanvasData);
-    rApp.meta2d.on('delete', setMeta2dCanvasData);
-    rApp.meta2d.on('rotatePens', setMeta2dCanvasData);
-    rApp.meta2d.on('translatePens', setMeta2dCanvasData);
-
-    rApp.meta2d.register(flowPens());
-    rApp.meta2d.register(activityDiagram());
-    rApp.meta2d.register(classPens());
-    rApp.meta2d.register(sequencePens());
-    rApp.meta2d.registerCanvasDraw(sequencePensbyCtx());
-    rApp.meta2d.registerCanvasDraw(formPens());
-
-    const data = localStorage.getItem('meta2d-data');
-    const options = localStorage.getItem('meta2d-options');
-
-    try {
-      if (data) {
-        rApp.meta2d.open(JSON.parse(data));
-      }
-      if (options) {
-        rApp.meta2d.setOptions(JSON.parse(options));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-    return () => {
-      if (!rApp.meta2d) return;
-
-      rApp.meta2d.off('scale', setMeta2dCanvasData);
-      rApp.meta2d.off('add', setMeta2dCanvasData);
-      rApp.meta2d.off('opened', setMeta2dCanvasData);
-      rApp.meta2d.off('undo', setMeta2dCanvasData);
-      rApp.meta2d.off('redo', setMeta2dCanvasData);
-      rApp.meta2d.off('add', setMeta2dCanvasData);
-      rApp.meta2d.off('delete', setMeta2dCanvasData);
-      rApp.meta2d.off('rotatePens', setMeta2dCanvasData);
-      rApp.meta2d.off('translatePens', setMeta2dCanvasData);
-
-      rApp.meta2d.off('*', setMeta2dCanvasData);
-
-      rApp.meta2d.destroy();
-    }
-  }, []);
+  useMeta2dEffect(meta2dHtmlElementRef, []);
 
   return (
     <div
@@ -130,6 +29,25 @@ const Meta2dContainer = () => {
       <div
         className='w-full h-full min-w-10 min-h-10'
         ref={meta2dHtmlElementRef}
+
+        onDragOver={e => {
+
+
+        }}
+
+        onDragEnd={e => {
+          const data = e.dataTransfer.getData('meta2d');
+
+          console.log(data);
+
+          console.log('放下了');
+
+          if (data) {
+            if (rApp.meta2d) {
+              rApp.meta2d.canvas.addCaches = [JSON.parse(data)];
+            }
+          }
+        }}
       />
     </div>
   );
@@ -139,7 +57,34 @@ export const Workstation = memo(() => {
 
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div
+      className='w-full h-full flex gap-x-1'
+    >
+      <div>
+        HELLO
+
+        <Widget
+          onDragStart={(e) => {
+            e.stopPropagation();
+
+            console.log('start');
+
+            if (e instanceof DragEvent) {
+              e.dataTransfer.setData('meta2d', JSON.stringify({ type: 'activityDiagram' }));
+            }
+            else {
+              if (rApp.meta2d) {
+                rApp.meta2d.canvas.addCaches = [{}];
+              }
+            }
+          }}
+        >
+          <IconFont
+            icon='ApiTwoTone'
+          />
+        </Widget>
+      </div>
+
       <Meta2dContainer />
     </div>
   );

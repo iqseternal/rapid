@@ -332,12 +332,12 @@ const Register = memo<RegisterProps>((props) => {
   )
 })
 
-export const TicketCheckingOffice = memo(() => {
+export const Ticket = memo(() => {
   const { t } = useTranslation();
   const { message, notification } = App.useApp();
 
   const [shallowState] = useShallowReactive(() => ({
-    activeMode: 'login' as TicketActiveMode,
+    activeMode: TicketActiveMode.Login,
   }))
 
   const changeTicket = useCallback((activeMode: TicketActiveMode) => {
@@ -508,4 +508,4 @@ export const TicketCheckingOffice = memo(() => {
   )
 });
 
-export default TicketCheckingOffice;
+export default Ticket;

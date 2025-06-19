@@ -37,7 +37,8 @@ export const RdApp = memo(() => {
 
           },
           Button: {
-
+            defaultActiveColor: cssVars.uiDefaultButtonTextColor,
+            defaultActiveBg: cssVars.uiDefaultButtonBackground,
           }
         },
         cssVar: {
