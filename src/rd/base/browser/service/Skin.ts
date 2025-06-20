@@ -97,9 +97,36 @@ export class Skin<PayloadSheet extends CssVariablePayloadSheet> {
     styleTag: void 0 as (undefined | HTMLStyleElement)
   }
 
-  public constructor(
-    public readonly cssVariablesPayloadSheet: PayloadSheet
-  ) { }
+  private readonly presetCssVariablesPayloadSheet: PayloadSheet;
+  public cssVariablesPayloadSheet: PayloadSheet;
+
+  public constructor(cssVariablesPayloadSheet: PayloadSheet) {
+    this.presetCssVariablesPayloadSheet = this.cloneCssVariablesPayloadSheet(cssVariablesPayloadSheet);
+    this.cssVariablesPayloadSheet = this.cloneCssVariablesPayloadSheet(cssVariablesPayloadSheet);
+  }
+
+  /**
+   * 克隆 CSS 变量样式
+   */
+  private cloneCssVariablesPayloadSheet(sheet: PayloadSheet): PayloadSheet {
+    const cssPayloadSheet = {} as PayloadSheet;
+
+    for (const key in sheet) {
+      cssPayloadSheet[key] = {
+        ...sheet[key],
+        value: sheet[key].value
+      }
+    }
+
+    return cssPayloadSheet;
+  }
+
+  /**
+   * 重置当前皮肤的 CSS 变量样式
+   */
+  public resetCssVariablesPayloadSheet() {
+    this.cssVariablesPayloadSheet = this.cloneCssVariablesPayloadSheet(this.presetCssVariablesPayloadSheet);
+  }
 
   /**
    * 生成当前皮肤的 CSS 变量声明

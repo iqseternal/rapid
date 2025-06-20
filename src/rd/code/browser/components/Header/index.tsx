@@ -21,10 +21,12 @@ export const Header = memo((props: HeaderProps) => {
   const HeaderMainContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
 
   const controllerBeforeContents = rApp.metadata.useMetadata('ui.layout.header.controller.before');
+
   const controllerOtherWidgets = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.others');
   const MinWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.min');
   const ReductionWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.reduction');
   const CloseWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.close');
+
   const controllerAfterContents = rApp.metadata.useMetadata('ui.layout.header.controller.after');
 
   return (
@@ -82,7 +84,7 @@ export const Header = memo((props: HeaderProps) => {
             'flex justify-end gap-x-0.5 flex-none items-center'
           )}
         >
-          {controllerOtherWidgets && controllerOtherWidgets.toReversed().map((OtherWidget, index) => (<OtherWidget key={index} />))}
+          {controllerOtherWidgets && controllerOtherWidgets.map((OtherWidget, index) => (<OtherWidget key={index} />))}
           {MinWindowWidget && (<MinWindowWidget />)}
           {ReductionWindowWidget && (<ReductionWindowWidget />)}
           {CloseWindowWidget && (<CloseWindowWidget />)}

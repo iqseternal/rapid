@@ -19,9 +19,11 @@ export function useExtends() {
   useLayoutEffect(() => {
     if (!themePayloadTransformers) return;
 
-    let declaration = rApp.skin.skin.toCssVariablesDeclaration();
-    themePayloadTransformers.forEach(transform => {
-      declaration = transform(declaration);
+    rApp.skin.skin.resetCssVariablesPayloadSheet();
+
+    const cssVariablesPayloadSheet = rApp.skin.skin.cssVariablesPayloadSheet;
+    themePayloadTransformers.forEach((transform) => {
+      transform(cssVariablesPayloadSheet);
     })
 
     rApp.skin.skin.install();

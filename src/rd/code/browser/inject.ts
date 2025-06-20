@@ -9,10 +9,7 @@ import {
   isReactLazyFC,
   isReactMemoFC
 } from '@rapid/libs-web';
-import {
-  ExtensionManager,
-  MetadataManager
-} from '@suey/rxp-meta';
+import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
   AES_DEFAULT_KEY,
   Ansi,
@@ -36,11 +33,7 @@ import {
   toNils,
   toWaitPromise
 } from '@rapid/libs';
-import {
-  useUserStore,
-  useDocStore,
-  useThemeStore,
-} from './features';
+import { useUserStore, useDocStore, useThemeStore } from './features';
 import { Skin, makeRdCssVarPayload, mrcvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';
 import { rxcThread } from './workers';
@@ -48,6 +41,7 @@ import { useTranslation } from 'react-i18next';
 import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
 import { Ellipsis } from '@rapid/libs-web';
 import { Timestamp } from 'rd/base/common/constants';
+import { defineRawType, defineCompleteType } from '@rapid/libs';
 
 import IconFont from './components/IconFont';
 import Empty from './components/Empty';
@@ -170,6 +164,9 @@ const rApp: Rapid.RApp = ({
     isReactForwardFC: isReactForwardFC,
     isReactLazyFC: isReactLazyFC,
     isReactMemoFC: isReactMemoFC,
+
+    defineCompleteType: defineCompleteType,
+    defineRawType: defineRawType
   },
 });
 

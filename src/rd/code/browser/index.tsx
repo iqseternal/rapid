@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import './inject';
 import './discrete';
 
@@ -15,6 +16,9 @@ import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
 
+
+// import diyExtension from 'rd/../../cli/rxc/template/src/index';
+
 async function setupThreadTask() {
   const startHeartbeat = () => rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 
@@ -31,6 +35,7 @@ async function setupEnvironments() {
 
 async function setupExtensionPlats() {
   rApp.extension.registerExtension(RdThemeExtension);
+  // rApp.extension.registerExtension(diyExtension);
 
   const extensionGroupId = 42;
   const extensionGroupUuid = 'fb024456-2f71-4f79-99e9-c3f5b7e2553c';
