@@ -12,6 +12,8 @@ import { RdThemeExtension } from './plats/extensions';
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 
+import * as ReactRouterDOM from 'react-router-dom';
+
 import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
@@ -19,6 +21,9 @@ import './tailwind.css';
 
 // import diyExtension from 'rd/../../cli/rxc/template/src/index';
 
+/**
+ * 创建线程任务
+ */
 async function setupThreadTask() {
   const startHeartbeat = () => rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 
@@ -29,10 +34,18 @@ async function setupThreadTask() {
   window.addEventListener('offline', stopHeartbeat);
 }
 
+/**
+ * 创建子项目需要的环境变量值
+ */
 async function setupEnvironments() {
   window.React = React;
+  window.ReactDOM = ReactDOM;
+  window.ReactRouterDOM = ReactRouterDOM;
 }
 
+/**
+ * 加载插件
+ */
 async function setupExtensionPlats() {
   rApp.extension.registerExtension(RdThemeExtension);
   // rApp.extension.registerExtension(diyExtension);
@@ -55,9 +68,11 @@ async function setupExtensionPlats() {
 }
 
 ((async () => {
-  await setupThreadTask();
-  await setupEnvironments();
-  await setupExtensionPlats();
+  await toNils(
+    setupThreadTask(),
+    setupEnvironments(),
+    setupExtensionPlats()
+  );
 
   const rootContainer = document.getElementById('root');
 

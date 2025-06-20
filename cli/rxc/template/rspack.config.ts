@@ -105,6 +105,7 @@ export default defineConfig({
   },
   externals: {
     react: 'React',
-    'react-dom': 'react-dom',
+    'react-router': 'ReactRouter',
+    'react-router-dom': 'ReactRouterDOM'
   },
 })
