@@ -6,9 +6,9 @@ declare global {
 
 
   interface Window {
-    React: typeof import('react');
-    ReactDOM: typeof import('react-dom/client');
-    ReactRouterDOM: typeof import('react-router-dom');
+    readonly React: typeof import('react');
+    readonly ReactDOM: typeof import('react-dom/client');
+    readonly ReactRouterDOM: typeof import('react-router-dom');
 
     /**
      * extension sdk

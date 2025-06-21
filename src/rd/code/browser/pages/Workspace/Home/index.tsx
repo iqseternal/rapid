@@ -1,5 +1,5 @@
 import { memo, useEffect } from 'react';
-import { Button, Card } from 'antd';
+import { Button, Card, Space } from 'antd';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -11,23 +11,36 @@ export const Home = memo(() => {
 
 	const docStore = useDocStore(store => store);
 
+	const [extensions] = rApp.extension.useExtensionsList();
+
 
 	return (
 		<Card>
-			<Button
-				onClick={() => {
-					useDocStore.setState({ isWork: !docStore.isWork });
-				}}
-			>
-				切换状态
-			</Button>
+			{extensions && extensions.map((extension) => {
 
-			<div>
-				状态:
-				<span>
-					{docStore.isWork ? '工作中' : '休息中'}
-				</span>
-			</div>
+
+				return (
+					<div
+						key={extension.meta?.extension_name}
+						className='bg-blue-100 flex items-center py-2 px-2'
+					>
+						<Space>
+							<span>
+								{extension.meta?.extension_name}
+							</span>
+							<span>
+								{extension.meta?.extension_id}
+							</span>
+							<span>
+								{extension.meta?.extension_version_id}
+							</span>
+							<span>
+								{extension.meta?.extension_uuid}
+							</span>
+						</Space>
+					</div>
+				)
+			})}
 		</Card>
 	)
 })

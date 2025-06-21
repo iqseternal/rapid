@@ -1,5 +1,5 @@
 import { useRef, memo, useEffect, useLayoutEffect, type RefObject, useCallback } from 'react';
-import { commonStyles, useAnimationClassSelector } from '@/scss/common';
+import { commonStyles } from '@/scss/common';
 import { classnames } from '@rapid/libs-web';
 import { useStorageBox } from './hook';
 import { useHeaderEditMenu, useHeaderFileMenu, useHeaderHelpMenu, useHeaderViewMenu } from '@/menus/modules/header';

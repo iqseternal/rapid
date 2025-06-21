@@ -809,9 +809,18 @@ declare const makeRdCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarVal
  */
 declare const mrcvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
-    readonly cssVariablesPayloadSheet: PayloadSheet;
     private readonly runtimeContext;
+    private readonly presetCssVariablesPayloadSheet;
+    cssVariablesPayloadSheet: PayloadSheet;
     constructor(cssVariablesPayloadSheet: PayloadSheet);
+    /**
+     * 克隆 CSS 变量样式
+     */
+    private cloneCssVariablesPayloadSheet;
+    /**
+     * 重置当前皮肤的 CSS 变量样式
+     */
+    resetCssVariablesPayloadSheet(): void;
     /**
      * 生成当前皮肤的 CSS 变量声明
      */

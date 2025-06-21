@@ -7,6 +7,7 @@ import { RdAppWrapper } from './app';
 import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension } from './plats';
 import { toNil, toNils } from '@suey/pkg-utils';
 import { useGroupExtensionsApi } from './api';
+import { injectReadonlyVariable } from '@rapid/libs';
 import { RdThemeExtension } from './plats/extensions';
 
 import ReactDOM from 'react-dom/client';
@@ -17,7 +18,6 @@ import * as ReactRouterDOM from 'react-router-dom';
 import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
-
 
 // import diyExtension from 'rd/../../cli/rxc/template/src/index';
 
@@ -38,9 +38,9 @@ async function setupThreadTask() {
  * 创建子项目需要的环境变量值
  */
 async function setupEnvironments() {
-  window.React = React;
-  window.ReactDOM = ReactDOM;
-  window.ReactRouterDOM = ReactRouterDOM;
+  injectReadonlyVariable(window, 'React', React);
+  injectReadonlyVariable(window, 'ReactDOM', ReactDOM);
+  injectReadonlyVariable(window, 'ReactRouterDOM', ReactRouterDOM);
 }
 
 /**
