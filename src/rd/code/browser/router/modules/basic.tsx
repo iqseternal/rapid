@@ -16,7 +16,7 @@ export const notRoleRoute = makeRoute({
 export const loginRoute = makeRoute({
   name: 'LoginRoute',
   path: '/login',
-  component: lazy(() => import('@/pages/Login'))
+  component: lazy(() => import('../../pages/Ticket'))
 })
 
 export const registerRoute = makeRoute({

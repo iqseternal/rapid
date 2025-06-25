@@ -1,10 +1,12 @@
 import { InnerExtensionNames } from './innerExtensionNames';
 
-const transformer = (cssVariablesDeclaration: Rapid.SKin.CssVariablesDeclaration) => {
+type Transformer = Parameters<typeof rApp.metadata.defineMetadataInVector<'functional.theme.variables.transformer'>>[1];
+
+const transformer: Transformer = (cssVariablesPayloadSheet) => {
 
   // cssVariablesDeclaration['--rd-caption-bar-background-color'] = '#00F';
 
-  return cssVariablesDeclaration;
+  return cssVariablesPayloadSheet;
 }
 
 export const RdThemeExtension = rApp.extension.defineExtension({

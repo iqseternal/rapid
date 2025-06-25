@@ -1,9 +1,10 @@
 import { memo } from 'react';
-import { uiControllerCloseSvg } from 'rd/assets';
+import { platControllerCloseImgUrl } from 'rd/assets';
 
 import Widget from '@/components/Widget';
+import IconFont from '../../components/IconFont';
 
-const WindowsCloseSvg = <img src={uiControllerCloseSvg} alt='' />;
+const WindowsCloseSvg = <img src={platControllerCloseImgUrl} alt='' />;
 
 export const WindowsCloseWindowWidget = memo(() => {
 
@@ -15,7 +16,9 @@ export const WindowsCloseWindowWidget = memo(() => {
       }}
       onClick={() => ipcActions.windowClose()}
     >
-      {WindowsCloseSvg}
+      <IconFont
+        icon='CloseOutlined'
+      />
     </Widget>
   )
 })

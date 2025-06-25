@@ -3,11 +3,12 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useFadeInEffect } from '@/libs/hooks';
 import { NavigationBar } from './plats/NavigationBar';
-import { commonStyles, useAnimationClassSelector } from '@/scss/common';
+import { commonStyles } from '@/scss/common';
 import { Guards } from '@/guards';
 import { classnames } from '@rapid/libs-web';
 import { useThemeStore } from '@/features';
 import { MaintenanceMenus } from './plats/MaintenanceMenus';
+import { workbenchesRouteSwitchTransitionClassNames } from './definition';
 
 import Header from '@/components/Header';
 import Logo from '@/components/Logo';
@@ -23,15 +24,13 @@ const WorkbenchesView = memo(() => {
   const location = useLocation();
   const nodeRef = useRef<HTMLDivElement>(null);
 
-  const switchAnimation = useAnimationClassSelector(animations => animations.workbenchesRouteSwitch);
-
   return (
     <SwitchTransition mode='out-in'>
       <CSSTransition
         key={location.pathname}
         nodeRef={nodeRef}
         timeout={300}
-        classNames={switchAnimation}
+        classNames={workbenchesRouteSwitchTransitionClassNames}
         appear={true}
         unmountOnExit={false}
       >

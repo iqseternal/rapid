@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import './inject';
 import './discrete';
 
@@ -6,15 +7,23 @@ import { RdAppWrapper } from './app';
 import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension } from './plats';
 import { toNil, toNils } from '@suey/pkg-utils';
 import { useGroupExtensionsApi } from './api';
+import { injectReadonlyVariable } from '@rapid/libs';
 import { RdThemeExtension } from './plats/extensions';
 
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 
+import * as ReactRouterDOM from 'react-router-dom';
+
 import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
 
+// import diyExtension from 'rd/../../cli/rxc/template/src/index';
+
+/**
+ * 创建线程任务
+ */
 async function setupThreadTask() {
   const startHeartbeat = () => rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 
@@ -25,12 +34,21 @@ async function setupThreadTask() {
   window.addEventListener('offline', stopHeartbeat);
 }
 
+/**
+ * 创建子项目需要的环境变量值
+ */
 async function setupEnvironments() {
-  window.React = React;
+  injectReadonlyVariable(window, 'React', React);
+  injectReadonlyVariable(window, 'ReactDOM', ReactDOM);
+  injectReadonlyVariable(window, 'ReactRouterDOM', ReactRouterDOM);
 }
 
+/**
+ * 加载插件
+ */
 async function setupExtensionPlats() {
   rApp.extension.registerExtension(RdThemeExtension);
+  // rApp.extension.registerExtension(diyExtension);
 
   const extensionGroupId = 42;
   const extensionGroupUuid = 'fb024456-2f71-4f79-99e9-c3f5b7e2553c';
@@ -50,9 +68,11 @@ async function setupExtensionPlats() {
 }
 
 ((async () => {
-  await setupThreadTask();
-  await setupEnvironments();
-  await setupExtensionPlats();
+  await toNils(
+    setupThreadTask(),
+    setupEnvironments(),
+    setupExtensionPlats()
+  );
 
   const rootContainer = document.getElementById('root');
 

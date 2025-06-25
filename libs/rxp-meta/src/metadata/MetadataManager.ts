@@ -118,23 +118,16 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     const vector = this.metadataMap.get(metadataKey);
     if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
-    const vectorSet = new Set(vector);
-    if (vectorSet.has(metadata)) return;
-    vectorSet.add(metadata);
+    const newVector = vector.filter(v => v !== metadata);
+    newVector.push(metadata);
 
-    // 已经注册
-    // if (vector.some(v => v === metadata)) return;
-    // vector.push(metadata);
-
-    const newMetadata = Array.from(vectorSet) as MetadataEntries[MetadataKey];
-
-    this.metadataMap.set(metadataKey, newMetadata);
+    this.metadataMap.set(metadataKey, newVector);
     super.updateStore();
     this.triggerMetadataChangeListeners({
       action: 'Define',
       type: 'Vector',
       metadataKey: metadataKey,
-      metadata: newMetadata
+      metadata: newVector
     })
   }
 
@@ -245,7 +238,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
           updateState();
         }
       })
-    } 
+    }
 
     useLayoutEffect(() => {
       normalState.isMounted = true;

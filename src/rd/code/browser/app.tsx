@@ -2,9 +2,11 @@ import { ConfigProvider, App } from 'antd';
 import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { ClickToComponent } from 'click-to-react-component';
+import { useExtends } from './libs/hooks';
 
 import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
+
 
 /**
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
@@ -35,7 +37,8 @@ export const RdApp = memo(() => {
 
           },
           Button: {
-
+            defaultActiveColor: cssVars.uiDefaultButtonTextColor,
+            defaultActiveBg: cssVars.uiDefaultButtonBackground,
           }
         },
         cssVar: {
@@ -44,14 +47,12 @@ export const RdApp = memo(() => {
       }}
       button={{
         style: {
-          borderRadius: cssVars.uiDefaultButtonRadius,
-          backgroundColor: cssVars.uiDefaultButtonBackground,
-          color: cssVars.uiDefaultButtonTextColor
+
         }
       }}
       dropdown={{
         style: {
-          background: cssVars.uiAutoMenuBackground,
+
         },
       }}
       card={{
@@ -95,32 +96,7 @@ export const RdApp = memo(() => {
  * App component, 这里做各种功能的插入：例如 插件等等
  */
 export const RdAppWrapper = memo(() => {
-  const [extensionList] = rApp.extension.useExtensionsList();
-  useLayoutEffect(() => {
-    const context: Rapid.Extend.ExtensionContext = {}
-
-    extensionList.forEach(extension => {
-      rApp.extension.activatedExtension(extension.name);
-    })
-  }, [extensionList]);
-
-
-  const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transformer');
-  useLayoutEffect(() => {
-    if (!themePayloadTransformers) return;
-
-    let declaration = rApp.skin.skin.toCssVariablesDeclaration();
-    themePayloadTransformers.forEach(transform => {
-      declaration = transform(declaration);
-    })
-
-    rApp.skin.skin.install();
-
-    return () => {
-
-      rApp.skin.skin.uninstall();
-    }
-  }, [themePayloadTransformers]);
+  useExtends();
 
   return (
     <>

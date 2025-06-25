@@ -15,14 +15,21 @@ export interface UserStore {
   accessToken: string;
 }
 
-export const useUserStore = create<UserStore>()(persist(immer((set, get, store) => ({
-  // store
-  userinfo: void 0,
-  accessToken: ''
-})), {
-  name: 'userStore',
-  storage: createJSONStorage(() => window.sessionStorage)
-}));
+export const useUserStore = create<UserStore>()(
+  persist(
+    immer(
+      (set, get, store) => ({
+        // store
+        userinfo: void 0,
+        accessToken: ''
+      })
+    ),
+    {
+      name: 'userStore',
+      storage: createJSONStorage(() => window.sessionStorage)
+    }
+  )
+);
 
 /**
  * 获得用户的 AccessToken
@@ -168,4 +175,3 @@ export const userActions = {
     return Promise.resolve();
   })
 }
-

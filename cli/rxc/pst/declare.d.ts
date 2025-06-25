@@ -809,9 +809,18 @@ declare const makeRdCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarVal
  */
 declare const mrcvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
-    readonly cssVariablesPayloadSheet: PayloadSheet;
     private readonly runtimeContext;
+    private readonly presetCssVariablesPayloadSheet;
+    cssVariablesPayloadSheet: PayloadSheet;
     constructor(cssVariablesPayloadSheet: PayloadSheet);
+    /**
+     * 克隆 CSS 变量样式
+     */
+    private cloneCssVariablesPayloadSheet;
+    /**
+     * 重置当前皮肤的 CSS 变量样式
+     */
+    resetCssVariablesPayloadSheet(): void;
     /**
      * 生成当前皮肤的 CSS 变量声明
      */
@@ -860,9 +869,7 @@ declare const useUserStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Use
     persist: {
         setOptions: (options: Partial<zustand_middleware.PersistOptions<UserStore, unknown>>) => void;
         clearStorage: () => void;
-        rehydrate: () => void | Promise<void>; /**
-         * 用户退出登录
-         */
+        rehydrate: () => void | Promise<void>;
         hasHydrated: () => boolean;
         onHydrate: (fn: (state: UserStore) => void) => () => void;
         onFinishHydration: (fn: (state: UserStore) => void) => () => void;
@@ -1099,7 +1106,11 @@ declare namespace cssVariablePayloadSheet {
   export { cssVariablePayloadSheet_borderError as borderError, cssVariablePayloadSheet_borderFocus as borderFocus, cssVariablePayloadSheet_borderPrimary as borderPrimary, cssVariablePayloadSheet_borderRadiusFull as borderRadiusFull, cssVariablePayloadSheet_borderRadiusLg as borderRadiusLg, cssVariablePayloadSheet_borderRadiusMd as borderRadiusMd, cssVariablePayloadSheet_borderRadiusSm as borderRadiusSm, cssVariablePayloadSheet_borderRadiusUnit as borderRadiusUnit, cssVariablePayloadSheet_borderRadiusXl as borderRadiusXl, cssVariablePayloadSheet_borderRadiusXs as borderRadiusXs, cssVariablePayloadSheet_borderSecondary as borderSecondary, cssVariablePayloadSheet_borderTertiary as borderTertiary, cssVariablePayloadSheet_colorError as colorError, cssVariablePayloadSheet_colorNeutral0 as colorNeutral0, cssVariablePayloadSheet_colorNeutral100 as colorNeutral100, cssVariablePayloadSheet_colorNeutral200 as colorNeutral200, cssVariablePayloadSheet_colorNeutral300 as colorNeutral300, cssVariablePayloadSheet_colorNeutral400 as colorNeutral400, cssVariablePayloadSheet_colorNeutral50 as colorNeutral50, cssVariablePayloadSheet_colorNeutral500 as colorNeutral500, cssVariablePayloadSheet_colorNeutral600 as colorNeutral600, cssVariablePayloadSheet_colorNeutral700 as colorNeutral700, cssVariablePayloadSheet_colorNeutral800 as colorNeutral800, cssVariablePayloadSheet_colorNeutral900 as colorNeutral900, cssVariablePayloadSheet_colorPrimary as colorPrimary, cssVariablePayloadSheet_colorSuccess as colorSuccess, cssVariablePayloadSheet_colorTextDisabled as colorTextDisabled, cssVariablePayloadSheet_colorTextError as colorTextError, cssVariablePayloadSheet_colorTextInverse as colorTextInverse, cssVariablePayloadSheet_colorTextLink as colorTextLink, cssVariablePayloadSheet_colorTextPrimary as colorTextPrimary, cssVariablePayloadSheet_colorTextSecondary as colorTextSecondary, cssVariablePayloadSheet_colorTextSuccess as colorTextSuccess, cssVariablePayloadSheet_colorTextTertiary as colorTextTertiary, cssVariablePayloadSheet_colorTextWarning as colorTextWarning, cssVariablePayloadSheet_colorWarning as colorWarning, cssVariablePayloadSheet_fontSize2Xl as fontSize2Xl, cssVariablePayloadSheet_fontSizeLg as fontSizeLg, cssVariablePayloadSheet_fontSizeMd as fontSizeMd, cssVariablePayloadSheet_fontSizeSm as fontSizeSm, cssVariablePayloadSheet_fontSizeXl as fontSizeXl, cssVariablePayloadSheet_fontSizeXs as fontSizeXs, cssVariablePayloadSheet_fontWeightBold as fontWeightBold, cssVariablePayloadSheet_fontWeightLight as fontWeightLight, cssVariablePayloadSheet_fontWeightMedium as fontWeightMedium, cssVariablePayloadSheet_fontWeightRegular as fontWeightRegular, cssVariablePayloadSheet_interactivePrimary as interactivePrimary, cssVariablePayloadSheet_interactivePrimaryActive as interactivePrimaryActive, cssVariablePayloadSheet_interactivePrimaryDisabled as interactivePrimaryDisabled, cssVariablePayloadSheet_interactivePrimaryHover as interactivePrimaryHover, cssVariablePayloadSheet_interactiveSecondary as interactiveSecondary, cssVariablePayloadSheet_interactiveSecondaryActive as interactiveSecondaryActive, cssVariablePayloadSheet_interactiveSecondaryDisabled as interactiveSecondaryDisabled, cssVariablePayloadSheet_interactiveSecondaryHover as interactiveSecondaryHover, cssVariablePayloadSheet_shadowLg as shadowLg, cssVariablePayloadSheet_shadowMd as shadowMd, cssVariablePayloadSheet_shadowSm as shadowSm, cssVariablePayloadSheet_shadowXl as shadowXl, cssVariablePayloadSheet_shadowXs as shadowXs, cssVariablePayloadSheet_spacingLg as spacingLg, cssVariablePayloadSheet_spacingMd as spacingMd, cssVariablePayloadSheet_spacingSm as spacingSm, cssVariablePayloadSheet_spacingUnit as spacingUnit, cssVariablePayloadSheet_spacingXl as spacingXl, cssVariablePayloadSheet_spacingXs as spacingXs, cssVariablePayloadSheet_surfacePrimary as surfacePrimary, cssVariablePayloadSheet_surfaceSecondary as surfaceSecondary, cssVariablePayloadSheet_surfaceTertiary as surfaceTertiary, cssVariablePayloadSheet_uiAutoMenuBackground as uiAutoMenuBackground, cssVariablePayloadSheet_uiAutoMenuRadius as uiAutoMenuRadius, cssVariablePayloadSheet_uiAutoMenuTextColor as uiAutoMenuTextColor, cssVariablePayloadSheet_uiCaptionBarBackground as uiCaptionBarBackground, cssVariablePayloadSheet_uiCaptionBarHeight as uiCaptionBarHeight, cssVariablePayloadSheet_uiDefaultButtonBackground as uiDefaultButtonBackground, cssVariablePayloadSheet_uiDefaultButtonRadius as uiDefaultButtonRadius, cssVariablePayloadSheet_uiDefaultButtonTextColor as uiDefaultButtonTextColor, cssVariablePayloadSheet_uiNavigationBarBackground as uiNavigationBarBackground, cssVariablePayloadSheet_uiNavigationBarWidth as uiNavigationBarWidth, cssVariablePayloadSheet_uiWidgetBackgroundPrimary as uiWidgetBackgroundPrimary, cssVariablePayloadSheet_uiWidgetBorderRadius as uiWidgetBorderRadius, cssVariablePayloadSheet_uiWidgetColorPrimary as uiWidgetColorPrimary, cssVariablePayloadSheet_uiWidgetHeight as uiWidgetHeight, cssVariablePayloadSheet_uiWidgetHoverBackgroundPrimary as uiWidgetHoverBackgroundPrimary, cssVariablePayloadSheet_uiWidgetWidth as uiWidgetWidth };
 }
 
-type RdCssVariablePayloadSheet = typeof cssVariablePayloadSheet;
+type RdCssVariablePayloadSheet = {
+    [Key in keyof typeof cssVariablePayloadSheet]: Omit<(typeof cssVariablePayloadSheet)[Key], 'value'> & {
+        value: string;
+    };
+};
 
 /**
  * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等
@@ -2061,7 +2072,7 @@ declare global {
                     /**
                      * 功能 - 主题 - 变量 - 转换
                      */
-                    'functional.theme.variables.transformer': ((variables: CssVariablesDeclaration<RdCssVariablePayloadSheet>) => CssVariablesDeclaration<RdCssVariablePayloadSheet>)[];
+                    'functional.theme.variables.transformer': ((variables: RdCssVariablePayloadSheet) => void)[];
                     /**
                      * ui-header 图标展示
                      */
@@ -2127,6 +2138,66 @@ declare global {
          * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
          */
         namespace Types {
+            /**
+             * 获取一个 Promise then函数的类型
+             */
+            type PromiseThenCallback<Pr extends Promise<unknown>> = Parameters<Pr['then']>[0];
+            /**
+             * 获取一个 Promise then函数回调参数 res 的类型
+             */
+            type PromiseResolvedType<Pr extends Promise<unknown>> = Parameters<Exclude<PromiseThenCallback<Pr>, null | undefined>>[0];
+            /**
+             * 获取一个 Promise数据 then函数回调参数 res 数组的类型
+             */
+            type PromiseArrayResolvedType<PrArr extends readonly Promise<unknown>[]> = {
+                readonly [Index in keyof PrArr]: PromiseResolvedType<PrArr[Index]>;
+            };
+            /**
+             * 获取一个 Promise catch函数回调参数 res 的类型
+             */
+            type PromiseCatchCallback<Pr extends Promise<unknown>> = Parameters<Pr['catch']>[0];
+            /**
+             * 获取一个 Promise catch函数回调参数 reason 的类型
+             */
+            type PromiseCatchReasonType<Pr extends Promise<unknown>> = Parameters<Exclude<PromiseCatchCallback<Pr>, null | undefined>>[0];
+            /**
+             * 获取一个 Promise数据 then函数回调参数 reason 数组的类型
+             */
+            type PromiseArrayCatchReasonType<PrArr extends readonly Promise<unknown>[]> = {
+                readonly [Index in keyof PrArr]: PromiseCatchReasonType<PrArr[Index]>;
+            };
+            /**
+             * 判断这个类型是否是一个 never 类型, 如果是返回第一个泛型参数, 否则返回第二个
+             * @example
+             *
+             * type C = never;
+             *
+             * type TResult = IsNever<C, true, false>; // true
+             *
+             */
+            type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
+            /**
+             * 判断这个类型是否是一个 any 类型, 如果是返回第一个泛型参数, 否则返回第二个
+             *
+             * @example
+             * type c = any;
+             * type TResult = IsAny<C, true, false>; // true
+             *
+             * type d = true;
+             * type TResult2 = IsAny<d, true, false>; // false
+             */
+            type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
+            /**
+             * 判断这个类型是否是一个 unknown 类型, 如果是返回第一个泛型参数, 否则返回第二个
+             *
+             * @example
+             * type c = unknown;
+             * type TResult = IsUnknown<C, true, false>; // true
+             *
+             * type d = true;
+             * type TResult2 = IsUnknown<d, true, false>; // false
+             */
+            type IsUnknown<T, SuccessReturnType, FailReturnType> = unknown extends T ? (T extends unknown ? SuccessReturnType : FailReturnType) : FailReturnType;
         }
         /**
          * RApp
@@ -2241,6 +2312,8 @@ declare global {
                 readonly isReactMemoFC: typeof isReactMemoFC;
                 readonly isReactFC: typeof isReactFC;
                 readonly isReactLazyFC: typeof isReactLazyFC;
+                readonly defineCompleteType: typeof _suey_pkg_utils.defineCompleteType;
+                readonly defineRawType: typeof _suey_pkg_utils.defineRawType;
             };
         }
     }
