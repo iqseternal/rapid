@@ -19,5 +19,8 @@
   "dependencies": {
     "@rapid/libs": "workspace:^",
     "@rapid/libs-web": "workspace:^"
+  },
+  "devDependencies": {
+    "@rapid/rd-builder": "workspace:*"
   }
 }

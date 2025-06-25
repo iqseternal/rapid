@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "outDir": "../../.rd-cache/",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "rootDir": "./",
+    "skipDefaultLibCheck": true,
+    "target": "ESNext",
+    "lib": [
+      "ESNext"
+    ],
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveSymlinks": false,
+    "strict": false,
+    "strictNullChecks": false,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+    "strictBindCallApply": false,
+    "emitDecoratorMetadata": true,
+    "allowUnusedLabels": true,
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "traceResolution": false,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowJs": true,
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "./**/*"
+  ],
+  "exclude": []
+}

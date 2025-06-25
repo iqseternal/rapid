@@ -1,0 +1,15 @@
+{
+  "name": "@rapid/rd-builder",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "rd-builder": "./bin/index.ts"
+  },
+  "main": "./index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.main.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
