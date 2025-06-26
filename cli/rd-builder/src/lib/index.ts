@@ -6,9 +6,9 @@ import { ElectronService } from '../service/ElectronService';
 import { rspack } from '@rspack/core';
 import { createRsbuild } from '@rsbuild/core';
 
-import * as path from 'path';
-import * as fs from 'fs';
-
+/**
+ * 转换配置文件中的编译配置
+ */
 export async function transformerConfig(rdBuilderConfig: RdBuilderConfig) {
   const { transformerBrowserRsbuildConfig, transformerMainRspackConfig, transformerSandboxRspackConfig } = rdBuilderConfig.transformers;
 
