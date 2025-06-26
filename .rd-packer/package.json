@@ -17,13 +17,13 @@
   "license": "ISC",
   "dependencies": {
     "bytenode": "catalog:packer",
-    "combined-stream": "catalog:packer",
-    "crypto-ts": "catalog:packer",
-    "delayed-stream": "catalog:packer",
-    "follow-redirects": "catalog:packer",
-    "form-data": "catalog:packer",
-    "mime-db": "catalog:packer",
-    "mime-types": "catalog:packer",
-    "proxy-from-env": "catalog:packer"
+    "combined-stream": "1.0.8",
+    "crypto-ts": "1.0.2",
+    "delayed-stream": "1.0.0",
+    "follow-redirects": "1.15.6",
+    "form-data": "4.0.0",
+    "mime-db": "1.53.0",
+    "mime-types": "2.1.35",
+    "proxy-from-env": "1.1.0"
   }
 }

@@ -19,11 +19,6 @@ declare global {
        */
       readonly NODE: string;
 
-      /**
-       * node 运行环境
-       */
-      readonly NODE_ENV: 'development' | 'production';
-
       ELECTRON_RUN_AS_NODE?: BooleanString;
       ELECTRON_NO_ASAR?: BooleanString;
       GOOGLE_API_KEY?: string;

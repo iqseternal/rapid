@@ -2,13 +2,10 @@
 import { resolve } from 'path';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-import { DIRS } from '../builder';
 import { Ansi } from '@suey/pkg-utils';
 import { printError, printInfo } from '../printer';
 
 import treeKill from 'tree-kill';
-
-const bin = resolve(DIRS.ROOT_DIR, './node_modules/.bin/electron');
 
 interface ElectronServiceState {
   /**
@@ -34,7 +31,9 @@ export class ElectronService {
   private readonly bindThisExitElectronProcess = this.exitElectronProcess.bind(this);
   private readonly bindThisExitCurrentProcess = this.exitCurrentProcess.bind(this);
 
-  public constructor() {
+  public constructor(
+    public readonly bin: string
+  ) {
     process.addListener('beforeExit', this.bindThisExitElectronProcess);
     process.addListener('exit', this.bindThisExitElectronProcess);
   }
@@ -84,6 +83,7 @@ export class ElectronService {
 
     // 开始 kill
     this.state.electronChildProcess.removeListener('exit', this.bindThisExitCurrentProcess);
+    this.state.electronChildProcess.removeListener('error', this.bindThisExitCurrentProcess);
     await this.exitElectronProcess();
   }
 
@@ -92,11 +92,12 @@ export class ElectronService {
    */
   protected async start(envArgs: readonly `${string}=${string | number}`[], startPath: string) {
     printInfo('启动程序');
+    console.log(this.bin, startPath);
 
     const envs = `cross-env ${envArgs.join(' ')}`;
 
     // 设置环境变量并启动 electron
-    this.state.electronChildProcess = exec(`${envs} ${bin} ${startPath}`);
+    this.state.electronChildProcess = exec(`${envs} ${this.bin} ${startPath}`);
     this.state.electronChildProcess?.stdout?.on('data', (data) => {
       process.stdout.write(data.toString());
     });
@@ -108,6 +109,7 @@ export class ElectronService {
     });
 
     this.state.electronChildProcess.addListener('exit', this.bindThisExitCurrentProcess);
+    this.state.electronChildProcess.addListener('error', this.bindThisExitCurrentProcess);
   }
 
   /**

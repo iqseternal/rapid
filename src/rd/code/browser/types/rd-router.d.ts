@@ -8,22 +8,22 @@ declare module '@rapid/libs-web' {
     /**
      * title 作为标识当前路由的作用, 并且作为菜单时作为 title 展示
      */
-    title: string;
+    readonly title: string;
 
     /**
      * window 的标签页标题
      */
-    windowTitle?: string;
+    readonly windowTitle?: string;
 
     /**
      * 附带 icon, 因为这可能会被作为菜单渲染
      */
-    icon?: IconKey;
+    readonly icon?: IconKey;
 
     /**
-   * 是否在菜单中隐藏
-   */
-    hiddenInMenu?: boolean;
+     * 是否在菜单中隐藏
+     */
+    readonly hiddenInMenu?: boolean;
   }
 }
 

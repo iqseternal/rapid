@@ -1,4 +1,7 @@
-import { NodeCommand, NodeEnv, Env } from './enums';
+// =======================================================================================
+// 运行时声明
+import { NodeCommand, NodeEnv } from '../constants';
+
 
 declare global {
   namespace NodeJS {

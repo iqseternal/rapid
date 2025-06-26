@@ -1,3 +1,4 @@
+
 import { Ansi } from '@suey/pkg-utils';
 
 export function print(...message: string[]) {
@@ -15,4 +16,5 @@ export function printInfo(...message: string[]) {
 export function printError(...message: string[]) {
   Ansi.print(Ansi.red, '[RD Builder Host]', ' ', Ansi.normal, ...message);
 }
+
 

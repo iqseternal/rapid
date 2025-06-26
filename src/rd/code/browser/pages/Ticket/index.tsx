@@ -404,7 +404,7 @@ export const Ticket = memo(() => {
                 </div>
               </div>
 
-              <div className='relative z-10 text-center '>
+              <div className='relative z-10 text-center'>
                 <div className='relative'>
                   <Typography.Title
                     level={1}
