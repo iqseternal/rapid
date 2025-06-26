@@ -1,14 +1,7 @@
 #!/usr/bin/env ts-node
-
-import { readFileSync } from 'fs';
-import { exec } from 'child_process';
 import { program } from 'commander';
-import { RdBuilderConfigName } from '../src/constants';
-import { printError, print, printWarn, printInfo } from '../src/printer';
-
-import * as path from 'path';
-import * as fs from 'fs';
-
+import { devAction } from '../src/scripts/dev';
+import { buildAction } from '../src/scripts/build';
 
 program
   .name('rd-builder')
@@ -16,32 +9,23 @@ program
   .description('rapid插件脚手架, 用于构建 electron')
   ;;
 
+program
+  .command('dev')
+  .option('-c, --config <string>', '指定配置文件')
+  .option('-p, --platform', '指定构建平台')
+  .option('-w, --watch', '是否开启 watch 模式')
+  .description('启用开发时脚手架')
+  .action(devAction)
+  ;;
 
 
 program
-  .command('dev <string>')
-  .description('创建一个插件子目录')
-  .action(async (name: string) => {
-
-    const configPath = path.join(process.cwd(), RdBuilderConfigName);
-
-    // 配置文件检查
-    if (!fs.existsSync(configPath) || !fs.statSync(configPath).isFile()) {
-      printError(`配置文件 ${RdBuilderConfigName} 不存在`);
-      process.exit(1);
-    }
-
-    const target = await import(configPath);
-
-    if (!target.default) {
-      printError(`配置文件 ${RdBuilderConfigName} 未默认导出配置对象`);
-      process.exit(1);
-    }
-
-    const config = target.default;
-
-    console.log(config);
-  })
+  .command('build')
+  .option('-c, --config <string>', '指定配置文件')
+  .option('-p, --platform', '指定构建平台')
+  .option('--preview', '是否开启预览模式')
+  .description('启用构建时脚手架')
+  .action(buildAction)
   ;;
 
 program.parse(process.argv);

@@ -5,9 +5,9 @@
   "private": true,
   "main": "out/main/index.js",
   "scripts": {
-    "dev": "cross-env COMMAND=dev ts-node --project tsconfig.json ./rspack.ts",
-    "build": "cross-env COMMAND=build ts-node --project tsconfig.json ./rspack.ts",
-    "preview": "cross-env COMMAND=preview ts-node --project tsconfig.json ./rspack.ts",
+    "dev": "rd-builder dev",
+    "build": "rd-builder build",
+    "preview": "rd-builder build --preview",
     "packer": "pnpm packer-win",
     "packer-win": "pnpm run build && pnpm -C ../.rd-packer run packer-win",
     "scripts-i18n-extract": "ts-node ./scripts/i18n-extract",

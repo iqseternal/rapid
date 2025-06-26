@@ -1,7 +1,5 @@
 import { join } from 'path';
-import { EnvChecker } from './checker';
-
-export * from './index';
+import { EnvChecker } from './EnvChecker';
 
 /**
  * 注入变量的接口, 用于创建注入变量集合

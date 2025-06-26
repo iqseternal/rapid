@@ -9,6 +9,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit -p tsconfig.main.json"
   },
+  "devDependencies": {
+    "bytenode": "catalog:packer"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"

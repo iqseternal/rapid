@@ -1,8 +1,6 @@
-
 import { defineConfig } from '@rapid/rd-builder';
 import { join } from 'path';
-import { DIRS, rules } from './rd-builder';
-import { createRsbuild, CreateRsbuildOptions } from '@rsbuild/core';
+import type { CreateRsbuildOptions } from '@rsbuild/core';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack, SwcJsMinimizerRspackPlugin } from '@rspack/core';
 import { defineConfig as defineRspackConfig } from '@rspack/cli';
 import { defineConfig as defineRsbuildConfig } from '@rsbuild/core';
@@ -12,15 +10,14 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
-
-import type { RdBuilderEnvs } from '@rapid/rd-builder';
+import { EnvBuilder } from '@rapid/rd-builder';
 
 import tailwindcss from 'tailwindcss';
-import bytenode from 'bytenode';
-import packageJson from '../package.json';
 import tsconfigMainJson from './rd/tsconfig.main.json';
 import tsconfigSandboxJson from './rd/tsconfig.sandbox.json';
 import tsconfigBrowserJson from './rd/tsconfig.browser.json';
+
+const ROOT_DIR = join(__dirname, '../');
 
 const rendererRootDir = join(__dirname, './rd/code/browser');
 const rendererEntry = join(rendererRootDir, './index.tsx');
@@ -28,12 +25,20 @@ const rendererEntry = join(rendererRootDir, './index.tsx');
 const mainEntry = join(__dirname, './rd/app.ts');
 const preloadEntry = join(__dirname, './rd/code/sandbox/index.ts');
 
+const mainOutput = join(ROOT_DIR, './.rd-packer/out/main');
+const preloadOutput = join(ROOT_DIR, './.rd-packer/out/preload');
+const rendererOutput = join(ROOT_DIR, './.rd-packer/out/renderer');
 
-const mainOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/main');
-const preloadOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/preload');
-const rendererOutput = join(DIRS.ROOT_DIR, './.rd-packer/out/renderer');
+const envBuilder = new EnvBuilder();
 
-async function transformMainRspackConfig({ IS_BUILD, IS_DEV, IS_PREVIEW, IS_PROD }: RdBuilderEnvs): Promise<RspackOptions> {
+const { IS_DEV, IS_BUILD, IS_PREVIEW, IS_PROD } = envBuilder.toEnvs();
+
+const defineVars = {
+  IS_DEV: IS_DEV,
+  IS_PROD: IS_PROD,
+} as const;
+
+async function transformMainRspackConfig(): Promise<RspackOptions> {
   const vars = envBuilder.defineVars();
 
   const mainRspackConfig = defineRspackConfig({
@@ -69,8 +74,29 @@ async function transformMainRspackConfig({ IS_BUILD, IS_DEV, IS_PREVIEW, IS_PROD
     ],
     module: {
       rules: [
-        rules.supportImportRaw,
-        rules.supportTypescript
+        {
+          resourceQuery: /(\?raw$)|(\.(png|jpe?g|gif|ico)$)/,
+          exclude: [/node_modules/],
+          type: 'asset/resource'
+        },
+        {
+          test: /\.(c)?[tj]sx?$/,
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              loose: true,
+              parser: {
+                syntax: 'typescript',
+                decorators: true,
+              },
+              transform: {
+                legacyDecorator: true,
+                decoratorMetadata: true
+              },
+            },
+          },
+          type: 'javascript/auto',
+        }
       ],
     },
     devServer: {
@@ -136,7 +162,31 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
       }))
     ],
     module: {
-      rules: [rules.supportImportRaw, rules.supportTypescript],
+      rules: [
+        {
+          resourceQuery: /(\?raw$)|(\.(png|jpe?g|gif|ico)$)/,
+          exclude: [/node_modules/],
+          type: 'asset/resource'
+        },
+        {
+          test: /\.(c)?[tj]sx?$/,
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              loose: true,
+              parser: {
+                syntax: 'typescript',
+                decorators: true,
+              },
+              transform: {
+                legacyDecorator: true,
+                decoratorMetadata: true
+              },
+            },
+          },
+          type: 'javascript/auto',
+        }
+      ],
     },
     devtool: IS_DEV ? 'source-map' : false,
     devServer: {
@@ -275,7 +325,7 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       swc: {
         jsc: {
           experimental: {
-            cacheRoot: join(DIRS.ROOT_DIR, './.rd-cache/src/rd/browser/swc')
+            cacheRoot: join(ROOT_DIR, './.rd-cache/src/rd/browser/swc')
           }
         }
       },
@@ -290,7 +340,13 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
 
 
 export default defineConfig({
-  transformerSandboxRspackConfig: transformPreloadRspackConfig,
-  transformerMainRspackConfig: transformMainRspackConfig,
-  transformerBrowserRsbuildConfig: transformRendererRsbuildConfig
+  bin: join(ROOT_DIR, './node_modules/.bin/electron'),
+
+  transformers: {
+    transformerSandboxRspackConfig: transformPreloadRspackConfig,
+
+    transformerMainRspackConfig: transformMainRspackConfig,
+
+    transformerBrowserRsbuildConfig: transformRendererRsbuildConfig
+  }
 })

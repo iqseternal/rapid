@@ -19,9 +19,7 @@
     "allowJs": true
   },
   "include": [
-    "./rspack.ts",
-
-    "./rd-builder/**/*",
+    "./rd-builder.config.ts",
     "./scripts/**/*",
 
     "./rd/*.json",
