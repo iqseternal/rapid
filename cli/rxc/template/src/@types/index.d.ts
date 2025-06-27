@@ -1,6 +1,0 @@
-
-declare global {
-
-}
-
-export {};

@@ -40,18 +40,18 @@
     "allowJs": true,
     "types": [
       "reflect-metadata",
-      "../../src/rd-dts/@types",
-      "../../src/rd-dts/@types-web",
-      "../../src/rd-dts/@types-node",
-      "../../src/rd/code/browser/types",
+      "../rd-dts/@types",
+      "../rd-dts/@types-web",
+      "../rd-dts/@types-node",
+      "../rd/code/browser/types",
       "node"
     ],
     "paths": {
       "@rapid/libs": ["../../packages/libs"],
       "@rapid/libs-web": ["../../packages/libs-web"],
       "@suey/rxp-meta": ["../../libs/rxp-meta"],
-      "rd/*": ["../../src/rd/*"],
-      "@/*": ["../../src/rd/code/browser/*"]
+      "rd/*": ["../rd/*"],
+      "@/*": ["../rd/code/browser/*"]
     }
   },
   "include": [
@@ -59,18 +59,16 @@
     "../../packages/**/*.tsx",
     "../../libs/**/*.ts",
     "../../libs/**/*.tsx",
-    "../../src/rd/**/*.ts",
-    "../../src/rd/code/browser/**/*.tsx",
-    "../../src/rd/code/browser/**/*.json",
-    "../../package.json",
-    "./src/**/*"
+    "../rd/**/*.ts",
+    "../rd/code/browser/**/*.tsx",
+    "../rd/code/browser/**/*.json",
+    "../../package.json"
   ],
   "exclude": [
     "../../**/node_modules/**/*",
     "../../**/*.test.ts",
     "../../**/rspack.config.ts",
     "../../**/rsbuild.config.ts",
-    "../../**/rspress.config.ts",
-    "../../src/rspack.ts"
+    "../../**/rspress.config.ts"
   ]
 }

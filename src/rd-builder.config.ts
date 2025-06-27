@@ -1,4 +1,4 @@
-import { defineConfig } from '@rapid/rd-builder';
+import { defineConfig } from '@suey/rd-builder';
 import { join } from 'path';
 import type { CreateRsbuildOptions } from '@rsbuild/core';
 import { DefinePlugin, HotModuleReplacementPlugin, ProgressPlugin, RspackOptions, node, rspack, SwcJsMinimizerRspackPlugin } from '@rspack/core';
@@ -10,7 +10,7 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 import { pluginStyledComponents } from '@rsbuild/plugin-styled-components';
 import { pluginTypedCSSModules } from '@rsbuild/plugin-typed-css-modules';
 import { pluginSourceBuild } from '@rsbuild/plugin-source-build';
-import { EnvBuilder } from '@rapid/rd-builder';
+import { EnvBuilder } from '@suey/rd-builder';
 
 import tailwindcss from 'tailwindcss';
 import tsconfigMainJson from './rd/tsconfig.main.json';

@@ -1,7 +1,7 @@
 {
-  "name": "@rapid/rd-builder",
+  "name": "@suey/rd-builder",
   "version": "1.0.0",
-  "description": "",
+  "description": "rd应用程序脚手架, 用于快速启动 electron 服务, 此脚手架可移植",
   "bin": {
     "rd-builder": "./bin/index.ts"
   },

@@ -1,6 +1,5 @@
 import { NodeCommand, RdBuilderConfigName } from '../constants';
 import { printError, printInfo, print } from '../printer';
-import { EnvBuilder } from '../service/EnvBuilder';
 import type { RdBuilderConfig } from '../../index';
 import { ElectronService } from '../service/ElectronService';
 import { transformerConfig } from '../lib';
@@ -11,14 +10,25 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 export interface BuildActionOptions {
+  /**
+   * 配置文件名称/路径
+   */
   config?: string;
 
+  /**
+   * 是否开启预览模式
+   */
   preview?: boolean;
 
+  /**
+   * TODO: 待实现
+   */
   platform?: 'windows' | 'linux' | 'mac';
 }
 
 export async function buildAction(options: BuildActionOptions) {
+  printInfo('build start.');
+
   process.env.COMMAND = NodeCommand.Build;
 
   const configPath = path.join(process.cwd(), options.config ?? RdBuilderConfigName);
@@ -38,9 +48,6 @@ export async function buildAction(options: BuildActionOptions) {
 
   const config = target.default as RdBuilderConfig;
 
-  const envBuilder = new EnvBuilder();
-
-  const { IS_DEV, IS_PROD, IS_PREVIEW, IS_BUILD } = envBuilder.toEnvs();
   const { mainCompiler, preloadCompiler, rendererRsbuilder, compilerMain, compilerPreload, compilerRenderer } = await transformerConfig(config);
 
   const electronService = new ElectronService(config.bin);

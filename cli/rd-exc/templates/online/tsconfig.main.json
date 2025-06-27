@@ -34,13 +34,11 @@
     "allowUmdGlobalAccess": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
-    "types": [],
     "paths": {}
   },
   "include": [
-    "./src/**/*",
-
-    "../pst"
+    "./types/**/*",
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",

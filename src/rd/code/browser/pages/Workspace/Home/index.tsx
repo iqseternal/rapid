@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, Key } from 'react';
 import { Button, Card, Space } from 'antd';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -17,11 +17,9 @@ export const Home = memo(() => {
 	return (
 		<Card>
 			{extensions && extensions.map((extension) => {
-
-
 				return (
 					<div
-						key={extension.meta?.extension_name}
+						key={extension.name as Key}
 						className='bg-blue-100 flex items-center py-2 px-2'
 					>
 						<Space>
