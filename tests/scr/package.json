@@ -1,8 +1,0 @@
-{
-	"dependencies": {
-		"@rapid/rd-builder": "workspace:*"
-	},
-	"scripts": {
-		"dev": "rd-builder dev s"
-	}
-}
