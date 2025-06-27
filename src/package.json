@@ -12,7 +12,7 @@
     "packer-win": "pnpm run build && pnpm -C ../.rd-packer run packer-win",
     "scripts-i18n-extract": "ts-node ./scripts/i18n-extract",
     "scripts-dts-extract": "cd ./scripts && tsup --config ./scripts/dts-extract.ts",
-    "extract": "pnpm scripts-i18n-extract && pnpm scripts-dts-extract",
+    "extract": "concurrently \"pnpm scripts-i18n-extract\" \"pnpm scripts-dts-extract\"",
     "typecheck": "concurrently \"tsc --noEmit -p tsconfig.json\" \"tsc --noEmit -p ./rd/tsconfig.main.json\" \"tsc --noEmit -p ./rd/tsconfig.sandbox.json\" \"tsc --noEmit -p ./rd/tsconfig.browser.json\""
   },
   "keywords": [],
