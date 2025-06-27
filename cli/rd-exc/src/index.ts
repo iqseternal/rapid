@@ -14,6 +14,17 @@ program
   .description('创建一个插件子目录')
   .action(async (name: string) => {
     if (typeof name !== 'string' || name.trim() === '') throw new Error('传递了一个无效的插件名');
+    const dir = path.join(__dirname, name);
+
+    fs.mkdirSync(dir);
+  })
+;;
+
+program
+  .command('build <string>')
+  .description('创建一个插件子目录')
+  .action(async (name: string) => {
+    if (typeof name !== 'string' || name.trim() === '') throw new Error('传递了一个无效的插件名');
 
 
 
@@ -22,5 +33,6 @@ program
     fs.mkdirSync(dir);
   })
 ;;
+
 
 program.parse(process.argv);

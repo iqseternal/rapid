@@ -27,6 +27,8 @@ export interface BuildActionOptions {
 }
 
 export async function buildAction(options: BuildActionOptions) {
+  printInfo('build start.');
+
   process.env.COMMAND = NodeCommand.Build;
 
   const configPath = path.join(process.cwd(), options.config ?? RdBuilderConfigName);

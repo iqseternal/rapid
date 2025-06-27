@@ -53,7 +53,7 @@
     "build": "pnpm -C ./src run build",
     "preview": "pnpm -C ./src run preview",
     "packer": "pnpm -C ./src run packer",
-    "scripts-i18n-extract": "pnpm -C ./src run scripts-i18n-extract",
+    "extract": "pnpm -C ./src run extract",
     "release": "pnpm -C ./cli/rxc run tsup && concurrently \"pnpm -C ./src run typecheck\" \"pnpm -C ./cli/rxc run typecheck\" && pnpm run packer",
     "docs:dev": "pnpm -C ./apps/docs run dev",
     "docs:build": "pnpm -C ./apps/docs run build",

@@ -1,7 +1,5 @@
 {
   "login": {
-    "language": "Change language",
-    "login": "Login",
-    "register": "Register"
+    "language": "Change language"
   }
 }

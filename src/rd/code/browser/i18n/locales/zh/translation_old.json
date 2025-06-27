@@ -2,6 +2,8 @@
   "login": {
     "s": "s",
     "ts": "s",
-    "txs": "s"
+    "txs": "s",
+    "login": "登录",
+    "register": "注册"
   }
 }

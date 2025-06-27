@@ -2,6 +2,8 @@
   "login": {
     "s": "s",
     "ts": "s",
-    "txs": "s"
+    "txs": "s",
+    "login": "Login",
+    "register": "Register"
   }
 }
