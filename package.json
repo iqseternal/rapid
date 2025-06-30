@@ -54,7 +54,7 @@
     "preview": "pnpm -C ./src run preview",
     "packer": "pnpm -C ./src run packer",
     "extract": "pnpm -C ./src run extract",
-    "release": "pnpm -C ./cli/rxc run tsup && concurrently \"pnpm -C ./src run typecheck\" \"pnpm -C ./cli/rxc run typecheck\" && pnpm run packer",
+    "release": "pnpm extract && concurrently \"pnpm -C ./src run typecheck\" \"pnpm -C ./cli/rd-exc run typecheck\" && pnpm run packer",
     "docs:dev": "pnpm -C ./apps/docs run dev",
     "docs:build": "pnpm -C ./apps/docs run build",
     "docs:preview": "pnpm -C ./apps/docs run preview",

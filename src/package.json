@@ -13,7 +13,7 @@
     "scripts-i18n-extract": "ts-node ./scripts/i18n-extract",
     "scripts-dts-extract": "cd ./scripts && tsup --config ./scripts/dts-extract.ts",
     "scripts-skin-extract": "ts-node --transpile-only ./scripts/skin-extract.ts",
-    "extract": "concurrently \"pnpm scripts-i18n-extract\" \"pnpm scripts-dts-extract\" \"pnpm scripts-skin-extract\"",
+    "extract": "concurrently \"pnpm scripts-i18n-extract\" \"pnpm -C . run scripts-dts-extract\" \"pnpm scripts-skin-extract\"",
     "typecheck": "concurrently \"tsc --noEmit -p tsconfig.json\" \"tsc --noEmit -p ./rd/tsconfig.main.json\" \"tsc --noEmit -p ./rd/tsconfig.sandbox.json\" \"tsc --noEmit -p ./rd/tsconfig.browser.json\""
   },
   "keywords": [],
