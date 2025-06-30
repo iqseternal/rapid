@@ -106,6 +106,10 @@ export default defineConfig({
   externals: {
     react: 'React',
     'react-router': 'ReactRouter',
-    'react-router-dom': 'ReactRouterDOM'
+    'react-router-dom': 'ReactRouterDOM',
+    'moment': 'moment',
+    'antd': 'Antd',
+    '@react-spring/web': 'spring',
+    'react-transition-group': 'transitionGroup'
   },
 })

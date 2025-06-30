@@ -1,6 +1,4 @@
 import {
-  Emitter,
-  Invoker,
   classnames,
   isReactClassComponent,
   isReactComponent,
@@ -9,6 +7,7 @@ import {
   isReactLazyFC,
   isReactMemoFC
 } from '@rapid/libs-web';
+import { Emitter, Invoker } from '@rapid/libs';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
   AES_DEFAULT_KEY,

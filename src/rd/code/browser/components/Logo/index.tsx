@@ -1,8 +1,7 @@
 import type { HTMLAttributes } from 'react';
 import { memo } from 'react';
 import { classnames } from '@rapid/libs-web/common';
-
-import { default as iconUrl } from '../../../../resources/icon.png?raw';
+import { iconPngUrl } from 'rd/assets';
 
 export interface LogoProps {
   src?: string;
@@ -13,7 +12,7 @@ export interface LogoProps {
 }
 
 export const Logo = memo((props: LogoProps) => {
-  const { className, src = iconUrl, alt, ...realProps } = props;
+  const { className, src = iconPngUrl, alt, ...realProps } = props;
 
   return (
     <div

@@ -4,14 +4,17 @@ import { electronApp, optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { WindowFlowService } from './flow/WindowFlowService';
 import { TrayMenuFlowService } from './flow/TrayMenuFlowService';
+import { registerHost } from 'rd/code/main/events';
 
 export class CodeMain {
 
   public async main() {
 
-    await IpcMainManager.start();
+    // await IpcMainManager.start();
 
-    await this.startApp();
+    // await this.startApp();
+
+    await this.registerEvents();
   }
 
   private async startApp() {
@@ -48,5 +51,10 @@ export class CodeMain {
     else {
       BrowserWindow.getAllWindows()[0].focus();
     }
+  }
+
+  private async registerEvents() {
+
+    await registerHost();
   }
 }

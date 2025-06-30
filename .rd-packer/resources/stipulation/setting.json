@@ -1,0 +1,12 @@
+{
+  "app": {
+
+  },
+  "stipulation": {
+
+    "browser": {
+      "extend.extension_group_id": 42,
+      "extend.extension_group_uuid": "fb024456-2f71-4f79-99e9-c3f5b7e2553c"
+    }
+  }
+}
