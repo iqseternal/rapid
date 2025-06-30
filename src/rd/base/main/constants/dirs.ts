@@ -7,7 +7,7 @@ export const RdDirs = {
 
   Root: path.join(__dirname, '../../'),
 
-  Resources: path.join(__dirname, '../../resources/stipulation/setting.json'),
+  Resources: path.join(__dirname, '../../resources'),
 
   OutMain: __dirname,
 

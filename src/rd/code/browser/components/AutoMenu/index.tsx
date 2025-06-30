@@ -132,10 +132,12 @@ export type AutoMenuType = typeof AutoContextMenu & {
   readonly convertMenuItem: typeof convertMenuItem,
   readonly convertMenuItemGroupType: typeof convertMenuItemGroupType,
   readonly convertSubMenu: typeof convertSubMenu,
+
   /**
    * 渲染 AutoMenu 中的菜单项元素
    */
   readonly MenuItem: typeof MenuItem,
+
   /**
    * 渲染一个 AutoMenu 中的子菜单元素
    */

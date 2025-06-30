@@ -8,7 +8,7 @@ export type BusInvokerEntries = {
 
 export type BusEmitterEntries = {
 
-  'rd-config-file-hot-reload': () => void;
+  'rd-config-file-hot-reload': void;
 
 }
 
