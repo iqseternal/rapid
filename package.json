@@ -46,7 +46,7 @@
     "directory": ""
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,cts,mts}": "eslint . --ext .ts,.tsx,.cts,.mts --cache --cache-location ./.rd-cache/.eslintcache"
+    "*.{ts,tsx,cts,mts}": "eslint . --ext .ts,.tsx,.cts,.mts --cache --cache-location ./.rd-cache/.eslintcache"
   },
   "scripts": {
     "dev": "pnpm -C ./src run dev",
