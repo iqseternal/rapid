@@ -24,7 +24,7 @@ export default async (): Promise<Config> => {
     bail: 1,
 
     // 是否收集测试时的覆盖率信息, 测试执行速度被明显减慢
-    collectCoverage: true,
+    collectCoverage: false,
 
     // Jest 在撰写报道报告时使用的报告者姓名列表
     coverageReporters: ['clover', 'json', 'lcov', ['text', { skipFull: true }]],
