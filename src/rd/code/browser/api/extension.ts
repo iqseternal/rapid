@@ -4,23 +4,23 @@ import type { RApiPromiseLike } from 'rd/base/common/api';
 import { asynced } from '@suey/pkg-utils';
 
 export interface UseGroupExtensionsApiPayload {
-  extension_group_id: number;
-  extension_group_uuid: string;
+  readonly extension_group_id: number;
+  readonly extension_group_uuid: string;
 }
 
 export interface UseGroupExtensionsApiStruct {
-  extension_group_id: number;
-  extension_group_uuid: string;
-  extension_group_name: string;
-  extension_id: number;
-  extension_uuid: string;
-  extension_name: string;
-  extension_version_id: number;
-  metadata: {} | null;
-  script_content: string;
-  script_hash: string;
-  use_version: number;
-  version: number;
+  readonly extension_group_id: number;
+  readonly extension_group_uuid: string;
+  readonly extension_group_name: string;
+  readonly extension_id: number;
+  readonly extension_uuid: string;
+  readonly extension_name: string;
+  readonly extension_version_id: number;
+  readonly metadata: {} | null;
+  readonly script_content: string;
+  readonly script_hash: string;
+  readonly use_version: number;
+  readonly version: number;
 }
 
 export type UseGroupExtensionsApiResponse = UseGroupExtensionsApiStruct[];
@@ -40,8 +40,8 @@ export const useGroupExtensionsApi = asynced<UseGroupExtensionsApi>(async payloa
  * 扩展凭证
  */
 export interface UseExtensionVoucher {
-  extension_id: number;
-  extension_uuid: string;
+  readonly extension_id: number;
+  readonly extension_uuid: string;
 }
 
 export interface UseExtensionsApiPayload {
@@ -49,18 +49,18 @@ export interface UseExtensionsApiPayload {
 }
 
 export interface UseExtensionsApiStruct {
-  extension_group_id: number;
-  extension_group_uuid: string;
-  extension_group_name: string;
-  extension_id: number;
-  extension_uuid: string;
-  extension_name: string;
-  extension_version_id: number;
-  metadata: {} | null;
-  script_content: string;
-  script_hash: string;
-  use_version: number;
-  version: number;
+  readonly extension_group_id: number;
+  readonly extension_group_uuid: string;
+  readonly extension_group_name: string;
+  readonly extension_id: number;
+  readonly extension_uuid: string;
+  readonly extension_name: string;
+  readonly extension_version_id: number;
+  readonly metadata: {} | null;
+  readonly script_content: string;
+  readonly script_hash: string;
+  readonly use_version: number;
+  readonly version: number;
 }
 
 export type UseExtensionsApiResponse = UseExtensionsApiStruct[];
@@ -80,12 +80,12 @@ export const useExtensionsApi = asynced<UseExtensionsApi>(async payload => {
  * 对接扩展心跳机制地凭证
  */
 export interface UseExtensionHeartbeatVoucher {
-  extension_id: number;
-  extension_uuid: string;
+  readonly extension_id: number;
+  readonly extension_uuid: string;
   /**
    * 扩展内容 hash 值
    */
-  script_hash: string;
+  readonly script_hash: string;
 }
 
 

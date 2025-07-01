@@ -9,9 +9,9 @@ export class CodeMain {
 
   public async main() {
 
-    // await IpcMainManager.start();
+    await IpcMainManager.start();
 
-    // await this.startApp();
+    await this.startApp();
   }
 
   private async startApp() {
