@@ -75,7 +75,7 @@ async function setupExtensionPlats() {
   rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 }
 
-((async () => {
+; ((async () => {
   await toNils(
     setupThreadTask(),
     setupEnvironments(),

@@ -33,7 +33,9 @@
     "axios",
     "rspack",
     "rsbuild",
-    "rspress"
+    "rspress",
+    "绘图板",
+    "桌面应用程序"
   ],
   "homepage": "http://rapid-doc.oupro.cn",
   "bugs": {

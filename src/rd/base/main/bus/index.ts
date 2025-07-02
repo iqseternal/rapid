@@ -1,6 +1,4 @@
-
 import { Invoker, Emitter } from '@rapid/libs';
-
 
 export type BusInvokerEntries = {
 
