@@ -9,9 +9,12 @@ export const RdDirs = {
 
   Resources: path.join(__dirname, '../../resources'),
 
-  OutMain: __dirname,
+  Entries: {
 
-  OutPreload: path.join(__dirname, '../reload'),
+    Main: __dirname,
 
-  OutRenderer: path.join(__dirname, '../renderer'),
+    Preload: path.join(__dirname, '../reload'),
+
+    Renderer: path.join(__dirname, '../renderer'),
+  }
 } as const;

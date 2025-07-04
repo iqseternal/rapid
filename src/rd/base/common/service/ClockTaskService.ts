@@ -12,7 +12,7 @@ export interface ClockTaskServiceOptions {
 }
 
 /**
- * 时钟任务, 每隔 xx 时间执行一次任务
+ * 时钟任务/定时任务, 每隔 xx 时间执行一次任务
  */
 export class ClockTaskService {
   private timer: (undefined | ReturnType<typeof setTimeout>) = void 0;
