@@ -44,7 +44,7 @@ export class PriorityQueue<V> extends Vessel<V> {
     if (this.length === 0) return null;
     const value = this.priorityQueueArr[1];
     this.swap(1, this.length);
-    this.priorityQueueArr.pop();
+    this.priorityQueueArr[this.length] = void 0;
     this.length --;
     this.sink(1);
     return value;
