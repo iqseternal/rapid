@@ -3,6 +3,10 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
+pnpm extract
+
+git add .
+
 pnpm typecheck
 
 pnpm lint-staged
