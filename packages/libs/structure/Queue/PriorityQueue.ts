@@ -44,6 +44,7 @@ export class PriorityQueue<V> extends Vessel<V> {
     if (this.length === 0) return null;
     const value = this.priorityQueueArr[1];
     this.swap(1, this.length);
+    this.priorityQueueArr[this.length] = void 0;
     this.length --;
     this.sink(1);
     return value;
@@ -81,7 +82,7 @@ export class PriorityQueue<V> extends Vessel<V> {
 
         if (!left || !right) return;
 
-        if (this.comparator(left, right) < 0) {
+        if (this.comparator(left, right) > 0) {
           k ++;
         }
       }

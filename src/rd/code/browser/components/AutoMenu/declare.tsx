@@ -128,6 +128,7 @@ export function convertSubMenu<SubMenu extends SubMenuType>(subMenu: SubMenu): A
 export type MenuDividerType = AntdMenuDividerType & {
   type: 'divider' | string;
 };
+
 export { AntdMenuDividerType };
 
 /**
@@ -144,6 +145,7 @@ export type MenuItemGroupType<T extends ItemType = ItemType> = Omit<AntdMenuItem
   children?: T[];
   type: 'group' | string;
 };
+
 export { AntdMenuItemGroupType };
 
 /**
@@ -169,6 +171,7 @@ export function convertMenuItemGroupType<MenuItemGroup extends MenuItemGroupType
 }
 
 export type ItemType<T extends MenuItemType = MenuItemType> = T | SubMenuType<T> | MenuDividerType | MenuItemGroupType<T> | null;
+
 export { AntdItemType };
 
 /**
@@ -180,6 +183,7 @@ export type MenuInstanceType = {
   readonly icon?: IconKey;
   children: ItemType[] | readonly ItemType[];
 }
+
 export type AntdMenuInstanceType = Omit<MenuInstanceType, 'children'> & {
   key: string;
   icon?: IconKey;

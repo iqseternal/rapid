@@ -41,7 +41,8 @@ export const MaintenanceMenus = memo(() => {
             key={`menu.key ${index}`}
             menu={menu.children}
             dropdownAttrs={{
-              className: 'h-full'
+              className: 'h-full',
+              forceRender: true,
             }}
           >
             <div

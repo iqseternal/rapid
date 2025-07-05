@@ -60,7 +60,10 @@ export const MenuItem = memo<MenuItemProps>((props) => {
         {content}
       </div>
       <span
-        className='flex-none text-gray-500'
+        className='flex-none'
+        style={{
+          color: cssVars.colorTextSecondary
+        }}
       >
         {shortcutKeys.length > 0 && shortcutKeys[0]}
       </span>
@@ -98,7 +101,9 @@ export const SubMenu = memo<SubMenuProps>((props) => {
         {icon && <>
           <IconFont
             icon={icon}
-            className='drop-shadow-lg'
+            style={{
+              filter: 'drop-shadow(3px 0px 1px rgba(0, 0, 0, 0.4))',
+            }}
           />
         </>}
       </div>

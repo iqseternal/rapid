@@ -11,7 +11,7 @@ export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
   const isInDocWorkbenches = useDocStore(state => state.isWork);
 
   const [fileMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: t('menus.header.filemenu.file', '文件'),
+    label: t('menus.header.filemenu.label', '文件'),
     children: [
       {
         type: 'item',
@@ -121,7 +121,7 @@ export function useHeaderEditMenu(): readonly [AntdMenuInstanceType] {
   const isInDocWorkbenches = useDocStore(state => state.isWork);
 
   const [editMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: t('menus.header.editmenu.edit', '编辑'),
+    label: t('menus.header.editmenu.label', '编辑'),
     children: [
       {
         type: 'item',
@@ -181,7 +181,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
   const layout = useThemeStore(store => store.layout);
 
   const [viewMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: t('menus.header.viewmenu.view', '查看'),
+    label: t('menus.header.viewmenu.label', '查看'),
     children: [
       {
         type: 'submenu',
@@ -286,7 +286,7 @@ export function useHeaderHelpMenu(): readonly [AntdMenuInstanceType] {
   const { t } = useTranslation();
 
   const [helpMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: t('menus.header.helpmenu.help', '帮助'),
+    label: t('menus.header.helpmenu.label', '帮助'),
     icon: 'HeatMapOutlined',
     children: [
       {

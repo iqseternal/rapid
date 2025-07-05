@@ -5,5 +5,24 @@
     "txs": "s",
     "login": "登录",
     "register": "注册"
+  },
+  "menus": {
+    "header": {
+      "filemenu": {
+        "file": "文件",
+        "filelabel": "文件"
+      },
+      "editmenu": {
+        "edit": "编辑",
+        "editlabel": "编辑"
+      },
+      "helpmenu": {
+        "help": "帮助",
+        "helplabel": "帮助"
+      },
+      "viewmenu": {
+        "viewlabel": "查看"
+      }
+    }
   }
 }
