@@ -120,7 +120,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
   return (
     <div
       className={classnames(
-        'w-max h-max max-w-full max-h-full rounded-md overflow-hidden cursor-pointer select-none flex-none drop-shadow-sm flex justify-center items-center',
+        'w-max h-max max-w-full max-h-full rounded-md overflow-hidden cursor-pointer select-none flex-none flex justify-center items-center',
         className,
         commonStyles.appRegionNo,
         (loading || disabled) && 'cursor-not-allowed'
@@ -152,13 +152,16 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
           onDoubleClick={withDisabledDoubleClick}
           onContextMenu={withDisabledContextMenu}
           className={classnames(
-            'flex items-center justify-center text-[100%] p-[25%] max-w-full max-h-full',
+            'flex items-center justify-center text-[100%] p-[25%] max-w-full max-h-full drop-shadow-md',
             'w-7 h-7',
             (loading || disabled) && 'pointer-events-none',
             size === 'large' && '!w-8 !h-8 text-[110%]',
             size === 'small' && '!w-6 !h-6 text-[90%]',
             innerClassName
           )}
+          style={{
+            filter: 'drop-shadow(2px 0px 1px rgba(0, 0, 0, 0.3))',
+          }}
         >
           {loading ? loadingContent : <>
             {icon ? <IconFont icon={icon} /> : children}

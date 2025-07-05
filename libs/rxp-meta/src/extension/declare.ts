@@ -1,4 +1,4 @@
-export type ExtensionName = string | symbol;
+export type ExtensionName = string;
 
 export interface Extension<Context = any> {
   /**

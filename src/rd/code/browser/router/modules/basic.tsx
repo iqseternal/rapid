@@ -13,14 +13,8 @@ export const notRoleRoute = makeRoute({
   component: lazy(() => import('@/components/NotRole'))
 });
 
-export const loginRoute = makeRoute({
-  name: 'LoginRoute',
-  path: '/login',
+export const ticketRoute = makeRoute({
+  name: 'TicketRoute',
+  path: '/ticket',
   component: lazy(() => import('../../pages/Ticket'))
-})
-
-export const registerRoute = makeRoute({
-  name: 'Register',
-  path: '/register',
-  component: lazy(() => import('@/pages/Register'))
 })

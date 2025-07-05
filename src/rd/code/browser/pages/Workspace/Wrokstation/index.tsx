@@ -29,18 +29,12 @@ const Meta2dContainer = () => {
       <div
         className='w-full h-full min-w-10 min-h-10'
         ref={meta2dHtmlElementRef}
-
         onDragOver={e => {
 
 
         }}
-
         onDragEnd={e => {
           const data = e.dataTransfer.getData('meta2d');
-
-          console.log(data);
-
-          console.log('放下了');
 
           if (data) {
             if (rApp.meta2d) {
@@ -60,30 +54,6 @@ export const Workstation = memo(() => {
     <div
       className='w-full h-full flex gap-x-1'
     >
-      <div>
-        HELLO
-
-        <Widget
-          onDragStart={(e) => {
-            e.stopPropagation();
-
-            console.log('start');
-
-            if (e instanceof DragEvent) {
-              e.dataTransfer.setData('meta2d', JSON.stringify({ type: 'activityDiagram' }));
-            }
-            else {
-              if (rApp.meta2d) {
-                rApp.meta2d.canvas.addCaches = [{}];
-              }
-            }
-          }}
-        >
-          <IconFont
-            icon='ApiTwoTone'
-          />
-        </Widget>
-      </div>
 
       <Meta2dContainer />
     </div>

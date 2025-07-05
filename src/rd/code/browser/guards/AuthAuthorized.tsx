@@ -21,11 +21,11 @@ export const AuthAuthorized = heavyDutyGuard(memo((props: AuthAuthorizedComponen
 
   const navigate = useNavigate();
   const hasAuthorized = useAuthHasAuthorized();
-  const loginRoute = useRetrieveRoute(routes => routes.loginRoute);
+  const ticketRoute = useRetrieveRoute(routes => routes.ticketRoute);
 
   useEffect(() => {
     if (!hasAuthorized) {
-      navigate(loginRoute.meta.fullPath);
+      navigate(ticketRoute.meta.fullPath);
     }
   }, [hasAuthorized]);
 

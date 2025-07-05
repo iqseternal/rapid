@@ -15,6 +15,7 @@ export namespace DepositService {
 
     /**
      * 是否取回数据后, 但是依旧保留
+     * @default false
      */
     persist?: boolean;
   }

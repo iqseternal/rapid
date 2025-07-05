@@ -49,7 +49,7 @@ const WorkbenchesView = memo(() => {
  * 工作区的布局组件, 该组件提供了整个 App 最核心的布局容器, 拥有 react-transition-group 为工作区提供切换动画的显示
  * 该工作区需要用户登录后才可以正常使用, 因此使用 Guards.AuthAuthorized 来校验用户是否已经获得了授权
  */
-const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
+const WorkspaceLayout = memo(() => {
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
   const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
@@ -87,7 +87,7 @@ const WorkspaceLayout = Guards.AuthAuthorized(memo(() => {
       </div>
     </div>
   )
-}))
+})
 
 const WorkspaceLayoutWrapper = memo(() => {
 

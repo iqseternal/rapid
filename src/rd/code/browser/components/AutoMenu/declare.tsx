@@ -43,7 +43,7 @@ export type MenuItemType = Omit<AntdMenuItemType, 'disabled' | 'icon' | 'key'> &
   /**
    * 快捷方式
    */
-  shortcut?: string | string[];
+  shortcut?: | string | string[] | readonly string[];
 
   /**
    * 当前项的类型
@@ -84,7 +84,9 @@ export type SubMenuType<T extends ItemType = ItemType> = Omit<AntdSubMenuType, '
   type: 'submenu' | string;
   icon?: IconKey;
   label?: ReactNode | FC | (() => JSX.Element);
-  children?: (T | SubMenuType | MenuDividerType)[];
+  children?:
+    | (T | SubMenuType | MenuDividerType)[]
+    | readonly (T | SubMenuType | MenuDividerType)[];
 };
 export { AntdSubMenuType };
 
@@ -176,7 +178,7 @@ export type MenuInstanceType = {
   readonly label: ReactNode;
   readonly trigger?: ('click' | 'hover' | 'contextMenu')[];
   readonly icon?: IconKey;
-  children: ItemType[];
+  children: ItemType[] | readonly ItemType[];
 }
 export type AntdMenuInstanceType = Omit<MenuInstanceType, 'children'> & {
   key: string;

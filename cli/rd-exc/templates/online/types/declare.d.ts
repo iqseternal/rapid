@@ -849,12 +849,12 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
  * 对接扩展心跳机制地凭证
  */
 interface UseExtensionHeartbeatVoucher {
-    extension_id: number;
-    extension_uuid: string;
+    readonly extension_id: number;
+    readonly extension_uuid: string;
     /**
      * 扩展内容 hash 值
      */
-    script_hash: string;
+    readonly script_hash: string;
 }
 
 interface UserStore {
@@ -1301,6 +1301,7 @@ declare namespace DepositService {
     type TakeOutOptions = {
         /**
          * 是否取回数据后, 但是依旧保留
+         * @default false
          */
         persist?: boolean;
     };
