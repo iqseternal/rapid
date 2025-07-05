@@ -79,17 +79,6 @@ declare const rApiPut: <SuccessResponse = unknown, FailResponse = unknown>(url: 
 declare const rApiDelete: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
 declare const rApiPatch: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
 
-/**
- * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
- * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
- */
-declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
-
-/**
- * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
- */
-declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
-
 declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
 declare const Wrong: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
@@ -154,48 +143,6 @@ interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
 declare const Widget: react.MemoExoticComponent<react.ForwardRefExoticComponent<WidgetProps & react.RefAttributes<HTMLDivElement>>>;
 
 /**
- * 时间戳
- */
-declare enum Timestamp {
-    /**
-     * 时间戳单位
-     */
-    Millisecond = 1,
-    /**
-     * 1 秒
-     */
-    Second = 1000,
-    /**
-     * 1 分钟
-     */
-    Minute = 60000,
-    /**
-     * 1 小时
-     */
-    Hour = 3600000,
-    /**
-     * 1 天
-     */
-    Day = 86400000,
-    /**
-     * 1 周
-     */
-    Week = 604800000,
-    /**
-     * 1 月 - 30 天
-     */
-    Month = 2592000000,
-    /**
-     * 1 年 - 365 天
-     */
-    Year = 31536000000,
-    /**
-     * 1 年 - 366 天
-     */
-    LeapYear = 31622400000
-}
-
-/**
  * 合并多个 className 类名,
  *
  * @param args
@@ -251,98 +198,6 @@ declare const isReactClassComponent: <Target extends Component<any, {}, any>>(ta
  * @returns
  */
 declare const isReactComponent: <Target extends Component<any, {}, any> | FC<any> | ForwardRefExoticComponent<any> | LazyExoticComponent<FC<any>>>(target: any) => target is Target;
-
-type EmitterListener<T> = (data: T) => void | Promise<void>;
-/**
- * 停止监听事件的函数回调
- */
-type EmitterListenerOffCallback = () => void;
-/**
- * 总线事件管理
- */
-declare abstract class EmitterManager<Entries extends Record<string | symbol, any>> {
-    private readonly effectManager;
-    constructor();
-    /**
-     * 订阅
-     * @returns
-     */
-    protected subscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>, options?: {
-        once?: boolean;
-    }): EmitterListenerOffCallback;
-    /**
-     * 取消订阅
-     * @returns
-     */
-    protected unsubscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>): void;
-    /**
-     * 通知处理事件
-     */
-    protected notice<K extends keyof Entries>(busName: K, data: Entries[K]): Promise<void>;
-    /**
-     * 清空所有事件
-     */
-    protected clear(): void;
-}
-
-declare class Emitter<Entries extends Record<string | symbol, any>> extends EmitterManager<Entries> {
-    /**
-     * 异步发射一个事件
-     */
-    emit<K extends keyof Entries>(busName: K, data: Entries[K]): Promise<void>;
-    /**
-     * 监听一个事件
-     */
-    on<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>, options?: {
-        once?: boolean;
-    }): EmitterListenerOffCallback;
-    /**
-     * 监听一个事件（只触发一次）
-     */
-    once<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): EmitterListenerOffCallback;
-    /**
-     * 移除监听某个事件
-     */
-    off<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): void;
-    /**
-     * 移除所有监听
-     */
-    clear(): void;
-}
-
-type InvokerKey = '*' | string | symbol | number;
-type InvokerHandler = (...args: any[]) => any;
-type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
-type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
-type ExtractInvokerHandler<T extends (...args: any[]) => any> = (...args: ExtractParameters<T>) => ExtractReturnType<T>;
-/**
- * 总线事件管理 (等待函数执行获得返回结果
- */
-declare abstract class InvokerManager<Entries extends Record<InvokerKey, InvokerHandler>> {
-    private readonly effectManager;
-    /**
-     * 注册一个事件的执行函数
-     */
-    protected handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
-    /**
-     * 发送事件, 并获取执行的返回结果
-     */
-    protected invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
-}
-
-/**
- * 总线事件管理 (等待函数执行获得返回结果
- */
-declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends InvokerManager<Entries> {
-    /**
-     * 注册一个事件的执行函数
-     */
-    handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
-    /**
-     * 发送事件, 并获取执行的返回结果
-     */
-    invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
-}
 
 /**
  * Ellipsis props
@@ -448,6 +303,151 @@ type EllipsisType = typeof EllipsisBase & {
     readonly Popover: typeof EllipsisPopover;
 };
 declare const Ellipsis: EllipsisType;
+
+/**
+ * 时间戳
+ */
+declare enum Timestamp {
+    /**
+     * 时间戳单位
+     */
+    Millisecond = 1,
+    /**
+     * 1 秒
+     */
+    Second = 1000,
+    /**
+     * 1 分钟
+     */
+    Minute = 60000,
+    /**
+     * 1 小时
+     */
+    Hour = 3600000,
+    /**
+     * 1 天
+     */
+    Day = 86400000,
+    /**
+     * 1 周
+     */
+    Week = 604800000,
+    /**
+     * 1 月 - 30 天
+     */
+    Month = 2592000000,
+    /**
+     * 1 年 - 365 天
+     */
+    Year = 31536000000,
+    /**
+     * 1 年 - 366 天
+     */
+    LeapYear = 31622400000
+}
+
+/**
+ * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
+ * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
+ */
+declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
+
+type EmitterListener<T> = (data: T) => void | Promise<void>;
+/**
+ * 停止监听事件的函数回调
+ */
+type EmitterListenerOffCallback = () => void;
+/**
+ * 总线事件管理
+ */
+declare abstract class EmitterManager<Entries extends Record<string | symbol, any>> {
+    private readonly effectManager;
+    constructor();
+    /**
+     * 订阅
+     * @returns
+     */
+    protected subscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>, options?: {
+        once?: boolean;
+    }): EmitterListenerOffCallback;
+    /**
+     * 取消订阅
+     * @returns
+     */
+    protected unsubscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>): void;
+    /**
+     * 通知处理事件
+     */
+    protected notice<K extends keyof Entries>(busName: K, data?: Entries[K]): Promise<void>;
+    /**
+     * 清空所有事件
+     */
+    protected clear(): void;
+}
+
+declare class Emitter<Entries extends Record<string | symbol, any>> extends EmitterManager<Entries> {
+    /**
+     * 异步发射一个事件
+     */
+    emit<K extends keyof Entries>(busName: K, data?: Entries[K]): Promise<void>;
+    /**
+     * 监听一个事件
+     */
+    on<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>, options?: {
+        once?: boolean;
+    }): EmitterListenerOffCallback;
+    /**
+     * 监听一个事件（只触发一次）
+     */
+    once<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): EmitterListenerOffCallback;
+    /**
+     * 移除监听某个事件
+     */
+    off<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): void;
+    /**
+     * 移除所有监听
+     */
+    clear(): void;
+}
+
+type InvokerKey = '*' | string | symbol | number;
+type InvokerHandler = (...args: any[]) => any;
+type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
+type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+type ExtractInvokerHandler<T extends (...args: any[]) => any> = (...args: ExtractParameters<T>) => ExtractReturnType<T>;
+/**
+ * 总线事件管理 (等待函数执行获得返回结果
+ */
+declare abstract class InvokerManager<Entries extends Record<InvokerKey, InvokerHandler>> {
+    private readonly effectManager;
+    /**
+     * 注册一个事件的执行函数
+     */
+    protected handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
+    /**
+     * 发送事件, 并获取执行的返回结果
+     */
+    protected invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
+}
+
+/**
+ * 总线事件管理 (等待函数执行获得返回结果
+ */
+declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends InvokerManager<Entries> {
+    /**
+     * 注册一个事件的执行函数
+     */
+    handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
+    /**
+     * 发送事件, 并获取执行的返回结果
+     */
+    invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
+}
+
+/**
+ * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
+ */
+declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
 type ExtensionName = string | symbol;
 interface Extension<Context = any> {
@@ -849,12 +849,12 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
  * 对接扩展心跳机制地凭证
  */
 interface UseExtensionHeartbeatVoucher {
-    extension_id: number;
-    extension_uuid: string;
+    readonly extension_id: number;
+    readonly extension_uuid: string;
     /**
      * 扩展内容 hash 值
      */
-    script_hash: string;
+    readonly script_hash: string;
 }
 
 interface UserStore {
@@ -1301,6 +1301,7 @@ declare namespace DepositService {
     type TakeOutOptions = {
         /**
          * 是否取回数据后, 但是依旧保留
+         * @default false
          */
         persist?: boolean;
     };

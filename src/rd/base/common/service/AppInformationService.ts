@@ -12,7 +12,7 @@ export class AppInformationService extends SingleInstanceService {
 
     appName: packInformation.information.name,
 
-    appVersion: packInformation.information.version,
+    appVersion: `V${packInformation.information.version}`,
 
     appApiUrls: {
 

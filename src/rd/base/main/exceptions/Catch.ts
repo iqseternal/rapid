@@ -1,6 +1,7 @@
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { ExceptionFilter } from './declare';
 import { Exception } from 'rd/base/common/exceptions';
+import { injectReadonlyVariable } from '@rapid/libs';
 
 /**
  * 自定义创建装饰器的结构
@@ -108,25 +109,10 @@ const parser: CatchDecorator['parser'] = (exception) => {
   throw exception;
 }
 
-Reflect.defineProperty(Catch, 'symbol', {
-  value: Symbol('CatchMetadata'),
-  enumerable: false,
-  writable: false,
-  configurable: false
+injectReadonlyVariable(Catch, 'symbol', Symbol('CatchMetadata'));
+
+injectReadonlyVariable(Catch, 'context', {
+  mapper: new WeakMap()
 });
 
-Reflect.defineProperty(Catch, 'context', {
-  value: {
-    mapper: new WeakMap()
-  },
-  enumerable: false,
-  writable: false,
-  configurable: false
-});
-
-Reflect.defineProperty(Catch, 'parser', {
-  value: parser,
-  enumerable: false,
-  writable: false,
-  configurable: false
-});
+injectReadonlyVariable(Catch, 'parser', parser);

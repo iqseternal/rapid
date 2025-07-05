@@ -4,7 +4,7 @@ export class Emitter<Entries extends Record<string | symbol, any>> extends Emitt
   /**
    * 异步发射一个事件
    */
-  public emit<K extends keyof Entries>(busName: K, data: Entries[K]) {
+  public emit<K extends keyof Entries>(busName: K, data?: Entries[K]) {
     return super.notice(busName, data);
   }
 

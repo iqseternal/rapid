@@ -1,33 +1,36 @@
 import type { MenuInstanceType, AntdMenuInstanceType } from '@/components/AutoMenu';
 import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
 import { useSyncNormalState } from '@rapid/libs-web/hooks/useReactive';
+import { useTranslation } from 'react-i18next';
 
 import AutoMenu from '@/components/AutoMenu';
 
 export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
+  const { t } = useTranslation();
+
   const isInDocWorkbenches = useDocStore(state => state.isWork);
 
   const [fileMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: '文件',
+    label: t('menus.header.filemenu.file', '文件'),
     children: [
       {
         type: 'item',
         icon: 'WindowsOutlined',
-        label: '新建窗口',
+        label: t('menus.header.filemenu.newwindow', '新建窗口'),
         shortcut: 'Ctrl+N'
       },
       {
         type: 'submenu',
         icon: 'FileDoneOutlined',
-        label: '新建文档',
+        label: t('menus.header.filemenu.newdoc', '新建文档'),
         children: [
           {
             type: 'item',
-            label: '空白文档',
+            label: t('menus.header.filemenu.blankdoc', '空白文档'),
           },
           {
             type: 'item',
-            label: '模板文档',
+            label: t('menus.header.filemenu.templatedoc', '模板文档'),
           }
         ]
       },
@@ -37,13 +40,13 @@ export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
       {
         type: 'item',
         icon: 'FolderOpenOutlined',
-        label: '打开',
+        label: t('menus.header.filemenu.open', '打开'),
         shortcut: ['Ctrl+O'],
         disabled: isInDocWorkbenches,
       },
       {
         type: 'item',
-        label: '打开最近文档',
+        label: t('menus.header.filemenu.recent', '打开最近文档'),
         shortcut: []
       },
       {
@@ -52,21 +55,21 @@ export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
       {
         type: 'item',
         icon: 'SaveOutlined',
-        label: '保存',
+        label: t('menus.header.filemenu.save', '保存'),
         shortcut: ['Ctrl+S'],
         disabled: isInDocWorkbenches
       },
       {
         type: 'item',
         icon: 'SaveOutlined',
-        label: '另存为',
+        label: t('menus.header.filemenu.saveas', '另存为'),
         shortcut: ['Ctrl+Shift+S'],
         disabled: isInDocWorkbenches
       },
       {
         type: 'submenu',
         icon: 'ExportOutlined',
-        label: '导出',
+        label: t('menus.header.filemenu.export', '导出'),
         children: [
           {
             type: 'item',
@@ -85,16 +88,16 @@ export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
       },
       {
         type: 'item',
-        label: '自动保存'
+        label: t('menus.header.filemenu.autosave', '自动保存')
       },
       {
         type: 'submenu',
-        label: '首选项',
+        label: t('menus.header.filemenu.option', '首选项'),
         children: [
           {
             type: 'item',
             icon: 'SettingOutlined',
-            label: '设置',
+            label: t('menus.header.filemenu.settings', '设置'),
           }
         ]
       },
@@ -104,29 +107,31 @@ export function useHeaderFileMenu(): readonly [AntdMenuInstanceType] {
       {
         type: 'item',
         icon: 'PrinterOutlined',
-        label: '打印'
+        label: t('menus.header.filemenu.print', '打印')
       }
     ]
-  }))
+  } as const))
 
   return useSyncNormalState(() => AutoMenu.convertMenuInstance(fileMenu));
 }
 
 export function useHeaderEditMenu(): readonly [AntdMenuInstanceType] {
+  const { t } = useTranslation();
+
   const isInDocWorkbenches = useDocStore(state => state.isWork);
 
   const [editMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: '编辑',
+    label: t('menus.header.editmenu.edit', '编辑'),
     children: [
       {
         type: 'item',
         icon: 'RedoOutlined',
-        label: '撤销',
+        label: t('menus.header.editmenu.undo', '撤销'),
         disabled: !isInDocWorkbenches
       },
       {
         type: 'item',
-        label: '恢复',
+        label: t('menus.header.editmenu.redo', '恢复'),
         disabled: !isInDocWorkbenches,
       },
       {
@@ -134,19 +139,19 @@ export function useHeaderEditMenu(): readonly [AntdMenuInstanceType] {
       },
       {
         type: 'item',
-        label: '剪切',
+        label: t('menus.header.editmenu.cut', '剪切'),
         disabled: !isInDocWorkbenches,
       },
       {
         type: 'item',
         icon: 'CopyOutlined',
-        label: '复制',
+        label: t('menus.header.editmenu.copy', '复制'),
         disabled: !isInDocWorkbenches,
       },
       {
         type: 'item',
         icon: 'PauseOutlined',
-        label: '粘贴',
+        label: t('menus.header.editmenu.paste', '粘贴'),
         disabled: !isInDocWorkbenches,
       },
       {
@@ -155,52 +160,48 @@ export function useHeaderEditMenu(): readonly [AntdMenuInstanceType] {
       {
         type: 'item',
         icon: 'SelectOutlined',
-        label: '全选',
+        label: t('menus.header.editmenu.selectall', '全选'),
         disabled: !isInDocWorkbenches,
       },
       {
         type: 'item',
         icon: 'DeleteOutlined',
-        label: '删除',
+        label: t('menus.header.editmenu.delete', '删除'),
         disabled: !isInDocWorkbenches
       }
     ]
-  }))
+  } as const));
 
   return useSyncNormalState(() => AutoMenu.convertMenuInstance(editMenu));
 }
 
 export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
+  const { t } = useTranslation();
+
   const layout = useThemeStore(store => store.layout);
 
   const [viewMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: '查看',
-
+    label: t('menus.header.viewmenu.view', '查看'),
     children: [
       {
         type: 'submenu',
-
         icon: 'FundViewOutlined',
-        label: '视图',
-
+        label: t('menus.header.viewmenu.view', '视图'),
         children: [
-
 
         ]
       },
-
       {
         type: 'divider',
       },
-
       {
         type: 'submenu',
         icon: 'SkinOutlined',
-        label: '外观',
+        label: t('menus.header.viewmenu.appearance', '外观'),
         children: [
           {
             type: 'item',
-            label: '全屏',
+            label: t('menus.header.viewmenu.fullscreen', '全屏'),
             onClick: () => {
 
             }
@@ -210,14 +211,14 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
           },
           {
             type: 'item',
-            label: '菜单栏',
+            label: t('menus.header.viewmenu.menubar', '菜单栏'),
             onClick: () => {
 
             }
           },
           {
             type: 'item',
-            label: '主侧边栏',
+            label: t('menus.header.viewmenu.sidebars', '侧边栏'),
             onClick: () => {
 
             }
@@ -227,11 +228,11 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
           },
           {
             type: 'submenu',
-            label: '主侧边栏',
+            label: t('menus.header.viewmenu.mainsidebar', '主侧边栏'),
             children: [
               {
                 type: 'item',
-                label: '展示',
+                label: t('menus.header.viewmenu.show', '展示'),
                 disabled: layout.mainSidebar !== 'none',
                 onClick: () => {
                   setMainSideBarStatus('left');
@@ -240,7 +241,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
               {
 
                 type: 'item',
-                label: '隐藏',
+                label: t('menus.header.viewmenu.hide', '隐藏'),
                 disabled: layout.mainSidebar === 'none',
                 onClick: () => {
                   setMainSideBarStatus('none')
@@ -253,7 +254,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
               {
                 type: 'item',
                 icon: 'LeftOutlined',
-                label: '左侧',
+                label: t('menus.header.viewmenu.left', '左侧'),
                 disabled: layout.mainSidebar === 'left',
                 onClick: () => {
                   setMainSideBarStatus('left');
@@ -262,7 +263,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
               {
                 type: 'item',
                 icon: 'RightOutlined',
-                label: '右侧',
+                label: t('menus.header.viewmenu.right', '右侧'),
                 disabled: layout.mainSidebar === 'right',
                 onClick: () => {
                   setMainSideBarStatus('right');
@@ -275,70 +276,59 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
       {
         type: 'divider'
       },
-      {
-        type: 'item',
-        icon: 'ExceptionOutlined',
-        label: '扩展'
-      }
     ]
-  }))
+  } as const));
 
   return useSyncNormalState(() => AutoMenu.convertMenuInstance(viewMenu));
 }
 
 export function useHeaderHelpMenu(): readonly [AntdMenuInstanceType] {
+  const { t } = useTranslation();
 
   const [helpMenu] = useSyncNormalState<MenuInstanceType>(() => ({
-    label: '帮助',
+    label: t('menus.header.helpmenu.help', '帮助'),
     icon: 'HeatMapOutlined',
     children: [
       {
         type: 'item',
-        label: '欢迎',
+        label: t('menus.header.helpmenu.welcome', '欢迎'),
       },
       {
         type: 'item',
-        label: '官网',
+        label: t('menus.header.helpmenu.website', '官网'),
         onClick: () => {
-
           window.open('http://rapid.oupro.cn/')
         }
       },
       {
         type: 'item',
-
         icon: 'DotChartOutlined',
-        label: '文档',
+        label: t('menus.header.helpmenu.document', '文档'),
         onClick: () => {
-
           window.open('http://rapid-doc.oupro.cn/')
         }
       },
       {
         type: 'divider',
       },
-
       {
         type: 'item',
         icon: 'DownloadOutlined',
-
-        label: '检查更新'
+        label: t('menus.header.helpmenu.checkupdate', '检查更新')
       },
-
       {
         type: 'divider',
       },
       {
         type: 'item',
-        label: '重新加载',
+        label: t('menus.header.helpmenu.reload', '重新加载'),
         onClick: () => {
           window.ipcActions.windowReload();
         }
       },
-
       {
         type: 'item',
-        label: '打开开发人员工具',
+        label: t('menus.header.helpmenu.devtool', '打开开发人员工具'),
         onClick: () => {
           window.ipcActions.windowDevtool(true, { mode: 'detach' });
         }
@@ -346,13 +336,12 @@ export function useHeaderHelpMenu(): readonly [AntdMenuInstanceType] {
       {
         type: 'divider',
       },
-
       {
         type: 'item',
-        label: '关于'
+        label: t('menus.header.helpmenu.about', '关于')
       }
     ]
-  }))
+  } as const));
 
   return useSyncNormalState(() => AutoMenu.convertMenuInstance(helpMenu));
 }

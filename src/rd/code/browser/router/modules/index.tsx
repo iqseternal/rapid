@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { makeRoute } from '@rapid/libs-web/router';
 import type { CompleteRouteConfig } from '@rapid/libs-web/router';
-import { loginRoute, registerRoute, notFoundRoute, notRoleRoute } from './basic';
+import { ticketRoute, notFoundRoute, notRoleRoute } from './basic';
 
 import RootLayout from '@/layout/RootLayout';
 import WorkspaceLayoutWrapper from '@/layout/WorkspaceLayout';
@@ -51,28 +51,18 @@ export const workbenchesRoute = makeRoute({
         title: '工作区',
         icon: 'FileWordOutlined'
       },
-      component: lazy(() => import('../../pages/Workspace/Wrokstation'))
+      component: lazy(() => import('@/pages/Workspace/Wrokstation'))
     },
     {
-      name: 'WorkspaceHome',
-      path: '/workspace/home',
+      name: 'WorkspaceExtensions',
+      path: '/workspace/extensions',
       meta: {
-        title: '首页',
-        icon: 'HomeOutlined',
-      },
-      component: lazy(() => import('@/pages/Workspace/Home'))
-    },
-
-    {
-      name: 'WorkspaceSkin',
-      path: '/workspace/skin',
-      meta: {
-        title: '皮肤',
-        icon: 'SkinOutlined',
+        title: '插件',
+        icon: 'ExperimentOutlined',
         hiddenInMenu: false
       },
-      component: lazy(() => import('@/pages/Workspace/Skin'))
-    }
+      component: lazy(() => import('@/pages/Workspace/Extensions'))
+    },
   ]
 } as const);
 
@@ -88,8 +78,7 @@ export const rootRoute = makeRoute({
   redirect: workbenchesRoute.meta.fullPath,
   component: <RootLayout />,
   children: [
-    loginRoute,
-    registerRoute,
+    ticketRoute,
     notFoundRoute,
     notRoleRoute,
     workbenchesRoute,

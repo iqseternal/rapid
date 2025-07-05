@@ -21,9 +21,9 @@ export interface RouteConfig extends Omit<PathRouteProps, 'children'> {
   /**
    * 路径：默认是相对的
    */
-  path: string;
+  readonly path: string;
 
-  name: string;
+  readonly name: string;
 
   /**
    * 设置的元数据

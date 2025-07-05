@@ -1,8 +1,13 @@
 import { contextBridge } from 'electron';
 
+/**
+ * Expose 暴露 Api 给 Window
+ */
 export class ExposeService<ExposeEntries extends Record<string, any>> {
 
-
+  /**
+   * 自动暴露 - 通过遍历绑定对象键值, 将其暴露给 Window
+   */
   public autoExpose(exposeApiObj: ExposeEntries) {
     const exposeKeys = Object.keys(exposeApiObj);
 

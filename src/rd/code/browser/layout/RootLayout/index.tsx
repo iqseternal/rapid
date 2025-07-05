@@ -2,10 +2,10 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { memo, useEffect } from 'react';
 import { UnlockTwoTone, UserAddOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 import Widget from '../../components/Widget';
 import i18n from '../../i18n';
-import { useTranslation } from 'react-i18next';
 
 const I18nChangeLanguageWidget = memo(() => {
   const { t } = useTranslation();
@@ -17,7 +17,7 @@ const I18nChangeLanguageWidget = memo(() => {
       onClick={() => {
         const lang = i18n.language;
 
-        if (lang === 'eb') {
+        if (lang === 'en') {
           i18n.changeLanguage('zh');
         }
         else {

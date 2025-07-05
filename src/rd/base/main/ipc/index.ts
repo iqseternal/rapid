@@ -13,7 +13,9 @@ import { ipcForwardDataTakeIn, ipcForwardDataTakeOut } from './handlers';
 
 export class IpcMainManager {
 
-
+  /**
+   * 注册 ipc 句柄
+   */
   public static async start() {
 
     registerIpcHandle([

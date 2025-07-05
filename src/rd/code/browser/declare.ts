@@ -337,12 +337,12 @@ declare global {
       /**
        * 事件总线
        */
-      readonly emitter: import('@rapid/libs-web').Emitter<Rapid.Bus.BusEmitterEntries>;
+      readonly emitter: import('@rapid/libs').Emitter<Rapid.Bus.BusEmitterEntries>;
 
       /**
        * 带有函数返回值的事件总线功能
        */
-      readonly invoker: import('@rapid/libs-web').Invoker<Bus.BusInvokerEntries>;
+      readonly invoker: import('@rapid/libs').Invoker<Bus.BusInvokerEntries>;
 
       /**
        * 全局的线程管理
@@ -395,8 +395,8 @@ declare global {
       readonly services: {
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
 
-        readonly Emitter: typeof import('@rapid/libs-web').Emitter;
-        readonly Invoker: typeof import('@rapid/libs-web').Invoker;
+        readonly Emitter: typeof import('@rapid/libs').Emitter;
+        readonly Invoker: typeof import('@rapid/libs').Invoker;
 
         readonly ExtensionManager: typeof import('@suey/rxp-meta').ExtensionManager;
         readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;

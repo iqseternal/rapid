@@ -92,7 +92,6 @@ export class ElectronService {
    */
   protected async start(envArgs: readonly `${string}=${string | number}`[], startPath: string) {
     printInfo('启动程序');
-    console.log(this.bin, startPath);
 
     const envs = `cross-env ${envArgs.join(' ')}`;
 

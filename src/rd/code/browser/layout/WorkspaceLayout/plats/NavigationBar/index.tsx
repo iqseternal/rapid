@@ -7,6 +7,7 @@ import { retrieveRoutes, useRetrieveRoute } from '@/router';
 import { useTransition } from '@rapid/libs-web';
 import type { WidgetProps } from '@/components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { useUserStore } from '@/features';
 
 import Widget from '@/components/Widget';
@@ -44,24 +45,12 @@ export interface NavigationBarProps {
  * 该组件为 WorkspaceLayout 提供服务, 作用为创建工作区的左侧导航条
  */
 export const NavigationBar = memo<NavigationBarProps>(() => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
-  const loginRoute = useRetrieveRoute(routes => routes.loginRoute);
 
   const userinfo = useUserStore(store => store.userinfo);
-
-  const [logoutPending, logout] = useTransition(async () => {
-    // const [logoutErr] = await toNil(logoutReq());
-    // if (logoutErr) {
-    //   IMessage.error(logoutErr.descriptor);
-    //   return;
-    // }
-
-    // await toWaitPromise();
-    await fadeOut(async () => {
-      navigate(loginRoute.meta.fullPath);
-    })
-  }, []);
 
   return (
     <div
@@ -71,7 +60,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
         minWidth: cssVars.uiNavigationBarWidth,
         maxWidth: cssVars.uiNavigationBarWidth,
         backgroundColor: cssVars.uiNavigationBarBackground,
-        boxShadow: cssVars.shadowSm
+        boxShadow: cssVars.shadowMd
       }}
     >
       <div
@@ -103,17 +92,12 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
             autoAdjustOverflow: true
           }}
           menu={[
-            {
-              key: 'setting-logout',
-              label: '退出登录',
-              icon: <LogoutOutlined />,
-              onClick: logout
-            }
+
           ]}
         >
           <SideBarItem
             icon='SettingOutlined'
-            tipText='设置'
+            tipText={t('ui.layout.workspace.navigation.bar.settings', '设置')}
           />
         </AutoMenu>
 

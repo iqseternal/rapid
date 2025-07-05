@@ -33,7 +33,9 @@
     "axios",
     "rspack",
     "rsbuild",
-    "rspress"
+    "rspress",
+    "绘图板",
+    "桌面应用程序"
   ],
   "homepage": "http://rapid-doc.oupro.cn",
   "bugs": {
@@ -46,7 +48,7 @@
     "directory": ""
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,cts,mts}": "eslint . --ext .ts,.tsx,.cts,.mts --cache --cache-location ./.rd-cache/.eslintcache"
+    "*.{ts,tsx,cts,mts}": "eslint . --ext .ts,.tsx,.cts,.mts --cache --cache-location ./.rd-cache/.eslintcache"
   },
   "scripts": {
     "dev": "pnpm -C ./src run dev",
@@ -54,7 +56,7 @@
     "preview": "pnpm -C ./src run preview",
     "packer": "pnpm -C ./src run packer",
     "extract": "pnpm -C ./src run extract",
-    "release": "pnpm -C ./cli/rxc run tsup && concurrently \"pnpm -C ./src run typecheck\" \"pnpm -C ./cli/rxc run typecheck\" && pnpm run packer",
+    "release": "pnpm extract && concurrently \"pnpm -C ./src run typecheck\" \"pnpm -C ./cli/rd-exc run typecheck\" && pnpm run packer",
     "docs:dev": "pnpm -C ./apps/docs run dev",
     "docs:build": "pnpm -C ./apps/docs run build",
     "docs:preview": "pnpm -C ./apps/docs run preview",

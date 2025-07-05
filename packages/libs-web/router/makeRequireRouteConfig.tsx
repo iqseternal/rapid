@@ -42,6 +42,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
   if (basePath.endsWith('/')) basePath = basePath.replaceAll(/\/+$/g, '');
 
   if (!route.meta) route.meta = {} as RouteMeta;
+
   if (route.path.startsWith('/') && !isRoot) {
     if (route.path !== '*') {
       if (!new RegExp(`^${basePath}(/.*|$)`).test(route.path)) {
