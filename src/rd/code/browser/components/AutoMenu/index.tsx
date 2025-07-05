@@ -86,8 +86,8 @@ const AutoContextMenu = memo((props: AutoMenuProps) => {
   // 当窗口发生大小或者滚动事件的时候, 关闭菜单的显示
   useEventListener(window, {
     'resize': close,
-    'scroll': close,
-    'blur': close
+    // 'scroll': close,
+    // 'blur': close
   }, []);
 
   return (

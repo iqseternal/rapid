@@ -31,7 +31,6 @@ const Meta2dContainer = () => {
         ref={meta2dHtmlElementRef}
         onDragOver={e => {
 
-
         }}
         onDragEnd={e => {
           const data = e.dataTransfer.getData('meta2d');
