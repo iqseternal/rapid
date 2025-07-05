@@ -5,8 +5,6 @@
 
 pnpm extract
 
-git add .
-
 pnpm typecheck
 
 pnpm lint-staged
