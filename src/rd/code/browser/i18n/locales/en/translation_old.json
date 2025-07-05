@@ -5,5 +5,18 @@
     "txs": "s",
     "login": "Login",
     "register": "Register"
+  },
+  "menus": {
+    "header": {
+      "filemenu": {
+        "file": "file"
+      },
+      "editmenu": {
+        "edit": "编辑"
+      },
+      "helpmenu": {
+        "help": "帮助"
+      }
+    }
   }
 }
