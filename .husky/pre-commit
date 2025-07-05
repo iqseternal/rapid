@@ -3,8 +3,6 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
-pnpm extract
-
 pnpm typecheck
 
 pnpm lint-staged
