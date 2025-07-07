@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import type { DependencyList, Ref, RefObject } from 'react';
-import { useNormalState } from './useReactive';
+import { useNormalState, useSyncNormalState } from './useReactive';
 import { Ansi } from '@rapid/libs';
+import { useUnmount } from 'ahooks';
 
 /**
  * resizeObserver, 利用 Hook 的方式创建该对象, 传递 Ref, 自动添加 callback 注册
@@ -13,39 +14,47 @@ import { Ansi } from '@rapid/libs';
  * @returns
  */
 export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement | null> | TElement, callback: ResizeObserverCallback, deps: DependencyList) {
-  const [normalState] = useNormalState(() => ({
-    resizeObserver: new ResizeObserver((entries, observer) => {
-      normalState.resizeCallback?.(entries, observer);
-    }),
-    resizeCallback: callback,
-  }))
+  const [syncState] = useSyncNormalState(() => ({
+    resizeCallback: callback
+  }));
 
-  const tDomRef = useMemo(() => {
-    if (dom instanceof HTMLElement) return { current: dom };
-    if (Reflect.has(dom, 'current')) return dom;
-    Ansi.print(Ansi.red, `useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
-    return dom;
-  }, [dom]);
+  const [normalState] = useNormalState(() => {
+    const observer = new ResizeObserver((entries, observer) => {
+      syncState.resizeCallback && syncState.resizeCallback(entries, observer);
+    });
 
-  useLayoutEffect(() => {
-    normalState.resizeCallback = callback;
-  }, [deps]);
+    return {
+      resizeObserver: observer
+    }
+  })
 
   useEffect(() => {
+    interface TDomRef {
+      current: TElement | null;
+    }
+
+    const tDomRef: TDomRef = {
+      current: null
+    };
+
+    if (dom instanceof HTMLDivElement) tDomRef.current = dom;
+    else if (Reflect.has(dom, 'current')) tDomRef.current = (dom as RefObject<TElement>).current;
+    else {
+      Ansi.print(Ansi.red, `useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
+      return;
+    }
+
     if (tDomRef.current) normalState.resizeObserver.observe(tDomRef.current);
 
     return () => {
       if (!tDomRef.current) return;
       normalState.resizeObserver.unobserve(tDomRef.current);
     }
-  }, [tDomRef.current]);
+  }, [dom]);
 
-  useEffect(() => {
-
-    return () => {
-      normalState.resizeObserver.disconnect();
-    }
-  }, []);
+  useUnmount(() => {
+    normalState.resizeObserver.disconnect();
+  })
 
   return [normalState.resizeObserver] as const;
 }

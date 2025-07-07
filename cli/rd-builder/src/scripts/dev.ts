@@ -25,6 +25,7 @@ export interface DevActionOptions {
 }
 
 export async function devAction(options: DevActionOptions) {
+  printInfo('Dev Start.');
 
   process.env.COMMAND = NodeCommand.Dev;
 
