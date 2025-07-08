@@ -1,20 +1,57 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
-import { Options, Meta2d, register, registerCanvasDraw, registerAnchors } from '@meta2d/core';
-import { flowAnchors, flowPens } from '@meta2d/flow-diagram';
-import { activityDiagram, activityDiagramByCtx } from '@meta2d/activity-diagram';
-import { classPens } from '@meta2d/class-diagram';
-import { sequencePens, sequencePensbyCtx } from '@meta2d/sequence-diagram';
-import { register as registerEcharts, registerHighcharts, registerLightningChart } from '@meta2d/chart-diagram';
-import { formPens } from '@meta2d/form-diagram';
-import { mindBoxPlugin } from '@meta2d/plugin-mind-core';
-import { collapseChildPlugin } from '@meta2d/plugin-mind-collapse';
-import { chartsPens } from '@meta2d/le5le-charts';
+import type { DragEventHandler } from 'react';
 import { useMeta2dEffect } from 'rd/code/browser/meta2d';
-import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
-import { MouseEventButton } from 'rd/base/browser/constants';
 
 import Widget from '@/components/Widget';
 import IconFont from 'rd/code/browser/components/IconFont';
+
+
+const Graphics = memo(() => {
+
+  const dragStart = useCallback<DragEventHandler<HTMLDivElement>>((e) => {
+
+    if (e instanceof DragEvent) {
+
+      e.dataTransfer.setData('rd-workbenches-meta2d-data', JSON.stringify({}));
+
+    }
+    else {
+      if (rApp.meta2d) {
+        rApp.meta2d.canvas.addCaches = []
+      }
+    }
+
+  }, []);
+
+  return (
+
+    <div
+      onDragStart={dragStart}
+    >
+
+
+    </div>
+  )
+})
+
+
+interface Meta2dFloatToolProps {
+
+}
+
+const Meta2dFloatTool = memo(() => {
+
+
+
+  return (
+    <div
+      className='h-full min-w-20'
+    >
+
+
+    </div>
+  )
+})
 
 const Meta2dContainer = () => {
 
@@ -53,6 +90,7 @@ export const Workstation = memo(() => {
     <div
       className='w-full h-full flex gap-x-1'
     >
+      <Meta2dFloatTool />
 
       <Meta2dContainer />
     </div>
