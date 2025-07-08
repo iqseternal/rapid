@@ -1007,13 +1007,13 @@ declare const uiWidgetColorPrimary: CssVariablePayload<"--rd-ui-widget-color-pri
 declare const uiWidgetBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-background-primary", "var(--rd-global-color-neutral-50)", "控件颜色">;
 declare const uiWidgetHoverBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-hover-background-primary", "var(--rd-global-color-neutral-100)", "控件颜色">;
 declare const uiWidgetBorderRadius: CssVariablePayload<"--rd-ui-widget-border-radius", "4px", "控件圆角半径">;
+declare const uiDefaultButtonBackground: CssVariablePayload<"--rd-ui-default-button-background", "var(--rd-global-color-neutral-50)", "默认按钮背景色">;
+declare const uiDefaultButtonTextColor: CssVariablePayload<"--rd-ui-default-button-text-color", "var(--rd-global-color-neutral-700)", "默认按钮文本色">;
+declare const uiDefaultButtonRadius: CssVariablePayload<"--rd-ui-default-button-radius", "10px", "默认按钮圆角半径">;
 declare const uiCaptionBarHeight: CssVariablePayload<"--rd-ui-caption-bar-height", "32px", "标题栏高度">;
 declare const uiCaptionBarBackground: CssVariablePayload<"--rd-ui-caption-bar-background", "var(--rd-global-color-neutral-0)", "标题栏背景色">;
 declare const uiNavigationBarWidth: CssVariablePayload<"--rd-ui-navigation-bar-width", "32px", "纵向导航栏宽度">;
 declare const uiNavigationBarBackground: CssVariablePayload<"--rd-ui-navigation-bar-background", "var(--rd-global-color-neutral-0)", "导航栏背景色">;
-declare const uiDefaultButtonBackground: CssVariablePayload<"--rd-ui-default-button-background", "var(--rd-global-color-neutral-50)", "默认按钮背景色">;
-declare const uiDefaultButtonTextColor: CssVariablePayload<"--rd-ui-default-button-text-color", "var(--rd-global-color-neutral-700)", "默认按钮文本色">;
-declare const uiDefaultButtonRadius: CssVariablePayload<"--rd-ui-default-button-radius", "10px", "默认按钮圆角半径">;
 declare const uiAutoMenuBackground: CssVariablePayload<"--rd-ui-auto-menu-background", "var(--rd-global-color-neutral-0)", "自动菜单背景色">;
 declare const uiAutoMenuTextColor: CssVariablePayload<"--rd-ui-auto-menu-text-color", "var(--rd-global-color-neutral-700)", "自动菜单文本色">;
 declare const uiAutoMenuRadius: CssVariablePayload<"--rd-ui-auto-menu-radius", "10px", "自动菜单圆角半径">;
