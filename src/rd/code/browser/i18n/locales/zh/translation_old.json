@@ -4,7 +4,8 @@
     "ts": "s",
     "txs": "s",
     "login": "登录",
-    "register": "注册"
+    "register": "注册",
+    "language": "切换语言包"
   },
   "menus": {
     "header": {
@@ -23,6 +24,11 @@
       "viewmenu": {
         "viewlabel": "查看"
       }
+    }
+  },
+  "test": {
+    "i18n": {
+      "changelanguage": "切换语言包"
     }
   }
 }

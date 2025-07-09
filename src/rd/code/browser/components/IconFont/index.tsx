@@ -13,7 +13,7 @@ export type IconKey = IconRealKey | IconCustomKey;
 
 export interface IconFontProps extends Partial<IconProps> {
 
-  icon: IconKey;
+  readonly icon: IconKey;
 }
 
 /**

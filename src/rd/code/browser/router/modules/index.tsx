@@ -51,7 +51,7 @@ export const workbenchesRoute = makeRoute({
         title: '工作区',
         icon: 'FileWordOutlined'
       },
-      component: lazy(() => import('@/pages/Workspace/Wrokstation'))
+      component: lazy(() => import('@/pages/Workspace/Workstation'))
     },
     {
       name: 'WorkspaceExtensions',

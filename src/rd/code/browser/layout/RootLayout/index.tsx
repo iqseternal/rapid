@@ -12,7 +12,7 @@ const I18nChangeLanguageWidget = memo(() => {
 
   return (
     <Widget
-      tipText={t('login.language', '切换语言包')}
+      tipText={t('test.widgets.i18n.changelanguage', '切换语言包')}
       icon={'ApiOutlined'}
       onClick={() => {
         const lang = i18n.language;

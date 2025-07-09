@@ -15,20 +15,26 @@ import { createSallowProxy } from '@rapid/libs';
  * state.a = 2; // 不会自动刷新组件
  */
 export function useNormalState<S extends object>(initValue: S | (() => S)) {
-  const stateRef = useRef<S>(
-    typeof initValue === 'function' ? (initValue as () => S)() : initValue
+  const isFirstInitialize = useRef(true);
+
+  const stateRef = useRef<S | undefined>(
+    !isFirstInitialize ? void 0 : (
+      typeof initValue === 'function' ? (initValue as () => S)() : initValue
+    )
   );
 
-  return [stateRef.current] as const;
+  if (isFirstInitialize.current) isFirstInitialize.current = false;
+
+  return [stateRef.current] as (readonly [S]);
 }
 
 /**
  * 每次组件刷新都会执行初始化函数的 state
  */
 export function useSyncNormalState<S extends object>(initValue: () => S) {
-  const initState = initValue();
+  const [state] = useNormalState(initValue);
 
-  const [state] = useNormalState(() => initState);
+  const initState = initValue();
 
   for (const key in initState) state[key] = initState[key];
   return [state] as const;
@@ -67,6 +73,8 @@ export function useDeepReactive<S extends object>(initValue: (() => S)): readonl
 export function useDeepReactive<S extends object>(initValue: S): readonly [S];
 
 export function useDeepReactive<S extends object>(initValue: S | (() => S)): (readonly [S] | readonly [S, () => void]) {
+  const isFirstInitialize = useRef(true);
+
   const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
 
   const [syncNormalState] = useSyncNormalState(() => ({
@@ -74,8 +82,12 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): (re
   }))
 
   const state = useAHookReactive(
-    (typeof initValue === 'function') ? initValue() : initValue
-  );
+    !isFirstInitialize ? {} : (
+      (typeof initValue === 'function') ? initValue() : initValue
+    )
+  ) as S;
+
+  if (isFirstInitialize.current) isFirstInitialize.current = false;
 
   /**
    * 重置 state

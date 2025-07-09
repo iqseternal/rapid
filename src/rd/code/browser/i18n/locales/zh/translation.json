@@ -3,6 +3,12 @@
     "components": {
       "nothasanydata": {
         "empty": "暂无数据"
+      },
+      "notfound": {
+        "notfound": "页面未找到"
+      },
+      "notrole": {
+        "notrole": "没有权限"
       }
     },
     "layout": {
@@ -15,8 +21,12 @@
       }
     }
   },
-  "login": {
-    "language": "切换语言包"
+  "test": {
+    "widgets": {
+      "i18n": {
+        "changelanguage": "切换语言包"
+      }
+    }
   },
   "menus": {
     "header": {
@@ -68,6 +78,25 @@
         "reload": "重新加载",
         "devtool": "打开开发人员工具",
         "about": "关于"
+      }
+    }
+  },
+  "plats": {
+    "widgets": {
+      "control": {
+        "close": {
+          "close": "关闭窗口"
+        },
+        "debug": {
+          "openDevtool": "打开开发者工具"
+        },
+        "min": {
+          "minimize": "最小化窗口"
+        },
+        "reduction": {
+          "reduction": "还原窗口",
+          "maximize": "最大化窗口"
+        }
       }
     }
   }

@@ -13,41 +13,41 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * 内部的 className
    */
-  innerClassName?: string;
+  readonly innerClassName?: string;
 
   /** 当前控件是否具有 hover 背景特性 */
-  hasHoverStyle?: boolean;
+  readonly hasHoverStyle?: boolean;
 
   /** 当前控件展示的图标元素 */
-  icon?: IconKey;
+  readonly icon?: IconKey;
 
   /**
    * 当前控件是否处于 loading 状态
    */
-  loading?: boolean;
+  readonly loading?: boolean;
 
   /**
    * 处于 loading 状态时自定义展示 loading 元素
    */
-  loadingContent?: ReactNode;
+  readonly loadingContent?: ReactNode;
 
   /**
    * @default 'base'
    */
-  size?: 'base' | 'small' | 'large';
+  readonly size?: 'base' | 'small' | 'large';
 
   /**
    * 控件 Hover 之后展示的提示文本
    */
-  tipText?: string;
+  readonly tipText?: string;
 
   /**
    * 展示提示文本的 tooltip 的 attrs
    */
-  tipAttrs?: TooltipProps;
+  readonly tipAttrs?: TooltipProps;
 
   /** 是否禁用当前控件 */
-  disabled?: boolean;
+  readonly disabled?: boolean;
 }
 
 /**

@@ -1,16 +1,16 @@
 import { memo } from 'react';
 import { platControllerCloseImgUrl } from 'rd/assets';
+import { useTranslation } from 'react-i18next';
 
 import Widget from '@/components/Widget';
 import IconFont from '../../components/IconFont';
 
-const WindowsCloseSvg = <img src={platControllerCloseImgUrl} alt='' />;
-
 export const WindowsCloseWindowWidget = memo(() => {
+  const { t } = useTranslation();
 
   return (
     <Widget
-      tipText='关闭'
+      tipText={t('plats.widgets.control.close.close', '关闭窗口')}
       tipAttrs={{
         placement: 'leftBottom'
       }}

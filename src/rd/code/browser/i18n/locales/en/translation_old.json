@@ -4,7 +4,8 @@
     "ts": "s",
     "txs": "s",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "language": "Change language"
   },
   "menus": {
     "header": {
@@ -23,6 +24,11 @@
       "viewmenu": {
         "viewlabel": "查看"
       }
+    }
+  },
+  "test": {
+    "i18n": {
+      "changelanguage": "切换语言包"
     }
   }
 }

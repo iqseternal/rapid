@@ -381,17 +381,41 @@ declare global {
         readonly useTranslation: typeof import('react-i18next').useTranslation;
       }
 
+      /**
+       * 内置常量
+       */
       readonly constants: {
         readonly Timestamp: typeof import('rd/base/common/constants').Timestamp;
       }
 
+      /**
+       * 提供可以公用的组件
+       */
       readonly components: {
+        /**
+         * 文本溢出隐藏省略的组件, 当文本长度超出容器的时候, 自动展示省略号
+         */
         readonly Ellipsis: typeof import('@rapid/libs-web').Ellipsis;
+
+        /**
+         * antd 与 自定义 icon 的结合组件
+         */
         readonly IconFont: typeof import('@/components/IconFont').default;
+
+        /**
+         * 通用的 widget - 控件, 用于展示一个图标, 附带功能提示信息 作为系统功能图标
+         */
         readonly Widget: typeof import('@/components/Widget').default;
+
+        /**
+         * 展示 -空-
+         */
         readonly Empty: typeof import('@/components/Empty').default;
       }
 
+      /**
+       * 部分 service 能力
+       */
       readonly services: {
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
 
@@ -402,6 +426,9 @@ declare global {
         readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
       }
 
+      /**
+       * 提供基础 API-Service
+       */
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
         readonly createSallowProxy: typeof import('@rapid/libs').createSallowProxy;
