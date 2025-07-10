@@ -9,12 +9,12 @@ import * as iconInstance from '@ant-design/icons';
 import iconInstance__default from '@ant-design/icons';
 import * as react_i18next from 'react-i18next';
 import i18n from 'i18next';
+import * as zustand_middleware from 'zustand/middleware';
+import * as zustand from 'zustand';
 import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
-import * as zustand_middleware from 'zustand/middleware';
-import * as zustand from 'zustand';
-import { Meta2d } from '@meta2d/core';
+import * as _meta2d_core from '@meta2d/core';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
 import { IpcMainInvokeEvent, IpcMainEvent, BrowserWindow, BrowserWindowConstructorOptions, OpenDevToolsOptions } from 'electron';
 
@@ -449,6 +449,89 @@ declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extend
  */
 declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
+/**
+ * 对接扩展心跳机制地凭证
+ */
+interface UseExtensionHeartbeatVoucher {
+    readonly extension_id: number;
+    readonly extension_uuid: string;
+    /**
+     * 扩展内容 hash 值
+     */
+    readonly script_hash: string;
+}
+
+interface UserStore {
+    userinfo?: {
+        roles?: string[];
+        id?: number;
+        username?: string;
+    };
+    accessToken: string;
+}
+declare const useUserStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<UserStore>, "persist"> & {
+    persist: {
+        setOptions: (options: Partial<zustand_middleware.PersistOptions<UserStore, unknown>>) => void;
+        clearStorage: () => void;
+        rehydrate: () => void | Promise<void>;
+        hasHydrated: () => boolean;
+        onHydrate: (fn: (state: UserStore) => void) => () => void;
+        onFinishHydration: (fn: (state: UserStore) => void) => () => void;
+        getOptions: () => Partial<zustand_middleware.PersistOptions<UserStore, unknown>>;
+    };
+}, "setState"> & {
+    setState(nextStateOrUpdater: UserStore | Partial<UserStore> | ((state: {
+        userinfo?: {
+            roles?: string[];
+            id?: number;
+            username?: string;
+        };
+        accessToken: string;
+    }) => void), shouldReplace?: boolean): void;
+}>;
+
+interface DocStore {
+    isWork: boolean;
+}
+declare const useDocStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<DocStore>, "persist"> & {
+    persist: {
+        setOptions: (options: Partial<zustand_middleware.PersistOptions<DocStore, unknown>>) => void;
+        clearStorage: () => void;
+        rehydrate: () => void | Promise<void>;
+        hasHydrated: () => boolean;
+        onHydrate: (fn: (state: DocStore) => void) => () => void;
+        onFinishHydration: (fn: (state: DocStore) => void) => () => void;
+        getOptions: () => Partial<zustand_middleware.PersistOptions<DocStore, unknown>>;
+    };
+}, "setState"> & {
+    setState(nextStateOrUpdater: DocStore | Partial<DocStore> | ((state: {
+        isWork: boolean;
+    }) => void), shouldReplace?: boolean): void;
+}>;
+
+interface ThemeStore {
+    layout: {
+        mainSidebar: 'none' | 'left' | 'right';
+    };
+}
+declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<ThemeStore>, "persist"> & {
+    persist: {
+        setOptions: (options: Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>) => void;
+        clearStorage: () => void;
+        rehydrate: () => void | Promise<void>;
+        hasHydrated: () => boolean;
+        onHydrate: (fn: (state: ThemeStore) => void) => () => void;
+        onFinishHydration: (fn: (state: ThemeStore) => void) => () => void;
+        getOptions: () => Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>;
+    };
+}, "setState"> & {
+    setState(nextStateOrUpdater: ThemeStore | Partial<ThemeStore> | ((state: {
+        layout: {
+            mainSidebar: 'none' | 'left' | 'right';
+        };
+    }) => void), shouldReplace?: boolean): void;
+}>;
+
 type ExtensionName = string | symbol;
 interface Extension<Context = any> {
     /**
@@ -844,89 +927,6 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
      */
     uninstall(): void;
 }
-
-/**
- * 对接扩展心跳机制地凭证
- */
-interface UseExtensionHeartbeatVoucher {
-    readonly extension_id: number;
-    readonly extension_uuid: string;
-    /**
-     * 扩展内容 hash 值
-     */
-    readonly script_hash: string;
-}
-
-interface UserStore {
-    userinfo?: {
-        roles?: string[];
-        id?: number;
-        username?: string;
-    };
-    accessToken: string;
-}
-declare const useUserStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<UserStore>, "persist"> & {
-    persist: {
-        setOptions: (options: Partial<zustand_middleware.PersistOptions<UserStore, unknown>>) => void;
-        clearStorage: () => void;
-        rehydrate: () => void | Promise<void>;
-        hasHydrated: () => boolean;
-        onHydrate: (fn: (state: UserStore) => void) => () => void;
-        onFinishHydration: (fn: (state: UserStore) => void) => () => void;
-        getOptions: () => Partial<zustand_middleware.PersistOptions<UserStore, unknown>>;
-    };
-}, "setState"> & {
-    setState(nextStateOrUpdater: UserStore | Partial<UserStore> | ((state: {
-        userinfo?: {
-            roles?: string[];
-            id?: number;
-            username?: string;
-        };
-        accessToken: string;
-    }) => void), shouldReplace?: boolean): void;
-}>;
-
-interface DocStore {
-    isWork: boolean;
-}
-declare const useDocStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<DocStore>, "persist"> & {
-    persist: {
-        setOptions: (options: Partial<zustand_middleware.PersistOptions<DocStore, unknown>>) => void;
-        clearStorage: () => void;
-        rehydrate: () => void | Promise<void>;
-        hasHydrated: () => boolean;
-        onHydrate: (fn: (state: DocStore) => void) => () => void;
-        onFinishHydration: (fn: (state: DocStore) => void) => () => void;
-        getOptions: () => Partial<zustand_middleware.PersistOptions<DocStore, unknown>>;
-    };
-}, "setState"> & {
-    setState(nextStateOrUpdater: DocStore | Partial<DocStore> | ((state: {
-        isWork: boolean;
-    }) => void), shouldReplace?: boolean): void;
-}>;
-
-interface ThemeStore {
-    layout: {
-        mainSidebar: 'none' | 'left' | 'right';
-    };
-}
-declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<ThemeStore>, "persist"> & {
-    persist: {
-        setOptions: (options: Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>) => void;
-        clearStorage: () => void;
-        rehydrate: () => void | Promise<void>;
-        hasHydrated: () => boolean;
-        onHydrate: (fn: (state: ThemeStore) => void) => () => void;
-        onFinishHydration: (fn: (state: ThemeStore) => void) => () => void;
-        getOptions: () => Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>;
-    };
-}, "setState"> & {
-    setState(nextStateOrUpdater: ThemeStore | Partial<ThemeStore> | ((state: {
-        layout: {
-            mainSidebar: 'none' | 'left' | 'right';
-        };
-    }) => void), shouldReplace?: boolean): void;
-}>;
 
 /**
  * ==================================================================================
@@ -2204,7 +2204,7 @@ declare global {
          * RApp
          */
         interface RApp {
-            meta2d?: Meta2d;
+            meta2d?: _meta2d_core.Meta2d;
             readonly Antd: typeof antd;
             readonly spring: typeof _react_spring_web;
             readonly transitionGroup: typeof react_transition_group;
@@ -2261,15 +2261,36 @@ declare global {
                 readonly i18n: typeof i18n;
                 readonly useTranslation: typeof react_i18next.useTranslation;
             };
+            /**
+             * 内置常量
+             */
             readonly constants: {
                 readonly Timestamp: typeof Timestamp;
             };
+            /**
+             * 提供可以公用的组件
+             */
             readonly components: {
+                /**
+                 * 文本溢出隐藏省略的组件, 当文本长度超出容器的时候, 自动展示省略号
+                 */
                 readonly Ellipsis: typeof Ellipsis;
+                /**
+                 * antd 与 自定义 icon 的结合组件
+                 */
                 readonly IconFont: typeof IconFont;
+                /**
+                 * 通用的 widget - 控件, 用于展示一个图标, 附带功能提示信息 作为系统功能图标
+                 */
                 readonly Widget: typeof Widget;
+                /**
+                 * 展示 -空-
+                 */
                 readonly Empty: typeof REmpty;
             };
+            /**
+             * 部分 service 能力
+             */
             readonly services: {
                 readonly Skin: typeof Skin;
                 readonly Emitter: typeof Emitter;
@@ -2277,6 +2298,9 @@ declare global {
                 readonly ExtensionManager: typeof ExtensionManager;
                 readonly MetadataManager: typeof MetadataManager;
             };
+            /**
+             * 提供基础 API-Service
+             */
             readonly libs: {
                 readonly injectReadonlyVariable: typeof injectReadonlyVariable;
                 readonly createSallowProxy: typeof createSallowProxy;

@@ -203,7 +203,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
             type: 'item',
             label: t('menus.header.viewmenu.fullscreen', '全屏'),
             onClick: () => {
-
+              ipcActions.windowEnableFullScreen();
             }
           },
           {

@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { commonStyles } from '@/scss/common';
 
 export interface HeaderProps {
-  className?: string;
+  readonly className?: string;
 }
 
 /**
@@ -17,6 +17,9 @@ export const Header = memo((props: HeaderProps) => {
   const menuBeforeContents = rApp.metadata.useMetadata('ui.layout.header.menu.before');
   const menuContents = rApp.metadata.useMetadata('ui.layout.header.menu.content');
   const menuAfterContents = rApp.metadata.useMetadata('ui.layout.header.menu.after');
+
+
+
 
   const HeaderMainContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
 

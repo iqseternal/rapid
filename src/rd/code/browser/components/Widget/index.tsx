@@ -159,9 +159,6 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
             size === 'small' && '!w-6 !h-6 text-[90%]',
             innerClassName
           )}
-          style={{
-            filter: 'drop-shadow(2px 0px 1px rgba(0, 0, 0, 0.3))',
-          }}
         >
           {loading ? loadingContent : <>
             {icon ? <IconFont icon={icon} /> : children}

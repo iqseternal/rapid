@@ -1,11 +1,8 @@
 import type { ComponentType } from 'react';
-import type { useUserStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
 import type { ThreadHandler } from 'rd/base/browser/service/Thread';
 import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
-import type { Meta2d } from '@meta2d/core';
-import type { CssVariablePayloadSheet, CssVariablesDeclaration, Skin } from 'rd/base/browser/service/Skin';
 import type { RdCssVariablePayloadSheet } from './skin';
 import type { Extension } from '@suey/rxp-meta';
 
@@ -313,7 +310,7 @@ declare global {
      * RApp
      */
     export interface RApp {
-      meta2d?: Meta2d;
+      meta2d?: import('@meta2d/core').Meta2d;
 
       readonly Antd: typeof import('antd');
       readonly spring: typeof import('@react-spring/web');
@@ -358,9 +355,9 @@ declare global {
        * 全局的状态管理
        */
       readonly stores: {
-        readonly useUserStore: typeof useUserStore;
-        readonly useThemeStore: typeof useThemeStore;
-        readonly useDocStore: typeof useDocStore;
+        readonly useUserStore: typeof import('@/features').useUserStore;
+        readonly useThemeStore: typeof import('@/features').useThemeStore;
+        readonly useDocStore: typeof import('@/features').useDocStore;
       }
 
       /**
