@@ -21,6 +21,7 @@ export { useAsyncEffect, useAsyncLayoutEffect } from './useAsyncEffect';
 export type { AsyncEffectCallback } from './useAsyncEffect';
 
 export { useTransition } from './useTransition';
+
 export type { StartTransitionFunction } from './useTransition';
 
 export { useMousetrap } from './useMousetrap';

@@ -37,21 +37,6 @@ export class TrayMenuFlowService {
 
     const contextMenu = Menu.buildFromTemplate([
       {
-        label: '没什么用的选项1',
-        type: 'radio',
-        click: () => {
-
-          console.log('click');
-        }
-      },
-      { label: '没用的选项2', type: 'radio' },
-      { label: '没用的选项3', type: 'radio', checked: true },
-      { label: '没用的选项4', type: 'radio' },
-      { type: 'separator' },
-      { label: '????', type: 'normal' },
-
-      { type: 'separator' },
-      {
         label: '退出',
         type: 'normal',
         click: () => app.quit()

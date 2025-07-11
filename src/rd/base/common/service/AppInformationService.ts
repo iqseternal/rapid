@@ -19,7 +19,7 @@ export class AppInformationService extends SingleInstanceService {
       rApi: 'http://oupro.cn/api/v1/',
       // rApi: 'http://127.0.0.1:3000/api/v1/',
 
-      rxApi: 'http://oupro.cn'
+      rxApi: 'http://rx-mp-server.oupro.cn/'
     }
 
   } as const;
