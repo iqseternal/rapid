@@ -29,9 +29,9 @@ export const RdRouterWrapper = memo(() => {
               return (
                 <Suspense
                   fallback={(
-                    <>
-                      <Skeleton />
-                    </>
+                    <Skeleton
+
+                    />
                   )}
                 >
                   {children}

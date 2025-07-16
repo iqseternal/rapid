@@ -1,5 +1,5 @@
 import { Tooltip, TooltipProps } from 'antd';
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 
 import { EllipsisBase } from './EllipsisBase';
 import type { EllipsisProps } from './EllipsisBase';
@@ -13,7 +13,7 @@ export interface EllipsisTooltipProps extends Omit<EllipsisProps, 'overlayRender
   /**
    * tooltip 的 attrs
    */
-  tipAttrs?: TooltipProps;
+  readonly tipAttrs?: TooltipProps;
 }
 
 /**
@@ -30,21 +30,22 @@ export interface EllipsisTooltipProps extends Omit<EllipsisProps, 'overlayRender
 export const EllipsisTooltip = memo((props: EllipsisTooltipProps) => {
   const { tipAttrs, children, ...realProps } = props;
 
+  const overlayRender = (realContent: ReactNode) => {
+
+    return (
+      <Tooltip
+        overlay={children}
+        autoAdjustOverflow
+        {...tipAttrs}
+      >
+        {realContent}
+      </Tooltip>
+    )
+  }
+
   return (
     <EllipsisBase
-      overlayRender={(realContent) => {
-
-        return (
-          <Tooltip
-
-            overlay={<>{children}</>}
-            autoAdjustOverflow
-            {...tipAttrs}
-          >
-            {realContent}
-          </Tooltip>
-        )
-      }}
+      overlayRender={overlayRender}
       children={children}
       {...realProps}
     />

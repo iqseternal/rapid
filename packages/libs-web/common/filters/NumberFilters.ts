@@ -30,24 +30,13 @@ export const toFixed = (value: number | `${number}` | undefined | null, position
  */
 export const toPercentage = (value: number | undefined | null, position = 2, fillStr = '0%' as `${number}%`): `${number}%` => {
   // 如果不是合格的数字, 直接返回填充字符, 因为填充字符可能不是数字字符
-  if (!(typeof value === 'number')) return fillStr;
+  if (!(typeof value === 'number')) {
+    const t = Number(value);
+    if (Number.isNaN(t)) return fillStr;
+    value = t;
+  }
 
   const dist = toFixed(value * 100, position);
   if (Number.isNaN(dist)) return fillStr;
   return `${dist}%` as const;
-}
-
-/**
- * 将数字转换为字符串输出
- *
- * @example
- *
- * const a = void 0;
- * NumberFilters.toString(a); // ''
- *
- * @returns
- */
-export const toString = (value: number | undefined | null, defaultStr = '') => {
-  if (!(typeof value === 'number')) return defaultStr;
-  return value.toString();
 }

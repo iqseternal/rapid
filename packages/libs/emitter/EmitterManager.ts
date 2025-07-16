@@ -74,18 +74,14 @@ export abstract class EmitterManager<Entries extends Record<string | symbol, any
     const onceListenersToRemove = new Set<EmitterListenerSlice<Entries[K]>>();
     const promises: Promise<void>[] = [];
 
-    ; (async () => {
+    await (async () => {
       if (data) {
         // 遍历执行监听器
         for (const slice of listeners) {
           const result = slice.listener(data);
-          if (result instanceof Promise) {
-            promises.push(result);
-          }
 
-          if (slice.once) {
-            onceListenersToRemove.add(slice);
-          }
+          if (result instanceof Promise) promises.push(result);
+          if (slice.once) onceListenersToRemove.add(slice);
         }
       }
 

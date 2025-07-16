@@ -53,11 +53,11 @@ export type MetadataType =
 ;
 
 export interface MetadataStoreListenerPayload {
-  action: MetadataAction;
+  readonly action: MetadataAction;
 
-  type: MetadataType;
+  readonly type: MetadataType;
 
-  metadataKey: number | string | symbol;
+  readonly metadataKey: number | string | symbol;
 
   metadata: unknown;
 }

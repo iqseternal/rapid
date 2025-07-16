@@ -12,14 +12,14 @@ import styles from './ellipsis.module.scss';
  * Ellipsis props
  */
 export interface EllipsisProps {
-  children?: ReactNode;
+  readonly children?: ReactNode;
 
-  className?: string;
+  readonly className?: string;
 
   /**
    * 如果传递的 children 展示为空时, 展示的默认字符串
    */
-  defaultContent?: string;
+  readonly defaultContent?: string;
 
   /**
    * 如果 children 字符串的内容超过了父容器, 那么就因该显示省略号, 同时 hover 应该展示完全内容
@@ -30,12 +30,12 @@ export interface EllipsisProps {
    *
    * 默认是: Tooltip
    */
-  overlayRender?: (children: ReactNode) => ReactElement;
+  readonly overlayRender?: (children: ReactNode) => ReactElement;
 
   /**
    * tooltip 的 attrs, 默认为 tooltip
    */
-  tipAttrs?: TooltipProps;
+  readonly tipAttrs?: TooltipProps;
 }
 
 /**
@@ -68,7 +68,8 @@ export interface EllipsisProps {
 export const EllipsisBase = memo((props: EllipsisProps) => {
   const {
     className,
-    children, defaultContent = '-',
+    children,
+    defaultContent = '-',
     tipAttrs = {},
     overlayRender = (realContent) => {
       return (
@@ -83,7 +84,7 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
     }
   } = props;
 
-  if (isUnDef(children)) return <></>;
+  if (isUnDef(children)) return null;
 
   const [state] = useShallowReactive({
     // 当前内容是否溢出了容器
@@ -103,18 +104,24 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
     return StringFilters.toValidStr(children.toString(), defaultContent);
   }, [children, defaultContent]);
 
-  // 创建 resizeObserver, 添加调整尺寸时的侦听器
-  const [resizeObserver] = useResizeObserver(textContainerRef, useDebounceHook(() => {
-    const container = textContainerRef.current;
+  const resizeObserverCallback = useMemo(() => {
+    const callback = () => {
+      const container = textContainerRef.current;
 
-    if (container) {
-      // 设置是否溢出
-      const isOverflow = container.scrollWidth > container.clientWidth || container.scrollHeight > container.clientHeight;
+      if (container) {
+        // 设置是否溢出
+        const isOverflow = container.scrollWidth > container.clientWidth || container.scrollHeight > container.clientHeight;
 
-      if (isOverflow === state.isOverflow) return;
-      state.isOverflow = isOverflow;
+        if (isOverflow === state.isOverflow) return;
+        state.isOverflow = isOverflow;
+      }
     }
-  }, { wait: 200 }), []);
+
+    return useDebounceHook(callback, { wait: 200 });
+  }, []);
+
+  // 创建 resizeObserver, 添加调整尺寸时的侦听器
+  const [resizeObserver] = useResizeObserver(textContainerRef, resizeObserverCallback, []);
 
   // 启动 observer
   useEffect(() => {

@@ -6,9 +6,6 @@ export { useRefresh, useUpdate } from './useRefresh';
 export { useDebounceHook, useThrottleHook, useDebounce, useThrottle } from './useDebounce';
 export type { DebounceOptions, ThrottleOptions, DebounceTarget, ThrottleTarget } from './useDebounce';
 
-export { useDependenciesListHook } from './useDependencies';
-export type { AppendDepFn, RemoveDepFn } from './useDependencies';
-
 export { useWindowScreenSizeHook, useWindowScreenSize, useWindowInnerSize, useWindowInnerSizeHook } from './useWindowSize';
 export type { WindowScreenSize, WindowInnerSize } from './useWindowSize';
 

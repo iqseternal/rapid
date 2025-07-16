@@ -313,7 +313,6 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple?: false): DoubleLinkedNode<V> | null;
   protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple: true): DoubleLinkedNode<V>[];
   protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple?: boolean): DoubleLinkedNode<V> | null | DoubleLinkedNode<V>[];
-
   protected override deleteNodeWhere(condition: (node: Readonly<DoubleLinkedNode<V>>) => boolean, multiple: boolean = false): DoubleLinkedNode<V> | null | DoubleLinkedNode<V>[] {
     let node = this.head;
     const list: DoubleLinkedNode<V>[] = [];
@@ -345,7 +344,6 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   public override delete(value: V, multiple?: false): V | null;
   public override delete(value: V, multiple: true): V[];
   public override delete(value: V, multiple?: boolean): V | null | V[];
-
   public override delete(value: V, multiple: boolean = false): V | null | V[] {
     return this.deleteWhere(v => this.comparator(v, value) === 0, multiple);
   }
@@ -356,7 +354,6 @@ export class DoubleLinkedList<V> extends LinkedList<V, DoubleLinkedNode<V>> {
   public override deleteWhere(condition: (value: V) => boolean, multiple?: false): V | null;
   public override deleteWhere(condition: (value: V) => boolean, multiple: true): V[];
   public override deleteWhere(condition: (value: V) => boolean, multiple?: boolean): V | null;
-
   public override deleteWhere(condition: (value: V) => boolean, multiple: boolean = false): V | null | V[] {
     const result = this.deleteNodeWhere(innerNode => condition(innerNode.value), multiple);
     if (!multiple) return (result as DoubleLinkedNode<V>)?.value ?? null;
