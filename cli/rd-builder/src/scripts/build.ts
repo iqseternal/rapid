@@ -54,9 +54,7 @@ export async function buildAction(options: BuildActionOptions) {
 
   await Promise.all([compilerRenderer(), compilerMain(), compilerPreload()]);
 
-  /**
-   * 构建主进程字节码
-   */
+  // 构建主进程字节码
   const bytenodeMain = async () => {
     const dist = await bytenode.compileFile({
       filename: path.join(mainCompiler.outputPath, 'index.js'),
