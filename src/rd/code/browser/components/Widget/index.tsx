@@ -4,7 +4,7 @@ import { theme, Tooltip, TooltipProps } from 'antd';
 import type { IconKey } from '@/components/IconFont';
 import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'react';
 import { memo, useCallback, useState, useMemo, forwardRef } from 'react';
-import { useShallowReactive } from '@rapid/libs-web';
+import { useShallowReactive, useSyncNormalState } from '@rapid/libs-web';
 import { commonStyles } from '@/scss/common';
 
 import IconFont from '@/components/IconFont';
@@ -15,10 +15,14 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
    */
   readonly innerClassName?: string;
 
-  /** 当前控件是否具有 hover 背景特性 */
+  /**
+   * 当前控件是否具有 hover 背景特性
+   */
   readonly hasHoverStyle?: boolean;
 
-  /** 当前控件展示的图标元素 */
+  /**
+   * 当前控件展示的图标元素
+   */
   readonly icon?: IconKey;
 
   /**
@@ -46,7 +50,9 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
    */
   readonly tipAttrs?: TooltipProps;
 
-  /** 是否禁用当前控件 */
+  /**
+   * 是否禁用当前控件
+   */
   readonly disabled?: boolean;
 }
 
@@ -62,7 +68,11 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
     size = 'base',
     disabled = false,
     loading = false,
-    loadingContent = <LoadingOutlined />,
+    loadingContent = (
+      <IconFont
+        icon={'LoadingOutlined'}
+      />
+    ),
     children,
     tipText,
     tipAttrs = {},
@@ -72,24 +82,18 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
     ...realProps
   } = props;
 
-  const [normalState] = useState({
-    loading: false,
-    disabled: false,
+  const [syncProps] = useSyncNormalState(() => ({
+    loading: props.loading,
+    disabled: props.disabled,
 
-    onClick: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
-    onDoubleClick: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
-    onContextMenu: (() => { }) as (MouseEventHandler<HTMLDivElement> | undefined),
-  })
+    onClick: props.onClick,
+    onDoubleClick: props.onDoubleClick,
+    onContextMenu: props.onContextMenu,
+  }))
 
   const [shallowState] = useShallowReactive(() => ({
     hasHover: false
   }))
-
-  if (normalState.loading !== loading) normalState.loading = loading;
-  if (normalState.disabled !== disabled) normalState.disabled = disabled;
-  if (normalState.onClick !== onClick) normalState.onClick = onClick;
-  if (normalState.onDoubleClick !== onDoubleClick) normalState.onDoubleClick = onDoubleClick;
-  if (normalState.onContextMenu !== onContextMenu) normalState.onContextMenu = onContextMenu;
 
   /**
    * 创建维护事件, 当 disabled 为 true 时, 将传递事件进行封装, 禁用执行
@@ -98,23 +102,24 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
   const withSafeEvent = useCallback(<Event extends MouseEvent>(callbackGetter: (() => (MouseEventHandler<HTMLDivElement> | undefined))) => {
 
     return (e: Event): void => {
-      if (normalState.disabled) return;
-      // if (normalState.loading) return;
+      if (syncProps.disabled) return;
+      if (syncProps.loading) return;
+
       const callback = callbackGetter();
       if (callback) callback(e as any);
     }
   }, []);
 
   const withDisabledClick = useMemo(() => {
-    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => normalState.onClick);
+    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => syncProps.onClick);
   }, []);
 
   const withDisabledDoubleClick = useMemo(() => {
-    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => normalState.onDoubleClick);
+    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => syncProps.onDoubleClick);
   }, []);
 
   const withDisabledContextMenu = useMemo(() => {
-    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => normalState.onContextMenu);
+    return withSafeEvent<MouseEvent<HTMLDivElement>>(() => syncProps.onContextMenu);
   }, []);
 
   return (
@@ -160,9 +165,9 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
             innerClassName
           )}
         >
-          {loading ? loadingContent : <>
-            {icon ? <IconFont icon={icon} /> : children}
-          </>}
+          {loading ? loadingContent : (
+            icon ? <IconFont icon={icon} /> : children
+          )}
         </div>
       </Tooltip>
     </div>

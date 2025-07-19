@@ -47,10 +47,12 @@ export const WindowsReductionWindowWidget = memo(() => {
       {isFullSize ? (
         <img
           src={platControllerReductionImgUrl}
+          alt={void 0}
         />
       ) : (
         <img
           src={platControllerMaxImgUrl}
+          alt={void 0}
         />
       )}
     </Widget>

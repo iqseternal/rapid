@@ -26,6 +26,7 @@ export class NotificationService {
       notification.on('close', () => {
 
       })
+
       notification.on('reply', (evt, reply) => {
         resolve(reply);
       })

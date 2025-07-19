@@ -91,7 +91,7 @@
     "@meta2d/sequence-diagram": "1.0.1",
     "@meta2d/svg": "1.0.7",
     "@react-spring/web": "9.7.5",
-    "@suey/pkg-utils": "0.4.2",
+    "@suey/pkg-utils": "0.4.3",
     "@suey/pkg-web": "0.0.3",
     "@types/pako": "2.0.3",
     "@uiw/codemirror-theme-androidstudio": "4.23.8",

@@ -22,7 +22,6 @@ export const RdApp = memo(() => {
       getPopupContainer={() => document.body}
       getTargetContainer={() => window}
       iconPrefixCls={'anticon'}
-      // locale={{}}
       popupMatchSelectWidth={true}
       popupOverflow={'viewport'}
       prefixCls='ant'

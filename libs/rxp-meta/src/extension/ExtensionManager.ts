@@ -80,7 +80,10 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   public isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt {
     if (typeof extension !== 'object') return false;
     const hasTAG = Reflect.has(extension, '__TAG__');
-    return hasTAG;
+    if (!hasTAG) return false;
+
+    const tag = Reflect.get(extension, '__TAG__');
+    return tag === ExtensionSymbolTag;
   }
 
   /**
