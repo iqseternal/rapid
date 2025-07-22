@@ -92,28 +92,21 @@ const WorkspaceLayout = memo(() => {
 const WorkspaceLayoutWrapper = memo(() => {
 
   useLayoutEffect(() => {
-    rApp.metadata.defineMetadata('ui.layout.header.icon', Logo);
+    const dmCallbacks = [
+      rApp.metadata.defineMetadataInVector('ui.layout.header.icon', Logo),
 
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget),
 
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-    rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus),
 
-    rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+      rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar),
+    ];
 
     return () => {
-      rApp.metadata.delMetadata('ui.layout.header.icon');
-
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.reduction');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
-
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-      rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
-
-      rApp.metadata.delMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+      dmCallbacks.forEach(callback => callback());
     }
   }, []);
 

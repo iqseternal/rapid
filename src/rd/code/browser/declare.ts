@@ -168,7 +168,7 @@ declare global {
           /**
            * ui-header 图标展示
            */
-          'ui.layout.header.icon': ComponentType;
+          'ui.layout.header.icon': ComponentType[];
 
           /**
            * ui-header-menu 菜单前展示
@@ -203,17 +203,17 @@ declare global {
           /**
            * ui-header最小化控件
            */
-          'ui.layout.header.controller.widgets.min': ComponentType;
+          'ui.layout.header.controller.widgets.min': ComponentType[];
 
           /**
            * ui-header还原控件
            */
-          'ui.layout.header.controller.widgets.reduction': ComponentType;
+          'ui.layout.header.controller.widgets.reduction': ComponentType[];
 
           /**
            * ui-header关闭控件
            */
-          'ui.layout.header.controller.widgets.close': ComponentType;
+          'ui.layout.header.controller.widgets.close': ComponentType[];
 
           /**
            * ui-header控件后插槽

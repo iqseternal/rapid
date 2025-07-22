@@ -25,7 +25,7 @@ export const RdApp = memo(() => {
       popupMatchSelectWidth={true}
       popupOverflow={'viewport'}
       prefixCls='ant'
-      renderEmpty={() => <REmpty />}
+      renderEmpty={() => <REmpty.NotHasAnyData />}
       theme={{
         components: {
           Message: {

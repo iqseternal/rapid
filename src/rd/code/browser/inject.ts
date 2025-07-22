@@ -172,5 +172,3 @@ const rApp: Rapid.RApp = ({
 injectReadonlyVariable(window, 'cssVars', cssVars);
 
 injectReadonlyVariable(window, 'rApp', rApp);
-
-

@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "baseUrl": "./",
+    "outDir": "../../.rd-cache/app-test",
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "lib": [
+      "DOM",
+      "ESNext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "preserveSymlinks": false,
+    "declaration": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUmdGlobalAccess": true,
+    "allowArbitraryExtensions": true,
+    "allowUnusedLabels": true,
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "./rspack.config.ts"
+  ],
+  "exclude": ["node_modules"]
+}
+

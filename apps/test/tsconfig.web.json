@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ES2020",
+    "lib": ["DOM", "ES2020"],
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "outDir": "../../.rd-cache/app-test"
+  },
+
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+
+    "src/env.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "mdx": {
+    "checkMdx": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+}

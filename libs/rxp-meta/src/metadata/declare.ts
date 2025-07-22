@@ -1,6 +1,6 @@
 
-type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
-type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
+type IsNever<T, SuccessReturnType, FailReturnType> = FailReturnType extends (T extends never ? SuccessReturnType : FailReturnType) ? FailReturnType : SuccessReturnType;
+type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'yes' : 'no') extends 'no' ? FailReturnType : SuccessReturnType;
 
 /**
  * 从数组中提取出元素的类型

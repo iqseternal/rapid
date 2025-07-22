@@ -36,12 +36,9 @@ const RootLayout = memo(() => {
 
   useEffect(() => {
 
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
+    const dm = rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
 
-    return () => {
-
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
-    }
+    return dm;
   }, []);
 
   return (

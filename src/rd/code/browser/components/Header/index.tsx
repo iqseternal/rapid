@@ -1,5 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { commonStyles } from '@/scss/common';
 
 export interface HeaderProps {
@@ -12,25 +12,23 @@ export interface HeaderProps {
 export const Header = memo((props: HeaderProps) => {
   const { className } = props;
 
-  const HeaderLogoContent = rApp.metadata.useMetadata('ui.layout.header.icon');
+  const HeaderLogoContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.icon');
 
-  const menuBeforeContents = rApp.metadata.useMetadata('ui.layout.header.menu.before');
-  const menuContents = rApp.metadata.useMetadata('ui.layout.header.menu.content');
-  const menuAfterContents = rApp.metadata.useMetadata('ui.layout.header.menu.after');
-
-
-
+  const MenuBeforeContents = rApp.metadata.useMetadata('ui.layout.header.menu.before');
+  const MenuContents = rApp.metadata.useMetadata('ui.layout.header.menu.content');
+  const MenuAfterContents = rApp.metadata.useMetadata('ui.layout.header.menu.after');
 
   const HeaderMainContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
 
-  const controllerBeforeContents = rApp.metadata.useMetadata('ui.layout.header.controller.before');
+  const ControllerBeforeContents = rApp.metadata.useMetadata('ui.layout.header.controller.before');
 
-  const controllerOtherWidgets = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.others');
-  const MinWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.min');
-  const ReductionWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.reduction');
-  const CloseWindowWidget = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.close');
+  const ControllerOtherWidgets = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.others');
 
-  const controllerAfterContents = rApp.metadata.useMetadata('ui.layout.header.controller.after');
+  const MinWindowWidget = rApp.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.min');
+  const ReductionWindowWidget = rApp.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.reduction');
+  const CloseWindowWidget = rApp.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.close');
+
+  const ControllerAfterContents = rApp.metadata.useMetadata('ui.layout.header.controller.after');
 
   return (
     <div
@@ -59,16 +57,16 @@ export const Header = memo((props: HeaderProps) => {
               'w-max flex items-center flex-none',
             )}
           >
-            {menuBeforeContents && menuBeforeContents.map((BeforeContent, index) => (<BeforeContent key={index} />))}
+            {MenuBeforeContents && MenuBeforeContents.map((BeforeContent, index) => (<BeforeContent key={index} />))}
           </div>
 
           <div className='w-full flex items-center flex-1'>
-            {menuContents && menuContents.map((Content, index) => (<Content key={index} />))}
+            {MenuContents && MenuContents.map((Content, index) => (<Content key={index} />))}
           </div>
         </div>
 
         <div className='flex items-center justify-end flex-none'>
-          {menuAfterContents && menuAfterContents.map((AfterContent, index) => (<AfterContent key={index} />))}
+          {MenuAfterContents && MenuAfterContents.map((AfterContent, index) => (<AfterContent key={index} />))}
         </div>
       </div>
 
@@ -78,7 +76,7 @@ export const Header = memo((props: HeaderProps) => {
 
       <div className='pr-1 flex-1 min-w-max flex justify-end items-center'>
         <div className='w-full flex flex-1 items-center'>
-          {controllerBeforeContents && (controllerBeforeContents.map((BeforeContent, index) => (<BeforeContent key={index} />)))}
+          {ControllerBeforeContents && (ControllerBeforeContents.map((BeforeContent, index) => (<BeforeContent key={index} />)))}
         </div>
 
         <div
@@ -87,14 +85,14 @@ export const Header = memo((props: HeaderProps) => {
             'flex justify-end gap-x-0.5 flex-none items-center'
           )}
         >
-          {controllerOtherWidgets && controllerOtherWidgets.map((OtherWidget, index) => (<OtherWidget key={index} />))}
+          {ControllerOtherWidgets && ControllerOtherWidgets.map((OtherWidget, index) => (<OtherWidget key={index} />))}
           {MinWindowWidget && (<MinWindowWidget />)}
           {ReductionWindowWidget && (<ReductionWindowWidget />)}
           {CloseWindowWidget && (<CloseWindowWidget />)}
         </div>
 
         <div className='w-max flex items-center flex-none'>
-          {controllerAfterContents && (controllerAfterContents.map((AfterContent, index) => <AfterContent key={index} />))}
+          {ControllerAfterContents && (ControllerAfterContents.map((AfterContent, index) => <AfterContent key={index} />))}
         </div>
       </div>
     </div>
