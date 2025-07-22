@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Monorepo for Electron Program",
   "private": true,
-  "main": "out/main/index.js",
   "scripts": {
     "dev": "rd-builder dev",
     "build": "rd-builder build",

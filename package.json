@@ -7,7 +7,6 @@
     "name": "suey",
     "email": "sueyeternal@163.com"
   },
-  "main": "./apps/app/out/main/index.js",
   "private": true,
   "engineStrict": true,
   "engines": {
@@ -17,7 +16,7 @@
   "packageManager": "pnpm@9.15.2",
   "os": [
     "win32",
-    "linux"
+    "x64"
   ],
   "config": {},
   "keywords": [
