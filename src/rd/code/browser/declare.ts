@@ -428,7 +428,7 @@ declare global {
        */
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
-        readonly createSallowProxy: typeof import('@rapid/libs').createSallowProxy;
+        readonly createShallowProxy: typeof import('@rapid/libs').createShallowProxy;
 
         readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
         readonly rApiPost: typeof import('rd/base/common/api').rApiPost;

@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
-import { createSallowProxy } from '@rapid/libs';
+import { createShallowProxy } from '@rapid/libs';
 
 /**
  * 普通 state, 不自动刷新组件
@@ -17,13 +17,13 @@ import { createSallowProxy } from '@rapid/libs';
 export function useNormalState<S extends object>(initValue: S | (() => S)) {
   const isFirstInitialize = useRef(true);
 
-  const stateRef = useRef<S | undefined>(
-    !isFirstInitialize ? void 0 : (
-      typeof initValue === 'function' ? (initValue as () => S)() : initValue
-    )
-  );
+  const stateRef = useRef<S>({} as S);
 
-  if (isFirstInitialize.current) isFirstInitialize.current = false;
+  if (isFirstInitialize.current) {
+    const state: S = ((typeof initValue === 'function') ? initValue() : initValue);
+    for (const key in state) stateRef.current[key] = state[key];
+    isFirstInitialize.current = false;
+  }
 
   return [stateRef.current] as (readonly [S]);
 }
@@ -32,7 +32,7 @@ export function useNormalState<S extends object>(initValue: S | (() => S)) {
  * 每次组件刷新都会执行初始化函数的 state
  */
 export function useSyncNormalState<S extends object>(initValue: () => S) {
-  const [state] = useNormalState(initValue);
+  const [state] = useNormalState({} as S);
 
   const initState = initValue();
 
@@ -145,7 +145,7 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    return createSallowProxy(initialState, refresh);
+    return createShallowProxy(initialState, refresh);
   });
 
   /**

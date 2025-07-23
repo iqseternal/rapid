@@ -22,7 +22,7 @@ import {
   apiPut,
   createApiRequest,
   createRequest,
-  createSallowProxy,
+  createShallowProxy,
   cryptoTs,
   injectReadonlyVariable,
   jose,
@@ -120,7 +120,7 @@ const rApp: Rapid.RApp = ({
   },
   libs: {
     injectReadonlyVariable: injectReadonlyVariable,
-    createSallowProxy: createSallowProxy,
+    createShallowProxy: createShallowProxy,
 
     rApiGet: rApiGet,
     rApiPost: rApiPost,

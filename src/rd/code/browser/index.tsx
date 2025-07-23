@@ -76,11 +76,19 @@ async function setupExtensionPlats() {
 }
 
 ; ((async () => {
-  await toNils(
+  const [threadNil, environmentsNil, extensionPlatsNil] = await toNils(
     setupThreadTask(),
     setupEnvironments(),
     setupExtensionPlats()
   );
+
+  const [threadErr] = threadNil;
+  const [environmentsErr] = environmentsNil;
+  const [extensionPlatsErr] = extensionPlatsNil;
+
+  if (threadErr) printer.printError(threadErr.reason);
+  if (environmentsErr) printer.printError(environmentsErr.reason);
+  if (extensionPlatsErr) printer.printError(extensionPlatsErr.reason);
 
   const rootContainer = document.getElementById('root');
 
