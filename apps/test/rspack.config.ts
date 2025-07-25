@@ -1,31 +1,33 @@
-
 import { defineConfig } from '@rspack/cli';
-import { DefinePlugin } from '@rspack/core';
-import { join } from 'path';
+import * as path from 'path';
 
 export default defineConfig({
-
-
-  entry: join(__dirname, './src/index.ts'),
-
-  plugins: [
-    new DefinePlugin({
-      OS_PLATFORM: `'darwin'`,
-    }),
-  ],
-
-  experiments: {
-
-
-
-
+  entry: './src/index.ts',
+  mode: 'production', // Enable tree shaking
+  target: 'node',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
-  optimization: {
-
-
-    minimize: true,
-
-
-    usedExports: true
-  }
-})
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: {
+          loader: 'builtin:swc-loader',
+          options: {
+            jsc: {
+              parser: {
+                syntax: 'typescript',
+              },
+            },
+          },
+        },
+        type: 'javascript/auto',
+      },
+    ],
+  },
+});

@@ -11,17 +11,17 @@ export interface DevActionOptions {
   /**
    * 配置文件名称/路径
    */
-  config?: string;
+  readonly config?: string;
 
   /**
    * 是否监听主入口文件、实现能够重新加载 应用程序
    */
-  watch?: boolean;
+  readonly watch?: boolean;
 
   /**
    * TODO: 待实现
    */
-  platform?: 'windows' | 'linux' | 'mac';
+  readonly platform?: 'windows' | 'linux' | 'mac';
 }
 
 export async function devAction(options: DevActionOptions) {

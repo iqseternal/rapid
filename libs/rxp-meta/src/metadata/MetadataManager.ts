@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useState, Key } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
@@ -111,17 +111,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
    */
   public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
-    if (!this.hasMetadata(metadataKey)) {
-      this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
-      super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: [metadata] as MetadataEntries[MetadataKey]
-      })
-    }
-    else {
+    if (this.hasMetadata(metadataKey)) {
       const vector = this.metadataMap.get(metadataKey);
       if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
@@ -135,6 +125,15 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
         type: 'Vector',
         metadataKey: metadataKey,
         metadata: newVector
+      })
+    } else {
+      this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
+      super.updateStore();
+      this.triggerMetadataChangeListeners({
+        action: 'Define',
+        type: 'Vector',
+        metadataKey: metadataKey,
+        metadata: [metadata] as MetadataEntries[MetadataKey]
       })
     }
 
