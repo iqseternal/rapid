@@ -6,7 +6,7 @@ import { NavigationBar } from './plats/NavigationBar';
 import { commonStyles } from '@/scss/common';
 import { Guards } from '@/guards';
 import { classnames } from '@rapid/libs-web';
-import { useThemeStore } from '@/features';
+import { SidebarStatus, useThemeStore } from '@/features';
 import { MaintenanceMenus } from './plats/MaintenanceMenus';
 import { workbenchesRouteSwitchTransitionClassNames } from './definition';
 
@@ -68,13 +68,13 @@ const WorkspaceLayout = memo(() => {
       <div
         className={classnames(
           'flex justify-between flex-nowrap items-center w-full h-full',
-          mainSidebarStatus === 'right' && 'flex-row-reverse'
+          mainSidebarStatus === SidebarStatus.Right && 'flex-row-reverse'
         )}
         style={{
           height: `calc(100% - ${cssVars.uiCaptionBarHeight})`,
         }}
       >
-        {mainSidebarStatus !== 'none' && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
+        {mainSidebarStatus !== SidebarStatus.None && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
 
         <main
           className={classnames(

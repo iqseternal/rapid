@@ -1,8 +1,9 @@
 import { ConfigProvider, App } from 'antd';
-import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { ClickToComponent } from 'click-to-react-component';
 import { useExtends } from './libs/hooks';
+import { useAsyncEffect } from '@rapid/libs-web';
 
 import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
@@ -11,6 +12,7 @@ import REmpty from '@/components/Empty';
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
  */
 export const RdApp = memo(() => {
+
   return (
     <ConfigProvider
       componentDisabled={false}

@@ -1,5 +1,5 @@
 import type { MenuInstanceType, AntdMenuInstanceType } from '@/components/AutoMenu';
-import { setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
+import { SidebarStatus, setMainSideBarStatus, useDocStore, useThemeStore } from '@/features';
 import { useSyncNormalState } from '@rapid/libs-web/hooks/useReactive';
 import { useTranslation } from 'react-i18next';
 
@@ -235,7 +235,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
                 label: t('menus.header.viewmenu.show', '展示'),
                 disabled: layout.mainSidebar !== 'none',
                 onClick: () => {
-                  setMainSideBarStatus('left');
+                  setMainSideBarStatus(SidebarStatus.Left);
                 }
               },
               {
@@ -244,7 +244,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
                 label: t('menus.header.viewmenu.hide', '隐藏'),
                 disabled: layout.mainSidebar === 'none',
                 onClick: () => {
-                  setMainSideBarStatus('none')
+                  setMainSideBarStatus(SidebarStatus.None);
                 }
               },
 
@@ -257,7 +257,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
                 label: t('menus.header.viewmenu.left', '左侧'),
                 disabled: layout.mainSidebar === 'left',
                 onClick: () => {
-                  setMainSideBarStatus('left');
+                  setMainSideBarStatus(SidebarStatus.Left);
                 }
               },
               {
@@ -266,7 +266,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
                 label: t('menus.header.viewmenu.right', '右侧'),
                 disabled: layout.mainSidebar === 'right',
                 onClick: () => {
-                  setMainSideBarStatus('right');
+                  setMainSideBarStatus(SidebarStatus.Right);
                 }
               }
             ]

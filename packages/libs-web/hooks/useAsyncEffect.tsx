@@ -14,5 +14,5 @@ export { useAsyncEffect } from 'ahooks';
 export function useAsyncLayoutEffect(asyncEffect: AsyncEffectCallback, deps?: DependencyList) {
   useLayoutEffect(() => {
     ;(asyncEffect)();
-  }, deps);
+  }, deps); 
 }
