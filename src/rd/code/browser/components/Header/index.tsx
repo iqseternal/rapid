@@ -1,5 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { commonStyles } from '@/scss/common';
 
 export interface HeaderProps {

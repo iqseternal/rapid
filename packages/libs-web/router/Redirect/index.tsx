@@ -1,8 +1,8 @@
 import { isString } from '@rapid/libs';
-import type { FC, LazyExoticComponent, MemoExoticComponent, ReactElement } from 'react';
-import { isValidElement, useLayoutEffect, useMemo, memo } from 'react';
+import { FC, LazyExoticComponent, MemoExoticComponent, ReactElement, useEffect } from 'react';
+import { isValidElement, useMemo, memo } from 'react';
 import { Outlet, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { useNormalState, useShallowReactive } from '../../hooks';
+import { useShallowReactive } from '../../hooks';
 
 /**
  * 重定向组件的 props
@@ -50,7 +50,7 @@ export const Redirect = memo((props: RedirectProps) => {
     isMatched: false
   })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isString(from)) {
       shallowState.isMatched = location.pathname === from;
       return;

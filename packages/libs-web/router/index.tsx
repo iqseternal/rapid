@@ -1,30 +1,34 @@
-import type { FC, ReactElement, ReactNode, LazyExoticComponent, MemoExoticComponent } from 'react';
-import { Suspense, isValidElement, useMemo } from 'react';
-import { isString } from '@rapid/libs';
-import { Skeleton } from 'antd';
+import type { FC, ReactNode } from 'react';
+import { isValidElement, memo, useEffect, useMemo } from 'react';
+import { isString, isUnUseful, isUndefined, isUseful } from '@rapid/libs';
 import type { PathRouteProps } from 'react-router-dom';
-import { Route } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import type { RedirectProps } from './Redirect';
 import { Redirect } from './Redirect';
-import { isReactClassComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
-import type { RouteMeta, RouteConfig } from './declare';
+import { isReactClassComponent, isReactComponent, isReactFC, isReactForwardFC, isReactLazyFC, isReactMemoFC } from '../common';
+import type { RouteConfig } from './declare';
+import { Routes, HashRouter } from 'react-router-dom';
 
 export type * from './declare';
 
 export * from './makeRequireRouteConfig';
 
-export interface CreateRoutesChildrenOptions {
+export interface RenderRoutesOptions {
   /**
    * 处理异步组件的展示
    * @returns
    */
-  onLazyComponent: FC<{ children: ReactNode }>;
+  readonly onLazyComponent: FC<{
+
+    readonly children: ReactNode
+  }>;
 }
 
 /**
  * 通过路由表创建符合要求的 ReactDomRouter 子元素
  */
-export const createRoutesChildren = <RouteConfigArr extends RouteConfig[]>(routeArr: RouteConfigArr, options: CreateRoutesChildrenOptions) => {
+export function renderRoutes<RouteConfigArr extends RouteConfig[]>(routeArr: RouteConfigArr, options: RenderRoutesOptions) {
+
   return routeArr.map((route, index) => {
     const { redirect, meta, children = [], component, ...realRoute } = route;
 
@@ -33,15 +37,15 @@ export const createRoutesChildren = <RouteConfigArr extends RouteConfig[]>(route
     let componentsProps = {} as RedirectProps;
 
     // 这是一个重定向组件
-    if (redirect) {
+    if (isUseful(redirect)) {
       Component = Redirect;
 
-      let from: string | RegExp = '', to = '';
-      if (isString(redirect)) throw new Error(`createRoutesChildren: route 对象 redirect 没有被处理, route 应该由 makeRoute 函数创建`);
+      // RouteConfig 对象中的 redirect 会在创建时被处理为对象模式
+      if (isString(redirect)) {
+        throw new Error(`createRoutesChildren: route 对象 redirect 没有被处理, route 应该由 makeRoute 函数创建`);
+      }
 
-      from = redirect.from;
-      to = redirect.to;
-      componentsProps = { from, to, element: component } as RedirectProps;
+      componentsProps = { from: redirect.from, to: redirect.to, element: component } as RedirectProps;
     }
 
     // 放入的是一个 lazy
@@ -54,33 +58,89 @@ export const createRoutesChildren = <RouteConfigArr extends RouteConfig[]>(route
         </OnLazyComponent>
       );
     }
+
     // 放入的是一个 FC
-    else if (
-      isReactFC(Component) || isReactClassComponent(Component) ||
-      isReactForwardFC(Component) || isReactMemoFC(Component)
-    ) {
-      realRoute.element = <Component {...componentsProps} />;
-    }
+    else if (isReactComponent(Component)) realRoute.element = <Component {...componentsProps} />;
+
     // 放入的 JSX Element
-    else if (isValidElement(Component)) {
-      realRoute.element = Component;
-    }
-    else {
-      // printWarn(`createRoutesChildren: 传入的 component 不是一个有效的值`);
-      realRoute.element = <></>;
-    }
+    else if (isValidElement(Component)) realRoute.element = Component;
+
+    // component 无效?
+    else realRoute.element = <></>;
 
     return (
       <Route
         {...(realRoute as PathRouteProps)}
         key={(route.name ?? route?.meta?.fullPath ?? index)}
       >
-        {children && createRoutesChildren(children, options)}
+        {children && renderRoutes(children, options)}
       </Route>
     )
   });
 }
 
+// const runtimeContext = {
+//   routes: {} as Record<string, RouteConfig>
+// }
+
+// @ts-ignore: s
+// const reserveRoutes = <Routes extends Record<string, RouteConfig>>(presetRoutes: Routes) => {
+//   Reflect.ownKeys(presetRoutes).forEach(routeKey => {
+//     const route = presetRoutes[routeKey as keyof Routes];
+
+//     if (isUnUseful(route)) return;
+
+//     runtimeContext.routes[routeKey as string] = route;
+//   })
+// }
+
+// function useRoute<RouteConfigGetter extends () => RouteConfig>(routeConfigGetter: RouteConfigGetter): ReturnType<RouteConfigGetter>;
+
+// function useRoute(): readonly [{ route: RouteConfig | null }] | null;
+
+// function useRoute<RouteConfigGetter extends () => RouteConfig>(routeConfigGetter?: RouteConfigGetter): ReturnType<RouteConfigGetter> | (readonly [{ route: RouteConfig | null }] | null) {
+
+//   if (isUnUseful(routeConfigGetter)) {
+//     const location = useLocation();
+
+//     const [shallowState] = useShallowReactive(() => ({
+//       route: runtimeContext.routes[location.pathname] ?? null
+//     }))
+
+//     useEffect(() => {
+
+//       shallowState.route = runtimeContext.routes[location.pathname] ?? null;
+//     }, [location.pathname]);
+
+//     return [shallowState] as const;
+//   }
+
+
+//   const route = routeConfigGetter();
+
+//   // @ts-ignore: '
+//   return route;
+// }
+
+export interface RouterProps {
+  readonly routes: RouteConfig[];
+
+  readonly renderComponents: {
+    readonly onLazyComponent: FC<{
+      readonly children: ReactNode
+    }>;
+  }
+}
+
+export const Router = memo<RouterProps>((props) => {
+  const { routes, renderComponents } = props;
+
+  return (
+    <Routes>
+      {renderRoutes(routes, renderComponents)}
+    </Routes>
+  )
+})
 
 /**
  * 设置检索对象, 该函数在入口处调用, 在构建组件之前

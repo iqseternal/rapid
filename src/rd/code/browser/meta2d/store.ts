@@ -5,7 +5,7 @@ import { create, createStore } from 'zustand';
 import type { StoreApi, UseBoundStore } from 'zustand';
 import { createJSONStorage, persist, type PersistOptions } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import type { WithImmer, Write, StorePersist } from './type.d';
+import type { WithImmer, Write, StorePersist } from './type';
 
 export const enum Meta2dSelectionMode {
   File,

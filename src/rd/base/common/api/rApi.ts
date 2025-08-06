@@ -94,7 +94,7 @@ const rApiConfig: RequestConfig<RApiHConfig> = {
 };
 
 const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(
-  appInformation.information.appApiUrls.rApi,
+  appInformation.information.appApiUrls.rApiServerV1,
   rApiConfig,
   {
     async onFulfilled(config) {

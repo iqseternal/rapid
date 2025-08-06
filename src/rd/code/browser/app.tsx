@@ -1,9 +1,8 @@
 import { ConfigProvider, App } from 'antd';
-import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { memo } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { ClickToComponent } from 'click-to-react-component';
 import { useExtends } from './libs/hooks';
-import { useAsyncEffect } from '@rapid/libs-web';
 
 import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
@@ -91,19 +90,22 @@ export const RdApp = memo(() => {
   )
 })
 
-
 /**
  * App component, 这里做各种功能的插入：例如 插件等等
  */
 export const RdAppWrapper = memo(() => {
   useExtends();
 
-  return (
-    <>
-      {IS_DEV && (
-        <ClickToComponent />
-      )}
-      <RdApp />
-    </>
-  )
+  if (IS_DEV) {
+    return (
+      <>
+        {IS_DEV && (
+          <ClickToComponent />
+        )}
+        <RdApp />
+      </>
+    )
+  }
+
+  return (<RdApp />)
 })

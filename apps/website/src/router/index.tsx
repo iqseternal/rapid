@@ -1,7 +1,7 @@
 import { Suspense, useEffect, memo } from 'react';
 import type { ReactElement } from 'react';
 import { Routes, BrowserRouter } from 'react-router-dom';
-import { makeRoute, createRoutesChildren, reserveRoutes } from '@rapid/libs-web/router';
+import { makeRoute, renderRoutes, reserveRoutes } from '@rapid/libs-web/router';
 import { Skeleton } from 'antd';
 
 import * as presetRoutes from './modules';
@@ -21,7 +21,7 @@ export const RouterWrapper = memo(() => {
         )}
       >
         <Routes>
-          {createRoutesChildren([presetRoutes.rootRoute], {
+          {renderRoutes([presetRoutes.rootRoute], {
             /**
              * 异步 lazy 组件展示
              */

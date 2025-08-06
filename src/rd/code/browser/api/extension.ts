@@ -1,5 +1,5 @@
 
-import { rApiGet, rApiPost } from 'rd/base/common/api';
+import { rApiPost } from 'rd/base/common/api';
 import type { RApiPromiseLike } from 'rd/base/common/api';
 import { asynced } from '@suey/pkg-utils';
 

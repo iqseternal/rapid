@@ -1,11 +1,10 @@
-
 import { toNil, toWaitPromise } from '@suey/pkg-utils';
 import { Thread } from 'rd/base/browser/service/Thread';
-import { rApiGet, rApiPost } from 'rd/base/common/api';
 import { Timestamp } from 'rd/base/common/constants';
 import { ClockTaskService } from 'rd/base/common/service/ClockTaskService';
 import type { ClockTaskServiceOptions } from 'rd/base/common/service/ClockTaskService';
-import { useExtensionHeartbeatApi, type UseExtensionHeartbeatVoucher } from '../api/extension';
+import type { UseExtensionHeartbeatVoucher } from '../api';
+import { useExtensionHeartbeatApi } from '../api';
 
 const selfThread = new Thread<Rapid.Thread.MainThreadEntries, Rapid.Thread.ExtensionThreadEntries>();
 
