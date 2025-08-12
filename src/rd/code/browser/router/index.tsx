@@ -1,8 +1,7 @@
 import { Suspense, memo } from 'react';
-import { Routes, HashRouter } from 'react-router-dom';
-import { renderRoutes, reserveRoutes } from '@rapid/libs-web/router';
+import { HashRouter } from 'react-router-dom';
+import { reserveRoutes, Router } from '@rapid/libs-web/router';
 import { useShallowReactive } from '@rapid/libs-web';
-import { Skeleton } from 'antd';
 
 import RouterErrorBoundary from './mods/ErrorBoundary';
 import LazyComponent from './mods/LazyComponent';
@@ -12,10 +11,9 @@ import * as presetRoutes from './modules';
 export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
 
 /**
- * 渲染所有的 routes
+ * 渲染路由
  */
-export const RdRoutes = memo(() => {
-
+export const RdRouter = memo(() => {
   const [shallowState] = useShallowReactive(() => ({
     routes: [
       presetRoutes.rootRoute
@@ -23,11 +21,12 @@ export const RdRoutes = memo(() => {
   }))
 
   return (
-    <Routes>
-      {renderRoutes(shallowState.routes, {
+    <Router
+      routes={shallowState.routes}
+      renderComponents={{
         onLazyComponent: LazyComponent
-      })}
-    </Routes>
+      }}
+    />
   )
 })
 
@@ -38,7 +37,7 @@ export const RdRouterWrapper = memo(() => {
       <Suspense
         fallback={<RouterErrorBoundary />}
       >
-        <RdRoutes />
+        <RdRouter />
       </Suspense>
     </HashRouter>
   )
