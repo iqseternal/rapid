@@ -1,6 +1,7 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
 import type { DragEventHandler } from 'react';
 import { useMeta2dEffect } from 'rd/code/browser/meta2d';
+import { useRoute } from '@rapid/libs-web';
 
 import Widget from '@/components/Widget';
 import IconFont from 'rd/code/browser/components/IconFont';

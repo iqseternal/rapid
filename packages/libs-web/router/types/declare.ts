@@ -1,8 +1,6 @@
-
-
-import type { FC, ReactElement, LazyExoticComponent, JSX, MemoExoticComponent } from 'react';
+import type { FC, ReactElement, LazyExoticComponent, MemoExoticComponent } from 'react';
 import type { PathRouteProps } from 'react-router-dom';
-import type { RedirectProps } from './Redirect';
+import type { RedirectProps } from '../mods/Redirect';
 
 /**
  * RouteMeta 用户表示一个路由对象的元数据
@@ -34,15 +32,21 @@ export interface RouteConfig extends Omit<PathRouteProps, 'children'> {
    * 让 component 支持多种配置方式
    *
    */
-  component?: FC | ReactElement | LazyExoticComponent<any> | MemoExoticComponent<any>;
+  component?:
+    | FC
+    | ReactElement
+    | LazyExoticComponent<any>
+    | MemoExoticComponent<any>;
 
   /**
    * 重定向参数, 参考重定向组件
    */
-  redirect?: string | {
-    from: RedirectProps['from'];
-    to: RedirectProps['to'];
-  };
+  redirect?:
+    | string
+    | {
+        from: RedirectProps['from'];
+        to: RedirectProps['to'];
+      };
 
   children?: RouteConfig[];
 }

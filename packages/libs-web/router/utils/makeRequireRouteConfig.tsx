@@ -1,5 +1,5 @@
 import { isString, Ansi } from '@rapid/libs';
-import type { RouteMeta, RouteConfig } from './declare';
+import type { RouteMeta, RouteConfig } from '../types/declare';
 
 import path from 'path-browserify';
 
@@ -54,9 +54,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
   // 如果没有处理 fullPath, 那么自动填充
   if (!route.meta.fullPath) {
     if (route.path.startsWith('/')) route.meta.fullPath = route.path;
-    else {
-      route.meta.fullPath = path.join(basePath, route.path);
-    }
+    else route.meta.fullPath = path.join(basePath, route.path);
   }
 
   // 解决重定向

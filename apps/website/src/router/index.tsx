@@ -1,7 +1,7 @@
 import { Suspense, useEffect, memo } from 'react';
 import type { ReactElement } from 'react';
 import { Routes, BrowserRouter } from 'react-router-dom';
-import { makeRoute, renderRoutes, reserveRoutes } from '@rapid/libs-web/router';
+import { makeRoute, Router, reserveRoutes } from '@rapid/libs-web/router';
 import { Skeleton } from 'antd';
 
 import * as presetRoutes from './modules';
@@ -20,11 +20,11 @@ export const RouterWrapper = memo(() => {
           </>
         )}
       >
-        <Routes>
-          {renderRoutes([presetRoutes.rootRoute], {
-            /**
-             * 异步 lazy 组件展示
-             */
+        <Router
+          routes={[
+            presetRoutes.rootRoute
+          ]}
+          renderComponents={{
             onLazyComponent: ({ children }) => {
               return (
                 <Suspense
@@ -38,8 +38,8 @@ export const RouterWrapper = memo(() => {
                 </Suspense>
               )
             }
-          })}
-        </Routes>
+          }}
+        />
       </Suspense>
     </BrowserRouter>
   )

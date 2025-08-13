@@ -98,6 +98,10 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): (re
     for (const key in initialState) state[key] = initialState[key];
   }, []);
 
+  if ((typeof initValue === 'function') !== isInitStateFunction) {
+    throw new Error('useDeepReactive 参数在多次运行中出现不一致的情况, 请检查参数是否为函数类型');
+  }
+
   if (isInitStateFunction) return [state, resetState] as const;
   return [state] as const;
 }
@@ -156,6 +160,10 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
     for (const key in initialState) state[key] = initialState[key];
   }, []);
+
+  if ((typeof initValue === 'function') !== isInitStateFunction) {
+    throw new Error('useShallowReactive 参数在多次运行中出现不一致的情况, 请检查参数是否为函数类型');
+  }
 
   if (isInitStateFunction) return [state, resetState] as const;
   return [state] as const;

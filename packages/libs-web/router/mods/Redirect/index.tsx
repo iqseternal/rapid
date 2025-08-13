@@ -1,8 +1,8 @@
 import { isString } from '@rapid/libs';
 import { FC, LazyExoticComponent, MemoExoticComponent, ReactElement, useEffect } from 'react';
 import { isValidElement, useMemo, memo } from 'react';
-import { Outlet, useLocation, Navigate, useNavigate } from 'react-router-dom';
-import { useShallowReactive } from '../../hooks';
+import { Outlet, useLocation, Navigate } from 'react-router-dom';
+import { useShallowReactive } from '../../../hooks';
 
 /**
  * 重定向组件的 props
