@@ -83,7 +83,7 @@ declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.J
 
 declare const Wrong: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
-declare const REmptyInstance: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
+declare const REmptyInstance: {};
 type EmptyType = (typeof REmptyInstance) & {
     readonly NotHasAnyData: typeof NotHasAnyData;
     readonly Wrong: typeof Wrong;
@@ -92,10 +92,21 @@ declare const REmpty: EmptyType;
 
 type IconInstance = typeof iconInstance__default;
 type IconProps = Parameters<IconInstance>[0];
+/**
+ * 使用 ant-design 的图标库
+ * @see https://ant.design/components/icon-cn
+ */
 type IconRealKey = Exclude<keyof typeof iconInstance, 'createFromIconfontCN' | 'default' | 'IconProvider' | 'setTwoToneColor' | 'getTwoToneColor'>;
+/**
+ * 自定义解析的图标库,
+ * TODO: 如果添加了自定义解析图标库, 可将 string 替换为具体的类型定义
+ */
 type IconCustomKey = `icon-${string}`;
 type IconKey = IconRealKey | IconCustomKey;
-interface IconFontProps extends Partial<IconProps> {
+interface IconFontProps extends IconProps {
+    /**
+     * 图标
+     */
     readonly icon: IconKey;
 }
 /**
@@ -110,9 +121,13 @@ interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
      * 内部的 className
      */
     readonly innerClassName?: string;
-    /** 当前控件是否具有 hover 背景特性 */
+    /**
+     * 当前控件是否具有 hover 背景特性
+     */
     readonly hasHoverStyle?: boolean;
-    /** 当前控件展示的图标元素 */
+    /**
+     * 当前控件展示的图标元素
+     */
     readonly icon?: IconKey;
     /**
      * 当前控件是否处于 loading 状态
@@ -134,7 +149,9 @@ interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
      * 展示提示文本的 tooltip 的 attrs
      */
     readonly tipAttrs?: TooltipProps;
-    /** 是否禁用当前控件 */
+    /**
+     * 是否禁用当前控件
+     */
     readonly disabled?: boolean;
 }
 /**
@@ -203,12 +220,12 @@ declare const isReactComponent: <Target extends Component<any, {}, any> | FC<any
  * Ellipsis props
  */
 interface EllipsisProps {
-    children?: ReactNode;
-    className?: string;
+    readonly children?: ReactNode;
+    readonly className?: string;
     /**
      * 如果传递的 children 展示为空时, 展示的默认字符串
      */
-    defaultContent?: string;
+    readonly defaultContent?: string;
     /**
      * 如果 children 字符串的内容超过了父容器, 那么就因该显示省略号, 同时 hover 应该展示完全内容
      *
@@ -218,11 +235,11 @@ interface EllipsisProps {
      *
      * 默认是: Tooltip
      */
-    overlayRender?: (children: ReactNode) => ReactElement;
+    readonly overlayRender?: (children: ReactNode) => ReactElement;
     /**
      * tooltip 的 attrs, 默认为 tooltip
      */
-    tipAttrs?: TooltipProps;
+    readonly tipAttrs?: TooltipProps;
 }
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Tooltip
@@ -261,7 +278,7 @@ interface EllipsisTooltipProps extends Omit<EllipsisProps, 'overlayRender'> {
     /**
      * tooltip 的 attrs
      */
-    tipAttrs?: TooltipProps;
+    readonly tipAttrs?: TooltipProps;
 }
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Tooltip
@@ -283,7 +300,7 @@ interface EllipsisPopoverProps extends Omit<EllipsisProps, 'overlayRender'> {
     /**
      * popover 的 attrs
      */
-    tipAttrs?: PopoverProps;
+    readonly tipAttrs?: PopoverProps;
 }
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Popover
@@ -320,26 +337,35 @@ declare enum Timestamp {
      * 1 分钟
      */
     Minute = 60000,
+    HalfMinute = 30000,
     /**
      * 1 小时
      */
     Hour = 3600000,
+    HalfHour = 1800000,
     /**
      * 1 天
      */
     Day = 86400000,
+    HalfDay = 43200000,
     /**
      * 1 周
      */
     Week = 604800000,
+    HalfWeek = 302400000,
     /**
      * 1 月 - 30 天
      */
     Month = 2592000000,
+    HalfMonth = 1296000000,
+    Month28 = 2419200000,
+    Month30 = 2592000000,
+    Month31 = 2678400000,
     /**
      * 1 年 - 365 天
      */
     Year = 31536000000,
+    HalfYear = 15768000000,
     /**
      * 1 年 - 366 天
      */
@@ -447,7 +473,7 @@ declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extend
 /**
  * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
  */
-declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
+declare function createShallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
 /**
  * 对接扩展心跳机制地凭证
@@ -509,9 +535,14 @@ declare const useDocStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<DocS
     }) => void), shouldReplace?: boolean): void;
 }>;
 
+declare const enum SidebarStatus {
+    None = "none",
+    Left = "left",
+    Right = "right"
+}
 interface ThemeStore {
     layout: {
-        mainSidebar: 'none' | 'left' | 'right';
+        mainSidebar: SidebarStatus;
     };
 }
 declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<ThemeStore>, "persist"> & {
@@ -527,7 +558,7 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
 }, "setState"> & {
     setState(nextStateOrUpdater: ThemeStore | Partial<ThemeStore> | ((state: {
         layout: {
-            mainSidebar: 'none' | 'left' | 'right';
+            mainSidebar: SidebarStatus;
         };
     }) => void), shouldReplace?: boolean): void;
 }>;
@@ -1261,7 +1292,7 @@ declare class WindowService {
      * declare const id: number;
      * const windowService = WindowService.findWindowService(id);
      */
-    static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]): WindowService;
+    static findWindowService(key: string | number | IpcMainEvent | IpcMainInvokeEvent): WindowService;
     /**
      * 判断是否是同一个 WindowService
      */
@@ -1832,7 +1863,7 @@ declare const windowSetSize: (options: {
 declare const windowSetPosition: (options: {
     id?: number;
     windowKey?: string;
-    x: number | "left" | "right" | "center";
+    x: number | "center" | "left" | "right";
     y: number | "top" | "center" | "bottom";
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
 /**
@@ -2077,7 +2108,7 @@ declare global {
                     /**
                      * ui-header 图标展示
                      */
-                    'ui.layout.header.icon': ComponentType;
+                    'ui.layout.header.icon': ComponentType[];
                     /**
                      * ui-header-menu 菜单前展示
                      */
@@ -2105,15 +2136,15 @@ declare global {
                     /**
                      * ui-header最小化控件
                      */
-                    'ui.layout.header.controller.widgets.min': ComponentType;
+                    'ui.layout.header.controller.widgets.min': ComponentType[];
                     /**
                      * ui-header还原控件
                      */
-                    'ui.layout.header.controller.widgets.reduction': ComponentType;
+                    'ui.layout.header.controller.widgets.reduction': ComponentType[];
                     /**
                      * ui-header关闭控件
                      */
-                    'ui.layout.header.controller.widgets.close': ComponentType;
+                    'ui.layout.header.controller.widgets.close': ComponentType[];
                     /**
                      * ui-header控件后插槽
                      */
@@ -2303,7 +2334,7 @@ declare global {
              */
             readonly libs: {
                 readonly injectReadonlyVariable: typeof injectReadonlyVariable;
-                readonly createSallowProxy: typeof createSallowProxy;
+                readonly createShallowProxy: typeof createShallowProxy;
                 readonly rApiGet: typeof rApiGet;
                 readonly rApiPost: typeof rApiPost;
                 readonly rApiPut: typeof rApiPut;

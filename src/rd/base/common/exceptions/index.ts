@@ -33,7 +33,7 @@ export class Exception<ErrMessageData extends ExceptionErrorMsgData> {
 
     if (IS_DEV) {
       if (label.startsWith('<') && label.endsWith('>')) {
-        PrinterService.printWarn(`Exception label属性传递不应该被 <> 包裹`);
+        PrinterService.printError(`Exception label属性传递不应该被 <> 包裹`);
       }
     }
 

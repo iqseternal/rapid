@@ -1,6 +1,7 @@
 
 export type { RouteConfig, RouteMeta } from './types';
 
+export type { CompleteRouteConfig, CompleteRouteMeta } from './func/makeRoute';
 export { makeRoute, reserveRoutes } from './func';
 
 export type { RouterProps, RouterRenderComponents } from './mods/Router';

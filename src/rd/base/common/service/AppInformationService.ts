@@ -15,7 +15,7 @@ export class AppInformationService extends SingleInstanceService {
     appVersion: `V${packInformation.information.version}`,
 
     appApiUrls: {
-      rApiServer: 'http://oupro.cn/api/',
+      rApiServerHost: 'http://oupro.cn/',
       rApiServerV1: 'http://oupro.cn/api/v1/',
 
       // rApi: 'http://127.0.0.1:3000/api/v1/',

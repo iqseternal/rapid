@@ -106,7 +106,6 @@ export class WindowService {
    * const windowService = WindowService.findWindowService(id);
    */
   public static findWindowService(key: string | number | IpcMainEvent | IpcMainInvokeEvent): WindowService {
-    // override 1
     if (isString(key)) {
       const service = WindowServiceStateMachine.findWindowService(key);
       if (service) return service;

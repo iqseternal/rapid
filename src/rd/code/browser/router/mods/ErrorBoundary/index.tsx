@@ -1,6 +1,4 @@
-import { Skeleton } from 'antd';
-import type { ReactNode } from 'react';
-import { Suspense, memo } from 'react';
+import { memo } from 'react';
 
 export interface RouterErrorBoundaryProps {
 

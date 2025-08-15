@@ -196,6 +196,7 @@ export class Skin<PayloadSheet extends CssVariablePayloadSheet> {
    * 卸载当前皮肤，移除 CSS 变量样式
    */
   public uninstall() {
+
     if (this.runtimeContext.styleTag) {
       this.runtimeContext.styleTag.remove();
       this.runtimeContext.styleTag = void 0; // 置空, 防止多次 remove

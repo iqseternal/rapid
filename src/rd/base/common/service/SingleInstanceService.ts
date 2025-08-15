@@ -2,7 +2,7 @@
 /**
  * 单实例抽象基类
  */
-export abstract class SingleInstanceService {
+export class SingleInstanceService {
   private static instanceMap = new WeakMap<Function, SingleInstanceService>();
   private static isCanNew = false;
 

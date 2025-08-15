@@ -86,6 +86,8 @@ export const RdApp = memo(() => {
       <Toaster
         position='bottom-right'
       />
+
+      {IS_DEV && (<ClickToComponent />)}
     </ConfigProvider>
   )
 })
@@ -95,17 +97,6 @@ export const RdApp = memo(() => {
  */
 export const RdAppWrapper = memo(() => {
   useExtends();
-
-  if (IS_DEV) {
-    return (
-      <>
-        {IS_DEV && (
-          <ClickToComponent />
-        )}
-        <RdApp />
-      </>
-    )
-  }
 
   return (<RdApp />)
 })

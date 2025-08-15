@@ -14,6 +14,10 @@ export default rApp.extension.defineExtension({
 
   onActivated() {
 
+    const dm = rApp.metadata.defineMetadataInVector('functional.theme.variables.transformer', () => {
+      
+    });
+
     rApp.printer.printInfo('example-11 activated');
 
   },
