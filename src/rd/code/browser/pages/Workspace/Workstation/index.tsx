@@ -85,6 +85,13 @@ const Meta2dContainer = () => {
 };
 
 export const Workstation = memo(() => {
+  // const [route] = useRoute();
+
+  // console.log(route);
+
+  console.log('刷新');
+
+
 
 
   return (

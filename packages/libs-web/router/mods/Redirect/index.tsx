@@ -1,8 +1,6 @@
-import { isString } from '@rapid/libs';
-import { FC, LazyExoticComponent, MemoExoticComponent, ReactElement, useEffect } from 'react';
+import type { FC, LazyExoticComponent, MemoExoticComponent, ReactElement } from 'react';
 import { isValidElement, useMemo, memo } from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router-dom';
-import { useShallowReactive } from '../../../hooks';
 
 /**
  * 重定向组件的 props
@@ -46,29 +44,25 @@ export const Redirect = memo((props: RedirectProps) => {
 
   const location = useLocation();
 
-  const [shallowState] = useShallowReactive({
-    isMatched: false
-  })
+  const needRedirect = (typeof from === 'string') ? location.pathname === from : from.test(location.pathname);
 
-  useEffect(() => {
-    if (isString(from)) {
-      shallowState.isMatched = location.pathname === from;
-      return;
-    }
+  const NavigateElement = useMemo(() => {
+    return (
+      <Navigate
+        to={to}
+      />
+    )
+  }, [to]);
 
-    shallowState.isMatched = from.test(location.pathname);
-  }, [location.pathname, from, to]);
-
-  return useMemo(() => {
-    if (shallowState.isMatched) return <Navigate to={to}/>;
+  const LayoutElement = useMemo(() => {
     if (isValidElement(element)) return element;
 
     const Element = element as FC;
 
-    return (
-      <Element />
-    );
-  }, [shallowState.isMatched, element]);
+    return <Element />;
+  }, [element]);
+
+  return needRedirect ? NavigateElement : LayoutElement;
 })
 
 export type RedirectType = typeof Redirect;

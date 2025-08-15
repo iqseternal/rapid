@@ -1,4 +1,4 @@
-import { useRef, memo, useLayoutEffect } from 'react';
+import { useRef, memo, useLayoutEffect, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useFadeInEffect } from '@/libs/hooks';

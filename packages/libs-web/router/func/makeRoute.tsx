@@ -1,5 +1,5 @@
+import type { RouteMeta, RouteConfig } from '../types';
 import { isString, Ansi } from '@rapid/libs';
-import type { RouteMeta, RouteConfig } from '../types/declare';
 
 import path from 'path-browserify';
 
