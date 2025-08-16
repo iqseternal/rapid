@@ -17,7 +17,9 @@ import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
 import * as _meta2d_core from '@meta2d/core';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
-import { IpcMainInvokeEvent, IpcMainEvent, BrowserWindow, BrowserWindowConstructorOptions, OpenDevToolsOptions } from 'electron';
+import * as _rapid_m_ipc_core from '@rapid/m-ipc-core';
+import { IpcActionEvent, IpcActionType } from '@rapid/m-ipc-core';
+import { BrowserWindow, BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent, OpenDevToolsOptions } from 'electron';
 
 /**
  * 请求 hConfig 配置
@@ -1079,87 +1081,6 @@ declare class Exception<ErrMessageData extends ExceptionErrorMsgData> {
     constructor(message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>);
 }
 
-/** Ipc 事件类型 */
-declare const enum IpcActionEvent {
-    Handle = 0,
-    On = 1
-}
-/** 自定义 ipc action 对象 */
-type IpcActionType<EvtActionType extends IpcActionEvent, Channel extends string = string, Action extends (...args: any[]) => any = (...args: any[]) => any> = {
-    /**
-     * 句柄名称
-     */
-    readonly channel: Channel;
-    /**
-     * 编写的 Action 回调, 可以让其他 Action 进行调用
-     */
-    readonly action: Action;
-    /**
-     * Action Type
-     */
-    readonly actionType: EvtActionType;
-    /**
-     * 中间件列表
-     */
-    readonly middlewares: IpcActionMiddleware<EvtActionType>[];
-    /**
-     * ipc 句柄的处理函数, 该函数会走中间件, 调用 action 对象的 action 方法作为返回值
-     */
-    readonly listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => Promise<any>;
-};
-/** 在中间件中 onSuccess 或者 onError 中获取当前的 action 信息的类型 */
-type IpcActionMessageType<EvtActionType extends IpcActionEvent> = Omit<IpcActionType<EvtActionType>, 'middlewares'> & {
-    readonly event: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent;
-};
-/**
- * Ipc Action 中间件
- */
-type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
-    /**
-     * 中间件名称
-     */
-    readonly name: string;
-    /**
-     * 转换参数, 可以利用本函数为每个子项的 action 函数提供统一的参数前缀, 因为默认情况下 electron ipc 第一个参数为 事件 e: IpcMainInvokeEvent | IpcMainEvent
-     * 可能需要转换自定义对象或者 已有的 窗口对象
-     *
-     * @example
-     * export const convertWindowService: IpcActionMiddleware<IpcActionEvent.Handle> = {
-     *   name: 'convertWindowService',
-     *   transformArgs(e, ...args) {
-     *     const windowService = WindowService.findWindowService(e);
-     *     return [windowService, ...args];
-     *   }
-     * }
-     */
-    readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<any[]>;
-    /**
-     * 转换响应
-     */
-    readonly transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
-    /**
-     * 在 action 正式处理之前的回调函数
-     */
-    readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
-    /**
-     * 在 action 处理之后的回调函数
-     */
-    readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
-    /**
-     * 在 action 正确处理 ipc 句柄的成功回调函数
-     * @param res 正确处理的返回数据
-     * @param message 返回处理当前 ipc 句柄的信息
-     */
-    readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => Promise<void>;
-    /**
-     * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
-     * 如果不处理, 那么会在主进程产出一个错误.
-     * @param res 错误处理时产生的异常对象
-     * @param message 返回处理当前 ipc 句柄的信息
-     */
-    readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => Promise<void | Exception<ExceptionErrorMsgData>>;
-};
-
 /**
  * 创建 windowService 的选项
  */
@@ -1214,8 +1135,8 @@ declare class WindowService {
 declare const ipcOnBroadcast: {
     readonly channel: "IpcBroadcast";
     readonly action: (windowService: WindowService, evtName: string, data: any) => Promise<void>;
-    readonly actionType: IpcActionEvent.On;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.On>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.On;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.On>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1225,8 +1146,8 @@ declare const ipcOnBroadcast: {
 declare const ipcOpenDevTool: {
     readonly channel: "IpcDevTool/openDevTool";
     readonly action: (e: Electron.IpcMainInvokeEvent, status: boolean, options?: OpenDevToolsOptions) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1275,8 +1196,8 @@ declare class DepositService<DepositEntries = unknown> {
 declare const ipcForwardDataTakeIn: {
     readonly channel: "IpcForwardData/takeIn";
     readonly action: (_: WindowService, key: string, data: any) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1285,8 +1206,8 @@ declare const ipcForwardDataTakeIn: {
 declare const ipcForwardDataTakeOut: {
     readonly channel: "IpcForwardData/takeOut";
     readonly action: (_: WindowService, key: string, options?: DepositService.TakeOutOptions) => Promise<any>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1301,8 +1222,8 @@ interface AppStoreType {
 declare const ipcAppStoreGetStore: {
     readonly channel: "IpcStore/appStore/getStore";
     readonly action: () => Promise<AppStoreType>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1311,8 +1232,8 @@ declare const ipcAppStoreGetStore: {
 declare const ipcAppStoreGet: {
     readonly channel: "IpcStore/appStore/get";
     readonly action: <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType>[Key]>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1321,8 +1242,8 @@ declare const ipcAppStoreGet: {
 declare const ipcAppStoreSet: {
     readonly channel: "IpcStore/appStore/set";
     readonly action: <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1331,8 +1252,8 @@ declare const ipcAppStoreSet: {
 declare const ipcAppStoreReset: {
     readonly channel: "IpcStore/appStore/reset";
     readonly action: <Key extends keyof AppStoreType>(_: WindowService, ...keys: Key[]) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1341,8 +1262,8 @@ declare const ipcAppStoreReset: {
 declare const ipcAppStoreHas: {
     readonly channel: "IpcStore/appStore/has";
     readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<boolean>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1351,8 +1272,8 @@ declare const ipcAppStoreHas: {
 declare const ipcAppStoreDelete: {
     readonly channel: "IpcStore/appStore/delete";
     readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1361,8 +1282,8 @@ declare const ipcAppStoreDelete: {
 declare const ipcAppStoreClear: {
     readonly channel: "IpcStore/appStore/clear";
     readonly action: (_: WindowService) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1375,8 +1296,8 @@ declare const ipcWindowMaximize: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1388,8 +1309,8 @@ declare const ipcWindowMinimize: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1401,8 +1322,8 @@ declare const ipcWindowReductionSize: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1415,8 +1336,8 @@ declare const ipcWindowResizeAble: {
         windowKey?: string;
         resizeAble: boolean;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1428,8 +1349,8 @@ declare const ipcWindowRelaunch: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1443,8 +1364,8 @@ declare const ipcWindowSetMinimumSize: {
         width: number;
         height: number;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1458,8 +1379,8 @@ declare const ipcWindowSetSize: {
         width: number;
         height: number;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1472,8 +1393,8 @@ declare const ipcWindowResetCustomSize: {
         windowKey?: string;
         type: 'mainWindow';
     }) => Promise<boolean>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1487,8 +1408,8 @@ declare const ipcWindowSetPosition: {
         x: 'center' | 'left' | 'right' | number;
         y: 'center' | 'top' | 'bottom' | number;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1500,8 +1421,8 @@ declare const ipcOpenWindow: {
         windowKey?: string;
         subUrl: string;
     }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1517,8 +1438,8 @@ declare const ipcWindowClose: {
          */
         fictitious?: boolean;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1531,8 +1452,8 @@ declare const ipcWindowShow: {
         windowKey?: string;
         show: boolean;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1552,8 +1473,8 @@ declare const ipcWindowProperties: {
     readonly action: (windowService: WindowService, selectedOptions: {
         windowKey?: string;
     }, properties: Partial<WindowProperties>) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1565,8 +1486,8 @@ declare const ipcWindowWorkAreaSize: {
         readonly width: number;
         readonly height: number;
     }>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1797,10 +1718,6 @@ declare const windowResetCustomSize: (options: {
  * @returns
  */
 declare const windowMax: (options?: {
-    /**
-     * 恢复窗口为定制化大小
-     * @returns
-     */
     id?: number;
     windowKey?: string;
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;

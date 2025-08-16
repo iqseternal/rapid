@@ -31,7 +31,7 @@ export interface RdBuilderConfig {
 /**
  * 定义 ts-packer 配置
  */
-export function defineConfig<T extends RdBuilderConfig>(config: T): T {
+export function defineConfig(config: RdBuilderConfig): typeof config {
   if (typeof config !== 'object') {
     printError(`${RdBuilderConfigName} 配置文件必须默认导出一个对象`);
     process.exit(1);
