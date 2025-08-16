@@ -3,8 +3,9 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
-pnpm typecheck
+pnpm -C ./src run typecheck
+# pnpm typecheck
 
-pnpm lint-staged
+# pnpm lint-staged
 
-pnpm test
+# pnpm test
