@@ -1,4 +1,5 @@
+import { RdThemeExtension } from './RdThemeExtension';
 
-export * from './innerExtensionNames';
-
-export * from './RdThemeExtension';
+export async function setupInnerExtensions() {
+  rApp.extension.registerExtension(RdThemeExtension);
+}

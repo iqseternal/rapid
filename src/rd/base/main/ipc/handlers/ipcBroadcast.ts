@@ -7,7 +7,7 @@
 
 import { BrowserWindow } from 'electron';
 import { WindowService } from '../../service/WindowService';
-import { toMakeIpcAction } from '../framework';
+import { toMakeIpcAction } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 
 const { makeIpcOnAction } = toMakeIpcAction<[], [WindowService]>({

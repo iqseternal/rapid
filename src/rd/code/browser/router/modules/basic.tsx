@@ -4,17 +4,17 @@ import { makeRoute } from '@rapid/libs-web/router';
 export const notFoundRoute = makeRoute({
   name: 'NotFound',
   path: '*',
-  component: lazy(() => import('@/components/NotFound'))
+  component: lazy(() => import('@/pages/NotFound'))
 });
 
 export const notRoleRoute = makeRoute({
   name: 'NotRole',
   path: '/403',
-  component: lazy(() => import('@/components/NotRole'))
+  component: lazy(() => import('@/pages/NotRole'))
 });
 
 export const ticketRoute = makeRoute({
   name: 'TicketRoute',
   path: '/ticket',
-  component: lazy(() => import('../../pages/Ticket'))
+  component: lazy(() => import('@/pages/Ticket'))
 })

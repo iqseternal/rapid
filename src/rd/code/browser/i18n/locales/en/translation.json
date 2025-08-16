@@ -2,72 +2,101 @@
   "ui": {
     "components": {
       "nothasanydata": {
-        "empty": "暂无数据"
+        "empty": "No data"
+      },
+      "notfound": {
+        "notfound": "Page not found"
+      },
+      "notrole": {
+        "notrole": "No permission"
       }
     },
     "layout": {
       "workspace": {
         "navigation": {
           "bar": {
-            "settings": "设置"
+            "settings": "Settings"
           }
         }
       }
     }
   },
-  "login": {
-    "language": "Change language"
+  "test": {
+    "widgets": {
+      "i18n": {
+        "changelanguage": "Change language"
+      }
+    }
   },
   "menus": {
     "header": {
       "filemenu": {
-        "label": "文件",
-        "newwindow": "newwindow",
-        "newdoc": "newdoc",
-        "blankdoc": "blankdoc",
-        "templatedoc": "templatedoc",
-        "open": "open",
-        "recent": "recent",
-        "save": "save",
-        "saveas": "saveas",
-        "export": "export",
-        "autosave": "autosave",
-        "option": "option",
-        "settings": "settings",
-        "print": "print"
+        "label": "File",
+        "newwindow": "New window",
+        "newdoc": "New document",
+        "blankdoc": "Blank document",
+        "templatedoc": "Template document",
+        "open": "Open",
+        "recent": "Recent",
+        "save": "Save",
+        "saveas": "Save as",
+        "export": "Export",
+        "autosave": "Autosave",
+        "option": "Option",
+        "settings": "Settings",
+        "print": "Print"
       },
       "editmenu": {
-        "label": "编辑",
-        "undo": "撤销",
-        "redo": "恢复",
-        "cut": "剪切",
-        "copy": "复制",
-        "paste": "粘贴",
-        "selectall": "全选",
-        "delete": "删除"
+        "label": "Edit",
+        "undo": "Undo",
+        "redo": "Redo",
+        "cut": "Cut",
+        "copy": "Copy",
+        "paste": "Paste",
+        "selectall": "Select all",
+        "delete": "Delete"
       },
       "viewmenu": {
-        "label": "查看",
-        "view": "视图",
-        "appearance": "外观",
-        "fullscreen": "全屏",
-        "menubar": "菜单栏",
-        "sidebars": "侧边栏",
-        "mainsidebar": "主侧边栏",
-        "show": "展示",
-        "hide": "隐藏",
-        "left": "左侧",
-        "right": "右侧"
+        "label": "View",
+        "view": "View",
+        "appearance": "Appearance",
+        "fullscreen": "Fullscreen",
+        "menubar": "Menu bar",
+        "sidebars": "Sidebars",
+        "mainsidebar": "Main sidebar",
+        "show": "Show",
+        "hide": "Hide",
+        "left": "Left",
+        "right": "Right"
       },
       "helpmenu": {
-        "label": "帮助",
-        "welcome": "欢迎",
-        "website": "官网",
-        "document": "文档",
-        "checkupdate": "检查更新",
-        "reload": "重新加载",
-        "devtool": "打开开发人员工具",
-        "about": "关于"
+        "label": "Help",
+        "welcome": "Welcome",
+        "website": "Website",
+        "document": "Document",
+        "checkupdate": "Check update",
+        "reload": "Reload",
+        "devtool": "Open dev tools",
+        "about": "About"
+      }
+    }
+  },
+  "plats": {
+    "widgets": {
+      "control": {
+        "close": {
+          "close": "Close window"
+        },
+        "debug": {
+          "openDevtool": "Open dev tools"
+        },
+        "min": {
+          "minimize": "Minimize"
+        },
+        "reduction": {
+          "reduction": "Restore",
+          "maximize": "Maximize"
+        }
       }
     }
   }

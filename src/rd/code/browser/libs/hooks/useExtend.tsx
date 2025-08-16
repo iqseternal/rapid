@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 /**
  * 使用扩展
@@ -6,7 +6,7 @@ import { useLayoutEffect } from 'react';
 export function useExtends() {
 
   const [extensionList] = rApp.extension.useExtensionsList();
-  useLayoutEffect(() => {
+  useEffect(() => {
     const context: Rapid.Extend.ExtensionContext = {}
 
     extensionList.forEach(extension => {
@@ -14,9 +14,8 @@ export function useExtends() {
     })
   }, [extensionList]);
 
-
   const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transformer');
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!themePayloadTransformers) return;
 
     rApp.skin.skin.resetCssVariablesPayloadSheet();

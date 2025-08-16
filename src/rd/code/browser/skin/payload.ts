@@ -105,15 +105,15 @@ export const uiWidgetBorderRadius = mrcvp('--rd-ui-widget-border-radius', '4px',
 // UI: Components/器件
 // ==================================================================================
 
+export const uiDefaultButtonBackground = mrcvp('--rd-ui-default-button-background', `var(${colorNeutral50.variable})`, '默认按钮背景色');
+export const uiDefaultButtonTextColor = mrcvp('--rd-ui-default-button-text-color', `var(${colorNeutral700.variable})`, '默认按钮文本色');
+export const uiDefaultButtonRadius = mrcvp('--rd-ui-default-button-radius', '10px', '默认按钮圆角半径');
+
 export const uiCaptionBarHeight = mrcvp('--rd-ui-caption-bar-height', '32px', '标题栏高度');
 export const uiCaptionBarBackground = mrcvp('--rd-ui-caption-bar-background', `var(${colorNeutral0.variable})`, '标题栏背景色');
 
 export const uiNavigationBarWidth = mrcvp('--rd-ui-navigation-bar-width', '32px', '纵向导航栏宽度');
 export const uiNavigationBarBackground = mrcvp('--rd-ui-navigation-bar-background', `var(${colorNeutral0.variable})`, '导航栏背景色');
-
-export const uiDefaultButtonBackground = mrcvp('--rd-ui-default-button-background', `var(${colorNeutral50.variable})`, '默认按钮背景色');
-export const uiDefaultButtonTextColor = mrcvp('--rd-ui-default-button-text-color', `var(${colorNeutral700.variable})`, '默认按钮文本色');
-export const uiDefaultButtonRadius = mrcvp('--rd-ui-default-button-radius', '10px', '默认按钮圆角半径');
 
 export const uiAutoMenuBackground = mrcvp('--rd-ui-auto-menu-background', `var(${colorNeutral0.variable})`, '自动菜单背景色');
 export const uiAutoMenuTextColor = mrcvp('--rd-ui-auto-menu-text-color', `var(${colorNeutral700.variable})`, '自动菜单文本色');

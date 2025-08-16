@@ -1,24 +1,8 @@
-
-import { memo } from 'react';
-import { Empty } from 'antd';
-
 import { injectReadonlyVariable } from '@rapid/libs';
-
 import { NotHasAnyData } from './NotHasAnyData';
 import { Wrong } from './Wrong';
 
-
-const REmptyInstance = memo(() => {
-
-
-  return (
-    <Empty>
-
-
-
-    </Empty>
-  )
-})
+const REmptyInstance = {};
 
 export type EmptyType = (typeof REmptyInstance) & {
   readonly NotHasAnyData: typeof NotHasAnyData;

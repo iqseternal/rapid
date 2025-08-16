@@ -15,11 +15,11 @@ export class AppInformationService extends SingleInstanceService {
     appVersion: `V${packInformation.information.version}`,
 
     appApiUrls: {
+      rApiServerHost: 'http://oupro.cn/',
+      rApiServerV1: 'http://oupro.cn/api/v1/',
 
-      rApi: 'http://oupro.cn/api/v1/',
       // rApi: 'http://127.0.0.1:3000/api/v1/',
-
-      rxApi: 'http://oupro.cn'
+      rxApiServer: 'http://rx-mp-server.oupro.cn/'
     }
 
   } as const;

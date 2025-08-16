@@ -1,5 +1,5 @@
 import { ConfigProvider, App } from 'antd';
-import { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { memo } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { ClickToComponent } from 'click-to-react-component';
 import { useExtends } from './libs/hooks';
@@ -7,11 +7,11 @@ import { useExtends } from './libs/hooks';
 import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
 
-
 /**
  * 在这里做根组件的渲染处理, 这里的 memo 有必要, 会避免一些不必要的重新渲染
  */
 export const RdApp = memo(() => {
+
   return (
     <ConfigProvider
       componentDisabled={false}
@@ -23,11 +23,10 @@ export const RdApp = memo(() => {
       getPopupContainer={() => document.body}
       getTargetContainer={() => window}
       iconPrefixCls={'anticon'}
-      // locale={{}}
       popupMatchSelectWidth={true}
       popupOverflow={'viewport'}
       prefixCls='ant'
-      renderEmpty={() => <REmpty />}
+      renderEmpty={() => <REmpty.NotHasAnyData />}
       theme={{
         components: {
           Message: {
@@ -87,10 +86,11 @@ export const RdApp = memo(() => {
       <Toaster
         position='bottom-right'
       />
+
+      {IS_DEV && (<ClickToComponent />)}
     </ConfigProvider>
   )
 })
-
 
 /**
  * App component, 这里做各种功能的插入：例如 插件等等
@@ -98,12 +98,5 @@ export const RdApp = memo(() => {
 export const RdAppWrapper = memo(() => {
   useExtends();
 
-  return (
-    <>
-      {IS_DEV && (
-        <ClickToComponent />
-      )}
-      <RdApp />
-    </>
-  )
+  return (<RdApp />)
 })

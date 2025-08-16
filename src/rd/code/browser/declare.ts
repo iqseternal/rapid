@@ -1,11 +1,8 @@
 import type { ComponentType } from 'react';
-import type { useUserStore, useThemeStore, useDocStore } from './features';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
 import type { ThreadHandler } from 'rd/base/browser/service/Thread';
 import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
-import type { Meta2d } from '@meta2d/core';
-import type { CssVariablePayloadSheet, CssVariablesDeclaration, Skin } from 'rd/base/browser/service/Skin';
 import type { RdCssVariablePayloadSheet } from './skin';
 import type { Extension } from '@suey/rxp-meta';
 
@@ -171,7 +168,7 @@ declare global {
           /**
            * ui-header 图标展示
            */
-          'ui.layout.header.icon': ComponentType;
+          'ui.layout.header.icon': ComponentType[];
 
           /**
            * ui-header-menu 菜单前展示
@@ -206,17 +203,17 @@ declare global {
           /**
            * ui-header最小化控件
            */
-          'ui.layout.header.controller.widgets.min': ComponentType;
+          'ui.layout.header.controller.widgets.min': ComponentType[];
 
           /**
            * ui-header还原控件
            */
-          'ui.layout.header.controller.widgets.reduction': ComponentType;
+          'ui.layout.header.controller.widgets.reduction': ComponentType[];
 
           /**
            * ui-header关闭控件
            */
-          'ui.layout.header.controller.widgets.close': ComponentType;
+          'ui.layout.header.controller.widgets.close': ComponentType[];
 
           /**
            * ui-header控件后插槽
@@ -313,7 +310,7 @@ declare global {
      * RApp
      */
     export interface RApp {
-      meta2d?: Meta2d;
+      meta2d?: import('@meta2d/core').Meta2d;
 
       readonly Antd: typeof import('antd');
       readonly spring: typeof import('@react-spring/web');
@@ -337,12 +334,12 @@ declare global {
       /**
        * 事件总线
        */
-      readonly emitter: import('@rapid/libs').Emitter<Rapid.Bus.BusEmitterEntries>;
+      readonly emitter: import('@rapid/bus').Emitter<Rapid.Bus.BusEmitterEntries>;
 
       /**
        * 带有函数返回值的事件总线功能
        */
-      readonly invoker: import('@rapid/libs').Invoker<Bus.BusInvokerEntries>;
+      readonly invoker: import('@rapid/bus').Invoker<Bus.BusInvokerEntries>;
 
       /**
        * 全局的线程管理
@@ -358,9 +355,9 @@ declare global {
        * 全局的状态管理
        */
       readonly stores: {
-        readonly useUserStore: typeof useUserStore;
-        readonly useThemeStore: typeof useThemeStore;
-        readonly useDocStore: typeof useDocStore;
+        readonly useUserStore: typeof import('@/features').useUserStore;
+        readonly useThemeStore: typeof import('@/features').useThemeStore;
+        readonly useDocStore: typeof import('@/features').useDocStore;
       }
 
       /**
@@ -381,30 +378,57 @@ declare global {
         readonly useTranslation: typeof import('react-i18next').useTranslation;
       }
 
+      /**
+       * 内置常量
+       */
       readonly constants: {
         readonly Timestamp: typeof import('rd/base/common/constants').Timestamp;
       }
 
+      /**
+       * 提供可以公用的组件
+       */
       readonly components: {
+        /**
+         * 文本溢出隐藏省略的组件, 当文本长度超出容器的时候, 自动展示省略号
+         */
         readonly Ellipsis: typeof import('@rapid/libs-web').Ellipsis;
+
+        /**
+         * antd 与 自定义 icon 的结合组件
+         */
         readonly IconFont: typeof import('@/components/IconFont').default;
+
+        /**
+         * 通用的 widget - 控件, 用于展示一个图标, 附带功能提示信息 作为系统功能图标
+         */
         readonly Widget: typeof import('@/components/Widget').default;
+
+        /**
+         * 展示 -空-
+         */
         readonly Empty: typeof import('@/components/Empty').default;
       }
 
+      /**
+       * 部分 service 能力
+       */
       readonly services: {
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
 
-        readonly Emitter: typeof import('@rapid/libs').Emitter;
-        readonly Invoker: typeof import('@rapid/libs').Invoker;
+        readonly Emitter: typeof import('@rapid/bus').Emitter;
+        readonly Invoker: typeof import('@rapid/bus').Invoker;
 
         readonly ExtensionManager: typeof import('@suey/rxp-meta').ExtensionManager;
         readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
       }
 
+      /**
+       * 提供基础 API-Service
+       */
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
-        readonly createSallowProxy: typeof import('@rapid/libs').createSallowProxy;
+        readonly createShallowProxy: typeof import('@rapid/libs').createShallowProxy;
 
         readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
         readonly rApiPost: typeof import('rd/base/common/api').rApiPost;

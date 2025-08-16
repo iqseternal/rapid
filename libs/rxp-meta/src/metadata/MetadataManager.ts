@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
@@ -50,6 +50,10 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
       metadataKey: metadataKey,
       metadata: metadata
     })
+
+    return () => {
+      this.delMetadata(metadataKey);
+    }
   }
 
   /**
@@ -92,6 +96,10 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
       metadataKey: metadataKey,
       metadata: metadata
     })
+
+    return () => {
+      this.delMetadata(metadataKey);
+    }
   }
 
   /**
@@ -103,7 +111,22 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
    */
   public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
-    if (!this.hasMetadata(metadataKey)) {
+    if (this.hasMetadata(metadataKey)) {
+      const vector = this.metadataMap.get(metadataKey);
+      if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
+
+      const newVector = vector.filter(v => v !== metadata);
+      newVector.push(metadata);
+
+      this.metadataMap.set(metadataKey, newVector);
+      super.updateStore();
+      this.triggerMetadataChangeListeners({
+        action: 'Define',
+        type: 'Vector',
+        metadataKey: metadataKey,
+        metadata: newVector
+      })
+    } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       super.updateStore();
       this.triggerMetadataChangeListeners({
@@ -112,23 +135,11 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
         metadataKey: metadataKey,
         metadata: [metadata] as MetadataEntries[MetadataKey]
       })
-      return;
     }
 
-    const vector = this.metadataMap.get(metadataKey);
-    if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
-
-    const newVector = vector.filter(v => v !== metadata);
-    newVector.push(metadata);
-
-    this.metadataMap.set(metadataKey, newVector);
-    super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Define',
-      type: 'Vector',
-      metadataKey: metadataKey,
-      metadata: newVector
-    })
+    return () => {
+      this.delMetadataInVector(metadataKey, metadata);
+    }
   }
 
   /**
@@ -142,7 +153,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void {
     if (!this.hasMetadata(metadataKey)) return;
 
-    const vector = this.metadataMap.get(metadataKey);
+    const vector = this.metadataMap.get(metadataKey) ?? [];
     if (!Array.isArray(vector)) throw new Error(`delMetadataInVector: current metadata value is not an array`);
     if (vector.length === 0) {
       this.metadataMap.delete(metadataKey);

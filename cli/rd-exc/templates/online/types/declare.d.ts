@@ -9,12 +9,13 @@ import * as iconInstance from '@ant-design/icons';
 import iconInstance__default from '@ant-design/icons';
 import * as react_i18next from 'react-i18next';
 import i18n from 'i18next';
+import * as zustand_middleware from 'zustand/middleware';
+import * as zustand from 'zustand';
+import * as _rapid_bus from '@rapid/bus';
 import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
-import * as zustand_middleware from 'zustand/middleware';
-import * as zustand from 'zustand';
-import { Meta2d } from '@meta2d/core';
+import * as _meta2d_core from '@meta2d/core';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
 import { IpcMainInvokeEvent, IpcMainEvent, BrowserWindow, BrowserWindowConstructorOptions, OpenDevToolsOptions } from 'electron';
 
@@ -79,11 +80,22 @@ declare const rApiPut: <SuccessResponse = unknown, FailResponse = unknown>(url: 
 declare const rApiDelete: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
 declare const rApiPatch: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
 
+/**
+ * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
+ * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
+ */
+declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
+
+/**
+ * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
+ */
+declare function createShallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
+
 declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
 declare const Wrong: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
-declare const REmptyInstance: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
+declare const REmptyInstance: {};
 type EmptyType = (typeof REmptyInstance) & {
     readonly NotHasAnyData: typeof NotHasAnyData;
     readonly Wrong: typeof Wrong;
@@ -92,11 +104,22 @@ declare const REmpty: EmptyType;
 
 type IconInstance = typeof iconInstance__default;
 type IconProps = Parameters<IconInstance>[0];
+/**
+ * 使用 ant-design 的图标库
+ * @see https://ant.design/components/icon-cn
+ */
 type IconRealKey = Exclude<keyof typeof iconInstance, 'createFromIconfontCN' | 'default' | 'IconProvider' | 'setTwoToneColor' | 'getTwoToneColor'>;
+/**
+ * 自定义解析的图标库,
+ * TODO: 如果添加了自定义解析图标库, 可将 string 替换为具体的类型定义
+ */
 type IconCustomKey = `icon-${string}`;
 type IconKey = IconRealKey | IconCustomKey;
-interface IconFontProps extends Partial<IconProps> {
-    icon: IconKey;
+interface IconFontProps extends IconProps {
+    /**
+     * 图标
+     */
+    readonly icon: IconKey;
 }
 /**
  * antd icon font
@@ -109,33 +132,39 @@ interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
     /**
      * 内部的 className
      */
-    innerClassName?: string;
-    /** 当前控件是否具有 hover 背景特性 */
-    hasHoverStyle?: boolean;
-    /** 当前控件展示的图标元素 */
-    icon?: IconKey;
+    readonly innerClassName?: string;
+    /**
+     * 当前控件是否具有 hover 背景特性
+     */
+    readonly hasHoverStyle?: boolean;
+    /**
+     * 当前控件展示的图标元素
+     */
+    readonly icon?: IconKey;
     /**
      * 当前控件是否处于 loading 状态
      */
-    loading?: boolean;
+    readonly loading?: boolean;
     /**
      * 处于 loading 状态时自定义展示 loading 元素
      */
-    loadingContent?: ReactNode;
+    readonly loadingContent?: ReactNode;
     /**
      * @default 'base'
      */
-    size?: 'base' | 'small' | 'large';
+    readonly size?: 'base' | 'small' | 'large';
     /**
      * 控件 Hover 之后展示的提示文本
      */
-    tipText?: string;
+    readonly tipText?: string;
     /**
      * 展示提示文本的 tooltip 的 attrs
      */
-    tipAttrs?: TooltipProps;
-    /** 是否禁用当前控件 */
-    disabled?: boolean;
+    readonly tipAttrs?: TooltipProps;
+    /**
+     * 是否禁用当前控件
+     */
+    readonly disabled?: boolean;
 }
 /**
  * 展示一个控件, 控件: 图标, 附带功能提示信息和事件
@@ -203,12 +232,12 @@ declare const isReactComponent: <Target extends Component<any, {}, any> | FC<any
  * Ellipsis props
  */
 interface EllipsisProps {
-    children?: ReactNode;
-    className?: string;
+    readonly children?: ReactNode;
+    readonly className?: string;
     /**
      * 如果传递的 children 展示为空时, 展示的默认字符串
      */
-    defaultContent?: string;
+    readonly defaultContent?: string;
     /**
      * 如果 children 字符串的内容超过了父容器, 那么就因该显示省略号, 同时 hover 应该展示完全内容
      *
@@ -218,11 +247,11 @@ interface EllipsisProps {
      *
      * 默认是: Tooltip
      */
-    overlayRender?: (children: ReactNode) => ReactElement;
+    readonly overlayRender?: (children: ReactNode) => ReactElement;
     /**
      * tooltip 的 attrs, 默认为 tooltip
      */
-    tipAttrs?: TooltipProps;
+    readonly tipAttrs?: TooltipProps;
 }
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Tooltip
@@ -261,7 +290,7 @@ interface EllipsisTooltipProps extends Omit<EllipsisProps, 'overlayRender'> {
     /**
      * tooltip 的 attrs
      */
-    tipAttrs?: TooltipProps;
+    readonly tipAttrs?: TooltipProps;
 }
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Tooltip
@@ -283,7 +312,7 @@ interface EllipsisPopoverProps extends Omit<EllipsisProps, 'overlayRender'> {
     /**
      * popover 的 attrs
      */
-    tipAttrs?: PopoverProps;
+    readonly tipAttrs?: PopoverProps;
 }
 /**
  * 自动检测内容是否溢出, 如果溢出展示 Popover
@@ -320,26 +349,35 @@ declare enum Timestamp {
      * 1 分钟
      */
     Minute = 60000,
+    HalfMinute = 30000,
     /**
      * 1 小时
      */
     Hour = 3600000,
+    HalfHour = 1800000,
     /**
      * 1 天
      */
     Day = 86400000,
+    HalfDay = 43200000,
     /**
      * 1 周
      */
     Week = 604800000,
+    HalfWeek = 302400000,
     /**
      * 1 月 - 30 天
      */
     Month = 2592000000,
+    HalfMonth = 1296000000,
+    Month28 = 2419200000,
+    Month30 = 2592000000,
+    Month31 = 2678400000,
     /**
      * 1 年 - 365 天
      */
     Year = 31536000000,
+    HalfYear = 15768000000,
     /**
      * 1 年 - 366 天
      */
@@ -347,107 +385,92 @@ declare enum Timestamp {
 }
 
 /**
- * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
- * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
+ * 对接扩展心跳机制地凭证
  */
-declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
-
-type EmitterListener<T> = (data: T) => void | Promise<void>;
-/**
- * 停止监听事件的函数回调
- */
-type EmitterListenerOffCallback = () => void;
-/**
- * 总线事件管理
- */
-declare abstract class EmitterManager<Entries extends Record<string | symbol, any>> {
-    private readonly effectManager;
-    constructor();
+interface UseExtensionHeartbeatVoucher {
+    readonly extension_id: number;
+    readonly extension_uuid: string;
     /**
-     * 订阅
-     * @returns
+     * 扩展内容 hash 值
      */
-    protected subscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>, options?: {
-        once?: boolean;
-    }): EmitterListenerOffCallback;
-    /**
-     * 取消订阅
-     * @returns
-     */
-    protected unsubscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>): void;
-    /**
-     * 通知处理事件
-     */
-    protected notice<K extends keyof Entries>(busName: K, data?: Entries[K]): Promise<void>;
-    /**
-     * 清空所有事件
-     */
-    protected clear(): void;
+    readonly script_hash: string;
 }
 
-declare class Emitter<Entries extends Record<string | symbol, any>> extends EmitterManager<Entries> {
-    /**
-     * 异步发射一个事件
-     */
-    emit<K extends keyof Entries>(busName: K, data?: Entries[K]): Promise<void>;
-    /**
-     * 监听一个事件
-     */
-    on<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>, options?: {
-        once?: boolean;
-    }): EmitterListenerOffCallback;
-    /**
-     * 监听一个事件（只触发一次）
-     */
-    once<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): EmitterListenerOffCallback;
-    /**
-     * 移除监听某个事件
-     */
-    off<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): void;
-    /**
-     * 移除所有监听
-     */
-    clear(): void;
+interface UserStore {
+    userinfo?: {
+        roles?: string[];
+        id?: number;
+        username?: string;
+    };
+    accessToken: string;
 }
+declare const useUserStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<UserStore>, "persist"> & {
+    persist: {
+        setOptions: (options: Partial<zustand_middleware.PersistOptions<UserStore, unknown>>) => void;
+        clearStorage: () => void;
+        rehydrate: () => void | Promise<void>;
+        hasHydrated: () => boolean;
+        onHydrate: (fn: (state: UserStore) => void) => () => void;
+        onFinishHydration: (fn: (state: UserStore) => void) => () => void;
+        getOptions: () => Partial<zustand_middleware.PersistOptions<UserStore, unknown>>;
+    };
+}, "setState"> & {
+    setState(nextStateOrUpdater: UserStore | Partial<UserStore> | ((state: {
+        userinfo?: {
+            roles?: string[];
+            id?: number;
+            username?: string;
+        };
+        accessToken: string;
+    }) => void), shouldReplace?: boolean): void;
+}>;
 
-type InvokerKey = '*' | string | symbol | number;
-type InvokerHandler = (...args: any[]) => any;
-type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
-type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
-type ExtractInvokerHandler<T extends (...args: any[]) => any> = (...args: ExtractParameters<T>) => ExtractReturnType<T>;
-/**
- * 总线事件管理 (等待函数执行获得返回结果
- */
-declare abstract class InvokerManager<Entries extends Record<InvokerKey, InvokerHandler>> {
-    private readonly effectManager;
-    /**
-     * 注册一个事件的执行函数
-     */
-    protected handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
-    /**
-     * 发送事件, 并获取执行的返回结果
-     */
-    protected invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
+interface DocStore {
+    isWork: boolean;
 }
+declare const useDocStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<DocStore>, "persist"> & {
+    persist: {
+        setOptions: (options: Partial<zustand_middleware.PersistOptions<DocStore, unknown>>) => void;
+        clearStorage: () => void;
+        rehydrate: () => void | Promise<void>;
+        hasHydrated: () => boolean;
+        onHydrate: (fn: (state: DocStore) => void) => () => void;
+        onFinishHydration: (fn: (state: DocStore) => void) => () => void;
+        getOptions: () => Partial<zustand_middleware.PersistOptions<DocStore, unknown>>;
+    };
+}, "setState"> & {
+    setState(nextStateOrUpdater: DocStore | Partial<DocStore> | ((state: {
+        isWork: boolean;
+    }) => void), shouldReplace?: boolean): void;
+}>;
 
-/**
- * 总线事件管理 (等待函数执行获得返回结果
- */
-declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends InvokerManager<Entries> {
-    /**
-     * 注册一个事件的执行函数
-     */
-    handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
-    /**
-     * 发送事件, 并获取执行的返回结果
-     */
-    invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
+declare const enum SidebarStatus {
+    None = "none",
+    Left = "left",
+    Right = "right"
 }
-
-/**
- * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
- */
-declare function createSallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
+interface ThemeStore {
+    layout: {
+        mainSidebar: SidebarStatus;
+    };
+}
+declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<ThemeStore>, "persist"> & {
+    persist: {
+        setOptions: (options: Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>) => void;
+        clearStorage: () => void;
+        rehydrate: () => void | Promise<void>;
+        hasHydrated: () => boolean;
+        onHydrate: (fn: (state: ThemeStore) => void) => () => void;
+        onFinishHydration: (fn: (state: ThemeStore) => void) => () => void;
+        getOptions: () => Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>;
+    };
+}, "setState"> & {
+    setState(nextStateOrUpdater: ThemeStore | Partial<ThemeStore> | ((state: {
+        layout: {
+            mainSidebar: SidebarStatus;
+        };
+    }) => void), shouldReplace?: boolean): void;
+}>;
 
 type ExtensionName = string | symbol;
 interface Extension<Context = any> {
@@ -846,89 +869,6 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
 }
 
 /**
- * 对接扩展心跳机制地凭证
- */
-interface UseExtensionHeartbeatVoucher {
-    readonly extension_id: number;
-    readonly extension_uuid: string;
-    /**
-     * 扩展内容 hash 值
-     */
-    readonly script_hash: string;
-}
-
-interface UserStore {
-    userinfo?: {
-        roles?: string[];
-        id?: number;
-        username?: string;
-    };
-    accessToken: string;
-}
-declare const useUserStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<UserStore>, "persist"> & {
-    persist: {
-        setOptions: (options: Partial<zustand_middleware.PersistOptions<UserStore, unknown>>) => void;
-        clearStorage: () => void;
-        rehydrate: () => void | Promise<void>;
-        hasHydrated: () => boolean;
-        onHydrate: (fn: (state: UserStore) => void) => () => void;
-        onFinishHydration: (fn: (state: UserStore) => void) => () => void;
-        getOptions: () => Partial<zustand_middleware.PersistOptions<UserStore, unknown>>;
-    };
-}, "setState"> & {
-    setState(nextStateOrUpdater: UserStore | Partial<UserStore> | ((state: {
-        userinfo?: {
-            roles?: string[];
-            id?: number;
-            username?: string;
-        };
-        accessToken: string;
-    }) => void), shouldReplace?: boolean): void;
-}>;
-
-interface DocStore {
-    isWork: boolean;
-}
-declare const useDocStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<DocStore>, "persist"> & {
-    persist: {
-        setOptions: (options: Partial<zustand_middleware.PersistOptions<DocStore, unknown>>) => void;
-        clearStorage: () => void;
-        rehydrate: () => void | Promise<void>;
-        hasHydrated: () => boolean;
-        onHydrate: (fn: (state: DocStore) => void) => () => void;
-        onFinishHydration: (fn: (state: DocStore) => void) => () => void;
-        getOptions: () => Partial<zustand_middleware.PersistOptions<DocStore, unknown>>;
-    };
-}, "setState"> & {
-    setState(nextStateOrUpdater: DocStore | Partial<DocStore> | ((state: {
-        isWork: boolean;
-    }) => void), shouldReplace?: boolean): void;
-}>;
-
-interface ThemeStore {
-    layout: {
-        mainSidebar: 'none' | 'left' | 'right';
-    };
-}
-declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<ThemeStore>, "persist"> & {
-    persist: {
-        setOptions: (options: Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>) => void;
-        clearStorage: () => void;
-        rehydrate: () => void | Promise<void>;
-        hasHydrated: () => boolean;
-        onHydrate: (fn: (state: ThemeStore) => void) => () => void;
-        onFinishHydration: (fn: (state: ThemeStore) => void) => () => void;
-        getOptions: () => Partial<zustand_middleware.PersistOptions<ThemeStore, unknown>>;
-    };
-}, "setState"> & {
-    setState(nextStateOrUpdater: ThemeStore | Partial<ThemeStore> | ((state: {
-        layout: {
-            mainSidebar: 'none' | 'left' | 'right';
-        };
-    }) => void), shouldReplace?: boolean): void;
-}>;
-
-/**
  * ==================================================================================
  * 该文件用于创建整个 App 中可以调整的 Css 样式列表
  * ==================================================================================
@@ -1007,13 +947,13 @@ declare const uiWidgetColorPrimary: CssVariablePayload<"--rd-ui-widget-color-pri
 declare const uiWidgetBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-background-primary", "var(--rd-global-color-neutral-50)", "控件颜色">;
 declare const uiWidgetHoverBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-hover-background-primary", "var(--rd-global-color-neutral-100)", "控件颜色">;
 declare const uiWidgetBorderRadius: CssVariablePayload<"--rd-ui-widget-border-radius", "4px", "控件圆角半径">;
+declare const uiDefaultButtonBackground: CssVariablePayload<"--rd-ui-default-button-background", "var(--rd-global-color-neutral-50)", "默认按钮背景色">;
+declare const uiDefaultButtonTextColor: CssVariablePayload<"--rd-ui-default-button-text-color", "var(--rd-global-color-neutral-700)", "默认按钮文本色">;
+declare const uiDefaultButtonRadius: CssVariablePayload<"--rd-ui-default-button-radius", "10px", "默认按钮圆角半径">;
 declare const uiCaptionBarHeight: CssVariablePayload<"--rd-ui-caption-bar-height", "32px", "标题栏高度">;
 declare const uiCaptionBarBackground: CssVariablePayload<"--rd-ui-caption-bar-background", "var(--rd-global-color-neutral-0)", "标题栏背景色">;
 declare const uiNavigationBarWidth: CssVariablePayload<"--rd-ui-navigation-bar-width", "32px", "纵向导航栏宽度">;
 declare const uiNavigationBarBackground: CssVariablePayload<"--rd-ui-navigation-bar-background", "var(--rd-global-color-neutral-0)", "导航栏背景色">;
-declare const uiDefaultButtonBackground: CssVariablePayload<"--rd-ui-default-button-background", "var(--rd-global-color-neutral-50)", "默认按钮背景色">;
-declare const uiDefaultButtonTextColor: CssVariablePayload<"--rd-ui-default-button-text-color", "var(--rd-global-color-neutral-700)", "默认按钮文本色">;
-declare const uiDefaultButtonRadius: CssVariablePayload<"--rd-ui-default-button-radius", "10px", "默认按钮圆角半径">;
 declare const uiAutoMenuBackground: CssVariablePayload<"--rd-ui-auto-menu-background", "var(--rd-global-color-neutral-0)", "自动菜单背景色">;
 declare const uiAutoMenuTextColor: CssVariablePayload<"--rd-ui-auto-menu-text-color", "var(--rd-global-color-neutral-700)", "自动菜单文本色">;
 declare const uiAutoMenuRadius: CssVariablePayload<"--rd-ui-auto-menu-radius", "10px", "自动菜单圆角半径">;
@@ -1261,7 +1201,7 @@ declare class WindowService {
      * declare const id: number;
      * const windowService = WindowService.findWindowService(id);
      */
-    static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]): WindowService;
+    static findWindowService(key: string | number | IpcMainEvent | IpcMainInvokeEvent): WindowService;
     /**
      * 判断是否是同一个 WindowService
      */
@@ -1832,7 +1772,7 @@ declare const windowSetSize: (options: {
 declare const windowSetPosition: (options: {
     id?: number;
     windowKey?: string;
-    x: number | "left" | "right" | "center";
+    x: number | "center" | "left" | "right";
     y: number | "top" | "center" | "bottom";
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
 /**
@@ -2077,7 +2017,7 @@ declare global {
                     /**
                      * ui-header 图标展示
                      */
-                    'ui.layout.header.icon': ComponentType;
+                    'ui.layout.header.icon': ComponentType[];
                     /**
                      * ui-header-menu 菜单前展示
                      */
@@ -2105,15 +2045,15 @@ declare global {
                     /**
                      * ui-header最小化控件
                      */
-                    'ui.layout.header.controller.widgets.min': ComponentType;
+                    'ui.layout.header.controller.widgets.min': ComponentType[];
                     /**
                      * ui-header还原控件
                      */
-                    'ui.layout.header.controller.widgets.reduction': ComponentType;
+                    'ui.layout.header.controller.widgets.reduction': ComponentType[];
                     /**
                      * ui-header关闭控件
                      */
-                    'ui.layout.header.controller.widgets.close': ComponentType;
+                    'ui.layout.header.controller.widgets.close': ComponentType[];
                     /**
                      * ui-header控件后插槽
                      */
@@ -2204,7 +2144,7 @@ declare global {
          * RApp
          */
         interface RApp {
-            meta2d?: Meta2d;
+            meta2d?: _meta2d_core.Meta2d;
             readonly Antd: typeof antd;
             readonly spring: typeof _react_spring_web;
             readonly transitionGroup: typeof react_transition_group;
@@ -2223,11 +2163,11 @@ declare global {
             /**
              * 事件总线
              */
-            readonly emitter: Emitter<Rapid.Bus.BusEmitterEntries>;
+            readonly emitter: _rapid_bus.Emitter<Rapid.Bus.BusEmitterEntries>;
             /**
              * 带有函数返回值的事件总线功能
              */
-            readonly invoker: Invoker<Bus.BusInvokerEntries>;
+            readonly invoker: _rapid_bus.Invoker<Bus.BusInvokerEntries>;
             /**
              * 全局的线程管理
              */
@@ -2261,25 +2201,49 @@ declare global {
                 readonly i18n: typeof i18n;
                 readonly useTranslation: typeof react_i18next.useTranslation;
             };
+            /**
+             * 内置常量
+             */
             readonly constants: {
                 readonly Timestamp: typeof Timestamp;
             };
+            /**
+             * 提供可以公用的组件
+             */
             readonly components: {
+                /**
+                 * 文本溢出隐藏省略的组件, 当文本长度超出容器的时候, 自动展示省略号
+                 */
                 readonly Ellipsis: typeof Ellipsis;
+                /**
+                 * antd 与 自定义 icon 的结合组件
+                 */
                 readonly IconFont: typeof IconFont;
+                /**
+                 * 通用的 widget - 控件, 用于展示一个图标, 附带功能提示信息 作为系统功能图标
+                 */
                 readonly Widget: typeof Widget;
+                /**
+                 * 展示 -空-
+                 */
                 readonly Empty: typeof REmpty;
             };
+            /**
+             * 部分 service 能力
+             */
             readonly services: {
                 readonly Skin: typeof Skin;
-                readonly Emitter: typeof Emitter;
-                readonly Invoker: typeof Invoker;
+                readonly Emitter: typeof _rapid_bus.Emitter;
+                readonly Invoker: typeof _rapid_bus.Invoker;
                 readonly ExtensionManager: typeof ExtensionManager;
                 readonly MetadataManager: typeof MetadataManager;
             };
+            /**
+             * 提供基础 API-Service
+             */
             readonly libs: {
                 readonly injectReadonlyVariable: typeof injectReadonlyVariable;
-                readonly createSallowProxy: typeof createSallowProxy;
+                readonly createShallowProxy: typeof createShallowProxy;
                 readonly rApiGet: typeof rApiGet;
                 readonly rApiPost: typeof rApiPost;
                 readonly rApiPut: typeof rApiPut;

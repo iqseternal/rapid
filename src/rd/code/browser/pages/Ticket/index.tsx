@@ -17,12 +17,13 @@ export const Ticket = memo(() => {
   }, []);
 
   useLayoutEffect(() => {
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+    const dmCallbacks = [
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget),
+    ]
 
     return () => {
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
+      dmCallbacks.forEach(callback => callback());
     }
   }, []);
 

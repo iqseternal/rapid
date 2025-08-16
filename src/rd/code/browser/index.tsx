@@ -8,7 +8,7 @@ import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension 
 import { toNil, toNils } from '@suey/pkg-utils';
 import { useGroupExtensionsApi } from './api';
 import { injectReadonlyVariable } from '@rapid/libs';
-import { RdThemeExtension } from './plats/extensions';
+import { setupInnerExtensions } from './plats/extensions';
 
 import ReactDOM from 'react-dom/client';
 import React from 'react';
@@ -55,7 +55,7 @@ async function setupEnvironments() {
  * 加载插件
  */
 async function setupExtensionPlats() {
-  rApp.extension.registerExtension(RdThemeExtension);
+  await setupInnerExtensions();
   // rApp.extension.registerExtension(diyExtension);
 
   const extensionGroupId = 42;
@@ -76,11 +76,19 @@ async function setupExtensionPlats() {
 }
 
 ; ((async () => {
-  await toNils(
-    setupThreadTask(),
+  const [threadNil, environmentsNil, extensionPlatsNil] = await toNils(
+    // setupThreadTask(),
     setupEnvironments(),
     setupExtensionPlats()
   );
+
+  const [threadErr] = threadNil;
+  const [environmentsErr] = environmentsNil;
+  const [extensionPlatsErr] = extensionPlatsNil;
+
+  if (threadErr) printer.printError(threadErr.reason);
+  if (environmentsErr) printer.printError(environmentsErr.reason);
+  if (extensionPlatsErr) printer.printError(extensionPlatsErr.reason);
 
   const rootContainer = document.getElementById('root');
 

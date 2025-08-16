@@ -1,5 +1,6 @@
 import { Popover, PopoverProps } from 'antd';
 import { memo } from 'react';
+import type { ReactNode } from 'react';
 
 import { EllipsisBase } from './EllipsisBase';
 import type { EllipsisProps } from './EllipsisBase';
@@ -12,7 +13,7 @@ export interface EllipsisPopoverProps extends Omit<EllipsisProps, 'overlayRender
   /**
    * popover 的 attrs
    */
-  tipAttrs?: PopoverProps;
+  readonly tipAttrs?: PopoverProps;
 }
 
 /**
@@ -29,19 +30,22 @@ export interface EllipsisPopoverProps extends Omit<EllipsisProps, 'overlayRender
 export const EllipsisPopover = memo((props: EllipsisPopoverProps) => {
   const { tipAttrs, children, ...realProps } = props;
 
+  const overlayRender = (realContent: ReactNode) => {
+
+    return (
+      <Popover
+        overlay={children}
+        autoAdjustOverflow
+        {...tipAttrs}
+      >
+        {realContent}
+      </Popover>
+    )
+  }
+
   return (
     <EllipsisBase
-      overlayRender={(realContent) => {
-        return (
-          <Popover
-            overlay={<>{children}</>}
-            autoAdjustOverflow
-            {...tipAttrs}
-          >
-            {realContent}
-          </Popover>
-        )
-      }}
+      overlayRender={overlayRender}
       children={children}
       {...realProps}
     />

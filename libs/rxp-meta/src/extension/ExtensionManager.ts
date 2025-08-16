@@ -19,10 +19,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
    */
   public defineExtension<DExt extends Ext>(define: DExt): DExt {
     if (!Reflect.has(define, 'name')) throw new Error(`Extension name is required`);
-    if (
-      !(typeof define.name === 'symbol') &&
-      !(typeof define.name === 'string')
-    ) throw new Error(`Extension name must be symbol or string`);
+    if (!(typeof define.name === 'string')) throw new Error(`Extension name must be string`);
     if (!Reflect.has(define, 'version')) throw new Error(`Extension version is required`);
 
     if (Reflect.has(define, 'onActivated') && !Reflect.has(define, 'onDeactivated')) throw new Error(`Extension lifecycle: onActivated and onDeactivated must be set at same time`);
@@ -83,7 +80,10 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   public isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt {
     if (typeof extension !== 'object') return false;
     const hasTAG = Reflect.has(extension, '__TAG__');
-    return hasTAG;
+    if (!hasTAG) return false;
+
+    const tag = Reflect.get(extension, '__TAG__');
+    return tag === ExtensionSymbolTag;
   }
 
   /**

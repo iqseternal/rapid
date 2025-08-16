@@ -1,12 +1,11 @@
-import { useRef, memo, useLayoutEffect } from 'react';
+import { useRef, memo, useLayoutEffect, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useFadeInEffect } from '@/libs/hooks';
 import { NavigationBar } from './plats/NavigationBar';
 import { commonStyles } from '@/scss/common';
-import { Guards } from '@/guards';
 import { classnames } from '@rapid/libs-web';
-import { useThemeStore } from '@/features';
+import { SidebarStatus, useThemeStore } from '@/features';
 import { MaintenanceMenus } from './plats/MaintenanceMenus';
 import { workbenchesRouteSwitchTransitionClassNames } from './definition';
 
@@ -47,7 +46,6 @@ const WorkbenchesView = memo(() => {
 
 /**
  * 工作区的布局组件, 该组件提供了整个 App 最核心的布局容器, 拥有 react-transition-group 为工作区提供切换动画的显示
- * 该工作区需要用户登录后才可以正常使用, 因此使用 Guards.AuthAuthorized 来校验用户是否已经获得了授权
  */
 const WorkspaceLayout = memo(() => {
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
@@ -68,13 +66,13 @@ const WorkspaceLayout = memo(() => {
       <div
         className={classnames(
           'flex justify-between flex-nowrap items-center w-full h-full',
-          mainSidebarStatus === 'right' && 'flex-row-reverse'
+          mainSidebarStatus === SidebarStatus.Right && 'flex-row-reverse'
         )}
         style={{
           height: `calc(100% - ${cssVars.uiCaptionBarHeight})`,
         }}
       >
-        {mainSidebarStatus !== 'none' && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
+        {mainSidebarStatus !== SidebarStatus.None && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
 
         <main
           className={classnames(
@@ -92,28 +90,21 @@ const WorkspaceLayout = memo(() => {
 const WorkspaceLayoutWrapper = memo(() => {
 
   useLayoutEffect(() => {
-    rApp.metadata.defineMetadata('ui.layout.header.icon', Logo);
+    const dmCallbacks = [
+      rApp.metadata.defineMetadataInVector('ui.layout.header.icon', Logo),
 
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
-    rApp.metadata.defineMetadata('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget),
 
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-    rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget),
+      rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus),
 
-    rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+      rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar),
+    ];
 
     return () => {
-      rApp.metadata.delMetadata('ui.layout.header.icon');
-
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.min');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.reduction');
-      rApp.metadata.delMetadata('ui.layout.header.controller.widgets.close');
-
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-      rApp.metadata.delMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
-
-      rApp.metadata.delMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+      dmCallbacks.forEach(callback => callback());
     }
   }, []);
 

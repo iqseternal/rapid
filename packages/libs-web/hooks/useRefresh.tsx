@@ -11,10 +11,6 @@ import { useUpdate } from 'ahooks';
  * refresh(); // 重新渲染当前组件
  *
  */
-export function useRefresh() {
-  const [_, set] = useState({});
-
-  return useCallback(() => set({}), []);
-}
+export const useRefresh = useUpdate;
 
 export { useUpdate };

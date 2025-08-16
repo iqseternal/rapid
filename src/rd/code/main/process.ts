@@ -2,12 +2,10 @@ import { LoggerService } from 'rd/base/main/service/LoggerService';
 import { Exception, isException, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { Catch } from 'rd/base/main/exceptions';
-import { logsDirStorageService } from 'rd/base/main/service/AppStorageService';
 
 // 关闭渲染进程安全警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 process.env.ELECTRON_ENABLE_LOGGING = 'true';
-process.env.ELECTRON_LOG_FILE = logsDirStorageService.createFileService('electron.log').filePath;
 process.env.ELECTRON_DEBUG_NOTIFICATIONS = 'true';
 
 // 处理没有捕捉的异常

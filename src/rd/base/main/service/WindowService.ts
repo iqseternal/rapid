@@ -105,14 +105,10 @@ export class WindowService {
    * declare const id: number;
    * const windowService = WindowService.findWindowService(id);
    */
-  public static findWindowService(...args: [string | number | IpcMainEvent | IpcMainInvokeEvent] | [string, (() => WindowService)?]): WindowService {
-    const [key, defaultWindowFn] = args;
-
-    // override 1
+  public static findWindowService(key: string | number | IpcMainEvent | IpcMainInvokeEvent): WindowService {
     if (isString(key)) {
       const service = WindowServiceStateMachine.findWindowService(key);
       if (service) return service;
-      if (defaultWindowFn) return defaultWindowFn();
       throw new RuntimeException(`Not found WindowService.`, {
         label: 'WindowService:findWindowService'
       })
@@ -120,7 +116,7 @@ export class WindowService {
 
     const browserWindow = WindowService.findBrowserWindow(key);
     if (!browserWindow) {
-      throw new RuntimeException(`Not found WindowService.`, {
+      throw new RuntimeException(`Not found browserWindow.`, {
         label: 'WindowService:findWindowService'
       })
     }

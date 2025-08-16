@@ -1,5 +1,4 @@
 import { Ansi } from '@suey/pkg-utils';
-import { AppFileStorageService, logsDirStorageService } from './AppStorageService';
 
 export namespace LoggerService {
 
@@ -15,10 +14,8 @@ export namespace LoggerService {
 export class LoggerService {
   private static readonly logService = new LoggerService('/base.log');
 
-  private readonly logFileStorageService: AppFileStorageService;
-
   public constructor(filename: string) {
-    this.logFileStorageService = logsDirStorageService.createFileService(filename);
+
   }
 
   /**

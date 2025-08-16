@@ -1,4 +1,4 @@
-import type { RApiBasicResponse } from '../api/rApi';
+import type { RApiBasicResponse } from '../api';
 
 export const enum Biz {
   Success = 0,
@@ -28,7 +28,6 @@ export const enum Biz {
 }
 
 export const BizMessage = {
-
   [Biz.MethodNotAllowed]: '方法不允许',
 
   [Biz.InternalServerError]: '内部错误',
@@ -38,8 +37,6 @@ export const BizMessage = {
 
 
   [Biz.ParameterError]: '参数错误',
-
-
 } as const;
 
 export const toBizErrorMsg = (data: RApiBasicResponse, msg?: string) => {

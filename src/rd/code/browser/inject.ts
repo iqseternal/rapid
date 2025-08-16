@@ -7,7 +7,7 @@ import {
   isReactLazyFC,
   isReactMemoFC
 } from '@rapid/libs-web';
-import { Emitter, Invoker } from '@rapid/libs';
+import { Emitter, Invoker } from '@rapid/bus';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
   AES_DEFAULT_KEY,
@@ -22,7 +22,7 @@ import {
   apiPut,
   createApiRequest,
   createRequest,
-  createSallowProxy,
+  createShallowProxy,
   cryptoTs,
   injectReadonlyVariable,
   jose,
@@ -120,7 +120,7 @@ const rApp: Rapid.RApp = ({
   },
   libs: {
     injectReadonlyVariable: injectReadonlyVariable,
-    createSallowProxy: createSallowProxy,
+    createShallowProxy: createShallowProxy,
 
     rApiGet: rApiGet,
     rApiPost: rApiPost,
@@ -172,5 +172,3 @@ const rApp: Rapid.RApp = ({
 injectReadonlyVariable(window, 'cssVars', cssVars);
 
 injectReadonlyVariable(window, 'rApp', rApp);
-
-

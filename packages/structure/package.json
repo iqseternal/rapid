@@ -1,0 +1,14 @@
+{
+  "name": "@rapid/structure",
+  "version": "1.0.0",
+  "description": "",
+  "source": "./index.ts",
+  "private": true,
+  "main": "./index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

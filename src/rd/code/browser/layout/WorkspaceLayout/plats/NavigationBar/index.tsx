@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { fadeOut } from '@/libs/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
-import { useTransition } from '@rapid/libs-web';
+import { useSyncNormalState, useTransition } from '@rapid/libs-web';
 import type { WidgetProps } from '@/components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
@@ -89,7 +89,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
           dropdownAttrs={{
             trigger: ['click'],
             placement: 'topRight',
-            autoAdjustOverflow: true
+            autoAdjustOverflow: true,
           }}
           menu={[
 

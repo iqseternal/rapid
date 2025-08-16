@@ -23,26 +23,24 @@ export class RdStoreService {
     const newStore = new ElectronStore<StoreType>({
       ...options,
 
-      /**
-       * 序列化
-       * 1. 将 value 转为 uint8Array
-       *
-       */
       serialize: (value) => {
+        // 压缩数据
         const data = Pako.deflate(JSON.stringify(value));
 
+        // 转为二进制字符串
         return Buffer.from(data).toString('binary');
       },
-      /**
-       * 反序列化
-       */
       deserialize: (text: string) => {
         if (text.trim() === '') return {};
 
+        // 转换二进制字符串为 Uint8Array
         const compressed = Uint8Array.from(Buffer.from(text, 'binary'));
 
         try {
+          // 解压数据
           const decompressed = Pako.inflate(compressed, { to: 'string' });
+
+          // 转为 JSON
           return JSON.parse(decompressed);
         } catch {
           return {};

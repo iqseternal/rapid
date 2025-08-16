@@ -647,6 +647,8 @@
   "colorHelper.resident": true,
   "vue.complete.casing.props": "camel",
   "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+  "typescript.format.insertSpaceBeforePostfixUnaryOperators": true,
+  "javascript.format.insertSpaceBeforePostfixUnaryOperators": true,
   "liveServer.settings.donotShowInfoMsg": true,
   "http.proxyAuthorization": null,
   "typescript.preferences.quoteStyle": "single",

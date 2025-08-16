@@ -1,13 +1,10 @@
-export { useReactive, useDeepReactive, useShallowReactive, useNormalState } from './useReactive';
+export { useReactive, useDeepReactive, useShallowReactive, useNormalState, useSyncNormalState } from './useReactive';
 export type { ReactiveOptions } from './useReactive';
 
 export { useRefresh, useUpdate } from './useRefresh';
 
 export { useDebounceHook, useThrottleHook, useDebounce, useThrottle } from './useDebounce';
 export type { DebounceOptions, ThrottleOptions, DebounceTarget, ThrottleTarget } from './useDebounce';
-
-export { useDependenciesListHook } from './useDependencies';
-export type { AppendDepFn, RemoveDepFn } from './useDependencies';
 
 export { useWindowScreenSizeHook, useWindowScreenSize, useWindowInnerSize, useWindowInnerSizeHook } from './useWindowSize';
 export type { WindowScreenSize, WindowInnerSize } from './useWindowSize';
@@ -21,6 +18,7 @@ export { useAsyncEffect, useAsyncLayoutEffect } from './useAsyncEffect';
 export type { AsyncEffectCallback } from './useAsyncEffect';
 
 export { useTransition } from './useTransition';
+
 export type { StartTransitionFunction } from './useTransition';
 
 export { useMousetrap } from './useMousetrap';

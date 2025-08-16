@@ -4,7 +4,7 @@ import { WindowService } from '../../service/WindowService';
 import { RuntimeException, TypeException } from '../../exceptions';
 import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
 import { AppConfigService } from '../../service/AppConfigService';
-import { toMakeIpcAction } from '../framework';
+import { toMakeIpcAction } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { posix } from 'path';
 import { userConfigStore } from '../../../main/stores';

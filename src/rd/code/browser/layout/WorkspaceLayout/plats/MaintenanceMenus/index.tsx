@@ -20,12 +20,9 @@ export const MaintenanceMenus = memo(() => {
   // 菜单容器
   const menusContainerRef = useRef<HTMLDivElement>(null);
 
-  const [shallowStatusState, maintenanceStack, storageStack] = useStorageBox(menusContainerRef, [
-    headerFileMenu,
-    headerEditMenu,
-    headerViewMenu,
-    headerHelpMenu
-  ]);
+  const storageBoxList = [headerFileMenu, headerEditMenu, headerViewMenu, headerHelpMenu];
+
+  const [shallowStatusState, maintenanceStack, storageStack] = useStorageBox(menusContainerRef, storageBoxList);
 
   return (
     <div

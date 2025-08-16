@@ -38,9 +38,7 @@ export async function transformerConfig(rdBuilderConfig: RdBuilderConfig) {
     })
   }
 
-  /**
-   * 编译 preload
-   */
+  // 编译 preload
   const compilerPreload = () => {
     return new Promise<void>((resolve, reject) => {
       printInfo(`Compiler: preload`);
@@ -57,9 +55,7 @@ export async function transformerConfig(rdBuilderConfig: RdBuilderConfig) {
     })
   }
 
-  /**
-   * 编译渲染进程
-   */
+  // 编译渲染进程
   const compilerRenderer = () => {
     return new Promise<void>(async (resolve) => {
       await rendererRsbuilder.build();

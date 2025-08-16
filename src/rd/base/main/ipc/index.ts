@@ -1,4 +1,4 @@
-import { IpcActionEvent, registerGlobalMiddleware, registerIpcHandle, registerIpcOn } from './framework';
+import { IpcActionEvent, registerGlobalMiddleware, registerIpcHandle, registerIpcOn } from '@rapid/m-ipc-core';
 import { ipcExceptionFilterMiddleware, ipcResponseMiddleware } from './middlewares';
 import { ipcAppStoreClear, ipcAppStoreDelete, ipcAppStoreGet, ipcAppStoreGetStore, ipcAppStoreHas, ipcAppStoreReset, ipcAppStoreSet } from './handlers';
 import {

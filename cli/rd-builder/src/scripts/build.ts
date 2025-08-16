@@ -13,17 +13,17 @@ export interface BuildActionOptions {
   /**
    * 配置文件名称/路径
    */
-  config?: string;
+  readonly config?: string;
 
   /**
    * 是否开启预览模式
    */
-  preview?: boolean;
+  readonly preview?: boolean;
 
   /**
    * TODO: 待实现
    */
-  platform?: 'windows' | 'linux' | 'mac';
+  readonly platform?: 'windows' | 'linux' | 'mac';
 }
 
 export async function buildAction(options: BuildActionOptions) {
@@ -54,9 +54,7 @@ export async function buildAction(options: BuildActionOptions) {
 
   await Promise.all([compilerRenderer(), compilerMain(), compilerPreload()]);
 
-  /**
-   * 构建主进程字节码
-   */
+  // 构建主进程字节码
   const bytenodeMain = async () => {
     const dist = await bytenode.compileFile({
       filename: path.join(mainCompiler.outputPath, 'index.js'),

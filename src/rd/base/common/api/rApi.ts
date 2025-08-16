@@ -1,5 +1,5 @@
 import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig } from '@suey/pkg-utils';
-import type { AxiosRequestConfig, AxiosResponse } from '@suey/pkg-utils';
+import type { AxiosResponse } from '@suey/pkg-utils';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
 const appInformation = AppInformationService.getInstance();
@@ -94,16 +94,9 @@ const rApiConfig: RequestConfig<RApiHConfig> = {
 };
 
 const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(
-  appInformation.information.appApiUrls.rApi,
+  appInformation.information.appApiUrls.rApiServerV1,
   rApiConfig,
-  {
-    async onFulfilled(config) {
-
-    },
-    async onRejected(config) {
-
-    },
-  },
+  {},
   {
     async onFulfilled(response) {
       if (!isRApiResponse(response)) return response;
@@ -117,7 +110,7 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
       if (
         Reflect.has(globalThat, 'rApp') &&
         Reflect.has(globalThat.rApp, 'invoker')
-      ) return await globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
+      ) return globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
 
       return response;
     },

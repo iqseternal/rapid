@@ -22,7 +22,7 @@ export const workbenchesToolRoute = makeRoute({
 })
 export const [
   workbenchesToolbarRoute
-] = (workbenchesToolRoute as Required<CompleteRouteConfig>).children;
+] = (workbenchesToolRoute as CompleteRouteConfig).children;
 
 export const workbenchesRoute = makeRoute({
   name: `Workbenches`,
@@ -51,7 +51,7 @@ export const workbenchesRoute = makeRoute({
         title: '工作区',
         icon: 'FileWordOutlined'
       },
-      component: lazy(() => import('@/pages/Workspace/Wrokstation'))
+      component: lazy(() => import('@/pages/Workspace/Workstation')),
     },
     {
       name: 'WorkspaceExtensions',
@@ -70,7 +70,7 @@ export const [
   workbenchesHomeRoute,
   workbenchesWorkstationRoute,
   WorkbenchesSkinRoute
-] = (workbenchesRoute as Required<CompleteRouteConfig>).children;
+] = (workbenchesRoute as CompleteRouteConfig).children;
 
 export const rootRoute = makeRoute({
   name: 'Root',

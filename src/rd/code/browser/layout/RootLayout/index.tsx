@@ -1,7 +1,5 @@
-
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { memo, useEffect } from 'react';
-import { UnlockTwoTone, UserAddOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 import Widget from '../../components/Widget';
@@ -12,16 +10,16 @@ const I18nChangeLanguageWidget = memo(() => {
 
   return (
     <Widget
-      tipText={t('login.language', '切换语言包')}
+      tipText={t('test.widgets.i18n.changelanguage', '切换语言包')}
       icon={'ApiOutlined'}
-      onClick={() => {
+      onClick={async () => {
         const lang = i18n.language;
 
         if (lang === 'en') {
-          i18n.changeLanguage('zh');
+          await i18n.changeLanguage('zh');
         }
         else {
-          i18n.changeLanguage('en');
+          await i18n.changeLanguage('en');
         }
       }}
     />
@@ -36,12 +34,9 @@ const RootLayout = memo(() => {
 
   useEffect(() => {
 
-    rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
+    const dm = rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
 
-    return () => {
-
-      rApp.metadata.delMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
-    }
+    return dm;
   }, []);
 
   return (
