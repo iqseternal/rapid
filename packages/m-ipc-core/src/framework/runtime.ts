@@ -1,8 +1,7 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { toNil, Nil } from '@rapid/libs';
+import { toNil, Nil } from '@suey/pkg-utils';
 import type { IpcActionType, IpcActionMiddleware, IpcActionMessageType } from './declare';
 import { getIpcRuntimeContext, IpcActionEvent } from './declare';
-import { Exception, isException } from 'rd/base/common/exceptions';
 
 /**
  * 获得制作 ipc 句柄的函数
@@ -239,7 +238,7 @@ async function findHandleHandling(globalMiddlewares: IpcActionMiddleware<IpcActi
   err = error;
 
   // onError 周期
-  if (err && isException(err.reason)) {
+  if (err) {
     let isResolved = false;
 
     // 内部 onError

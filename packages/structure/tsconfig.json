@@ -1,0 +1,29 @@
+{
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
+  "compilerOptions": {
+    "incremental": true,
+    "baseUrl": ".",
+    "composite": true,
+    "isolatedModules": true,
+    "outDir": "../../.rd-cache/packages/structure",
+    "declarationDir": "../../.rd-cache/packages/structure",
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "allowUnusedLabels": true,
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "moduleResolution": "NodeNext",
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "module": "NodeNext"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,5 +1,5 @@
 import { WindowService } from '../../service/WindowService';
-import { IpcActionMiddleware, IpcActionEvent } from '../framework';
+import { IpcActionMiddleware, IpcActionEvent } from '@rapid/m-ipc-core';
 import { Catch, RuntimeException } from '../../exceptions';
 import { isException } from 'rd/base/common/exceptions';
 import type { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
@@ -15,9 +15,11 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
    * ipc 接口出现了错误, 利用 onError 回调在主进程处理 ipc 产生地异常, 记录日志...
    */
   onError: async (err, { channel }) => {
-    err.errMessage.other.channel = channel;
+    if (isException(err)) {
+      err.errMessage.other.channel = channel;
 
-    if (isException(err)) Catch.parser(err);
+      Catch.parser(err);
+    }
 
     return err;
   },

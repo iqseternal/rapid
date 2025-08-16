@@ -1,5 +1,5 @@
 {
-  "name": "@rapid/libs",
+  "name": "@rapid/bus",
   "version": "1.0.0",
   "description": "",
   "source": "./index.ts",

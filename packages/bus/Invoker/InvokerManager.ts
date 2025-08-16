@@ -1,6 +1,4 @@
 
-import { EffectManager } from './EffectManager';
-
 export type InvokerKey = '*' | string | symbol | number;
 
 export type InvokerHandler = (...args: any[]) => any;

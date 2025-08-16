@@ -1,5 +1,4 @@
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { Exception, isException, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 
 /** Ipc 事件类型 */
 export const enum IpcActionEvent {
@@ -92,7 +91,7 @@ export type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
    * @param res 错误处理时产生的异常对象
    * @param message 返回处理当前 ipc 句柄的信息
    */
-  readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => Promise<void | Exception<ExceptionErrorMsgData>>;
+  readonly onError?: (err: Error, message: IpcActionMessageType<EvtActionType>) => Promise<void | Error>;
 }
 
 /** 存储注册的全局中间件 */

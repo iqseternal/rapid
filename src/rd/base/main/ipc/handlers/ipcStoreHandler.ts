@@ -1,5 +1,5 @@
 import { WindowService } from '../../service/WindowService';
-import { toMakeIpcAction } from '../framework';
+import { toMakeIpcAction } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { appStore, AppStoreType } from '../../../main/stores';
 

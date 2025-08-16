@@ -1,5 +1,4 @@
-
-import { EffectManager } from './EffectManager';
+import { EffectManager } from '../Effect/EffectManager';
 
 export type EmitterKey = '*' | string | symbol | number;
 

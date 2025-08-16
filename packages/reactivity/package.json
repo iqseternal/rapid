@@ -1,5 +1,5 @@
 {
-  "name": "@rapid/libs",
+  "name": "@rapid/reactivity",
   "version": "1.0.0",
   "description": "",
   "source": "./index.ts",
@@ -10,5 +10,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@vue/reactivity": "3.5.18"
+  }
 }

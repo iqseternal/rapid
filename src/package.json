@@ -19,8 +19,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rapid/libs": "workspace:^",
-    "@rapid/libs-web": "workspace:^"
+    "@rapid/bus": "workspace:*",
+    "@rapid/libs": "workspace:*",
+    "@rapid/libs-web": "workspace:*",
+    "@rapid/m-ipc-core": "workspace:*",
+    "@rapid/structure": "workspace:*"
   },
   "devDependencies": {
     "@suey/rd-builder": "workspace:*"

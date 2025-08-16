@@ -11,6 +11,7 @@ import * as react_i18next from 'react-i18next';
 import i18n from 'i18next';
 import * as zustand_middleware from 'zustand/middleware';
 import * as zustand from 'zustand';
+import * as _rapid_bus from '@rapid/bus';
 import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
@@ -78,6 +79,17 @@ declare const rCreateApi: (method: _suey_pkg_utils.Method) => <SuccessResponse =
 declare const rApiPut: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
 declare const rApiDelete: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
 declare const rApiPatch: <SuccessResponse = unknown, FailResponse = unknown>(url: string, apiConfig?: RequestConfig<RApiHConfig>) => ApiPromiseResultTypeBuilder<RApiSuccessResponse, RApiFailResponse, SuccessResponse, FailResponse, "data">;
+
+/**
+ * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
+ * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
+ */
+declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
+
+/**
+ * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
+ */
+declare function createShallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
 declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
@@ -371,109 +383,6 @@ declare enum Timestamp {
      */
     LeapYear = 31622400000
 }
-
-/**
- * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
- * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
- */
-declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
-
-type EmitterListener<T> = (data: T) => void | Promise<void>;
-/**
- * 停止监听事件的函数回调
- */
-type EmitterListenerOffCallback = () => void;
-/**
- * 总线事件管理
- */
-declare abstract class EmitterManager<Entries extends Record<string | symbol, any>> {
-    private readonly effectManager;
-    constructor();
-    /**
-     * 订阅
-     * @returns
-     */
-    protected subscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>, options?: {
-        once?: boolean;
-    }): EmitterListenerOffCallback;
-    /**
-     * 取消订阅
-     * @returns
-     */
-    protected unsubscribe<K extends keyof Entries>(busName: K, listener: EmitterListener<Entries[K]>): void;
-    /**
-     * 通知处理事件
-     */
-    protected notice<K extends keyof Entries>(busName: K, data?: Entries[K]): Promise<void>;
-    /**
-     * 清空所有事件
-     */
-    protected clear(): void;
-}
-
-declare class Emitter<Entries extends Record<string | symbol, any>> extends EmitterManager<Entries> {
-    /**
-     * 异步发射一个事件
-     */
-    emit<K extends keyof Entries>(busName: K, data?: Entries[K]): Promise<void>;
-    /**
-     * 监听一个事件
-     */
-    on<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>, options?: {
-        once?: boolean;
-    }): EmitterListenerOffCallback;
-    /**
-     * 监听一个事件（只触发一次）
-     */
-    once<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): EmitterListenerOffCallback;
-    /**
-     * 移除监听某个事件
-     */
-    off<K extends keyof Entries>(busName: K, listener: (data: Entries[K]) => void | Promise<void>): void;
-    /**
-     * 移除所有监听
-     */
-    clear(): void;
-}
-
-type InvokerKey = '*' | string | symbol | number;
-type InvokerHandler = (...args: any[]) => any;
-type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
-type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
-type ExtractInvokerHandler<T extends (...args: any[]) => any> = (...args: ExtractParameters<T>) => ExtractReturnType<T>;
-/**
- * 总线事件管理 (等待函数执行获得返回结果
- */
-declare abstract class InvokerManager<Entries extends Record<InvokerKey, InvokerHandler>> {
-    private readonly effectManager;
-    /**
-     * 注册一个事件的执行函数
-     */
-    protected handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
-    /**
-     * 发送事件, 并获取执行的返回结果
-     */
-    protected invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
-}
-
-/**
- * 总线事件管理 (等待函数执行获得返回结果
- */
-declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends InvokerManager<Entries> {
-    /**
-     * 注册一个事件的执行函数
-     */
-    handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>): void;
-    /**
-     * 发送事件, 并获取执行的返回结果
-     */
-    invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
-}
-
-/**
- * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
- */
-declare function createShallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
 /**
  * 对接扩展心跳机制地凭证
@@ -2254,11 +2163,11 @@ declare global {
             /**
              * 事件总线
              */
-            readonly emitter: Emitter<Rapid.Bus.BusEmitterEntries>;
+            readonly emitter: _rapid_bus.Emitter<Rapid.Bus.BusEmitterEntries>;
             /**
              * 带有函数返回值的事件总线功能
              */
-            readonly invoker: Invoker<Bus.BusInvokerEntries>;
+            readonly invoker: _rapid_bus.Invoker<Bus.BusInvokerEntries>;
             /**
              * 全局的线程管理
              */
@@ -2324,8 +2233,8 @@ declare global {
              */
             readonly services: {
                 readonly Skin: typeof Skin;
-                readonly Emitter: typeof Emitter;
-                readonly Invoker: typeof Invoker;
+                readonly Emitter: typeof _rapid_bus.Emitter;
+                readonly Invoker: typeof _rapid_bus.Invoker;
                 readonly ExtensionManager: typeof ExtensionManager;
                 readonly MetadataManager: typeof MetadataManager;
             };
