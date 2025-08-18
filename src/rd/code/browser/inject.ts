@@ -22,7 +22,6 @@ import {
   apiPut,
   createApiRequest,
   createRequest,
-  createShallowProxy,
   cryptoTs,
   injectReadonlyVariable,
   jose,
@@ -32,6 +31,30 @@ import {
   toNils,
   toWaitPromise
 } from '@rapid/libs';
+import {
+  reactive,
+  watch,
+  effect,
+  computed,
+  ref,
+  shallowRef,
+  reactiveReadArray,
+  readonly,
+  shallowReadonly,
+  shallowReactive,
+  toRaw,
+  toReactive,
+  toReadonly,
+  toRef,
+  toRefs,
+  toValue,
+  unref,
+  isRef,
+  isReactive,
+  isReadonly,
+  isShallow,
+  isProxy
+} from '@rapid/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
 import { Skin, makeRdCssVarPayload, mrcvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';
@@ -120,7 +143,29 @@ const rApp: Rapid.RApp = ({
   },
   libs: {
     injectReadonlyVariable: injectReadonlyVariable,
-    createShallowProxy: createShallowProxy,
+
+    reactive: reactive,
+    watch: watch,
+    effect: effect,
+    computed: computed,
+    ref: ref,
+    shallowRef: shallowRef,
+    reactiveReadArray: reactiveReadArray,
+    readonly: readonly,
+    shallowReadonly: shallowReadonly,
+    shallowReactive: shallowReactive,
+    toRaw: toRaw,
+    toReactive: toReactive,
+    toReadonly: toReadonly,
+    toRef: toRef,
+    toRefs: toRefs,
+    toValue: toValue,
+    unref: unref,
+    isRef: isRef,
+    isReactive: isReactive,
+    isReadonly: isReadonly,
+    isShallow: isShallow,
+    isProxy: isProxy,
 
     rApiGet: rApiGet,
     rApiPost: rApiPost,

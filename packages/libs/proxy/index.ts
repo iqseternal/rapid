@@ -6,6 +6,7 @@ export interface ProxyOptions {
 
 /**
  * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
+ * @deprecated 使用响应式系统代替
  */
 export function createShallowProxy<T extends {}>(target: T, setterCallback = () => {}) {
 

@@ -22,6 +22,7 @@ import * as ReactRouterDOM from 'react-router-dom';
 import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
+import { reactive, watch } from '@rapid/reactivity';
 
 // import diyExtension from 'rd/../../cli/rxc/template/src/index';
 

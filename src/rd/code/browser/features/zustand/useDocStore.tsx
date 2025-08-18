@@ -6,11 +6,15 @@ export interface DocStore {
   isWork: boolean;
 }
 
-export const useDocStore = create<DocStore>()(persist(immer((set, get, store) => ({
+export const useDocStore = create<DocStore>()(
+  persist(
+    immer((set, get, store) => ({
 
-  isWork: false
+      isWork: false
 
-})), {
+    }
+  )
+), {
   name: 'docStore',
   storage: createJSONStorage(() => window.sessionStorage)
 }));

@@ -109,7 +109,9 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
       // 如果存在, 则寻找存在的 invoker 分发器
       if (
         Reflect.has(globalThat, 'rApp') &&
-        Reflect.has(globalThat.rApp, 'invoker')
+        Reflect.has(globalThat.rApp, 'invoker') &&
+        Reflect.has(globalThat.rApp.invoker, 'invoke') &&
+        typeof globalThat.rApp.invoker.invoke === 'function'
       ) return globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
 
       return response;

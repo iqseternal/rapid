@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
-import { createShallowProxy } from '@rapid/libs';
+import type { WatchHandle } from '@rapid/reactivity';
+import { reactive, watch } from '@rapid/reactivity';
 
 /**
  * 普通 state, 不自动刷新组件
@@ -16,12 +17,11 @@ import { createShallowProxy } from '@rapid/libs';
  */
 export function useNormalState<S extends object>(initValue: S | (() => S)) {
   const isFirstInitialize = useRef(true);
-
   const stateRef = useRef<S>({} as S);
 
   if (isFirstInitialize.current) {
-    const state: S = ((typeof initValue === 'function') ? initValue() : initValue);
-    for (const key in state) stateRef.current[key] = state[key];
+    const initState: S = ((typeof initValue === 'function') ? initValue() : initValue);
+    for (const key in initState) stateRef.current[key] = initState[key];
     isFirstInitialize.current = false;
   }
 
@@ -32,12 +32,11 @@ export function useNormalState<S extends object>(initValue: S | (() => S)) {
  * 每次组件刷新都会执行初始化函数的 state
  */
 export function useSyncNormalState<S extends object>(initValue: () => S) {
-  const [state] = useNormalState({} as S);
-
+  const stateRef = useRef<S>({} as S);
   const initState = initValue();
 
-  for (const key in initState) state[key] = initState[key];
-  return [state] as const;
+  for (const key in initState) stateRef.current[key] = initState[key];
+  return [stateRef.current] as const;
 }
 
 /**
@@ -76,10 +75,8 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): (re
   const isFirstInitialize = useRef(true);
 
   const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
-
-  const [syncNormalState] = useSyncNormalState(() => ({
-    initValue: initValue
-  }))
+  const initValueRef = useRef<S | (() => S)>(initValue);
+  initValueRef.current = initValue;
 
   const state = useAHookReactive(
     !isFirstInitialize ? {} : (
@@ -93,7 +90,7 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): (re
    * 重置 state
    */
   const resetState = useCallback(() => {
-    const initValue = syncNormalState.initValue;
+    const initValue = initValueRef.current;
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
     for (const key in initialState) state[key] = initialState[key];
   }, []);
@@ -140,30 +137,45 @@ export function useShallowReactive<S extends object>(initValue: S): readonly [S]
 
 export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
   const refresh = useRefresh();
-
+  const isFirstInitialize = useRef(true);
   const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
 
-  const [syncNormalState] = useSyncNormalState(() => ({
-    initValue: initValue
-  }))
+  const unwatchRef = useRef<null | WatchHandle>(null);
+  const initValueRef = useRef<S | (() => S)>(initValue);
+  initValueRef.current = initValue;
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    return createShallowProxy(initialState, refresh);
+    return reactive(initialState);
   });
 
   /**
    * 重置 state
    */
   const resetState = useCallback(() => {
-    const initValue = syncNormalState.initValue;
-    const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    for (const key in initialState) state[key] = initialState[key];
+    const initValue = initValueRef.current;
+    const initialState: S = (typeof initValue === 'function') ? initValue() : initValue;
+    for (const key in state) state[key as keyof typeof state] = initialState[key as keyof S] as any;
   }, []);
 
-  if ((typeof initValue === 'function') !== isInitStateFunction) {
-    throw new Error('useShallowReactive 参数在多次运行中出现不一致的情况, 请检查参数是否为函数类型');
+  const appendWatch = useCallback(() => {
+    unwatchRef.current = watch(() => ({ ...state }), refresh);
+  }, []);
+
+  if ((typeof initValue === 'function') !== isInitStateFunction) throw new Error('useShallowReactive 参数在多次运行中出现不一致的情况, 请检查参数是否为函数类型');
+  if (isFirstInitialize.current) {
+    appendWatch();
+    isFirstInitialize.current = false;
   }
+
+  useEffect(() => {
+    if (!unwatchRef.current) appendWatch();
+
+    return () => {
+      if (unwatchRef.current) unwatchRef.current();
+      unwatchRef.current = null;
+    }
+  }, []);
 
   if (isInitStateFunction) return [state, resetState] as const;
   return [state] as const;

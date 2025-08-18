@@ -240,6 +240,26 @@ declare global {
       export interface Extension extends RdExtension { }
     }
 
+    export namespace Reactivity {
+      export type Reactive<T> = import('@rapid/reactivity').Reactive<T>;
+      export type WatchSource<T> = import('@rapid/reactivity').WatchSource<T>;
+      export type WatchHandle = import('@rapid/reactivity').WatchHandle;
+      export type EffectScope = import('@rapid/reactivity').EffectScope;
+      export type OnCleanup = import('@rapid/reactivity').OnCleanup;
+      export type ReactiveEffect = import('@rapid/reactivity').ReactiveEffect;
+      export type ReactiveEffectOptions = import('@rapid/reactivity').ReactiveEffectOptions;
+      export type ReactiveEffectRunner = import('@rapid/reactivity').ReactiveEffectRunner;
+      export type Ref = import('@rapid/reactivity').Ref;
+      export type ShallowRef = import('@rapid/reactivity').ShallowRef;
+      export type UnwrapNestedRefs<T> = import('@rapid/reactivity').UnwrapNestedRefs<T>;
+      export type UnwrapRef<T> = import('@rapid/reactivity').UnwrapRef<T>;
+      export type UnwrapRefSimple<T> = import('@rapid/reactivity').UnwrapRefSimple<T>;
+      export type ComputedRef = import('@rapid/reactivity').ComputedRef;
+      export type WritableComputedRef<T, S> = import('@rapid/reactivity').WritableComputedRef<T, S>;
+      export type ReactiveMarker = import('@rapid/reactivity').ReactiveMarker;
+      export type DeepReadonly<T> = import('@rapid/reactivity').DeepReadonly<T>;
+    }
+
     /**
      * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
      */
@@ -428,7 +448,29 @@ declare global {
        */
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
-        readonly createShallowProxy: typeof import('@rapid/libs').createShallowProxy;
+
+        readonly reactive: typeof import('@rapid/reactivity').reactive;
+        readonly watch: typeof import('@rapid/reactivity').watch;
+        readonly effect: typeof import('@rapid/reactivity').effect;
+        readonly computed: typeof import('@rapid/reactivity').computed;
+        readonly ref: typeof import('@rapid/reactivity').ref;
+        readonly shallowRef: typeof import('@rapid/reactivity').shallowRef;
+        readonly reactiveReadArray: typeof import('@rapid/reactivity').reactiveReadArray;
+        readonly readonly: typeof import('@rapid/reactivity').readonly;
+        readonly shallowReactive: typeof import('@rapid/reactivity').shallowReactive;
+        readonly shallowReadonly: typeof import('@rapid/reactivity').shallowReadonly;
+        readonly toRaw: typeof import('@rapid/reactivity').toRaw;
+        readonly toReactive: typeof import('@rapid/reactivity').toReactive;
+        readonly toReadonly: typeof import('@rapid/reactivity').toReadonly;
+        readonly toRef: typeof import('@rapid/reactivity').toRef;
+        readonly toRefs: typeof import('@rapid/reactivity').toRefs;
+        readonly toValue: typeof import('@rapid/reactivity').toValue;
+        readonly unref: typeof import('@rapid/reactivity').unref;
+        readonly isRef: typeof import('@rapid/reactivity').isRef;
+        readonly isReactive: typeof import('@rapid/reactivity').isReactive;
+        readonly isReadonly: typeof import('@rapid/reactivity').isReadonly;
+        readonly isShallow: typeof import('@rapid/reactivity').isShallow;
+        readonly isProxy: typeof import('@rapid/reactivity').isProxy;
 
         readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
         readonly rApiPost: typeof import('rd/base/common/api').rApiPost;

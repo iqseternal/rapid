@@ -53,7 +53,6 @@ export default async (): Promise<Config> => {
     // 用作 Jest 配置基础的预设。
     preset: 'ts-jest',
 
-
     // 当配置提供一组路径或glob模式时，Jest将同时在所有指定的项目中运行测试。
     // projects: ['<rootDir>', '<rootDir>/examples/*'],
     // projects: [],
@@ -93,8 +92,7 @@ export default async (): Promise<Config> => {
     // 测试超时时间
     testTimeout: 10000,
 
-
     // 是否使用工作线程进行并行化。默认情况下使用子进程。使用工作线程可能有助于提高性能。
-    // workerThreads: true,
+    workerThreads: true,
   } as Config;
 };

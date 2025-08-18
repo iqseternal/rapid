@@ -16,6 +16,7 @@ import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
 import * as _meta2d_core from '@meta2d/core';
+import * as _rapid_reactivity from '@rapid/reactivity';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
 import * as _rapid_m_ipc_core from '@rapid/m-ipc-core';
 import { IpcActionEvent, IpcActionType } from '@rapid/m-ipc-core';
@@ -87,11 +88,6 @@ declare const rApiPatch: <SuccessResponse = unknown, FailResponse = unknown>(url
  * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
  */
 declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
-
-/**
- * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
- */
-declare function createShallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
 declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
@@ -1992,6 +1988,25 @@ declare global {
             interface Extension extends RdExtension {
             }
         }
+        namespace Reactivity {
+            type Reactive<T> = _rapid_reactivity.Reactive<T>;
+            type WatchSource<T> = _rapid_reactivity.WatchSource<T>;
+            type WatchHandle = _rapid_reactivity.WatchHandle;
+            type EffectScope = _rapid_reactivity.EffectScope;
+            type OnCleanup = _rapid_reactivity.OnCleanup;
+            type ReactiveEffect = _rapid_reactivity.ReactiveEffect;
+            type ReactiveEffectOptions = _rapid_reactivity.ReactiveEffectOptions;
+            type ReactiveEffectRunner = _rapid_reactivity.ReactiveEffectRunner;
+            type Ref = _rapid_reactivity.Ref;
+            type ShallowRef = _rapid_reactivity.ShallowRef;
+            type UnwrapNestedRefs<T> = _rapid_reactivity.UnwrapNestedRefs<T>;
+            type UnwrapRef<T> = _rapid_reactivity.UnwrapRef<T>;
+            type UnwrapRefSimple<T> = _rapid_reactivity.UnwrapRefSimple<T>;
+            type ComputedRef = _rapid_reactivity.ComputedRef;
+            type WritableComputedRef<T, S> = _rapid_reactivity.WritableComputedRef<T, S>;
+            type ReactiveMarker = _rapid_reactivity.ReactiveMarker;
+            type DeepReadonly<T> = _rapid_reactivity.DeepReadonly<T>;
+        }
         /**
          * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
          */
@@ -2160,7 +2175,28 @@ declare global {
              */
             readonly libs: {
                 readonly injectReadonlyVariable: typeof injectReadonlyVariable;
-                readonly createShallowProxy: typeof createShallowProxy;
+                readonly reactive: typeof _rapid_reactivity.reactive;
+                readonly watch: typeof _rapid_reactivity.watch;
+                readonly effect: typeof _rapid_reactivity.effect;
+                readonly computed: typeof _rapid_reactivity.computed;
+                readonly ref: typeof _rapid_reactivity.ref;
+                readonly shallowRef: typeof _rapid_reactivity.shallowRef;
+                readonly reactiveReadArray: typeof _rapid_reactivity.reactiveReadArray;
+                readonly readonly: typeof _rapid_reactivity.readonly;
+                readonly shallowReactive: typeof _rapid_reactivity.shallowReactive;
+                readonly shallowReadonly: typeof _rapid_reactivity.shallowReadonly;
+                readonly toRaw: typeof _rapid_reactivity.toRaw;
+                readonly toReactive: typeof _rapid_reactivity.toReactive;
+                readonly toReadonly: typeof _rapid_reactivity.toReadonly;
+                readonly toRef: typeof _rapid_reactivity.toRef;
+                readonly toRefs: typeof _rapid_reactivity.toRefs;
+                readonly toValue: typeof _rapid_reactivity.toValue;
+                readonly unref: typeof _rapid_reactivity.unref;
+                readonly isRef: typeof _rapid_reactivity.isRef;
+                readonly isReactive: typeof _rapid_reactivity.isReactive;
+                readonly isReadonly: typeof _rapid_reactivity.isReadonly;
+                readonly isShallow: typeof _rapid_reactivity.isShallow;
+                readonly isProxy: typeof _rapid_reactivity.isProxy;
                 readonly rApiGet: typeof rApiGet;
                 readonly rApiPost: typeof rApiPost;
                 readonly rApiPut: typeof rApiPut;

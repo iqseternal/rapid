@@ -15,6 +15,10 @@ export type {
   UnwrapRefSimple,
   WatchSource,
   WritableComputedRef,
+  WatchHandle,
+  ReactiveFlags,
+  ReactiveMarker,
+  ReactiveMarkerSymbol
 } from '@vue/reactivity';
 
 export {
