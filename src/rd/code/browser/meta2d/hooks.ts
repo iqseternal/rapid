@@ -12,6 +12,7 @@ import { chartsPens } from '@meta2d/le5le-charts';
 import { ftaPens, ftaPensbyCtx, ftaAnchors } from '@meta2d/fta-diagram';
 import { MouseEventButton } from 'rd/base/browser/constants';
 import type { DependencyList, RefObject } from 'react';
+import { useSyncNormalState } from '@rapid/libs-web';
 
 export function setMeta2dCanvasData() {
   if (!rApp.meta2d) return;
@@ -31,7 +32,6 @@ export function setMeta2dCanvasData() {
 
 
 export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, deps: DependencyList) {
-
   useEffect(() => {
     if (!meta2dHtmlElementRef.current) return;
 
@@ -117,7 +117,6 @@ export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, de
       rApp.meta2d.off('translatePens', setMeta2dCanvasData);
 
       rApp.meta2d.off('*', setMeta2dCanvasData);
-
       rApp.meta2d.destroy();
     }
   }, deps);

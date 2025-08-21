@@ -1,42 +1,33 @@
 import { memo, useEffect } from 'react';
-import { Button, Card } from 'antd';
+import { Button, Card, Space } from 'antd';
 import { useShallowReactive } from '@rapid/libs-web';
 import { watch } from '@rapid/reactivity';
 
 const Extensions = memo(() => {
-
-  const [state] = useShallowReactive(() => {
-    return ({
-      name: 'Graphics',
-      count: 0,
-    })
-  })
-
-	useEffect(() => {
-		const unwatch = watch(() => ({ ...state }), () => {
-			console.log(
-				'组件内监听：',
-				state.count
-			);
-
-		});
-
-		return () => {
-			unwatch();
-		}
-	}, []);
+	const [state] = useShallowReactive(() => {
+		return ({
+			name: 'Graphics',
+			count: 0,
+		})
+	})
 
 	return (
 		<Card>
-			{state.count}
+			<Space>
+				<span>
+					{state.count}
+				</span>
 
-			<Button
-				onClick={() => {
-					state.count++;
-				}}
-			>
-				Click
-			</Button>
+				<Button
+					type='primary'
+					ghost
+					onClick={() => {
+						state.count++;
+					}}
+				>
+					Click
+				</Button>
+			</Space>
 		</Card>
 	)
 })

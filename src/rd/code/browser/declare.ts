@@ -166,6 +166,20 @@ declare global {
           'functional.theme.variables.transformer': ((variables: RdCssVariablePayloadSheet) => void)[];
 
           /**
+           * 功能 - meta2d - 注册
+           */
+          'functional.meta2d.lifecycle.registered': ((meta2d: import('@meta2d/core').Meta2d) => void)[];
+
+          /**
+           * 功能 - meta2d - 卸载
+           */
+          'functional.meta2d.lifecycle.unregistered': ((meta2d: import('@meta2d/core').Meta2d) => void)[];
+
+          // =====================================================================================================
+          // =====================================================================================================
+          // =====================================================================================================
+
+          /**
            * ui-header 图标展示
            */
           'ui.layout.header.icon': ComponentType[];
