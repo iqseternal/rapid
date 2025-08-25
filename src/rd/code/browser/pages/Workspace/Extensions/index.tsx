@@ -1,14 +1,11 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { Button, Card, Space } from 'antd';
 import { useShallowReactive } from '@rapid/libs-web';
-import { watch } from '@rapid/reactivity';
 
 const Extensions = memo(() => {
-	const [state] = useShallowReactive(() => {
-		return ({
-			name: 'Graphics',
-			count: 0,
-		})
+	const [state] = useShallowReactive({
+		name: 'Graphics',
+		count: 0,
 	})
 
 	return (

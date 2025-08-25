@@ -58,8 +58,8 @@ export async function transformerConfig(rdBuilderConfig: RdBuilderConfig) {
   // 编译渲染进程
   const compilerRenderer = () => {
     return new Promise<void>(async (resolve) => {
-      await rendererRsbuilder.build();
       printInfo(`Compiler: web`);
+      await rendererRsbuilder.build();
       resolve();
     })
   }

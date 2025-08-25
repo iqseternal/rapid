@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
 import { toNil } from '@rapid/libs';
-import { useAsyncLayoutEffect, useNormalState, useRefresh, useWindowInnerSize } from '@rapid/libs-web';
+import { useNormalState, useRefresh, useWindowInnerSize, useAsyncEffect } from '@rapid/libs-web';
 import { platControllerMaxImgUrl, platControllerReductionImgUrl } from 'rd/assets';
 import { useTranslation } from 'react-i18next';
 
@@ -25,7 +25,7 @@ export const WindowsReductionWindowWidget = memo(() => {
     windowInnerSize.innerHeight === normalState.workAreaSize.height
   );
 
-  useAsyncLayoutEffect(async () => {
+  useAsyncEffect(async () => {
     const [err, res] = await toNil(window.ipcActions.windowWorkAreaSize());
     if (err) return;
     normalState.workAreaSize = {

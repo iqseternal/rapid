@@ -2,9 +2,10 @@ import { Tooltip, TooltipProps } from 'antd';
 import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
-import { useDebounceHook, useResizeObserver, useShallowReactive } from '../../hooks';
+import { useResizeObserver, useShallowReactive } from '../../hooks';
 import { isRawObject, isUnDef } from '@rapid/libs';
 import { StringFilters } from '../../common';
+import { debounce } from 'lodash';
 
 import styles from './ellipsis.module.scss';
 
@@ -117,7 +118,7 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
       }
     }
 
-    return useDebounceHook(callback, { wait: 200 });
+    return debounce(callback, 200);
   }, []);
 
   // 创建 resizeObserver, 添加调整尺寸时的侦听器

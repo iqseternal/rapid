@@ -25,7 +25,7 @@ export class PriorityQueue<V> extends Vessel<V> {
   public top(): V | null {
     if (this.length === 0) return null;
     return this.priorityQueueArr[1];
-  }
+  } 
 
   /**
    * 放入元素到单调队列中

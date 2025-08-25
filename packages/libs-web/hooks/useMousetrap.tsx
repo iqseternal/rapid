@@ -1,4 +1,5 @@
 import type { RefObject } from 'react';
+import { useEffect } from 'react';
 
 import Mousetrap from 'mousetrap';
 
@@ -13,7 +14,7 @@ export namespace KeyboardSampleKeys {
 
   export type Number = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
-  export type FunctionKeys = 'F1' | 'F2' | 'F3' | 'F4' | 'F5' | 'F6' | 'F7' | 'F8' | 'F9' | 'F10' | 'F11' | 'F12';
+  export type FunctionKeys = 'f1' | 'f2' | 'f3' | 'f4' | 'f5' | 'f6' | 'f7' | 'f8' | 'f9' | 'f10' | 'f11' | 'f12';
 }
 
 export type WithControl<K extends string> =
@@ -44,36 +45,3 @@ export type KeyboardSampleCompose =
     | KeyboardSampleKeys.FunctionKeys
   >
 ;
-
-// TODO: 添加剩余的类型
-type Join<T extends readonly string[], D extends string = " "> =
-  T extends readonly [infer F extends string, ...infer R extends readonly string[]]
-    ? `${F}${R['length'] extends 0 ? '' : `${D}${Join<R, D>}`}`
-    : ""
-;
-
-
-export function makeFlowKeys<FlowKeys extends readonly KeyboardSampleCompose[]>(...keys: FlowKeys): Join<FlowKeys> {
-  return keys.join(' ') as Join<FlowKeys>;
-}
-
-/**
- *
- * @todo 需要实现
- */
-export function useMousetrap(keys: readonly KeyboardSampleCompose[], callback: () => void): void;
-
-export function useMousetrap(keys: readonly [KeyboardSampleCompose[], (() => void)][]): void;
-
-export function useMousetrap<FlowKeys extends readonly KeyboardSampleCompose[]>(keys: FlowKeys, callback: () => void): void
-
-export function useMousetrap<TDom extends HTMLElement>(target: TDom, key: readonly KeyboardSampleCompose[], callback: () => void): void;
-
-export function useMousetrap<TDom extends HTMLElement>(target: RefObject<TDom>, keys: readonly KeyboardSampleCompose[], callback: () => void): void;
-
-/**
- * TODO: 编写函数实现
- */
-export function useMousetrap() {
-
-}
