@@ -40,26 +40,3 @@ export type ExtractVectorEntries<Entries> = {
 export type ExtractSingleEntries<Entries> = {
   [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
 }
-
-export type MetadataAction =
-  | 'Define'
-  | 'Remove'
-;
-
-export type MetadataType =
-  | 'Vector'
-  | 'Single'
-  | 'All'
-;
-
-export interface MetadataStoreListenerPayload {
-  readonly action: MetadataAction;
-
-  readonly type: MetadataType;
-
-  readonly metadataKey: number | string | symbol;
-
-  metadata: unknown;
-}
-
-export type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;

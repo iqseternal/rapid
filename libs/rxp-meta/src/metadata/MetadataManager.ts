@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, useState } from 'react';
-import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';
+import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
 /**
@@ -13,25 +13,6 @@ import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
  */
 export class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
-  private readonly metadataChangeListeners = new Set<MetadataStoreChangeListener>();
-
-  /**
-   * 触发元数据更改监听函数
-   */
-  protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload) {
-    this.metadataChangeListeners.forEach(listener => listener(payload));
-  }
-
-  /**
-   * 订阅元数据更改
-   */
-  public subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener) {
-    this.metadataChangeListeners.add(listener);
-
-    return () => {
-      this.metadataChangeListeners.delete(listener);
-    }
-  }
 
   /**
    * 定义 store 元数据, 元数据可以是任何东西
@@ -44,12 +25,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     this.metadataMap.set(metadataKey, metadata);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Define',
-      type: 'All',
-      metadataKey: metadataKey,
-      metadata: metadata
-    })
 
     return () => {
       this.delMetadata(metadataKey);
@@ -75,12 +50,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
 
     this.metadataMap.delete(metadataKey);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Remove',
-      type: 'All',
-      metadataKey: metadataKey,
-      metadata: this.metadataMap.get(metadataKey)
-    })
   }
 
   /**
@@ -90,12 +59,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     this.metadataMap.set(metadataKey, metadata);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Define',
-      type: 'Single',
-      metadataKey: metadataKey,
-      metadata: metadata
-    })
 
     return () => {
       this.delMetadata(metadataKey);
@@ -120,21 +83,9 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
 
       this.metadataMap.set(metadataKey, newVector);
       super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: newVector
-      })
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: [metadata] as MetadataEntries[MetadataKey]
-      })
     }
 
     return () => {
@@ -164,23 +115,11 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     if (fVector.length === 0) {
       this.metadataMap.delete(metadataKey);
       super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Remove',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: [] as MetadataEntries[MetadataKey]
-      })
       return;
     }
 
     this.metadataMap.set(metadataKey, fVector);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Remove',
-      type: 'Vector',
-      metadataKey: metadataKey,
-      metadata: fVector as MetadataEntries[MetadataKey]
-    })
   }
 
   /**
@@ -289,7 +228,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * 获取到所有定义的元数据
    */
   public useAllMetadata() {
-    super.useStoreValue();
+    super.useStoreValueToRerenderComponent();
     return this.metadataMap;
   }
 

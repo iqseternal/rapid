@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
-import type { Reactive, WatchHandle } from '@rapid/reactivity';
-import { reactive, watch } from '@rapid/reactivity';
+import type { WatchHandle, ShallowReactive } from '@rapid/reactivity';
+import { shallowReactive, watch } from '@rapid/reactivity';
 
 /**
  * 普通 state, 不自动刷新组件
@@ -74,7 +74,7 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): Use
 
 export type UseShallowReactiveRestoreFunction = () => void;
 
-export type UseShallowReactiveReturnType<S extends object> = readonly [Reactive<S>, UseShallowReactiveRestoreFunction];
+export type UseShallowReactiveReturnType<S extends object> = readonly [ShallowReactive<S>, UseShallowReactiveRestoreFunction];
 
 /**
  * 修改 state 自动刷新组件
@@ -102,7 +102,7 @@ export function useShallowReactive<S extends object>(initValue: S | (() => S)): 
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    return reactive(initialState);
+    return shallowReactive(initialState);
   });
 
   /**

@@ -8,7 +8,7 @@ export interface InnerStore {
   /**
    * 对应的更新数据
    */
-  value: {}
+  value: Record<string, unknown>;
 }
 
 /**
@@ -29,31 +29,33 @@ export abstract class InnerZustandStoreManager {
    * zustand
    */
   private readonly store = create<InnerStore>()(
-    immer(() => {
-      return {
-        value: {}
-      }
-    })
+    immer(() => ({
+      value: {}
+    }))
   );
 
   private readonly listeners = new Set<InnerStoreListener>();
 
-  private readonly unsubscribe = this.store.subscribe(() => {
+  private readonly unsubscribeListeners = this.store.subscribe(() => {
     this.listeners.forEach(listener => listener());
   });
 
   /**
    * 更新当前的 store, 会导致状态库的组件更新触发
    */
-  protected updateStore() {
+  protected updateStore(): void {
     this.store.setState({ value: {} });
   }
 
   /**
    * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
    */
-  protected useStoreValue() {
+  protected useStoreValueToRerenderComponent(): Record<string, unknown> {
     return this.store(store => store.value);
+  }
+
+  protected unsubscribe(listener: InnerStoreListener) {
+    this.listeners.delete(listener);
   }
 
   /**
@@ -62,12 +64,21 @@ export abstract class InnerZustandStoreManager {
   protected subscribe(listener: InnerStoreListener): InnerStoreDestroyListener {
     this.listeners.add(listener);
 
-    return () => {
-      this.listeners.delete(listener);
-    }
+    return () => this.unsubscribe(listener);
   }
 
-  protected destroy() {
-    this.unsubscribe();
+  /**
+   * 销毁管理器
+   */
+  protected destroy(): void {
+    this.listeners.clear();
+    this.unsubscribeListeners();
+  }
+
+  /**
+   * 获取监听器数量
+   */
+  protected getListenerCount(): number {
+    return this.listeners.size;
   }
 }

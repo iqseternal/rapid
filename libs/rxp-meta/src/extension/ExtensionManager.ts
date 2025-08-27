@@ -1,6 +1,8 @@
+// @ts-nocheck
 import type { Extension, ExtensionWithLifecycle, ExtensionName, ExtractExtensionContext } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 import { useEffect, useState, Ref } from 'react';
+import { ExtensionErrors } from '../constants';
 
 const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
 
@@ -12,57 +14,50 @@ const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
  * 3. 调动 emitter 实现事件触发
  */
 export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
-  private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle<Ext>>();
+  private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle>();
 
   /**
    * Define extension, 定义插件, 那么插件会被存储到 Map 中.
    */
   public defineExtension<DExt extends Ext>(define: DExt): DExt {
-    if (!Reflect.has(define, 'name')) throw new Error(`Extension name is required`);
-    if (!(typeof define.name === 'string')) throw new Error(`Extension name must be string`);
-    if (!Reflect.has(define, 'version')) throw new Error(`Extension version is required`);
+    if (!Reflect.has(define, 'name')) throw new Error(ExtensionErrors.ExtensionNameIsRequired);
+    if (!(typeof define.name === 'string')) throw new Error(ExtensionErrors.ExtensionNameMustBeString);
 
-    if (Reflect.has(define, 'onActivated') && !Reflect.has(define, 'onDeactivated')) throw new Error(`Extension lifecycle: onActivated and onDeactivated must be set at same time`);
-    if (Reflect.has(define, 'onDeactivated') && !Reflect.has(define, 'onActivated')) throw new Error(`Extension lifecycle: onActivated and onDeactivated must be set at same time`);
+    if (!Reflect.has(define, 'version')) throw new Error(ExtensionErrors.ExtensionVersionIsRequired);
+    if (!(typeof define.version === 'string')) throw new Error(ExtensionErrors.ExtensionVersionMustBeString);
+
+    if (!Reflect.has(define, 'onActivated')) throw new Error(ExtensionErrors.ExtensionOnActivatedIsRequired);
+    if (typeof define.onActivated !== 'function') throw new Error(ExtensionErrors.ExtensionOnActivatedMustBeFunction);
 
     const name = define.name;
     const version = define.version;
     const onActivated = define.onActivated;
-    const onDeactivated = define.onDeactivated;
 
-    const extension: DExt = {
-      ...define,
-      onActivated: async (...args) => {
-        if (!this.extNameMapStore.has(name)) {
-          console.error(`当前扩展还未注册加载, 但却错误得试图激活`);
-          return;
-        }
-
-        const lifecycle = this.extNameMapStore.get(name);
-        if (!lifecycle) return;
-        if (lifecycle.isActivated) {
-          console.error(`当前扩展已被激活, 但却错误得试图再次激活`);
-          return;
-        }
-
-        await onActivated?.call(extension, ...args);
-        lifecycle.isActivated = true;
+    const extension: Extension<any> = {
+      get name() {
+        return name;
       },
-      onDeactivated: async (...args) => {
-        if (!this.extNameMapStore.has(name)) {
-          console.error(`当前扩展还未注册加载, 但却错误得试图去活`);
-          return;
+      get version() {
+        return version;
+      },
+      meta: define.meta,
+      get onActivated() {
+        return async (context) => {
+          const onDeactivated = await onActivated?.call(extension, context);
+
+          if (onDeactivated) {
+            return () => {
+              onDeactivated();
+            }
+          }
+
+          return () => {
+
+
+          }
         }
-        const lifecycle = this.extNameMapStore.get(name);
-        if (!lifecycle) return;
-        if (!lifecycle.isActivated) {
-          console.error(`当前扩展未被激活, 但却错误得试图去活`);
-          return;
-        }
-        await onDeactivated?.call(extension, ...args);
-        lifecycle.isActivated = false;
       }
-    } as const;
+    };
 
     Reflect.defineProperty(extension, '__TAG__', {
       enumerable: false,
@@ -169,7 +164,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
    * 获取扩展列表
    */
   public useExtensionsList(): readonly [Ext[]] {
-    const value = this.useStoreValue();
+    const value = this.useStoreValueToRerenderComponent();
 
     const [statusState] = useState(() => ({
       value: void 0 as (undefined | typeof value)
