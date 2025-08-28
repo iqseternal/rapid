@@ -1,8 +1,6 @@
-// @ts-nocheck
 import type { Extension, ExtensionWithLifecycle, ExtensionName, ExtractExtensionContext } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 import { useEffect, useState, Ref } from 'react';
-import { ExtensionErrors } from '../constants';
 
 const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
 
@@ -20,44 +18,51 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
    * Define extension, 定义插件, 那么插件会被存储到 Map 中.
    */
   public defineExtension<DExt extends Ext>(define: DExt): DExt {
-    if (!Reflect.has(define, 'name')) throw new Error(ExtensionErrors.ExtensionNameIsRequired);
-    if (!(typeof define.name === 'string')) throw new Error(ExtensionErrors.ExtensionNameMustBeString);
+    if (!Reflect.has(define, 'name')) throw new Error(`Extension name is required`);
+    if (!(typeof define.name === 'string')) throw new Error(`Extension name must be string`);
+    if (!Reflect.has(define, 'version')) throw new Error(`Extension version is required`);
 
-    if (!Reflect.has(define, 'version')) throw new Error(ExtensionErrors.ExtensionVersionIsRequired);
-    if (!(typeof define.version === 'string')) throw new Error(ExtensionErrors.ExtensionVersionMustBeString);
-
-    if (!Reflect.has(define, 'onActivated')) throw new Error(ExtensionErrors.ExtensionOnActivatedIsRequired);
-    if (typeof define.onActivated !== 'function') throw new Error(ExtensionErrors.ExtensionOnActivatedMustBeFunction);
+    if (Reflect.has(define, 'onActivated') && !Reflect.has(define, 'onDeactivated')) throw new Error(`Extension lifecycle: onActivated and onDeactivated must be set at same time`);
+    if (Reflect.has(define, 'onDeactivated') && !Reflect.has(define, 'onActivated')) throw new Error(`Extension lifecycle: onActivated and onDeactivated must be set at same time`);
 
     const name = define.name;
     const version = define.version;
     const onActivated = define.onActivated;
+    const onDeactivated = define.onDeactivated;
 
-    const extension: Extension<any> = {
-      get name() {
-        return name;
-      },
-      get version() {
-        return version;
-      },
-      meta: define.meta,
-      get onActivated() {
-        return async (context) => {
-          const onDeactivated = await onActivated?.call(extension, context);
-
-          if (onDeactivated) {
-            return () => {
-              onDeactivated();
-            }
-          }
-
-          return () => {
-
-
-          }
+    const extension: DExt = {
+      ...define,
+      onActivated: async (...args) => {
+        if (!this.extNameMapStore.has(name)) {
+          console.error(`当前扩展还未注册加载, 但却错误得试图激活`);
+          return;
         }
+
+        const lifecycle = this.extNameMapStore.get(name);
+        if (!lifecycle) return;
+        if (lifecycle.isActivated) {
+          console.error(`当前扩展已被激活, 但却错误得试图再次激活`);
+          return;
+        }
+
+        await onActivated?.call(extension, ...args);
+        lifecycle.isActivated = true;
+      },
+      onDeactivated: async (...args) => {
+        if (!this.extNameMapStore.has(name)) {
+          console.error(`当前扩展还未注册加载, 但却错误得试图去活`);
+          return;
+        }
+        const lifecycle = this.extNameMapStore.get(name);
+        if (!lifecycle) return;
+        if (!lifecycle.isActivated) {
+          console.error(`当前扩展未被激活, 但却错误得试图去活`);
+          return;
+        }
+        await onDeactivated?.call(extension, ...args);
+        lifecycle.isActivated = false;
       }
-    };
+    } as const;
 
     Reflect.defineProperty(extension, '__TAG__', {
       enumerable: false,
@@ -75,10 +80,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   public isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt {
     if (typeof extension !== 'object') return false;
     const hasTAG = Reflect.has(extension, '__TAG__');
-    if (!hasTAG) return false;
-
-    const tag = Reflect.get(extension, '__TAG__');
-    return tag === ExtensionSymbolTag;
+    return hasTAG;
   }
 
   /**
@@ -111,7 +113,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
       console.error(`试图重新注册一个已存在得扩展：应该先移除再注册`);
       return;
     }
-    const extensionLifecycle: ExtensionWithLifecycle<Ext> = {
+    const extensionLifecycle: ExtensionWithLifecycle = {
       extension: extension,
       isActivated: false,
     };
@@ -163,7 +165,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 获取扩展列表
    */
-  public useExtensionsList(): readonly [Ext[]] {
+  public useExtensionsList(): readonly [Extension[]] {
     const value = this.useStoreValueToRerenderComponent();
 
     const [statusState] = useState(() => ({
@@ -171,14 +173,14 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     }))
 
     const [normalState] = useState({
-      extensions: [] as Ext[],
+      extensions: [] as Extension[],
     })
 
     if (statusState.value !== value) {
       statusState.value = value;
 
       // 如果 store 被更新了, 那么替换最新的 extension
-      const extensions: Ext[] = [];
+      const extensions: Extension[] = [];
 
       for (const ext of this.extNameMapStore.values()) {
         extensions.push(ext.extension);
@@ -193,8 +195,8 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 获得所有的插件
    */
-  public getExtensions(): readonly Ext[] {
-    const extensions: Ext[] = [];
+  public getExtensions(): readonly Extension[] {
+    const extensions: Extension[] = [];
 
     for (const ext of this.extNameMapStore.values()) {
       extensions.push(ext.extension);
