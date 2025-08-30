@@ -1,17 +1,24 @@
+// @ts-nocheck
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 import { ExtensionErrors } from '../constants';
 
-export type ExtensionName = string;
+export type ExtensionOnActivated = (this: Extension) => (() => void) | Promise<(() => void)>;
 
-export type ExtensionOnActivated<Context = unknown> = (context?: Context) => (() => void) | Promise<(() => void)>;
+export type ExtensionOnDeactivated = (this: Extension) => (void | Promise<void>);
 
-export type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
+export type ExtensionOnInstalled = (this: Extension) => (void | Promise<void>);
 
-export interface Extension<Context = unknown> {
+export type ExtensionOnUninstalled = (this: Extension) => (void | Promise<void>);
+
+export interface ExtensionMeta {
+
+}
+
+export interface Extension {
   /**
    * 插件的唯一标识 name
    */
-  readonly name: ExtensionName;
+  readonly name: string;
 
   /**
    * 插件版本
@@ -21,14 +28,33 @@ export interface Extension<Context = unknown> {
   /**
    * 插件数据, 由项目自主决定插件附带携带的数据
    */
-  meta?: any;
+  meta?: ExtensionMeta;
+
+  readonly isInstalled: boolean;
+  readonly isUninstalled: boolean;
+
+  readonly isActivated: boolean;
+  readonly isDeactivated: boolean;
+
+  readonly onInstalled?: ExtensionOnInstalled;
+  readonly onUninstalled?: ExtensionOnUninstalled;
 
   /**
    * 插件被激活, 被使用的状态
    */
-  readonly onActivated?: ExtensionOnActivated<Context>;
+  readonly onActivated?: ExtensionOnActivated;
+  readonly onDeactivated?: ExtensionOnDeactivated;
+}
 
-  readonly onDeactivated?: ExtensionOnDeactivated<Context>;
+export interface ExtensionInnerInstance {
+  readonly name: string;
+  readonly version: string | number;
+
+  isRegistered: boolean;
+  isUnregistered: boolean;
+
+  isActivated: boolean;
+  isDeactivated: boolean;
 }
 
 export const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
@@ -48,36 +74,71 @@ export class ExtensionManager extends InnerZustandStoreManager {
 
     const name = define['name'];
     const version = define['version'];
-    const onActivated = define['onActivated'];
-    // const onDeactivated = define['onDeactivated'];
 
-    let isActivated = false;
-    let onDeactivated: () => (void | Promise<void>);
+    const extensionInnerInstance: ExtensionInnerInstance = {
+      name: name,
+      version: version,
+      isRegistered: false,
+      isUnregistered: false,
+      isActivated: false,
+      isDeactivated: false,
+    };
+
+    const that = this;
+
+    const onInstalled: ExtensionOnInstalled = function () {
+      that.defineExtension({
+        name: '',
+        version: 1,
+        onInstalled: () => {
+
+
+        }
+      })
+    }
 
     const extension: Extension = {
       get name() {
-        return name;
+        return extensionInnerInstance.name;
       },
       get version() {
-        return version;
+        return extensionInnerInstance.version;
+      },
+      get isInstalled() {
+        return extensionInnerInstance.isRegistered;
+      },
+      get isUninstalled() {
+        return extensionInnerInstance.isUnregistered;
+      },
+      get isActivated() {
+        return extensionInnerInstance.isActivated;
+      },
+      get isDeactivated() {
+        return extensionInnerInstance.isDeactivated;
       },
       meta: define['meta'] ?? void 0,
-      get onActivated() {
-        return async (context: unknown) => {
-          const onDeactivated = await onActivated?.call(extension, context);
+      get onInstalled() {
+        return onInstalled;
+      },
+      get onUninstalled() {
 
-          return async () => {
-            if (onDeactivated && typeof onDeactivated === 'function') {
-              await onDeactivated();
-            }
+        return () => {
+
+        };
+      },
+      get onActivated() {
+
+        return () => {
+          return () => {
+
           }
-        }
+        };
       },
       get onDeactivated() {
 
         return () => {
 
-        }
+        };
       }
     };
 
@@ -99,8 +160,15 @@ export class ExtensionManager extends InnerZustandStoreManager {
     return tag === ExtensionSymbolTag;
   }
 
-  public registerExtension() {
+  public registerExtension(extensionName: string) {
+    if (!(typeof extensionName === 'string')) throw new Error(ExtensionErrors.ExtensionNameMustBeString);
 
+    if (!this.isExtension(extensionName)) throw new Error(ExtensionErrors.ExtensionIsNotExist);
+
+    const extension = this.getExtension(extensionName);
+    if (!extension) throw new Error(ExtensionErrors.ExtensionIsNotExist);
+
+    extension.onInstalled?.();
   }
 
   public unregisterExtension() {
@@ -115,7 +183,9 @@ export class ExtensionManager extends InnerZustandStoreManager {
 
   }
 
-  public getExtension() {
+  public getExtension(extensionName: string): Extension | null {
+
+
 
   }
 

@@ -8,6 +8,8 @@ export const enum ExtensionErrors {
 
   ExtensionOnActivatedIsRequired = 'Extension onActivated is required',
   ExtensionOnActivatedMustBeFunction = 'Extension onActivated must be function',
+
+  ExtensionIsNotExist = 'Extension is not exist',
 }
 
 export const enum MetadataErrors {
