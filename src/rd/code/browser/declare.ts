@@ -255,23 +255,23 @@ declare global {
     }
 
     export namespace Reactivity {
-      export type Reactive<T> = import('@rapid/reactivity').Reactive<T>;
-      export type WatchSource<T> = import('@rapid/reactivity').WatchSource<T>;
-      export type WatchHandle = import('@rapid/reactivity').WatchHandle;
-      export type EffectScope = import('@rapid/reactivity').EffectScope;
-      export type OnCleanup = import('@rapid/reactivity').OnCleanup;
-      export type ReactiveEffect = import('@rapid/reactivity').ReactiveEffect;
-      export type ReactiveEffectOptions = import('@rapid/reactivity').ReactiveEffectOptions;
-      export type ReactiveEffectRunner = import('@rapid/reactivity').ReactiveEffectRunner;
-      export type Ref = import('@rapid/reactivity').Ref;
-      export type ShallowRef = import('@rapid/reactivity').ShallowRef;
-      export type UnwrapNestedRefs<T> = import('@rapid/reactivity').UnwrapNestedRefs<T>;
-      export type UnwrapRef<T> = import('@rapid/reactivity').UnwrapRef<T>;
-      export type UnwrapRefSimple<T> = import('@rapid/reactivity').UnwrapRefSimple<T>;
-      export type ComputedRef = import('@rapid/reactivity').ComputedRef;
-      export type WritableComputedRef<T, S> = import('@rapid/reactivity').WritableComputedRef<T, S>;
-      export type ReactiveMarker = import('@rapid/reactivity').ReactiveMarker;
-      export type DeepReadonly<T> = import('@rapid/reactivity').DeepReadonly<T>;
+      export type Reactive<T> = import('@vue/reactivity').Reactive<T>;
+      export type WatchSource<T> = import('@vue/reactivity').WatchSource<T>;
+      export type WatchHandle = import('@vue/reactivity').WatchHandle;
+      export type EffectScope = import('@vue/reactivity').EffectScope;
+      export type OnCleanup = import('@vue/reactivity').OnCleanup;
+      export type ReactiveEffect = import('@vue/reactivity').ReactiveEffect;
+      export type ReactiveEffectOptions = import('@vue/reactivity').ReactiveEffectOptions;
+      export type ReactiveEffectRunner = import('@vue/reactivity').ReactiveEffectRunner;
+      export type Ref = import('@vue/reactivity').Ref;
+      export type ShallowRef = import('@vue/reactivity').ShallowRef;
+      export type UnwrapNestedRefs<T> = import('@vue/reactivity').UnwrapNestedRefs<T>;
+      export type UnwrapRef<T> = import('@vue/reactivity').UnwrapRef<T>;
+      export type UnwrapRefSimple<T> = import('@vue/reactivity').UnwrapRefSimple<T>;
+      export type ComputedRef = import('@vue/reactivity').ComputedRef;
+      export type WritableComputedRef<T, S> = import('@vue/reactivity').WritableComputedRef<T, S>;
+      export type ReactiveMarker = import('@vue/reactivity').ReactiveMarker;
+      export type DeepReadonly<T> = import('@vue/reactivity').DeepReadonly<T>;
     }
 
     /**
@@ -463,28 +463,28 @@ declare global {
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
 
-        readonly reactive: typeof import('@rapid/reactivity').reactive;
-        readonly watch: typeof import('@rapid/reactivity').watch;
-        readonly effect: typeof import('@rapid/reactivity').effect;
-        readonly computed: typeof import('@rapid/reactivity').computed;
-        readonly ref: typeof import('@rapid/reactivity').ref;
-        readonly shallowRef: typeof import('@rapid/reactivity').shallowRef;
-        readonly reactiveReadArray: typeof import('@rapid/reactivity').reactiveReadArray;
-        readonly readonly: typeof import('@rapid/reactivity').readonly;
-        readonly shallowReactive: typeof import('@rapid/reactivity').shallowReactive;
-        readonly shallowReadonly: typeof import('@rapid/reactivity').shallowReadonly;
-        readonly toRaw: typeof import('@rapid/reactivity').toRaw;
-        readonly toReactive: typeof import('@rapid/reactivity').toReactive;
-        readonly toReadonly: typeof import('@rapid/reactivity').toReadonly;
-        readonly toRef: typeof import('@rapid/reactivity').toRef;
-        readonly toRefs: typeof import('@rapid/reactivity').toRefs;
-        readonly toValue: typeof import('@rapid/reactivity').toValue;
-        readonly unref: typeof import('@rapid/reactivity').unref;
-        readonly isRef: typeof import('@rapid/reactivity').isRef;
-        readonly isReactive: typeof import('@rapid/reactivity').isReactive;
-        readonly isReadonly: typeof import('@rapid/reactivity').isReadonly;
-        readonly isShallow: typeof import('@rapid/reactivity').isShallow;
-        readonly isProxy: typeof import('@rapid/reactivity').isProxy;
+        readonly reactive: typeof import('@vue/reactivity').reactive;
+        readonly watch: typeof import('@vue/reactivity').watch;
+        readonly effect: typeof import('@vue/reactivity').effect;
+        readonly computed: typeof import('@vue/reactivity').computed;
+        readonly ref: typeof import('@vue/reactivity').ref;
+        readonly shallowRef: typeof import('@vue/reactivity').shallowRef;
+        readonly reactiveReadArray: typeof import('@vue/reactivity').reactiveReadArray;
+        readonly readonly: typeof import('@vue/reactivity').readonly;
+        readonly shallowReactive: typeof import('@vue/reactivity').shallowReactive;
+        readonly shallowReadonly: typeof import('@vue/reactivity').shallowReadonly;
+        readonly toRaw: typeof import('@vue/reactivity').toRaw;
+        readonly toReactive: typeof import('@vue/reactivity').toReactive;
+        readonly toReadonly: typeof import('@vue/reactivity').toReadonly;
+        readonly toRef: typeof import('@vue/reactivity').toRef;
+        readonly toRefs: typeof import('@vue/reactivity').toRefs;
+        readonly toValue: typeof import('@vue/reactivity').toValue;
+        readonly unref: typeof import('@vue/reactivity').unref;
+        readonly isRef: typeof import('@vue/reactivity').isRef;
+        readonly isReactive: typeof import('@vue/reactivity').isReactive;
+        readonly isReadonly: typeof import('@vue/reactivity').isReadonly;
+        readonly isShallow: typeof import('@vue/reactivity').isShallow;
+        readonly isProxy: typeof import('@vue/reactivity').isProxy;
 
         readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
         readonly rApiPost: typeof import('rd/base/common/api').rApiPost;

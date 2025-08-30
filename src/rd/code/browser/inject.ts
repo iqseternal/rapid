@@ -54,7 +54,7 @@ import {
   isReadonly,
   isShallow,
   isProxy
-} from '@rapid/reactivity';
+} from '@vue/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
 import { Skin, makeRdCssVarPayload, mrcvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';

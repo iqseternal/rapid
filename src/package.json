@@ -23,7 +23,6 @@
     "@rapid/libs": "workspace:*",
     "@rapid/libs-web": "workspace:*",
     "@rapid/m-ipc-core": "workspace:*",
-    "@rapid/reactivity": "workspace:*",
     "@rapid/structure": "workspace:*"
   },
   "devDependencies": {

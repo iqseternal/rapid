@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
-import type { WatchHandle, ShallowReactive } from '@rapid/reactivity';
-import { shallowReactive, watch } from '@rapid/reactivity';
+import type { WatchHandle, ShallowReactive } from '@vue/reactivity';
+import { shallowReactive, watch } from '@vue/reactivity';
 
 /**
  * 普通 state, 不自动刷新组件
