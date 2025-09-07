@@ -52,13 +52,6 @@ const WorkspaceLayout = memo(() => {
 
   const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
 
-  useFadeInEffect(async () => {
-    await Promise.allSettled([
-      ipcActions.windowResizeAble({ resizeAble: true }),
-      ipcActions.windowResetCustomSize({ type: 'mainWindow' })
-    ]);
-  }, []);
-
   return (
     <div className='w-full h-full'>
       <Header />
@@ -88,6 +81,13 @@ const WorkspaceLayout = memo(() => {
 })
 
 const WorkspaceLayoutWrapper = memo(() => {
+
+  useFadeInEffect(async () => {
+    await Promise.allSettled([
+      ipcActions.windowResizeAble({ resizeAble: true }),
+      ipcActions.windowResetCustomSize({ type: 'mainWindow' })
+    ]);
+  }, []);
 
   useLayoutEffect(() => {
     const dmCallbacks = [
