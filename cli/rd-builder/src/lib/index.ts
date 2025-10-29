@@ -1,8 +1,5 @@
-import { NodeCommand, RdBuilderConfigName } from '../constants';
 import { printError, printInfo, print } from '../printer';
-import { EnvBuilder } from '../service/EnvBuilder';
 import type { RdBuilderConfig } from '../../index';
-import { ElectronService } from '../service/ElectronService';
 import { rspack } from '@rspack/core';
 import { createRsbuild } from '@rsbuild/core';
 

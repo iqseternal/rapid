@@ -11,20 +11,12 @@ export const Ticket = memo(() => {
   const { t } = useTranslation();
   const { message, notification } = App.useApp();
 
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+
   useFadeInEffect(async () => {
     await ipcActions.windowSetSize({ width: 850, height: 550 });
     await ipcActions.windowResizeAble({ resizeAble: false });
-  }, []);
-
-  useLayoutEffect(() => {
-    const dmCallbacks = [
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget),
-    ]
-
-    return () => {
-      dmCallbacks.forEach(callback => callback());
-    }
   }, []);
 
   return (

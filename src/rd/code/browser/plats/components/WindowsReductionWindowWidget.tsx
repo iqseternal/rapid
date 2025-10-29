@@ -42,6 +42,7 @@ export const WindowsReductionWindowWidget = memo(() => {
       ) : (
         t('plats.widgets.control.reduction.maximize', '最大化窗口')
       )}
+      className='!cursor-default'
       onClick={() => ipcActions.windowReduction()}
     >
       {isFullSize ? (

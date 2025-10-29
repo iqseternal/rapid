@@ -1,4 +1,5 @@
-import { classnames } from './common';
+import { classnames, isReactFC } from './common';
+import { createElement, lazy, type FC } from 'react';
 
 describe('classnames', () => {
   it('classnames', () => {
@@ -31,3 +32,32 @@ describe('classnames', () => {
   })
 })
 
+describe('isReactLazyFC', () => {
+  it('isReactLazyFC', async () => {
+    const Component = () => {
+
+      return (
+        createElement('div', null, 'test')
+      );
+    }
+
+    const components: [FC, boolean][] = [
+      [
+        Component,
+        false
+      ],
+      [
+        lazy(async () => ({
+          default: Component
+        })),
+        true
+      ]
+    ];
+
+    expect(
+      components.map(item => item[0]).map(component => isReactFC(component))
+    ).toEqual(
+      components.map(item => item[1])
+    );
+  });
+})

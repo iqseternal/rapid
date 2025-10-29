@@ -81,31 +81,19 @@ const WorkspaceLayout = memo(() => {
 })
 
 const WorkspaceLayoutWrapper = memo(() => {
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+  rApp.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
 
   useFadeInEffect(async () => {
     await Promise.allSettled([
       ipcActions.windowResizeAble({ resizeAble: true }),
       ipcActions.windowResetCustomSize({ type: 'mainWindow' })
     ]);
-  }, []);
-
-  useLayoutEffect(() => {
-    const dmCallbacks = [
-      rApp.metadata.defineMetadataInVector('ui.layout.header.icon', Logo),
-
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget),
-
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus),
-
-      rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar),
-    ];
-
-    return () => {
-      dmCallbacks.forEach(callback => callback());
-    }
   }, []);
 
   return (

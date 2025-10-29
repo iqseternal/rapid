@@ -1,4 +1,6 @@
 import { defineConfig } from '@rspack/cli';
+import { } from '@rspack/core';
+
 import * as path from 'path';
 
 export default defineConfig({

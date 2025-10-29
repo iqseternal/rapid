@@ -90,7 +90,7 @@ export function useRouteContextInject() {
 }
 
 export function useRouteContextProvider(routes: RouteConfig[]) {
-  // const location = useLocation();
+  const location = useLocation();
 
   const [normalState] = useNormalState(() => ({
     routeMap: new Map<string, RouteConfig>(),
@@ -114,6 +114,7 @@ export function useRouteContextProvider(routes: RouteConfig[]) {
     normalState.routeMap = routeMap;
 
     const route = normalState.routeMap.get(location.pathname);
+
     if (route) setCurrentRoute(route);
     else setCurrentRoute(null);
 
@@ -122,13 +123,12 @@ export function useRouteContextProvider(routes: RouteConfig[]) {
     }
   }, [routes]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const route = normalState.routeMap.get(location.pathname);
 
     if (route) setCurrentRoute(route);
     else setCurrentRoute(null);
   }, [location.pathname]);
-
 
   return [currentRoute, setCurrentRoute] as const;
 }

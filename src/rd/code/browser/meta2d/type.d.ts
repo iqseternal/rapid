@@ -1,4 +1,5 @@
 
+export type { Write } from 'zustand/middleware';
 
 export type Write<T, U> = Omit<T, keyof U> & U;
 

@@ -20,6 +20,7 @@ export const workbenchesToolRoute = makeRoute({
     }
   ]
 })
+
 export const [
   workbenchesToolbarRoute
 ] = (workbenchesToolRoute as CompleteRouteConfig).children;

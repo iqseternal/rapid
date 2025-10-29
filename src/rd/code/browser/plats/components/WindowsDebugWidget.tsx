@@ -12,6 +12,7 @@ export const WindowsDebugWidget = memo(() => {
     <Widget
       icon='BugOutlined'
       tipText={t('plats.widgets.control.debug.openDevtool', '打开开发者工具')}
+      className='!cursor-default'
       onClick={() => {
         toast.success(t('plats.widgets.control.debug.openDevtool', '打开开发者工具'));
 

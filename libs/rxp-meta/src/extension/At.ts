@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck: 希望重新编写 ExtensionManager 生命周期相关逻辑
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 import { ExtensionErrors } from '../constants';
 
@@ -58,10 +58,9 @@ export interface ExtensionInnerInstance {
 }
 
 export const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
-export const ExtensionSymbolTagKey = '__TAG__';
+export const ExtensionSymbolTagKey = Symbol('__TAG__');
 
 export class ExtensionManager extends InnerZustandStoreManager {
-
   public defineExtension<E extends Extension>(define: E): E {
     if (!Reflect.has(define, 'name')) throw new Error(ExtensionErrors.ExtensionNameIsRequired);
     if (!(typeof define.name === 'string')) throw new Error(ExtensionErrors.ExtensionNameMustBeString);
@@ -87,14 +86,7 @@ export class ExtensionManager extends InnerZustandStoreManager {
     const that = this;
 
     const onInstalled: ExtensionOnInstalled = function () {
-      that.defineExtension({
-        name: '',
-        version: 1,
-        onInstalled: () => {
 
-
-        }
-      })
     }
 
     const extension: Extension = {
@@ -184,8 +176,6 @@ export class ExtensionManager extends InnerZustandStoreManager {
   }
 
   public getExtension(extensionName: string): Extension | null {
-
-
 
   }
 

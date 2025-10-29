@@ -118,9 +118,13 @@ const rApp: Rapid.RApp = ({
   },
 
   stores: {
-    useUserStore,
-    useDocStore,
-    useThemeStore,
+    appStore: window.stores.appStore,
+
+    features: {
+      useUserStore,
+      useDocStore,
+      useThemeStore,
+    }
   },
   components: {
     Ellipsis: Ellipsis,
@@ -187,8 +191,6 @@ const rApp: Rapid.RApp = ({
     aesEncryptAlgorithm: aesEncryptAlgorithm,
     aesDecrypt: aesDecrypt,
     aesDecryptAlgorithm: aesDecryptAlgorithm,
-
-    AES_DEFAULT_KEY: AES_DEFAULT_KEY,
 
     jose: jose,
     cryptoTs: cryptoTs,

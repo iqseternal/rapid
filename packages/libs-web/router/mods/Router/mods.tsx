@@ -1,5 +1,5 @@
 import type { RouteConfig } from '../../types';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Routes } from 'react-router-dom';
 
 import type { RouterRenderComponents } from './libs';
@@ -12,7 +12,7 @@ export interface RouterProps {
 }
 
 /**
- * 渲染路由树
+ * 渲染路由树, Router 组件会跟随 location.pathname 变化而刷新, 使用 memo 避免路由树的多次刷新
  */
 const RouterInner = memo<RouterProps>((props) => {
   const { routes, renderComponents } = props;

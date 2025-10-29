@@ -14,6 +14,7 @@ export const WindowsCloseWindowWidget = memo(() => {
       tipAttrs={{
         placement: 'leftBottom'
       }}
+      className='!cursor-default'
       onClick={() => ipcActions.windowClose()}
     >
       <IconFont

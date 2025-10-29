@@ -388,11 +388,13 @@ declare global {
       /**
        * 全局的状态管理
        */
-      readonly stores: {
-        readonly useUserStore: typeof import('@/features').useUserStore;
-        readonly useThemeStore: typeof import('@/features').useThemeStore;
-        readonly useDocStore: typeof import('@/features').useDocStore;
-      }
+      readonly stores: RdSandbox.ExposeApi['stores'] & {
+        features: {
+          readonly useUserStore: typeof import('@/features').useUserStore;
+          readonly useThemeStore: typeof import('@/features').useThemeStore;
+          readonly useDocStore: typeof import('@/features').useDocStore;
+        }
+      };
 
       /**
        * 皮肤
@@ -506,7 +508,7 @@ declare global {
         readonly aesDecrypt: typeof import('@rapid/libs').aesDecrypt;
         readonly aesEncryptAlgorithm: typeof import('@rapid/libs').aesEncryptAlgorithm;
         readonly aesDecryptAlgorithm: typeof import('@rapid/libs').aesDecryptAlgorithm;
-        readonly AES_DEFAULT_KEY: typeof import('@rapid/libs').AES_DEFAULT_KEY;
+
         readonly jose: typeof import('@rapid/libs').jose;
         readonly cryptoTs: typeof import('@rapid/libs').cryptoTs;
         readonly jsr: typeof import('@rapid/libs').jsr;
