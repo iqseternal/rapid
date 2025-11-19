@@ -3,7 +3,7 @@ import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export const RdDirs = {
+export const RdCatalogs = {
 
   Root: path.join(__dirname, '../../'),
 

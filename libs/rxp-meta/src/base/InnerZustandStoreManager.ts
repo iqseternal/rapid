@@ -51,7 +51,7 @@ export abstract class InnerZustandStoreManager {
    * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
    */
   protected useStoreValueToRerenderComponent(): Record<string, unknown> {
-    return this.store(store => store.value);
+    return this.store(store => store.value); 
   }
 
   protected unsubscribe(listener: InnerStoreListener) {

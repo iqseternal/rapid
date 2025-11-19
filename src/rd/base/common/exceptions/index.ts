@@ -44,6 +44,13 @@ export class Exception<ErrMessageData extends ExceptionErrorMsgData> {
       other: {}
     } as ErrMessageData;
   }
+
+  /**
+   * @todo 替换 isException 函数
+   */
+  public static is<Error>(exp: Error | Exception<any>): exp is Exception<any> {
+    return exp instanceof Exception;
+  }
 }
 
 /**

@@ -11,7 +11,7 @@
   "scripts": {
     "packer-win:x64": "electron-builder --win --x64 --config",
     "packer-win:ia32": "electron-builder --win --ia32 --config",
-    "packer-win": "electron-builder --win --x64 --ia32 --config"
+    "packer-win": "electron-builder --win --config"
   },
   "keywords": [],
   "license": "ISC",

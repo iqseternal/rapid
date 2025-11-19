@@ -34,6 +34,7 @@
   },
   "include": [
     "./base/**/*.ts",
+    "./catalog/**/*.ts",
     "./code/main/**/*.ts",
     "app.ts",
     "../../package.json"

@@ -1,8 +1,8 @@
 import { isString, isNumber, isNull } from '@rapid/libs';
 import { RuntimeException, TypeException } from '../exceptions';
-import { WindowService } from './WindowService';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { BrowserWindow } from 'electron';
+import type { WindowService } from './WindowService';
 
 /**
  * window的状态机, 用于记录创建了那些窗口服务
@@ -32,9 +32,14 @@ export class WindowServiceStateMachine {
    * 回当前状态机中是否含有 Service
    */
   public static hasWindowService(key: string | number | WindowService) {
-    if (key instanceof WindowService) key = key.window.id;
     if (isString(key)) return WindowServiceStateMachine.keyToServiceMap.has(key);
     if (isNumber(key)) return WindowServiceStateMachine.idToServiceMap.has(key);
+
+    if (Reflect.has(key, 'window')) {
+      const windowService = key as WindowService;
+      const id = windowService.window.id;
+      return WindowServiceStateMachine.idToServiceMap.has(id);
+    }
 
     throw new TypeException('传入了未指定类型 type', {
       label: 'WindowServiceStateMachine:hasWindowServiceKey'

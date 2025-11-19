@@ -62,7 +62,7 @@ const WorkspaceLayout = memo(() => {
           mainSidebarStatus === SidebarStatus.Right && 'flex-row-reverse'
         )}
         style={{
-          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`,
+          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`
         }}
       >
         {mainSidebarStatus !== SidebarStatus.None && (NavigationBarLatestContent && <NavigationBarLatestContent />)}

@@ -1,5 +1,4 @@
 
-type IsNever<T, SuccessReturnType, FailReturnType> = FailReturnType extends (T extends never ? SuccessReturnType : FailReturnType) ? FailReturnType : SuccessReturnType;
 type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'yes' : 'no') extends 'no' ? FailReturnType : SuccessReturnType;
 
 /**

@@ -13,6 +13,7 @@ const Graphics = memo(() => {
 
     if (e instanceof DragEvent) {
       e.dataTransfer.setData('rd-workbenches-meta2d-data', JSON.stringify({}));
+
     }
     else {
       if (rApp.meta2d) {

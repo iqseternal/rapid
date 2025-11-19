@@ -22,6 +22,11 @@ export const RdRouter = memo(() => {
     onLazyComponent: LazyComponent
   }))
 
+  const routes = useMemo(
+    () => shallowState.routes,
+    [shallowState.routes]
+  );
+
   const renderComponents = useMemo(
     (): RouterRenderComponents => (
       {
@@ -33,7 +38,7 @@ export const RdRouter = memo(() => {
 
   return (
     <Router
-      routes={shallowState.routes}
+      routes={routes}
       renderComponents={renderComponents}
     />
   )
