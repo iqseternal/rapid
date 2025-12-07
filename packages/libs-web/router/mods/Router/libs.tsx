@@ -24,7 +24,7 @@ export interface RenderRoutesOptions {
   readonly renderComponents: RouterRenderComponents;
 }
 
-export function renderRoutes(routes: RouteConfig[], options: RenderRoutesOptions) {
+export function renderRoutes(route: RouteConfig, options: RenderRoutesOptions) {
   const { renderComponents } = options;
 
   const LazyComponent = renderComponents.onLazyComponent;
@@ -78,7 +78,7 @@ export function renderRoutes(routes: RouteConfig[], options: RenderRoutesOptions
     })
   }
 
-  return renderRoutesTree(routes);
+  return renderRoutesTree([route]);
 }
 
 export const RouteContext = createContext<RouteConfig | null>(null);
@@ -89,7 +89,7 @@ export function useRouteContextInject() {
   return [route] as const;
 }
 
-export function useRouteContextProvider(routes: RouteConfig[]) {
+export function useRouteContextProvider(route: RouteConfig) {
   const location = useLocation();
 
   const [normalState] = useNormalState(() => ({
@@ -101,27 +101,30 @@ export function useRouteContextProvider(routes: RouteConfig[]) {
   useEffect(() => {
     const routeMap = new Map<string, RouteConfig>();
 
-    function setupRouteMap(routes: RouteConfig[]) {
-      for (const route of routes) {
-        if (route.meta?.fullPath) routeMap.set(route.meta.fullPath, route);
+    function setupRouteMap(route: RouteConfig) {
+      if (route.meta?.fullPath) routeMap.set(route.meta.fullPath, route);
 
-        if (route.children) setupRouteMap(route.children);
+      if (route.children) {
+        for (const childRoute of route.children) {
+          setupRouteMap(childRoute);
+        }
       }
     }
 
-    setupRouteMap(routes);
+    setupRouteMap(route);
 
     normalState.routeMap = routeMap;
 
-    const route = normalState.routeMap.get(location.pathname);
-
-    if (route) setCurrentRoute(route);
+    if (normalState.routeMap.has(location.pathname)) {
+      const route = normalState.routeMap.get(location.pathname);
+      if (route) setCurrentRoute(route);
+    }
     else setCurrentRoute(null);
 
     return () => {
       normalState.routeMap.clear();
     }
-  }, [routes]);
+  }, [route]);
 
   useEffect(() => {
     const route = normalState.routeMap.get(location.pathname);

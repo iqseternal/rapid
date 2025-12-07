@@ -6,7 +6,7 @@ import { toNil } from '@suey/pkg-utils';
 export async function analysisExtensionSource<ExtensionTemplate extends { script_content: string }>(extensionTemplate: ExtensionTemplate): Promise<Rapid.Extend.Extension | null> {
   const scriptContent = extensionTemplate.script_content;
 
-  eval(scriptContent);
+  (new Function('window', scriptContent))(window);
 
   if (window.__define_extension__) {
     const extension = window.__define_extension__;
@@ -35,35 +35,44 @@ export interface ExtensionSource {
 export async function transformerExtensionsSourceToRdExtension(extensionsSource: ExtensionSource[]): Promise<Rapid.Extend.Extension[]> {
   const extensions: Rapid.Extend.Extension[] = [];
 
-  for (const extensionSource of extensionsSource) {
-    const extensionId = extensionSource.extension_id;
-    const extensionUuid = extensionSource.extension_uuid;
-    const extensionName = extensionSource.extension_name;
-    const extensionVersionId = extensionSource.extension_version_id;
-    const scriptHash = extensionSource.script_hash;
 
-    // 分析插件
-    const [analysisErr, extension] = await toNil(analysisExtensionSource({ script_content: extensionSource.script_content }));
-    if (analysisErr) {
-      console.error(analysisErr);
-      continue;
-    }
+  await Promise.allSettled(extensionsSource.map((extensionSource) => {
 
-    if (!extension) continue;
+    return new Promise<void>(async (resolve, reject) => {
+      const extensionId = extensionSource.extension_id;
+      const extensionUuid = extensionSource.extension_uuid;
+      const extensionName = extensionSource.extension_name;
+      const extensionVersionId = extensionSource.extension_version_id;
+      const scriptHash = extensionSource.script_hash;
 
-    // 补充插件信息
-    if (!extension.meta) {
-      extension.meta = {
-        extension_id: extensionId,
-        extension_name: extensionName,
-        extension_uuid: extensionUuid,
-        extension_version_id: extensionVersionId,
-        script_hash: scriptHash
-      };
-    }
+      // 分析插件
+      const [analysisErr, extension] = await toNil(analysisExtensionSource({ script_content: extensionSource.script_content }));
+      if (analysisErr) {
+        rApp.printer.printError(analysisErr.reason);
+        reject();
+        return;
+      }
 
-    extensions.push(extension);
-  }
+      if (!extension) {
+        reject();
+        return;
+      }
+
+      // 补充插件信息
+      if (!extension.meta) {
+        extension.meta = {
+          extension_id: extensionId,
+          extension_name: extensionName,
+          extension_uuid: extensionUuid,
+          extension_version_id: extensionVersionId,
+          script_hash: scriptHash
+        };
+      }
+
+      extensions.push(extension);
+      resolve();
+    })
+  }))
 
   return extensions;
 }

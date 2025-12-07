@@ -90,15 +90,14 @@ export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, de
     rApp.meta2d.registerCanvasDraw(formPens());
 
     const data = localStorage.getItem('meta2d-data');
+
     const options = localStorage.getItem('meta2d-options');
 
     try {
-      if (data) {
-        rApp.meta2d.open(JSON.parse(data));
-      }
-      if (options) {
-        rApp.meta2d.setOptions(JSON.parse(options));
-      }
+      if (data) rApp.meta2d.open(JSON.parse(data));
+
+      if (options) rApp.meta2d.setOptions(JSON.parse(options));
+
     } catch (e) {
       console.error(e);
     }

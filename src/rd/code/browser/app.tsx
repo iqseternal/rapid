@@ -1,9 +1,9 @@
 import { ConfigProvider, App } from 'antd';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { ClickToComponent } from 'click-to-react-component';
-import { useExtends } from './libs/hooks';
 
+import useExtend from './extend';
 import RdRouterWrapper from './router';
 import REmpty from '@/components/Empty';
 
@@ -96,7 +96,7 @@ export const RdApp = memo(() => {
  * App component, 这里做各种功能的插入：例如 插件等等
  */
 export const RdAppWrapper = memo(() => {
-  useExtends();
+  useExtend();
 
   return (<RdApp />)
 })

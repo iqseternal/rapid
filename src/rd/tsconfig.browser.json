@@ -57,7 +57,9 @@
     "../../package.json",
 
     "../../libs/rxp-meta/**/*.ts",
-    "../../libs/rxp-meta/**/*.tsx"
+    "../../libs/rxp-meta/**/*.tsx",
+
+    "./catalog/**/*.ts"
   ],
   "exclude": [
     "node_modules",

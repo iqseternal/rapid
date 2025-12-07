@@ -1,5 +1,5 @@
 import * as _suey_pkg_utils from '@suey/pkg-utils';
-import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, ExtractNever, CutHead, RPromiseLike, Ansi, AxiosResponse, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, AES_DEFAULT_KEY, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
+import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, ExtractNever, CutHead, RPromiseLike, Ansi, AxiosResponse, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
 import * as react from 'react';
 import { HTMLAttributes, ReactNode, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent, ReactElement, ComponentType } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
@@ -470,8 +470,10 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
     }) => void), shouldReplace?: boolean): void;
 }>;
 
-type ExtensionName = string | symbol;
-interface Extension<Context = any> {
+type ExtensionName = string;
+type ExtensionOnActivated<Context = unknown> = (context?: Context) => (() => void) | Promise<(() => void)>;
+type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
+interface Extension<Context = unknown> {
     /**
      * 插件的唯一标识 name
      */
@@ -487,11 +489,8 @@ interface Extension<Context = any> {
     /**
      * 插件被激活, 被使用的状态
      */
-    readonly onActivated?: (this: this, context?: Context) => (void | Promise<void>);
-    /**
-     * 插件被去活, 被禁用的状态
-     */
-    readonly onDeactivated?: (this: this, context?: Context) => (void | Promise<void>);
+    readonly onActivated?: ExtensionOnActivated<Context>;
+    readonly onDeactivated?: ExtensionOnDeactivated<Context>;
 }
 type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];
 
@@ -512,7 +511,7 @@ declare abstract class InnerZustandStoreManager {
      */
     private readonly store;
     private readonly listeners;
-    private readonly unsubscribe;
+    private readonly unsubscribeListeners;
     /**
      * 更新当前的 store, 会导致状态库的组件更新触发
      */
@@ -520,12 +519,20 @@ declare abstract class InnerZustandStoreManager {
     /**
      * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
      */
-    protected useStoreValue(): {};
+    protected useStoreValueToRerenderComponent(): Record<string, unknown>;
+    protected unsubscribe(listener: InnerStoreListener): void;
     /**
      * 添加订阅函数
      */
     protected subscribe(listener: InnerStoreListener): InnerStoreDestroyListener;
+    /**
+     * 销毁管理器
+     */
     protected destroy(): void;
+    /**
+     * 获取监听器数量
+     */
+    protected getListenerCount(): number;
 }
 
 /**
@@ -552,7 +559,7 @@ declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreM
     /**
      * 获取一个扩展
      */
-    getExtension(extensionName: ExtensionName): Ext | null;
+    getExtension(extensionName: ExtensionName): Extension<unknown>;
     /**
      * 注册一个扩展
      */
@@ -572,15 +579,14 @@ declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreM
     /**
      * 获取扩展列表
      */
-    useExtensionsList(): readonly [Ext[]];
+    useExtensionsList(): readonly [Extension[]];
     /**
      * 获得所有的插件
      */
-    getExtensions(): readonly Ext[];
+    getExtensions(): readonly Extension[];
 }
 
-type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
-type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
+type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'yes' : 'no') extends 'no' ? FailReturnType : SuccessReturnType;
 /**
  * 从数组中提取出元素的类型
  * @example
@@ -617,15 +623,6 @@ type ExtractVectorEntries<Entries> = {
 type ExtractSingleEntries<Entries> = {
     [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
 };
-type MetadataAction = 'Define' | 'Remove';
-type MetadataType = 'Vector' | 'Single' | 'All';
-interface MetadataStoreListenerPayload {
-    action: MetadataAction;
-    type: MetadataType;
-    metadataKey: number | string | symbol;
-    metadata: unknown;
-}
-type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;
 
 /**
  * 元数据, 在页面中组件的变化可能相距甚远
@@ -638,15 +635,6 @@ type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => vo
  */
 declare class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
     private readonly metadataMap;
-    private readonly metadataChangeListeners;
-    /**
-     * 触发元数据更改监听函数
-     */
-    protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload): void;
-    /**
-     * 订阅元数据更改
-     */
-    subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener): () => void;
     /**
      * 定义 store 元数据, 元数据可以是任何东西
      * @example
@@ -655,13 +643,21 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * metadata.defineMetadata('example-key', {});
      * metadata.defineMetadata('example-key', () => { return (<div />) });
      */
-    defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): () => void;
     /**
      * 获取定义的元数据
      * @example
      * metadata.getMetadata('example-key');
      */
     getMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
+    /**
+     * 获取元数据列表中最新注册的元数据
+     */
+    getMetadataLatestInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
+    /**
+     * 获取元数据列表中最旧注册的元数据
+     */
+    getMetadataOldestInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
     /**
      * 删除定义的元数据
      * @example
@@ -672,7 +668,7 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * 语义化方法, 作用与 defineMetadata 一致. 但是在此基础上排除了数据值类型
      * @description 意为: 定义覆盖式的元数据
      */
-    defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): () => void;
     /**
      * 定义多个元数据组合的容器型元数据列表, 顾名思义, 也就是某个元数据的定义是数组时使用, 能够自动从数组中添加单个该元数据, 而不是全部覆盖
      * @example
@@ -681,7 +677,7 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * metadata.defineMetadataInVector('example-key', {});
      * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
      */
-    defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
+    defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): () => void;
     /**
      * 在一组元数据集合列表中删除具体的某一个, 通常与 `defineMetadataInVector` 配套使用
      * @example
@@ -738,6 +734,18 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * 查看是否定义了元数据
      */
     hasMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): boolean;
+    /**
+     * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+     */
+    useFollowMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    /**
+     * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+     */
+    useFollowMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
+    /**
+     * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+     */
+    useFollowMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
 }
 
 type ThreadHandler = (data: any) => (void | any);
@@ -1075,6 +1083,7 @@ declare class Exception<ErrMessageData extends ExceptionErrorMsgData> {
     message: string;
     readonly errMessage: ErrMessageData;
     constructor(message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>);
+    static is<Error>(exp: Error | Exception<any>): exp is Exception<any>;
 }
 
 /**
@@ -1151,17 +1160,18 @@ declare namespace DepositService {
     /**
      * 存放数据时的函数的 options
      */
-    type TakeInOptions = {};
+    interface TakeInOptions {
+    }
     /**
      * 取回数据的函数的 options
      */
-    type TakeOutOptions = {
+    interface TakeOutOptions {
         /**
          * 是否取回数据后, 但是依旧保留
          * @default false
          */
         persist?: boolean;
-    };
+    }
 }
 /**
  * 转发数据的寄存器中转站
@@ -1207,7 +1217,7 @@ declare const ipcForwardDataTakeOut: {
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
-interface AppStoreType {
+interface AppStoreType$1 {
     refreshToken: string;
     accessToken: string;
 }
@@ -1217,7 +1227,7 @@ interface AppStoreType {
  */
 declare const ipcAppStoreGetStore: {
     readonly channel: "IpcStore/appStore/getStore";
-    readonly action: () => Promise<AppStoreType>;
+    readonly action: () => Promise<AppStoreType$1>;
     readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
     readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
@@ -1227,7 +1237,7 @@ declare const ipcAppStoreGetStore: {
  */
 declare const ipcAppStoreGet: {
     readonly channel: "IpcStore/appStore/get";
-    readonly action: <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType>[Key]>;
+    readonly action: <Key extends keyof AppStoreType$1, V extends Required<AppStoreType$1>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType$1>[Key]>;
     readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
     readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
@@ -1237,7 +1247,7 @@ declare const ipcAppStoreGet: {
  */
 declare const ipcAppStoreSet: {
     readonly channel: "IpcStore/appStore/set";
-    readonly action: <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
+    readonly action: <Key extends keyof AppStoreType$1, V extends AppStoreType$1[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
     readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
     readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
@@ -1247,7 +1257,7 @@ declare const ipcAppStoreSet: {
  */
 declare const ipcAppStoreReset: {
     readonly channel: "IpcStore/appStore/reset";
-    readonly action: <Key extends keyof AppStoreType>(_: WindowService, ...keys: Key[]) => Promise<void>;
+    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, ...keys: Key[]) => Promise<void>;
     readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
     readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
@@ -1257,7 +1267,7 @@ declare const ipcAppStoreReset: {
  */
 declare const ipcAppStoreHas: {
     readonly channel: "IpcStore/appStore/has";
-    readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<boolean>;
+    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, key: Key) => Promise<boolean>;
     readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
     readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
@@ -1267,7 +1277,7 @@ declare const ipcAppStoreHas: {
  */
 declare const ipcAppStoreDelete: {
     readonly channel: "IpcStore/appStore/delete";
-    readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<void>;
+    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, key: Key) => Promise<void>;
     readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
     readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
@@ -1643,6 +1653,40 @@ interface PrinterServer {
 }
 
 /**
+ * 应用的 store 类型
+ */
+interface AppStoreType {
+    /**
+     * 获取所有的 store
+     */
+    readonly getStore: () => ReturnType<HandleHandlers['IpcStore/appStore/getStore']>;
+    /**
+     * 获取 store 的值
+     */
+    readonly get: <Key extends keyof AppStoreType$1>(key: Key, defaultValue?: AppStoreType$1[Key]) => ReturnType<HandleHandlers['IpcStore/appStore/get']>;
+    /**
+     * 设置 store 的值
+     */
+    readonly set: <Key extends keyof AppStoreType$1>(key: Key, value: AppStoreType$1[Key]) => ReturnType<HandleHandlers['IpcStore/appStore/set']>;
+    /**
+     * 删除 store 的值
+     */
+    readonly delete: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<HandleHandlers['IpcStore/appStore/delete']>;
+    /**
+     * 判断 store 是否存在
+     */
+    readonly has: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<HandleHandlers['IpcStore/appStore/has']>;
+    /**
+     * 重置 store 的值
+     */
+    readonly reset: <Key extends keyof AppStoreType$1>(...keys: Key[]) => ReturnType<HandleHandlers['IpcStore/appStore/reset']>;
+    /**
+     * 清空 store
+     */
+    readonly clear: () => ReturnType<HandleHandlers['IpcStore/appStore/clear']>;
+}
+
+/**
  * 打开页面
  * @return
  */
@@ -1798,6 +1842,26 @@ declare namespace ipcActions {
 }
 
 type IpcActions = typeof ipcActions;
+/**
+ * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
+ */
+interface ExposeApi {
+    readonly electron: ElectronAPI;
+    /**
+     * 打印器对象
+     */
+    readonly printer: PrinterServer;
+    /**
+     * IPC 事件
+     */
+    readonly ipcActions: IpcActions;
+    /**
+     * 应用的 store
+     */
+    readonly stores: Exclude<{
+        readonly appStore: AppStoreType;
+    }, 'features'>;
+}
 
 interface RdExtension extends Extension<never> {
     meta?: {
@@ -2120,10 +2184,12 @@ declare global {
             /**
              * 全局的状态管理
              */
-            readonly stores: {
-                readonly useUserStore: typeof useUserStore;
-                readonly useThemeStore: typeof useThemeStore;
-                readonly useDocStore: typeof useDocStore;
+            readonly stores: ExposeApi['stores'] & {
+                features: {
+                    readonly useUserStore: typeof useUserStore;
+                    readonly useThemeStore: typeof useThemeStore;
+                    readonly useDocStore: typeof useDocStore;
+                };
             };
             /**
              * 皮肤
@@ -2223,7 +2289,6 @@ declare global {
                 readonly aesDecrypt: typeof aesDecrypt;
                 readonly aesEncryptAlgorithm: typeof aesEncryptAlgorithm;
                 readonly aesDecryptAlgorithm: typeof aesDecryptAlgorithm;
-                readonly AES_DEFAULT_KEY: typeof AES_DEFAULT_KEY;
                 readonly jose: typeof jose;
                 readonly cryptoTs: typeof cryptoTs;
                 readonly jsr: typeof jsr;

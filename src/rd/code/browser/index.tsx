@@ -76,15 +76,7 @@ async function setupExtensionPlats() {
 }
 
 ; ((async () => {
-  const [
-    threadNil,
-    environmentsNil,
-    extensionPlatsNil
-  ] = await toNils(
-    setupThreadTask(),
-    setupEnvironments(),
-    setupExtensionPlats()
-  );
+  const [threadNil, environmentsNil, extensionPlatsNil] = await toNils(setupThreadTask(), setupEnvironments(), setupExtensionPlats());
 
   const [threadErr] = threadNil;
   const [environmentsErr] = environmentsNil;

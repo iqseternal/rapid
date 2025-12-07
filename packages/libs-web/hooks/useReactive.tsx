@@ -74,7 +74,7 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): Use
 
 export type UseShallowReactiveRestoreFunction = () => void;
 
-export type UseShallowReactiveReturnType<S extends object> = readonly [ShallowReactive<S>, UseShallowReactiveRestoreFunction];
+export type UseShallowReactiveReturnType<S extends object> = readonly [S, UseShallowReactiveRestoreFunction];
 
 /**
  * 修改 state 自动刷新组件

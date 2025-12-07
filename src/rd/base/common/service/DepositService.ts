@@ -4,14 +4,14 @@ export namespace DepositService {
   /**
    * 存放数据时的函数的 options
    */
-  export type TakeInOptions = {
+  export interface TakeInOptions {
 
   }
 
   /**
    * 取回数据的函数的 options
    */
-  export type TakeOutOptions = {
+  export interface TakeOutOptions {
 
     /**
      * 是否取回数据后, 但是依旧保留
@@ -54,4 +54,3 @@ export class DepositService<DepositEntries = unknown> {
     return data;
   }
 }
-

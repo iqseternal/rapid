@@ -1,10 +1,16 @@
 import { useEffect } from 'react';
 
-/**
- * 使用扩展
- */
-export function useExtends() {
+function rAppExtensionActivateAllExtensions() {
 
+}
+
+
+function rAppExtensionApplyThemeTransformers() {
+
+}
+
+
+export default function useExtend() {
   const [extensionList] = rApp.extension.useExtensionsList();
   useEffect(() => {
     const context: Rapid.Extend.ExtensionContext = {}
@@ -12,6 +18,12 @@ export function useExtends() {
     extensionList.forEach(extension => {
       rApp.extension.activatedExtension(extension.name);
     })
+
+    return () => {
+
+
+
+    }
   }, [extensionList]);
 
   const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transformer');

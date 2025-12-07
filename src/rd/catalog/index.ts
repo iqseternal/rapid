@@ -3,6 +3,9 @@ import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 
+/**
+ * Rd 相关目录
+ */
 export const RdCatalogs = {
 
   Root: path.join(__dirname, '../../'),

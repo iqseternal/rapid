@@ -45,15 +45,7 @@ export class Exception<ErrMessageData extends ExceptionErrorMsgData> {
     } as ErrMessageData;
   }
 
-  /**
-   * @todo 替换 isException 函数
-   */
   public static is<Error>(exp: Error | Exception<any>): exp is Exception<any> {
     return exp instanceof Exception;
   }
 }
-
-/**
-* 判断目标是否一个自定义异常
-*/
-export const isException = <Error>(exp: Error | Exception<any>): exp is Exception<any> => exp instanceof Exception;

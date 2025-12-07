@@ -12,7 +12,7 @@ declare global {
       /**
        * 注入的变量, 用于在 NodeJs 中获取启动的 Web URL
        */
-      readonly ELECTRON_RENDERER_URL: string;
+      readonly ELECTRON_BROWSER_URL: string;
 
       /**
        * node 位置

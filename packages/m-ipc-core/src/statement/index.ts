@@ -9,3 +9,6 @@ export interface MIpcInterface {
 
   'ipcGetAppPath': () => string;
 }
+
+
+

@@ -7,14 +7,13 @@ import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { RdCatalogs } from 'rd/catalog';
 import { bus } from './base/main/bus';
 import { app } from 'electron';
+import { join } from 'path';
 
 import chokidar from 'chokidar';
 
-import * as path from 'path';
-
 const code = new CodeMain();
 
-const stipulationSettingJSONFilePath = path.join(RdCatalogs.Resources, './stipulation/setting.json');
+const stipulationSettingJSONFilePath = join(RdCatalogs.Resources, './stipulation/setting.json');
 
 const stipulationSettingJSONWatcher = chokidar.watch(stipulationSettingJSONFilePath, {
   persistent: true,

@@ -62,7 +62,7 @@ export async function devAction(options: DevActionOptions) {
 
   // 环境变量
   const envs = [
-    `ELECTRON_RENDERER_URL=${rendererServerUrl}`
+    `ELECTRON_BROWSER_URL=${rendererServerUrl}`
   ] as const;
 
   // 只有 web 热更新

@@ -10,37 +10,6 @@ declare global {
   }
 }
 
-const supportImportRaw: RuleSetRule = {
-  resourceQuery: /(\?raw$)|(\.(png|jpe?g|gif|ico)$)/,
-  exclude: [/node_modules/],
-  type: 'asset/resource'
-} as const;
-
-const supportTypescript: RuleSetRule = {
-  test: /\.(c)?[tj]sx?$/,
-  loader: 'builtin:swc-loader',
-  options: {
-    jsc: {
-      loose: true,
-      parser: {
-        syntax: 'typescript',
-        dynamicImport: false,
-        decorators: true,
-        importAssertions: false
-      },
-      transform: {
-        legacyDecorator: true,
-        decoratorMetadata: true,
-        optimizer: {
-          simplify: true,
-        }
-      },
-      target: 'es5'
-    },
-  },
-  type: 'javascript/auto',
-} as const;
-
 export default defineConfig({
   entry: './src/index.tsx',
   mode: process.env.NODE_ENV,
@@ -59,10 +28,36 @@ export default defineConfig({
 
   ],
   module: {
-
     rules: [
-      supportImportRaw,
-      supportTypescript
+      {
+        resourceQuery: /(\?raw$)|(\.(png|jpe?g|gif|ico)$)/,
+        exclude: [/node_modules/],
+        type: 'asset/resource'
+      },
+      {
+        test: /\.(c)?[tj]sx?$/,
+        loader: 'builtin:swc-loader',
+        options: {
+          jsc: {
+            loose: true,
+            parser: {
+              syntax: 'typescript',
+              dynamicImport: false,
+              decorators: true,
+              importAssertions: false
+            },
+            transform: {
+              legacyDecorator: true,
+              decoratorMetadata: true,
+              optimizer: {
+                simplify: true,
+              }
+            },
+            target: 'es5'
+          },
+        },
+        type: 'javascript/auto',
+      }
     ],
   },
   resolve: {

@@ -1,15 +1,20 @@
 import { is } from '@electron-toolkit/utils';
 import { join } from 'path';
 
-/**
+
+import { RdCatalogs } from 'rd/catalog';
+
+/**s
  * 根据当前的环境获取URL
  *
  * dev: 获取URL
  * pro: 获取路径
  */
 const makeStartUrl = (fileName: string, extension = 'html') => {
-  if (is.dev && process.env.ELECTRON_RENDERER_URL) return `${process.env.ELECTRON_RENDERER_URL}/${fileName}.${extension}/#`;
-  return join(__dirname, `../renderer/${fileName}.${extension}`);
+
+  if (is.dev && process.env.ELECTRON_BROWSER_URL) return `${process.env.ELECTRON_BROWSER_URL}/${fileName}.${extension}/#`;
+
+  return join(RdCatalogs.Entries.Renderer, `${fileName}.${extension}`);
 }
 
 export class AppRouterService {
