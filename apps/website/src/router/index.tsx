@@ -21,9 +21,7 @@ export const RouterWrapper = memo(() => {
         )}
       >
         <Router
-          routes={[
-            presetRoutes.rootRoute
-          ]}
+          route={presetRoutes.rootRoute}
           renderComponents={{
             onLazyComponent: ({ children }) => {
               return (

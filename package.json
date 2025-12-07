@@ -180,7 +180,7 @@
     "atomically": "2.0.3",
     "chokidar": "4.0.3",
     "commander": "13.1.0",
-    "concurrently": "8.2.2",
+    "concurrently": "9.0.0",
     "cross-env": "7.0.3",
     "depcheck": "1.4.7",
     "electron": "24.8.8",
