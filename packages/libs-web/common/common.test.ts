@@ -1,4 +1,4 @@
-import { classnames, isReactFC } from './common';
+import { classnames, isReactFC, isReactLazyFC } from './common';
 import { createElement, lazy, type FC } from 'react';
 
 describe('classnames', () => {
@@ -55,7 +55,7 @@ describe('isReactLazyFC', () => {
     ];
 
     expect(
-      components.map(item => item[0]).map(component => isReactFC(component))
+      components.map(item => item[0]).map(component => isReactLazyFC(component))
     ).toEqual(
       components.map(item => item[1])
     );
