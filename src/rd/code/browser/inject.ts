@@ -22,7 +22,6 @@ import {
   apiPut,
   createApiRequest,
   createRequest,
-  createShallowProxy,
   cryptoTs,
   injectReadonlyVariable,
   jose,
@@ -32,8 +31,32 @@ import {
   toNils,
   toWaitPromise
 } from '@rapid/libs';
+import {
+  reactive,
+  watch,
+  effect,
+  computed,
+  ref,
+  shallowRef,
+  reactiveReadArray,
+  readonly,
+  shallowReadonly,
+  shallowReactive,
+  toRaw,
+  toReactive,
+  toReadonly,
+  toRef,
+  toRefs,
+  toValue,
+  unref,
+  isRef,
+  isReactive,
+  isReadonly,
+  isShallow,
+  isProxy
+} from '@vue/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
-import { Skin, makeRdCssVarPayload, mrcvp } from 'rd/base/browser/service/Skin';
+import { Skin, makeCssVarPayload, mrvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';
 import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
@@ -65,7 +88,7 @@ const skin = new Skin(cssVariablesPayloadSheet);
 
 const cssVars = skin.toCssVars();
 
-const rApp: Rapid.RApp = ({
+const native: Rapid.Native = ({
   extension: extensionManager,
   metadata: metadataManager,
   emitter: emitter,
@@ -95,9 +118,13 @@ const rApp: Rapid.RApp = ({
   },
 
   stores: {
-    useUserStore,
-    useDocStore,
-    useThemeStore,
+    appStore: window.stores.appStore,
+
+    features: {
+      useUserStore,
+      useDocStore,
+      useThemeStore,
+    }
   },
   components: {
     Ellipsis: Ellipsis,
@@ -107,8 +134,8 @@ const rApp: Rapid.RApp = ({
   },
   skin: {
     skin: skin,
-    mrcvp: mrcvp,
-    makeRdCssVarPayload: makeRdCssVarPayload,
+    mrvp: mrvp,
+    makeCssVarPayload: makeCssVarPayload,
     Skin: Skin,
   },
   services: {
@@ -118,9 +145,32 @@ const rApp: Rapid.RApp = ({
     ExtensionManager: ExtensionManager,
     MetadataManager: MetadataManager,
   },
+
   libs: {
     injectReadonlyVariable: injectReadonlyVariable,
-    createShallowProxy: createShallowProxy,
+
+    reactive: reactive,
+    watch: watch,
+    effect: effect,
+    computed: computed,
+    ref: ref,
+    shallowRef: shallowRef,
+    reactiveReadArray: reactiveReadArray,
+    readonly: readonly,
+    shallowReadonly: shallowReadonly,
+    shallowReactive: shallowReactive,
+    toRaw: toRaw,
+    toReactive: toReactive,
+    toReadonly: toReadonly,
+    toRef: toRef,
+    toRefs: toRefs,
+    toValue: toValue,
+    unref: unref,
+    isRef: isRef,
+    isReactive: isReactive,
+    isReadonly: isReadonly,
+    isShallow: isShallow,
+    isProxy: isProxy,
 
     rApiGet: rApiGet,
     rApiPost: rApiPost,
@@ -142,8 +192,6 @@ const rApp: Rapid.RApp = ({
     aesEncryptAlgorithm: aesEncryptAlgorithm,
     aesDecrypt: aesDecrypt,
     aesDecryptAlgorithm: aesDecryptAlgorithm,
-
-    AES_DEFAULT_KEY: AES_DEFAULT_KEY,
 
     jose: jose,
     cryptoTs: cryptoTs,
@@ -171,4 +219,4 @@ const rApp: Rapid.RApp = ({
 
 injectReadonlyVariable(window, 'cssVars', cssVars);
 
-injectReadonlyVariable(window, 'rApp', rApp);
+injectReadonlyVariable(window, 'native', native);

@@ -11,6 +11,7 @@ export const WindowsMinWindowWidget = memo(() => {
   return (
     <Widget
       icon='LineOutlined'
+      className='!cursor-default'
       tipText={t('plats.widgets.control.min.minimize', '最小化窗口')}
       onClick={() => ipcActions.windowMin()}
     />

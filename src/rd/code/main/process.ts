@@ -1,5 +1,5 @@
 import { LoggerService } from 'rd/base/main/service/LoggerService';
-import { Exception, isException, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
+import { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { Catch } from 'rd/base/main/exceptions';
 
@@ -51,7 +51,7 @@ process.on('unhandledRejection', (reason: Error, promise) => {
   } catch (err) {
 
     if (IS_DEV) {
-      if (!isException(reason)) {
+      if (!Exception.is(reason)) {
         PrinterService.printError('当前异常未定义(非Exception)');
       }
     }

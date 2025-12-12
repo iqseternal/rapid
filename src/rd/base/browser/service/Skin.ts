@@ -76,7 +76,7 @@ export type CssVariablesDeclaration<PayloadSheet extends CssVariablePayloadSheet
  * @example
  * const primaryBackgroundColor = makeRapidCssVarPayload('--rapid-primary-background-color', '#ffffff', '主要背景色'),
  */
-export const makeRdCssVarPayload = <CssVar extends CssVariable, CssVarValue extends CssVariableValue, CssTip extends CssVariableTip>(
+export const makeCssVarPayload = <CssVar extends CssVariable, CssVarValue extends CssVariableValue, CssTip extends CssVariableTip>(
   cssVariableName: CssVar,
   cssVariableValue: CssVarValue,
   cssVariableTip: CssTip
@@ -90,7 +90,7 @@ export const makeRdCssVarPayload = <CssVar extends CssVariable, CssVarValue exte
  * 创建一个预设的 Css 样式, 别名：makeRdCssVarPayload
  * @alias makeRdCssVarPayload
  */
-export const mrcvp = makeRdCssVarPayload;
+export const mrvp = makeCssVarPayload;
 
 export class Skin<PayloadSheet extends CssVariablePayloadSheet> {
   private readonly runtimeContext = {
@@ -124,7 +124,7 @@ export class Skin<PayloadSheet extends CssVariablePayloadSheet> {
   /**
    * 重置当前皮肤的 CSS 变量样式
    */
-  public resetCssVariablesPayloadSheet() {
+  public resetCssVarsSheet() {
     this.cssVariablesPayloadSheet = this.cloneCssVariablesPayloadSheet(this.presetCssVariablesPayloadSheet);
   }
 
@@ -163,6 +163,20 @@ export class Skin<PayloadSheet extends CssVariablePayloadSheet> {
       Reflect.set(cssVars, cssKey, this.toCssVar((sheet) => sheet[cssKey]));
     }
     return cssVars;
+  }
+
+  /**
+   * 使用变换器函数来变换当前皮肤的 CSS 变量样式
+   */
+  public transformer(transformer: (sheet: PayloadSheet) => void) {
+    return transformer(this.cssVariablesPayloadSheet);
+  }
+
+  /**
+   * 使用一组变换器函数来变换当前皮肤的 CSS 变量样式
+   */
+  public transformers(transformers: ((sheet: PayloadSheet) => void)[]) {
+    transformers.forEach((transformer) => this.transformer(transformer));
   }
 
   /**

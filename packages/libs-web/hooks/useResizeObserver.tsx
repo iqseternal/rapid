@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { DependencyList, Ref, RefObject } from 'react';
 import { useNormalState, useSyncNormalState } from './useReactive';
 import { Ansi } from '@rapid/libs';
@@ -14,19 +14,14 @@ import { useUnmount } from 'ahooks';
  * @returns
  */
 export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<TElement | null> | TElement, callback: ResizeObserverCallback, deps: DependencyList) {
-  const [syncState] = useSyncNormalState(() => ({
-    resizeCallback: callback
-  }));
+  const resizeCallbackRef = useRef(callback);
+  if (resizeCallbackRef.current !== callback) resizeCallbackRef.current = callback;
 
-  const [normalState] = useNormalState(() => {
-    const observer = new ResizeObserver((entries, observer) => {
-      syncState.resizeCallback && syncState.resizeCallback(entries, observer);
-    });
-
-    return {
-      resizeObserver: observer
-    }
-  })
+  const [normalState] = useNormalState(() => ({
+    resizeObserver: new ResizeObserver((entries, observer) => {
+      resizeCallbackRef.current && resizeCallbackRef.current(entries, observer);
+    })
+  } as const));
 
   useEffect(() => {
     interface TDomRef {
@@ -47,14 +42,9 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
     if (tDomRef.current) normalState.resizeObserver.observe(tDomRef.current);
 
     return () => {
-      if (!tDomRef.current) return;
-      normalState.resizeObserver.unobserve(tDomRef.current);
+      normalState.resizeObserver.disconnect();
     }
   }, [dom]);
-
-  useUnmount(() => {
-    normalState.resizeObserver.disconnect();
-  })
 
   return [normalState.resizeObserver] as const;
 }

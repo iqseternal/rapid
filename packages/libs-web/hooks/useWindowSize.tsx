@@ -1,40 +1,76 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useDebounceHook } from './useDebounce';
+import { useEffect, useState } from 'react';
 import { useRefresh } from './useRefresh';
+import { debounce } from 'lodash';
 
-type InnerSizeEffect = (innerSize: WindowInnerSize, screenSize: WindowInnerSize) => void;
+type InnerSizeEffect = (oldInnerSize: Readonly<WindowInnerSize>, newInnerSize: Readonly<WindowInnerSize>) => void;
+type ScreenSizeEffect = (oldScreenSize: Readonly<WindowScreenSize>, newScreenSize: Readonly<WindowScreenSize>) => void;
 
-type ScreenSizeEffect = (screenSize: WindowScreenSize, innerSize: WindowScreenSize) => void;
+const innerSize: WindowInnerSize = {
+  innerWidth: globalThis.window?.innerWidth ?? 0,
+  innerHeight: globalThis.window?.innerHeight ?? 0,
+};
 
-const innerSize: WindowInnerSize = { innerWidth: globalThis.window?.innerWidth ?? 0, innerHeight: globalThis.window?.innerHeight ?? 0 };
-const screenSize: WindowScreenSize = { screenWidth: globalThis.window?.screen?.width ?? 0, screenHeight: globalThis.window?.screen?.height ?? 0 };
+const screenSize: WindowScreenSize = {
+  screenWidth: globalThis.window?.screen?.width ?? 0,
+  screenHeight: globalThis.window?.screen?.height ?? 0,
+};
 
-const { effects: innerSizeEffects, appendEffect: appendInnerSizeEffect, removeEffect: removeInnerSizeEffect } = createEffects<InnerSizeEffect>();
-const { effects: screenSizeEffects, appendEffect: appendScreenSizeEffect, removeEffect: removeScreenSizeEffect } = createEffects<ScreenSizeEffect>();
+const {
+  effects: innerSizeEffects,
+  appendEffect: appendInnerSizeEffect,
+  removeEffect: removeInnerSizeEffect,
+} = createEffects<InnerSizeEffect>();
 
-const windowResizeCallback = useDebounceHook(() => {
-  const { width: screenWidth, height: screenHeight } = window.screen;
-  const { innerWidth, innerHeight } = window;
+const {
+  effects: screenSizeEffects,
+  appendEffect: appendScreenSizeEffect,
+  removeEffect: removeScreenSizeEffect,
+} = createEffects<ScreenSizeEffect>();
 
-  const innerHasChanged = (innerSize.innerWidth !== innerWidth || innerSize.innerHeight !== innerHeight);
-  const screenHasChanged = (screenSize.screenWidth !== screenWidth || screenSize.screenHeight !== screenHeight);
+const windowResizeCallback = debounce(
+  () => {
+    const { width: oldScreenWidth, height: oldScreenHeight } = window.screen;
+    const { innerWidth: oldInnerWidth, innerHeight: oldInnerHeight } = window;
 
-  const oldInnerSize: WindowInnerSize = { innerWidth: innerSize.innerWidth, innerHeight: innerSize.innerHeight };
-  const oldScreenSize: WindowScreenSize = { screenWidth: screenSize.screenWidth, screenHeight: screenSize.screenHeight };
+    const innerHasChanged = (innerSize.innerWidth !== oldInnerWidth || innerSize.innerHeight !== oldInnerHeight);
+    const screenHasChanged = (screenSize.screenWidth !== oldScreenWidth || screenSize.screenHeight !== oldScreenHeight);
 
-  if (innerHasChanged) {
-    innerSize.innerWidth = innerWidth;
-    innerSize.innerHeight = innerHeight;
-    innerSizeEffects.forEach(effect => effect(oldInnerSize, { innerWidth, innerHeight }));
+    const oldInnerSize: WindowInnerSize = {
+      innerWidth: oldInnerWidth,
+      innerHeight: oldInnerHeight
+    };
+    const oldScreenSize: WindowScreenSize = {
+      screenWidth: oldScreenWidth,
+      screenHeight: oldScreenHeight,
+    };
+
+    if (innerHasChanged) {
+      innerSize.innerWidth = oldInnerWidth;
+      innerSize.innerHeight = oldInnerHeight;
+      innerSizeEffects.forEach(effect => effect(oldInnerSize, { ...innerSize }));
+    }
+
+    if (screenHasChanged) {
+      screenSize.screenWidth = oldScreenWidth;
+      screenSize.screenHeight = oldScreenHeight;
+      screenSizeEffects.forEach(effect => effect(oldScreenSize, { ...screenSize }));
+    }
+  },
+  20,
+  {
+    maxWait: 100,
   }
+);
 
-  if (screenHasChanged) {
-    screenSize.screenWidth = screenWidth;
-    screenSize.screenHeight = screenHeight;
-    screenSizeEffects.forEach(effect => effect(oldScreenSize, { screenWidth, screenHeight }));
-  }
-}, { wait: 20 });
-if (globalThis.window) window.addEventListener('resize', windowResizeCallback);
+startWindowSizeEffect();
+
+export function startWindowSizeEffect() {
+  if (globalThis.window) window.addEventListener('resize', windowResizeCallback);
+}
+
+export function stopWindowSizeEffect() {
+  if (globalThis.window) window.removeEventListener('resize', windowResizeCallback);
+}
 
 /**
  * WindowInnerSize
@@ -58,7 +94,7 @@ export interface WindowInnerSize {
  * console.log(windowInnerSize.innerWidth); // 会打印当前最新的屏幕尺寸
  *
  */
-export function useWindowInnerSizeHook(): Readonly<WindowInnerSize> {
+export function getWindowInnerSize(): Readonly<WindowInnerSize> {
   return innerSize;
 }
 
@@ -71,7 +107,7 @@ export function useWindowInnerSizeHook(): Readonly<WindowInnerSize> {
  */
 export function useWindowInnerSize() {
   const refresh = useRefresh();
-  const [windowInnerSize] = useState(useWindowInnerSizeHook);
+  const [windowInnerSize] = useState(getWindowInnerSize);
   useEffect(() => {
     appendInnerSizeEffect(refresh);
     return () => removeInnerSizeEffect(refresh);
@@ -101,7 +137,7 @@ export interface WindowScreenSize {
  *
  * console.log(windowScreenSize.screenWidth); // 会打印当前最新的屏幕尺寸(与分辨率有一定关系)
  */
-export function useWindowScreenSizeHook(): Readonly<WindowScreenSize> {
+export function getWindowScreenSize(): Readonly<WindowScreenSize> {
   return screenSize;
 }
 
@@ -114,7 +150,7 @@ export function useWindowScreenSizeHook(): Readonly<WindowScreenSize> {
  */
 export function useWindowScreenSize() {
   const refresh = useRefresh();
-  const [windowScreenSize] = useState(useWindowScreenSizeHook);
+  const [windowScreenSize] = useState(getWindowScreenSize);
   useEffect(() => {
     appendScreenSizeEffect(refresh);
     return () => removeScreenSizeEffect(refresh);
@@ -130,10 +166,12 @@ interface EffectCompose<T> {
   readonly removeEffect: (effect: T) => void;
 }
 
-function createEffects<T,>(): EffectCompose<T> {
+function createEffects<T>(): EffectCompose<T> {
   const effects = new Set<T>();
 
   const appendEffect = (effect: T) => effects.add(effect);
+
   const removeEffect = (effect: T) => effects.delete(effect);
+
   return { effects, appendEffect, removeEffect } as const;
 }

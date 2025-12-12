@@ -13,7 +13,12 @@
     "scripts-dts-extract": "cd ./scripts && tsup --config ./scripts/dts-extract.ts",
     "scripts-skin-extract": "ts-node --transpile-only ./scripts/skin-extract.ts",
     "extract": "concurrently \"pnpm scripts-i18n-extract\" \"pnpm -C . run scripts-dts-extract\" \"pnpm scripts-skin-extract\"",
-    "typecheck": "concurrently \"tsc --noEmit -p tsconfig.json\" \"tsc --noEmit -p ./rd/tsconfig.main.json\" \"tsc --noEmit -p ./rd/tsconfig.sandbox.json\" \"tsc --noEmit -p ./rd/tsconfig.browser.json\""
+
+    "typecheck-main": "tsc --noEmit -p ./rd/tsconfig.main.json",
+    "typecheck-sandbox": "tsc --noEmit -p ./rd/tsconfig.sandbox.json",
+    "typecheck-browser": "tsc --noEmit -p ./rd/tsconfig.browser.json",
+
+    "typecheck": "concurrently \"pnpm typecheck-main\" \"pnpm typecheck-sandbox\" \"pnpm typecheck-browser\""
   },
   "keywords": [],
   "author": "",

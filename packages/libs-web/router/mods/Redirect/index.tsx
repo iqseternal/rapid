@@ -42,27 +42,48 @@ export interface RedirectProps {
 export const Redirect = memo((props: RedirectProps) => {
   const { from, to, element = Outlet } = props;
 
+  const fromRoutePath = from;
+  const toRoutePath = to;
+
   const location = useLocation();
 
-  const needRedirect = (typeof from === 'string') ? location.pathname === from : from.test(location.pathname);
+  const needRedirect = (typeof fromRoutePath === 'string') ? location.pathname === fromRoutePath : fromRoutePath.test(location.pathname);
 
-  const NavigateElement = useMemo(() => {
-    return (
-      <Navigate
-        to={to}
-      />
-    )
-  }, [to]);
+  /**
+   * 如果当前需要重定向, 那么渲染 Navigate 组件, 重定向到指定路由
+   */
+  const NavigateElement = useMemo(
+    () => {
 
-  const LayoutElement = useMemo(() => {
-    if (isValidElement(element)) return element;
+      return (
+        <Navigate
+          to={toRoutePath}
+        />
+      )
+    },
+    [
+      toRoutePath
+    ]
+  );
 
-    const Element = element as FC;
+  /**
+   * 如果当前不满足 from 规则, 那么展示 element 组件
+   */
+  const LayoutElement = useMemo(
+    () => {
+      if (isValidElement(element)) return element;
 
-    return <Element />;
-  }, [element]);
+      const Element = element as FC;
+      return <Element />;
+    },
+    [
+      element
+    ]
+  );
 
-  return needRedirect ? NavigateElement : LayoutElement;
+  return (
+    needRedirect ? NavigateElement : LayoutElement
+  );
 })
 
 export type RedirectType = typeof Redirect;

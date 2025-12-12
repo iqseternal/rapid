@@ -30,15 +30,15 @@ type RdThread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntri
 
 declare global {
   interface Window {
-    readonly rApp: Rapid.RApp;
+    readonly native: Rapid.Native;
 
     readonly cssVars: Rapid.SKin.CssVars;
   }
 
   /**
-   * 全局的 RApp 实例
+   * 全局的 native 实例
    */
-  const rApp: Rapid.RApp;
+  const native: Rapid.Native;
 
   /**
    * 全局的皮肤变量
@@ -47,7 +47,7 @@ declare global {
 
   /**
    * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
-   * 其中 RApp 为全局对象实例 - 为其他扩展环境提供功能性编写基础
+   * 其中 Native 为全局对象实例 - 为其他扩展环境提供功能性编写基础
    */
   export namespace Rapid {
     /**
@@ -166,6 +166,20 @@ declare global {
           'functional.theme.variables.transformer': ((variables: RdCssVariablePayloadSheet) => void)[];
 
           /**
+           * 功能 - meta2d - 注册
+           */
+          'functional.meta2d.lifecycle.registered': ((meta2d: import('@meta2d/core').Meta2d) => void)[];
+
+          /**
+           * 功能 - meta2d - 卸载
+           */
+          'functional.meta2d.lifecycle.unregistered': ((meta2d: import('@meta2d/core').Meta2d) => void)[];
+
+          // =====================================================================================================
+          // =====================================================================================================
+          // =====================================================================================================
+
+          /**
            * ui-header 图标展示
            */
           'ui.layout.header.icon': ComponentType[];
@@ -240,6 +254,26 @@ declare global {
       export interface Extension extends RdExtension { }
     }
 
+    export namespace Reactivity {
+      export type Reactive<T> = import('@vue/reactivity').Reactive<T>;
+      export type WatchSource<T> = import('@vue/reactivity').WatchSource<T>;
+      export type WatchHandle = import('@vue/reactivity').WatchHandle;
+      export type EffectScope = import('@vue/reactivity').EffectScope;
+      export type OnCleanup = import('@vue/reactivity').OnCleanup;
+      export type ReactiveEffect = import('@vue/reactivity').ReactiveEffect;
+      export type ReactiveEffectOptions = import('@vue/reactivity').ReactiveEffectOptions;
+      export type ReactiveEffectRunner = import('@vue/reactivity').ReactiveEffectRunner;
+      export type Ref = import('@vue/reactivity').Ref;
+      export type ShallowRef = import('@vue/reactivity').ShallowRef;
+      export type UnwrapNestedRefs<T> = import('@vue/reactivity').UnwrapNestedRefs<T>;
+      export type UnwrapRef<T> = import('@vue/reactivity').UnwrapRef<T>;
+      export type UnwrapRefSimple<T> = import('@vue/reactivity').UnwrapRefSimple<T>;
+      export type ComputedRef = import('@vue/reactivity').ComputedRef;
+      export type WritableComputedRef<T, S> = import('@vue/reactivity').WritableComputedRef<T, S>;
+      export type ReactiveMarker = import('@vue/reactivity').ReactiveMarker;
+      export type DeepReadonly<T> = import('@vue/reactivity').DeepReadonly<T>;
+    }
+
     /**
      * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
      */
@@ -307,9 +341,9 @@ declare global {
     }
 
     /**
-     * RApp
+     * 系统提供的原生 api 能力
      */
-    export interface RApp {
+    export interface Native {
       meta2d?: import('@meta2d/core').Meta2d;
 
       readonly Antd: typeof import('antd');
@@ -354,19 +388,26 @@ declare global {
       /**
        * 全局的状态管理
        */
-      readonly stores: {
-        readonly useUserStore: typeof import('@/features').useUserStore;
-        readonly useThemeStore: typeof import('@/features').useThemeStore;
-        readonly useDocStore: typeof import('@/features').useDocStore;
-      }
+      readonly stores: RdSandbox.ExposeApi['stores'] & Omit<{
+        features: {
+          readonly useUserStore: typeof import('@/features').useUserStore;
+          readonly useThemeStore: typeof import('@/features').useThemeStore;
+          readonly useDocStore: typeof import('@/features').useDocStore;
+        }
+
+        appStore: {
+
+          a: number;
+        }
+      }, keyof RdSandbox.ExposeApi['stores']>;
 
       /**
        * 皮肤
        */
       readonly skin: {
         readonly skin: import('rd/base/browser/service/Skin').Skin<RdCssVariablePayloadSheet>;
-        readonly makeRdCssVarPayload: typeof import('rd/base/browser/service/Skin').makeRdCssVarPayload;
-        readonly mrcvp: typeof import('rd/base/browser/service/Skin').mrcvp;
+        readonly makeCssVarPayload: typeof import('rd/base/browser/service/Skin').makeCssVarPayload;
+        readonly mrvp: typeof import('rd/base/browser/service/Skin').mrvp;
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
       };
 
@@ -428,7 +469,29 @@ declare global {
        */
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
-        readonly createShallowProxy: typeof import('@rapid/libs').createShallowProxy;
+
+        readonly reactive: typeof import('@vue/reactivity').reactive;
+        readonly watch: typeof import('@vue/reactivity').watch;
+        readonly effect: typeof import('@vue/reactivity').effect;
+        readonly computed: typeof import('@vue/reactivity').computed;
+        readonly ref: typeof import('@vue/reactivity').ref;
+        readonly shallowRef: typeof import('@vue/reactivity').shallowRef;
+        readonly reactiveReadArray: typeof import('@vue/reactivity').reactiveReadArray;
+        readonly readonly: typeof import('@vue/reactivity').readonly;
+        readonly shallowReactive: typeof import('@vue/reactivity').shallowReactive;
+        readonly shallowReadonly: typeof import('@vue/reactivity').shallowReadonly;
+        readonly toRaw: typeof import('@vue/reactivity').toRaw;
+        readonly toReactive: typeof import('@vue/reactivity').toReactive;
+        readonly toReadonly: typeof import('@vue/reactivity').toReadonly;
+        readonly toRef: typeof import('@vue/reactivity').toRef;
+        readonly toRefs: typeof import('@vue/reactivity').toRefs;
+        readonly toValue: typeof import('@vue/reactivity').toValue;
+        readonly unref: typeof import('@vue/reactivity').unref;
+        readonly isRef: typeof import('@vue/reactivity').isRef;
+        readonly isReactive: typeof import('@vue/reactivity').isReactive;
+        readonly isReadonly: typeof import('@vue/reactivity').isReadonly;
+        readonly isShallow: typeof import('@vue/reactivity').isShallow;
+        readonly isProxy: typeof import('@vue/reactivity').isProxy;
 
         readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
         readonly rApiPost: typeof import('rd/base/common/api').rApiPost;
@@ -450,7 +513,7 @@ declare global {
         readonly aesDecrypt: typeof import('@rapid/libs').aesDecrypt;
         readonly aesEncryptAlgorithm: typeof import('@rapid/libs').aesEncryptAlgorithm;
         readonly aesDecryptAlgorithm: typeof import('@rapid/libs').aesDecryptAlgorithm;
-        readonly AES_DEFAULT_KEY: typeof import('@rapid/libs').AES_DEFAULT_KEY;
+
         readonly jose: typeof import('@rapid/libs').jose;
         readonly cryptoTs: typeof import('@rapid/libs').cryptoTs;
         readonly jsr: typeof import('@rapid/libs').jsr;

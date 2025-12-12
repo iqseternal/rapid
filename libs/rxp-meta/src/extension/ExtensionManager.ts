@@ -12,7 +12,7 @@ const ExtensionSymbolTag = Symbol('ExtensionSymbolTag');
  * 3. 调动 emitter 实现事件触发
  */
 export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreManager {
-  private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle<Ext>>();
+  private readonly extNameMapStore = new Map<ExtensionName, ExtensionWithLifecycle>();
 
   /**
    * Define extension, 定义插件, 那么插件会被存储到 Map 中.
@@ -80,10 +80,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   public isExtension<DExt extends Ext>(extension: DExt | any): extension is DExt {
     if (typeof extension !== 'object') return false;
     const hasTAG = Reflect.has(extension, '__TAG__');
-    if (!hasTAG) return false;
-
-    const tag = Reflect.get(extension, '__TAG__');
-    return tag === ExtensionSymbolTag;
+    return hasTAG;
   }
 
   /**
@@ -116,7 +113,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
       console.error(`试图重新注册一个已存在得扩展：应该先移除再注册`);
       return;
     }
-    const extensionLifecycle: ExtensionWithLifecycle<Ext> = {
+    const extensionLifecycle: ExtensionWithLifecycle = {
       extension: extension,
       isActivated: false,
     };
@@ -168,22 +165,22 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 获取扩展列表
    */
-  public useExtensionsList(): readonly [Ext[]] {
-    const value = this.useStoreValue();
+  public useExtensionsList(): readonly [Extension[]] {
+    const value = this.useStoreValueToRerenderComponent();
 
     const [statusState] = useState(() => ({
       value: void 0 as (undefined | typeof value)
     }))
 
     const [normalState] = useState({
-      extensions: [] as Ext[],
+      extensions: [] as Extension[],
     })
 
     if (statusState.value !== value) {
       statusState.value = value;
 
       // 如果 store 被更新了, 那么替换最新的 extension
-      const extensions: Ext[] = [];
+      const extensions: Extension[] = [];
 
       for (const ext of this.extNameMapStore.values()) {
         extensions.push(ext.extension);
@@ -198,8 +195,8 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
   /**
    * 获得所有的插件
    */
-  public getExtensions(): readonly Ext[] {
-    const extensions: Ext[] = [];
+  public getExtensions(): readonly Extension[] {
+    const extensions: Extension[] = [];
 
     for (const ext of this.extNameMapStore.values()) {
       extensions.push(ext.extension);

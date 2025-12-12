@@ -43,6 +43,7 @@ export enum Timestamp {
   HalfMonth = Month * 0.5,
 
   Month28 = Day * 28,
+  Month29 = Day * 29,
   Month30 = Day * 30,
   Month31 = Day * 31,
 

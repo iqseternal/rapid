@@ -1,5 +1,5 @@
 import * as _suey_pkg_utils from '@suey/pkg-utils';
-import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, ExtractNever, CutHead, RPromiseLike, Ansi, AxiosResponse, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, AES_DEFAULT_KEY, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
+import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, ExtractNever, CutHead, RPromiseLike, Ansi, AxiosResponse, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
 import * as react from 'react';
 import { HTMLAttributes, ReactNode, Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent, ReactElement, ComponentType } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
@@ -15,9 +15,12 @@ import * as _rapid_bus from '@rapid/bus';
 import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
+import * as _vue_reactivity from '@vue/reactivity';
 import * as _meta2d_core from '@meta2d/core';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
-import { IpcMainInvokeEvent, IpcMainEvent, BrowserWindow, BrowserWindowConstructorOptions, OpenDevToolsOptions } from 'electron';
+import * as _rapid_m_ipc_core from '@rapid/m-ipc-core';
+import { IpcActionEvent, IpcActionType } from '@rapid/m-ipc-core';
+import { BrowserWindow, BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent, OpenDevToolsOptions } from 'electron';
 
 /**
  * 请求 hConfig 配置
@@ -85,11 +88,6 @@ declare const rApiPatch: <SuccessResponse = unknown, FailResponse = unknown>(url
  * @description 为什么需要它？当对象生命为 readonly, 但是需要初始化赋值
  */
 declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
-
-/**
- * 将一个对象浅层劫持, 并在 调用 setter 时, 执行特定的回调函数
- */
-declare function createShallowProxy<T extends {}>(target: T, setterCallback?: () => void): T;
 
 declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
@@ -192,7 +190,7 @@ declare const Widget: react.MemoExoticComponent<react.ForwardRefExoticComponent<
  *    }
  * ></div>
  */
-declare const classnames: (...args: (string | undefined | boolean | null | number | Record<string, any | boolean | undefined>)[]) => string;
+declare const classnames: (...args: (string | undefined | boolean | null | number | Record<string, boolean | undefined>)[]) => string;
 /**
  * 判断一个对象是否是一个被 lazy 包裹的 FC 组件
  * @param target
@@ -371,6 +369,7 @@ declare enum Timestamp {
     Month = 2592000000,
     HalfMonth = 1296000000,
     Month28 = 2419200000,
+    Month29 = 2505600000,
     Month30 = 2592000000,
     Month31 = 2678400000,
     /**
@@ -472,8 +471,10 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
     }) => void), shouldReplace?: boolean): void;
 }>;
 
-type ExtensionName = string | symbol;
-interface Extension<Context = any> {
+type ExtensionName = string;
+type ExtensionOnActivated<Context = unknown> = (context?: Context) => ((() => void) | Promise<(() => void)> | void | Promise<void>);
+type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
+interface Extension<Context = unknown> {
     /**
      * 插件的唯一标识 name
      */
@@ -489,11 +490,8 @@ interface Extension<Context = any> {
     /**
      * 插件被激活, 被使用的状态
      */
-    readonly onActivated?: (this: this, context?: Context) => (void | Promise<void>);
-    /**
-     * 插件被去活, 被禁用的状态
-     */
-    readonly onDeactivated?: (this: this, context?: Context) => (void | Promise<void>);
+    readonly onActivated?: ExtensionOnActivated<Context>;
+    readonly onDeactivated?: ExtensionOnDeactivated<Context>;
 }
 type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];
 
@@ -514,7 +512,7 @@ declare abstract class InnerZustandStoreManager {
      */
     private readonly store;
     private readonly listeners;
-    private readonly unsubscribe;
+    private readonly unsubscribeListeners;
     /**
      * 更新当前的 store, 会导致状态库的组件更新触发
      */
@@ -522,12 +520,20 @@ declare abstract class InnerZustandStoreManager {
     /**
      * store hook, 只要元数据发生改变, 就会触发 zustand 的状态更新
      */
-    protected useStoreValue(): {};
+    protected useStoreValueToRerenderComponent(): Record<string, unknown>;
+    protected unsubscribe(listener: InnerStoreListener): void;
     /**
      * 添加订阅函数
      */
     protected subscribe(listener: InnerStoreListener): InnerStoreDestroyListener;
+    /**
+     * 销毁管理器
+     */
     protected destroy(): void;
+    /**
+     * 获取监听器数量
+     */
+    protected getListenerCount(): number;
 }
 
 /**
@@ -554,7 +560,7 @@ declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreM
     /**
      * 获取一个扩展
      */
-    getExtension(extensionName: ExtensionName): Ext | null;
+    getExtension(extensionName: ExtensionName): Extension<unknown>;
     /**
      * 注册一个扩展
      */
@@ -574,15 +580,14 @@ declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreM
     /**
      * 获取扩展列表
      */
-    useExtensionsList(): readonly [Ext[]];
+    useExtensionsList(): readonly [Extension[]];
     /**
      * 获得所有的插件
      */
-    getExtensions(): readonly Ext[];
+    getExtensions(): readonly Extension[];
 }
 
-type IsNever<T, SuccessReturnType, FailReturnType> = T extends never ? SuccessReturnType : FailReturnType;
-type IsAny<T, SuccessReturnType, FailReturnType> = IsNever<T, 'yes', 'no'> extends 'no' ? FailReturnType : SuccessReturnType;
+type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'yes' : 'no') extends 'no' ? FailReturnType : SuccessReturnType;
 /**
  * 从数组中提取出元素的类型
  * @example
@@ -619,15 +624,6 @@ type ExtractVectorEntries<Entries> = {
 type ExtractSingleEntries<Entries> = {
     [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
 };
-type MetadataAction = 'Define' | 'Remove';
-type MetadataType = 'Vector' | 'Single' | 'All';
-interface MetadataStoreListenerPayload {
-    action: MetadataAction;
-    type: MetadataType;
-    metadataKey: number | string | symbol;
-    metadata: unknown;
-}
-type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => void;
 
 /**
  * 元数据, 在页面中组件的变化可能相距甚远
@@ -640,15 +636,6 @@ type MetadataStoreChangeListener = (payload: MetadataStoreListenerPayload) => vo
  */
 declare class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
     private readonly metadataMap;
-    private readonly metadataChangeListeners;
-    /**
-     * 触发元数据更改监听函数
-     */
-    protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload): void;
-    /**
-     * 订阅元数据更改
-     */
-    subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener): () => void;
     /**
      * 定义 store 元数据, 元数据可以是任何东西
      * @example
@@ -657,13 +644,21 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * metadata.defineMetadata('example-key', {});
      * metadata.defineMetadata('example-key', () => { return (<div />) });
      */
-    defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): () => void;
     /**
      * 获取定义的元数据
      * @example
      * metadata.getMetadata('example-key');
      */
     getMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null;
+    /**
+     * 获取元数据列表中最新注册的元数据
+     */
+    getMetadataLatestInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
+    /**
+     * 获取元数据列表中最旧注册的元数据
+     */
+    getMetadataOldestInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null;
     /**
      * 删除定义的元数据
      * @example
@@ -674,7 +669,7 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * 语义化方法, 作用与 defineMetadata 一致. 但是在此基础上排除了数据值类型
      * @description 意为: 定义覆盖式的元数据
      */
-    defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): () => void;
     /**
      * 定义多个元数据组合的容器型元数据列表, 顾名思义, 也就是某个元数据的定义是数组时使用, 能够自动从数组中添加单个该元数据, 而不是全部覆盖
      * @example
@@ -683,7 +678,7 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * metadata.defineMetadataInVector('example-key', {});
      * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
      */
-    defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
+    defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): () => void;
     /**
      * 在一组元数据集合列表中删除具体的某一个, 通常与 `defineMetadataInVector` 配套使用
      * @example
@@ -740,6 +735,18 @@ declare class MetadataManager<MetadataEntries extends Record<string, any>> exten
      * 查看是否定义了元数据
      */
     hasMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): boolean;
+    /**
+     * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+     */
+    useFollowMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
+    /**
+     * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+     */
+    useFollowMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void;
+    /**
+     * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+     */
+    useFollowMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]): void;
 }
 
 type ThreadHandler = (data: any) => (void | any);
@@ -825,12 +832,12 @@ type CssVariablesDeclaration<PayloadSheet extends CssVariablePayloadSheet> = {
  * @example
  * const primaryBackgroundColor = makeRapidCssVarPayload('--rapid-primary-background-color', '#ffffff', '主要背景色'),
  */
-declare const makeRdCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
+declare const makeCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 /**
  * 创建一个预设的 Css 样式, 别名：makeRdCssVarPayload
  * @alias makeRdCssVarPayload
  */
-declare const mrcvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
+declare const mrvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
     private readonly runtimeContext;
     private readonly presetCssVariablesPayloadSheet;
@@ -843,7 +850,7 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
     /**
      * 重置当前皮肤的 CSS 变量样式
      */
-    resetCssVariablesPayloadSheet(): void;
+    resetCssVarsSheet(): void;
     /**
      * 生成当前皮肤的 CSS 变量声明
      */
@@ -858,6 +865,14 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
      * @returns CssVars<PayloadSheet>
      */
     toCssVars(): CssVars<PayloadSheet>;
+    /**
+     * 使用变换器函数来变换当前皮肤的 CSS 变量样式
+     */
+    transformer(transformer: (sheet: PayloadSheet) => void): void;
+    /**
+     * 使用一组变换器函数来变换当前皮肤的 CSS 变量样式
+     */
+    transformers(transformers: ((sheet: PayloadSheet) => void)[]): void;
     /**
      * 安装当前皮肤，将 CSS 变量注入到页面中
      */
@@ -1077,88 +1092,8 @@ declare class Exception<ErrMessageData extends ExceptionErrorMsgData> {
     message: string;
     readonly errMessage: ErrMessageData;
     constructor(message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>);
+    static is<Error>(exp: Error | Exception<any>): exp is Exception<any>;
 }
-
-/** Ipc 事件类型 */
-declare const enum IpcActionEvent {
-    Handle = 0,
-    On = 1
-}
-/** 自定义 ipc action 对象 */
-type IpcActionType<EvtActionType extends IpcActionEvent, Channel extends string = string, Action extends (...args: any[]) => any = (...args: any[]) => any> = {
-    /**
-     * 句柄名称
-     */
-    readonly channel: Channel;
-    /**
-     * 编写的 Action 回调, 可以让其他 Action 进行调用
-     */
-    readonly action: Action;
-    /**
-     * Action Type
-     */
-    readonly actionType: EvtActionType;
-    /**
-     * 中间件列表
-     */
-    readonly middlewares: IpcActionMiddleware<EvtActionType>[];
-    /**
-     * ipc 句柄的处理函数, 该函数会走中间件, 调用 action 对象的 action 方法作为返回值
-     */
-    readonly listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => Promise<any>;
-};
-/** 在中间件中 onSuccess 或者 onError 中获取当前的 action 信息的类型 */
-type IpcActionMessageType<EvtActionType extends IpcActionEvent> = Omit<IpcActionType<EvtActionType>, 'middlewares'> & {
-    readonly event: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent;
-};
-/**
- * Ipc Action 中间件
- */
-type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
-    /**
-     * 中间件名称
-     */
-    readonly name: string;
-    /**
-     * 转换参数, 可以利用本函数为每个子项的 action 函数提供统一的参数前缀, 因为默认情况下 electron ipc 第一个参数为 事件 e: IpcMainInvokeEvent | IpcMainEvent
-     * 可能需要转换自定义对象或者 已有的 窗口对象
-     *
-     * @example
-     * export const convertWindowService: IpcActionMiddleware<IpcActionEvent.Handle> = {
-     *   name: 'convertWindowService',
-     *   transformArgs(e, ...args) {
-     *     const windowService = WindowService.findWindowService(e);
-     *     return [windowService, ...args];
-     *   }
-     * }
-     */
-    readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<any[]>;
-    /**
-     * 转换响应
-     */
-    readonly transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
-    /**
-     * 在 action 正式处理之前的回调函数
-     */
-    readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
-    /**
-     * 在 action 处理之后的回调函数
-     */
-    readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
-    /**
-     * 在 action 正确处理 ipc 句柄的成功回调函数
-     * @param res 正确处理的返回数据
-     * @param message 返回处理当前 ipc 句柄的信息
-     */
-    readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => Promise<void>;
-    /**
-     * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
-     * 如果不处理, 那么会在主进程产出一个错误.
-     * @param res 错误处理时产生的异常对象
-     * @param message 返回处理当前 ipc 句柄的信息
-     */
-    readonly onError?: (err: Exception<ExceptionErrorMsgData>, message: IpcActionMessageType<EvtActionType>) => Promise<void | Exception<ExceptionErrorMsgData>>;
-};
 
 /**
  * 创建 windowService 的选项
@@ -1214,8 +1149,8 @@ declare class WindowService {
 declare const ipcOnBroadcast: {
     readonly channel: "IpcBroadcast";
     readonly action: (windowService: WindowService, evtName: string, data: any) => Promise<void>;
-    readonly actionType: IpcActionEvent.On;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.On>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.On;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.On>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1225,8 +1160,8 @@ declare const ipcOnBroadcast: {
 declare const ipcOpenDevTool: {
     readonly channel: "IpcDevTool/openDevTool";
     readonly action: (e: Electron.IpcMainInvokeEvent, status: boolean, options?: OpenDevToolsOptions) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1234,17 +1169,18 @@ declare namespace DepositService {
     /**
      * 存放数据时的函数的 options
      */
-    type TakeInOptions = {};
+    interface TakeInOptions {
+    }
     /**
      * 取回数据的函数的 options
      */
-    type TakeOutOptions = {
+    interface TakeOutOptions {
         /**
          * 是否取回数据后, 但是依旧保留
          * @default false
          */
         persist?: boolean;
-    };
+    }
 }
 /**
  * 转发数据的寄存器中转站
@@ -1275,8 +1211,8 @@ declare class DepositService<DepositEntries = unknown> {
 declare const ipcForwardDataTakeIn: {
     readonly channel: "IpcForwardData/takeIn";
     readonly action: (_: WindowService, key: string, data: any) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1285,12 +1221,12 @@ declare const ipcForwardDataTakeIn: {
 declare const ipcForwardDataTakeOut: {
     readonly channel: "IpcForwardData/takeOut";
     readonly action: (_: WindowService, key: string, options?: DepositService.TakeOutOptions) => Promise<any>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
-interface AppStoreType {
+interface AppStoreType$1 {
     refreshToken: string;
     accessToken: string;
 }
@@ -1300,9 +1236,9 @@ interface AppStoreType {
  */
 declare const ipcAppStoreGetStore: {
     readonly channel: "IpcStore/appStore/getStore";
-    readonly action: () => Promise<AppStoreType>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly action: () => Promise<AppStoreType$1>;
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1310,9 +1246,9 @@ declare const ipcAppStoreGetStore: {
  */
 declare const ipcAppStoreGet: {
     readonly channel: "IpcStore/appStore/get";
-    readonly action: <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType>[Key]>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly action: <Key extends keyof AppStoreType$1, V extends Required<AppStoreType$1>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType$1>[Key]>;
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1320,9 +1256,9 @@ declare const ipcAppStoreGet: {
  */
 declare const ipcAppStoreSet: {
     readonly channel: "IpcStore/appStore/set";
-    readonly action: <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly action: <Key extends keyof AppStoreType$1, V extends AppStoreType$1[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1330,9 +1266,9 @@ declare const ipcAppStoreSet: {
  */
 declare const ipcAppStoreReset: {
     readonly channel: "IpcStore/appStore/reset";
-    readonly action: <Key extends keyof AppStoreType>(_: WindowService, ...keys: Key[]) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, ...keys: Key[]) => Promise<void>;
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1340,9 +1276,9 @@ declare const ipcAppStoreReset: {
  */
 declare const ipcAppStoreHas: {
     readonly channel: "IpcStore/appStore/has";
-    readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<boolean>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, key: Key) => Promise<boolean>;
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1350,9 +1286,9 @@ declare const ipcAppStoreHas: {
  */
 declare const ipcAppStoreDelete: {
     readonly channel: "IpcStore/appStore/delete";
-    readonly action: <Key extends keyof AppStoreType>(_: WindowService, key: Key) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, key: Key) => Promise<void>;
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1361,8 +1297,8 @@ declare const ipcAppStoreDelete: {
 declare const ipcAppStoreClear: {
     readonly channel: "IpcStore/appStore/clear";
     readonly action: (_: WindowService) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1375,8 +1311,8 @@ declare const ipcWindowMaximize: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1388,8 +1324,8 @@ declare const ipcWindowMinimize: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1401,8 +1337,8 @@ declare const ipcWindowReductionSize: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1415,8 +1351,8 @@ declare const ipcWindowResizeAble: {
         windowKey?: string;
         resizeAble: boolean;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1428,8 +1364,8 @@ declare const ipcWindowRelaunch: {
         id?: number;
         windowKey?: string;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1443,8 +1379,8 @@ declare const ipcWindowSetMinimumSize: {
         width: number;
         height: number;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1458,8 +1394,8 @@ declare const ipcWindowSetSize: {
         width: number;
         height: number;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1472,8 +1408,8 @@ declare const ipcWindowResetCustomSize: {
         windowKey?: string;
         type: 'mainWindow';
     }) => Promise<boolean>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1487,8 +1423,8 @@ declare const ipcWindowSetPosition: {
         x: 'center' | 'left' | 'right' | number;
         y: 'center' | 'top' | 'bottom' | number;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1500,8 +1436,8 @@ declare const ipcOpenWindow: {
         windowKey?: string;
         subUrl: string;
     }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1517,8 +1453,8 @@ declare const ipcWindowClose: {
          */
         fictitious?: boolean;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1531,8 +1467,8 @@ declare const ipcWindowShow: {
         windowKey?: string;
         show: boolean;
     }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1552,8 +1488,8 @@ declare const ipcWindowProperties: {
     readonly action: (windowService: WindowService, selectedOptions: {
         windowKey?: string;
     }, properties: Partial<WindowProperties>) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 /**
@@ -1565,8 +1501,8 @@ declare const ipcWindowWorkAreaSize: {
         readonly width: number;
         readonly height: number;
     }>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
+    readonly actionType: _rapid_m_ipc_core.IpcActionEvent.Handle;
+    readonly middlewares: _rapid_m_ipc_core.IpcActionMiddleware<_rapid_m_ipc_core.IpcActionEvent.Handle>[];
     readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
 };
 
@@ -1726,6 +1662,40 @@ interface PrinterServer {
 }
 
 /**
+ * 应用的 store 类型
+ */
+interface AppStoreType {
+    /**
+     * 获取所有的 store
+     */
+    readonly getStore: () => ReturnType<HandleHandlers['IpcStore/appStore/getStore']>;
+    /**
+     * 获取 store 的值
+     */
+    readonly get: <Key extends keyof AppStoreType$1>(key: Key, defaultValue?: AppStoreType$1[Key]) => ReturnType<HandleHandlers['IpcStore/appStore/get']>;
+    /**
+     * 设置 store 的值
+     */
+    readonly set: <Key extends keyof AppStoreType$1>(key: Key, value: AppStoreType$1[Key]) => ReturnType<HandleHandlers['IpcStore/appStore/set']>;
+    /**
+     * 删除 store 的值
+     */
+    readonly delete: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<HandleHandlers['IpcStore/appStore/delete']>;
+    /**
+     * 判断 store 是否存在
+     */
+    readonly has: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<HandleHandlers['IpcStore/appStore/has']>;
+    /**
+     * 重置 store 的值
+     */
+    readonly reset: <Key extends keyof AppStoreType$1>(...keys: Key[]) => ReturnType<HandleHandlers['IpcStore/appStore/reset']>;
+    /**
+     * 清空 store
+     */
+    readonly clear: () => ReturnType<HandleHandlers['IpcStore/appStore/clear']>;
+}
+
+/**
  * 打开页面
  * @return
  */
@@ -1797,10 +1767,6 @@ declare const windowResetCustomSize: (options: {
  * @returns
  */
 declare const windowMax: (options?: {
-    /**
-     * 恢复窗口为定制化大小
-     * @returns
-     */
     id?: number;
     windowKey?: string;
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
@@ -1885,6 +1851,26 @@ declare namespace ipcActions {
 }
 
 type IpcActions = typeof ipcActions;
+/**
+ * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
+ */
+interface ExposeApi {
+    readonly electron: ElectronAPI;
+    /**
+     * 打印器对象
+     */
+    readonly printer: PrinterServer;
+    /**
+     * IPC 事件
+     */
+    readonly ipcActions: IpcActions;
+    /**
+     * 应用的 store
+     */
+    readonly stores: Exclude<{
+        readonly appStore: AppStoreType;
+    }, 'features'>;
+}
 
 interface RdExtension extends Extension<never> {
     meta?: {
@@ -1900,20 +1886,20 @@ type RdCssVars = CssVars<RdCssVariablePayloadSheet>;
 type RdThread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntries extends Record<string, ThreadHandler> = {}> = Thread<TThreadEntries, SThreadEntries>;
 declare global {
     interface Window {
-        readonly rApp: Rapid.RApp;
+        readonly native: Rapid.Native;
         readonly cssVars: Rapid.SKin.CssVars;
     }
     /**
-     * 全局的 RApp 实例
+     * 全局的 native 实例
      */
-    const rApp: Rapid.RApp;
+    const native: Rapid.Native;
     /**
      * 全局的皮肤变量
      */
     const cssVars: Rapid.SKin.CssVars;
     /**
      * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
-     * 其中 RApp 为全局对象实例 - 为其他扩展环境提供功能性编写基础
+     * 其中 Native 为全局对象实例 - 为其他扩展环境提供功能性编写基础
      */
     export namespace Rapid {
         /**
@@ -2015,6 +2001,14 @@ declare global {
                      */
                     'functional.theme.variables.transformer': ((variables: RdCssVariablePayloadSheet) => void)[];
                     /**
+                     * 功能 - meta2d - 注册
+                     */
+                    'functional.meta2d.lifecycle.registered': ((meta2d: _meta2d_core.Meta2d) => void)[];
+                    /**
+                     * 功能 - meta2d - 卸载
+                     */
+                    'functional.meta2d.lifecycle.unregistered': ((meta2d: _meta2d_core.Meta2d) => void)[];
+                    /**
                      * ui-header 图标展示
                      */
                     'ui.layout.header.icon': ComponentType[];
@@ -2074,6 +2068,25 @@ declare global {
              */
             interface Extension extends RdExtension {
             }
+        }
+        namespace Reactivity {
+            type Reactive<T> = _vue_reactivity.Reactive<T>;
+            type WatchSource<T> = _vue_reactivity.WatchSource<T>;
+            type WatchHandle = _vue_reactivity.WatchHandle;
+            type EffectScope = _vue_reactivity.EffectScope;
+            type OnCleanup = _vue_reactivity.OnCleanup;
+            type ReactiveEffect = _vue_reactivity.ReactiveEffect;
+            type ReactiveEffectOptions = _vue_reactivity.ReactiveEffectOptions;
+            type ReactiveEffectRunner = _vue_reactivity.ReactiveEffectRunner;
+            type Ref = _vue_reactivity.Ref;
+            type ShallowRef = _vue_reactivity.ShallowRef;
+            type UnwrapNestedRefs<T> = _vue_reactivity.UnwrapNestedRefs<T>;
+            type UnwrapRef<T> = _vue_reactivity.UnwrapRef<T>;
+            type UnwrapRefSimple<T> = _vue_reactivity.UnwrapRefSimple<T>;
+            type ComputedRef = _vue_reactivity.ComputedRef;
+            type WritableComputedRef<T, S> = _vue_reactivity.WritableComputedRef<T, S>;
+            type ReactiveMarker = _vue_reactivity.ReactiveMarker;
+            type DeepReadonly<T> = _vue_reactivity.DeepReadonly<T>;
         }
         /**
          * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
@@ -2141,9 +2154,9 @@ declare global {
             type IsUnknown<T, SuccessReturnType, FailReturnType> = unknown extends T ? (T extends unknown ? SuccessReturnType : FailReturnType) : FailReturnType;
         }
         /**
-         * RApp
+         * 系统提供的原生 api 能力
          */
-        interface RApp {
+        interface Native {
             meta2d?: _meta2d_core.Meta2d;
             readonly Antd: typeof antd;
             readonly spring: typeof _react_spring_web;
@@ -2180,18 +2193,23 @@ declare global {
             /**
              * 全局的状态管理
              */
-            readonly stores: {
-                readonly useUserStore: typeof useUserStore;
-                readonly useThemeStore: typeof useThemeStore;
-                readonly useDocStore: typeof useDocStore;
-            };
+            readonly stores: ExposeApi['stores'] & Omit<{
+                features: {
+                    readonly useUserStore: typeof useUserStore;
+                    readonly useThemeStore: typeof useThemeStore;
+                    readonly useDocStore: typeof useDocStore;
+                };
+                appStore: {
+                    a: number;
+                };
+            }, keyof ExposeApi['stores']>;
             /**
              * 皮肤
              */
             readonly skin: {
                 readonly skin: Skin<RdCssVariablePayloadSheet>;
-                readonly makeRdCssVarPayload: typeof makeRdCssVarPayload;
-                readonly mrcvp: typeof mrcvp;
+                readonly makeCssVarPayload: typeof makeCssVarPayload;
+                readonly mrvp: typeof mrvp;
                 readonly Skin: typeof Skin;
             };
             /**
@@ -2243,7 +2261,28 @@ declare global {
              */
             readonly libs: {
                 readonly injectReadonlyVariable: typeof injectReadonlyVariable;
-                readonly createShallowProxy: typeof createShallowProxy;
+                readonly reactive: typeof _vue_reactivity.reactive;
+                readonly watch: typeof _vue_reactivity.watch;
+                readonly effect: typeof _vue_reactivity.effect;
+                readonly computed: typeof _vue_reactivity.computed;
+                readonly ref: typeof _vue_reactivity.ref;
+                readonly shallowRef: typeof _vue_reactivity.shallowRef;
+                readonly reactiveReadArray: typeof _vue_reactivity.reactiveReadArray;
+                readonly readonly: typeof _vue_reactivity.readonly;
+                readonly shallowReactive: typeof _vue_reactivity.shallowReactive;
+                readonly shallowReadonly: typeof _vue_reactivity.shallowReadonly;
+                readonly toRaw: typeof _vue_reactivity.toRaw;
+                readonly toReactive: typeof _vue_reactivity.toReactive;
+                readonly toReadonly: typeof _vue_reactivity.toReadonly;
+                readonly toRef: typeof _vue_reactivity.toRef;
+                readonly toRefs: typeof _vue_reactivity.toRefs;
+                readonly toValue: typeof _vue_reactivity.toValue;
+                readonly unref: typeof _vue_reactivity.unref;
+                readonly isRef: typeof _vue_reactivity.isRef;
+                readonly isReactive: typeof _vue_reactivity.isReactive;
+                readonly isReadonly: typeof _vue_reactivity.isReadonly;
+                readonly isShallow: typeof _vue_reactivity.isShallow;
+                readonly isProxy: typeof _vue_reactivity.isProxy;
                 readonly rApiGet: typeof rApiGet;
                 readonly rApiPost: typeof rApiPost;
                 readonly rApiPut: typeof rApiPut;
@@ -2262,7 +2301,6 @@ declare global {
                 readonly aesDecrypt: typeof aesDecrypt;
                 readonly aesEncryptAlgorithm: typeof aesEncryptAlgorithm;
                 readonly aesDecryptAlgorithm: typeof aesDecryptAlgorithm;
-                readonly AES_DEFAULT_KEY: typeof AES_DEFAULT_KEY;
                 readonly jose: typeof jose;
                 readonly cryptoTs: typeof cryptoTs;
                 readonly jsr: typeof jsr;

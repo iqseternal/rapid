@@ -7,7 +7,7 @@ import { AppConfigService } from '../../service/AppConfigService';
 import { toMakeIpcAction } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { posix } from 'path';
-import { userConfigStore } from '../../../main/stores';
+import { userConfigStore } from '../../stores';
 import { WindowServiceStateMachine } from '../../service/WindowServiceStateMachine';
 import { AppRouterService } from '../../service/AppRouterService';
 

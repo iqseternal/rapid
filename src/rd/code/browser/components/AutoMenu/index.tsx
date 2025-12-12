@@ -1,5 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
-import { useEventListener, useReactive, useThrottleHook, useShallowReactive, useThrottle } from '@rapid/libs-web/hooks';
+import { useEventListener, useEventListeners, useShallowReactive, useThrottle } from '@rapid/libs-web/hooks';
 import { Dropdown, Menu } from 'antd';
 import type { DropDownProps, MenuProps } from 'antd';
 import { createContext, useContext, forwardRef, useMemo, useCallback, memo } from 'react';
@@ -78,17 +78,31 @@ const AutoContextMenu = memo((props: AutoMenuProps) => {
     open: false
   });
 
-  const close = useThrottle(() => {
-    if (!state.open) return;
-    state.open = false;
-  }, { wait: 100 }, []);
+  const close = useThrottle(
+    () => {
+      if (!state.open) return;
+      state.open = false;
+    },
+    100,
+    {
+      leading: false,
+      trailing: true
+    },
+    []
+  );
 
   // 当窗口发生大小或者滚动事件的时候, 关闭菜单的显示
-  useEventListener(window, {
-    'resize': close,
-    'scroll': close,
-    'blur': close
-  }, []);
+  useEventListeners(
+    {
+      current: window
+    },
+    {
+      'resize': close,
+      'scroll': close,
+      'blur': close
+    },
+    []
+  );
 
   return (
     <DropdownMenuOpenContext.Provider value={state.open}>

@@ -1,5 +1,5 @@
-import { useCallback, useLayoutEffect, useState } from 'react';
-import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray, MetadataStoreChangeListener, MetadataStoreListenerPayload } from './declare';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } from './declare';
 import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
 /**
@@ -13,25 +13,6 @@ import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
  */
 export class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
-  private readonly metadataChangeListeners = new Set<MetadataStoreChangeListener>();
-
-  /**
-   * 触发元数据更改监听函数
-   */
-  protected triggerMetadataChangeListeners(payload: MetadataStoreListenerPayload) {
-    this.metadataChangeListeners.forEach(listener => listener(payload));
-  }
-
-  /**
-   * 订阅元数据更改
-   */
-  public subscribeMetadataStoreChanged(listener: MetadataStoreChangeListener) {
-    this.metadataChangeListeners.add(listener);
-
-    return () => {
-      this.metadataChangeListeners.delete(listener);
-    }
-  }
 
   /**
    * 定义 store 元数据, 元数据可以是任何东西
@@ -44,12 +25,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     this.metadataMap.set(metadataKey, metadata);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Define',
-      type: 'All',
-      metadataKey: metadataKey,
-      metadata: metadata
-    })
 
     return () => {
       this.delMetadata(metadataKey);
@@ -66,6 +41,20 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   }
 
   /**
+   * 获取元数据列表中最新注册的元数据
+   */
+  public getMetadataLatestInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
+    return (this.metadataMap.get(metadataKey) ?? [])[this.metadataMap.get(metadataKey)?.length - 1] ?? null;
+  }
+
+  /**
+   * 获取元数据列表中最旧注册的元数据
+   */
+  public getMetadataOldestInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey): ExtractElInArray<MetadataEntries[MetadataKey]> | null {
+    return (this.metadataMap.get(metadataKey) ?? [])[0] ?? null;
+  }
+
+  /**
    * 删除定义的元数据
    * @example
    * metadata.delMetadata('example-key');
@@ -75,12 +64,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
 
     this.metadataMap.delete(metadataKey);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Remove',
-      type: 'All',
-      metadataKey: metadataKey,
-      metadata: this.metadataMap.get(metadataKey)
-    })
   }
 
   /**
@@ -90,12 +73,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     this.metadataMap.set(metadataKey, metadata);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Define',
-      type: 'Single',
-      metadataKey: metadataKey,
-      metadata: metadata
-    })
 
     return () => {
       this.delMetadata(metadataKey);
@@ -120,21 +97,9 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
 
       this.metadataMap.set(metadataKey, newVector);
       super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: newVector
-      })
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Define',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: [metadata] as MetadataEntries[MetadataKey]
-      })
     }
 
     return () => {
@@ -164,23 +129,11 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     if (fVector.length === 0) {
       this.metadataMap.delete(metadataKey);
       super.updateStore();
-      this.triggerMetadataChangeListeners({
-        action: 'Remove',
-        type: 'Vector',
-        metadataKey: metadataKey,
-        metadata: [] as MetadataEntries[MetadataKey]
-      })
       return;
     }
 
     this.metadataMap.set(metadataKey, fVector);
     super.updateStore();
-    this.triggerMetadataChangeListeners({
-      action: 'Remove',
-      type: 'Vector',
-      metadataKey: metadataKey,
-      metadata: fVector as MetadataEntries[MetadataKey]
-    })
   }
 
   /**
@@ -216,15 +169,12 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public useMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): MetadataEntries[MetadataKey] | null {
     const [_, setState] = useState({});
 
-    const [normalState] = useState(() => ({
-      isMounted: false,
+    const normalState = useRef({
+      isMounted: false as boolean,
       data: this.getMetadata(metadataKey),
-      unsubscribe: void 0 as ((() => void) | undefined)
-    }))
-
-    const [syncState] = useState(() => ({
-      needSync: false
-    }))
+      unsubscribe: void 0 as ((() => void) | undefined),
+      needSync: false as boolean
+    })
 
     /**
      * updateState
@@ -232,39 +182,41 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
      * @description 改更新是有 20ms 延迟的
      */
     const updateState = useCallback(() => {
-      if (!normalState.isMounted) {
+      if (!normalState.current.isMounted) {
         // 标记需要同步
-        syncState.needSync = true;
+        normalState.current.needSync = true;
         return;
       }
       // 刷新组件 (在组件挂载时才 setState)
       setState({});
     }, []);
 
-    if (!normalState.unsubscribe) {
-      normalState.unsubscribe = super.subscribe(() => {
+    if (!normalState.current.isMounted && !normalState.current.unsubscribe) {
+      normalState.current.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
-        if (data !== normalState.data) {
-          normalState.data = data;
+        if (data !== normalState.current.data) {
+          normalState.current.data = data;
+          normalState.current.needSync = false;
           updateState();
         }
       })
     }
 
-    useLayoutEffect(() => {
-      normalState.isMounted = true;
+    useEffect(() => {
+      normalState.current.isMounted = true;
 
-      // 同步, 因为元数据得注册可能过早, 在当前组件都还没挂载时就已经注册
-      if (syncState.needSync) updateState();
+      // 因为元数据的注册时间可能不恰当(在组件创建时, 但组件未挂载), 在当前组件都还没挂载时就已经注册
+      // 所以在组件挂载后, 需要进行一次同步
+      if (normalState.current.needSync) updateState();
 
       return () => {
-        normalState.isMounted = false;
-        if (normalState.unsubscribe) normalState.unsubscribe();
-        normalState.unsubscribe = void 0;
+        normalState.current.isMounted = false;
+        if (normalState.current.unsubscribe) normalState.current.unsubscribe();
+        normalState.current.unsubscribe = void 0;
       }
     }, []);
 
-    return normalState.data;
+    return normalState.current.data;
   }
 
   /**
@@ -289,7 +241,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * 获取到所有定义的元数据
    */
   public useAllMetadata() {
-    super.useStoreValue();
+    super.useStoreValueToRerenderComponent();
     return this.metadataMap;
   }
 
@@ -298,5 +250,36 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    */
   public hasMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): boolean {
     return this.metadataMap.has(metadataKey);
+  }
+
+  /**
+   * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+   */
+  public useFollowMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
+    useEffect(() => {
+      const destroy = this.defineMetadata(metadataKey, metadata);
+
+      return destroy;
+    }, [metadataKey, metadata]);
+  }
+
+  /**
+   * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+   */
+  public useFollowMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
+    useEffect(() => {
+      const destroy = this.defineMetadataInVector(metadataKey, metadata);
+      return destroy;
+    }, [metadataKey, metadata]);
+  }
+
+  /**
+   * 在组件中注册元数据, 跟随当前组件生命周期, 组件卸载时自动删除
+   */
+  public useFollowMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
+    useEffect(() => {
+      const destroy = this.defineMetadataInSingle(metadataKey, metadata);
+      return destroy;
+    }, [metadataKey, metadata]);
   }
 }

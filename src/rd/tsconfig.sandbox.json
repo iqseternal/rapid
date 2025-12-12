@@ -39,7 +39,8 @@
   },
   "include": [
     "./code/sandbox/**/*.ts",
-    "./base/**/*.ts"
+    "./base/**/*.ts",
+    "./catalog/**/*.ts"
   ],
   "exclude": [
     "./base/browser/**/*",

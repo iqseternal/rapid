@@ -1,8 +1,11 @@
 import { RdStoreService } from '../service/RdStoreService';
 
 export interface UserConfigStoreType {
-  mainWindowMemoryWidth: number;
-  mainWindowMemoryHeight: number;
+  mainWindowMemoryWidth?: number;
+  mainWindowMemoryHeight?: number;
+
+  mainWindowMemoryX?: number;
+  mainWindowMemoryY?: number;
 }
 
 export const userConfigStore = RdStoreService.getInstance<UserConfigStoreType>('USER_CONFIG', {
@@ -10,3 +13,4 @@ export const userConfigStore = RdStoreService.getInstance<UserConfigStoreType>('
 
   fileExtension: 'json'
 });
+

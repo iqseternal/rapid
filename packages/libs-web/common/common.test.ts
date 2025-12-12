@@ -1,4 +1,5 @@
-import { classnames } from './common';
+import { classnames, isReactFC, isReactLazyFC } from './common';
+import { createElement, lazy, type FC } from 'react';
 
 describe('classnames', () => {
   it('classnames', () => {
@@ -17,7 +18,7 @@ describe('classnames', () => {
     expect(classnames(null)).toBe('');
     expect(classnames(void 0)).toBe('');
     expect(classnames({})).toBe('');
-    expect(classnames([])).toBe('');
+    expect(classnames([] as unknown as string)).toBe('');
     expect(
       classnames(
         'a',
@@ -31,3 +32,32 @@ describe('classnames', () => {
   })
 })
 
+describe('isReactLazyFC', () => {
+  it('isReactLazyFC', async () => {
+    const Component = () => {
+
+      return (
+        createElement('div', null, 'test')
+      );
+    }
+
+    const components: [FC, boolean][] = [
+      [
+        Component,
+        false
+      ],
+      [
+        lazy(async () => ({
+          default: Component
+        })),
+        true
+      ]
+    ];
+
+    expect(
+      components.map(item => item[0]).map(component => isReactLazyFC(component))
+    ).toEqual(
+      components.map(item => item[1])
+    );
+  });
+})

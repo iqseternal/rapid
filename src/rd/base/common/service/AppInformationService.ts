@@ -23,5 +23,4 @@ export class AppInformationService extends SingleInstanceService {
     }
 
   } as const;
-
 }

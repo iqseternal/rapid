@@ -7,6 +7,7 @@ const appInformation = AppInformationService.getInstance();
  * 系统通知
  */
 export class NotificationService {
+  
   public static showNotificationInfo() {
     return new Promise((resolve, reject) => {
       const notification = new Notification({

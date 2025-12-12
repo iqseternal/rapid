@@ -50,14 +50,7 @@ const WorkbenchesView = memo(() => {
 const WorkspaceLayout = memo(() => {
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
-
-  useFadeInEffect(async () => {
-    await Promise.allSettled([
-      ipcActions.windowResizeAble({ resizeAble: true }),
-      ipcActions.windowResetCustomSize({ type: 'mainWindow' })
-    ]);
-  }, []);
+  const NavigationBarLatestContent = native.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
 
   return (
     <div className='w-full h-full'>
@@ -69,14 +62,14 @@ const WorkspaceLayout = memo(() => {
           mainSidebarStatus === SidebarStatus.Right && 'flex-row-reverse'
         )}
         style={{
-          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`,
+          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`
         }}
       >
         {mainSidebarStatus !== SidebarStatus.None && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
 
         <main
           className={classnames(
-            'w-full h-full pl-1 py-1 rounded-md overflow-x-hidden overflow-y-auto',
+            'w-full h-full px-1 py-1 rounded-md overflow-x-hidden overflow-y-auto',
             commonStyles.beautifulBar
           )}
         >
@@ -88,24 +81,19 @@ const WorkspaceLayout = memo(() => {
 })
 
 const WorkspaceLayoutWrapper = memo(() => {
+  native.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+  native.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
 
-  useLayoutEffect(() => {
-    const dmCallbacks = [
-      rApp.metadata.defineMetadataInVector('ui.layout.header.icon', Logo),
-
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget),
-
-      rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget),
-      rApp.metadata.defineMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus),
-
-      rApp.metadata.defineMetadataInVector('ui.layout.navigation.bar.content', NavigationBar),
-    ];
-
-    return () => {
-      dmCallbacks.forEach(callback => callback());
-    }
+  useFadeInEffect(async () => {
+    await Promise.allSettled([
+      ipcActions.windowResizeAble({ resizeAble: true }),
+      ipcActions.windowResetCustomSize({ type: 'mainWindow' })
+    ]);
   }, []);
 
   return (

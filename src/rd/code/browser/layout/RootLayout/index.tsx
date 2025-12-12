@@ -32,12 +32,7 @@ const I18nChangeLanguageWidget = memo(() => {
  */
 const RootLayout = memo(() => {
 
-  useEffect(() => {
-
-    const dm = rApp.metadata.defineMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
-
-    return dm;
-  }, []);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
 
   return (
     <Outlet />

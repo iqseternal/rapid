@@ -45,6 +45,8 @@ export class WindowService {
 
     if (IS_DEV) {
       this.window.loadURL(this.options.url).then(r => r).catch(e => {
+        PrinterService.printError(e);
+
         // TODO: 处理加载错误
         PrinterService.printError('加载URL失败');
       });

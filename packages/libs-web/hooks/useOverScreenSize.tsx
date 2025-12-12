@@ -29,15 +29,24 @@ export function useWindowOverScreenSize() {
     overflowScreenHeight: window.innerHeight > window.screen.height
   }));
 
-  const judgeStatus = useDebounce(() => {
-    const overflowWidth = window.innerWidth > window.screen.width;
-    const overflowHeight = window.innerHeight > window.screen.height;
+  const judgeStatus = useDebounce(
+    () => {
+      const overflowWidth = window.innerWidth > window.screen.width;
+      const overflowHeight = window.innerHeight > window.screen.height;
 
-    state.overflowScreenWidth = overflowWidth;
-    state.overflowScreenHeight = overflowHeight;
-  }, { wait: 20 }, []);
+      state.overflowScreenWidth = overflowWidth;
+      state.overflowScreenHeight = overflowHeight;
+    },
+    20,
+    {
+      leading: false,
+      maxWait: 200,
+      trailing: true
+    },
+    []
+  );
 
-  useEventListener(window, 'resize', judgeStatus, []);
+  useEventListener({ current: window }, 'resize', judgeStatus, []);
 
   return [state as Readonly<WindowOverScreenSize>] as const;
 }

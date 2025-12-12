@@ -28,9 +28,9 @@ export interface BuildActionOptions {
 
 export async function buildAction(options: BuildActionOptions) {
   printInfo('build start.');
-
   process.env.COMMAND = NodeCommand.Build;
 
+  const startTime = Date.now();
   const configPath = path.join(process.cwd(), options.config ?? RdBuilderConfigName);
 
   // 配置文件检查
@@ -84,4 +84,6 @@ export async function buildAction(options: BuildActionOptions) {
   if (options.preview) {
     await electronService.restart([], mainCompiler.outputPath);
   }
+
+  printInfo(`Build Success: ${Date.now() - startTime}ms`);
 }

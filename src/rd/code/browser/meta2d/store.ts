@@ -12,7 +12,12 @@ export const enum Meta2dSelectionMode {
 
   Pen,
 
-  Rect
+  Rect,
+
+  Graphics,
+  Shape,
+  Text,
+  Image,
 }
 
 export interface Meta2dSelectionsStore {

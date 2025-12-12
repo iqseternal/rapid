@@ -7,6 +7,7 @@ declare global {
   const IS_DEV: boolean;
   /**
    * 当前是否为生产环境
+   * @description 与 IS_DEV 相反
    */
   const IS_PROD: boolean;
 

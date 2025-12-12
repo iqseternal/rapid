@@ -26,6 +26,8 @@ i18n
     interpolation: {
       escapeValue: false
     }
+  }).catch(err => {
+    console.error(err.message);
   });
 
 export default i18n;

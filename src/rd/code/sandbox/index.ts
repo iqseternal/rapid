@@ -47,9 +47,12 @@ export interface ExposeApi {
   /**
    * 应用的 store
    */
-  readonly stores: {
-    readonly appStore: AppStoreType;
-  }
+  readonly stores: Exclude<
+    {
+      readonly appStore: AppStoreType;
+    },
+    | 'features'
+  >;
 }
 
 const exposeService = new ExposeService<ExposeApi>();

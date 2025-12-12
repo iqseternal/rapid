@@ -22,18 +22,25 @@ import type { Component, FC, ForwardRefExoticComponent, LazyExoticComponent, Mem
  *    }
  * ></div>
  */
-export const classnames = (...args: (string | undefined | boolean | null | number | Record<string, any | boolean | undefined>)[]) => {
+export const classnames = (...args: (string | undefined | boolean | null | number | Record<string, boolean | undefined>)[]) => {
   const classNameList: string[] = [];
 
   for (const arg of args) {
     if (isString(arg)) {
-      if (arg.trim() !== '') classNameList.push(arg);
+      const className = arg.trim();
+
+      if (className !== '') classNameList.push(className);
       continue;
     }
 
     if (isRawObject(arg)) {
       for (const key in arg) {
-        if (arg[key] && key.trim() !== '') classNameList.push(key);
+        if (isString(key)) {
+          const flag = arg[key];
+          const className = key.trim();
+
+          if (flag && className !== '') classNameList.push(className);
+        }
       }
     }
   }

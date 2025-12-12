@@ -1,8 +1,7 @@
 import { WindowService } from '../../service/WindowService';
 import { IpcActionMiddleware, IpcActionEvent } from '@rapid/m-ipc-core';
 import { Catch, RuntimeException } from '../../exceptions';
-import { isException } from 'rd/base/common/exceptions';
-import type { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
+import { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import type { RPromiseLike } from '@rapid/libs';
 import { toNil, asynced } from '@rapid/libs';
 
@@ -15,7 +14,7 @@ export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> =
    * ipc 接口出现了错误, 利用 onError 回调在主进程处理 ipc 产生地异常, 记录日志...
    */
   onError: async (err, { channel }) => {
-    if (isException(err)) {
+    if (Exception.is(err)) {
       err.errMessage.other.channel = channel;
 
       Catch.parser(err);
@@ -42,7 +41,7 @@ export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
     const [err, data] = await toNil(response);
 
     if (err) {
-      if (isException(err.reason)) return Promise.reject(JSON.stringify(err.reason));
+      if (Exception.is(err.reason)) return Promise.reject(JSON.stringify(err.reason));
 
       if (err.reason instanceof Error) {
         return Promise.reject(JSON.stringify(new RuntimeException(err.reason.message, {

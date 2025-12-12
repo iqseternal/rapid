@@ -1,6 +1,10 @@
 export type ExtensionName = string;
 
-export interface Extension<Context = any> {
+export type ExtensionOnActivated<Context = unknown> = (context?: Context) => ((() => void) | Promise<(() => void)> | void | Promise<void>);
+
+export type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
+
+export interface Extension<Context = unknown> {
   /**
    * 插件的唯一标识 name
    */
@@ -19,21 +23,22 @@ export interface Extension<Context = any> {
   /**
    * 插件被激活, 被使用的状态
    */
-  readonly onActivated?: (this: this, context?: Context) => (void | Promise<void>);
+  readonly onActivated?: ExtensionOnActivated<Context>;
 
-  /**
-   * 插件被去活, 被禁用的状态
-   */
-  readonly onDeactivated?: (this: this, context?: Context) => (void | Promise<void>);
+  readonly onDeactivated?: ExtensionOnDeactivated<Context>;
 }
 
-export interface ExtensionWithLifecycle<Ext extends Extension> {
-  readonly extension: Ext;
+export interface ExtensionWithLifecycle {
+  readonly extension: Extension;
 
   /**
    * 插件是否被激活
    */
   isActivated: boolean;
+
+  onActivated?: () => void;
+
+  onDeactivated?: () => void;
 }
 
 export type ExtractExtensionContext<Ext extends Extension> = Parameters<Exclude<Ext['onActivated'], undefined>>[0];

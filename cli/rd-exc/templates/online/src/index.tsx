@@ -1,29 +1,32 @@
 import { memo } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const { apiGet, apiPost } = rApp.libs;
-const { Ellipsis, Widget, IconFont } = rApp.components;
-const { Timestamp } = rApp.constants;
-const { rApiGet, rApiPost, rApiDelete, classnames, toNil, injectReadonlyVariable } = rApp.libs;
-const { skin, mrcvp } = rApp.skin;
-const { Space, Dropdown } = rApp.Antd;
+const { apiGet, apiPost } = native.libs;
+const { Ellipsis, Widget, IconFont } = native.components;
+const { Timestamp } = native.constants;
+const { rApiGet, rApiPost, rApiDelete, classnames, toNil, injectReadonlyVariable } = native.libs;
+const { skin, mrvp } = native.skin;
+const { Space, Dropdown } = native.Antd;
 
-export default rApp.extension.defineExtension({
+const transformer = (sheet: Rapid.SKin.CssVariablePayloadSheet) => {
+  sheet.uiCaptionBarBackground.value = '#0f0';
+}
+
+export default native.extension.defineExtension({
   name: 'example-11',
   version: '0.0.1',
 
   onActivated() {
-    const dm = rApp.metadata.defineMetadataInVector('functional.theme.variables.transformer', () => {
+    native.printer.printInfo('example-11 deactivated');
 
-    });
-
-    rApp.printer.printInfo('example-11 activated');
-
+    native.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
   },
 
   onDeactivated() {
 
-    rApp.printer.printInfo('example-11 deactivated');
+    native.printer.printInfo('example-11 deactivated');
+
+    native.metadata.delMetadataInVector('functional.theme.variables.transformer', transformer);
   },
 })
 

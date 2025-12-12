@@ -2,6 +2,10 @@ import { classnames } from '@rapid/libs-web/common';
 import { memo } from 'react';
 import { commonStyles } from '@/scss/common';
 
+import { TransitionGroup, Transition, CSSTransition } from 'react-transition-group';
+
+import styles from './header.module.scss';
+
 export interface HeaderProps {
   readonly className?: string;
 }
@@ -12,23 +16,23 @@ export interface HeaderProps {
 export const Header = memo((props: HeaderProps) => {
   const { className } = props;
 
-  const HeaderLogoContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.icon');
+  const HeaderLogoContent = native.metadata.useLatestMetadataInVector('ui.layout.header.icon');
 
-  const MenuBeforeContents = rApp.metadata.useMetadata('ui.layout.header.menu.before');
-  const MenuContents = rApp.metadata.useMetadata('ui.layout.header.menu.content');
-  const MenuAfterContents = rApp.metadata.useMetadata('ui.layout.header.menu.after');
+  const MenuBeforeContents = native.metadata.useMetadata('ui.layout.header.menu.before');
+  const MenuContents = native.metadata.useMetadata('ui.layout.header.menu.content');
+  const MenuAfterContents = native.metadata.useMetadata('ui.layout.header.menu.after');
 
-  const HeaderMainContent = rApp.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
+  const HeaderMainContent = native.metadata.useLatestMetadataInVector('ui.layout.header.main.content');
 
-  const ControllerBeforeContents = rApp.metadata.useMetadata('ui.layout.header.controller.before');
+  const ControllerBeforeContents = native.metadata.useMetadata('ui.layout.header.controller.before');
 
-  const ControllerOtherWidgets = rApp.metadata.useMetadata('ui.layout.header.controller.widgets.others');
+  const ControllerOtherWidgets = native.metadata.useMetadata('ui.layout.header.controller.widgets.others');
 
-  const MinWindowWidget = rApp.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.min');
-  const ReductionWindowWidget = rApp.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.reduction');
-  const CloseWindowWidget = rApp.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.close');
+  const MinWindowWidget = native.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.min');
+  const ReductionWindowWidget = native.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.reduction');
+  const CloseWindowWidget = native.metadata.useLatestMetadataInVector('ui.layout.header.controller.widgets.close');
 
-  const ControllerAfterContents = rApp.metadata.useMetadata('ui.layout.header.controller.after');
+  const ControllerAfterContents = native.metadata.useMetadata('ui.layout.header.controller.after');
 
   return (
     <div
@@ -85,7 +89,35 @@ export const Header = memo((props: HeaderProps) => {
             'flex justify-end gap-x-0.5 flex-none items-center'
           )}
         >
-          {ControllerOtherWidgets && ControllerOtherWidgets.map((OtherWidget, index) => (<OtherWidget key={index} />))}
+          {ControllerOtherWidgets && ControllerOtherWidgets.toReversed().map((OtherWidget, index) => {
+
+            return (<OtherWidget key={index} />)
+
+            return (
+              <CSSTransition
+                key={`ControllerOtherWidgets-${index}`}
+                appear
+                in
+                unmountOnExit
+                classNames={{
+                  appear: styles.widgetSlideEnter,
+                  appearActive: styles.widgetSlideEnterActive,
+                  enter: styles.widgetSlideEnter,
+                  enterActive: styles.widgetSlideEnterActive,
+                  exit: styles.widgetSlideExit,
+                  exitActive: styles.widgetSlideExitActive,
+                }}
+                timeout={0.5}
+              >
+                <div
+                  key={`ControllerOtherWidgets-${index}`}
+                >
+                  <OtherWidget key={index} />
+                </div>
+              </CSSTransition>
+            )
+          })}
+
           {MinWindowWidget && (<MinWindowWidget />)}
           {ReductionWindowWidget && (<ReductionWindowWidget />)}
           {CloseWindowWidget && (<CloseWindowWidget />)}

@@ -2,6 +2,8 @@ import type * as SKIN from 'rd/code/browser/skin';
 
 import 'reflect-metadata';
 
+
+
 declare global {
 
 
@@ -17,7 +19,7 @@ declare global {
     /**
      * extension sdk
      */
-    readonly __define_extension__?: Rapid.RExtension;
+    readonly __define_extension__?: Rapid.Extend.Extension;
   }
 }
 

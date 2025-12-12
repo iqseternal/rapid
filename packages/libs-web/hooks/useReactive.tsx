@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRefresh } from './useRefresh';
 import { useReactive as useAHookReactive } from 'ahooks';
-import { createShallowProxy } from '@rapid/libs';
+import type { WatchHandle, ShallowReactive } from '@vue/reactivity';
+import { shallowReactive, watch } from '@vue/reactivity';
 
 /**
  * 普通 state, 不自动刷新组件
@@ -16,12 +17,11 @@ import { createShallowProxy } from '@rapid/libs';
  */
 export function useNormalState<S extends object>(initValue: S | (() => S)) {
   const isFirstInitialize = useRef(true);
-
   const stateRef = useRef<S>({} as S);
 
   if (isFirstInitialize.current) {
-    const state: S = ((typeof initValue === 'function') ? initValue() : initValue);
-    for (const key in state) stateRef.current[key] = state[key];
+    const initState: S = ((typeof initValue === 'function') ? initValue() : initValue);
+    for (const key in initState) stateRef.current[key] = initState[key];
     isFirstInitialize.current = false;
   }
 
@@ -32,30 +32,14 @@ export function useNormalState<S extends object>(initValue: S | (() => S)) {
  * 每次组件刷新都会执行初始化函数的 state
  */
 export function useSyncNormalState<S extends object>(initValue: () => S) {
-  const [state] = useNormalState({} as S);
-
+  const stateRef = useRef<S>({} as S);
   const initState = initValue();
 
-  for (const key in initState) state[key] = initState[key];
-  return [state] as const;
+  for (const key in initState) stateRef.current[key] = initState[key];
+  return [stateRef.current] as const;
 }
 
-/**
- * 修改 state 自动刷新组件
- * @example
- * const [state, resetState] = useDeepReactive(() => ({
- *   a: 1,
- *   b: {
- *     c: 1
- *   }
- * });
- *
- * state.a = 2; // 自动刷新组件
- * state.b.c = 2; // 自动刷新组件
- *
- * resetState(); // 调用初始化函数重置 state
- */
-export function useDeepReactive<S extends object>(initValue: (() => S)): readonly [S, () => void];
+export type UseDeepReactiveReturnType<S extends object> = readonly [S];
 
 /**
  * 修改 state 自动刷新组件
@@ -70,16 +54,12 @@ export function useDeepReactive<S extends object>(initValue: (() => S)): readonl
  * state.a = 2; // 自动刷新组件
  * state.b.c = 2; // 自动刷新组件
  */
-export function useDeepReactive<S extends object>(initValue: S): readonly [S];
-
-export function useDeepReactive<S extends object>(initValue: S | (() => S)): (readonly [S] | readonly [S, () => void]) {
+export function useDeepReactive<S extends object>(initValue: S): UseDeepReactiveReturnType<S>;
+export function useDeepReactive<S extends object>(initValue: S | (() => S)): UseDeepReactiveReturnType<S> {
   const isFirstInitialize = useRef(true);
 
-  const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
-
-  const [syncNormalState] = useSyncNormalState(() => ({
-    initValue: initValue
-  }))
+  const initValueRef = useRef<S | (() => S)>(initValue);
+  initValueRef.current = initValue;
 
   const state = useAHookReactive(
     !isFirstInitialize ? {} : (
@@ -89,22 +69,12 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): (re
 
   if (isFirstInitialize.current) isFirstInitialize.current = false;
 
-  /**
-   * 重置 state
-   */
-  const resetState = useCallback(() => {
-    const initValue = syncNormalState.initValue;
-    const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    for (const key in initialState) state[key] = initialState[key];
-  }, []);
-
-  if ((typeof initValue === 'function') !== isInitStateFunction) {
-    throw new Error('useDeepReactive 参数在多次运行中出现不一致的情况, 请检查参数是否为函数类型');
-  }
-
-  if (isInitStateFunction) return [state, resetState] as const;
   return [state] as const;
 }
+
+export type UseShallowReactiveRestoreFunction = () => void;
+
+export type UseShallowReactiveReturnType<S extends object> = readonly [S, UseShallowReactiveRestoreFunction];
 
 /**
  * 修改 state 自动刷新组件
@@ -121,75 +91,44 @@ export function useDeepReactive<S extends object>(initValue: S | (() => S)): (re
  *
  * resetState(); // 调用初始化函数重置 state
  */
-export function useShallowReactive<S extends object>(initValue: (() => S)): readonly [S, () => void];
-
-/**
- * 修改 state 自动刷新组件
- * @example
- * const [state] = useShallowReactive({
- *   a: 1,
- *   b: {
- *     c: 1
- *   }
- * });
- *
- * state.a = 2; // 自动刷新组件
- * state.b.c = 2; // 不会自动刷新组件
- */
-export function useShallowReactive<S extends object>(initValue: S): readonly [S];
-
-export function useShallowReactive<S extends object>(initValue: S | (() => S)) {
+export function useShallowReactive<S extends object>(initValue: S | (() => S)): UseShallowReactiveReturnType<S>;
+export function useShallowReactive<S extends object>(initValue: S | (() => S)): UseShallowReactiveReturnType<S> {
   const refresh = useRefresh();
+  const isFirstInitialize = useRef(true);
 
-  const isInitStateFunction = useMemo(() => (typeof initValue === 'function'), []);
-
-  const [syncNormalState] = useSyncNormalState(() => ({
-    initValue: initValue
-  }))
+  const unwatchRef = useRef<null | WatchHandle>(null);
+  const initValueRef = useRef<S | (() => S)>(initValue);
+  initValueRef.current = initValue;
 
   const [state] = useState(() => {
     const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    return createShallowProxy(initialState, refresh);
+    return shallowReactive(initialState);
   });
 
   /**
    * 重置 state
    */
-  const resetState = useCallback(() => {
-    const initValue = syncNormalState.initValue;
-    const initialState = (typeof initValue === 'function') ? initValue() : initValue;
-    for (const key in initialState) state[key] = initialState[key];
+  const restoreState = useCallback(() => {
+    const initValue = initValueRef.current;
+    const initialState: S = (typeof initValue === 'function') ? initValue() : initValue;
+    for (const key in state) state[key as keyof typeof state] = initialState[key as keyof S] as any;
   }, []);
 
-  if ((typeof initValue === 'function') !== isInitStateFunction) {
-    throw new Error('useShallowReactive 参数在多次运行中出现不一致的情况, 请检查参数是否为函数类型');
+  if (isFirstInitialize.current) {
+    unwatchRef.current = watch(() => ({ ...state }), refresh);
+    isFirstInitialize.current = false;
   }
 
-  if (isInitStateFunction) return [state, resetState] as const;
-  return [state] as const;
+  useEffect(() => {
+    if (!unwatchRef.current) {
+      unwatchRef.current = watch(() => ({ ...state }), refresh);
+    }
+
+    return () => {
+      if (unwatchRef.current) unwatchRef.current();
+      unwatchRef.current = null;
+    }
+  }, []);
+
+  return [state, restoreState] as const;
 }
-
-/**
- * 修改 state 自动刷新组件 的配置
- */
-export interface ReactiveOptions {
-  /**
-   * 是否深度监听
-   *
-   * @default true
-   */
-  readonly deep?: boolean;
-}
-
-export function useReactive<S extends object>(initValue: (() => S), options?: ReactiveOptions): readonly [S, () => void];
-
-export function useReactive<S extends object>(initValue: S, options?: ReactiveOptions): readonly [S];
-
-export function useReactive<S extends object>(initValue: S | (() => S), options?: ReactiveOptions): (readonly [S, () => void] | readonly [S]) {
-  const { deep = true } = options ?? {};
-
-  if (deep) return useDeepReactive(initValue as S) as readonly [S, () => void] | readonly [S];
-
-  return useShallowReactive(initValue as S) as readonly [S, () => void] | readonly [S];
-}
-
