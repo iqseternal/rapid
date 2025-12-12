@@ -17,8 +17,8 @@ const Graphics = memo(() => {
 
     }
     else {
-      if (rApp.meta2d) {
-        rApp.meta2d.canvas.addCaches = []
+      if (native.meta2d) {
+        native.meta2d.canvas.addCaches = []
       }
     }
 
@@ -72,8 +72,8 @@ const Meta2dContainer = () => {
           const data = e.dataTransfer.getData('meta2d');
 
           if (data) {
-            if (rApp.meta2d) {
-              rApp.meta2d.canvas.addCaches = [JSON.parse(data)];
+            if (native.meta2d) {
+              native.meta2d.canvas.addCaches = [JSON.parse(data)];
             }
           }
         }}

@@ -110,9 +110,9 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
       if (
         Reflect.has(globalThat, 'rApp') &&
         Reflect.has(globalThat.rApp, 'invoker') &&
-        Reflect.has(globalThat.rApp.invoker, 'invoke') &&
-        typeof globalThat.rApp.invoker.invoke === 'function'
-      ) return globalThat.rApp.invoker.invoke('r-api-err-distributor', response);
+        Reflect.has(globalThat.native.invoker, 'invoke') &&
+        typeof globalThat.native.invoker.invoke === 'function'
+      ) return globalThat.native.invoker.invoke('r-api-err-distributor', response);
 
       return response;
     },

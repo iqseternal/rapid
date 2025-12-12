@@ -50,7 +50,7 @@ const WorkbenchesView = memo(() => {
 const WorkspaceLayout = memo(() => {
   const mainSidebarStatus = useThemeStore(store => store.layout.mainSidebar);
 
-  const NavigationBarLatestContent = rApp.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
+  const NavigationBarLatestContent = native.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
 
   return (
     <div className='w-full h-full'>
@@ -69,7 +69,7 @@ const WorkspaceLayout = memo(() => {
 
         <main
           className={classnames(
-            'w-full h-full pl-1 py-1 rounded-md overflow-x-hidden overflow-y-auto',
+            'w-full h-full px-1 py-1 rounded-md overflow-x-hidden overflow-y-auto',
             commonStyles.beautifulBar
           )}
         >
@@ -81,13 +81,13 @@ const WorkspaceLayout = memo(() => {
 })
 
 const WorkspaceLayoutWrapper = memo(() => {
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
+  native.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
 
   useFadeInEffect(async () => {
     await Promise.allSettled([

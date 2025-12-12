@@ -7,7 +7,6 @@ import * as antd from 'antd';
 import { TooltipProps, PopoverProps } from 'antd';
 import * as iconInstance from '@ant-design/icons';
 import iconInstance__default from '@ant-design/icons';
-import * as _vue_reactivity from '@vue/reactivity';
 import * as react_i18next from 'react-i18next';
 import i18n from 'i18next';
 import * as zustand_middleware from 'zustand/middleware';
@@ -16,6 +15,7 @@ import * as _rapid_bus from '@rapid/bus';
 import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
+import * as _vue_reactivity from '@vue/reactivity';
 import * as _meta2d_core from '@meta2d/core';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
 import * as _rapid_m_ipc_core from '@rapid/m-ipc-core';
@@ -190,7 +190,7 @@ declare const Widget: react.MemoExoticComponent<react.ForwardRefExoticComponent<
  *    }
  * ></div>
  */
-declare const classnames: (...args: (string | undefined | boolean | null | number | Record<string, any | boolean | undefined>)[]) => string;
+declare const classnames: (...args: (string | undefined | boolean | null | number | Record<string, boolean | undefined>)[]) => string;
 /**
  * 判断一个对象是否是一个被 lazy 包裹的 FC 组件
  * @param target
@@ -369,6 +369,7 @@ declare enum Timestamp {
     Month = 2592000000,
     HalfMonth = 1296000000,
     Month28 = 2419200000,
+    Month29 = 2505600000,
     Month30 = 2592000000,
     Month31 = 2678400000,
     /**
@@ -471,7 +472,7 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
 }>;
 
 type ExtensionName = string;
-type ExtensionOnActivated<Context = unknown> = (context?: Context) => (() => void) | Promise<(() => void)>;
+type ExtensionOnActivated<Context = unknown> = (context?: Context) => ((() => void) | Promise<(() => void)> | void | Promise<void>);
 type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
 interface Extension<Context = unknown> {
     /**
@@ -831,12 +832,12 @@ type CssVariablesDeclaration<PayloadSheet extends CssVariablePayloadSheet> = {
  * @example
  * const primaryBackgroundColor = makeRapidCssVarPayload('--rapid-primary-background-color', '#ffffff', '主要背景色'),
  */
-declare const makeRdCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
+declare const makeCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 /**
  * 创建一个预设的 Css 样式, 别名：makeRdCssVarPayload
  * @alias makeRdCssVarPayload
  */
-declare const mrcvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
+declare const mrvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
 declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
     private readonly runtimeContext;
     private readonly presetCssVariablesPayloadSheet;
@@ -849,7 +850,7 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
     /**
      * 重置当前皮肤的 CSS 变量样式
      */
-    resetCssVariablesPayloadSheet(): void;
+    resetCssVarsSheet(): void;
     /**
      * 生成当前皮肤的 CSS 变量声明
      */
@@ -864,6 +865,14 @@ declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
      * @returns CssVars<PayloadSheet>
      */
     toCssVars(): CssVars<PayloadSheet>;
+    /**
+     * 使用变换器函数来变换当前皮肤的 CSS 变量样式
+     */
+    transformer(transformer: (sheet: PayloadSheet) => void): void;
+    /**
+     * 使用一组变换器函数来变换当前皮肤的 CSS 变量样式
+     */
+    transformers(transformers: ((sheet: PayloadSheet) => void)[]): void;
     /**
      * 安装当前皮肤，将 CSS 变量注入到页面中
      */
@@ -1877,20 +1886,20 @@ type RdCssVars = CssVars<RdCssVariablePayloadSheet>;
 type RdThread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntries extends Record<string, ThreadHandler> = {}> = Thread<TThreadEntries, SThreadEntries>;
 declare global {
     interface Window {
-        readonly rApp: Rapid.RApp;
+        readonly native: Rapid.Native;
         readonly cssVars: Rapid.SKin.CssVars;
     }
     /**
-     * 全局的 RApp 实例
+     * 全局的 native 实例
      */
-    const rApp: Rapid.RApp;
+    const native: Rapid.Native;
     /**
      * 全局的皮肤变量
      */
     const cssVars: Rapid.SKin.CssVars;
     /**
      * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
-     * 其中 RApp 为全局对象实例 - 为其他扩展环境提供功能性编写基础
+     * 其中 Native 为全局对象实例 - 为其他扩展环境提供功能性编写基础
      */
     export namespace Rapid {
         /**
@@ -2145,9 +2154,9 @@ declare global {
             type IsUnknown<T, SuccessReturnType, FailReturnType> = unknown extends T ? (T extends unknown ? SuccessReturnType : FailReturnType) : FailReturnType;
         }
         /**
-         * RApp
+         * 系统提供的原生 api 能力
          */
-        interface RApp {
+        interface Native {
             meta2d?: _meta2d_core.Meta2d;
             readonly Antd: typeof antd;
             readonly spring: typeof _react_spring_web;
@@ -2184,20 +2193,23 @@ declare global {
             /**
              * 全局的状态管理
              */
-            readonly stores: ExposeApi['stores'] & {
+            readonly stores: ExposeApi['stores'] & Omit<{
                 features: {
                     readonly useUserStore: typeof useUserStore;
                     readonly useThemeStore: typeof useThemeStore;
                     readonly useDocStore: typeof useDocStore;
                 };
-            };
+                appStore: {
+                    a: number;
+                };
+            }, keyof ExposeApi['stores']>;
             /**
              * 皮肤
              */
             readonly skin: {
                 readonly skin: Skin<RdCssVariablePayloadSheet>;
-                readonly makeRdCssVarPayload: typeof makeRdCssVarPayload;
-                readonly mrcvp: typeof mrcvp;
+                readonly makeCssVarPayload: typeof makeCssVarPayload;
+                readonly mrvp: typeof mrvp;
                 readonly Skin: typeof Skin;
             };
             /**

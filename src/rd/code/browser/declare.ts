@@ -30,15 +30,15 @@ type RdThread<TThreadEntries extends Record<string, ThreadHandler>, SThreadEntri
 
 declare global {
   interface Window {
-    readonly rApp: Rapid.RApp;
+    readonly native: Rapid.Native;
 
     readonly cssVars: Rapid.SKin.CssVars;
   }
 
   /**
-   * 全局的 RApp 实例
+   * 全局的 native 实例
    */
-  const rApp: Rapid.RApp;
+  const native: Rapid.Native;
 
   /**
    * 全局的皮肤变量
@@ -47,7 +47,7 @@ declare global {
 
   /**
    * 应用程序的命名空间 - 此命名空间将为其他扩展环境提供编写 TS 地基础
-   * 其中 RApp 为全局对象实例 - 为其他扩展环境提供功能性编写基础
+   * 其中 Native 为全局对象实例 - 为其他扩展环境提供功能性编写基础
    */
   export namespace Rapid {
     /**
@@ -341,9 +341,9 @@ declare global {
     }
 
     /**
-     * RApp
+     * 系统提供的原生 api 能力
      */
-    export interface RApp {
+    export interface Native {
       meta2d?: import('@meta2d/core').Meta2d;
 
       readonly Antd: typeof import('antd');
@@ -388,21 +388,26 @@ declare global {
       /**
        * 全局的状态管理
        */
-      readonly stores: RdSandbox.ExposeApi['stores'] & {
+      readonly stores: RdSandbox.ExposeApi['stores'] & Omit<{
         features: {
           readonly useUserStore: typeof import('@/features').useUserStore;
           readonly useThemeStore: typeof import('@/features').useThemeStore;
           readonly useDocStore: typeof import('@/features').useDocStore;
         }
-      };
+
+        appStore: {
+
+          a: number;
+        }
+      }, keyof RdSandbox.ExposeApi['stores']>;
 
       /**
        * 皮肤
        */
       readonly skin: {
         readonly skin: import('rd/base/browser/service/Skin').Skin<RdCssVariablePayloadSheet>;
-        readonly makeRdCssVarPayload: typeof import('rd/base/browser/service/Skin').makeRdCssVarPayload;
-        readonly mrcvp: typeof import('rd/base/browser/service/Skin').mrcvp;
+        readonly makeCssVarPayload: typeof import('rd/base/browser/service/Skin').makeCssVarPayload;
+        readonly mrvp: typeof import('rd/base/browser/service/Skin').mrvp;
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
       };
 

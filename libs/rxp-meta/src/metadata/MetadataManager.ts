@@ -191,7 +191,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
       setState({});
     }, []);
 
-    if (!normalState.current.unsubscribe) {
+    if (!normalState.current.isMounted && !normalState.current.unsubscribe) {
       normalState.current.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
         if (data !== normalState.current.data) {
@@ -205,7 +205,8 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     useEffect(() => {
       normalState.current.isMounted = true;
 
-      // 同步, 因为元数据得注册可能过早, 在当前组件都还没挂载时就已经注册
+      // 因为元数据的注册时间可能不恰当(在组件创建时, 但组件未挂载), 在当前组件都还没挂载时就已经注册
+      // 所以在组件挂载后, 需要进行一次同步
       if (normalState.current.needSync) updateState();
 
       return () => {

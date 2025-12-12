@@ -64,6 +64,7 @@ export class WindowFlowService {
     windowService.window.setMenu(null);
 
     windowService.window.webContents.setFrameRate(144);
+    windowService.window.webContents.setZoomLevel(1);
     windowService.window.webContents.setWindowOpenHandler((details) => {
       if (details.url) {
         return {
@@ -98,16 +99,9 @@ export class WindowFlowService {
       userConfigStore.set('mainWindowMemoryY', bounds.y);
     }, 1000);
 
-    windowService.window.on('resize', () => {
 
-      saveWindowSizeToConfig();
-    });
-
-    windowService.window.on('moved', () => {
-
-      saveWindowPositionToConfig();
-    });
-
+    windowService.window.on('resize', saveWindowSizeToConfig);
+    windowService.window.on('moved', saveWindowPositionToConfig);
 
     if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
     return windowService;

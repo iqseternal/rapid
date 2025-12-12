@@ -11,8 +11,8 @@ export const Ticket = memo(() => {
   const { t } = useTranslation();
   const { message, notification } = App.useApp();
 
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
-  rApp.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
 
   useFadeInEffect(async () => {
     await ipcActions.windowSetSize({ width: 850, height: 550 });

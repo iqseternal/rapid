@@ -1,6 +1,6 @@
 export type ExtensionName = string;
 
-export type ExtensionOnActivated<Context = unknown> = (context?: Context) => (() => void) | Promise<(() => void)>;
+export type ExtensionOnActivated<Context = unknown> = (context?: Context) => ((() => void) | Promise<(() => void)> | void | Promise<void>);
 
 export type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
 

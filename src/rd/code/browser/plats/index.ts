@@ -20,13 +20,13 @@ export async function analysisExtensionSource<ExtensionTemplate extends { script
  * 插件源的标准类型
  */
 export interface ExtensionSource {
-  extension_id: number;
-  extension_uuid: string;
-  extension_name: string;
-  extension_version_id: number;
+  readonly extension_id: number;
+  readonly extension_uuid: string;
+  readonly extension_name: string;
+  readonly extension_version_id: number;
 
-  script_content: string;
-  script_hash: string;
+  readonly script_content: string;
+  readonly script_hash: string;
 }
 
 /**
@@ -34,7 +34,6 @@ export interface ExtensionSource {
  */
 export async function transformerExtensionsSourceToRdExtension(extensionsSource: ExtensionSource[]): Promise<Rapid.Extend.Extension[]> {
   const extensions: Rapid.Extend.Extension[] = [];
-
 
   await Promise.allSettled(extensionsSource.map((extensionSource) => {
 
@@ -48,7 +47,7 @@ export async function transformerExtensionsSourceToRdExtension(extensionsSource:
       // 分析插件
       const [analysisErr, extension] = await toNil(analysisExtensionSource({ script_content: extensionSource.script_content }));
       if (analysisErr) {
-        rApp.printer.printError(analysisErr.reason);
+        native.printer.printError(analysisErr.reason);
         reject();
         return;
       }
@@ -82,11 +81,11 @@ export async function transformerExtensionsSourceToRdExtension(extensionsSource:
  */
 export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.Extension[]) {
   for (const nextExtension of nextExtensions) {
-    const extension = rApp.extension.getExtension(nextExtension.name);
+    const extension = native.extension.getExtension(nextExtension.name);
 
     if (!extension) {
-      rApp.extension.registerExtension(nextExtension);
-      rApp.extension.activatedExtension(nextExtension.name);
+      native.extension.registerExtension(nextExtension);
+      native.extension.activatedExtension(nextExtension.name);
       continue;
     }
 
@@ -98,14 +97,14 @@ export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.
     if (!nextExtension.meta) return;
     if (extension.meta.script_hash === nextExtension.meta.script_hash) continue;
 
-    await rApp.extension.deactivatedExtension(extension.name);
-    await rApp.extension.delExtension(extension.name);
+    await native.extension.deactivatedExtension(extension.name);
+    await native.extension.delExtension(extension.name);
 
-    rApp.extension.registerExtension(nextExtension);
-    rApp.extension.activatedExtension(nextExtension.name);
+    native.extension.registerExtension(nextExtension);
+    native.extension.activatedExtension(nextExtension.name);
   }
 
-  const vouchers = rApp.extension.getExtensions().filter(extension => {
+  const vouchers = native.extension.getExtensions().filter(extension => {
     return extension.meta && extension.meta.script_hash && extension.meta.extension_uuid && extension.meta.script_hash;
   }).map((extension) => {
     if (!extension.meta) {
@@ -124,6 +123,6 @@ export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.
     }
   });
 
-  rApp.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
+  native.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
 }
 

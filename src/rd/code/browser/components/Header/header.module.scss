@@ -1,0 +1,28 @@
+
+
+
+/* 定义进入（浮现）动画的初始状态 */
+.widgetSlideEnter {
+  opacity: 0;
+  transform: translateX(-20px); /* 开始时位于正常位置左侧20px */
+}
+
+/* 定义进入动画的激活状态 */
+.widgetSlideEnterActive {
+  opacity: 1;
+  transform: translateX(0); /* 移动到正常位置 */
+  transition: opacity 0.5s ease, transform 0.5s ease; /* 应用过渡效果，时长与 timeout 一致 */
+}
+
+/* 定义离开（消失）动画的初始状态 */
+.widgetSlideExit {
+  opacity: 1;
+  transform: translateX(0); /* 从正常位置开始 */
+}
+
+/* 定义离开动画的激活状态 */
+.widgetSlideExitActive {
+  opacity: 0;
+  transform: translateX(20px); /* 向右移动20px后消失 */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}

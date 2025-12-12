@@ -81,8 +81,6 @@ export class CodeMain {
 
     await app.whenReady();
 
-    electronApp.setAppUserModelId(`com.electron`);
-
     await WindowFlowService.setupMainWindowService();
 
     await setupTrayMenu();

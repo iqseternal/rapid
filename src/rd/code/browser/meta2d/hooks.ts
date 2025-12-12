@@ -15,17 +15,17 @@ import type { DependencyList, RefObject } from 'react';
 import { useSyncNormalState } from '@rapid/libs-web';
 
 export function setMeta2dCanvasData() {
-  if (!rApp.meta2d) return;
+  if (!native.meta2d) return;
 
-  // console.log(rApp.meta2d);
+  // console.log(native.meta2d);
 
-  // const data = rApp.meta2d.data?.();
+  // const data = native.meta2d.data?.();
 
   // console.log(data);
 
   // localStorage.setItem('meta2d-data', JSON.stringify(data));
 
-  // const options = rApp.meta2d.getOptions();
+  // const options = native.meta2d.getOptions();
 
   // localStorage.setItem('meta2d-options', JSON.stringify(options));
 }
@@ -35,7 +35,7 @@ export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, de
   useEffect(() => {
     if (!meta2dHtmlElementRef.current) return;
 
-    rApp.meta2d = new Meta2d(meta2dHtmlElementRef.current, {
+    native.meta2d = new Meta2d(meta2dHtmlElementRef.current, {
       rule: true,
       grid: true,
     });
@@ -48,7 +48,7 @@ export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, de
     register(sequencePens());
     registerCanvasDraw(sequencePensbyCtx());
 
-    rApp.meta2d.installPenPlugins({ name: 'mindNode2' }, [
+    native.meta2d.installPenPlugins({ name: 'mindNode2' }, [
       { plugin: mindBoxPlugin },
       { plugin: collapseChildPlugin }
     ]);
@@ -72,51 +72,51 @@ export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, de
     registerCanvasDraw(ftaPensbyCtx());
     registerAnchors(ftaAnchors());
 
-    rApp.meta2d.on('scale', setMeta2dCanvasData);
-    rApp.meta2d.on('add', setMeta2dCanvasData);
-    rApp.meta2d.on('opened', setMeta2dCanvasData);
-    rApp.meta2d.on('undo', setMeta2dCanvasData);
-    rApp.meta2d.on('redo', setMeta2dCanvasData);
-    rApp.meta2d.on('add', setMeta2dCanvasData);
-    rApp.meta2d.on('delete', setMeta2dCanvasData);
-    rApp.meta2d.on('rotatePens', setMeta2dCanvasData);
-    rApp.meta2d.on('translatePens', setMeta2dCanvasData);
+    native.meta2d.on('scale', setMeta2dCanvasData);
+    native.meta2d.on('add', setMeta2dCanvasData);
+    native.meta2d.on('opened', setMeta2dCanvasData);
+    native.meta2d.on('undo', setMeta2dCanvasData);
+    native.meta2d.on('redo', setMeta2dCanvasData);
+    native.meta2d.on('add', setMeta2dCanvasData);
+    native.meta2d.on('delete', setMeta2dCanvasData);
+    native.meta2d.on('rotatePens', setMeta2dCanvasData);
+    native.meta2d.on('translatePens', setMeta2dCanvasData);
 
-    rApp.meta2d.register(flowPens());
-    rApp.meta2d.register(activityDiagram());
-    rApp.meta2d.register(classPens());
-    rApp.meta2d.register(sequencePens());
-    rApp.meta2d.registerCanvasDraw(sequencePensbyCtx());
-    rApp.meta2d.registerCanvasDraw(formPens());
+    native.meta2d.register(flowPens());
+    native.meta2d.register(activityDiagram());
+    native.meta2d.register(classPens());
+    native.meta2d.register(sequencePens());
+    native.meta2d.registerCanvasDraw(sequencePensbyCtx());
+    native.meta2d.registerCanvasDraw(formPens());
 
     const data = localStorage.getItem('meta2d-data');
 
     const options = localStorage.getItem('meta2d-options');
 
     try {
-      if (data) rApp.meta2d.open(JSON.parse(data));
+      if (data) native.meta2d.open(JSON.parse(data));
 
-      if (options) rApp.meta2d.setOptions(JSON.parse(options));
+      if (options) native.meta2d.setOptions(JSON.parse(options));
 
     } catch (e) {
       console.error(e);
     }
 
     return () => {
-      if (!rApp.meta2d) return;
+      if (!native.meta2d) return;
 
-      rApp.meta2d.off('scale', setMeta2dCanvasData);
-      rApp.meta2d.off('add', setMeta2dCanvasData);
-      rApp.meta2d.off('opened', setMeta2dCanvasData);
-      rApp.meta2d.off('undo', setMeta2dCanvasData);
-      rApp.meta2d.off('redo', setMeta2dCanvasData);
-      rApp.meta2d.off('add', setMeta2dCanvasData);
-      rApp.meta2d.off('delete', setMeta2dCanvasData);
-      rApp.meta2d.off('rotatePens', setMeta2dCanvasData);
-      rApp.meta2d.off('translatePens', setMeta2dCanvasData);
+      native.meta2d.off('scale', setMeta2dCanvasData);
+      native.meta2d.off('add', setMeta2dCanvasData);
+      native.meta2d.off('opened', setMeta2dCanvasData);
+      native.meta2d.off('undo', setMeta2dCanvasData);
+      native.meta2d.off('redo', setMeta2dCanvasData);
+      native.meta2d.off('add', setMeta2dCanvasData);
+      native.meta2d.off('delete', setMeta2dCanvasData);
+      native.meta2d.off('rotatePens', setMeta2dCanvasData);
+      native.meta2d.off('translatePens', setMeta2dCanvasData);
 
-      rApp.meta2d.off('*', setMeta2dCanvasData);
-      rApp.meta2d.destroy();
+      native.meta2d.off('*', setMeta2dCanvasData);
+      native.meta2d.destroy();
     }
   }, deps);
 }

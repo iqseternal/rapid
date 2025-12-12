@@ -15,7 +15,7 @@ const rxcThread = new Thread<Rapid.Thread.ExtensionThreadEntries, Rapid.Thread.M
 );
 
 rxcThread.handle('rxc:extension-changed', async (extensionIds) => {
-  const extensions = rApp.extension.getExtensions().filter((extension) => (extension.meta && extensionIds.includes(extension.meta.extension_id)));
+  const extensions = native.extension.getExtensions().filter((extension) => (extension.meta && extensionIds.includes(extension.meta.extension_id)));
 
   const [err, res] = await toNil(useExtensionsApi({
     vouchers: extensions.map(extension => {

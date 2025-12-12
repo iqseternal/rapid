@@ -67,7 +67,7 @@ export const RdApp = memo(() => {
       <App
         className='w-full h-full'
         message={{
-          maxCount: 5,
+          maxCount: 1,
           getContainer: () => document.body
         }}
         notification={{

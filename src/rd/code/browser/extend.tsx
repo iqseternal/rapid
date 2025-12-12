@@ -1,22 +1,18 @@
 import { useEffect } from 'react';
+import { Skin } from 'rd/base/browser/service/Skin';
+import type { RdCssVariablePayloadSheet } from './skin';
 
 function rAppExtensionActivateAllExtensions() {
 
 }
 
-
-function rAppExtensionApplyThemeTransformers() {
-
-}
-
-
 export default function useExtend() {
-  const [extensionList] = rApp.extension.useExtensionsList();
+  const [extensionList] = native.extension.useExtensionsList();
   useEffect(() => {
     const context: Rapid.Extend.ExtensionContext = {}
 
     extensionList.forEach(extension => {
-      rApp.extension.activatedExtension(extension.name);
+      native.extension.activatedExtension(extension.name);
     })
 
     return () => {
@@ -26,22 +22,19 @@ export default function useExtend() {
     }
   }, [extensionList]);
 
-  const themePayloadTransformers = rApp.metadata.useMetadata('functional.theme.variables.transformer');
+  const themeTransformers = native.metadata.useMetadata('functional.theme.variables.transformer');
   useEffect(() => {
-    if (!themePayloadTransformers) return;
+    if (!themeTransformers) return;
 
-    rApp.skin.skin.resetCssVariablesPayloadSheet();
+    native.skin.skin.resetCssVarsSheet();
 
-    const cssVariablesPayloadSheet = rApp.skin.skin.cssVariablesPayloadSheet;
-    themePayloadTransformers.forEach((transform) => {
-      transform(cssVariablesPayloadSheet);
-    })
+    native.skin.skin.transformers(themeTransformers);
 
-    rApp.skin.skin.install();
+    native.skin.skin.install();
 
     return () => {
 
-      rApp.skin.skin.uninstall();
+      native.skin.skin.uninstall();
     }
-  }, [themePayloadTransformers]);
+  }, [themeTransformers]);
 }

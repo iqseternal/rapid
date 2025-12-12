@@ -33,7 +33,7 @@ export class PrinterService {
    * 错误信息
    */
   public printError(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.red, Ansi.underline, '[ERR ]')}`, ' ', ...messages);
+    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.red, Ansi.underline, '[ERRO]')}`, ' ', ...messages);
 
   }
 
@@ -48,7 +48,7 @@ export class PrinterService {
    * 成功信息
    */
   public printSuccess(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.green, Ansi.underline, '[SUC ]')}`, ' ', ...messages);
+    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.green, Ansi.underline, '[SUCC]')}`, ' ', ...messages);
   }
 
   /**

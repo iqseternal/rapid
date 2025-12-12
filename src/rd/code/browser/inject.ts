@@ -56,7 +56,7 @@ import {
   isProxy
 } from '@vue/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
-import { Skin, makeRdCssVarPayload, mrcvp } from 'rd/base/browser/service/Skin';
+import { Skin, makeCssVarPayload, mrvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';
 import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
@@ -88,7 +88,7 @@ const skin = new Skin(cssVariablesPayloadSheet);
 
 const cssVars = skin.toCssVars();
 
-const rApp: Rapid.RApp = ({
+const native: Rapid.Native = ({
   extension: extensionManager,
   metadata: metadataManager,
   emitter: emitter,
@@ -134,8 +134,8 @@ const rApp: Rapid.RApp = ({
   },
   skin: {
     skin: skin,
-    mrcvp: mrcvp,
-    makeRdCssVarPayload: makeRdCssVarPayload,
+    mrvp: mrvp,
+    makeCssVarPayload: makeCssVarPayload,
     Skin: Skin,
   },
   services: {
@@ -145,6 +145,7 @@ const rApp: Rapid.RApp = ({
     ExtensionManager: ExtensionManager,
     MetadataManager: MetadataManager,
   },
+
   libs: {
     injectReadonlyVariable: injectReadonlyVariable,
 
@@ -218,4 +219,4 @@ const rApp: Rapid.RApp = ({
 
 injectReadonlyVariable(window, 'cssVars', cssVars);
 
-injectReadonlyVariable(window, 'rApp', rApp);
+injectReadonlyVariable(window, 'native', native);

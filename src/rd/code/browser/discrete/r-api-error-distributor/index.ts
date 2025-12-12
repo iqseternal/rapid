@@ -5,7 +5,7 @@ import { Biz } from 'rd/base/common/constants';
  *
  * 分发器
  */
-rApp.invoker.handle('r-api-err-distributor', async response => {
+native.invoker.handle('r-api-err-distributor', async response => {
   if (!isRApiResponse(response)) return Promise.reject(response);
 
   const data = response.data;

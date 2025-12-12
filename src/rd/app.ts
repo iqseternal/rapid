@@ -3,13 +3,15 @@ import 'rd/code/main/process';
 import 'rd/base/main/events';
 
 import { CodeMain } from './code/main';
-import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { RdCatalogs } from 'rd/catalog';
 import { bus } from './base/main/bus';
-import { app } from 'electron';
+import { Notification, app } from 'electron';
 import { join } from 'path';
 
 import chokidar from 'chokidar';
+
+app.setAppUserModelId('rapid');
+app.setName('rapid');
 
 const code = new CodeMain();
 
@@ -27,3 +29,5 @@ stipulationSettingJSONWatcher.on('all', (eventType, fileName) => {
 code.main().catch((err) => {
   app.exit(1);
 });
+
+

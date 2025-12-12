@@ -5,7 +5,7 @@ import './discrete';
 import { StrictMode } from 'react';
 import { RdAppWrapper } from './app';
 import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension } from './plats';
-import { toNil, toNils } from '@suey/pkg-utils';
+import { toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
 import { useGroupExtensionsApi } from './api';
 import { injectReadonlyVariable } from '@rapid/libs';
 import { setupInnerExtensions } from './plats/extensions';
@@ -23,19 +23,21 @@ import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
 
-// import diyExtension from 'rd/../../cli/rxc/template/src/index';
-
 /**
  * 创建线程任务
  */
 async function setupThreadTask() {
-  const startHeartbeat = () => rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
+  const startHeartbeat = () => native.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 
-  const stopHeartbeat = () => rApp.threads.rxcThread.send('rxc-thread-terminate-extension-heartbeat', void 0);
+  const stopHeartbeat = () => native.threads.rxcThread.send('rxc-thread-terminate-extension-heartbeat', void 0);
 
   window.addEventListener('online', startHeartbeat);
-
   window.addEventListener('offline', stopHeartbeat);
+
+  window.addEventListener('beforeunload', () => {
+    window.removeEventListener('online', startHeartbeat);
+    window.removeEventListener('offline', stopHeartbeat);
+  })
 }
 
 /**
@@ -56,7 +58,7 @@ async function setupEnvironments() {
  */
 async function setupExtensionPlats() {
   await setupInnerExtensions();
-  // rApp.extension.registerExtension(diyExtension);
+  // native.extension.registerExtension(diyExtension);
 
   const extensionGroupId = 42;
   const extensionGroupUuid = 'fb024456-2f71-4f79-99e9-c3f5b7e2553c';
@@ -68,23 +70,25 @@ async function setupExtensionPlats() {
 
   if (err) return;
 
+  await toWaitPromise({ waitTime: 1500 });
+
   const extensions = await transformerExtensionsSourceToRdExtension(res.data.data);
 
   registerAndReplaceExtensions(extensions);
 
-  rApp.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
+  native.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 }
 
 ; ((async () => {
-  const [threadNil, environmentsNil, extensionPlatsNil] = await toNils(setupThreadTask(), setupEnvironments(), setupExtensionPlats());
+  const [environmentsErr] = await toNil(setupEnvironments());
 
-  const [threadErr] = threadNil;
-  const [environmentsErr] = environmentsNil;
-  const [extensionPlatsErr] = extensionPlatsNil;
+  if (environmentsErr) {
+    printer.printError(environmentsErr.reason);
+    return;
+  }
 
-  if (threadErr) printer.printError(threadErr.reason);
-  if (environmentsErr) printer.printError(environmentsErr.reason);
-  if (extensionPlatsErr) printer.printError(extensionPlatsErr.reason);
+  setupThreadTask();
+  setupExtensionPlats();
 
   const rootContainer = document.getElementById('root');
 
@@ -94,5 +98,9 @@ async function setupExtensionPlats() {
         <RdAppWrapper />
       </StrictMode>
     );
+
+    // ReactDOM.createRoot(rootContainer).render(
+    //   <RdAppWrapper />
+    // );
   }
 })());
