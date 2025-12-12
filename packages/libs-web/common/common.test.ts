@@ -18,7 +18,7 @@ describe('classnames', () => {
     expect(classnames(null)).toBe('');
     expect(classnames(void 0)).toBe('');
     expect(classnames({})).toBe('');
-    expect(classnames([])).toBe('');
+    expect(classnames([] as unknown as string)).toBe('');
     expect(
       classnames(
         'a',
