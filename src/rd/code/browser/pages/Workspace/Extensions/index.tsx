@@ -13,26 +13,6 @@ const Extensions = memo(() => {
 		count: 0,
 	})
 
-	useAsyncEffect(async () => {
-		const [err, res] = await toNil(useExtensionsApi({
-			vouchers: [
-				{
-					extension_id: 1,
-					extension_uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-				}
-			]
-		}));
-
-		if (err) {
-			message.error(toBizErrorMsg(err.reason, err.reason?.message || '获取扩展失败'));
-			return;
-		}
-
-		const extensionSourceList = res.data.data;
-
-		console.log('extensionSourceList', extensionSourceList);
-	}, []);
-
 	return (
 		<Card>
 			<Space>

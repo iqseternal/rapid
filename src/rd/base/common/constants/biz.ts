@@ -39,12 +39,17 @@ export const BizMessage = {
   [Biz.ParameterError]: '参数错误',
 } as const;
 
-export const toBizErrorMsg = (data: RApiBasicResponse, msg?: string) => {
-  if (typeof data !== 'object') return '';
-  if (!Reflect.has(data, 'code')) return '';
+export const toBizErrorMsg = (response: RApiBasicResponse, msg?: string) => {
+  if (typeof response !== 'object') return msg;
+  if (!Reflect.has(response, 'data')) return msg;
+
+  const data = response.data;
+
+  if (typeof data !== 'object') return msg;
+  if (!Reflect.has(data, 'code')) return msg;
 
   const definitionMsg = BizMessage[data.code as keyof typeof BizMessage];
 
   if (definitionMsg) return definitionMsg;
-  return msg ?? data.message;
+  return data.message ?? msg;
 }

@@ -573,7 +573,7 @@ declare class ExtensionManager<Ext extends Extension> extends InnerZustandStoreM
      * 去活某个插件
      */
     deactivatedExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
-    /**
+    /**w
      * 删除扩展
      */
     delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context): Promise<void>;
@@ -2194,13 +2194,10 @@ declare global {
              * 全局的状态管理
              */
             readonly stores: ExposeApi['stores'] & Omit<{
-                features: {
+                readonly features: {
                     readonly useUserStore: typeof useUserStore;
                     readonly useThemeStore: typeof useThemeStore;
                     readonly useDocStore: typeof useDocStore;
-                };
-                appStore: {
-                    a: number;
                 };
             }, keyof ExposeApi['stores']>;
             /**

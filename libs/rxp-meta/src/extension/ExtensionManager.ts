@@ -144,7 +144,7 @@ export class ExtensionManager<Ext extends Extension> extends InnerZustandStoreMa
     lifecycle.isActivated = false;
   }
 
-  /**
+  /**w
    * 删除扩展
    */
   public async delExtension<Context extends ExtractExtensionContext<Ext>>(name: ExtensionName, context?: Context) {

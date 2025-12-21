@@ -389,15 +389,10 @@ declare global {
        * 全局的状态管理
        */
       readonly stores: RdSandbox.ExposeApi['stores'] & Omit<{
-        features: {
+        readonly features: {
           readonly useUserStore: typeof import('@/features').useUserStore;
           readonly useThemeStore: typeof import('@/features').useThemeStore;
           readonly useDocStore: typeof import('@/features').useDocStore;
-        }
-
-        appStore: {
-
-          a: number;
         }
       }, keyof RdSandbox.ExposeApi['stores']>;
 

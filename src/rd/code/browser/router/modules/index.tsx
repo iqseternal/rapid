@@ -63,7 +63,7 @@ export const workbenchesRoute = makeRoute({
         hiddenInMenu: false
       },
       component: lazy(() => import('@/pages/Workspace/Extensions'))
-    },
+    }
   ]
 } as const);
 

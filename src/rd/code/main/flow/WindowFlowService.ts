@@ -62,6 +62,7 @@ export class WindowFlowService {
     );
 
     windowService.window.setMenu(null);
+    windowService.window.setMenuBarVisibility(false);
 
     windowService.window.webContents.setFrameRate(144);
     windowService.window.webContents.setZoomLevel(1);
@@ -83,7 +84,10 @@ export class WindowFlowService {
           }
         }
       }
-      return { action: 'deny' };
+
+      return {
+        action: 'deny',
+      };
     });
 
 
