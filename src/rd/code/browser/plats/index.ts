@@ -125,4 +125,3 @@ export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.
 
   native.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
 }
-

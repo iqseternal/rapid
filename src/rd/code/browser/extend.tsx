@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Skin } from 'rd/base/browser/service/Skin';
 import type { RdCssVariablePayloadSheet } from './skin';
 

@@ -80,6 +80,7 @@ const WorkspaceLayout = memo(() => {
   )
 })
 
+
 const WorkspaceLayoutWrapper = memo(() => {
   native.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
@@ -88,6 +89,10 @@ const WorkspaceLayoutWrapper = memo(() => {
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
   native.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
   native.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
+
+
+
+
 
   useFadeInEffect(async () => {
     await Promise.allSettled([

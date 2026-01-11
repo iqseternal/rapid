@@ -6,6 +6,13 @@ const Skin = memo(() => {
 
 
 
+  useAsyncEffect(async () => {
+
+
+
+    
+
+  }, []);
 
   return (
     <div>

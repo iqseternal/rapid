@@ -87,24 +87,31 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * metadata.defineMetadataInVector('example-key', {});
    * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
    */
-  public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
+  public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): (() => void) {
+    let hasThisMetadata = false;
+
     if (this.hasMetadata(metadataKey)) {
       const vector = this.metadataMap.get(metadataKey);
       if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
-      const newVector = vector.filter(v => v !== metadata);
-      newVector.push(metadata);
+      const newVector = vector.filter(v => {
+        const isThisMetadata = (v === metadata);
+        if (isThisMetadata) hasThisMetadata = true;
+        return !isThisMetadata;
+      });
 
-      this.metadataMap.set(metadataKey, newVector);
-      super.updateStore();
+      if (!hasThisMetadata) {
+        newVector.push(metadata);
+
+        this.metadataMap.set(metadataKey, newVector);
+        super.updateStore();
+      }
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       super.updateStore();
     }
 
-    return () => {
-      this.delMetadataInVector(metadataKey, metadata);
-    }
+    return () => this.delMetadataInVector(metadataKey, metadata);
   }
 
   /**
@@ -118,22 +125,33 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void {
     if (!this.hasMetadata(metadataKey)) return;
 
+    let hasThisMetadata = false;
+
     const vector = this.metadataMap.get(metadataKey) ?? [];
     if (!Array.isArray(vector)) throw new Error(`delMetadataInVector: current metadata value is not an array`);
-    if (vector.length === 0) {
-      this.metadataMap.delete(metadataKey);
-      return;
-    }
 
-    const fVector = vector.filter(v => v !== metadata);
-    if (fVector.length === 0) {
+    if (vector.length === 0) {
       this.metadataMap.delete(metadataKey);
       super.updateStore();
       return;
     }
 
-    this.metadataMap.set(metadataKey, fVector);
-    super.updateStore();
+    const fVector = vector.filter(v => {
+      const isThisMetadata = (v === metadata);
+      if (isThisMetadata) hasThisMetadata = true;
+      return !isThisMetadata;
+    });
+
+    if (hasThisMetadata) {
+      if (fVector.length === 0) {
+        this.metadataMap.delete(metadataKey);
+        super.updateStore();
+        return;
+      }
+
+      this.metadataMap.set(metadataKey, fVector);
+      super.updateStore();
+    }
   }
 
   /**
@@ -177,27 +195,30 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     })
 
     /**
-     * updateState
+     * refreshComponent
      * @description 用于更新 state, 让视图进行刷新, 但是由于 setState 需要组件已经挂载, 所以有额外的挂载判断
      * @description 改更新是有 20ms 延迟的
      */
-    const updateState = useCallback(() => {
+    const refreshComponent = useCallback(() => {
       if (!normalState.current.isMounted) {
         // 标记需要同步
         normalState.current.needSync = true;
         return;
       }
       // 刷新组件 (在组件挂载时才 setState)
-      setState({});
+      setState(() => ({}));
     }, []);
 
-    if (!normalState.current.isMounted && !normalState.current.unsubscribe) {
+    if (!normalState.current.isMounted || !normalState.current.unsubscribe) {
+      if (normalState.current.unsubscribe) normalState.current.unsubscribe();
+
+      normalState.current.data = this.getMetadata(metadataKey);
       normalState.current.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
         if (data !== normalState.current.data) {
           normalState.current.data = data;
           normalState.current.needSync = false;
-          updateState();
+          refreshComponent();
         }
       })
     }
@@ -207,10 +228,11 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
 
       // 因为元数据的注册时间可能不恰当(在组件创建时, 但组件未挂载), 在当前组件都还没挂载时就已经注册
       // 所以在组件挂载后, 需要进行一次同步
-      if (normalState.current.needSync) updateState();
+      if (normalState.current.needSync) refreshComponent();
 
       return () => {
         normalState.current.isMounted = false;
+
         if (normalState.current.unsubscribe) normalState.current.unsubscribe();
         normalState.current.unsubscribe = void 0;
       }

@@ -28,7 +28,7 @@ export class WindowFlowService {
 
     PrinterService.printInfo('窗口开始构建');
 
-    const workareaSize = screen.getPrimaryDisplay().workArea;
+    const workAreaSize = screen.getPrimaryDisplay().workArea;
 
     const appConfigService = AppConfigService.getInstance();
     const appInformation = AppInformationService.getInstance();
@@ -40,8 +40,8 @@ export class WindowFlowService {
     }
 
     const windowConstructorOptionsSizePosition = {
-      x: userConfigStore.get('mainWindowMemoryX', workareaSize.width * 0.5 - windowConstructorOptionsSize.width * 0.5),
-      y: userConfigStore.get('mainWindowMemoryY', workareaSize.height * 0.5 - windowConstructorOptionsSize.height * 0.5),
+      x: userConfigStore.get('mainWindowMemoryX', workAreaSize.width * 0.5 - windowConstructorOptionsSize.width * 0.5),
+      y: userConfigStore.get('mainWindowMemoryY', workAreaSize.height * 0.5 - windowConstructorOptionsSize.height * 0.5),
     }
 
     const windowService = new WindowService(
