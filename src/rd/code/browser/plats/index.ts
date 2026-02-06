@@ -94,7 +94,7 @@ export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.
       continue;
     }
 
-    if (!nextExtension.meta) return;
+    if (!nextExtension.meta) continue;
     if (extension.meta.script_hash === nextExtension.meta.script_hash) continue;
 
     await native.extension.deactivatedExtension(extension.name);

@@ -36,7 +36,7 @@ export const Header = memo((props: HeaderProps) => {
 
   return (
     <div
-      className={classnames('w-full text-sm flex justify-between items-center', commonStyles.appRegion, className)}
+      className={classnames('w-full text-sm flex justify-between items-center transition-all ease-out', commonStyles.appRegion, className)}
       style={{
         backgroundColor: cssVars.uiCaptionBarBackground,
         height: cssVars.uiCaptionBarHeight,

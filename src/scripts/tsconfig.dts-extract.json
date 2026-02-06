@@ -60,8 +60,7 @@
     "../../libs/**/*.ts",
     "../../libs/**/*.tsx",
     "../rd/**/*.ts",
-    "../rd/code/browser/**/*.tsx",
-    "../rd/code/browser/**/*.json",
+    "../rd/**/*.json",
     "../../package.json"
   ],
   "exclude": [

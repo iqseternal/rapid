@@ -5,12 +5,29 @@ import { useShallowReactive } from '@rapid/libs-web';
 import type { RouterRenderComponents } from '@rapid/libs-web';
 import { useUserStore } from '../features';
 
-import RouterErrorBoundary from './mods/ErrorBoundary';
 import LazyComponent from './mods/LazyComponent';
 
 import * as presetRoutes from './modules';
 
 export const { retrieveRoutes, useRetrieveRoute } = reserveRoutes(presetRoutes);
+
+export interface RdRouterErrorBoundaryProps {
+
+}
+
+/**
+ * Router 加载错误
+ */
+export const RdRouterErrorBoundary = memo<RdRouterErrorBoundaryProps>(() => {
+
+
+  return (
+    <div>
+      <div>正在加载组件 ....</div>
+      <div>当然, 你可能在出错的时候才有可能看到此页面....</div>
+    </div>
+  )
+})
 
 /**
  * 渲染路由
@@ -60,7 +77,7 @@ export const RdRouterWrapper = memo(() => {
   return (
     <HashRouter>
       <Suspense
-        fallback={<RouterErrorBoundary />}
+        fallback={<RdRouterErrorBoundary />}
       >
         <RdRouter />
       </Suspense>

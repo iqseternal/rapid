@@ -4,7 +4,7 @@ type Transformer = Parameters<typeof native.metadata.defineMetadataInVector<'fun
 
 const transformer: Transformer = (cssVariablesPayloadSheet) => {
 
-  // cssVariablesDeclaration['--rd-caption-bar-background-color'] = '#00F';
+  cssVariablesPayloadSheet.uiCaptionBarBackground.value = '#00F';
 
   return cssVariablesPayloadSheet;
 }

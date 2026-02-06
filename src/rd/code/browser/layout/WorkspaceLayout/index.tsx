@@ -80,7 +80,6 @@ const WorkspaceLayout = memo(() => {
   )
 })
 
-
 const WorkspaceLayoutWrapper = memo(() => {
   native.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);

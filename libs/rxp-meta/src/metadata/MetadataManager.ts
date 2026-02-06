@@ -102,14 +102,28 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
 
       if (!hasThisMetadata) {
         newVector.push(metadata);
-
         this.metadataMap.set(metadataKey, newVector);
         super.updateStore();
+      }
+
+      if (metadataKey === 'functional.theme.variables.transformer') {
+        console.log('functional.theme.variables.transformer')
+        console.log(vector, newVector, vector === newVector);
       }
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       super.updateStore();
+
+
+      if (metadataKey === 'functional.theme.variables.transformer') {
+
+        // console.log('第一次定义');
+
+      }
     }
+
+
+
 
     return () => this.delMetadataInVector(metadataKey, metadata);
   }
@@ -215,26 +229,44 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
       normalState.current.data = this.getMetadata(metadataKey);
       normalState.current.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
+
+        if (metadataKey === 'functional.theme.variables.transformer') {
+          console.log(data);
+        }
+
         if (data !== normalState.current.data) {
           normalState.current.data = data;
-          normalState.current.needSync = false;
           refreshComponent();
+
+          console.log('更新组件');
+
+
+          setState(() => ({}));
         }
       })
+
+
     }
 
-    useEffect(() => {
+
+    useLayoutEffect(() => {
       normalState.current.isMounted = true;
 
+    }, []);
+
+    useEffect(() => {
       // 因为元数据的注册时间可能不恰当(在组件创建时, 但组件未挂载), 在当前组件都还没挂载时就已经注册
       // 所以在组件挂载后, 需要进行一次同步
-      if (normalState.current.needSync) refreshComponent();
+      if (normalState.current.needSync) setState(() => ({}));
 
       return () => {
         normalState.current.isMounted = false;
 
         if (normalState.current.unsubscribe) normalState.current.unsubscribe();
         normalState.current.unsubscribe = void 0;
+
+        normalState.current.data = null;
+        normalState.current.needSync = false;
       }
     }, []);
 

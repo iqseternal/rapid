@@ -1,11 +1,9 @@
-import type { RsbuildPlugin, OnDevCompileDoneFn } from '@rsbuild/core';
 import type { UserConfig } from 'i18next-parser';
 import { exec } from 'child_process';
 import { join } from 'path';
 import { Ansi } from '@suey/pkg-utils';
 import { tmpdir } from 'os';
 import { writeFileSync, unlinkSync, readFileSync } from 'fs';
-import { Stats } from '@rspack/core';
 
 const browserDir = join(__dirname, '../rd/code/browser');
 const i18nDir = join(browserDir, 'i18n');

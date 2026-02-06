@@ -44,7 +44,7 @@ export abstract class InnerZustandStoreManager {
    * 更新当前的 store, 会导致状态库的组件更新触发
    */
   protected updateStore(): void {
-    this.store.setState({ value: {} });
+    this.store.setState(() => ({ value: {} }));
   }
 
   /**

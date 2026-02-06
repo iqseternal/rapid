@@ -10,7 +10,7 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=20.19.2",
+    "node": ">=20.18.2",
     "pnpm": ">=8.9.0"
   },
   "packageManager": "pnpm@9.15.2",

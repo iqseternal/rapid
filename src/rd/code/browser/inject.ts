@@ -10,7 +10,6 @@ import {
 import { Emitter, Invoker } from '@rapid/bus';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
-  AES_DEFAULT_KEY,
   Ansi,
   aesDecrypt,
   aesDecryptAlgorithm,

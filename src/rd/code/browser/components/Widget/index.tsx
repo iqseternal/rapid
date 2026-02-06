@@ -19,6 +19,7 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
    * 当前控件是否具有 hover 背景特性
    */
   readonly hasHoverStyle?: boolean;
+  readonly hoverStyleBackground?: string;
 
   /**
    * 当前控件展示的图标元素
@@ -64,6 +65,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
     className,
     innerClassName,
     hasHoverStyle = true,
+    hoverStyleBackground,
     icon,
     size = 'base',
     disabled = false,
@@ -141,7 +143,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
       }}
       ref={ref}
       style={{
-        background: shallowState.hasHover ? cssVars.colorNeutral200 : void 0
+        background: shallowState.hasHover ? (hoverStyleBackground || cssVars.colorNeutral200) : void 0
       }}
     >
       <Tooltip

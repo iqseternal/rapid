@@ -57,7 +57,21 @@ async function setupEnvironments() {
  * 加载插件
  */
 async function setupExtensionPlats() {
-  await setupInnerExtensions();
+
+
+  setTimeout(async () => {
+
+    // await setupInnerExtensions();
+    type Transformer = Parameters<typeof native.metadata.defineMetadataInVector<'functional.theme.variables.transformer'>>[1];
+    const transformer: Transformer = (cssVariablesPayloadSheet) => {
+      cssVariablesPayloadSheet.uiCaptionBarBackground.value = '#00F';
+      return cssVariablesPayloadSheet;
+    }
+    native.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
+  }, 1500);
+
+
+  // return;
   // native.extension.registerExtension(diyExtension);
 
   const extensionGroupId = 42;
@@ -74,7 +88,7 @@ async function setupExtensionPlats() {
 
   const extensions = await transformerExtensionsSourceToRdExtension(res.data.data);
 
-  registerAndReplaceExtensions(extensions);
+  await registerAndReplaceExtensions(extensions);
 
   native.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
 }
