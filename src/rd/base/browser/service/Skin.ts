@@ -1,4 +1,4 @@
-import { isUndefined } from '@suey/pkg-utils';
+import { isUndefined } from '@rapid/libs';
 
 /**
  * CSS 变量的名称

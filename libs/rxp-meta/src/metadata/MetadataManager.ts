@@ -105,25 +105,10 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
         this.metadataMap.set(metadataKey, newVector);
         super.updateStore();
       }
-
-      if (metadataKey === 'functional.theme.variables.transformer') {
-        console.log('functional.theme.variables.transformer')
-        console.log(vector, newVector, vector === newVector);
-      }
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       super.updateStore();
-
-
-      if (metadataKey === 'functional.theme.variables.transformer') {
-
-        // console.log('第一次定义');
-
-      }
     }
-
-
-
 
     return () => this.delMetadataInVector(metadataKey, metadata);
   }
@@ -230,28 +215,15 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
       normalState.current.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
 
-        if (metadataKey === 'functional.theme.variables.transformer') {
-          console.log(data);
-        }
-
         if (data !== normalState.current.data) {
           normalState.current.data = data;
           refreshComponent();
-
-          console.log('更新组件');
-
-
-          setState(() => ({}));
         }
       })
-
-
     }
-
 
     useLayoutEffect(() => {
       normalState.current.isMounted = true;
-
     }, []);
 
     useEffect(() => {

@@ -34,10 +34,12 @@
     "allowUmdGlobalAccess": true,
     "allowArbitraryExtensions": true,
     "allowUnusedLabels": true,
-    "paths": {}
+    "paths": {},
+    "types": [
+      "./types"
+    ]
   },
   "include": [
-    "./types/**/*",
     "./src/**/*"
   ],
   "exclude": [

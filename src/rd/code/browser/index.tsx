@@ -24,23 +24,6 @@ import '@/scss/index.scss';
 import './tailwind.css';
 
 /**
- * 创建线程任务
- */
-async function setupThreadTask() {
-  const startHeartbeat = () => native.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
-
-  const stopHeartbeat = () => native.threads.rxcThread.send('rxc-thread-terminate-extension-heartbeat', void 0);
-
-  window.addEventListener('online', startHeartbeat);
-  window.addEventListener('offline', stopHeartbeat);
-
-  window.addEventListener('beforeunload', () => {
-    window.removeEventListener('online', startHeartbeat);
-    window.removeEventListener('offline', stopHeartbeat);
-  })
-}
-
-/**
  * 创建子项目需要的环境变量值
  */
 async function setupEnvironments() {
@@ -57,18 +40,18 @@ async function setupEnvironments() {
  * 加载插件
  */
 async function setupExtensionPlats() {
+  await setupInnerExtensions();
 
-
-  setTimeout(async () => {
-
-    // await setupInnerExtensions();
-    type Transformer = Parameters<typeof native.metadata.defineMetadataInVector<'functional.theme.variables.transformer'>>[1];
-    const transformer: Transformer = (cssVariablesPayloadSheet) => {
-      cssVariablesPayloadSheet.uiCaptionBarBackground.value = '#00F';
-      return cssVariablesPayloadSheet;
-    }
-    native.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
-  }, 1500);
+  // setTimeout(async () => {
+  //
+  //   // await setupInnerExtensions();
+  //   type Transformer = Parameters<typeof native.metadata.defineMetadataInVector<'functional.theme.variables.transformer'>>[1];
+  //   const transformer: Transformer = (cssVariablesPayloadSheet) => {
+  //     cssVariablesPayloadSheet.uiCaptionBarBackground.value = '#00F';
+  //     return cssVariablesPayloadSheet;
+  //   }
+  //   native.metadata.defineMetadataInVector('functional.theme.variables.transformer', transformer);
+  // }, 1500);
 
 
   // return;
@@ -83,15 +66,14 @@ async function setupExtensionPlats() {
   }));
 
   if (err) return;
-
   await toWaitPromise({ waitTime: 1500 });
 
   const extensions = await transformerExtensionsSourceToRdExtension(res.data.data);
 
-  await registerAndReplaceExtensions(extensions);
 
-  native.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
+  await registerAndReplaceExtensions(extensions);
 }
+
 
 ; ((async () => {
   const [environmentsErr] = await toNil(setupEnvironments());
@@ -101,8 +83,7 @@ async function setupExtensionPlats() {
     return;
   }
 
-  setupThreadTask();
-  setupExtensionPlats();
+  await setupExtensionPlats();
 
   const rootContainer = document.getElementById('root');
 

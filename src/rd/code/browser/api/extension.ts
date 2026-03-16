@@ -77,7 +77,7 @@ export const useExtensionsApi = asynced<UseExtensionsApi>(async payload => {
 })
 
 /**
- * 对接扩展心跳机制地凭证
+ * 对接扩展心跳机制的凭证
  */
 export interface UseExtensionHeartbeatVoucher {
   readonly extension_id: number;

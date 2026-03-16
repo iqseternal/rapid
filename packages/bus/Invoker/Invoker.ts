@@ -10,7 +10,7 @@ export class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extends
    * 注册一个事件的执行函数
    */
   public override handle<K extends keyof Entries>(key: K, handler: ExtractInvokerHandler<Entries[K]>) {
-    super.handle(key, handler);
+    return super.handle(key, handler);
   }
 
   /**

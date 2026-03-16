@@ -30,23 +30,21 @@ export interface EllipsisPopoverProps extends Omit<EllipsisProps, 'overlayRender
 export const EllipsisPopover = memo((props: EllipsisPopoverProps) => {
   const { tipAttrs, children, ...realProps } = props;
 
-  const overlayRender = (realContent: ReactNode) => {
-
-    return (
-      <Popover
-        overlay={children}
-        autoAdjustOverflow
-        {...tipAttrs}
-      >
-        {realContent}
-      </Popover>
-    )
-  }
-
   return (
     <EllipsisBase
-      overlayRender={overlayRender}
       children={children}
+      overlayRender={(realContent: ReactNode) => {
+
+        return (
+          <Popover
+            overlay={children}
+            autoAdjustOverflow
+            {...tipAttrs}
+          >
+            {realContent}
+          </Popover>
+        )
+      }}
       {...realProps}
     />
   )

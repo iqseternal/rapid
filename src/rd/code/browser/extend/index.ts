@@ -117,8 +117,6 @@ export class ExtensionManager extends RXPExtensionManager<Rapid.Extend.Extension
         script_hash: extension.meta.script_hash
       }
     });
-
-    native.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
   }
 
 

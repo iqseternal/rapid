@@ -1,4 +1,4 @@
-import { Suspense, memo, useEffect, useMemo } from 'react';
+import { Suspense, memo, useMemo } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { reserveRoutes, Router } from '@rapid/libs-web/router';
 import { useShallowReactive } from '@rapid/libs-web';

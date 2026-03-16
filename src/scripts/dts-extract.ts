@@ -1,10 +1,11 @@
 import { join } from 'path';
 import { defineConfig, build } from 'tsup';
-import type { Options } from 'tsup';
+
+import * as fs from 'fs';
 
 export default defineConfig({
   entry: [
-    join(__dirname, '../rd/code/browser/declare.ts').replaceAll('\\', '//')
+    join(__dirname, '../rd/code/browser/types/index.ts').replaceAll('\\', '//')
   ],
   plugins: [],
   tsconfig: join(__dirname, './tsconfig.dts-extract.json'),
@@ -13,6 +14,7 @@ export default defineConfig({
     compilerOptions: {
       composite: false,
       incremental: false,
+      removeComments: true,
     }
   },
   splitting: false,
@@ -23,5 +25,7 @@ export default defineConfig({
     'cjs'
   ],
   treeshake: true,
-  minify: false
+  minify: false,
+  noExternal: [/.+/],
+  silent: false,
 });

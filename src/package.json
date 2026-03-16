@@ -7,11 +7,14 @@
     "dev": "rd-builder dev",
     "build": "rd-builder build",
     "preview": "rd-builder build --preview",
+
     "packer": "pnpm packer-win",
     "packer-win": "pnpm run build && pnpm -C ../.rd-packer run packer-win",
+
     "scripts-i18n-extract": "ts-node ./scripts/i18n-extract",
     "scripts-dts-extract": "cd ./scripts && tsup --config ./scripts/dts-extract.ts",
     "scripts-skin-extract": "ts-node --transpile-only ./scripts/skin-extract.ts",
+
     "extract": "concurrently \"pnpm scripts-i18n-extract\" \"pnpm -C . run scripts-dts-extract\" \"pnpm scripts-skin-extract\"",
 
     "typecheck-main": "tsc --noEmit -p ./rd/tsconfig.main.json",

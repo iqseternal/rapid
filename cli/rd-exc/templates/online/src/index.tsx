@@ -9,7 +9,7 @@ const { skin, mrvp } = native.skin;
 const { Space, Dropdown } = native.Antd;
 
 const transformer = (sheet: Rapid.SKin.CssVariablePayloadSheet) => {
-  sheet.uiCaptionBarBackground.value = '#0f0';
+  sheet.uiCaptionBarBackground.value = '#f00';
 }
 
 export default native.extension.defineExtension({

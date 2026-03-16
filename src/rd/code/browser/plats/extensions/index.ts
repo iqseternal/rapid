@@ -1,6 +1,14 @@
 import { RdThemeExtension } from './RdThemeExtension';
 
 export async function setupInnerExtensions() {
-  native.extension.registerExtension(RdThemeExtension);
-  native.extension.activatedExtension(RdThemeExtension.name);
+  const setupRdThemeExtension = async () => {
+    native.extension.registerExtension(RdThemeExtension);
+    await native.extension.activatedExtension(RdThemeExtension.name);
+  }
+
+
+
+  return Promise.all([
+    setupRdThemeExtension(),
+  ])
 }

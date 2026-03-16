@@ -1,5 +1,5 @@
 
-import { apiGet } from '../api';
+import { apiGet, apiPost, apiDelete } from '../api';
 
 
 export class BugReportService {

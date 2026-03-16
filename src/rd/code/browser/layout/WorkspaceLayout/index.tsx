@@ -89,10 +89,6 @@ const WorkspaceLayoutWrapper = memo(() => {
   native.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
   native.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
 
-
-
-
-
   useFadeInEffect(async () => {
     await Promise.allSettled([
       ipcActions.windowResizeAble({ resizeAble: true }),

@@ -57,7 +57,7 @@ import {
 import { useUserStore, useDocStore, useThemeStore } from './features';
 import { Skin, makeCssVarPayload, mrvp } from 'rd/base/browser/service/Skin';
 import { cssVariablesPayloadSheet } from './skin';
-import { rxcThread } from './workers';
+// import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
 import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
 import { Ellipsis } from '@rapid/libs-web';
@@ -113,7 +113,7 @@ const native: Rapid.Native = ({
   },
 
   threads: {
-    rxcThread: rxcThread
+    // rxcThread: rxcThread
   },
 
   stores: {
