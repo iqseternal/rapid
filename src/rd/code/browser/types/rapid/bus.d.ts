@@ -11,7 +11,7 @@ declare global {
      * 事件总线 Emitter 的入口映射关系
      */
     export type BusEmitterEntries = {
-
+      'react-app-first-rendered': void;
     }
 
     /**

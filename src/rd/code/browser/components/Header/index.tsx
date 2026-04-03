@@ -89,33 +89,31 @@ export const Header = memo((props: HeaderProps) => {
             'flex justify-end gap-x-0.5 flex-none items-center'
           )}
         >
-          {ControllerOtherWidgets && ControllerOtherWidgets.toReversed().map((OtherWidget, index) => {
+          {ControllerOtherWidgets && ControllerOtherWidgets.map((OtherWidget, index) => {
+            const reversedIndex = Math.abs(ControllerOtherWidgets.length - index - 1);
+            const ReversedOtherWidget = ControllerOtherWidgets[reversedIndex];
 
-            return (<OtherWidget key={index} />)
+            return (<ReversedOtherWidget key={index} />)
 
-            return (
-              <CSSTransition
-                key={`ControllerOtherWidgets-${index}`}
-                appear
-                in
-                unmountOnExit
-                classNames={{
-                  appear: styles.widgetSlideEnter,
-                  appearActive: styles.widgetSlideEnterActive,
-                  enter: styles.widgetSlideEnter,
-                  enterActive: styles.widgetSlideEnterActive,
-                  exit: styles.widgetSlideExit,
-                  exitActive: styles.widgetSlideExitActive,
-                }}
-                timeout={0.5}
-              >
-                <div
-                  key={`ControllerOtherWidgets-${index}`}
-                >
-                  <OtherWidget key={index} />
-                </div>
-              </CSSTransition>
-            )
+            // return (
+            //   <CSSTransition
+            //     key={`ControllerOtherWidgets-${index}`}
+            //     appear
+            //     in
+            //     unmountOnExit
+            //     classNames={{
+            //       appear: styles.widgetSlideEnter,
+            //       appearActive: styles.widgetSlideEnterActive,
+            //       enter: styles.widgetSlideEnter,
+            //       enterActive: styles.widgetSlideEnterActive,
+            //       exit: styles.widgetSlideExit,
+            //       exitActive: styles.widgetSlideExitActive,
+            //     }}
+            //     timeout={0.5}
+            //   >
+            //     <ReversedOtherWidget key={index} />
+            //   </CSSTransition>
+            // )
           })}
 
           {MinWindowWidget && (<MinWindowWidget />)}

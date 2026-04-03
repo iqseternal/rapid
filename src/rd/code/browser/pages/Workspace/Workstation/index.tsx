@@ -57,6 +57,7 @@ const Meta2dContainer = () => {
   const meta2dHtmlElementRef = useRef<HTMLDivElement>(null);
 
   useMeta2dEffect(meta2dHtmlElementRef, []);
+  
 
   return (
     <div

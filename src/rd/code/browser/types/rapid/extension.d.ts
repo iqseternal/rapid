@@ -1,12 +1,13 @@
 import type { ComponentType } from 'react';
 import type { RdCssVariablePayloadSheet } from '@/skin';
+
 import type { Extension } from '@suey/rxp-meta';
 
 // ==================================================================================================
 // ===== WHY TO THIS
 // ===== 对已有的类型进行别名定义 - 如果不别名定义会导致 Rapid 域中具有重复的标识符, 会导致 tsup 解析声明出现冲突错误
 // ==================================================================================================
-interface RdExtension extends Extension<never> {
+interface RdExtension extends Extension {
   meta?: {
     extension_id: number;
     extension_name: string;
@@ -31,6 +32,9 @@ declare global {
        * 注册元数据的入口映射关系
        */
       export interface MetadataEntries {
+        'test': any;
+        'tests': any[];
+
         /**
          * 功能 - 主题 - 变量 - 转换
          */
@@ -115,9 +119,7 @@ declare global {
     /**
      * 扩展的上下文
      */
-    export interface ExtensionContext {
-
-    }
+    export interface ExtensionContext { }
 
     /**
      * 扩展

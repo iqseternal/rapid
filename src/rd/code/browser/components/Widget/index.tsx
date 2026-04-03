@@ -143,7 +143,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
       }}
       ref={ref}
       style={{
-        background: shallowState.hasHover ? (hoverStyleBackground || cssVars.colorNeutral200) : void 0
+        background: shallowState.hasHover ? (hoverStyleBackground || cssVars.colorNeutral200) : void 0,
       }}
     >
       <Tooltip

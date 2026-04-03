@@ -5,7 +5,7 @@ export type EmitterKey = '*' | string | symbol | number;
 export type ExtractParameters<T> = T extends (...args: infer P) => any ? P : never;
 export type ExtractReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
 
-export type EmitterListener<T> = (data: T) => void | Promise<void>;
+export type EmitterListener<T> = (data?: T) => void | Promise<void>;
 
 /**
  * 停止监听事件的函数回调
@@ -73,15 +73,13 @@ export abstract class EmitterManager<Entries extends Record<string | symbol, any
     const onceListenersToRemove = new Set<EmitterListenerSlice<Entries[K]>>();
     const promises: Promise<void>[] = [];
 
-    await (async () => {
-      if (data) {
-        // 遍历执行监听器
-        for (const slice of listeners) {
-          const result = slice.listener(data);
+    ;await (async () => {
+      // 遍历执行监听器
+      for (const slice of listeners) {
+        const result = slice.listener(data);
 
-          if (result instanceof Promise) promises.push(result);
-          if (slice.once) onceListenersToRemove.add(slice);
-        }
+        if (result instanceof Promise) promises.push(result);
+        if (slice.once) onceListenersToRemove.add(slice);
       }
 
       // 批量删除 once 监听器

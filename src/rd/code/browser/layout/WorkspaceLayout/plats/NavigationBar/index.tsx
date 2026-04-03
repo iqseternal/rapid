@@ -13,19 +13,32 @@ import Widget from '@/components/Widget';
 import AutoMenu from '@/components/AutoMenu';
 
 interface SideBarItemProps extends WidgetProps {
-
+  readonly activeFullPath?: string;
 }
 
 /**
  * 该组件为 NavigationBar 提供服务, 作用为创建工作区的左侧导航条中某个导航项内容的展示
  */
 const SideBarItem = memo<SideBarItemProps>((props) => {
-  const { className, tipAttrs = {} } = props;
+  const {
+    className,
+    tipAttrs = {},
+    activeFullPath,
+    ...attrs
+  } = props;
+
+  const location = useLocation();
 
   return (
     <Widget
-      {...props}
-      className={classnames('text-base h-[unset] aspect-square', className)}
+      {...attrs}
+      className={classnames(
+        'text-base h-[unset] aspect-square',
+        className,
+        {
+          ['bg-blue-50']: !!activeFullPath && (location.pathname === activeFullPath)
+        }
+      )}
       tipAttrs={{
         ...tipAttrs,
         placement: 'right',
@@ -69,6 +82,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
           return (
             <SideBarItem
               key={routeItem.meta.fullPath}
+              activeFullPath={routeItem.meta.fullPath}
               icon={routeItem.meta.icon}
               tipText={routeItem.meta.title}
               onClick={() => {

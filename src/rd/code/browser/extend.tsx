@@ -2,17 +2,19 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Skin } from 'rd/base/browser/service/Skin';
 import type { RdCssVariablePayloadSheet } from './skin';
 
-function rAppExtensionActivateAllExtensions() {
-
-}
-
 export default function useExtend() {
   const [extensionList] = native.extension.useExtensionsList();
   useEffect(() => {
     const context: Rapid.Extend.ExtensionContext = {}
 
-    return () => {
+    extensionList.forEach(extension => {
+      extension.activated();
+    })
 
+    return () => {
+      extensionList.forEach(extension => {
+        extension.deactivated();
+      })
     }
   }, [extensionList]);
 

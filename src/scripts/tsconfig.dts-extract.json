@@ -35,6 +35,7 @@
     "noImplicitReturns": false,
     "traceResolution": false,
     "allowSyntheticDefaultImports": true,
+    "stripInternal": true,
     "allowUmdGlobalAccess": true,
     "allowArbitraryExtensions": true,
     "allowJs": true,

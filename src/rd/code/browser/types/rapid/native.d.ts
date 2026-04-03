@@ -10,10 +10,6 @@ import type * as RdSandbox from 'rd/code/sandbox';
 
 declare global {
   export namespace Rapid {
-
-    /**
-     * 系统提供的原生 api 能力
-     */
     export interface Native {
       meta2d?: import('@meta2d/core').Meta2d;
 
@@ -26,39 +22,12 @@ declare global {
       readonly electron: RdSandbox.ElectronAPI;
       readonly printer: RdSandbox.PrinterServer;
 
-      /**
-       * 插件管理器
-       */
       readonly extension: import('@suey/rxp-meta').ExtensionManager<Rapid.Extend.Extension>;
-
-      /**
-       * 元数据管理器
-       */
       readonly metadata: import('@suey/rxp-meta').MetadataManager<Rapid.Extend.Metadata.MetadataEntries>;
-
-      /**
-       * 事件总线
-       */
       readonly emitter: import('@rapid/bus').Emitter<Rapid.Bus.BusEmitterEntries>;
-
-      /**
-       * 带有函数返回值的事件总线功能
-       */
       readonly invoker: import('@rapid/bus').Invoker<Bus.BusInvokerEntries>;
+      readonly threads: {}
 
-      /**
-       * 全局的线程管理
-       */
-      readonly threads: {
-        /**
-         * 插件的线程化版本管理
-         */
-        // readonly rxcThread: RdThread<Rapid.Thread.ExtensionThreadEntries, Rapid.Thread.MainThreadEntries>;
-      }
-
-      /**
-       * 全局的状态管理
-       */
       readonly stores: RdSandbox.ExposeApi['stores'] & Omit<{
         readonly features: {
           readonly useUserStore: typeof import('@/features').useUserStore;
@@ -67,9 +36,6 @@ declare global {
         }
       }, keyof RdSandbox.ExposeApi['stores']>;
 
-      /**
-       * 皮肤
-       */
       readonly skin: {
         readonly skin: import('rd/base/browser/service/Skin').Skin<RdCssVariablePayloadSheet>;
         readonly makeCssVarPayload: typeof import('rd/base/browser/service/Skin').makeCssVarPayload;
@@ -77,49 +43,22 @@ declare global {
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
       };
 
-      /**
-       * 国际化
-       */
       readonly i18n: {
         readonly i18n: typeof import('@/i18n').default;
         readonly useTranslation: typeof import('react-i18next').useTranslation;
       }
 
-      /**
-       * 内置常量
-       */
       readonly constants: {
         readonly Timestamp: typeof import('rd/base/common/constants').Timestamp;
       }
 
-      /**
-       * 提供可以公用的组件
-       */
       readonly components: {
-        /**
-         * 文本溢出隐藏省略的组件, 当文本长度超出容器的时候, 自动展示省略号
-         */
         readonly Ellipsis: typeof import('@rapid/libs-web').Ellipsis;
-
-        /**
-         * antd 与 自定义 icon 的结合组件
-         */
         readonly IconFont: typeof import('@/components/IconFont').default;
-
-        /**
-         * 通用的 widget - 控件, 用于展示一个图标, 附带功能提示信息 作为系统功能图标
-         */
         readonly Widget: typeof import('@/components/Widget').default;
-
-        /**
-         * 展示 -空-
-         */
         readonly Empty: typeof import('@/components/Empty').default;
       }
 
-      /**
-       * 部分 service 能力
-       */
       readonly services: {
         readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
 
@@ -130,9 +69,6 @@ declare global {
         readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
       }
 
-      /**
-       * 提供基础 API-Service
-       */
       readonly libs: {
         readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
 

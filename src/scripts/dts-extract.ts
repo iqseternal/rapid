@@ -14,9 +14,12 @@ export default defineConfig({
     compilerOptions: {
       composite: false,
       incremental: false,
-      removeComments: true,
+      removeComments: false,
+      target: 'ES2015',
+      stripInternal: true,
     }
   },
+  target: 'es2015',
   splitting: false,
   sourcemap: false,
   clean: true,

@@ -1,9 +1,6 @@
 
 declare global {
-
   export namespace Rapid.Reactivity {
-
-
     export type Reactive<T> = import('@vue/reactivity').Reactive<T>;
     export type WatchSource<T> = import('@vue/reactivity').WatchSource<T>;
     export type WatchHandle = import('@vue/reactivity').WatchHandle;

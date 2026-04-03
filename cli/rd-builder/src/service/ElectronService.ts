@@ -82,6 +82,7 @@ export class ElectronService {
     printInfo(`进行结束 electron 进程`);
 
     // 开始 kill
+    this.state.electronChildProcess.removeListener('close', this.bindThisExitCurrentProcess);
     this.state.electronChildProcess.removeListener('exit', this.bindThisExitCurrentProcess);
     this.state.electronChildProcess.removeListener('error', this.bindThisExitCurrentProcess);
     await this.exitElectronProcess();
@@ -107,6 +108,7 @@ export class ElectronService {
       process.stderr.write(message.toString());
     });
 
+    this.state.electronChildProcess.addListener('close', this.bindThisExitCurrentProcess);
     this.state.electronChildProcess.addListener('exit', this.bindThisExitCurrentProcess);
     this.state.electronChildProcess.addListener('error', this.bindThisExitCurrentProcess);
   }

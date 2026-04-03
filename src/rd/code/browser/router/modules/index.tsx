@@ -46,6 +46,15 @@ export const workbenchesRoute = makeRoute({
   },
   children: [
     {
+      name:  'WorkspaceHome',
+      path: '/workspace/home',
+      meta: {
+        title: '主页',
+        icon: 'HomeOutlined'
+      },
+      component: lazy(() => import('@/pages/Workspace/Home')),
+    },
+    {
       name:  'WorkspaceWorkstation',
       path: '/workspace/workstation',
       meta: {
@@ -53,6 +62,16 @@ export const workbenchesRoute = makeRoute({
         icon: 'FileWordOutlined'
       },
       component: lazy(() => import('@/pages/Workspace/Workstation')),
+    },
+    {
+      name: 'WorkspaceSkin',
+      path: '/workspace/skin',
+      meta: {
+        title: '皮肤',
+        icon: 'SkinOutlined',
+        hiddenInMenu: false
+      },
+      component: lazy(() => import('@/pages/Workspace/Skin'))
     },
     {
       name: 'WorkspaceExtensions',
@@ -68,8 +87,9 @@ export const workbenchesRoute = makeRoute({
 } as const);
 
 export const [
-  workbenchesHomeRoute,
-  workbenchesWorkstationRoute,
+  // workbenchesWorkstationRoute,
+  // workbenchesHomeRoute,
+
   workbenchesSkinRoute
 ] = (workbenchesRoute as CompleteRouteConfig).children;
 

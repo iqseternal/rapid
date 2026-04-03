@@ -1,47 +1,6 @@
-
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { RxpInnerStore } from '../base/index';
-
-type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'yes' : 'no') extends 'no' ? FailReturnType : SuccessReturnType;
-
-/**
- * 从数组中提取出元素的类型
- * @example
- * type A = number[];
- * type B = ExtractElInArray<A>; // number
- */
-type ExtractElInArray<T> = IsAny<T, never, T extends (infer U)[] ? U : never>;
-
-/**
- * 提取列表的 entries, 在 interface {} 中, 只有值为数组类型 U[], 时会被保留, 否则不在此类型中
- * @example
- * type A = {
- *    name: string;
- *    age: number;
- *    friends: any[];
- * }
- *
- * type B = ExtractVectorEntries<A>; // { friends: any[]; }
- */
-type ExtractVectorEntries<Entries> = {
-  [Key in keyof Entries as (IsAny<Entries[Key], never, Entries[Key] extends unknown[] ? Key : never>)]: Entries[Key];
-}
-
-/**
- * 提取列表的 entries, 在 interface {} 中, 只有值不为数组类型 U[], 时会被保留, 否则不在此类型中
- * @description 与上一个 `ExtractVectorEntries` 相反
- * @example
- * type A = {
- *    name: string;
- *    age: number;
- *    friends: any[];
- * }
- *
- * type B = ExtractSingleEntries<A>; // { name: string;age: number; }
- */
-type ExtractSingleEntries<Entries> = {
-  [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
-}
+import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } from './declare';
+import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
 
 /**
  * 元数据, 在页面中组件的变化可能相距甚远
@@ -52,8 +11,7 @@ type ExtractSingleEntries<Entries> = {
  * 2. 在特殊时机, 注册槽点数据, 从而响应式自动更新到子孙或者兄弟级甚远的组件进行渲染
  *
  */
-export class MetadataManager<MetadataEntries extends Record<string, any>> {
-  private readonly rxpInnerStore = new RxpInnerStore();
+export class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
   private readonly metadataMap = new Map<string | number | symbol, any>();
 
   /**
@@ -65,9 +23,8 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
    * metadata.defineMetadata('example-key', () => { return (<div />) });
    */
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
-
     this.metadataMap.set(metadataKey, metadata);
-    this.rxpInnerStore.update();
+    super.updateStore();
 
     return () => {
       this.delMetadata(metadataKey);
@@ -106,7 +63,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
     if (!this.hasMetadata(metadataKey)) return;
 
     this.metadataMap.delete(metadataKey);
-    this.rxpInnerStore.update();
+    super.updateStore();
   }
 
   /**
@@ -115,7 +72,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
    */
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     this.metadataMap.set(metadataKey, metadata);
-    this.rxpInnerStore.update();
+    super.updateStore();
 
     return () => {
       this.delMetadata(metadataKey);
@@ -146,11 +103,11 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
       if (!hasThisMetadata) {
         newVector.push(metadata);
         this.metadataMap.set(metadataKey, newVector);
-        this.rxpInnerStore.update();
+        super.updateStore();
       }
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
-      this.rxpInnerStore.update();
+      super.updateStore();
     }
 
     return () => this.delMetadataInVector(metadataKey, metadata);
@@ -174,7 +131,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
 
     if (vector.length === 0) {
       this.metadataMap.delete(metadataKey);
-      this.rxpInnerStore.update();
+      super.updateStore();
       return;
     }
 
@@ -187,12 +144,12 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
     if (hasThisMetadata) {
       if (fVector.length === 0) {
         this.metadataMap.delete(metadataKey);
-        this.rxpInnerStore.update();
+        super.updateStore();
         return;
       }
 
       this.metadataMap.set(metadataKey, fVector);
-      this.rxpInnerStore.update();
+      super.updateStore();
     }
   }
 
@@ -255,7 +212,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
       if (normalState.current.unsubscribe) normalState.current.unsubscribe();
 
       normalState.current.data = this.getMetadata(metadataKey);
-      normalState.current.unsubscribe = this.rxpInnerStore.subscribe(() => {
+      normalState.current.unsubscribe = super.subscribe(() => {
         const data = this.getMetadata(metadataKey);
 
         if (data !== normalState.current.data) {
@@ -310,7 +267,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
    * 获取到所有定义的元数据
    */
   public useAllMetadata() {
-    this.rxpInnerStore.useValueToRenderReactComponent();
+    super.useStoreValueToRerenderComponent();
     return this.metadataMap;
   }
 
