@@ -58,12 +58,18 @@ export class Extension {
     this.onDeactivated = onDeactivated;
   }
 
-  public activated() {
-    this.onActivated();
+  public getIsActivated() {
+    return this.isActivated;
   }
 
-  public deactivated() {
-    this.onDeactivated?.();
+  public async activated() {
+    await this.onActivated();
+    this.isActivated = true;
+  }
+
+  public async deactivated() {
+    await this.onDeactivated?.();
+    this.isActivated = false;
   }
 
   public static isExtension(extension: any): extension is Extension {

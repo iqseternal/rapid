@@ -2,10 +2,6 @@ import { classnames } from '@rapid/libs-web/common';
 import { memo } from 'react';
 import { commonStyles } from '@/scss/common';
 
-import { TransitionGroup, Transition, CSSTransition } from 'react-transition-group';
-
-import styles from './header.module.scss';
-
 export interface HeaderProps {
   readonly className?: string;
 }
@@ -93,7 +89,7 @@ export const Header = memo((props: HeaderProps) => {
             const reversedIndex = Math.abs(ControllerOtherWidgets.length - index - 1);
             const ReversedOtherWidget = ControllerOtherWidgets[reversedIndex];
 
-            return (<ReversedOtherWidget key={index} />)
+            return (<ReversedOtherWidget key={`r-${index}`} />)
 
             // return (
             //   <CSSTransition

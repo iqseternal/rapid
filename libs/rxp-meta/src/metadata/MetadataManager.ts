@@ -56,6 +56,10 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
   private readonly rxpInnerStore = new RxpInnerStore();
   private readonly metadataMap = new Map<string | number | symbol, any>();
 
+  public constructor() {
+    this.metadataMap.clear();
+  }
+
   /**
    * 定义 store 元数据, 元数据可以是任何东西
    * @example
@@ -137,10 +141,9 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
       const vector = this.metadataMap.get(metadataKey);
       if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
-      const newVector = vector.filter(v => {
-        const isThisMetadata = (v === metadata);
-        if (isThisMetadata) hasThisMetadata = true;
-        return !isThisMetadata;
+      const newVector = vector.map(v => {
+        if (v === metadata) hasThisMetadata = true;
+        return v;
       });
 
       if (!hasThisMetadata) {
@@ -239,7 +242,6 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
     /**
      * refreshComponent
      * @description 用于更新 state, 让视图进行刷新, 但是由于 setState 需要组件已经挂载, 所以有额外的挂载判断
-     * @description 改更新是有 20ms 延迟的
      */
     const refreshComponent = useCallback(() => {
       if (!normalState.current.isMounted) {

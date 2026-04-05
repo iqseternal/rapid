@@ -12,9 +12,9 @@ export default function useExtend() {
     })
 
     return () => {
-      extensionList.forEach(extension => {
-        extension.deactivated();
-      })
+      // extensionList.forEach(extension => {
+      //   extension.deactivated();
+      // })
     }
   }, [extensionList]);
 

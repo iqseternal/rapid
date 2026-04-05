@@ -14,6 +14,7 @@ declare global {
       meta2d?: import('@meta2d/core').Meta2d;
 
       readonly Antd: typeof import('antd');
+      readonly AntdIcons: typeof import('@ant-design/icons');
       readonly spring: typeof import('@react-spring/web');
       readonly transitionGroup: typeof import('react-transition-group');
       readonly moment: typeof import('moment');

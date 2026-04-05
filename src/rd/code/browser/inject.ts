@@ -72,6 +72,7 @@ import i18n from './i18n';
 import moment from 'moment';
 
 import * as Antd from 'antd';
+import * as AntdIcons from '@ant-design/icons';
 import * as spring from '@react-spring/web';
 import * as transitionGroup from 'react-transition-group';
 
@@ -95,6 +96,7 @@ const native: Rapid.Native = ({
   meta2d: void 0,
 
   Antd: Antd,
+  AntdIcons: AntdIcons,
   spring: spring,
   transitionGroup: transitionGroup,
   moment: moment,
