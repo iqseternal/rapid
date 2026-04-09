@@ -1,5 +1,4 @@
 import { useGroupExtensionsApi } from '@/api';
-import { RdThemeExtension } from './RdThemeExtension';
 import { toNil, toWaitPromise } from '@rapid/libs';
 import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension } from '../index';
 
@@ -7,7 +6,7 @@ import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension 
  * 加载内部插件
  */
 export async function setupInnerExtensions() {
-  native.extension.registerExtension(RdThemeExtension);
+
 }
 
 /**

@@ -37,13 +37,6 @@ declare global {
         }
       }, keyof RdSandbox.ExposeApi['stores']>;
 
-      readonly skin: {
-        readonly skin: import('rd/base/browser/service/Skin').Skin<RdCssVariablePayloadSheet>;
-        readonly makeCssVarPayload: typeof import('rd/base/browser/service/Skin').makeCssVarPayload;
-        readonly mrvp: typeof import('rd/base/browser/service/Skin').mrvp;
-        readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
-      };
-
       readonly i18n: {
         readonly i18n: typeof import('@/i18n').default;
         readonly useTranslation: typeof import('react-i18next').useTranslation;
@@ -61,8 +54,6 @@ declare global {
       }
 
       readonly services: {
-        readonly Skin: typeof import('rd/base/browser/service/Skin').Skin;
-
         readonly Emitter: typeof import('@rapid/bus').Emitter;
         readonly Invoker: typeof import('@rapid/bus').Invoker;
 

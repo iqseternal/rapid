@@ -56,17 +56,16 @@ const WorkspaceLayout = memo(() => {
   const NavigationBarLatestContent = native.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
 
   return (
-    <div className='w-full h-full'>
+    <div
+      className='w-full h-full max-h-full overflow-hidden flex flex-col'
+    >
       <Header />
 
       <div
         className={classnames(
-          'flex justify-between flex-nowrap items-center w-full h-full',
+          'flex flex-1 justify-between flex-nowrap items-center w-full h-full',
           mainSidebarStatus === SidebarStatus.Right && 'flex-row-reverse'
         )}
-        style={{
-          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`
-        }}
       >
         {mainSidebarStatus !== SidebarStatus.None && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
 

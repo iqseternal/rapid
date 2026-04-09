@@ -38,8 +38,8 @@ export const RdApp = memo(() => {
 
           },
           Button: {
-            defaultActiveColor: cssVars.uiDefaultButtonTextColor,
-            defaultActiveBg: cssVars.uiDefaultButtonBackground,
+            defaultActiveColor: '#616161',
+            defaultActiveBg: '#fafafa',
           }
         },
         cssVar: {
@@ -78,8 +78,8 @@ export const RdApp = memo(() => {
           placement: 'bottomRight'
         }}
         style={{
-          color: cssVars.colorNeutral900,
-          backgroundColor: cssVars.colorNeutral50
+          color: '#212121',
+          backgroundColor: '#fafafa'
         }}
       >
         <RdRouterWrapper />

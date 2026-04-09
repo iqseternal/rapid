@@ -1,6 +1,4 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { Skin } from 'rd/base/browser/service/Skin';
-import type { RdCssVariablePayloadSheet } from './skin';
 
 export default function useExtend() {
   const [extensionList] = native.extension.useExtensionsList();
@@ -17,20 +15,4 @@ export default function useExtend() {
       // })
     }
   }, [extensionList]);
-
-  const themeTransformers = native.metadata.useMetadata('functional.theme.variables.transformer');
-  useEffect(() => {
-    if (!themeTransformers) return;
-
-    native.skin.skin.resetCssVarsSheet();
-
-    native.skin.skin.transformers(themeTransformers);
-
-    native.skin.skin.install();
-
-    return () => {
-
-      native.skin.skin.uninstall();
-    }
-  }, [themeTransformers]);
 }

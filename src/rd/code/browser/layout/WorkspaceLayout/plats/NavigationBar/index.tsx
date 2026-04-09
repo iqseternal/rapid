@@ -8,6 +8,7 @@ import type { WidgetProps } from '@/components/Widget';
 import { LogoutOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useUserStore } from '@/features';
+import { commonStyles } from 'rd/code/browser/scss/common';
 
 import Widget from '@/components/Widget';
 import AutoMenu from '@/components/AutoMenu';
@@ -33,7 +34,7 @@ const SideBarItem = memo<SideBarItemProps>((props) => {
     <Widget
       {...attrs}
       className={classnames(
-        'text-base h-[unset] aspect-square',
+        'h-[unset] aspect-square',
         className,
         {
           ['bg-blue-50']: !!activeFullPath && (location.pathname === activeFullPath)
@@ -66,24 +67,25 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
 
   return (
     <div
-      className='h-full gap-1 flex-auto flex flex-col justify-between items-center'
-      style={{
-        width: cssVars.uiNavigationBarWidth,
-        minWidth: cssVars.uiNavigationBarWidth,
-        maxWidth: cssVars.uiNavigationBarWidth,
-        backgroundColor: cssVars.uiNavigationBarBackground,
-        boxShadow: cssVars.shadowMd
-      }}
+      className={classnames(
+        'h-full gap-1 flex-auto flex flex-col justify-between items-center',
+        'w-16',
+        'bg-white',
+        'shadow-sm',
+        commonStyles.appRegion,
+      )}
     >
       <div
-        className='mt-[2px] h-max flex justify-center flex-col w-full items-center'
+        className='mt-[2px] h-max flex justify-center flex-col w-full items-center gap-y-2'
       >
-        {workbenchesRoute.children?.filter(routeItem => !routeItem.meta.hiddenInMenu).map(routeItem => {
+        {workbenchesRoute.children?.filter(routeItem => !routeItem.meta?.more?.hiddenInMenu).map(routeItem => {
           return (
             <SideBarItem
               key={routeItem.meta.fullPath}
               activeFullPath={routeItem.meta.fullPath}
               icon={routeItem.meta.icon}
+              size='large'
+              hasHoverStyle={true}
               tipText={routeItem.meta.title}
               onClick={() => {
                 navigate(routeItem.meta.fullPath);
@@ -94,7 +96,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
       </div>
 
       <div
-        className='mb-8 flex justify-center w-full items-center'
+        className='mb-8 flex flex-col justify-center w-full items-center'
       >
         <div />
 
@@ -110,6 +112,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
         >
           <SideBarItem
             icon='SettingOutlined'
+            size='large'
             tipText={t('ui.layout.workspace.navigation.bar.settings', '设置')}
           />
         </AutoMenu>

@@ -69,7 +69,9 @@ export const workbenchesRoute = makeRoute({
       meta: {
         title: '皮肤',
         icon: 'SkinOutlined',
-        hiddenInMenu: false
+        more: {
+          hiddenInMenu: false
+        }
       },
       component: lazy(() => import('@/pages/Workspace/Skin'))
     },
@@ -79,7 +81,9 @@ export const workbenchesRoute = makeRoute({
       meta: {
         title: '插件',
         icon: 'ExperimentOutlined',
-        hiddenInMenu: false
+        more: {
+          hiddenInMenu: false
+        }
       },
       component: lazy(() => import('@/pages/Workspace/Extensions'))
     }

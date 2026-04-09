@@ -2,7 +2,6 @@ import './bus';
 import './extension';
 import './native';
 import './reactivity';
-import './skin';
 import './thread';
 import './types';
 

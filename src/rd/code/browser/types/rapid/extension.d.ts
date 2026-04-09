@@ -36,11 +36,6 @@ declare global {
         'tests': any[];
 
         /**
-         * 功能 - 主题 - 变量 - 转换
-         */
-        'functional.theme.variables.transformer': ((variables: RdCssVariablePayloadSheet) => void)[];
-
-        /**
          * 功能 - meta2d - 注册
          */
         'functional.meta2d.lifecycle.registered': ((meta2d: import('@meta2d/core').Meta2d) => void)[];

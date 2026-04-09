@@ -28,7 +28,7 @@ export const MaintenanceMenus = memo(() => {
     <div
       ref={menusContainerRef}
       className={classnames(
-        'py-0.5 h-full w-full flex items-center justify-start',
+        'h-full w-full flex items-center justify-start',
         !shallowStatusState.isCalcDone && 'opacity-0'
       )}
     >
@@ -45,7 +45,7 @@ export const MaintenanceMenus = memo(() => {
             <div
               className={classnames(
                 commonStyles.appRegionNo,
-                'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
+                'px-1.5 h-full rounded-[3px] overflow-hidden hover:bg-gray-200 flex items-center text-sm'
               )}
             >
               {menu.label}
@@ -75,7 +75,7 @@ export const MaintenanceMenus = memo(() => {
           <div
             className={classnames(
               commonStyles.appRegionNo,
-              'px-2 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
+              'px-2 py-0.5 h-full rounded-md overflow-hidden hover:bg-gray-200 flex items-center'
             )}
           >
             <IconFont

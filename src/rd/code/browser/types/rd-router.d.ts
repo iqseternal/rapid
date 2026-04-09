@@ -20,10 +20,13 @@ declare module '@rapid/libs-web' {
      */
     readonly icon?: IconKey;
 
-    /**
-     * 是否在菜单中隐藏
-     */
-    readonly hiddenInMenu?: boolean;
+    readonly more?: {
+
+      /**
+       * 是否在菜单中隐藏
+       */
+      readonly hiddenInMenu?: boolean;
+    }
   }
 }
 

@@ -9,6 +9,7 @@ import * as antd from 'antd';
 import { TooltipProps, PopoverProps } from 'antd';
 import * as iconInstance from '@ant-design/icons';
 import iconInstance__default from '@ant-design/icons';
+import { Property } from 'csstype';
 import * as react_i18next from 'react-i18next';
 import i18n from 'i18next';
 import * as zustand_middleware from 'zustand/middleware';
@@ -125,298 +126,6 @@ declare global {
   }
 }
 
-/**
- * CSS 变量的名称
- */
-type CssVariable = `--rd-${string}`;
-/**
- * CSS 变量的值
- */
-type CssVariableValue = string;
-/**
- * CSS 变量提示标签
- */
-type CssVariableTip = string;
-/**
- * 单个 CSS 变量的描述性负载
- */
-interface CssVariablePayload<Variable extends CssVariable = CssVariable, Value extends CssVariableValue = CssVariableValue, Tip extends CssVariableTip = CssVariableTip> {
-    /**
-     * 变量名
-     */
-    readonly variable: Variable;
-    /**
-     * 变量值
-     */
-    value: Value;
-    /**
-     * 提示，说明变量用途
-     */
-    readonly tip: Tip;
-}
-/**
- * 从 payload 中提取出变量名
- */
-type ExtractCssVariableFromPayload<Payload extends CssVariablePayload> = Payload['variable'];
-/**
- * 从 payload 中提取出默认值
- */
-type ExtractCssVariableValueFromPayload<Payload extends CssVariablePayload> = Payload['value'];
-/**
- * 表示所有 CSS 变量的负载映射
- */
-type CssVariablePayloadSheet = Record<string, CssVariablePayload>;
-type CssVar<Payload extends CssVariablePayload> = `var(${ExtractCssVariableFromPayload<Payload>}, ${ExtractCssVariableValueFromPayload<Payload>})`;
-type CssVars<Sheet extends CssVariablePayloadSheet> = {
-    readonly [Key in keyof Sheet]: CssVar<Sheet[Key]>;
-};
-/**
- * 主题变量的声明表: 例如: { '--rapid-xx-xx': '#FFF' }
- */
-type CssVariablesDeclaration<PayloadSheet extends CssVariablePayloadSheet> = {
-    [Key in (keyof PayloadSheet) as ExtractCssVariableFromPayload<PayloadSheet[Key]>]: (ExtractCssVariableValueFromPayload<PayloadSheet[Key]> extends number ? number : string);
-};
-/**
- * 创建一个预设的 Css 样式
- *
- * @example
- * const primaryBackgroundColor = makeRapidCssVarPayload('--rapid-primary-background-color', '#ffffff', '主要背景色'),
- */
-declare const makeCssVarPayload: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
-/**
- * 创建一个预设的 Css 样式, 别名：makeRdCssVarPayload
- * @alias makeRdCssVarPayload
- */
-declare const mrvp: <CssVar_1 extends `--rd-${string}`, CssVarValue extends string, CssTip extends string>(cssVariableName: CssVar_1, cssVariableValue: CssVarValue, cssVariableTip: CssTip) => CssVariablePayload<CssVar_1, CssVarValue, CssTip>;
-declare class Skin<PayloadSheet extends CssVariablePayloadSheet> {
-    private readonly runtimeContext;
-    private readonly presetCssVariablesPayloadSheet;
-    cssVariablesPayloadSheet: PayloadSheet;
-    constructor(cssVariablesPayloadSheet: PayloadSheet);
-    /**
-     * 克隆 CSS 变量样式
-     */
-    private cloneCssVariablesPayloadSheet;
-    /**
-     * 重置当前皮肤的 CSS 变量样式
-     */
-    resetCssVarsSheet(): void;
-    /**
-     * 生成当前皮肤的 CSS 变量声明
-     */
-    toCssVariablesDeclaration(): CssVariablesDeclaration<PayloadSheet>;
-    /**
-     * 将 CssVariablePayload 转换为 CSS 变量字符串
-     * @param selector 用于选择 CssVariablePayload 的函数
-     */
-    toCssVar<Payload extends CssVariablePayload>(selector: (sheet: CssVariablePayloadSheet) => Payload): CssVar<Payload>;
-    /**
-     * 将当前皮肤的 CSS 变量转换为 CssVars 类型
-     * @returns CssVars<PayloadSheet>
-     */
-    toCssVars(): CssVars<PayloadSheet>;
-    /**
-     * 使用变换器函数来变换当前皮肤的 CSS 变量样式
-     */
-    transformer(transformer: (sheet: PayloadSheet) => void): void;
-    /**
-     * 使用一组变换器函数来变换当前皮肤的 CSS 变量样式
-     */
-    transformers(transformers: ((sheet: PayloadSheet) => void)[]): void;
-    /**
-     * 安装当前皮肤，将 CSS 变量注入到页面中
-     */
-    install(): void;
-    /**
-     * 卸载当前皮肤，移除 CSS 变量样式
-     */
-    uninstall(): void;
-}
-
-/**
- * ==================================================================================
- * 该文件用于创建整个 App 中可以调整的 Css 样式列表
- * ==================================================================================
- */
-declare const colorPrimary: CssVariablePayload<"--rd-global-color-primary", "#3498db", "全局主题色">;
-declare const colorSuccess: CssVariablePayload<"--rd-global-color-success", "#2ecc71", "全局成功色">;
-declare const colorWarning: CssVariablePayload<"--rd-global-color-warning", "#f1c40f", "全局警告色">;
-declare const colorError: CssVariablePayload<"--rd-global-color-danger", "#e74c3c", "全局危险色">;
-declare const colorNeutral0: CssVariablePayload<"--rd-global-color-neutral-0", "#ffffff", "全局中性色">;
-declare const colorNeutral50: CssVariablePayload<"--rd-global-color-neutral-50", "#fafafa", "全局中性色">;
-declare const colorNeutral100: CssVariablePayload<"--rd-global-color-neutral-100", "#f5f5f5", "全局中性色">;
-declare const colorNeutral200: CssVariablePayload<"--rd-global-color-neutral-200", "#eeeeee", "全局中性色">;
-declare const colorNeutral300: CssVariablePayload<"--rd-global-color-neutral-300", "#e0e0e0", "全局中性色">;
-declare const colorNeutral400: CssVariablePayload<"--rd-global-color-neutral-400", "#bdbdbd", "全局中性色">;
-declare const colorNeutral500: CssVariablePayload<"--rd-global-color-neutral-500", "#9e9e9e", "全局中性色">;
-declare const colorNeutral600: CssVariablePayload<"--rd-global-color-neutral-600", "#757575", "全局中性色">;
-declare const colorNeutral700: CssVariablePayload<"--rd-global-color-neutral-700", "#616161", "全局中性色">;
-declare const colorNeutral800: CssVariablePayload<"--rd-global-color-neutral-800", "#424242", "全局中性色">;
-declare const colorNeutral900: CssVariablePayload<"--rd-global-color-neutral-900", "#212121", "全局中性色">;
-declare const spacingUnit: CssVariablePayload<"--rd-global-spacing-unit", "2px", "全局间距单位">;
-declare const spacingXs: CssVariablePayload<"--rd-global-spacing-xs-unit", "calc(1 * var(--rd-global-spacing-unit))", "全局超小间距">;
-declare const spacingSm: CssVariablePayload<"--rd-global-spacing-sm-unit", "calc(2 * var(--rd-global-spacing-unit))", "全局小间距">;
-declare const spacingMd: CssVariablePayload<"--rd-global-spacing-md-unit", "calc(4 * var(--rd-global-spacing-unit))", "全局中等间距">;
-declare const spacingLg: CssVariablePayload<"--rd-global-spacing-lg-unit", "calc(5 * var(--rd-global-spacing-unit))", "全局大间距">;
-declare const spacingXl: CssVariablePayload<"--rd-global-spacing-xl-unit", "calc(6 * var(--rd-global-spacing-unit))", "全局超大间距">;
-declare const borderRadiusUnit: CssVariablePayload<"--rd-global-border-radius-unit", "4px", "全局圆角单位">;
-declare const borderRadiusXs: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(0.5 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
-declare const borderRadiusSm: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(1 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
-declare const borderRadiusMd: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(2 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
-declare const borderRadiusLg: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(3 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
-declare const borderRadiusXl: CssVariablePayload<"--rd-global-border-radius-small-unit", "calc(4 * var(--rd-global-border-radius-unit))", "全局圆角单位">;
-declare const borderRadiusFull: CssVariablePayload<"--rd-global-border-radius-full", "9999px", "全局圆角单位">;
-declare const shadowXs: CssVariablePayload<"--rd-global-shadow-xs", "0 1px 2px rgba(0,0,0,0.05)", "全局阴影">;
-declare const shadowSm: CssVariablePayload<"--rd-global-shadow-sm", "0 2px 4px rgba(0,0,0,0.05)", "全局阴影">;
-declare const shadowMd: CssVariablePayload<"--rd-global-shadow-md", "0 4px 8px rgba(0,0,0,0.05)", "全局阴影">;
-declare const shadowLg: CssVariablePayload<"--rd-global-shadow-lg", "0 8px 16px rgba(0,0,0,0.05)", "全局阴影">;
-declare const shadowXl: CssVariablePayload<"--rd-global-shadow-xl", "0 16px 32px rgba(0,0,0,0.05)", "全局阴影">;
-declare const fontSizeXs: CssVariablePayload<"--rd-global-font-size-xs", "0.75rem", "全局字体大小">;
-declare const fontSizeSm: CssVariablePayload<"--rd-global-font-size-sm", "0.875rem", "全局字体大小">;
-declare const fontSizeMd: CssVariablePayload<"--rd-global-font-size-md", "1rem", "全局字体大小">;
-declare const fontSizeLg: CssVariablePayload<"--rd-global-font-size-lg", "1.125rem", "全局字体大小">;
-declare const fontSizeXl: CssVariablePayload<"--rd-global-font-size-xl", "1.25rem", "全局字体大小">;
-declare const fontSize2Xl: CssVariablePayload<"--rd-global-font-size-xxl", "1.5rem", "全局字体大小">;
-declare const fontWeightLight: CssVariablePayload<"--rd-global-font-weight-light", "300", "全局细体字重">;
-declare const fontWeightRegular: CssVariablePayload<"--rd-global-font-weight-regular", "400", "全局常规字重">;
-declare const fontWeightMedium: CssVariablePayload<"--rd-global-font-weight-medium", "500", "全局中等字重">;
-declare const fontWeightBold: CssVariablePayload<"--rd-global-font-weight-bold", "700", "全局粗体字重">;
-declare const colorTextPrimary: CssVariablePayload<"--rd-global-color-text-primary", "var(--rd-global-color-neutral-900)", "全局主要文本色">;
-declare const colorTextSecondary: CssVariablePayload<"--rd-global-color-text-secondary", "var(--rd-global-color-neutral-700)", "全局次要文本色">;
-declare const colorTextTertiary: CssVariablePayload<"--rd-global-color-text-tertiary", "var(--rd-global-color-neutral-500)", "全局第三文本色">;
-declare const colorTextDisabled: CssVariablePayload<"--rd-global-color-text-disabled", "var(--rd-global-color-neutral-400)", "全局禁用文本色">;
-declare const colorTextInverse: CssVariablePayload<"--rd-global-color-text-inverse", "var(--rd-global-color-neutral-50)", "全局反色文本">;
-declare const colorTextLink: CssVariablePayload<"--rd-global-color-text-link", "var(--rd-global-color-primary)", "全局链接文本色">;
-declare const colorTextSuccess: CssVariablePayload<"--rd-global-color-text-success", "var(--rd-global-color-success)", "全局成功文本色">;
-declare const colorTextWarning: CssVariablePayload<"--rd-global-color-text-warning", "var(--rd-global-color-warning)", "全局警告文本色">;
-declare const colorTextError: CssVariablePayload<"--rd-global-color-text-danger", "var(--rd-global-color-danger)", "全局错误文本色">;
-declare const surfacePrimary: CssVariablePayload<"--rd-global-surface-primary", "var(--rd-global-color-neutral-100)", "全局主要表面色">;
-declare const surfaceSecondary: CssVariablePayload<"--rd-global-surface-secondary", "var(--rd-global-color-neutral-50)", "全局次要表面色">;
-declare const surfaceTertiary: CssVariablePayload<"--rd-global-surface-tertiary", "var(--rd-global-color-neutral-200)", "全局第三表面色">;
-declare const borderPrimary: CssVariablePayload<"--rd-global-border-primary", "1px solid var(--rd-global-color-neutral-300)", "全局主要边框">;
-declare const borderSecondary: CssVariablePayload<"--rd-global-border-secondary", "1px solid var(--rd-global-color-neutral-200)", "全局次要边框">;
-declare const borderTertiary: CssVariablePayload<"--rd-global-border-tertiary", "1px solid var(--rd-global-color-neutral-100)", "全局第三边框">;
-declare const borderFocus: CssVariablePayload<"--rd-global-border-focus", "1px solid var(--rd-global-color-primary)", "全局聚焦边框">;
-declare const borderError: CssVariablePayload<"--rd-global-border-error", "1px solid var(--rd-global-color-danger)", "全局错误边框">;
-declare const interactivePrimary: CssVariablePayload<"--rd-global-interactive-primary", "var(--rd-global-color-primary)", "全局主要交互色">;
-declare const interactivePrimaryHover: CssVariablePayload<"--rd-global-interactive-primary-hover", "#2980b9", "全局主要交互悬停色">;
-declare const interactivePrimaryActive: CssVariablePayload<"--rd-global-interactive-primary-active", "#1d6fa5", "全局主要交互激活色">;
-declare const interactivePrimaryDisabled: CssVariablePayload<"--rd-global-interactive-primary-disabled", "var(--rd-global-color-neutral-300)", "全局主要交互禁用色">;
-declare const interactiveSecondary: CssVariablePayload<"--rd-global-interactive-secondary", "var(--rd-global-color-neutral-400)", "全局次要交互色">;
-declare const interactiveSecondaryHover: CssVariablePayload<"--rd-global-interactive-secondary-hover", "var(--rd-global-color-neutral-500)", "全局次要交互悬停色">;
-declare const interactiveSecondaryActive: CssVariablePayload<"--rd-global-interactive-secondary-active", "var(--rd-global-color-neutral-600)", "全局次要交互激活色">;
-declare const interactiveSecondaryDisabled: CssVariablePayload<"--rd-global-interactive-secondary-disabled", "var(--rd-global-color-neutral-200)", "全局次要交互禁用色">;
-declare const uiWidgetWidth: CssVariablePayload<"--rd-ui-widget-width", "26px", "控件宽度">;
-declare const uiWidgetHeight: CssVariablePayload<"--rd-ui-widget-height", "26px", "控件高度">;
-declare const uiWidgetColorPrimary: CssVariablePayload<"--rd-ui-widget-color-primary", "var(--rd-global-color-neutral-700)", "控件颜色">;
-declare const uiWidgetBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-background-primary", "var(--rd-global-color-neutral-50)", "控件颜色">;
-declare const uiWidgetHoverBackgroundPrimary: CssVariablePayload<"--rd-ui-widget-hover-background-primary", "var(--rd-global-color-neutral-100)", "控件颜色">;
-declare const uiWidgetBorderRadius: CssVariablePayload<"--rd-ui-widget-border-radius", "4px", "控件圆角半径">;
-declare const uiDefaultButtonBackground: CssVariablePayload<"--rd-ui-default-button-background", "var(--rd-global-color-neutral-50)", "默认按钮背景色">;
-declare const uiDefaultButtonTextColor: CssVariablePayload<"--rd-ui-default-button-text-color", "var(--rd-global-color-neutral-700)", "默认按钮文本色">;
-declare const uiDefaultButtonRadius: CssVariablePayload<"--rd-ui-default-button-radius", "10px", "默认按钮圆角半径">;
-declare const uiCaptionBarHeight: CssVariablePayload<"--rd-ui-caption-bar-height", "32px", "标题栏高度">;
-declare const uiCaptionBarBackground: CssVariablePayload<"--rd-ui-caption-bar-background", "var(--rd-global-color-neutral-0)", "标题栏背景色">;
-declare const uiNavigationBarWidth: CssVariablePayload<"--rd-ui-navigation-bar-width", "32px", "纵向导航栏宽度">;
-declare const uiNavigationBarBackground: CssVariablePayload<"--rd-ui-navigation-bar-background", "var(--rd-global-color-neutral-0)", "导航栏背景色">;
-declare const uiAutoMenuBackground: CssVariablePayload<"--rd-ui-auto-menu-background", "var(--rd-global-color-neutral-0)", "自动菜单背景色">;
-declare const uiAutoMenuTextColor: CssVariablePayload<"--rd-ui-auto-menu-text-color", "var(--rd-global-color-neutral-700)", "自动菜单文本色">;
-declare const uiAutoMenuRadius: CssVariablePayload<"--rd-ui-auto-menu-radius", "10px", "自动菜单圆角半径">;
-
-declare const cssVariablePayloadSheet_borderError: typeof borderError;
-declare const cssVariablePayloadSheet_borderFocus: typeof borderFocus;
-declare const cssVariablePayloadSheet_borderPrimary: typeof borderPrimary;
-declare const cssVariablePayloadSheet_borderRadiusFull: typeof borderRadiusFull;
-declare const cssVariablePayloadSheet_borderRadiusLg: typeof borderRadiusLg;
-declare const cssVariablePayloadSheet_borderRadiusMd: typeof borderRadiusMd;
-declare const cssVariablePayloadSheet_borderRadiusSm: typeof borderRadiusSm;
-declare const cssVariablePayloadSheet_borderRadiusUnit: typeof borderRadiusUnit;
-declare const cssVariablePayloadSheet_borderRadiusXl: typeof borderRadiusXl;
-declare const cssVariablePayloadSheet_borderRadiusXs: typeof borderRadiusXs;
-declare const cssVariablePayloadSheet_borderSecondary: typeof borderSecondary;
-declare const cssVariablePayloadSheet_borderTertiary: typeof borderTertiary;
-declare const cssVariablePayloadSheet_colorError: typeof colorError;
-declare const cssVariablePayloadSheet_colorNeutral0: typeof colorNeutral0;
-declare const cssVariablePayloadSheet_colorNeutral100: typeof colorNeutral100;
-declare const cssVariablePayloadSheet_colorNeutral200: typeof colorNeutral200;
-declare const cssVariablePayloadSheet_colorNeutral300: typeof colorNeutral300;
-declare const cssVariablePayloadSheet_colorNeutral400: typeof colorNeutral400;
-declare const cssVariablePayloadSheet_colorNeutral50: typeof colorNeutral50;
-declare const cssVariablePayloadSheet_colorNeutral500: typeof colorNeutral500;
-declare const cssVariablePayloadSheet_colorNeutral600: typeof colorNeutral600;
-declare const cssVariablePayloadSheet_colorNeutral700: typeof colorNeutral700;
-declare const cssVariablePayloadSheet_colorNeutral800: typeof colorNeutral800;
-declare const cssVariablePayloadSheet_colorNeutral900: typeof colorNeutral900;
-declare const cssVariablePayloadSheet_colorPrimary: typeof colorPrimary;
-declare const cssVariablePayloadSheet_colorSuccess: typeof colorSuccess;
-declare const cssVariablePayloadSheet_colorTextDisabled: typeof colorTextDisabled;
-declare const cssVariablePayloadSheet_colorTextError: typeof colorTextError;
-declare const cssVariablePayloadSheet_colorTextInverse: typeof colorTextInverse;
-declare const cssVariablePayloadSheet_colorTextLink: typeof colorTextLink;
-declare const cssVariablePayloadSheet_colorTextPrimary: typeof colorTextPrimary;
-declare const cssVariablePayloadSheet_colorTextSecondary: typeof colorTextSecondary;
-declare const cssVariablePayloadSheet_colorTextSuccess: typeof colorTextSuccess;
-declare const cssVariablePayloadSheet_colorTextTertiary: typeof colorTextTertiary;
-declare const cssVariablePayloadSheet_colorTextWarning: typeof colorTextWarning;
-declare const cssVariablePayloadSheet_colorWarning: typeof colorWarning;
-declare const cssVariablePayloadSheet_fontSize2Xl: typeof fontSize2Xl;
-declare const cssVariablePayloadSheet_fontSizeLg: typeof fontSizeLg;
-declare const cssVariablePayloadSheet_fontSizeMd: typeof fontSizeMd;
-declare const cssVariablePayloadSheet_fontSizeSm: typeof fontSizeSm;
-declare const cssVariablePayloadSheet_fontSizeXl: typeof fontSizeXl;
-declare const cssVariablePayloadSheet_fontSizeXs: typeof fontSizeXs;
-declare const cssVariablePayloadSheet_fontWeightBold: typeof fontWeightBold;
-declare const cssVariablePayloadSheet_fontWeightLight: typeof fontWeightLight;
-declare const cssVariablePayloadSheet_fontWeightMedium: typeof fontWeightMedium;
-declare const cssVariablePayloadSheet_fontWeightRegular: typeof fontWeightRegular;
-declare const cssVariablePayloadSheet_interactivePrimary: typeof interactivePrimary;
-declare const cssVariablePayloadSheet_interactivePrimaryActive: typeof interactivePrimaryActive;
-declare const cssVariablePayloadSheet_interactivePrimaryDisabled: typeof interactivePrimaryDisabled;
-declare const cssVariablePayloadSheet_interactivePrimaryHover: typeof interactivePrimaryHover;
-declare const cssVariablePayloadSheet_interactiveSecondary: typeof interactiveSecondary;
-declare const cssVariablePayloadSheet_interactiveSecondaryActive: typeof interactiveSecondaryActive;
-declare const cssVariablePayloadSheet_interactiveSecondaryDisabled: typeof interactiveSecondaryDisabled;
-declare const cssVariablePayloadSheet_interactiveSecondaryHover: typeof interactiveSecondaryHover;
-declare const cssVariablePayloadSheet_shadowLg: typeof shadowLg;
-declare const cssVariablePayloadSheet_shadowMd: typeof shadowMd;
-declare const cssVariablePayloadSheet_shadowSm: typeof shadowSm;
-declare const cssVariablePayloadSheet_shadowXl: typeof shadowXl;
-declare const cssVariablePayloadSheet_shadowXs: typeof shadowXs;
-declare const cssVariablePayloadSheet_spacingLg: typeof spacingLg;
-declare const cssVariablePayloadSheet_spacingMd: typeof spacingMd;
-declare const cssVariablePayloadSheet_spacingSm: typeof spacingSm;
-declare const cssVariablePayloadSheet_spacingUnit: typeof spacingUnit;
-declare const cssVariablePayloadSheet_spacingXl: typeof spacingXl;
-declare const cssVariablePayloadSheet_spacingXs: typeof spacingXs;
-declare const cssVariablePayloadSheet_surfacePrimary: typeof surfacePrimary;
-declare const cssVariablePayloadSheet_surfaceSecondary: typeof surfaceSecondary;
-declare const cssVariablePayloadSheet_surfaceTertiary: typeof surfaceTertiary;
-declare const cssVariablePayloadSheet_uiAutoMenuBackground: typeof uiAutoMenuBackground;
-declare const cssVariablePayloadSheet_uiAutoMenuRadius: typeof uiAutoMenuRadius;
-declare const cssVariablePayloadSheet_uiAutoMenuTextColor: typeof uiAutoMenuTextColor;
-declare const cssVariablePayloadSheet_uiCaptionBarBackground: typeof uiCaptionBarBackground;
-declare const cssVariablePayloadSheet_uiCaptionBarHeight: typeof uiCaptionBarHeight;
-declare const cssVariablePayloadSheet_uiDefaultButtonBackground: typeof uiDefaultButtonBackground;
-declare const cssVariablePayloadSheet_uiDefaultButtonRadius: typeof uiDefaultButtonRadius;
-declare const cssVariablePayloadSheet_uiDefaultButtonTextColor: typeof uiDefaultButtonTextColor;
-declare const cssVariablePayloadSheet_uiNavigationBarBackground: typeof uiNavigationBarBackground;
-declare const cssVariablePayloadSheet_uiNavigationBarWidth: typeof uiNavigationBarWidth;
-declare const cssVariablePayloadSheet_uiWidgetBackgroundPrimary: typeof uiWidgetBackgroundPrimary;
-declare const cssVariablePayloadSheet_uiWidgetBorderRadius: typeof uiWidgetBorderRadius;
-declare const cssVariablePayloadSheet_uiWidgetColorPrimary: typeof uiWidgetColorPrimary;
-declare const cssVariablePayloadSheet_uiWidgetHeight: typeof uiWidgetHeight;
-declare const cssVariablePayloadSheet_uiWidgetHoverBackgroundPrimary: typeof uiWidgetHoverBackgroundPrimary;
-declare const cssVariablePayloadSheet_uiWidgetWidth: typeof uiWidgetWidth;
-declare namespace cssVariablePayloadSheet {
-  export { cssVariablePayloadSheet_borderError as borderError, cssVariablePayloadSheet_borderFocus as borderFocus, cssVariablePayloadSheet_borderPrimary as borderPrimary, cssVariablePayloadSheet_borderRadiusFull as borderRadiusFull, cssVariablePayloadSheet_borderRadiusLg as borderRadiusLg, cssVariablePayloadSheet_borderRadiusMd as borderRadiusMd, cssVariablePayloadSheet_borderRadiusSm as borderRadiusSm, cssVariablePayloadSheet_borderRadiusUnit as borderRadiusUnit, cssVariablePayloadSheet_borderRadiusXl as borderRadiusXl, cssVariablePayloadSheet_borderRadiusXs as borderRadiusXs, cssVariablePayloadSheet_borderSecondary as borderSecondary, cssVariablePayloadSheet_borderTertiary as borderTertiary, cssVariablePayloadSheet_colorError as colorError, cssVariablePayloadSheet_colorNeutral0 as colorNeutral0, cssVariablePayloadSheet_colorNeutral100 as colorNeutral100, cssVariablePayloadSheet_colorNeutral200 as colorNeutral200, cssVariablePayloadSheet_colorNeutral300 as colorNeutral300, cssVariablePayloadSheet_colorNeutral400 as colorNeutral400, cssVariablePayloadSheet_colorNeutral50 as colorNeutral50, cssVariablePayloadSheet_colorNeutral500 as colorNeutral500, cssVariablePayloadSheet_colorNeutral600 as colorNeutral600, cssVariablePayloadSheet_colorNeutral700 as colorNeutral700, cssVariablePayloadSheet_colorNeutral800 as colorNeutral800, cssVariablePayloadSheet_colorNeutral900 as colorNeutral900, cssVariablePayloadSheet_colorPrimary as colorPrimary, cssVariablePayloadSheet_colorSuccess as colorSuccess, cssVariablePayloadSheet_colorTextDisabled as colorTextDisabled, cssVariablePayloadSheet_colorTextError as colorTextError, cssVariablePayloadSheet_colorTextInverse as colorTextInverse, cssVariablePayloadSheet_colorTextLink as colorTextLink, cssVariablePayloadSheet_colorTextPrimary as colorTextPrimary, cssVariablePayloadSheet_colorTextSecondary as colorTextSecondary, cssVariablePayloadSheet_colorTextSuccess as colorTextSuccess, cssVariablePayloadSheet_colorTextTertiary as colorTextTertiary, cssVariablePayloadSheet_colorTextWarning as colorTextWarning, cssVariablePayloadSheet_colorWarning as colorWarning, cssVariablePayloadSheet_fontSize2Xl as fontSize2Xl, cssVariablePayloadSheet_fontSizeLg as fontSizeLg, cssVariablePayloadSheet_fontSizeMd as fontSizeMd, cssVariablePayloadSheet_fontSizeSm as fontSizeSm, cssVariablePayloadSheet_fontSizeXl as fontSizeXl, cssVariablePayloadSheet_fontSizeXs as fontSizeXs, cssVariablePayloadSheet_fontWeightBold as fontWeightBold, cssVariablePayloadSheet_fontWeightLight as fontWeightLight, cssVariablePayloadSheet_fontWeightMedium as fontWeightMedium, cssVariablePayloadSheet_fontWeightRegular as fontWeightRegular, cssVariablePayloadSheet_interactivePrimary as interactivePrimary, cssVariablePayloadSheet_interactivePrimaryActive as interactivePrimaryActive, cssVariablePayloadSheet_interactivePrimaryDisabled as interactivePrimaryDisabled, cssVariablePayloadSheet_interactivePrimaryHover as interactivePrimaryHover, cssVariablePayloadSheet_interactiveSecondary as interactiveSecondary, cssVariablePayloadSheet_interactiveSecondaryActive as interactiveSecondaryActive, cssVariablePayloadSheet_interactiveSecondaryDisabled as interactiveSecondaryDisabled, cssVariablePayloadSheet_interactiveSecondaryHover as interactiveSecondaryHover, cssVariablePayloadSheet_shadowLg as shadowLg, cssVariablePayloadSheet_shadowMd as shadowMd, cssVariablePayloadSheet_shadowSm as shadowSm, cssVariablePayloadSheet_shadowXl as shadowXl, cssVariablePayloadSheet_shadowXs as shadowXs, cssVariablePayloadSheet_spacingLg as spacingLg, cssVariablePayloadSheet_spacingMd as spacingMd, cssVariablePayloadSheet_spacingSm as spacingSm, cssVariablePayloadSheet_spacingUnit as spacingUnit, cssVariablePayloadSheet_spacingXl as spacingXl, cssVariablePayloadSheet_spacingXs as spacingXs, cssVariablePayloadSheet_surfacePrimary as surfacePrimary, cssVariablePayloadSheet_surfaceSecondary as surfaceSecondary, cssVariablePayloadSheet_surfaceTertiary as surfaceTertiary, cssVariablePayloadSheet_uiAutoMenuBackground as uiAutoMenuBackground, cssVariablePayloadSheet_uiAutoMenuRadius as uiAutoMenuRadius, cssVariablePayloadSheet_uiAutoMenuTextColor as uiAutoMenuTextColor, cssVariablePayloadSheet_uiCaptionBarBackground as uiCaptionBarBackground, cssVariablePayloadSheet_uiCaptionBarHeight as uiCaptionBarHeight, cssVariablePayloadSheet_uiDefaultButtonBackground as uiDefaultButtonBackground, cssVariablePayloadSheet_uiDefaultButtonRadius as uiDefaultButtonRadius, cssVariablePayloadSheet_uiDefaultButtonTextColor as uiDefaultButtonTextColor, cssVariablePayloadSheet_uiNavigationBarBackground as uiNavigationBarBackground, cssVariablePayloadSheet_uiNavigationBarWidth as uiNavigationBarWidth, cssVariablePayloadSheet_uiWidgetBackgroundPrimary as uiWidgetBackgroundPrimary, cssVariablePayloadSheet_uiWidgetBorderRadius as uiWidgetBorderRadius, cssVariablePayloadSheet_uiWidgetColorPrimary as uiWidgetColorPrimary, cssVariablePayloadSheet_uiWidgetHeight as uiWidgetHeight, cssVariablePayloadSheet_uiWidgetHoverBackgroundPrimary as uiWidgetHoverBackgroundPrimary, cssVariablePayloadSheet_uiWidgetWidth as uiWidgetWidth };
-}
-
-type RdCssVariablePayloadSheet = {
-    [Key in keyof typeof cssVariablePayloadSheet]: Omit<(typeof cssVariablePayloadSheet)[Key], 'value'> & {
-        value: string;
-    };
-};
-
 type ExtensionName = string;
 type ExtensionOnActivated<Context = unknown> = (context?: Context) => ((() => void) | Promise<(() => void)> | void | Promise<void>);
 type ExtensionOnDeactivated<Context = unknown> = (context?: Context) => (void | Promise<void>);
@@ -451,8 +160,9 @@ declare class Extension {
     readonly onActivated: ExtensionOnActivated;
     readonly onDeactivated?: ExtensionOnDeactivated;
     constructor(options: ExtensionOptions);
-    activated(): void;
-    deactivated(): void;
+    getIsActivated(): boolean;
+    activated(): Promise<void>;
+    deactivated(): Promise<void>;
     static isExtension(extension: any): extension is Extension;
 }
 /**
@@ -556,6 +266,7 @@ type ExtractSingleEntries<Entries> = {
 declare class MetadataManager<MetadataEntries extends Record<string, any>> {
     private readonly rxpInnerStore;
     private readonly metadataMap;
+    constructor();
     /**
      * 定义 store 元数据, 元数据可以是任何东西
      * @example
@@ -698,10 +409,8 @@ declare global {
        * 注册元数据的入口映射关系
        */
       export interface MetadataEntries {
-        /**
-         * 功能 - 主题 - 变量 - 转换
-         */
-        'functional.theme.variables.transformer': ((variables: RdCssVariablePayloadSheet) => void)[];
+        'test': any;
+        'tests': any[];
 
         /**
          * 功能 - meta2d - 注册
@@ -843,7 +552,8 @@ interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
      * 当前控件是否具有 hover 背景特性
      */
     readonly hasHoverStyle?: boolean;
-    readonly hoverStyleBackground?: string;
+    readonly hoverStyleBackground?: Property.Background;
+    readonly hasInnerPadding?: boolean;
     /**
      * 当前控件展示的图标元素
      */
@@ -1159,7 +869,7 @@ declare const enum SidebarStatus {
 }
 interface ThemeStore {
     layout: {
-        mainSidebar: SidebarStatus;
+        mainSidebar: SidebarStatus | 'left' | 'right' | 'none';
     };
 }
 declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<ThemeStore>, "persist"> & {
@@ -1175,7 +885,7 @@ declare const useThemeStore: zustand.UseBoundStore<Omit<Omit<zustand.StoreApi<Th
 }, "setState"> & {
     setState(nextStateOrUpdater: ThemeStore | Partial<ThemeStore> | ((state: {
         layout: {
-            mainSidebar: SidebarStatus;
+            mainSidebar: SidebarStatus | 'left' | 'right' | 'none';
         };
     }) => void), shouldReplace?: boolean): void;
 }>;
@@ -2164,6 +1874,7 @@ declare global {
       meta2d?: _meta2d_core.Meta2d;
 
       readonly Antd: typeof antd;
+      readonly AntdIcons: typeof iconInstance;
       readonly spring: typeof _react_spring_web;
       readonly transitionGroup: typeof react_transition_group;
       readonly moment: typeof moment;
@@ -2186,13 +1897,6 @@ declare global {
         }
       }, keyof ExposeApi['stores']>;
 
-      readonly skin: {
-        readonly skin: Skin<RdCssVariablePayloadSheet>;
-        readonly makeCssVarPayload: typeof makeCssVarPayload;
-        readonly mrvp: typeof mrvp;
-        readonly Skin: typeof Skin;
-      };
-
       readonly i18n: {
         readonly i18n: typeof i18n;
         readonly useTranslation: typeof react_i18next.useTranslation;
@@ -2210,8 +1914,6 @@ declare global {
       }
 
       readonly services: {
-        readonly Skin: typeof Skin;
-
         readonly Emitter: typeof Emitter;
         readonly Invoker: typeof Invoker;
 
@@ -2311,32 +2013,6 @@ declare global {
     export type WritableComputedRef<T, S> = _vue_reactivity.WritableComputedRef<T, S>;
     export type ReactiveMarker = _vue_reactivity.ReactiveMarker;
     export type DeepReadonly<T> = _vue_reactivity.DeepReadonly<T>;
-  }
-}
-
-type RdCssVariablesDeclaration = CssVariablesDeclaration<RdCssVariablePayloadSheet>;
-
-type RdCssVars = CssVars<RdCssVariablePayloadSheet>;
-
-declare global {
-  /**
-   * 皮肤相关的类型定义
-   */
-  export namespace Rapid.SKin {
-    /**
-     * 当前定义地 payload sheet
-     */
-    export type CssVariablePayloadSheet = RdCssVariablePayloadSheet;
-
-    /**
-     * 皮肤变量声明
-     */
-    export type CssVariablesDeclaration = RdCssVariablesDeclaration;
-
-    /**
-     * 皮肤变量
-     */
-    export type CssVars = RdCssVars;
   }
 }
 
@@ -2444,17 +2120,10 @@ declare global {
 
   interface Window {
     readonly native: Rapid.Native;
-
-    readonly cssVars: Rapid.SKin.CssVars;
   }
 
   /**
    * 全局的 native 实例
    */
   const native: Rapid.Native;
-
-  /**
-   * 全局的皮肤变量
-   */
-  const cssVars: Rapid.SKin.CssVars;
 }
