@@ -11,7 +11,7 @@ export const enum SidebarStatus {
 
 export interface ThemeStore {
   layout: {
-    mainSidebar: SidebarStatus;
+    mainSidebar: SidebarStatus | 'left' | 'right' | 'none';
   }
 }
 

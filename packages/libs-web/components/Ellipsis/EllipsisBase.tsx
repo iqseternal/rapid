@@ -85,8 +85,6 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
     }
   } = props;
 
-  if (isUnDef(children)) return null;
-
   const [state] = useShallowReactive({
     // 当前内容是否溢出了容器
     isOverflow: false
@@ -102,7 +100,7 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
       return defaultContent;
     }
 
-    return StringFilters.toValidStr(children.toString(), defaultContent);
+    return StringFilters.toValidStr(children?.toString(), defaultContent);
   }, [children, defaultContent]);
 
   const resizeObserverCallback = useMemo(() => {
@@ -143,6 +141,8 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
       {realContent}
     </div>
   );
+
+  if (isUnDef(children)) return null;
 
   if (!state.isOverflow) return element;
   return overlayRender(element);

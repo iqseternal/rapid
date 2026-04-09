@@ -10,7 +10,7 @@
   "private": true,
   "engineStrict": true,
   "engines": {
-    "node": ">=20.19.2",
+    "node": ">=20.18.2",
     "pnpm": ">=8.9.0"
   },
   "packageManager": "pnpm@9.15.2",
@@ -182,6 +182,7 @@
     "commander": "13.1.0",
     "concurrently": "9.0.0",
     "cross-env": "7.0.3",
+    "csstype": "3.2.3",
     "depcheck": "1.4.7",
     "electron": "24.8.8",
     "electron-builder": "24.13.3",

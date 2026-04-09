@@ -7,8 +7,8 @@ program
   .name('rd-builder')
   .version('0.0.1')
   .description('rapid插件脚手架, 用于构建 electron')
-  ;;
-
+  ;
+ 
 program
   .command('dev')
   .option('-c, --config <string>', '指定配置文件')
@@ -16,7 +16,7 @@ program
   .option('-w, --watch', '是否开启 watch 模式')
   .description('启用开发时脚手架')
   .action(devAction)
-  ;;
+  ;
 
 
 program
@@ -26,6 +26,6 @@ program
   .option('--preview', '是否开启预览模式')
   .description('启用构建时脚手架')
   .action(buildAction)
-  ;;
+  ;
 
 program.parse(process.argv);

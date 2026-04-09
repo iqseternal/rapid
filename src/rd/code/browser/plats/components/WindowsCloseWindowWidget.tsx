@@ -14,6 +14,7 @@ export const WindowsCloseWindowWidget = memo(() => {
       tipAttrs={{
         placement: 'leftBottom'
       }}
+      size='base'
       className='!cursor-default'
       onClick={() => ipcActions.windowClose()}
     >

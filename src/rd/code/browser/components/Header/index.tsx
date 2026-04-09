@@ -2,10 +2,6 @@ import { classnames } from '@rapid/libs-web/common';
 import { memo } from 'react';
 import { commonStyles } from '@/scss/common';
 
-import { TransitionGroup, Transition, CSSTransition } from 'react-transition-group';
-
-import styles from './header.module.scss';
-
 export interface HeaderProps {
   readonly className?: string;
 }
@@ -36,20 +32,21 @@ export const Header = memo((props: HeaderProps) => {
 
   return (
     <div
-      className={classnames('w-full text-sm flex justify-between items-center', commonStyles.appRegion, className)}
-      style={{
-        backgroundColor: cssVars.uiCaptionBarBackground,
-        height: cssVars.uiCaptionBarHeight,
-        maxHeight: cssVars.uiCaptionBarHeight,
-      }}
+      className={classnames(
+        'w-full text-sm flex justify-between items-center transition-all ease-out',
+        'h-9',
+        // 'bg-gray-50 bg-opacity-5',
+        'bg-white',
+        commonStyles.appRegion,
+        className
+      )}
     >
       <div className='w-full h-full z-50 flex justify-between items-center flex-1'>
         <div
-          className='flex items-center w-max max-w-full max-h-full aspect-square pl-0.5 flex-none'
-          style={{
-            width: cssVars.uiNavigationBarWidth,
-            maxWidth: cssVars.uiNavigationBarWidth
-          }}
+          className={classnames(
+            'flex items-center w-max max-w-full max-h-full aspect-square pl-0.5 flex-none',
+            'w-8'
+          )}
         >
           {HeaderLogoContent && <HeaderLogoContent />}
         </div>
@@ -86,36 +83,34 @@ export const Header = memo((props: HeaderProps) => {
         <div
           className={classnames(
             commonStyles.appRegionNo,
-            'flex justify-end gap-x-0.5 flex-none items-center'
+            'flex justify-end gap-x-1 flex-none items-center h-full py-0.5'
           )}
         >
-          {ControllerOtherWidgets && ControllerOtherWidgets.toReversed().map((OtherWidget, index) => {
+          {ControllerOtherWidgets && ControllerOtherWidgets.map((OtherWidget, index) => {
+            const reversedIndex = Math.abs(ControllerOtherWidgets.length - index - 1);
+            const ReversedOtherWidget = ControllerOtherWidgets[reversedIndex];
 
-            return (<OtherWidget key={index} />)
+            return (<ReversedOtherWidget key={`r-${index}`} />)
 
-            return (
-              <CSSTransition
-                key={`ControllerOtherWidgets-${index}`}
-                appear
-                in
-                unmountOnExit
-                classNames={{
-                  appear: styles.widgetSlideEnter,
-                  appearActive: styles.widgetSlideEnterActive,
-                  enter: styles.widgetSlideEnter,
-                  enterActive: styles.widgetSlideEnterActive,
-                  exit: styles.widgetSlideExit,
-                  exitActive: styles.widgetSlideExitActive,
-                }}
-                timeout={0.5}
-              >
-                <div
-                  key={`ControllerOtherWidgets-${index}`}
-                >
-                  <OtherWidget key={index} />
-                </div>
-              </CSSTransition>
-            )
+            // return (
+            //   <CSSTransition
+            //     key={`ControllerOtherWidgets-${index}`}
+            //     appear
+            //     in
+            //     unmountOnExit
+            //     classNames={{
+            //       appear: styles.widgetSlideEnter,
+            //       appearActive: styles.widgetSlideEnterActive,
+            //       enter: styles.widgetSlideEnter,
+            //       enterActive: styles.widgetSlideEnterActive,
+            //       exit: styles.widgetSlideExit,
+            //       exitActive: styles.widgetSlideExitActive,
+            //     }}
+            //     timeout={0.5}
+            //   >
+            //     <ReversedOtherWidget key={index} />
+            //   </CSSTransition>
+            // )
           })}
 
           {MinWindowWidget && (<MinWindowWidget />)}

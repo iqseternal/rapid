@@ -30,23 +30,21 @@ export interface EllipsisTooltipProps extends Omit<EllipsisProps, 'overlayRender
 export const EllipsisTooltip = memo((props: EllipsisTooltipProps) => {
   const { tipAttrs, children, ...realProps } = props;
 
-  const overlayRender = (realContent: ReactNode) => {
-
-    return (
-      <Tooltip
-        overlay={children}
-        autoAdjustOverflow
-        {...tipAttrs}
-      >
-        {realContent}
-      </Tooltip>
-    )
-  }
-
   return (
     <EllipsisBase
-      overlayRender={overlayRender}
       children={children}
+      overlayRender={(realContent: ReactNode) => {
+
+        return (
+          <Tooltip
+            overlay={children}
+            autoAdjustOverflow
+            {...tipAttrs}
+          >
+            {realContent}
+          </Tooltip>
+        )
+      }}
       {...realProps}
     />
   )

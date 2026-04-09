@@ -1,7 +1,9 @@
 import { ConfigProvider, App } from 'antd';
-import { memo, useEffect } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { ClickToComponent } from 'click-to-react-component';
+
+import { debounce } from 'lodash';
 
 import useExtend from './extend';
 import RdRouterWrapper from './router';
@@ -36,8 +38,8 @@ export const RdApp = memo(() => {
 
           },
           Button: {
-            defaultActiveColor: cssVars.uiDefaultButtonTextColor,
-            defaultActiveBg: cssVars.uiDefaultButtonBackground,
+            defaultActiveColor: '#616161',
+            defaultActiveBg: '#fafafa',
           }
         },
         cssVar: {
@@ -76,8 +78,8 @@ export const RdApp = memo(() => {
           placement: 'bottomRight'
         }}
         style={{
-          color: cssVars.colorNeutral900,
-          backgroundColor: cssVars.colorNeutral50
+          color: '#212121',
+          backgroundColor: '#fafafa'
         }}
       >
         <RdRouterWrapper />
@@ -96,6 +98,25 @@ export const RdApp = memo(() => {
  * App component, 这里做各种功能的插入：例如 插件等等
  */
 export const RdAppWrapper = memo(() => {
+  const isFirstRendered = useRef(true);
+  const noticeReactAppFirstRendered = useMemo(
+    () => debounce(
+      () => {
+        if (!isFirstRendered.current) return;
+
+        native.emitter.emit('react-app-first-rendered');
+        isFirstRendered.current = false;
+      },
+      20,
+      {
+        maxWait: 1000
+      }
+    ),
+    []
+  );
+
+  useEffect(noticeReactAppFirstRendered, []);
+
   useExtend();
 
   return (<RdApp />)

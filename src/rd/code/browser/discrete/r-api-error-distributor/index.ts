@@ -23,5 +23,5 @@ native.invoker.handle('r-api-err-distributor', async response => {
     return Promise.reject(response);
   }
 
-  return Promise.reject(data);
+  return Promise.reject(response);
 })

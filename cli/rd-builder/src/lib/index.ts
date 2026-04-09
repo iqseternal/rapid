@@ -13,6 +13,14 @@ export async function transformerConfig(rdBuilderConfig: RdBuilderConfig) {
   const preloadRspackConfig = await transformerSandboxRspackConfig();
   const rendererRsbuildConfig = await transformerBrowserRsbuildConfig();
 
+  if (!mainRspackConfig.devServer) mainRspackConfig.devServer = {};
+  if (!mainRspackConfig.devServer.devMiddleware) mainRspackConfig.devServer.devMiddleware = {};
+  mainRspackConfig.devServer.devMiddleware.writeToDisk = true;
+
+  if (!preloadRspackConfig.devServer) preloadRspackConfig.devServer = {};
+  if (!preloadRspackConfig.devServer.devMiddleware) preloadRspackConfig.devServer.devMiddleware = {};
+  preloadRspackConfig.devServer.devMiddleware.writeToDisk = true;
+
   // compiler
   const mainCompiler = rspack(mainRspackConfig);
   const preloadCompiler = rspack(preloadRspackConfig);

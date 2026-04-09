@@ -84,8 +84,8 @@ export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.
     const extension = native.extension.getExtension(nextExtension.name);
 
     if (!extension) {
-      native.extension.registerExtension(nextExtension);
-      native.extension.activatedExtension(nextExtension.name);
+      await native.extension.registerExtension(nextExtension);
+      await native.extension.activatedExtension(nextExtension.name);
       continue;
     }
 
@@ -94,35 +94,13 @@ export async function registerAndReplaceExtensions(nextExtensions: Rapid.Extend.
       continue;
     }
 
-    if (!nextExtension.meta) return;
+    if (!nextExtension.meta) continue;
     if (extension.meta.script_hash === nextExtension.meta.script_hash) continue;
 
     await native.extension.deactivatedExtension(extension.name);
     await native.extension.delExtension(extension.name);
 
-    native.extension.registerExtension(nextExtension);
-    native.extension.activatedExtension(nextExtension.name);
+    await native.extension.registerExtension(nextExtension);
+    await native.extension.activatedExtension(nextExtension.name);
   }
-
-  const vouchers = native.extension.getExtensions().filter(extension => {
-    return extension.meta && extension.meta.script_hash && extension.meta.extension_uuid && extension.meta.script_hash;
-  }).map((extension) => {
-    if (!extension.meta) {
-
-      return {
-        extension_id: -1,
-        extension_uuid: '',
-        script_hash: ''
-      }
-    }
-
-    return {
-      extension_id: extension.meta.extension_id,
-      extension_uuid: extension.meta.extension_uuid,
-      script_hash: extension.meta.script_hash
-    }
-  });
-
-  native.threads.rxcThread.send('rxc-thread-sync-extensions-info', vouchers);
 }
-

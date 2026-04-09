@@ -99,13 +99,6 @@ async function transformMainRspackConfig(): Promise<RspackOptions> {
         }
       ],
     },
-    devServer: {
-      devMiddleware: {
-        // 将结果写入到磁盘
-        writeToDisk: true,
-
-      },
-    },
     optimization: {
       minimize: IS_PROD,
       minimizer: [
@@ -189,11 +182,6 @@ async function transformPreloadRspackConfig(): Promise<RspackOptions> {
       ],
     },
     devtool: IS_DEV ? 'source-map' : false,
-    devServer: {
-      devMiddleware: {
-        writeToDisk: true
-      },
-    },
     optimization: {
       minimize: IS_PROD,
       minimizer: [
@@ -273,7 +261,6 @@ async function transformRendererRsbuildConfig(): Promise<CreateRsbuildOptions> {
       minify: {
         js: IS_PROD,
         jsOptions: {
-
           extractComments: false,
           minimizerOptions: {
             minify: IS_PROD,

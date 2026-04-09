@@ -1,12 +1,16 @@
 import { memo } from 'react';
 import { Card } from 'antd';
 
+import { useTranslation } from 'react-i18next';
+
 export const Home = memo(() => {
 
 
+	const { t } = useTranslation();
+
 	return (
 		<Card>
-			Home
+			{t('plats.widgets.control.reduction.reduction')}
 		</Card>
 	)
 })

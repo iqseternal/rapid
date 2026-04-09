@@ -10,7 +10,6 @@ import {
 import { Emitter, Invoker } from '@rapid/bus';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
-  AES_DEFAULT_KEY,
   Ansi,
   aesDecrypt,
   aesDecryptAlgorithm,
@@ -56,9 +55,7 @@ import {
   isProxy
 } from '@vue/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
-import { Skin, makeCssVarPayload, mrvp } from 'rd/base/browser/service/Skin';
-import { cssVariablesPayloadSheet } from './skin';
-import { rxcThread } from './workers';
+// import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
 import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
 import { Ellipsis } from '@rapid/libs-web';
@@ -73,6 +70,7 @@ import i18n from './i18n';
 import moment from 'moment';
 
 import * as Antd from 'antd';
+import * as AntdIcons from '@ant-design/icons';
 import * as spring from '@react-spring/web';
 import * as transitionGroup from 'react-transition-group';
 
@@ -84,10 +82,6 @@ const emitter = new Emitter<Rapid.Bus.BusEmitterEntries>();
 
 const invoker = new Invoker<Rapid.Bus.BusInvokerEntries>();
 
-const skin = new Skin(cssVariablesPayloadSheet);
-
-const cssVars = skin.toCssVars();
-
 const native: Rapid.Native = ({
   extension: extensionManager,
   metadata: metadataManager,
@@ -96,6 +90,7 @@ const native: Rapid.Native = ({
   meta2d: void 0,
 
   Antd: Antd,
+  AntdIcons: AntdIcons,
   spring: spring,
   transitionGroup: transitionGroup,
   moment: moment,
@@ -114,7 +109,7 @@ const native: Rapid.Native = ({
   },
 
   threads: {
-    rxcThread: rxcThread
+    // rxcThread: rxcThread
   },
 
   stores: {
@@ -132,14 +127,7 @@ const native: Rapid.Native = ({
     Widget: Widget,
     Empty: Empty
   },
-  skin: {
-    skin: skin,
-    mrvp: mrvp,
-    makeCssVarPayload: makeCssVarPayload,
-    Skin: Skin,
-  },
   services: {
-    Skin: Skin,
     Emitter: Emitter,
     Invoker: Invoker,
     ExtensionManager: ExtensionManager,
@@ -216,7 +204,5 @@ const native: Rapid.Native = ({
     defineRawType: defineRawType
   },
 });
-
-injectReadonlyVariable(window, 'cssVars', cssVars);
 
 injectReadonlyVariable(window, 'native', native);

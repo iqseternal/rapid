@@ -1,16 +1,8 @@
-
-
 import { rApiGet } from 'rd/base/common/api';
+import { setupExtensions, setupInnerExtensions } from '@/plats/extensions';
+import { useGroupExtensionsApi } from '@/api';
+import { toNil, toWaitPromise } from '@rapid/libs';
+import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension } from '@/plats';
+import { debounce } from 'lodash';
 
-native.emitter.on('task:start-rxc-extension-heartbeat', () => {
-
-
-  native.threads.rxcThread.send('rxc-thread-start-extension-heartbeat', void 0);
-})
-
-native.emitter.on('task:terminate-rxc-extension-heartbeat', () => {
-
-
-  native.threads.rxcThread.send('rxc-thread-terminate-extension-heartbeat', void 0);
-})
-
+native.emitter.on('react-app-first-rendered', setupExtensions);

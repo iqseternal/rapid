@@ -62,7 +62,7 @@ export const MenuItem = memo<MenuItemProps>((props) => {
       <span
         className='flex-none'
         style={{
-          color: cssVars.colorTextSecondary
+          color: '#616161'
         }}
       >
         {shortcutKeys.length > 0 && shortcutKeys[0]}

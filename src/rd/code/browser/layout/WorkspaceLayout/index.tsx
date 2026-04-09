@@ -8,7 +8,10 @@ import { classnames } from '@rapid/libs-web';
 import { SidebarStatus, useThemeStore } from '@/features';
 import { MaintenanceMenus } from './plats/MaintenanceMenus';
 import { workbenchesRouteSwitchTransitionClassNames } from './definition';
+import { useTranslation } from 'react-i18next';
 
+import Widget from '../../components/Widget';
+import i18n from '../../i18n';
 import Header from '@/components/Header';
 import Logo from '@/components/Logo';
 import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';
@@ -53,17 +56,16 @@ const WorkspaceLayout = memo(() => {
   const NavigationBarLatestContent = native.metadata.useLatestMetadataInVector('ui.layout.navigation.bar.content');
 
   return (
-    <div className='w-full h-full'>
+    <div
+      className='w-full h-full max-h-full overflow-hidden flex flex-col'
+    >
       <Header />
 
       <div
         className={classnames(
-          'flex justify-between flex-nowrap items-center w-full h-full',
+          'flex flex-1 justify-between flex-nowrap items-center w-full h-full',
           mainSidebarStatus === SidebarStatus.Right && 'flex-row-reverse'
         )}
-        style={{
-          height: `calc(100% - ${cssVars.uiCaptionBarHeight})`
-        }}
       >
         {mainSidebarStatus !== SidebarStatus.None && (NavigationBarLatestContent && <NavigationBarLatestContent />)}
 
@@ -80,12 +82,34 @@ const WorkspaceLayout = memo(() => {
   )
 })
 
+const I18nChangeLanguageWidget = memo(() => {
+  const { t } = useTranslation();
+
+  return (
+    <Widget
+      tipText={t('test.widgets.i18n.changelanguage', '切换语言包')}
+      icon={'ApiOutlined'}
+      onClick={async () => {
+        const lang = i18n.language;
+
+        if (lang === 'en') {
+          await i18n.changeLanguage('zh');
+        }
+        else {
+          await i18n.changeLanguage('en');
+        }
+      }}
+    />
+  )
+})
+
 const WorkspaceLayoutWrapper = memo(() => {
   native.metadata.useFollowMetadataInVector('ui.layout.header.icon', Logo);
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.reduction', WindowsReductionWindowWidget);
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.close', WindowsCloseWindowWidget);
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', WindowsDebugWidget);
+  native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.others', I18nChangeLanguageWidget);
   native.metadata.useFollowMetadataInVector('ui.layout.header.menu.content', MaintenanceMenus);
   native.metadata.useFollowMetadataInVector('ui.layout.navigation.bar.content', NavigationBar);
 

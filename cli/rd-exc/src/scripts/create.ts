@@ -6,7 +6,7 @@ export interface CreateActionOptions {
 
 }
 
-export function createAction(extName: string, options: CreateActionOptions) {
+export async function createAction(extName: string, options: CreateActionOptions) {
 
   const cwd = process.cwd();
 

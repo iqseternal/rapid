@@ -35,6 +35,7 @@
     "noImplicitReturns": false,
     "traceResolution": false,
     "allowSyntheticDefaultImports": true,
+    "stripInternal": true,
     "allowUmdGlobalAccess": true,
     "allowArbitraryExtensions": true,
     "allowJs": true,
@@ -43,12 +44,13 @@
       "../rd-dts/@types",
       "../rd-dts/@types-web",
       "../rd-dts/@types-node",
-      "../rd/code/browser/types",
       "node"
     ],
     "paths": {
       "@rapid/libs": ["../../packages/libs"],
       "@rapid/libs-web": ["../../packages/libs-web"],
+      "@rapid/bus": ["../../packages/bus"],
+      "@rapid/m-ipc-core": ["../../packages/m-ipc-core"],
       "@suey/rxp-meta": ["../../libs/rxp-meta"],
       "rd/*": ["../rd/*"],
       "@/*": ["../rd/code/browser/*"]
@@ -60,8 +62,7 @@
     "../../libs/**/*.ts",
     "../../libs/**/*.tsx",
     "../rd/**/*.ts",
-    "../rd/code/browser/**/*.tsx",
-    "../rd/code/browser/**/*.json",
+    "../rd/**/*.json",
     "../../package.json"
   ],
   "exclude": [

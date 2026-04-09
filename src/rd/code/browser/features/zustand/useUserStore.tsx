@@ -170,7 +170,6 @@ export const userActions = {
    */
   useLogout: asynced<typeof logoutApi>(async (payload) => {
     const [err, res] = await toNil(logoutApi(payload));
-
     if (err) return Promise.reject();
     return Promise.resolve();
   })

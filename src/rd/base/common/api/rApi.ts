@@ -105,11 +105,11 @@ const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailR
 
       const globalThat = globalThis as any;
 
-      // 获取当前环境是否存在 rApp
+      // 获取当前环境是否存在 native
       // 如果存在, 则寻找存在的 invoker 分发器
       if (
-        Reflect.has(globalThat, 'rApp') &&
-        Reflect.has(globalThat.rApp, 'invoker') &&
+        Reflect.has(globalThat, 'native') &&
+        Reflect.has(globalThat.native, 'invoker') &&
         Reflect.has(globalThat.native.invoker, 'invoke') &&
         typeof globalThat.native.invoker.invoke === 'function'
       ) return globalThat.native.invoker.invoke('r-api-err-distributor', response);

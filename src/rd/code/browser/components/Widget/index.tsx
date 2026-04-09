@@ -6,6 +6,7 @@ import type { HTMLAttributes, MouseEventHandler, ReactNode, MouseEvent } from 'r
 import { memo, useCallback, useState, useMemo, forwardRef } from 'react';
 import { useShallowReactive, useSyncNormalState } from '@rapid/libs-web';
 import { commonStyles } from '@/scss/common';
+import type { Property } from 'csstype';
 
 import IconFont from '@/components/IconFont';
 
@@ -19,6 +20,9 @@ export interface WidgetProps extends HTMLAttributes<HTMLDivElement> {
    * 当前控件是否具有 hover 背景特性
    */
   readonly hasHoverStyle?: boolean;
+  readonly hoverStyleBackground?: Property.Background;
+
+  readonly hasInnerPadding?: boolean;
 
   /**
    * 当前控件展示的图标元素
@@ -64,6 +68,8 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
     className,
     innerClassName,
     hasHoverStyle = true,
+    hoverStyleBackground,
+    hasInnerPadding = true,
     icon,
     size = 'base',
     disabled = false,
@@ -141,7 +147,7 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
       }}
       ref={ref}
       style={{
-        background: shallowState.hasHover ? cssVars.colorNeutral200 : void 0
+        background: shallowState.hasHover && hasHoverStyle ? (hoverStyleBackground || '#eeeeee') : void 0,
       }}
     >
       <Tooltip
@@ -157,16 +163,19 @@ export const Widget = memo(forwardRef<HTMLDivElement, WidgetProps>((props, ref) 
           onDoubleClick={withDisabledDoubleClick}
           onContextMenu={withDisabledContextMenu}
           className={classnames(
-            'flex items-center justify-center text-[100%] p-[25%] max-w-full max-h-full drop-shadow-md',
-            'w-7 h-7',
+            'flex items-center justify-center max-w-full max-h-full drop-shadow-md overflow-hidden',
             (loading || disabled) && 'pointer-events-none',
-            size === 'large' && '!w-8 !h-8 text-[110%]',
-            size === 'small' && '!w-6 !h-6 text-[90%]',
+            size === 'base' && '!w-7 !h-7 !text-base',
+            size === 'large' && '!w-9 !h-9 !text-[24px]',
+            size === 'small' && '!w-6 !h-6 !text-[14px]',
+            children && hasInnerPadding && 'p-1.5',
             innerClassName
           )}
         >
           {loading ? loadingContent : (
-            icon ? <IconFont icon={icon} /> : children
+            children ? children : (
+              icon && <IconFont icon={icon} />
+            )
           )}
         </div>
       </Tooltip>

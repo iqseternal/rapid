@@ -84,6 +84,10 @@
   "plats": {
     "widgets": {
       "control": {
+        "reduction": {
+          "reduction": "还原窗口",
+          "maximize": "最大化窗口"
+        },
         "close": {
           "close": "关闭窗口"
         },
@@ -92,10 +96,6 @@
         },
         "min": {
           "minimize": "最小化窗口"
-        },
-        "reduction": {
-          "reduction": "还原窗口",
-          "maximize": "最大化窗口"
         }
       }
     }

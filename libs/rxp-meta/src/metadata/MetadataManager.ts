@@ -1,6 +1,47 @@
+
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import type { ExtractSingleEntries, ExtractVectorEntries, ExtractElInArray } from './declare';
-import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
+import { RxpInnerStore } from '../base/index';
+
+type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'yes' : 'no') extends 'no' ? FailReturnType : SuccessReturnType;
+
+/**
+ * 从数组中提取出元素的类型
+ * @example
+ * type A = number[];
+ * type B = ExtractElInArray<A>; // number
+ */
+type ExtractElInArray<T> = IsAny<T, never, T extends (infer U)[] ? U : never>;
+
+/**
+ * 提取列表的 entries, 在 interface {} 中, 只有值为数组类型 U[], 时会被保留, 否则不在此类型中
+ * @example
+ * type A = {
+ *    name: string;
+ *    age: number;
+ *    friends: any[];
+ * }
+ *
+ * type B = ExtractVectorEntries<A>; // { friends: any[]; }
+ */
+type ExtractVectorEntries<Entries> = {
+  [Key in keyof Entries as (IsAny<Entries[Key], never, Entries[Key] extends unknown[] ? Key : never>)]: Entries[Key];
+}
+
+/**
+ * 提取列表的 entries, 在 interface {} 中, 只有值不为数组类型 U[], 时会被保留, 否则不在此类型中
+ * @description 与上一个 `ExtractVectorEntries` 相反
+ * @example
+ * type A = {
+ *    name: string;
+ *    age: number;
+ *    friends: any[];
+ * }
+ *
+ * type B = ExtractSingleEntries<A>; // { name: string;age: number; }
+ */
+type ExtractSingleEntries<Entries> = {
+  [Key in keyof Entries as Entries[Key] extends unknown[] ? never : Key]: Entries[Key];
+}
 
 /**
  * 元数据, 在页面中组件的变化可能相距甚远
@@ -11,8 +52,13 @@ import { InnerZustandStoreManager } from '../base/InnerZustandStoreManager';
  * 2. 在特殊时机, 注册槽点数据, 从而响应式自动更新到子孙或者兄弟级甚远的组件进行渲染
  *
  */
-export class MetadataManager<MetadataEntries extends Record<string, any>> extends InnerZustandStoreManager {
+export class MetadataManager<MetadataEntries extends Record<string, any>> {
+  private readonly rxpInnerStore = new RxpInnerStore();
   private readonly metadataMap = new Map<string | number | symbol, any>();
+
+  public constructor() {
+    this.metadataMap.clear();
+  }
 
   /**
    * 定义 store 元数据, 元数据可以是任何东西
@@ -23,8 +69,9 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * metadata.defineMetadata('example-key', () => { return (<div />) });
    */
   public defineMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
+
     this.metadataMap.set(metadataKey, metadata);
-    super.updateStore();
+    this.rxpInnerStore.update();
 
     return () => {
       this.delMetadata(metadataKey);
@@ -63,7 +110,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     if (!this.hasMetadata(metadataKey)) return;
 
     this.metadataMap.delete(metadataKey);
-    super.updateStore();
+    this.rxpInnerStore.update();
   }
 
   /**
@@ -72,7 +119,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    */
   public defineMetadataInSingle<MetadataKey extends keyof ExtractSingleEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: MetadataEntries[MetadataKey]) {
     this.metadataMap.set(metadataKey, metadata);
-    super.updateStore();
+    this.rxpInnerStore.update();
 
     return () => {
       this.delMetadata(metadataKey);
@@ -87,24 +134,29 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * metadata.defineMetadataInVector('example-key', {});
    * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
    */
-  public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>) {
+  public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): (() => void) {
+    let hasThisMetadata = false;
+
     if (this.hasMetadata(metadataKey)) {
       const vector = this.metadataMap.get(metadataKey);
       if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
-      const newVector = vector.filter(v => v !== metadata);
-      newVector.push(metadata);
+      const newVector = vector.map(v => {
+        if (v === metadata) hasThisMetadata = true;
+        return v;
+      });
 
-      this.metadataMap.set(metadataKey, newVector);
-      super.updateStore();
+      if (!hasThisMetadata) {
+        newVector.push(metadata);
+        this.metadataMap.set(metadataKey, newVector);
+        this.rxpInnerStore.update();
+      }
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
-      super.updateStore();
+      this.rxpInnerStore.update();
     }
 
-    return () => {
-      this.delMetadataInVector(metadataKey, metadata);
-    }
+    return () => this.delMetadataInVector(metadataKey, metadata);
   }
 
   /**
@@ -118,22 +170,33 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
   public delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void {
     if (!this.hasMetadata(metadataKey)) return;
 
+    let hasThisMetadata = false;
+
     const vector = this.metadataMap.get(metadataKey) ?? [];
     if (!Array.isArray(vector)) throw new Error(`delMetadataInVector: current metadata value is not an array`);
+
     if (vector.length === 0) {
       this.metadataMap.delete(metadataKey);
+      this.rxpInnerStore.update();
       return;
     }
 
-    const fVector = vector.filter(v => v !== metadata);
-    if (fVector.length === 0) {
-      this.metadataMap.delete(metadataKey);
-      super.updateStore();
-      return;
-    }
+    const fVector = vector.filter(v => {
+      const isThisMetadata = (v === metadata);
+      if (isThisMetadata) hasThisMetadata = true;
+      return !isThisMetadata;
+    });
 
-    this.metadataMap.set(metadataKey, fVector);
-    super.updateStore();
+    if (hasThisMetadata) {
+      if (fVector.length === 0) {
+        this.metadataMap.delete(metadataKey);
+        this.rxpInnerStore.update();
+        return;
+      }
+
+      this.metadataMap.set(metadataKey, fVector);
+      this.rxpInnerStore.update();
+    }
   }
 
   /**
@@ -177,42 +240,50 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
     })
 
     /**
-     * updateState
+     * refreshComponent
      * @description 用于更新 state, 让视图进行刷新, 但是由于 setState 需要组件已经挂载, 所以有额外的挂载判断
-     * @description 改更新是有 20ms 延迟的
      */
-    const updateState = useCallback(() => {
+    const refreshComponent = useCallback(() => {
       if (!normalState.current.isMounted) {
         // 标记需要同步
         normalState.current.needSync = true;
         return;
       }
       // 刷新组件 (在组件挂载时才 setState)
-      setState({});
+      setState(() => ({}));
     }, []);
 
-    if (!normalState.current.isMounted && !normalState.current.unsubscribe) {
-      normalState.current.unsubscribe = super.subscribe(() => {
+    if (!normalState.current.isMounted || !normalState.current.unsubscribe) {
+      if (normalState.current.unsubscribe) normalState.current.unsubscribe();
+
+      normalState.current.data = this.getMetadata(metadataKey);
+      normalState.current.unsubscribe = this.rxpInnerStore.subscribe(() => {
         const data = this.getMetadata(metadataKey);
+
         if (data !== normalState.current.data) {
           normalState.current.data = data;
-          normalState.current.needSync = false;
-          updateState();
+          refreshComponent();
         }
       })
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       normalState.current.isMounted = true;
+    }, []);
 
+    useEffect(() => {
       // 因为元数据的注册时间可能不恰当(在组件创建时, 但组件未挂载), 在当前组件都还没挂载时就已经注册
       // 所以在组件挂载后, 需要进行一次同步
-      if (normalState.current.needSync) updateState();
+      if (normalState.current.needSync) setState(() => ({}));
 
       return () => {
         normalState.current.isMounted = false;
+
         if (normalState.current.unsubscribe) normalState.current.unsubscribe();
         normalState.current.unsubscribe = void 0;
+
+        normalState.current.data = null;
+        normalState.current.needSync = false;
       }
     }, []);
 
@@ -241,7 +312,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> extend
    * 获取到所有定义的元数据
    */
   public useAllMetadata() {
-    super.useStoreValueToRerenderComponent();
+    this.rxpInnerStore.useValueToRenderReactComponent();
     return this.metadataMap;
   }
 

@@ -84,6 +84,10 @@
   "plats": {
     "widgets": {
       "control": {
+        "reduction": {
+          "reduction": "Restore",
+          "maximize": "Maximize"
+        },
         "close": {
           "close": "Close window"
         },
@@ -92,10 +96,6 @@
         },
         "min": {
           "minimize": "Minimize"
-        },
-        "reduction": {
-          "reduction": "Restore",
-          "maximize": "Maximize"
         }
       }
     }
