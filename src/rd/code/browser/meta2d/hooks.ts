@@ -117,6 +117,8 @@ export function useMeta2dEffect(meta2dHtmlElementRef: RefObject<HTMLElement>, de
 
       native.meta2d.off('*', setMeta2dCanvasData);
       native.meta2d.destroy();
+
+      native.meta2d = void 0;
     }
   }, deps);
 }

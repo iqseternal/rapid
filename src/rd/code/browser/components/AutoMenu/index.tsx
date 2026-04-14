@@ -42,7 +42,7 @@ const ContextMenu = memo<ContextMenuProps>((props) => {
 
   return (
     <Menu
-      items={menu.concat([])}
+      items={menu.concat()}
       getPopupContainer={() => document.body}
       triggerSubMenuAction={'click'}
       {...menuAttrs}

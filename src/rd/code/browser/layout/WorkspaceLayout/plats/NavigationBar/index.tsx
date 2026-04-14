@@ -25,28 +25,42 @@ const SideBarItem = memo<SideBarItemProps>((props) => {
     className,
     tipAttrs = {},
     activeFullPath,
+    children,
     ...attrs
   } = props;
 
   const location = useLocation();
 
   return (
-    <Widget
-      {...attrs}
+    <div
       className={classnames(
-        'h-[unset] aspect-square',
-        className,
-        {
-          ['bg-blue-50']: !!activeFullPath && (location.pathname === activeFullPath)
-        }
+        commonStyles.appRegionNo,
+        'cursor-default h-max'
       )}
-      tipAttrs={{
-        ...tipAttrs,
-        placement: 'right',
-        trigger: 'hover',
-        mouseEnterDelay: 1
-      }}
-    />
+    >
+      <Widget
+        {...attrs}
+        className={classnames(
+          'aspect-square',
+          className,
+          {
+            ['bg-blue-50']: !!activeFullPath && (location.pathname === activeFullPath)
+          }
+        )}
+        tipAttrs={{
+          ...tipAttrs,
+          placement: 'right',
+          trigger: 'hover',
+          mouseEnterDelay: 1
+        }}
+      />
+
+      <div
+        className='w-full h-max text-center'
+      >
+        {children}
+      </div>
+    </div>
   )
 })
 
@@ -72,11 +86,12 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
         'w-16',
         'bg-white',
         'shadow-sm',
+        'pt-2 pb-4',
         commonStyles.appRegion,
       )}
     >
       <div
-        className='mt-[2px] h-max flex justify-center flex-col w-full items-center gap-y-2'
+        className='h-max flex justify-center flex-col w-full items-center gap-y-2'
       >
         {workbenchesRoute.children?.filter(routeItem => !routeItem.meta?.more?.hiddenInMenu).map(routeItem => {
           return (
@@ -96,7 +111,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
       </div>
 
       <div
-        className='mb-8 flex flex-col justify-center w-full items-center'
+        className='flex flex-col justify-center w-full items-center'
       >
         <div />
 
@@ -105,9 +120,18 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
             trigger: ['click'],
             placement: 'topRight',
             autoAdjustOverflow: true,
+            getPopupContainer: () => document.body,
+          }}
+          menuAttrs={{
+            getPopupContainer: () => document.body,
           }}
           menu={[
-
+            {
+              key: 'setting-1',
+              type: 'item',
+              icon: 'CloseCircleFilled',
+              label: '设置'
+            }
           ]}
         >
           <SideBarItem
