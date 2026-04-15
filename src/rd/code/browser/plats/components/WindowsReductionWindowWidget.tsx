@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { toNil } from '@rapid/libs';
+import { toNil } from '@suey/pkg-utils';
 import { useNormalState, useRefresh, useWindowInnerSize, useAsyncEffect } from '@rapid/libs-web';
 import { platControllerMaxImgUrl, platControllerReductionImgUrl } from 'rd/assets';
 import { useTranslation } from 'react-i18next';

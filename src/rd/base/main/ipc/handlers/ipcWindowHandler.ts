@@ -2,7 +2,7 @@ import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { WindowService } from '../../service/WindowService';
 import { RuntimeException, TypeException } from '../../exceptions';
-import { isNumber, isString, isUnDef, isDef } from '@rapid/libs';
+import { isNumber, isString, isUnDef, isDef } from '@suey/pkg-utils';
 import { AppConfigService } from '../../service/AppConfigService';
 import { toMakeIpcAction } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';

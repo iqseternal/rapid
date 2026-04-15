@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { BrowserWindow, type BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { isString } from '@rapid/libs';
+import { isString } from '@suey/pkg-utils';
 import { WindowServiceStateMachine } from './WindowServiceStateMachine';
 import { RuntimeException } from '../exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';

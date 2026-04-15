@@ -1,4 +1,4 @@
-import { isString, isNumber, isNull } from '@rapid/libs';
+import { isString, isNumber, isNull } from '@suey/pkg-utils';
 import { RuntimeException, TypeException } from '../exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { BrowserWindow } from 'electron';

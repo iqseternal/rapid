@@ -2,8 +2,8 @@ import { WindowService } from '../../service/WindowService';
 import { IpcActionMiddleware, IpcActionEvent } from '@rapid/m-ipc-core';
 import { Catch, RuntimeException } from '../../exceptions';
 import { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
-import type { RPromiseLike } from '@rapid/libs';
-import { toNil, asynced } from '@rapid/libs';
+import type { RPromiseLike } from '@suey/pkg-utils';
+import { toNil, asynced } from '@suey/pkg-utils';
 
 /**
  * ipc 全局中间件, 用于处理异常和日志行为

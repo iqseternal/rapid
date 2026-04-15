@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { DependencyList, Ref, RefObject } from 'react';
 import { useNormalState, useSyncNormalState } from './useReactive';
-import { Ansi } from '@rapid/libs';
+import { Ansi } from '@suey/pkg-utils';
 import { useUnmount } from 'ahooks';
 
 /**

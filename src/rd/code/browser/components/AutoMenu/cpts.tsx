@@ -2,7 +2,7 @@ import { classnames, isReactFC } from '@rapid/libs-web/common';
 import type { FC, ReactNode } from 'react';
 import type { MenuInstanceType, MenuItemType, SubMenuType } from './declare';
 import { isValidElement, useMemo, memo } from 'react';
-import { isString } from '@rapid/libs';
+import { isString } from '@suey/pkg-utils';
 
 import IconFont from '@/components/IconFont';
 

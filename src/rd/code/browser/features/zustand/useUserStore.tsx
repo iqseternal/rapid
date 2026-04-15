@@ -1,6 +1,6 @@
 import { registerApi, loginApi, logoutApi } from '@/api';
 import { useShallowReactive } from '@rapid/libs-web';
-import { toNil, asynced, RPromiseLike } from '@rapid/libs';
+import { toNil, asynced, RPromiseLike } from '@suey/pkg-utils';
 import { useEffect, useLayoutEffect } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';

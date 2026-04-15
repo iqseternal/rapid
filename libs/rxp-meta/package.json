@@ -4,18 +4,15 @@
   "author": "suey",
   "private": false,
   "description": "扩展包",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/lib/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/commonjs/index.js",
-      "types": "./dist/lib/index.d.ts"
-    }
-  },
+  "main": "./index.ts",
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "exports": {
+      ".": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/commonjs/index.js",
+        "types": "./dist/lib/index.d.ts"
+      }
+    }
   },
   "scripts": {
     "build": "pnpm build-commonjs && pnpm build-esm && pnpm build-types",

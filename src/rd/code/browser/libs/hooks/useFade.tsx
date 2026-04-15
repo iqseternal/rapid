@@ -1,5 +1,5 @@
 import { useAsyncEffect } from '@rapid/libs-web/hooks';
-import { toNil } from '@rapid/libs';
+import { toNil } from '@suey/pkg-utils';
 import type { DependencyList } from 'react';
 
 export interface FadeOptions {

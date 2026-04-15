@@ -1,0 +1,12 @@
+/.idea
+/.vscode
+/coverage
+/**/node_modules
+/src
+/test
+/tests
+/.gitignore
+/.npmrc
+/jest.config.ts
+/tsconfig.json
+/pnpm-lock.yaml

@@ -1,5 +1,4 @@
 import { memo, useState } from 'react';
-import { toNil } from '@rapid/libs';
 import { useTranslation } from 'react-i18next';
 
 import Widget from '@/components/Widget';

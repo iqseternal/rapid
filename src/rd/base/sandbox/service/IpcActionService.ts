@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { toNil } from '@rapid/libs';
+import { toNil } from '@suey/pkg-utils';
 
 /**
  * IpcActionService

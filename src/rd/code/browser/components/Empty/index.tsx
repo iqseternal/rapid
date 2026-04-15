@@ -1,4 +1,4 @@
-import { injectReadonlyVariable } from '@rapid/libs';
+import { injectReadonlyVariable } from '@suey/pkg-utils';
 import { NotHasAnyData } from './NotHasAnyData';
 import { Wrong } from './Wrong';
 

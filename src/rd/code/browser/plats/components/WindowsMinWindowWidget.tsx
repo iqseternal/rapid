@@ -1,6 +1,5 @@
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toNil } from '@rapid/libs';
 
 import Widget from '@/components/Widget';
 import toast from 'react-hot-toast';

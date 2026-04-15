@@ -62,7 +62,7 @@ declare global {
       }
 
       readonly libs: {
-        readonly injectReadonlyVariable: typeof import('@rapid/libs').injectReadonlyVariable;
+        readonly injectReadonlyVariable: typeof import('@suey/pkg-utils').injectReadonlyVariable;
 
         readonly reactive: typeof import('@vue/reactivity').reactive;
         readonly watch: typeof import('@vue/reactivity').watch;
@@ -95,28 +95,28 @@ declare global {
         readonly rApiPatch: typeof import('rd/base/common/api').rApiPatch;
         readonly rCreateApi: typeof import('rd/base/common/api').rCreateApi;
 
-        readonly apiGet: typeof import('@rapid/libs').apiGet;
-        readonly apiPost: typeof import('@rapid/libs').apiPost;
-        readonly apiPut: typeof import('@rapid/libs').apiPut;
-        readonly apiDelete: typeof import('@rapid/libs').apiDelete;
-        readonly request: typeof import('@rapid/libs').request;
-        readonly createApiRequest: typeof import('@rapid/libs').createApiRequest;
-        readonly createRequest: typeof import('@rapid/libs').createRequest;
+        readonly apiGet: typeof import('@suey/pkg-utils').apiGet;
+        readonly apiPost: typeof import('@suey/pkg-utils').apiPost;
+        readonly apiPut: typeof import('@suey/pkg-utils').apiPut;
+        readonly apiDelete: typeof import('@suey/pkg-utils').apiDelete;
+        readonly request: typeof import('@suey/pkg-utils').request;
+        readonly createApiRequest: typeof import('@suey/pkg-utils').createApiRequest;
+        readonly createRequest: typeof import('@suey/pkg-utils').createRequest;
 
-        readonly aesEncrypt: typeof import('@rapid/libs').aesEncrypt;
-        readonly aesDecrypt: typeof import('@rapid/libs').aesDecrypt;
-        readonly aesEncryptAlgorithm: typeof import('@rapid/libs').aesEncryptAlgorithm;
-        readonly aesDecryptAlgorithm: typeof import('@rapid/libs').aesDecryptAlgorithm;
+        readonly aesEncrypt: typeof import('@suey/pkg-utils').aesEncrypt;
+        readonly aesDecrypt: typeof import('@suey/pkg-utils').aesDecrypt;
+        readonly aesEncryptAlgorithm: typeof import('@suey/pkg-utils').aesEncryptAlgorithm;
+        readonly aesDecryptAlgorithm: typeof import('@suey/pkg-utils').aesDecryptAlgorithm;
 
-        readonly jose: typeof import('@rapid/libs').jose;
-        readonly cryptoTs: typeof import('@rapid/libs').cryptoTs;
-        readonly jsr: typeof import('@rapid/libs').jsr;
+        readonly jose: typeof import('@suey/pkg-utils').jose;
+        readonly cryptoTs: typeof import('@suey/pkg-utils').cryptoTs;
+        readonly jsr: typeof import('@suey/pkg-utils').jsr;
 
-        readonly toNil: typeof import('@rapid/libs').toNil;
-        readonly toNils: typeof import('@rapid/libs').toNils;
-        readonly toWaitPromise: typeof import('@rapid/libs').toWaitPromise;
+        readonly toNil: typeof import('@suey/pkg-utils').toNil;
+        readonly toNils: typeof import('@suey/pkg-utils').toNils;
+        readonly toWaitPromise: typeof import('@suey/pkg-utils').toWaitPromise;
 
-        readonly Ansi: typeof import('@rapid/libs').Ansi;
+        readonly Ansi: typeof import('@suey/pkg-utils').Ansi;
 
         readonly classnames: typeof import('@rapid/libs-web').classnames;
 

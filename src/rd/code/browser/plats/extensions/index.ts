@@ -1,5 +1,5 @@
 import { useGroupExtensionsApi } from '@/api';
-import { toNil, toWaitPromise } from '@rapid/libs';
+import { toNil, toWaitPromise } from '@suey/pkg-utils';
 import { registerAndReplaceExtensions, transformerExtensionsSourceToRdExtension } from '../index';
 
 /**

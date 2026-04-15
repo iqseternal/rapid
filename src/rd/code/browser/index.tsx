@@ -4,7 +4,7 @@ import './discrete';
 
 import { StrictMode } from 'react';
 import { RdAppWrapper } from './app';
-import { injectReadonlyVariable } from '@rapid/libs';
+import { injectReadonlyVariable } from '@suey/pkg-utils';
 
 import ReactDOM from 'react-dom/client';
 import React from 'react';

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Ansi } from '@rapid/libs';
+import { Ansi } from '@suey/pkg-utils';
 
 import type { default as iconInstance } from '@ant-design/icons';
 import * as icons from '@ant-design/icons';

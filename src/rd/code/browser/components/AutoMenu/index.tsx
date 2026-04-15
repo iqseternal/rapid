@@ -13,7 +13,7 @@ import type {
 
 import { MenuItem, SubMenu } from './cpts';
 import type { MenuItemProps, SubMenuProps } from './cpts';
-import { injectReadonlyVariable } from '@rapid/libs';
+import { injectReadonlyVariable } from '@suey/pkg-utils';
 
 import styles from './index.module.scss';
 

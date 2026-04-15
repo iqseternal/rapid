@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rapid/libs": "workspace:^",
     "@rapid/libs-web": "workspace:^"
   }
 }

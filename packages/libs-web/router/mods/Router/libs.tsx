@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import type { RouteConfig } from '../../types';
-import { isUseful, isString } from '@rapid/libs';
+import { isUseful, isString } from '@suey/pkg-utils';
 import type { RedirectProps } from '../Redirect';
 import { Redirect } from '../Redirect';
 import { createContext, isValidElement, useContext, useEffect, useLayoutEffect, useState } from 'react';

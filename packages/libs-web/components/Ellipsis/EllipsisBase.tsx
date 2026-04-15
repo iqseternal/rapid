@@ -3,7 +3,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
 import { useResizeObserver, useShallowReactive } from '../../hooks';
-import { isRawObject, isUnDef } from '@rapid/libs';
+import { isRawObject, isUnDef } from '@suey/pkg-utils';
 import { StringFilters } from '../../common';
 import { debounce } from 'lodash';
 

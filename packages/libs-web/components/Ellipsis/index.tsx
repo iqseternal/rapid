@@ -1,7 +1,7 @@
 import { EllipsisBase, type EllipsisProps } from './EllipsisBase';
 import { EllipsisTooltip, type EllipsisTooltipProps } from './EllipsisTooltip';
 import { EllipsisPopover, type EllipsisPopoverProps } from './EllipsisPopover';
-import { injectReadonlyVariable } from '@rapid/libs/inject';
+import { injectReadonlyVariable } from '@suey/pkg-utils';
 
 export type { EllipsisProps, EllipsisTooltipProps, EllipsisPopoverProps };
 

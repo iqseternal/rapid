@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react';
 import { useNormalState, useRefresh, useResizeObserver, useShallowReactive } from '@rapid/libs-web';
-import { isUndefined } from '@rapid/libs';
+import { isUndefined } from '@suey/pkg-utils';
 
 /**
  * 收纳盒

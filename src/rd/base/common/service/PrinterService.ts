@@ -1,4 +1,4 @@
-import { Ansi } from '@rapid/libs';
+import { Ansi } from '@suey/pkg-utils';
 import { AppInformationService } from './AppInformationService';
 
 const appInfo = AppInformationService.getInstance();

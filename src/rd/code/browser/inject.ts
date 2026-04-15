@@ -29,7 +29,7 @@ import {
   toNil,
   toNils,
   toWaitPromise
-} from '@rapid/libs';
+} from '@suey/pkg-utils';
 import {
   reactive,
   watch,
@@ -60,7 +60,7 @@ import { useTranslation } from 'react-i18next';
 import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
 import { Ellipsis } from '@rapid/libs-web';
 import { Timestamp } from 'rd/base/common/constants';
-import { defineRawType, defineCompleteType } from '@rapid/libs';
+import { defineRawType, defineCompleteType } from '@suey/pkg-utils';
 
 import IconFont from './components/IconFont';
 import Empty from './components/Empty';

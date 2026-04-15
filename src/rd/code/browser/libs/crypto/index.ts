@@ -1,5 +1,5 @@
 
-import { forge } from '@rapid/libs';
+import { forge } from '@suey/pkg-utils';
 
 const RSA_PUBLIC_KEY: string = `
 -----BEGIN PUBLIC KEY-----

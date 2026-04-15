@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rapid/libs": "workspace:^",
+    "@suey/pkg-utils": "workspace:*",
     "ahooks": "3.8.4"
   }
 }

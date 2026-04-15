@@ -1,7 +1,7 @@
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { ExceptionFilter } from './declare';
 import { Exception } from 'rd/base/common/exceptions';
-import { injectReadonlyVariable } from '@rapid/libs';
+import { injectReadonlyVariable } from '@suey/pkg-utils';
 
 /**
  * 自定义创建装饰器的结构

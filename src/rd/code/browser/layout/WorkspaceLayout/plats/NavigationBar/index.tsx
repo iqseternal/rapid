@@ -1,5 +1,4 @@
 import { classnames } from '@rapid/libs-web/common';
-import { toNil } from '@rapid/libs';
 import { FC, useCallback, useEffect, useState, memo } from 'react';
 import { fadeOut } from '@/libs/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';

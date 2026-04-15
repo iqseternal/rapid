@@ -4,7 +4,7 @@
  * ==========================================
  */
 import type { NodeProcess, IpcRenderer as BaseIcpRenderer, WebFrame, IpcRendererListener } from '@electron-toolkit/preload';
-import type { CutHead, ExtractNever, RPromiseLike } from '@rapid/libs';
+import type { CutHead, ExtractNever, RPromiseLike } from '@suey/pkg-utils';
 import type { IpcActionEvent, IpcActionType } from '@rapid/m-ipc-core';
 import type { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 
