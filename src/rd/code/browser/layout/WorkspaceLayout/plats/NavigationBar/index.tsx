@@ -1,5 +1,5 @@
 import { classnames } from '@rapid/libs-web/common';
-import { FC, useCallback, useEffect, useState, memo } from 'react';
+import { FC, useCallback, useEffect, useState, memo, useMemo } from 'react';
 import { fadeOut } from '@/libs/hooks';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { retrieveRoutes, useRetrieveRoute } from '@/router';
@@ -76,7 +76,32 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
   const navigate = useNavigate();
   const workbenchesRoute = useRetrieveRoute(routes => routes.workbenchesRoute);
 
-  const userinfo = useUserStore(store => store.userinfo);
+  const userinfo = useUserStore(store => store.userinfo)
+
+
+  const navigationBarItems = useMemo(
+    () => {
+
+      return workbenchesRoute.children?.filter(routeItem => !routeItem.meta?.more?.hiddenInMenu).map(routeItem => {
+        return (
+          <SideBarItem
+            key={routeItem.meta.fullPath}
+            activeFullPath={routeItem.meta.fullPath}
+            icon={routeItem.meta.icon}
+            size='large'
+            hasHoverStyle={true}
+            tipText={routeItem.meta.title}
+            onClick={() => {
+              navigate(routeItem.meta.fullPath);
+            }}
+          />
+        )
+      })
+    },
+    [
+      workbenchesRoute.children,
+    ]
+  );
 
   return (
     <div
@@ -92,21 +117,7 @@ export const NavigationBar = memo<NavigationBarProps>(() => {
       <div
         className='h-max flex justify-center flex-col w-full items-center gap-y-2'
       >
-        {workbenchesRoute.children?.filter(routeItem => !routeItem.meta?.more?.hiddenInMenu).map(routeItem => {
-          return (
-            <SideBarItem
-              key={routeItem.meta.fullPath}
-              activeFullPath={routeItem.meta.fullPath}
-              icon={routeItem.meta.icon}
-              size='large'
-              hasHoverStyle={true}
-              tipText={routeItem.meta.title}
-              onClick={() => {
-                navigate(routeItem.meta.fullPath);
-              }}
-            />
-          )
-        })}
+        {navigationBarItems}
       </div>
 
       <div

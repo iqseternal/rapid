@@ -55,7 +55,6 @@ import {
   isProxy
 } from '@vue/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
-// import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
 import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
 import { Ellipsis } from '@rapid/libs-web';

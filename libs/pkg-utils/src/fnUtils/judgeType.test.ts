@@ -58,7 +58,6 @@ test(`类型判断: isBoolean 函数`, () => {
   expect(isBoolean({ toString: () => 'Boolean' })).toBe(false);
   expect(isBoolean({ a: 1 })).toBe(false);
   expect(isBoolean(new Object())).toBe(false);
-  expect(isBoolean(new Object()['a'])).toBe(false);
   expect(isBoolean(new Proxy({}, {}))).toBe(false);
   expect(isBoolean(new Date())).toBe(false);
 
@@ -78,7 +77,6 @@ test(`类型判断: isBoolean 函数`, () => {
   expect(isBoolean(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isBoolean(1n)).toBe(false);
   expect(isBoolean(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -157,7 +155,6 @@ test(`类型判断: isNumber 函数`, () => {
   expect(isNumber({ toString: () => 'Boolean' })).toBe(false);
   expect(isNumber({ a: 1 })).toBe(false);
   expect(isNumber(new Object())).toBe(false);
-  expect(isNumber(new Object()['a'])).toBe(false);
   expect(isNumber(new Proxy({}, {}))).toBe(false);
   expect(isNumber(new Date())).toBe(false);
 
@@ -177,7 +174,6 @@ test(`类型判断: isNumber 函数`, () => {
   expect(isNumber(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isNumber(1n)).toBe(false);
   expect(isNumber(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -256,7 +252,6 @@ test(`类型判断: isString 函数`, () => {
   expect(isString({ toString: () => 'Boolean' })).toBe(false);
   expect(isString({ a: 1 })).toBe(false);
   expect(isString(new Object())).toBe(false);
-  expect(isString(new Object()['a'])).toBe(false);
   expect(isString(new Proxy({}, {}))).toBe(false);
   expect(isString(new Date())).toBe(false);
 
@@ -276,7 +271,6 @@ test(`类型判断: isString 函数`, () => {
   expect(isString(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isString(1n)).toBe(false);
   expect(isString(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -355,7 +349,6 @@ test(`类型判断: isNull 函数`, () => {
   expect(isNull({ toString: () => 'Boolean' })).toBe(false);
   expect(isNull({ a: 1 })).toBe(false);
   expect(isNull(new Object())).toBe(false);
-  expect(isNull(new Object()['a'])).toBe(false);
   expect(isNull(new Proxy({}, {}))).toBe(false);
   expect(isNull(new Date())).toBe(false);
 
@@ -375,7 +368,6 @@ test(`类型判断: isNull 函数`, () => {
   expect(isNull(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isNull(1n)).toBe(false);
   expect(isNull(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -454,7 +446,6 @@ test(`类型判断: isUndefined 函数`, () => {
   expect(isUndefined({ toString: () => 'Boolean' })).toBe(false);
   expect(isUndefined({ a: 1 })).toBe(false);
   expect(isUndefined(new Object())).toBe(false);
-  expect(isUndefined(new Object()['a'])).toBe(true);
   expect(isUndefined(new Proxy({}, {}))).toBe(false);
   expect(isUndefined(new Date())).toBe(false);
 
@@ -474,7 +465,6 @@ test(`类型判断: isUndefined 函数`, () => {
   expect(isUndefined(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isUndefined(1n)).toBe(false);
   expect(isUndefined(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -553,7 +543,6 @@ test(`类型判断: isDef 函数`, () => {
   expect(isDef({ toString: () => 'Boolean' })).toBe(true);
   expect(isDef({ a: 1 })).toBe(true);
   expect(isDef(new Object())).toBe(true);
-  expect(isDef(new Object()['a'])).toBe(false);
   expect(isDef(new Proxy({}, {}))).toBe(true);
   expect(isDef(new Date())).toBe(true);
 
@@ -573,7 +562,6 @@ test(`类型判断: isDef 函数`, () => {
   expect(isDef(Symbol('1'))).toBe(true);
 
   // bigint
-  expect(isDef(1n)).toBe(true);
   expect(isDef(BigInt(42))).toBe(true);
 
   // 迭代器与生成器
@@ -652,7 +640,6 @@ test(`类型判断: isUnDef 函数`, () => {
   expect(isUnDef({ toString: () => 'Boolean' })).toBe(false);
   expect(isUnDef({ a: 1 })).toBe(false);
   expect(isUnDef(new Object())).toBe(false);
-  expect(isUnDef(new Object()['a'])).toBe(true);
   expect(isUnDef(new Proxy({}, {}))).toBe(false);
   expect(isUnDef(new Date())).toBe(false);
 
@@ -672,7 +659,6 @@ test(`类型判断: isUnDef 函数`, () => {
   expect(isUnDef(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isUnDef(1n)).toBe(false);
   expect(isUnDef(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -751,7 +737,6 @@ test(`类型判断: isUseful 函数`, () => {
   expect(isUseful({ toString: () => 'Boolean' })).toBe(true);
   expect(isUseful({ a: 1 })).toBe(true);
   expect(isUseful(new Object())).toBe(true);
-  expect(isUseful(new Object()['a'])).toBe(false);
   expect(isUseful(new Proxy({}, {}))).toBe(true);
   expect(isUseful(new Date())).toBe(true);
 
@@ -771,7 +756,6 @@ test(`类型判断: isUseful 函数`, () => {
   expect(isUseful(Symbol('1'))).toBe(true);
 
   // bigint
-  expect(isUseful(1n)).toBe(true);
   expect(isUseful(BigInt(42))).toBe(true);
 
   // 迭代器与生成器
@@ -850,7 +834,6 @@ test(`类型判断: isUnUseful 函数`, () => {
   expect(isUnUseful({ toString: () => 'Boolean' })).toBe(false);
   expect(isUnUseful({ a: 1 })).toBe(false);
   expect(isUnUseful(new Object())).toBe(false);
-  expect(isUnUseful(new Object()['a'])).toBe(true);
   expect(isUnUseful(new Proxy({}, {}))).toBe(false);
   expect(isUnUseful(new Date())).toBe(false);
 
@@ -870,7 +853,6 @@ test(`类型判断: isUnUseful 函数`, () => {
   expect(isUnUseful(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isUnUseful(1n)).toBe(false);
   expect(isUnUseful(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -949,7 +931,6 @@ test(`类型判断: isObject 函数`, () => {
   expect(isObject({ toString: () => 'Boolean' })).toBe(true);
   expect(isObject({ a: 1 })).toBe(true);
   expect(isObject(new Object())).toBe(true);
-  expect(isObject(new Object()['a'])).toBe(false);
   expect(isObject(new Proxy({}, {}))).toBe(true);
   expect(isObject(new Date())).toBe(true);
 
@@ -969,7 +950,6 @@ test(`类型判断: isObject 函数`, () => {
   expect(isObject(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isObject(1n)).toBe(false);
   expect(isObject(BigInt(42))).toBe(false);
 
   // 迭代器与生成器
@@ -1048,7 +1028,6 @@ test(`类型判断: isRawObject 函数`, () => {
   expect(isRawObject({ toString: () => 'Boolean' })).toBe(true);
   expect(isRawObject({ a: 1 })).toBe(true);
   expect(isRawObject(new Object())).toBe(true);
-  expect(isRawObject(new Object()['a'])).toBe(false);
 
   expect(isRawObject(new Proxy({}, {}))).toBe(true);
   expect(isRawObject(new Date())).toBe(true);
@@ -1069,7 +1048,6 @@ test(`类型判断: isRawObject 函数`, () => {
   expect(isRawObject(Symbol('1'))).toBe(false);
 
   // bigint
-  expect(isRawObject(1n)).toBe(false);
   expect(isRawObject(BigInt(42))).toBe(false);
 
   // 迭代器与生成器

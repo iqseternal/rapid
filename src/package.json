@@ -28,8 +28,7 @@
   "dependencies": {
     "@rapid/bus": "workspace:*",
     "@rapid/libs-web": "workspace:*",
-    "@rapid/m-ipc-core": "workspace:*",
-    "@rapid/structure": "workspace:*"
+    "@rapid/m-ipc-core": "workspace:*"
   },
   "devDependencies": {
     "@suey/rd-builder": "workspace:*"

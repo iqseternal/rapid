@@ -1,11 +1,11 @@
 
 /**
-   * 随机产生范围内的一个数字
-   * @example
-   * const randomNumber = randomRegion(1, 10); // 产生一个 1-10 之间的随机数字
-   *
-   * @returns
-   */
+ * 随机产生范围内的一个数字
+ * @example
+ * const randomNumber = randomRegion(1, 10); // 产生一个 1-10 之间的随机数字
+ *
+ * @returns
+ */
 export const randomRegion = (min: number, max: number) => (Math.random() * (max - min) + min);
 
 /**

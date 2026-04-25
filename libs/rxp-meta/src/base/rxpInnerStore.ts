@@ -1,6 +1,4 @@
-import { debounce } from 'lodash';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { toWaitPromise } from '@suey/pkg-utils';
 
 export type RxpInnerStoreListener = () => void;
 
@@ -34,11 +32,13 @@ export class RxpInnerStore {
   /**
    * 更新当前 store
    */
-  public async update() {
+  public update() {
     if (!this.store.live) return;
 
     this.store.value = {};
-    this.triggerEffects();
+    this.triggerEffects().catch(err => {
+
+    });
   }
 
   /**

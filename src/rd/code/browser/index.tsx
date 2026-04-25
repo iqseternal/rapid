@@ -43,4 +43,7 @@ async function setupEnvironments() {
       </StrictMode>
     );
   }
+  //
+  // window.electron.webFrame.setZoomLevel(1);
+  // window.electron.webFrame.setZoomFactor(1);
 })());

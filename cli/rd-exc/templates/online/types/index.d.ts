@@ -1,5 +1,5 @@
 import * as _suey_pkg_utils from '@suey/pkg-utils';
-import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, AxiosResponse, ExtractNever, CutHead, RPromiseLike, Ansi, apiGet, apiPost, apiPut, apiDelete, request, createApiRequest, createRequest, aesEncrypt, aesDecrypt, aesEncryptAlgorithm, aesDecryptAlgorithm, jose, cryptoTs, jsr, toNil, toNils, toWaitPromise } from '@suey/pkg-utils';
+import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, AxiosResponse, ExtractNever, CutHead, RPromiseLike, Ansi } from '@suey/pkg-utils';
 import * as _meta2d_core from '@meta2d/core';
 import * as react from 'react';
 import { ComponentType, HTMLAttributes, ReactNode, Component, FC, LazyExoticComponent, ForwardRefExoticComponent, MemoExoticComponent, ReactElement } from 'react';
@@ -499,12 +499,6 @@ declare global {
     export interface Extension extends RdExtension { }
   }
 }
-
-/**
- * Object.defineProperty, 向对象注入变量, 默认不可修改不可配置不可删除不可枚举
- * @description 为什么需要它？当对象声明为 readonly, 但是需要初始化赋值
- */
-declare function injectReadonlyVariable<T extends {}, Key extends keyof T, Value>(target: T, propertyKey: Key, value: Value, attributes?: PropertyDescriptor & ThisType<any>): void;
 
 declare const NotHasAnyData: react.MemoExoticComponent<() => react_jsx_runtime.JSX.Element>;
 
@@ -1763,6 +1757,10 @@ declare const windowResetCustomSize: (options: {
  * @returns
  */
 declare const windowMax: (options?: {
+    /**
+     * 恢复窗口为定制化大小
+     * @returns
+     */
     id?: number;
     windowKey?: string;
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
@@ -1772,7 +1770,10 @@ declare const windowMax: (options?: {
  */
 declare const windowMin: (options?: {
     id?: number;
-    windowKey?: string;
+    windowKey?: string; /**
+     * 关闭窗口
+     * @returns
+     */
 }) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
 /**
  * 还原窗口
@@ -1922,7 +1923,7 @@ declare global {
       }
 
       readonly libs: {
-        readonly injectReadonlyVariable: typeof injectReadonlyVariable;
+        readonly injectReadonlyVariable: typeof _suey_pkg_utils.injectReadonlyVariable;
 
         readonly reactive: typeof _vue_reactivity.reactive;
         readonly watch: typeof _vue_reactivity.watch;
@@ -1955,28 +1956,28 @@ declare global {
         readonly rApiPatch: typeof rApiPatch;
         readonly rCreateApi: typeof rCreateApi;
 
-        readonly apiGet: typeof apiGet;
-        readonly apiPost: typeof apiPost;
-        readonly apiPut: typeof apiPut;
-        readonly apiDelete: typeof apiDelete;
-        readonly request: typeof request;
-        readonly createApiRequest: typeof createApiRequest;
-        readonly createRequest: typeof createRequest;
+        readonly apiGet: typeof _suey_pkg_utils.apiGet;
+        readonly apiPost: typeof _suey_pkg_utils.apiPost;
+        readonly apiPut: typeof _suey_pkg_utils.apiPut;
+        readonly apiDelete: typeof _suey_pkg_utils.apiDelete;
+        readonly request: typeof _suey_pkg_utils.request;
+        readonly createApiRequest: typeof _suey_pkg_utils.createApiRequest;
+        readonly createRequest: typeof _suey_pkg_utils.createRequest;
 
-        readonly aesEncrypt: typeof aesEncrypt;
-        readonly aesDecrypt: typeof aesDecrypt;
-        readonly aesEncryptAlgorithm: typeof aesEncryptAlgorithm;
-        readonly aesDecryptAlgorithm: typeof aesDecryptAlgorithm;
+        readonly aesEncrypt: typeof _suey_pkg_utils.aesEncrypt;
+        readonly aesDecrypt: typeof _suey_pkg_utils.aesDecrypt;
+        readonly aesEncryptAlgorithm: typeof _suey_pkg_utils.aesEncryptAlgorithm;
+        readonly aesDecryptAlgorithm: typeof _suey_pkg_utils.aesDecryptAlgorithm;
 
-        readonly jose: typeof jose;
-        readonly cryptoTs: typeof cryptoTs;
-        readonly jsr: typeof jsr;
+        readonly jose: typeof _suey_pkg_utils.jose;
+        readonly cryptoTs: typeof _suey_pkg_utils.cryptoTs;
+        readonly jsr: typeof _suey_pkg_utils.jsr;
 
-        readonly toNil: typeof toNil;
-        readonly toNils: typeof toNils;
-        readonly toWaitPromise: typeof toWaitPromise;
+        readonly toNil: typeof _suey_pkg_utils.toNil;
+        readonly toNils: typeof _suey_pkg_utils.toNils;
+        readonly toWaitPromise: typeof _suey_pkg_utils.toWaitPromise;
 
-        readonly Ansi: typeof Ansi;
+        readonly Ansi: typeof _suey_pkg_utils.Ansi;
 
         readonly classnames: typeof classnames;
 

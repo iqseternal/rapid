@@ -84,7 +84,7 @@ export const isPromiseLike = <T extends Promise<K>, K>(target: T): target is T =
 export const isClass = <T>(target: T | any): target is (new (...args: any[]) => any) => {
   if (typeof target !== 'function') return false;
   const __str__ = target.toString();
-  if (target.prototype === undefined) return false;
+  if (target.prototype === void 0) return false;
   if (target.prototype.constructor !== target) return false;
   if (__str__.slice(0, 5) === 'class') return true;
   if (Object.getOwnPropertyNames(target.prototype).length >= 2) return true;

@@ -143,7 +143,7 @@ export const removeIpcHandle = (handle: IpcActionType<IpcActionEvent.Handle>) =>
     const deleted = ipcRuntimeContext.registered.handle.delete(handle.channel);
     ipcMain.removeHandler(handle.channel);
 
-    if (deleted) throw new Error(`移除了一个未注册的句柄 handle: ${handle.channel}`);
+    if (!deleted) throw new Error(`移除了一个未注册的句柄 handle: ${handle.channel}`);
   }
 }
 
@@ -192,6 +192,6 @@ export const offIpcOn = (handle: IpcActionType<IpcActionEvent.On>) => {
   if (handle.actionType === IpcActionEvent.On) {
     const deleted = ipcRuntimeContext.registered.on.delete(handle.channel);
     ipcMain.off(handle.channel, handle.listener);
-    if (deleted) throw new Error(`移除了一个未注册的句柄 on: ${handle.channel}`);
+    if (!deleted) throw new Error(`移除了一个未注册的句柄 on: ${handle.channel}`);
   }
 }
