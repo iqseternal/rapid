@@ -84,7 +84,7 @@ export class ElectronService {
     // 开始 kill
     this.state.electronChildProcess.removeListener('close', this.bindThisExitCurrentProcess);
     this.state.electronChildProcess.removeListener('exit', this.bindThisExitCurrentProcess);
-    this.state.electronChildProcess.removeListener('error', this.bindThisExitCurrentProcess);
+    // this.state.electronChildProcess.removeListener('error', this.bindThisExitCurrentProcess);
     await this.exitElectronProcess();
   }
 
@@ -102,15 +102,15 @@ export class ElectronService {
       process.stdout.write(data.toString());
     });
     this.state.electronChildProcess.on('error', (err) => {
-      process.stderr.write(err.toString());
+      process.stdout.write(err.toString());
     });
     this.state.electronChildProcess.on('message', (message) => {
-      process.stderr.write(message.toString());
+      process.stdout.write(message.toString());
     });
 
     this.state.electronChildProcess.addListener('close', this.bindThisExitCurrentProcess);
     this.state.electronChildProcess.addListener('exit', this.bindThisExitCurrentProcess);
-    this.state.electronChildProcess.addListener('error', this.bindThisExitCurrentProcess);
+    // this.state.electronChildProcess.addListener('error', this.bindThisExitCurrentProcess);
   }
 
   /**

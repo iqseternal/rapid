@@ -46,6 +46,8 @@ export class IpcMReceiver extends IpcAbstractReceiver {
         ipcMain.removeHandler(processor.channel);
       }
 
+
+
       // 注册新的 handler
       ipcMain.handle(processor.channel, processor.listener);
 
@@ -93,7 +95,7 @@ export class IpcMReceiver extends IpcAbstractReceiver {
    * @returns this（支持链式调用）
    */
   public registerAsOn(...processors: IpcCompatibleProcessor[]): this {
-    return this.registerOn(processors as any);
+    return this.registerOn(...processors);
   }
 
   /**

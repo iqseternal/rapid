@@ -7,6 +7,7 @@ import { RdCatalogs } from 'rd/catalog';
 import { bus } from './base/main/bus';
 import { Notification, app } from 'electron';
 import { join } from 'path';
+import { PrinterService } from './base/common/service/PrinterService';
 
 import chokidar from 'chokidar';
 
@@ -26,8 +27,11 @@ stipulationSettingJSONWatcher.on('all', (eventType, fileName) => {
   bus.emitter.emit('rd-config-file-hot-reload');
 });
 
-code.main().catch((err) => {
+code.main().catch(() => {
+  PrinterService.printError('app server 启动失败');
+
   app.exit(1);
+  process.exit(1);
 });
 
 

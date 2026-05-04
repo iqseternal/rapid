@@ -7,19 +7,14 @@
     "dev": "rd-builder dev",
     "build": "rd-builder build",
     "preview": "rd-builder build --preview",
-
     "packer": "pnpm packer-win",
     "packer-win": "pnpm run build && pnpm -C ../.rd-packer run packer-win",
-
     "scripts-i18n-extract": "ts-node ./scripts/i18n-extract",
     "scripts-dts-extract": "cd ./scripts && tsup --config ./scripts/dts-extract.ts",
-
     "extract": "concurrently \"pnpm scripts-i18n-extract\" \"pnpm -C . run scripts-dts-extract\"",
-
     "typecheck-main": "tsc --noEmit -p ./rd/tsconfig.main.json",
     "typecheck-sandbox": "tsc --noEmit -p ./rd/tsconfig.sandbox.json",
     "typecheck-browser": "tsc --noEmit -p ./rd/tsconfig.browser.json",
-
     "typecheck": "concurrently \"pnpm typecheck-main\" \"pnpm typecheck-sandbox\" \"pnpm typecheck-browser\""
   },
   "keywords": [],
@@ -28,7 +23,8 @@
   "dependencies": {
     "@rapid/bus": "workspace:*",
     "@rapid/libs-web": "workspace:*",
-    "@suey/elec-ipc-core": "workspace:*"
+    "@suey/elec-ipc-core": "workspace:*",
+    "@suey/rxp-meta": "workspace:*"
   },
   "devDependencies": {
     "@suey/rd-builder": "workspace:*"

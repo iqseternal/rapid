@@ -29,10 +29,6 @@ export const ipcWindowMaximize = makeHandleProcessor(
   }
 );
 
-const handler = ipcWindowMaximize.handler;
-
-
-
 /**
  * 窗口最小化, 可以在 options 中传递制定 id 来控制某个窗口
  */
