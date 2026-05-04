@@ -7,7 +7,7 @@
  * ==============================================================
  */
 import { WindowService } from '../../service/WindowService';
-import { ipcMReceiver } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@suey/elec-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { DepositService } from 'rd/base/common/service/DepositService';
 

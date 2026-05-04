@@ -1,9 +1,3 @@
-/**
- * @rapid/m-ipc-core - Renderer Process
- *
- * 渲染进程 IPC 调用器（仅在渲染进程中可用）
- */
-
 import type { IpcCompatibleProcessor, IpcCallerConfig, MutateProcessorSheet, IpcTypeHandle, ExtractMutateProcessorSheet, IpcTypeOn } from '../types';
 import { ipcRenderer } from 'electron';
 import { toNil } from '@suey/pkg-utils';

@@ -7,7 +7,7 @@
 
 import { BrowserWindow } from 'electron';
 import { WindowService } from '../../service/WindowService';
-import { ipcMReceiver, IpcMiddleware } from '@rapid/m-ipc-core';
+import { ipcMReceiver, IpcMiddleware } from '@suey/elec-ipc-core';
 
 /**
  * 接收 IpcBroadcast 事件, 并且向其他窗口广播, 携带 事件名、参数

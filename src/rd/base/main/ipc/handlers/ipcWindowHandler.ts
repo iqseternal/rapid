@@ -4,7 +4,7 @@ import { WindowService } from '../../service/WindowService';
 import { TypeException } from '../../exceptions';
 import { isNumber, isString, isUnDef, isDef } from '@suey/pkg-utils';
 import { AppConfigService } from '../../service/AppConfigService';
-import { ipcMReceiver } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@suey/elec-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { userConfigStore } from '../../stores';
 import { WindowServiceStateMachine } from '../../service/WindowServiceStateMachine';

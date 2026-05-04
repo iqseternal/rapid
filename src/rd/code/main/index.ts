@@ -3,7 +3,7 @@ import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { app } from 'electron';
 import { setupMainWindowService } from './flow/windowFlow';
 import { setupTrayMenu } from './flow/trayMenuFlow';
-import { ipcMReceiver } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@suey/elec-ipc-core';
 import { ipcAppStoreClear, ipcAppStoreDelete, ipcAppStoreGet, ipcAppStoreGetStore, ipcAppStoreHas, ipcAppStoreReset, ipcAppStoreSet } from 'rd/base/main/ipc/handlers';
 import {
   ipcWindowResizeAble, ipcWindowWorkAreaSize, ipcWindowShow, ipcWindowSetSize,

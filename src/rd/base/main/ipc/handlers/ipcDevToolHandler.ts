@@ -1,6 +1,6 @@
 import type { OpenDevToolsOptions } from 'electron';
 import { WindowService } from '../../service/WindowService';
-import { ipcMReceiver } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@suey/elec-ipc-core';
 
 /**
  * 渲染进程打开开发者检查工具

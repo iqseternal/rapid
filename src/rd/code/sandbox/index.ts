@@ -15,8 +15,8 @@ import type { AppStoreType } from './server/stores';
 import { appStore } from './server/stores';
 
 import type * as AllIpcProcessors from 'rd/base/main/ipc/handlers';
-import { IpcBCaller } from '@rapid/m-ipc-core';
-import type { IpcCompatibleProcessor, MutateProcessorSheet } from '@rapid/m-ipc-core';
+import { IpcBCaller } from '@suey/elec-ipc-core';
+import type { IpcCompatibleProcessor, MutateProcessorSheet } from '@suey/elec-ipc-core';
 
 import * as ipcActions from './server/ipcActions';
 

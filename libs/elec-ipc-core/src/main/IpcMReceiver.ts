@@ -5,7 +5,7 @@
  */
 
 import { ipcMain } from 'electron';
-import type { IpcProcessor, IpcMiddleware, IpcType, IpcTypeHandle, IpcTypeOn, IpcTypeBoth, IpcDefaultEvent, IpcCompatibleProcessor } from '../types';
+import type { IpcMiddleware, IpcCompatibleProcessor } from '../types';
 import type { AbstractPrinter } from '../types';
 import { IpcAbstractReceiver } from '../base';
 
@@ -78,9 +78,7 @@ export class IpcMReceiver extends IpcAbstractReceiver {
       }
 
       // 注册新的 listener
-      ipcMain.on(processor.channel, (event, ...args) => {
-        processor.listener(event, ...args);
-      });
+      ipcMain.on(processor.channel, processor.listener);
 
       // 存储 processor 引用
       this.onProcessors.set(processor.channel, processor);

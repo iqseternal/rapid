@@ -1,15 +1,16 @@
 {
   "include": [
-    "./**/*.ts",
-    "./**/*.tsx"
+    "./index.ts",
+    "./src/**/*.ts"
   ],
   "compilerOptions": {
     "incremental": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "composite": true,
+    "rootDir": ".",
     "isolatedModules": true,
-    "outDir": "../../.rd-cache/packages/m-ipc-core",
-    "declarationDir": "../../.rd-cache/packages/m-ipc-core",
+    "outDir": "../../.rd-cache/libs/elec-ipc-code",
+    "declarationDir": "../../.rd-cache/libs/elec-ipc-code",
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
     "allowUnusedLabels": true,

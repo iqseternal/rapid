@@ -1,4 +1,3 @@
-import { ipcMain } from 'electron';
 import {
 	IpcProcessor,
 	IpcMiddleware,
@@ -10,21 +9,35 @@ import {
 	IpcMiddlewareContext
 } from '../types';
 import type { AbstractPrinter } from '../types';
-import { IpcMiddlewaresMA, IpcPrinter } from '../base';
-import { IsUnknown, IsType, IsUndefined, type CutHead, IsAny, Type, Nil, toNil } from '@suey/pkg-utils';
-import type { IpcMainInvokeEvent, IpcMainEvent, IpcRendererEvent, IpcMessageEvent } from 'electron';
+import { IpcMiddlewaresMA, IpcPrinter } from './index';
+import { IsUnknown, IsAny, Nil, toNil } from '@suey/pkg-utils';
+import type { IpcMainInvokeEvent, IpcMainEvent } from 'electron';
 
+/**
+ * 查找并处理 IPC 句柄的执行选项接口
+ */
 export interface FindHandleHandlingOptions {
+	/** IPC 通信通道名称 */
 	channel: string;
 
+	/** IPC 类型（handle/on/both） */
 	type: IpcType;
 
+	/** 中间件列表 */
 	middlewares: IpcMiddleware[];
 
+	/** 处理器函数 */
 	handler: IpcProcessor<IpcType, any>['handler'];
 }
 
-export async function applyOnBeforeEach(middlewares: IpcMiddleware[], ipcMiddlewareContext: IpcMiddlewareContext, ...convertArgs: any[]) {
+/**
+ * 应用所有中间件的 onBeforeEach 钩子函数（前置处理）
+ * @param middlewares - 中间件列表
+ * @param ipcMiddlewareContext - IPC 中间件上下文
+ * @param convertArgs - 转换后的参数列表
+ * @returns 如果出现错误则返回被拒绝的 Promise，否则继续执行
+ */
+export async function applyOnBeforeEach(middlewares: IpcMiddleware[], ipcMiddlewareContext: IpcMiddlewareContext, ...convertArgs: any[]): Promise<void> {
 	for (let i = 0; i < middlewares.length; i++) {
 		const middleware = middlewares[i];
 		if (!middleware.onBeforeEach) continue;
@@ -32,8 +45,16 @@ export async function applyOnBeforeEach(middlewares: IpcMiddleware[], ipcMiddlew
 		const [err] = await toNil(Promise.resolve(middleware.onBeforeEach(ipcMiddlewareContext, ...convertArgs)));
 		if (err) return Promise.reject(err.reason);
 	}
+	return;
 }
 
+/**
+ * 应用所有中间件的 transformArgs 钩子函数（参数转换）
+ * @param middlewares - 中间件列表
+ * @param ipcMiddlewareContext - IPC 中间件上下文
+ * @param convertArgs - 原始参数列表
+ * @returns 转换后的参数列表，如果出现错误则返回被拒绝的 Promise
+ */
 export async function applyTransformArgs(middlewares: IpcMiddleware[], ipcMiddlewareContext: IpcMiddlewareContext, ...convertArgs: [any, ...any[]]) {
 	let finalConvertArgs = convertArgs;
 
@@ -50,6 +71,13 @@ export async function applyTransformArgs(middlewares: IpcMiddleware[], ipcMiddle
 	return finalConvertArgs;
 }
 
+/**
+ * 应用所有中间件的 onError 钩子函数（错误处理）
+ * @param middlewares - 中间件列表
+ * @param ipcMiddlewareContext - IPC 中间件上下文
+ * @param err - 错误原因对象
+ * @returns 如果错误被某个中间件解决则返回 true，否则返回 false；如果出现错误则返回被拒绝的 Promise
+ */
 export async function applyOnError(middlewares: IpcMiddleware[], ipcMiddlewareContext: IpcMiddlewareContext, err: Nil.NilRefusedReasonType) {
 	let isResolved = false;
 
@@ -69,6 +97,12 @@ export async function applyOnError(middlewares: IpcMiddleware[], ipcMiddlewareCo
 	return isResolved;
 }
 
+/**
+ * 应用所有中间件的 onAfterEach 钩子函数（后置处理）
+ * @param middlewares - 中间件列表
+ * @param ipcMiddlewareContext - IPC 中间件上下文
+ * @param response - 响应数据
+ */
 export async function applyOnAfterEach(middlewares: IpcMiddleware[], ipcMiddlewareContext: IpcMiddlewareContext, response: any) {
 	for (let i = 0; i < middlewares.length; i++) {
 		const middleware = middlewares[i];
@@ -78,6 +112,13 @@ export async function applyOnAfterEach(middlewares: IpcMiddleware[], ipcMiddlewa
 	}
 }
 
+/**
+ * 应用所有中间件的 transformResponse 钩子函数（响应转换）
+ * @param middlewares - 中间件列表
+ * @param ipcMiddlewareContext - IPC 中间件上下文
+ * @param response - 原始响应数据
+ * @returns 转换后的响应数据，如果出现错误则返回被拒绝的 Promise
+ */
 export async function applyTransformResponse(middlewares: IpcMiddleware[], ipcMiddlewareContext: IpcMiddlewareContext, response: any) {
 	let finalResponse = response;
 
@@ -94,12 +135,23 @@ export async function applyTransformResponse(middlewares: IpcMiddleware[], ipcMi
 	return finalResponse;
 }
 
-export async function findHandleHandling(globalMiddlewares: IpcMiddleware[], options: FindHandleHandlingOptions, ...ipcArgs: unknown[]) {
-
-}
-
 /**
- * 处理一个 `action`, 来解决对应的 ipc 句柄, 并处理响应
+ * 处理一个 action，解决对应的 IPC 句柄，并处理响应（带保护机制）
+ * 
+ * 执行流程：
+ * 1. 创建 IPC 中间件上下文
+ * 2. 依次执行全局和内部中间件的前置钩子（onBeforeEach）
+ * 3. 依次执行全局和内部中间件的参数转换（transformArgs）
+ * 4. 调用实际的处理器函数（handler）
+ * 5. 如果处理器出错，依次尝试内部和全局的错误处理（onError）
+ * 6. 依次执行内部和全局中间件的响应转换（transformResponse）
+ * 7. 依次执行内部和全局中间件的后置钩子（onAfterEach）
+ * 8. 根据是否失败决定返回或抛出异常
+ * 
+ * @param globalMiddlewares - 全局中间件列表
+ * @param options - 处理选项配置（包含 channel、type、middlewares、handler）
+ * @param ipcArgs - IPC 参数列表（第一个参数是事件对象，其余是其他参数）
+ * @returns 处理后的响应数据，如果失败则抛出异常
  */
 export async function findHandleHandlingGuard(globalMiddlewares: IpcMiddleware[], options: FindHandleHandlingOptions, ...ipcArgs: unknown[]) {
 	const [event, ...otherArgs] = ipcArgs as [IpcMainInvokeEvent | IpcMainEvent, ...unknown[]];
@@ -114,7 +166,7 @@ export async function findHandleHandlingGuard(globalMiddlewares: IpcMiddleware[]
 
 	const innerMiddlewares = options.middlewares;
 
-	let response: any = void 0;
+	let response: any;
 	let isFailed = false;
 
 	const [err, res] = await toNil((async () => {
@@ -203,7 +255,20 @@ export namespace IpcAbstractReceiver {
 				)
 		);
 
+	/**
+	 * 根据推断的 IPC 类型获取默认事件类型
+	 * @description 用于在类型系统中自动推导合适的事件对象类型
+	 */
 	export type InferIpcDefaultEvent<FirstType extends (IpcType | undefined), SecondType extends (IpcType | undefined) = undefined> = IpcDefaultEvent<IpcAbstractReceiver.InferIpcType<FirstType, SecondType>>;
+
+	/**
+	 * 推断处理器函数的签名类型
+	 * @description 根据 IPC 类型、第一个参数类型、剩余参数类型和返回值类型构建完整的处理器函数签名
+	 * @template Type - IPC 类型，默认为 IpcTypeBoth
+	 * @template FirstArg - 第一个参数的类型，如果为 unknown 则使用默认事件类型
+	 * @template RemainingArgs - 剩余参数的类型数组
+	 * @template Return - 返回值类型，如果为 any 则包装为 Promise
+	 */
 
 	export type InferProcessorHandler<Type extends (IpcType | undefined) = IpcTypeBoth, FirstArg extends unknown = unknown, RemainingArgs extends any[] = any[], Return extends any = any> = (
 		first: IsUnknown<
@@ -215,15 +280,26 @@ export namespace IpcAbstractReceiver {
 	) => IsAny<Return, Promise<Return>, Return> | Return;
 }
 
-/**
- * IPC 管理器
- */
+	/**
+	 * IPC 抽象接收器基类
+	 * @description 提供 IPC 通信的核心功能，包括中间件管理、处理器创建和执行等
+	 */
 export class IpcAbstractReceiver {
+	/**
+	 * 全局中间件管理数组实例（受保护）
+	 */
 	protected readonly ipcMiddlewaresMa: IpcMiddlewaresMA;
+
+	/**
+	 * 日志打印器实例（受保护）
+	 */
 	protected readonly printer: AbstractPrinter;
 
 	/**
-	 * 创建 IPC 管理器
+	 * 创建 IPC 管理器实例（受保护的构造函数）
+	 * @param options - 配置选项
+	 * @param options.middlewares - 初始全局中间件列表，默认为空数组
+	 * @param options.printer - 自定义日志打印器，如果不提供则使用默认的 IpcPrinter
 	 */
 	protected constructor(
 		options?: {
@@ -244,6 +320,9 @@ export class IpcAbstractReceiver {
 	 * - 全局中间件应该在应用启动时尽早注册
 	 * - 避免将已用作局部中间件的名称注册为全局中间件
 	 * - 如果存在同名冲突，createProcessor 会自动过滤局部中间件
+	 * 
+	 * @param middlewares - 要注册的全局中间件列表（可变长参数）
+	 * @returns 返回 this，支持链式调用
 	 */
 	public useGlobalMiddleware(...middlewares: IpcMiddleware[]): this {
 		for (const mw of middlewares) {
@@ -259,7 +338,8 @@ export class IpcAbstractReceiver {
 	}
 
 	/**
-	 * 销毁全局中间件
+	 * 销毁（移除）全局中间件
+	 * @param middlewares - 要移除的全局中间件列表（可变长参数）
 	 */
 	public revokeGlobalMiddleware(...middlewares: IpcMiddleware[]) {
 		for (const mw of middlewares) {
@@ -274,7 +354,13 @@ export class IpcAbstractReceiver {
 	}
 
 	/**
-	 * 创建 Processor 工厂
+	 * 创建 Processor 工厂函数
+	 * @description 返回一组便捷方法，用于快速创建不同类型的 IPC 处理器
+	 * 
+	 * @template ProcessorFirstArg - 处理器第一个参数的类型，默认为根据 IPC 类型推断的默认事件类型
+	 * @param options - 配置选项
+	 * @param options.middlewares - 工厂级别的中间件列表，这些中间件会被添加到所有通过此工厂创建的处理器中
+	 * @returns 包含三个方法的对象：makeHandleProcessor、makeOnProcessor、makeProcessor
 	 */
 	public withProcessorFactory<ProcessorFirstArg extends any = IpcAbstractReceiver.InferIpcDefaultEvent<IpcType>>(
 		options?: {
@@ -342,10 +428,20 @@ export class IpcAbstractReceiver {
 
 	/**
 	 * 创建 IPC 处理器（Processor）
-	 * @param channel - IPC 通信通道名称
-	 * @param options - 配置选项，包含类型和初始中间件列表
-	 * @param handler - 处理器函数，接收事件和参数
-	 * @returns 返回可链式调用的 Processor 对象
+	 * @description 这是核心的处理器创建方法，支持完整的类型推断和中间件管理
+	 * 
+	 * @template Type - IPC 类型（handle/on/both），默认为 'both'
+	 * @template Channel - 通道名称字符串类型，用于类型安全
+	 * @template ProcessorFirstArg - 处理器第一个参数的类型
+	 * @template ProcessorHandler - 处理器函数的完整签名类型，根据其他泛型自动推断
+	 * 
+	 * @param channel - IPC 通信通道名称，必须唯一标识一个 IPC 端点
+	 * @param options - 配置选项
+	 * @param options.type - IPC 类型，可选值为 'handle'、'on' 或 'both'，默认为 'both'
+	 * @param options.middlewares - 初始中间件列表，这些中间件仅作用于当前处理器
+	 * @param handler - 处理器函数，接收事件对象和其他参数，返回 Promise 或普通值
+	 * 
+	 * @returns 返回可链式调用的 Processor 对象，包含 listener、middlewares、useMiddleware、revokeMiddleware 等属性和方法
 	 */
 	public createProcessor<
 		Type extends (IpcType | undefined),
@@ -360,9 +456,11 @@ export class IpcAbstractReceiver {
 		},
 		handler: ProcessorHandler
 	) {
+		// 1. 设置默认值：type 默认为 'both'，middlewares 默认为空数组
 		const { type = 'both' as Type, middlewares = [] as IpcMiddleware[] } = options;
 
 		// 2. 过滤并去重初始中间件列表（只检查 processor 内部重复）
+		// 目的：确保同一个中间件不会在同一个处理器中重复注册
 		const availedMiddlewareNames = new Set<string>();
 		const uniqueMiddlewares = [] as IpcMiddleware[];
 
@@ -378,6 +476,7 @@ export class IpcAbstractReceiver {
 		})
 
 		// 3. 使用 state 对象封装中间件数组，避免闭包问题
+		// 说明：通过引用 state 对象，确保 useMiddleware 和 revokeMiddleware 操作的是同一份数据
 		const state = {
 			channel,
 			type: type as Type,
@@ -387,10 +486,16 @@ export class IpcAbstractReceiver {
 		}
 
 		// 4. 构建 Processor 对象，支持动态添加/移除中间件
+		// 结构：包含 channel、type、handler、listener 以及中间件管理方法
 		const processor: IpcProcessor<IpcAbstractReceiver.InferIpcType<Type>, ProcessorFirstArg, Channel, ProcessorHandler> = {
 			channel,
 			type: type as IpcAbstractReceiver.InferIpcType<Type>,
 			handler: handler,
+			/**
+			 * IPC 监听器函数，当 IPC 消息到达时被调用
+			 * @param args - IPC 参数列表（第一个是事件对象，其余是其他参数）
+			 * @returns 处理后的响应数据的 Promise
+			 */
 			listener: (...args) => {
 				const globalMiddlewares = this.ipcMiddlewaresMa.entries();
 
@@ -403,22 +508,34 @@ export class IpcAbstractReceiver {
 
 				return findHandleHandlingGuard(globalMiddlewares, options, ...args) as Promise<Awaited<ReturnType<ProcessorHandler>>>;
 			},
-			// 获取当前中间件列表（只读访问）
+			/**
+			 * 获取当前中间件列表（只读访问）
+			 * @returns 返回当前处理器中的所有中间件数组的副本
+			 */
 			get middlewares() {
 				return state.middlewares;
 			},
 			/**
 			 * 动态添加中间件到处理器
-			 * 执行双重过滤：排除已存在的中间件、排除重复项
+			 * @description 执行双重过滤：排除已存在的中间件、排除本次添加中的重复项
+			 * 
 			 * @param middlewares - 要添加的中间件列表（可变长参数）
 			 * @returns 返回 processor 自身，支持链式调用
+			 * 
+			 * @example
+			 * ```typescript
+			 * processor.useMiddleware(middleware1, middleware2)
+			 *   .useMiddleware(middleware3);
+			 * ```
 			 */
 			useMiddleware: (...middlewares) => {
-				// 获取当前已存在的中间件名称集合
+				// 获取当前已存在的中间件名称集合，用于快速查找
 				const innerMiddlewares = state.middlewares;
 				const innerMiddlewareNames = new Set(innerMiddlewares.map(mw => mw.name));
 
 				// 过滤并收集有效的中间件（双重过滤）
+				// 第一重：不能已在处理器的中间件列表中
+				// 第二重：不能在本次添加的列表中重复
 				const availedMiddlewareNames = new Set<string>();
 				const availedMiddlewares = [] as IpcMiddleware[];
 
@@ -438,22 +555,30 @@ export class IpcAbstractReceiver {
 					availedMiddlewares.push(mw);
 				})
 
-				// 将有效的中间件添加到处理器
+				// 将有效的中间件添加到处理器数组末尾
 				state.middlewares.push(...availedMiddlewares);
 				return processor;
 			},
 			/**
 			 * 从处理器中移除指定的中间件
-			 * 执行双重过滤：排除不存在的中间件、排除重复项
+			 * @description 执行双重过滤：排除不存在的中间件、排除本次移除中的重复项
+			 * 
 			 * @param middlewares - 要移除的中间件列表（可变长参数）
 			 * @returns 返回 processor 自身，支持链式调用
+			 * 
+			 * @example
+			 * ```typescript
+			 * processor.revokeMiddleware(middleware1, middleware2);
+			 * ```
 			 */
 			revokeMiddleware: (...middlewares) => {
-				// 获取当前已存在的中间件名称集合
+				// 获取当前已存在的中间件名称集合，用于验证中间件是否存在
 				const innerMiddlewares = state.middlewares;
 				const innerMiddlewareNames = new Set(innerMiddlewares.map(mw => mw.name));
 
 				// 过滤并收集需要移除的中间件（双重过滤）
+				// 第一重：必须在处理器的中间件列表中存在
+				// 第二重：不能在本次移除的列表中重复
 				const targetMiddlewareNames = new Set<string>();
 				const targetMiddlewares = [] as IpcMiddleware[];
 
@@ -473,7 +598,7 @@ export class IpcAbstractReceiver {
 					targetMiddlewares.push(mw);
 				})
 
-				// 执行删除操作：逐个从数组中移除
+				// 执行删除操作：逐个从数组中移除匹配的中间件
 				targetMiddlewares.forEach(mw => {
 					const index = state.middlewares.findIndex(m => m.name === mw.name);
 					if (index !== -1) state.middlewares.splice(index, 1);

@@ -1,5 +1,5 @@
 import { WindowService } from '../../service/WindowService';
-import { IpcMiddleware, ipcMReceiver, IpcMiddlewareContext } from '@rapid/m-ipc-core';
+import { IpcMiddleware, ipcMReceiver, IpcMiddlewareContext } from '@suey/elec-ipc-core';
 import { Catch, RuntimeException } from '../../exceptions';
 import { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
 import type { RPromiseLike, ExtractUnknown } from '@suey/pkg-utils';

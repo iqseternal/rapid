@@ -1,4 +1,4 @@
-import { ipcMReceiver } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@suey/elec-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { appStore, AppStoreType } from 'rd/base/main/stores';
 import { WindowService } from 'rd/base/main/service/WindowService';
