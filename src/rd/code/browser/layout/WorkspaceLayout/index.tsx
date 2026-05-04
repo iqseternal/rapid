@@ -10,8 +10,8 @@ import { MaintenanceMenus } from './plats/MaintenanceMenus';
 import { workbenchesRouteSwitchTransitionClassNames } from './definition';
 import { useTranslation } from 'react-i18next';
 
-import Widget from '../../components/Widget';
-import i18n from '../../i18n';
+import Widget from '@/components/Widget';
+import i18n from '@/i18n';
 import Header from '@/components/Header';
 import Logo from '@/components/Logo';
 import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidget';

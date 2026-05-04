@@ -1,16 +1,17 @@
 import type { OpenDevToolsOptions } from 'electron';
 import { WindowService } from '../../service/WindowService';
-import { toMakeIpcAction } from '@rapid/m-ipc-core';
-
-const { makeIpcHandleAction } = toMakeIpcAction();
+import { ipcMReceiver } from '@rapid/m-ipc-core';
 
 /**
  * 渲染进程打开开发者检查工具
  */
-export const ipcOpenDevTool = makeIpcHandleAction(
+export const ipcOpenDevTool = ipcMReceiver.createProcessor(
   'IpcDevTool/openDevTool',
-  [],
-  async (e, status: boolean, options?: OpenDevToolsOptions) => {
+  {
+    type: 'handle',
+    middlewares: []
+  },
+  (e, status: boolean, options?: OpenDevToolsOptions) => {
     const windowService = WindowService.findWindowService(e);
 
     if (status) {

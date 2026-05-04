@@ -8,6 +8,7 @@
     "resolveJsonModule": true,
     "lib": ["ESNext"],
     "experimentalDecorators": true,
+    "target": "ESNext",
     "strict": false,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,

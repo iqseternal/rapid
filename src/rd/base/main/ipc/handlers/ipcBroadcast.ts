@@ -7,20 +7,20 @@
 
 import { BrowserWindow } from 'electron';
 import { WindowService } from '../../service/WindowService';
-import { toMakeIpcAction } from '@rapid/m-ipc-core';
-import { convertWindowServiceMiddleware } from '../middlewares';
-
-const { makeIpcOnAction } = toMakeIpcAction<[], [WindowService]>({
-  onMiddlewares: [convertWindowServiceMiddleware]
-});
+import { ipcMReceiver, IpcMiddleware } from '@rapid/m-ipc-core';
 
 /**
  * 接收 IpcBroadcast 事件, 并且向其他窗口广播, 携带 事件名、参数
  */
-export const ipcOnBroadcast = makeIpcOnAction(
+export const ipcOnBroadcast = ipcMReceiver.createProcessor(
   'IpcBroadcast',
-  [],
-  async (windowService, evtName: string, data: any) => {
+  {
+    type: 'on',
+    middlewares: []
+  },
+  async (e, evtName: string, data: any) => {
+    const windowService = WindowService.findWindowService(e);
+
     const windows = BrowserWindow.getAllWindows();
 
     // 向所有窗口广播事件

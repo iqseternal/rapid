@@ -136,7 +136,7 @@ export type MergeWithParent<T extends Record<string | number | symbol, any>, R e
 /**
  * 切除一个数组的头部，将剩余部分返回结果
  */
-export type CutHead<Tuple extends any[]> = ((...args: Tuple) => any) extends (first: any, ...rest: infer Result) => any ? Result : never;
+export type CutHead<Tuple extends any[]> = ((...args: Tuple) => any) extends (first: any, ...rest: infer Result) => any ? Result : never; 
 
 /**
  * 获取一个 Promise then函数的类型
@@ -205,7 +205,25 @@ export type IsAny<T, SuccessReturnType, FailReturnType> = (T extends never ? 'ye
  * type d = true;
  * type TResult2 = IsUnknown<d, true, false>; // false
  */
-export type IsUnknown<T, SuccessReturnType, FailReturnType> = unknown extends T ? (T extends unknown ? SuccessReturnType : FailReturnType) : FailReturnType;
+export type IsUnknown<T, SuccessReturnType, FailReturnType> = (
+  IsAny<
+    T,
+    FailReturnType,
+    (
+      unknown extends T ? (T extends unknown ? SuccessReturnType : FailReturnType) : FailReturnType
+    )
+  >
+);
+
+export type IsUndefined<T, SuccessReturnType, FailReturnType> = (
+  IsAny<
+    T,
+    FailReturnType,
+    (
+      T extends undefined ? SuccessReturnType : FailReturnType
+    )
+  >
+);
 
 /**
  * 从一个对象类型中剔除含有 never 意义的属性名

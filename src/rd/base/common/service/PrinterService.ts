@@ -34,7 +34,6 @@ export class PrinterService {
    */
   public printError(...messages: PrintMessagesTypeArr) {
     return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.red, Ansi.underline, '[ERRO]')}`, ' ', ...messages);
-
   }
 
   /**

@@ -1,10 +1,19 @@
-import { IpcMainManager } from 'rd/base/main/ipc';
 import { optimizer } from '@electron-toolkit/utils';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { app } from 'electron';
 import { setupMainWindowService } from './flow/windowFlow';
 import { setupTrayMenu } from './flow/trayMenuFlow';
-import { WindowService } from 'rd/base/main/service/WindowService';
+import { ipcMReceiver } from '@rapid/m-ipc-core';
+import { ipcAppStoreClear, ipcAppStoreDelete, ipcAppStoreGet, ipcAppStoreGetStore, ipcAppStoreHas, ipcAppStoreReset, ipcAppStoreSet } from 'rd/base/main/ipc/handlers';
+import {
+  ipcWindowResizeAble, ipcWindowWorkAreaSize, ipcWindowShow, ipcWindowSetSize,
+  ipcWindowSetPosition, ipcWindowSetMinimumSize, ipcWindowResetCustomSize, ipcWindowRelaunch,
+  ipcWindowReductionSize, ipcWindowProperties, ipcWindowMinimize, ipcWindowMaximize, ipcWindowClose
+} from 'rd/base/main/ipc/handlers';
+import { ipcOnBroadcast } from 'rd/base/main/ipc/handlers';
+import { ipcOpenDevTool } from 'rd/base/main/ipc/handlers';
+import { ipcForwardDataTakeIn, ipcForwardDataTakeOut } from 'rd/base/main/ipc/handlers';
+import { ipcExceptionFilterMiddleware, ipcResponseMiddleware } from 'rd/base/main/ipc/middlewares';
 
 /**
  * 设置应用监听事件
@@ -33,7 +42,7 @@ export async function setupAppListeners() {
 
 export class CodeMain {
   public async main() {
-    await IpcMainManager.start();
+    await this.setupIpcListeners();
 
     await setupAppListeners();
 
@@ -42,5 +51,32 @@ export class CodeMain {
     await setupMainWindowService();
 
     await setupTrayMenu();
+  }
+
+  public async setupIpcListeners() {
+    ipcMReceiver
+      .registerHandle(
+        ipcWindowClose, ipcWindowMaximize, ipcWindowMinimize, ipcWindowReductionSize, ipcWindowRelaunch,
+        ipcWindowResetCustomSize, ipcWindowResizeAble, ipcWindowSetPosition, ipcWindowSetSize, ipcWindowShow,
+        ipcWindowSetMinimumSize,
+        ipcWindowProperties,
+        ipcWindowWorkAreaSize
+      )
+      .registerHandle(
+        ipcAppStoreDelete, ipcAppStoreClear, ipcAppStoreGet, ipcAppStoreGetStore,
+        ipcAppStoreReset, ipcAppStoreHas, ipcAppStoreSet
+      )
+      .registerHandle(ipcOpenDevTool)
+      .registerHandle(ipcForwardDataTakeIn, ipcForwardDataTakeOut)
+    ;
+
+    ipcMReceiver
+      .registerAsOn(ipcOnBroadcast)
+    ;
+
+    ipcMReceiver
+      .useGlobalMiddleware(ipcExceptionFilterMiddleware)
+      .useGlobalMiddleware(ipcResponseMiddleware)
+    ;
   }
 }

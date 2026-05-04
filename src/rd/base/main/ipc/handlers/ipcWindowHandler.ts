@@ -1,26 +1,26 @@
 import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { WindowService } from '../../service/WindowService';
-import { RuntimeException, TypeException } from '../../exceptions';
+import { TypeException } from '../../exceptions';
 import { isNumber, isString, isUnDef, isDef } from '@suey/pkg-utils';
 import { AppConfigService } from '../../service/AppConfigService';
-import { toMakeIpcAction } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
-import { posix } from 'path';
 import { userConfigStore } from '../../stores';
 import { WindowServiceStateMachine } from '../../service/WindowServiceStateMachine';
 import { AppRouterService } from '../../service/AppRouterService';
 
-const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowServiceMiddleware]
+// 创建带有 WindowService 中间件的处理器工厂
+const { makeProcessor, makeHandleProcessor } = ipcMReceiver.withProcessorFactory<WindowService>({
+  middlewares: [convertWindowServiceMiddleware]
 });
 
 /**
  * 窗口最大化, 可以在 options 中传递制定 id 来控制某个窗口
  */
-export const ipcWindowMaximize = makeIpcHandleAction(
+export const ipcWindowMaximize = makeHandleProcessor(
   'IpcWindow/maxSize',
-  [],
+  {},
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
     const targetKey = windowKey ?? id;
@@ -29,12 +29,16 @@ export const ipcWindowMaximize = makeIpcHandleAction(
   }
 );
 
+const handler = ipcWindowMaximize.handler;
+
+
+
 /**
  * 窗口最小化, 可以在 options 中传递制定 id 来控制某个窗口
  */
-export const ipcWindowMinimize = makeIpcHandleAction(
+export const ipcWindowMinimize = makeHandleProcessor(
   'IpcWindow/minSize',
-  [],
+  {},
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
     const targetKey = windowKey ?? id;
@@ -46,9 +50,9 @@ export const ipcWindowMinimize = makeIpcHandleAction(
 /**
  * 窗口还原指令, 还原窗口大小
  */
-export const ipcWindowReductionSize = makeIpcHandleAction(
+export const ipcWindowReductionSize = makeHandleProcessor(
   'IpcWindow/reduction',
-  [],
+  {},
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
     const targetKey = windowKey ?? id;
@@ -66,9 +70,9 @@ export const ipcWindowReductionSize = makeIpcHandleAction(
 /**
  * 设置窗口是否可以调整大小尺寸
  */
-export const ipcWindowResizeAble = makeIpcHandleAction(
+export const ipcWindowResizeAble = makeHandleProcessor(
   'IpcWindow/resizeAble',
-  [],
+  {},
   async (windowService, options?: { id?: number;windowKey?: string;resizeAble: boolean; }) => {
     const { id, windowKey, resizeAble = true } = options ?? {};
     const targetKey = windowKey ?? id;
@@ -81,9 +85,9 @@ export const ipcWindowResizeAble = makeIpcHandleAction(
 /**
  * 重新加载某个窗口页面
  */
-export const ipcWindowRelaunch = makeIpcHandleAction(
+export const ipcWindowRelaunch = makeHandleProcessor(
   'IpcWindow/relaunch',
-  [],
+  {},
   async (windowService, options?: { id?: number;windowKey?: string; }) => {
     const { id, windowKey } = options ?? {};
     const targetKey = windowKey ?? id;
@@ -95,9 +99,9 @@ export const ipcWindowRelaunch = makeIpcHandleAction(
 /**
  * 设置窗口的最小尺寸大小
  */
-export const ipcWindowSetMinimumSize = makeIpcHandleAction(
+export const ipcWindowSetMinimumSize = makeHandleProcessor(
   'IpcWindow/setMinimumSize',
-  [],
+  {},
   async (windowService, options: {
     id?: number;
     windowKey?: string;
@@ -115,9 +119,9 @@ export const ipcWindowSetMinimumSize = makeIpcHandleAction(
 /**
  * 设置窗口的当前尺寸
  */
-export const ipcWindowSetSize = makeIpcHandleAction(
+export const ipcWindowSetSize = makeHandleProcessor(
   'IpcWindow/setSize',
-  [],
+  {},
   async (windowService, options: {
     id?: number
     windowKey?: string;
@@ -136,9 +140,9 @@ export const ipcWindowSetSize = makeIpcHandleAction(
 /**
  * 重置窗口为制定大小, 用于记忆化窗口尺寸
  */
-export const ipcWindowResetCustomSize = makeIpcHandleAction(
+export const ipcWindowResetCustomSize = makeHandleProcessor(
   'IpcWindow/resetCustomSize',
-  [],
+  {},
   async (windowService, options: {
     id?: number,
     windowKey?: string;
@@ -190,9 +194,9 @@ export const ipcWindowResetCustomSize = makeIpcHandleAction(
 /**
  * 设置窗口的位置
  */
-export const ipcWindowSetPosition = makeIpcHandleAction(
+export const ipcWindowSetPosition = makeHandleProcessor(
   'IpcWindow/setPosition',
-  [],
+  {},
   async (windowService, options: {
     id?: number,
     windowKey?: string;
@@ -232,9 +236,9 @@ export const ipcWindowSetPosition = makeIpcHandleAction(
 /**
  * TODO: 需要改进
  */
-export const ipcOpenWindow = makeIpcHandleAction(
+export const ipcOpenWindow = makeHandleProcessor(
   'IpcWindow/openWindow',
-  [],
+  {},
   async (_, options: { windowKey?: string; subUrl: string; }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => {
     const { windowKey, subUrl } = options;
 
@@ -257,10 +261,10 @@ export const ipcOpenWindow = makeIpcHandleAction(
 /**
  * 关闭窗口
  */
-export const ipcWindowClose = makeIpcHandleAction(
+export const ipcWindowClose = makeHandleProcessor(
   'IpcWindow/closeWindow',
-  [],
-  async (windowService, options?: {
+  {},
+  async (windowService: WindowService, options?: {
     windowKey?: string;
     id?: number,
     /**
@@ -293,9 +297,9 @@ export const ipcWindowClose = makeIpcHandleAction(
 /**
  * 显示窗口, 如果窗口存在, 并且是隐藏地情况下
  */
-export const ipcWindowShow = makeIpcHandleAction(
+export const ipcWindowShow = makeHandleProcessor(
   'IpcWindow/showWindow',
-  [],
+  {},
   async (windowService: WindowService, options: {
     id?: number
     windowKey?: string;
@@ -328,10 +332,10 @@ export declare interface WindowProperties {
 /**
  * TODO: 需要改进, 理想作用是通过一个 ipc 设置多个 window 属性
  */
-export const ipcWindowProperties = makeIpcHandleAction(
+export const ipcWindowProperties = makeHandleProcessor(
   'IpcWindow/properties',
-  [],
-  async (windowService, selectedOptions: { windowKey?: string; }, properties: Partial<WindowProperties>) => {
+  {},
+  async (windowService: WindowService, selectedOptions: { windowKey?: string; }, properties: Partial<WindowProperties>) => {
     const { windowKey } = selectedOptions;
 
     if (isString(windowKey)) {
@@ -350,9 +354,9 @@ export const ipcWindowProperties = makeIpcHandleAction(
 /**
  * 获取展示窗口的尺寸
  */
-export const ipcWindowWorkAreaSize = makeIpcHandleAction(
+export const ipcWindowWorkAreaSize = makeHandleProcessor(
   'IpcWindow/workAreaSize',
-  [],
+  {},
   async () => {
     const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 

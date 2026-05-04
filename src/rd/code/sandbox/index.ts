@@ -14,7 +14,26 @@ import { printerServer } from './server/printer';
 import type { AppStoreType } from './server/stores';
 import { appStore } from './server/stores';
 
+import type * as AllIpcProcessors from 'rd/base/main/ipc/handlers';
+import { IpcBCaller } from '@rapid/m-ipc-core';
+import type { IpcCompatibleProcessor, MutateProcessorSheet } from '@rapid/m-ipc-core';
+
 import * as ipcActions from './server/ipcActions';
+
+export type IpcProcessors = {
+  readonly [Key in keyof typeof AllIpcProcessors]: (typeof AllIpcProcessors)[Key] extends IpcCompatibleProcessor ? (typeof AllIpcProcessors)[Key] : never;
+};
+
+export type IpcProcessorSheet = Omit<
+  MutateProcessorSheet<IpcProcessors>,
+  | IpcProcessors['ipcAppStoreClear']['channel']
+  | IpcProcessors['ipcAppStoreDelete']['channel']
+  | IpcProcessors['ipcAppStoreGet']['channel']
+  | IpcProcessors['ipcAppStoreGetStore']['channel']
+  | IpcProcessors['ipcAppStoreHas']['channel']
+  | IpcProcessors['ipcAppStoreReset']['channel']
+  | IpcProcessors['ipcAppStoreSet']['channel']
+>;
 
 export type { ElectronAPI };
 
@@ -39,6 +58,8 @@ export interface ExposeApi {
    */
   readonly printer: PrinterServer;
 
+  readonly ipcBCaller: IpcBCaller<IpcProcessorSheet>;
+
   /**
    * IPC 事件
    */
@@ -60,6 +81,7 @@ const exposeService = new ExposeService<ExposeApi>();
 exposeService.autoExpose({
   electron,
   printer: printerServer,
+  ipcBCaller: new IpcBCaller<IpcProcessorSheet>(),
   ipcActions,
   stores: {
     appStore

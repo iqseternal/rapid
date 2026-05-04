@@ -1,18 +1,17 @@
-import { WindowService } from '../../service/WindowService';
-import { toMakeIpcAction } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@rapid/m-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
-import { appStore, AppStoreType } from '../../../main/stores';
+import { appStore, AppStoreType } from 'rd/base/main/stores';
+import { WindowService } from 'rd/base/main/service/WindowService';
 
-const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowServiceMiddleware]
-});
+// 创建带有 WindowService 中间件的处理器工厂
+const { makeProcessor, makeHandleProcessor } = ipcMReceiver.withProcessorFactory();
 
 /**
  * 为渲染进程提供获得 appStore 的能力
  */
-export const ipcAppStoreGetStore = makeIpcHandleAction(
+export const ipcAppStoreGetStore = makeHandleProcessor(
   'IpcStore/appStore/getStore',
-  [],
+  {},
   async () => {
     return appStore.store;
   }
@@ -21,22 +20,24 @@ export const ipcAppStoreGetStore = makeIpcHandleAction(
 /**
  * 渲染进程通过 key 获得一个存储在 appStore 中的数据
  */
-export const ipcAppStoreGet = makeIpcHandleAction(
+export const ipcAppStoreGet = makeHandleProcessor(
   'IpcStore/appStore/get',
-  [],
-  async <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: WindowService, key: Key, defaultValue?: V) => {
+  {},
+  async <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: unknown, key: Key, defaultValue?: V) => {
     if (defaultValue) return appStore.get(key, defaultValue);
     return appStore.get(key);
   }
 );
 
+
+
 /**
  * 渲染进程通过 key 设置存储在 appStore 中的数据
  */
-export const ipcAppStoreSet = makeIpcHandleAction(
+export const ipcAppStoreSet = makeHandleProcessor(
   'IpcStore/appStore/set',
-  [],
-  async <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: WindowService, key: Key, value: V) => {
+  {},
+  async <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: unknown, key: Key, value: V) => {
     return appStore.set(key, value);
   }
 );
@@ -44,10 +45,10 @@ export const ipcAppStoreSet = makeIpcHandleAction(
 /**
  * 渲染进程通过 key 重置某些 appStore 中的数据
  */
-export const ipcAppStoreReset = makeIpcHandleAction(
+export const ipcAppStoreReset = makeHandleProcessor(
   'IpcStore/appStore/reset',
-  [],
-  async <Key extends keyof AppStoreType>(_: WindowService, ...keys: Key[]) => {
+  {},
+  async <Key extends keyof AppStoreType>(_: unknown, ...keys: Key[]) => {
     return appStore.reset(...keys);
   }
 );
@@ -55,10 +56,10 @@ export const ipcAppStoreReset = makeIpcHandleAction(
 /**
  * 渲染进程通过 key 判断 appStore 中是否含有某个 key
  */
-export const ipcAppStoreHas = makeIpcHandleAction(
+export const ipcAppStoreHas = makeHandleProcessor(
   'IpcStore/appStore/has',
-  [],
-  async <Key extends keyof AppStoreType>(_: WindowService, key: Key) => {
+  {},
+  async <Key extends keyof AppStoreType>(_: unknown, key: Key) => {
     return appStore.has(key);
   }
 );
@@ -66,10 +67,10 @@ export const ipcAppStoreHas = makeIpcHandleAction(
 /**
  * 渲染进程通过 key 删除 appStore 中的数据
  */
-export const ipcAppStoreDelete = makeIpcHandleAction(
+export const ipcAppStoreDelete = makeHandleProcessor(
   'IpcStore/appStore/delete',
-  [],
-  async <Key extends keyof AppStoreType>(_: WindowService, key: Key) => {
+  {},
+  async <Key extends keyof AppStoreType>(_: unknown, key: Key) => {
     return appStore.delete(key)
   }
 );
@@ -77,10 +78,10 @@ export const ipcAppStoreDelete = makeIpcHandleAction(
 /**
  * 清空 appStore
  */
-export const ipcAppStoreClear = makeIpcHandleAction(
+export const ipcAppStoreClear = makeHandleProcessor(
   'IpcStore/appStore/clear',
-  [],
-  async (_: WindowService) => {
+  {},
+  async (_) => {
     return appStore.clear()
   }
 );

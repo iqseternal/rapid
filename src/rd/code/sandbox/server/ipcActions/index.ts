@@ -1,8 +1,9 @@
 import { IpcActionService } from 'rd/base/sandbox/service/IpcActionService';
 import type { HandleHandlers } from '../electron';
 
-const ipcActionService = new IpcActionService<HandleHandlers>();
-
+const ipcActionService = new IpcActionService<{
+  [Key in keyof HandleHandlers as HandleHandlers[Key]['channel']]: HandleHandlers[Key]['handler'];
+}>();
 
 /**
  * 打开页面

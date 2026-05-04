@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { AxiosResponse } from '@suey/pkg-utils';
-import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
+import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/base/api';
 import type { ThreadHandler } from 'rd/base/browser/service/Thread';
 import type { UseExtensionHeartbeatVoucher } from '@/api/extension';
 import type { RdCssVariablePayloadSheet } from '@/skin';
@@ -43,7 +43,7 @@ declare global {
       }
 
       readonly constants: {
-        readonly Timestamp: typeof import('rd/base/common/constants').Timestamp;
+        readonly Timestamp: typeof import('rd/base/base/constants').Timestamp;
       }
 
       readonly components: {
@@ -87,13 +87,13 @@ declare global {
         readonly isShallow: typeof import('@vue/reactivity').isShallow;
         readonly isProxy: typeof import('@vue/reactivity').isProxy;
 
-        readonly rApiGet: typeof import('rd/base/common/api').rApiGet;
-        readonly rApiPost: typeof import('rd/base/common/api').rApiPost;
-        readonly rApiPut: typeof import('rd/base/common/api').rApiPut;
-        readonly rApiDelete: typeof import('rd/base/common/api').rApiDelete;
-        readonly rRequest: typeof import('rd/base/common/api').rRequest;
-        readonly rApiPatch: typeof import('rd/base/common/api').rApiPatch;
-        readonly rCreateApi: typeof import('rd/base/common/api').rCreateApi;
+        readonly rApiGet: typeof import('rd/base/base/api').rApiGet;
+        readonly rApiPost: typeof import('rd/base/base/api').rApiPost;
+        readonly rApiPut: typeof import('rd/base/base/api').rApiPut;
+        readonly rApiDelete: typeof import('rd/base/base/api').rApiDelete;
+        readonly rRequest: typeof import('rd/base/base/api').rRequest;
+        readonly rApiPatch: typeof import('rd/base/base/api').rApiPatch;
+        readonly rCreateApi: typeof import('rd/base/base/api').rCreateApi;
 
         readonly apiGet: typeof import('@suey/pkg-utils').apiGet;
         readonly apiPost: typeof import('@suey/pkg-utils').apiPost;

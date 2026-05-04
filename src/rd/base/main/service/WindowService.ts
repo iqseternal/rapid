@@ -108,27 +108,19 @@ export class WindowService {
    * const windowService = WindowService.findWindowService(id);
    */
   public static findWindowService(key: string | number | IpcMainEvent | IpcMainInvokeEvent): WindowService {
+    const exceptionLabel = 'WindowService:findWindowService';
+
     if (isString(key)) {
       const service = WindowServiceStateMachine.findWindowService(key);
       if (service) return service;
-      throw new RuntimeException(`Not found WindowService.`, {
-        label: 'WindowService:findWindowService'
-      })
+      throw new RuntimeException(`Not found WindowService.`, { label: exceptionLabel });
     }
 
     const browserWindow = WindowService.findBrowserWindow(key);
-    if (!browserWindow) {
-      throw new RuntimeException(`Not found browserWindow.`, {
-        label: 'WindowService:findWindowService'
-      })
-    }
+    if (!browserWindow) throw new RuntimeException(`Not found WindowService.`, { label: exceptionLabel });
 
     const windowService = WindowServiceStateMachine.findWindowService(browserWindow.id);
-    if (!windowService) {
-      throw new RuntimeException(`Not found WindowService.`, {
-        label: 'WindowService:findWindowService'
-      })
-    }
+    if (!windowService) throw new RuntimeException(`Not found WindowService.`, { label: exceptionLabel });
 
     return windowService;
   }
