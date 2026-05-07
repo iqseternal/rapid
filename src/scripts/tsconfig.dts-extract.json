@@ -47,10 +47,9 @@
       "node"
     ],
     "paths": {
-      "@rapid/libs": ["../../packages/libs"],
       "@rapid/libs-web": ["../../packages/libs-web"],
       "@rapid/bus": ["../../packages/bus"],
-      "@rapid/m-ipc-core": ["../../packages/m-ipc-core"],
+      "@suey/elec-ipc-core": ["../../libs/elec-ipc-core"],
       "@suey/rxp-meta": ["../../libs/rxp-meta"],
       "rd/*": ["../rd/*"],
       "@/*": ["../rd/code/browser/*"]

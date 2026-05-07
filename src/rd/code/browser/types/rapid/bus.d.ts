@@ -1,5 +1,5 @@
 import type { AxiosResponse } from '@suey/pkg-utils';
-import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/base/api';
+import type { RApiBasicResponse, RApiFailResponse, RApiSuccessResponse } from 'rd/base/common/api';
 
 declare global {
 

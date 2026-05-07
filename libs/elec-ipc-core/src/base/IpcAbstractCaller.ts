@@ -61,6 +61,10 @@ export class IpcAbstractCaller<IpcProcessorSheet extends MutateProcessorSheet<Re
 		return response;
 	}
 
+	public makeInvoker = <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, IpcTypeHandle>>(channel: Key) => {
+		return (...args: IpcProcessorSheet[Key]['args']): Promise<IpcProcessorSheet[Key]['return']> => this.invoke(channel, ...args);
+	}
+
 	/**
 	 * 发送 IPC 消息
 	 *

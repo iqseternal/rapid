@@ -44,25 +44,25 @@ if (IS_DEV) {
 // })
 
 // 捕捉没有 处理 Catch 的 Promise
-// process.on('unhandledRejection', (reason: Error, promise) => {
-//   try {
-//     Catch.parser(reason as unknown as Exception<ExceptionErrorMsgData>);
-//   } catch (err) {
-//
-//     if (IS_DEV) {
-//       if (!Exception.is(reason)) {
-//         PrinterService.printError('当前异常未定义(非Exception)');
-//       }
-//     }
-//
-//     if (err && err === reason) {
-//       LoggerService.error(`未捕获的Promise`, JSON.stringify(reason), promise);
-//       return;
-//     }
-//
-//     PrinterService.printError(err);
-//   }
-// });
-//
+process.on('unhandledRejection', (reason: Error, promise) => {
+  try {
+    Catch.parser(reason as unknown as Exception<ExceptionErrorMsgData>);
+  } catch (err) {
+
+    if (IS_DEV) {
+      if (!Exception.is(reason)) {
+        PrinterService.printError('当前异常未定义(非Exception)');
+      }
+    }
+
+    if (err && err === reason) {
+      LoggerService.error(`未捕获的Promise`, JSON.stringify(reason), promise);
+      return;
+    }
+
+    PrinterService.printError(err);
+  }
+});
+
 
 

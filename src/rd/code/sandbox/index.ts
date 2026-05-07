@@ -78,10 +78,12 @@ export interface ExposeApi {
 
 const exposeService = new ExposeService<ExposeApi>();
 
+const ipcBCaller = new IpcBCaller<IpcProcessorSheet>();
+
 exposeService.autoExpose({
   electron,
   printer: printerServer,
-  ipcBCaller: new IpcBCaller<IpcProcessorSheet>(),
+  ipcBCaller: ipcBCaller,
   ipcActions,
   stores: {
     appStore

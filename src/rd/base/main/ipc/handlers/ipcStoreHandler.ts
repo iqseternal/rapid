@@ -29,8 +29,6 @@ export const ipcAppStoreGet = makeHandleProcessor(
   }
 );
 
-
-
 /**
  * 渲染进程通过 key 设置存储在 appStore 中的数据
  */

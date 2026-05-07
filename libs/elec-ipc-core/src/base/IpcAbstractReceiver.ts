@@ -137,7 +137,7 @@ export async function applyTransformResponse(middlewares: IpcMiddleware[], ipcMi
 
 /**
  * 处理一个 action，解决对应的 IPC 句柄，并处理响应（带保护机制）
- * 
+ *
  * 执行流程：
  * 1. 创建 IPC 中间件上下文
  * 2. 依次执行全局和内部中间件的前置钩子（onBeforeEach）
@@ -147,7 +147,7 @@ export async function applyTransformResponse(middlewares: IpcMiddleware[], ipcMi
  * 6. 依次执行内部和全局中间件的响应转换（transformResponse）
  * 7. 依次执行内部和全局中间件的后置钩子（onAfterEach）
  * 8. 根据是否失败决定返回或抛出异常
- * 
+ *
  * @param globalMiddlewares - 全局中间件列表
  * @param options - 处理选项配置（包含 channel、type、middlewares、handler）
  * @param ipcArgs - IPC 参数列表（第一个参数是事件对象，其余是其他参数）
@@ -320,7 +320,7 @@ export class IpcAbstractReceiver {
 	 * - 全局中间件应该在应用启动时尽早注册
 	 * - 避免将已用作局部中间件的名称注册为全局中间件
 	 * - 如果存在同名冲突，createProcessor 会自动过滤局部中间件
-	 * 
+	 *
 	 * @param middlewares - 要注册的全局中间件列表（可变长参数）
 	 * @returns 返回 this，支持链式调用
 	 */
@@ -356,7 +356,7 @@ export class IpcAbstractReceiver {
 	/**
 	 * 创建 Processor 工厂函数
 	 * @description 返回一组便捷方法，用于快速创建不同类型的 IPC 处理器
-	 * 
+	 *
 	 * @template ProcessorFirstArg - 处理器第一个参数的类型，默认为根据 IPC 类型推断的默认事件类型
 	 * @param options - 配置选项
 	 * @param options.middlewares - 工厂级别的中间件列表，这些中间件会被添加到所有通过此工厂创建的处理器中
@@ -420,27 +420,27 @@ export class IpcAbstractReceiver {
 		) => makeProcessor(channel, { ...options, type: 'on' }, handler));
 
 		return {
-			makeHandleProcessor,
-			makeOnProcessor,
-			makeProcessor,
-		};
+			makeHandleProcessor: makeHandleProcessor,
+			makeOnProcessor: makeOnProcessor,
+			makeProcessor: makeProcessor,
+		} as const;
 	}
 
 	/**
 	 * 创建 IPC 处理器（Processor）
 	 * @description 这是核心的处理器创建方法，支持完整的类型推断和中间件管理
-	 * 
+	 *
 	 * @template Type - IPC 类型（handle/on/both），默认为 'both'
 	 * @template Channel - 通道名称字符串类型，用于类型安全
 	 * @template ProcessorFirstArg - 处理器第一个参数的类型
 	 * @template ProcessorHandler - 处理器函数的完整签名类型，根据其他泛型自动推断
-	 * 
+	 *
 	 * @param channel - IPC 通信通道名称，必须唯一标识一个 IPC 端点
 	 * @param options - 配置选项
 	 * @param options.type - IPC 类型，可选值为 'handle'、'on' 或 'both'，默认为 'both'
 	 * @param options.middlewares - 初始中间件列表，这些中间件仅作用于当前处理器
 	 * @param handler - 处理器函数，接收事件对象和其他参数，返回 Promise 或普通值
-	 * 
+	 *
 	 * @returns 返回可链式调用的 Processor 对象，包含 listener、middlewares、useMiddleware、revokeMiddleware 等属性和方法
 	 */
 	public createProcessor<
@@ -518,10 +518,10 @@ export class IpcAbstractReceiver {
 			/**
 			 * 动态添加中间件到处理器
 			 * @description 执行双重过滤：排除已存在的中间件、排除本次添加中的重复项
-			 * 
+			 *
 			 * @param middlewares - 要添加的中间件列表（可变长参数）
 			 * @returns 返回 processor 自身，支持链式调用
-			 * 
+			 *
 			 * @example
 			 * ```typescript
 			 * processor.useMiddleware(middleware1, middleware2)
@@ -562,10 +562,10 @@ export class IpcAbstractReceiver {
 			/**
 			 * 从处理器中移除指定的中间件
 			 * @description 执行双重过滤：排除不存在的中间件、排除本次移除中的重复项
-			 * 
+			 *
 			 * @param middlewares - 要移除的中间件列表（可变长参数）
 			 * @returns 返回 processor 自身，支持链式调用
-			 * 
+			 *
 			 * @example
 			 * ```typescript
 			 * processor.revokeMiddleware(middleware1, middleware2);

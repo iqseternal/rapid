@@ -1,5 +1,5 @@
 import * as _suey_pkg_utils from '@suey/pkg-utils';
-import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, AxiosResponse, ExtractNever, CutHead, RPromiseLike, Ansi } from '@suey/pkg-utils';
+import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, AxiosResponse, CutHead, Ansi } from '@suey/pkg-utils';
 import * as _meta2d_core from '@meta2d/core';
 import * as react from 'react';
 import { ComponentType, HTMLAttributes, ReactNode, Component, FC, LazyExoticComponent, ForwardRefExoticComponent, MemoExoticComponent, ReactElement } from 'react';
@@ -18,7 +18,7 @@ import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
 import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
-import { IpcMainInvokeEvent, IpcMainEvent, BrowserWindow, BrowserWindowConstructorOptions, OpenDevToolsOptions } from 'electron';
+import { IpcMainInvokeEvent, IpcMainEvent, OpenDevToolsOptions, BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 
 /**
  * 请求 hConfig 配置
@@ -976,114 +976,279 @@ declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extend
     invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
 }
 
-/** Ipc 事件类型 */
-declare const enum IpcActionEvent {
-    Handle = 0,
-    On = 1
-}
-/** 自定义 ipc action 对象 */
-type IpcActionType<EvtActionType extends IpcActionEvent, Channel extends string = string, Action extends (...args: any[]) => any = (...args: any[]) => any> = {
+/**
+ * @rapid/m-ipc-core - Common Types
+ *
+ * 通用类型定义（所有环境可用）
+ */
+
+/**
+ * IPC 类型：handle（双向通信，有返回值）
+ */
+type IpcTypeHandle = 'handle';
+/**
+ * IPC 类型：on（单向通知，无返回值）
+ */
+type IpcTypeOn = 'on';
+/**
+ * IPC 类型：both（兼容态，可用于 handle 或 on）
+ */
+type IpcTypeBoth = 'both';
+/**
+ * IPC 完整类型（所有类型的联合）
+ */
+type IpcType = IpcTypeHandle | IpcTypeOn | IpcTypeBoth;
+/**
+ * 根据 IPC 类型推导默认事件对象
+ * - handle: IpcMainInvokeEvent
+ * - on: IpcMainEvent
+ * - both: IpcMainInvokeEvent | IpcMainEvent
+ */
+type IpcDefaultEvent<T extends IpcType> = (T extends IpcTypeBoth ? IpcMainInvokeEvent | IpcMainEvent : (T extends IpcTypeHandle ? IpcMainInvokeEvent : IpcMainEvent));
+/**
+ * IPC 处理器接口（未注册的处理器）
+ *
+ * 通用处理器抽象，注册时决定作为 Handle 还是 On
+ *
+ * @template Type - 注册类型（默认 'both'，兼容态）
+ * @template FirstArg - 第一个参数类型（可自定义，如 WindowService）
+ * @template Channel - 通道名称
+ * @template ProcessorHandler - 处理函数类型
+ */
+interface IpcProcessor<Type extends IpcType = IpcTypeBoth, FirstArg extends unknown = unknown, Channel extends string = string, ProcessorHandler extends ((...args: [any, ...(any[])]) => any) = ((...args: [FirstArg, ...(any[])]) => any)> {
     /**
-     * 句柄名称
+     * 通道名称
      */
     readonly channel: Channel;
     /**
-     * 编写的 Action 回调, 可以让其他 Action 进行调用
+     * IPC 类型（'handle' | 'on' | 'both'）
      */
-    readonly action: Action;
+    readonly type: Type;
     /**
-     * Action Type
+     * 中间件列表（只读）
      */
-    readonly actionType: EvtActionType;
+    get middlewares(): IpcMiddleware[];
     /**
-     * 中间件列表
+     * 业务处理函数
+     *
+     * @description 不直接使用 ProcessorHandler 标注，避免泛型函数第一个参数推导为 any
      */
-    readonly middlewares: IpcActionMiddleware<EvtActionType>[];
+    readonly handler: ProcessorHandler;
     /**
-     * ipc 句柄的处理函数, 该函数会走中间件, 调用 action 对象的 action 方法作为返回值
+     * 监听器函数（带中间件包装的实际执行函数）
      */
-    readonly listener: (e: IpcMainInvokeEvent | IpcMainEvent, ...args: any[]) => Promise<any>;
-};
-/** 在中间件中 onSuccess 或者 onError 中获取当前的 action 信息的类型 */
-type IpcActionMessageType<EvtActionType extends IpcActionEvent> = Omit<IpcActionType<EvtActionType>, 'middlewares'> & {
-    readonly event: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent;
-};
+    readonly listener: (event: IpcDefaultEvent<Type>, ...args: CutHead<Parameters<ProcessorHandler>>) => Promise<Awaited<ReturnType<ProcessorHandler>>>;
+    /**
+     * 添加中间件（支持链式调用）
+     *
+     * @example
+     * ```ts
+     * processor.useMiddleware(loggerMiddleware, authMiddleware);
+     * ```
+     */
+    useMiddleware: (...middlewares: IpcMiddleware[]) => this;
+    /**
+     * 移除中间件（支持链式调用）
+     */
+    revokeMiddleware: (...middlewares: IpcMiddleware[]) => this;
+}
 /**
- * Ipc Action 中间件
+ * 兼容的 IpcProcessor 类型（涵盖所有子类型）
  */
-type IpcActionMiddleware<EvtActionType extends IpcActionEvent> = {
+type IpcCompatibleProcessor = IpcProcessor<IpcType, any, string, (...args: any[]) => any>;
+/**
+ * IPC 中间件上下文（传递给中间件的生命周期钩子）
+ */
+interface IpcMiddlewareContext {
     /**
-     * 中间件名称
+     * 通道名称
+     */
+    readonly channel: string;
+    /**
+     * IPC 类型
+     */
+    readonly type: IpcType;
+    /**
+     * 原始事件对象
+     */
+    readonly event: IpcMainInvokeEvent | IpcMainEvent;
+    /**
+     * 执行开始时间戳（毫秒）
+     */
+    readonly startTime: number;
+    /**
+     * 中间件间共享的元数据存储
+     */
+    readonly metadata: Map<string, any>;
+}
+/**
+ * IPC 中间件接口（洋葱模型）
+ *
+ * 中间件按注册顺序形成洋葱结构：
+ * - 请求阶段：从外层到内层（onBeforeEach → transformArgs）
+ * - 响应阶段：从内层到外层（onSuccess/onError → onAfterEach）
+ */
+interface IpcMiddleware {
+    /**
+     * 中间件名称（唯一标识符）
      */
     readonly name: string;
     /**
-     * 转换参数, 可以利用本函数为每个子项的 action 函数提供统一的参数前缀, 因为默认情况下 electron ipc 第一个参数为 事件 e: IpcMainInvokeEvent | IpcMainEvent
-     * 可能需要转换自定义对象或者 已有的 窗口对象
+     * 前置钩子（请求阶段，洋葱外层）
      *
-     * @example
-     * export const convertWindowService: IpcActionMiddleware<IpcActionEvent.Handle> = {
-     *   name: 'convertWindowService',
-     *   transformArgs(e, ...args) {
-     *     const windowService = WindowService.findWindowService(e);
-     *     return [windowService, ...args];
-     *   }
-     * }
+     * 在下一个中间件或 handler 执行之前调用
+     * 可访问原始事件和参数，但不可修改
      */
-    readonly transformArgs?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<any[]>;
+    readonly onBeforeEach?: (ctx: IpcMiddlewareContext, ...args: unknown[]) => Promise<void> | void;
     /**
-     * 转换响应
+     * 参数转换函数（请求阶段，洋葱外层）
+     *
+     * 用于转换参数（如将 Event 转换为 WindowService）
+     * 返回新的参数数组，传递给下一个中间件或 handler
      */
-    readonly transformResponse?: <Data>(response: Promise<Data>) => Promise<any>;
+    readonly transformArgs?: (ctx: IpcMiddlewareContext, ...args: [unknown, ...unknown[]]) => Promise<[any, ...any[]]> | [any, ...any[]];
     /**
-     * 在 action 正式处理之前的回调函数
+     * 错误回调（响应阶段，洋葱内层）
+     *
+     * 仅在 handler 或前置中间件抛出错误时调用
+     *
+     * @returns
+     * - true: 错误已处理，停止向外冒泡
+     * - false/void: 继续向外层中间件冒泡
      */
-    readonly onBeforeEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
+    readonly onError?: (ctx: IpcMiddlewareContext, error: Error) => Promise<boolean | void> | boolean | void;
     /**
-     * 在 action 处理之后的回调函数
+     * 响应转换器
+     *
+     * 用于统一转换响应数据格式
      */
-    readonly onAfterEach?: (e: EvtActionType extends IpcActionEvent.Handle ? IpcMainInvokeEvent : IpcMainEvent, ...args: any[]) => Promise<void>;
+    readonly transformResponse?: <Data extends any>(ctx: IpcMiddlewareContext, response: Data) => Promise<any>;
     /**
-     * 在 action 正确处理 ipc 句柄的成功回调函数
-     * @param res 正确处理的返回数据
-     * @param message 返回处理当前 ipc 句柄的信息
+     * 后置钩子（响应阶段，洋葱内层）
+     *
+     * 在 handler 执行之后调用（无论成功或失败）
+     * 可访问处理结果，但不可修改
      */
-    readonly onSuccess?: (res: any, message: IpcActionMessageType<EvtActionType>) => Promise<void>;
+    readonly onAfterEach?: (ctx: IpcMiddlewareContext, result?: any, response?: any) => Promise<void> | void;
+}
+/**
+ * 渲染进程 IPC 调用选项
+ */
+interface IpcCallerConfig {
     /**
-     * 在 action 错误处理 ipc 句柄的回调函数, 改回调会产出一个异常对象, 可以中间件处理, 也可以继续往上抛, 让外面的中间件处理,
-     * 如果不处理, 那么会在主进程产出一个错误.
-     * @param res 错误处理时产生的异常对象
-     * @param message 返回处理当前 ipc 句柄的信息
+     * 超时时间（毫秒），0 表示不超时
      */
-    readonly onError?: (err: Error, message: IpcActionMessageType<EvtActionType>) => Promise<void | Error>;
+    timeout?: number;
+    /**
+     * 重试次数
+     */
+    retry?: number;
+    /**
+     * 重试间隔（毫秒）
+     */
+    retryDelay?: number;
+}
+
+/**
+ * 处理器转换类型
+ * @description 将 IPC 处理器转换为包含通道、类型、参数、返回值和自定义处理器的完整结构
+ * @template T - 要转换的 IPC 兼容处理器类型
+ */
+type MutateProcessor<T extends IpcCompatibleProcessor> = {
+    /** IPC 通信通道名称 */
+    channel: T['channel'];
+    /** IPC 类型（handle/on/both） */
+    type: T['type'];
+    /**
+     * 处理器参数列表（去除第一个事件参数）
+     * @description 使用 CutHead 工具类型移除 listener 的第一个参数（通常是事件对象）
+     */
+    args: CutHead<Parameters<T['listener']>>;
+    /**
+     * 处理器返回值类型
+     * @description 等待 handler 返回值的 Promise 解析后的类型
+     */
+    return: Awaited<ReturnType<T['handler']>>;
+    /**
+     * 自定义处理器函数
+     * @description 接收去除第一个参数后的 handler 参数，返回 listener 的完整返回值类型
+     */
+    handler: (...args: CutHead<Parameters<T['handler']>>) => ReturnType<T['listener']>;
+};
+/**
+ * 处理器记录转换映射表
+ * @description 将处理器记录对象转换为以通道名称为键的 MutateProcessor 映射表
+ * @template PRecord - 处理器记录对象，键为任意字符串，值为 IPC 兼容处理器
+ */
+type MutateProcessorSheet<PRecord extends Record<string, IpcCompatibleProcessor>> = {
+    [Key in keyof PRecord as PRecord[Key]['channel']]: MutateProcessor<PRecord[Key]>;
+};
+/**
+ * 提取指定类型的处理器映射表
+ * @description 从完整的处理器映射表中筛选出符合指定 IPC 类型的处理器
+ * @template PRecord - 已转换的处理器映射表
+ * @template PType - 要筛选的目标 IPC 类型
+ */
+type ExtractMutateProcessorSheet<PRecord extends MutateProcessorSheet<Record<string, IpcCompatibleProcessor>>, PType extends IpcType> = {
+    [Key in keyof PRecord as (PRecord[Key]['type'] extends (PType | IpcTypeBoth) ? Key : never)]: PRecord[Key];
 };
 
 /**
- * 产生自定义异常时，所需要携带的参数类型，可以做日志操作等等
+ * 渲染进程 IPC 调用器类
+ *
+ * 提供面向对象的渲染进程 IPC 调用方式
  */
-interface ExceptionErrorMsgData {
+declare class IpcAbstractCaller<IpcProcessorSheet extends MutateProcessorSheet<Record<string, IpcCompatibleProcessor>>> {
+    protected readonly ipcCallerConfig: IpcCallerConfig;
     /**
-     * 异常标签, 通常用于打印服务
+     * 创建 IPC 调用器实例
+     *
+     * @param ipcCallerConfig
      */
-    readonly label: string;
+    constructor(ipcCallerConfig?: IpcCallerConfig);
     /**
-     * 异常等级
+     * 解析 ipc 拒绝信息字符串为可用 Error
      */
-    readonly level: 'ERROR' | 'SUCCESS' | 'INFO' | 'WARN';
+    private extractIpcRefusedReason;
     /**
-     * 异常产生时间
+     * 调用 IPC 句柄
+     *
+     * @param channel - 句柄名称
+     * @param args - 参数列表
+     * @returns 响应结果
      */
-    readonly time: number;
-    readonly other: Record<string, any>;
+    invoke: <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, "handle">>(channel: Key, ...args: IpcProcessorSheet[Key]["args"]) => Promise<IpcProcessorSheet[Key]["return"]>;
+    makeInvoker: <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, "handle">>(channel: Key) => (...args: IpcProcessorSheet[Key]["args"]) => Promise<IpcProcessorSheet[Key]["return"]>;
+    /**
+     * 发送 IPC 消息
+     *
+     * @param channel - 通道名称
+     * @param args - 参数列表
+     */
+    send: <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, "on">>(channel: Key, ...args: IpcProcessorSheet[Key]["args"]) => void;
 }
+
 /**
- * 异常基类
+ * 浏览器进程 IPC 调用器类
  */
-declare class Exception<ErrMessageData extends ExceptionErrorMsgData> {
-    message: string;
-    readonly errMessage: ErrMessageData;
-    constructor(message: string, errMessage?: Pick<Partial<ErrMessageData>, 'level' | 'label'>);
-    static is<Error>(exp: Error | Exception<any>): exp is Exception<any>;
+declare class IpcBCaller<IpcProcessorSheet extends MutateProcessorSheet<Record<string, IpcCompatibleProcessor>>> extends IpcAbstractCaller<IpcProcessorSheet> {
 }
+
+/**
+ * ====================================================================================
+ * ipc 广播, 渲染进程发射事件, 携带 事件名和数据, 向其他窗口广播, 事件名由渲染进程决定, 由渲染进程监听是否处理
+ * 此做法免去主进程的多事件注册, 由渲染进程进行处理解决.
+ * ====================================================================================
+ */
+/**
+ * 接收 IpcBroadcast 事件, 并且向其他窗口广播, 携带 事件名、参数
+ */
+declare const ipcOnBroadcast: IpcProcessor<"on", unknown, "IpcBroadcast", (e: Electron.IpcMainEvent, evtName: string, data: any) => Promise<void>>;
+
+/**
+ * 渲染进程打开开发者检查工具
+ */
+declare const ipcOpenDevTool: IpcProcessor<"handle", unknown, "IpcDevTool/openDevTool", (e: Electron.IpcMainInvokeEvent, status: boolean, options?: OpenDevToolsOptions) => void>;
 
 /**
  * 创建 windowService 的选项
@@ -1133,28 +1298,6 @@ declare class WindowService {
     static isSameWindowService(tr: WindowService | null, other: WindowService | null): boolean;
 }
 
-/**
- * 接收 IpcBroadcast 事件, 并且向其他窗口广播, 携带 事件名、参数
- */
-declare const ipcOnBroadcast: {
-    readonly channel: "IpcBroadcast";
-    readonly action: (windowService: WindowService, evtName: string, data: any) => Promise<void>;
-    readonly actionType: IpcActionEvent.On;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.On>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
-
-/**
- * 渲染进程打开开发者检查工具
- */
-declare const ipcOpenDevTool: {
-    readonly channel: "IpcDevTool/openDevTool";
-    readonly action: (e: Electron.IpcMainInvokeEvent, status: boolean, options?: OpenDevToolsOptions) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
-
 declare namespace DepositService {
     /**
      * 存放数据时的函数的 options
@@ -1198,269 +1341,144 @@ declare class DepositService<DepositEntries = unknown> {
 /**
  * ipc 接口, 渲染进程存放转发数据
  */
-declare const ipcForwardDataTakeIn: {
-    readonly channel: "IpcForwardData/takeIn";
-    readonly action: (_: WindowService, key: string, data: any) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcForwardDataTakeIn: IpcProcessor<"handle", WindowService, "IpcForwardData/takeIn", (windowService: WindowService, key: string, data: any) => Promise<void>>;
 /**
  * 渲染进程取回数据
  */
-declare const ipcForwardDataTakeOut: {
-    readonly channel: "IpcForwardData/takeOut";
-    readonly action: (_: WindowService, key: string, options?: DepositService.TakeOutOptions) => Promise<any>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcForwardDataTakeOut: IpcProcessor<"handle", WindowService, "IpcForwardData/takeOut", (windowService: WindowService, key: string, options?: DepositService.TakeOutOptions) => Promise<any>>;
 
 interface AppStoreType$1 {
     refreshToken: string;
     accessToken: string;
+    test: number;
 }
 
 /**
  * 为渲染进程提供获得 appStore 的能力
  */
-declare const ipcAppStoreGetStore: {
-    readonly channel: "IpcStore/appStore/getStore";
-    readonly action: () => Promise<AppStoreType$1>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreGetStore: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/getStore", () => Promise<AppStoreType$1>>;
 /**
  * 渲染进程通过 key 获得一个存储在 appStore 中的数据
  */
-declare const ipcAppStoreGet: {
-    readonly channel: "IpcStore/appStore/get";
-    readonly action: <Key extends keyof AppStoreType$1, V extends Required<AppStoreType$1>[Key]>(_: WindowService, key: Key, defaultValue?: V) => Promise<Required<AppStoreType$1>[Key]>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreGet: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/get", <Key extends keyof AppStoreType$1, V extends Required<AppStoreType$1>[Key]>(_: unknown, key: Key, defaultValue?: V) => Promise<Required<AppStoreType$1>[Key]>>;
 /**
  * 渲染进程通过 key 设置存储在 appStore 中的数据
  */
-declare const ipcAppStoreSet: {
-    readonly channel: "IpcStore/appStore/set";
-    readonly action: <Key extends keyof AppStoreType$1, V extends AppStoreType$1[Key]>(_: WindowService, key: Key, value: V) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreSet: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/set", <Key extends keyof AppStoreType$1, V extends AppStoreType$1[Key]>(_: unknown, key: Key, value: V) => Promise<void>>;
 /**
  * 渲染进程通过 key 重置某些 appStore 中的数据
  */
-declare const ipcAppStoreReset: {
-    readonly channel: "IpcStore/appStore/reset";
-    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, ...keys: Key[]) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreReset: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/reset", <Key extends keyof AppStoreType$1>(_: unknown, ...keys: Key[]) => Promise<void>>;
 /**
  * 渲染进程通过 key 判断 appStore 中是否含有某个 key
  */
-declare const ipcAppStoreHas: {
-    readonly channel: "IpcStore/appStore/has";
-    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, key: Key) => Promise<boolean>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreHas: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/has", <Key extends keyof AppStoreType$1>(_: unknown, key: Key) => Promise<boolean>>;
 /**
  * 渲染进程通过 key 删除 appStore 中的数据
  */
-declare const ipcAppStoreDelete: {
-    readonly channel: "IpcStore/appStore/delete";
-    readonly action: <Key extends keyof AppStoreType$1>(_: WindowService, key: Key) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreDelete: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/delete", <Key extends keyof AppStoreType$1>(_: unknown, key: Key) => Promise<void>>;
 /**
  * 清空 appStore
  */
-declare const ipcAppStoreClear: {
-    readonly channel: "IpcStore/appStore/clear";
-    readonly action: (_: WindowService) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcAppStoreClear: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/clear", (_: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent) => Promise<void>>;
 
 /**
  * 窗口最大化, 可以在 options 中传递制定 id 来控制某个窗口
  */
-declare const ipcWindowMaximize: {
-    readonly channel: "IpcWindow/maxSize";
-    readonly action: (windowService: WindowService, options?: {
-        id?: number;
-        windowKey?: string;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowMaximize: IpcProcessor<"handle", WindowService, "IpcWindow/maxSize", (windowService: WindowService, options?: {
+    id?: number;
+    windowKey?: string;
+}) => Promise<void>>;
 /**
  * 窗口最小化, 可以在 options 中传递制定 id 来控制某个窗口
  */
-declare const ipcWindowMinimize: {
-    readonly channel: "IpcWindow/minSize";
-    readonly action: (windowService: WindowService, options?: {
-        id?: number;
-        windowKey?: string;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowMinimize: IpcProcessor<"handle", WindowService, "IpcWindow/minSize", (windowService: WindowService, options?: {
+    id?: number;
+    windowKey?: string;
+}) => Promise<void>>;
 /**
  * 窗口还原指令, 还原窗口大小
  */
-declare const ipcWindowReductionSize: {
-    readonly channel: "IpcWindow/reduction";
-    readonly action: (windowService: WindowService, options?: {
-        id?: number;
-        windowKey?: string;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowReductionSize: IpcProcessor<"handle", WindowService, "IpcWindow/reduction", (windowService: WindowService, options?: {
+    id?: number;
+    windowKey?: string;
+}) => Promise<void>>;
 /**
  * 设置窗口是否可以调整大小尺寸
  */
-declare const ipcWindowResizeAble: {
-    readonly channel: "IpcWindow/resizeAble";
-    readonly action: (windowService: WindowService, options?: {
-        id?: number;
-        windowKey?: string;
-        resizeAble: boolean;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowResizeAble: IpcProcessor<"handle", WindowService, "IpcWindow/resizeAble", (windowService: WindowService, options?: {
+    id?: number;
+    windowKey?: string;
+    resizeAble: boolean;
+}) => Promise<void>>;
 /**
  * 重新加载某个窗口页面
  */
-declare const ipcWindowRelaunch: {
-    readonly channel: "IpcWindow/relaunch";
-    readonly action: (windowService: WindowService, options?: {
-        id?: number;
-        windowKey?: string;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowRelaunch: IpcProcessor<"handle", WindowService, "IpcWindow/relaunch", (windowService: WindowService, options?: {
+    id?: number;
+    windowKey?: string;
+}) => Promise<void>>;
 /**
  * 设置窗口的最小尺寸大小
  */
-declare const ipcWindowSetMinimumSize: {
-    readonly channel: "IpcWindow/setMinimumSize";
-    readonly action: (windowService: WindowService, options: {
-        id?: number;
-        windowKey?: string;
-        width: number;
-        height: number;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowSetMinimumSize: IpcProcessor<"handle", WindowService, "IpcWindow/setMinimumSize", (windowService: WindowService, options: {
+    id?: number;
+    windowKey?: string;
+    width: number;
+    height: number;
+}) => Promise<void>>;
 /**
  * 设置窗口的当前尺寸
  */
-declare const ipcWindowSetSize: {
-    readonly channel: "IpcWindow/setSize";
-    readonly action: (windowService: WindowService, options: {
-        id?: number;
-        windowKey?: string;
-        width: number;
-        height: number;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowSetSize: IpcProcessor<"handle", WindowService, "IpcWindow/setSize", (windowService: WindowService, options: {
+    id?: number;
+    windowKey?: string;
+    width: number;
+    height: number;
+}) => Promise<void>>;
 /**
  * 重置窗口为制定大小, 用于记忆化窗口尺寸
  */
-declare const ipcWindowResetCustomSize: {
-    readonly channel: "IpcWindow/resetCustomSize";
-    readonly action: (windowService: WindowService, options: {
-        id?: number;
-        windowKey?: string;
-        type: 'mainWindow';
-    }) => Promise<boolean>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowResetCustomSize: IpcProcessor<"handle", WindowService, "IpcWindow/resetCustomSize", (windowService: WindowService, options: {
+    id?: number;
+    windowKey?: string;
+    type: 'mainWindow';
+}) => Promise<boolean>>;
 /**
  * 设置窗口的位置
  */
-declare const ipcWindowSetPosition: {
-    readonly channel: "IpcWindow/setPosition";
-    readonly action: (windowService: WindowService, options: {
-        id?: number;
-        windowKey?: string;
-        x: 'center' | 'left' | 'right' | number;
-        y: 'center' | 'top' | 'bottom' | number;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowSetPosition: IpcProcessor<"handle", WindowService, "IpcWindow/setPosition", (windowService: WindowService, options: {
+    id?: number;
+    windowKey?: string;
+    x: 'center' | 'left' | 'right' | number;
+    y: 'center' | 'top' | 'bottom' | number;
+}) => Promise<void>>;
 /**
  * TODO: 需要改进
  */
-declare const ipcOpenWindow: {
-    readonly channel: "IpcWindow/openWindow";
-    readonly action: (_: WindowService, options: {
-        windowKey?: string;
-        subUrl: string;
-    }, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcOpenWindow: IpcProcessor<"handle", WindowService, "IpcWindow/openWindow", (_: WindowService, options: {
+    windowKey?: string;
+    subUrl: string;
+}, browserWindowOptions: Partial<BrowserWindowConstructorOptions>) => Promise<void>>;
 /**
  * 关闭窗口
  */
-declare const ipcWindowClose: {
-    readonly channel: "IpcWindow/closeWindow";
-    readonly action: (windowService: WindowService, options?: {
-        windowKey?: string;
-        id?: number;
-        /**
-         * 遮掩的。为 true, 那么窗口不会正常地销毁, 而只是隐藏掉
-         */
-        fictitious?: boolean;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowClose: IpcProcessor<"handle", WindowService, "IpcWindow/closeWindow", (windowService: WindowService, options?: {
+    windowKey?: string;
+    id?: number;
+    /**
+     * 遮掩的。为 true, 那么窗口不会正常地销毁, 而只是隐藏掉
+     */
+    fictitious?: boolean;
+}) => Promise<void>>;
 /**
  * 显示窗口, 如果窗口存在, 并且是隐藏地情况下
  */
-declare const ipcWindowShow: {
-    readonly channel: "IpcWindow/showWindow";
-    readonly action: (windowService: WindowService, options: {
-        id?: number;
-        windowKey?: string;
-        show: boolean;
-    }) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowShow: IpcProcessor<"handle", WindowService, "IpcWindow/showWindow", (windowService: WindowService, options: {
+    id?: number;
+    windowKey?: string;
+    show: boolean;
+}) => Promise<void>>;
 /**
  * TODO:
  */
@@ -1473,57 +1491,45 @@ declare interface WindowProperties {
 /**
  * TODO: 需要改进, 理想作用是通过一个 ipc 设置多个 window 属性
  */
-declare const ipcWindowProperties: {
-    readonly channel: "IpcWindow/properties";
-    readonly action: (windowService: WindowService, selectedOptions: {
-        windowKey?: string;
-    }, properties: Partial<WindowProperties>) => Promise<void>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowProperties: IpcProcessor<"handle", WindowService, "IpcWindow/properties", (windowService: WindowService, selectedOptions: {
+    windowKey?: string;
+}, properties: Partial<WindowProperties>) => Promise<void>>;
 /**
  * 获取展示窗口的尺寸
  */
-declare const ipcWindowWorkAreaSize: {
-    readonly channel: "IpcWindow/workAreaSize";
-    readonly action: () => Promise<{
-        readonly width: number;
-        readonly height: number;
-    }>;
-    readonly actionType: IpcActionEvent.Handle;
-    readonly middlewares: IpcActionMiddleware<IpcActionEvent.Handle>[];
-    readonly listener: (e: Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, ...args: unknown[]) => Promise<any>;
-};
+declare const ipcWindowWorkAreaSize: IpcProcessor<"handle", WindowService, "IpcWindow/workAreaSize", () => Promise<{
+    readonly width: number;
+    readonly height: number;
+}>>;
 
-type actions_WindowProperties = WindowProperties;
-declare const actions_ipcAppStoreClear: typeof ipcAppStoreClear;
-declare const actions_ipcAppStoreDelete: typeof ipcAppStoreDelete;
-declare const actions_ipcAppStoreGet: typeof ipcAppStoreGet;
-declare const actions_ipcAppStoreGetStore: typeof ipcAppStoreGetStore;
-declare const actions_ipcAppStoreHas: typeof ipcAppStoreHas;
-declare const actions_ipcAppStoreReset: typeof ipcAppStoreReset;
-declare const actions_ipcAppStoreSet: typeof ipcAppStoreSet;
-declare const actions_ipcForwardDataTakeIn: typeof ipcForwardDataTakeIn;
-declare const actions_ipcForwardDataTakeOut: typeof ipcForwardDataTakeOut;
-declare const actions_ipcOnBroadcast: typeof ipcOnBroadcast;
-declare const actions_ipcOpenDevTool: typeof ipcOpenDevTool;
-declare const actions_ipcOpenWindow: typeof ipcOpenWindow;
-declare const actions_ipcWindowClose: typeof ipcWindowClose;
-declare const actions_ipcWindowMaximize: typeof ipcWindowMaximize;
-declare const actions_ipcWindowMinimize: typeof ipcWindowMinimize;
-declare const actions_ipcWindowProperties: typeof ipcWindowProperties;
-declare const actions_ipcWindowReductionSize: typeof ipcWindowReductionSize;
-declare const actions_ipcWindowRelaunch: typeof ipcWindowRelaunch;
-declare const actions_ipcWindowResetCustomSize: typeof ipcWindowResetCustomSize;
-declare const actions_ipcWindowResizeAble: typeof ipcWindowResizeAble;
-declare const actions_ipcWindowSetMinimumSize: typeof ipcWindowSetMinimumSize;
-declare const actions_ipcWindowSetPosition: typeof ipcWindowSetPosition;
-declare const actions_ipcWindowSetSize: typeof ipcWindowSetSize;
-declare const actions_ipcWindowShow: typeof ipcWindowShow;
-declare const actions_ipcWindowWorkAreaSize: typeof ipcWindowWorkAreaSize;
-declare namespace actions {
-  export { type actions_WindowProperties as WindowProperties, actions_ipcAppStoreClear as ipcAppStoreClear, actions_ipcAppStoreDelete as ipcAppStoreDelete, actions_ipcAppStoreGet as ipcAppStoreGet, actions_ipcAppStoreGetStore as ipcAppStoreGetStore, actions_ipcAppStoreHas as ipcAppStoreHas, actions_ipcAppStoreReset as ipcAppStoreReset, actions_ipcAppStoreSet as ipcAppStoreSet, actions_ipcForwardDataTakeIn as ipcForwardDataTakeIn, actions_ipcForwardDataTakeOut as ipcForwardDataTakeOut, actions_ipcOnBroadcast as ipcOnBroadcast, actions_ipcOpenDevTool as ipcOpenDevTool, actions_ipcOpenWindow as ipcOpenWindow, actions_ipcWindowClose as ipcWindowClose, actions_ipcWindowMaximize as ipcWindowMaximize, actions_ipcWindowMinimize as ipcWindowMinimize, actions_ipcWindowProperties as ipcWindowProperties, actions_ipcWindowReductionSize as ipcWindowReductionSize, actions_ipcWindowRelaunch as ipcWindowRelaunch, actions_ipcWindowResetCustomSize as ipcWindowResetCustomSize, actions_ipcWindowResizeAble as ipcWindowResizeAble, actions_ipcWindowSetMinimumSize as ipcWindowSetMinimumSize, actions_ipcWindowSetPosition as ipcWindowSetPosition, actions_ipcWindowSetSize as ipcWindowSetSize, actions_ipcWindowShow as ipcWindowShow, actions_ipcWindowWorkAreaSize as ipcWindowWorkAreaSize };
+type AllIpcProcessors_WindowProperties = WindowProperties;
+declare const AllIpcProcessors_ipcAppStoreClear: typeof ipcAppStoreClear;
+declare const AllIpcProcessors_ipcAppStoreDelete: typeof ipcAppStoreDelete;
+declare const AllIpcProcessors_ipcAppStoreGet: typeof ipcAppStoreGet;
+declare const AllIpcProcessors_ipcAppStoreGetStore: typeof ipcAppStoreGetStore;
+declare const AllIpcProcessors_ipcAppStoreHas: typeof ipcAppStoreHas;
+declare const AllIpcProcessors_ipcAppStoreReset: typeof ipcAppStoreReset;
+declare const AllIpcProcessors_ipcAppStoreSet: typeof ipcAppStoreSet;
+declare const AllIpcProcessors_ipcForwardDataTakeIn: typeof ipcForwardDataTakeIn;
+declare const AllIpcProcessors_ipcForwardDataTakeOut: typeof ipcForwardDataTakeOut;
+declare const AllIpcProcessors_ipcOnBroadcast: typeof ipcOnBroadcast;
+declare const AllIpcProcessors_ipcOpenDevTool: typeof ipcOpenDevTool;
+declare const AllIpcProcessors_ipcOpenWindow: typeof ipcOpenWindow;
+declare const AllIpcProcessors_ipcWindowClose: typeof ipcWindowClose;
+declare const AllIpcProcessors_ipcWindowMaximize: typeof ipcWindowMaximize;
+declare const AllIpcProcessors_ipcWindowMinimize: typeof ipcWindowMinimize;
+declare const AllIpcProcessors_ipcWindowProperties: typeof ipcWindowProperties;
+declare const AllIpcProcessors_ipcWindowReductionSize: typeof ipcWindowReductionSize;
+declare const AllIpcProcessors_ipcWindowRelaunch: typeof ipcWindowRelaunch;
+declare const AllIpcProcessors_ipcWindowResetCustomSize: typeof ipcWindowResetCustomSize;
+declare const AllIpcProcessors_ipcWindowResizeAble: typeof ipcWindowResizeAble;
+declare const AllIpcProcessors_ipcWindowSetMinimumSize: typeof ipcWindowSetMinimumSize;
+declare const AllIpcProcessors_ipcWindowSetPosition: typeof ipcWindowSetPosition;
+declare const AllIpcProcessors_ipcWindowSetSize: typeof ipcWindowSetSize;
+declare const AllIpcProcessors_ipcWindowShow: typeof ipcWindowShow;
+declare const AllIpcProcessors_ipcWindowWorkAreaSize: typeof ipcWindowWorkAreaSize;
+declare namespace AllIpcProcessors {
+  export { type AllIpcProcessors_WindowProperties as WindowProperties, AllIpcProcessors_ipcAppStoreClear as ipcAppStoreClear, AllIpcProcessors_ipcAppStoreDelete as ipcAppStoreDelete, AllIpcProcessors_ipcAppStoreGet as ipcAppStoreGet, AllIpcProcessors_ipcAppStoreGetStore as ipcAppStoreGetStore, AllIpcProcessors_ipcAppStoreHas as ipcAppStoreHas, AllIpcProcessors_ipcAppStoreReset as ipcAppStoreReset, AllIpcProcessors_ipcAppStoreSet as ipcAppStoreSet, AllIpcProcessors_ipcForwardDataTakeIn as ipcForwardDataTakeIn, AllIpcProcessors_ipcForwardDataTakeOut as ipcForwardDataTakeOut, AllIpcProcessors_ipcOnBroadcast as ipcOnBroadcast, AllIpcProcessors_ipcOpenDevTool as ipcOpenDevTool, AllIpcProcessors_ipcOpenWindow as ipcOpenWindow, AllIpcProcessors_ipcWindowClose as ipcWindowClose, AllIpcProcessors_ipcWindowMaximize as ipcWindowMaximize, AllIpcProcessors_ipcWindowMinimize as ipcWindowMinimize, AllIpcProcessors_ipcWindowProperties as ipcWindowProperties, AllIpcProcessors_ipcWindowReductionSize as ipcWindowReductionSize, AllIpcProcessors_ipcWindowRelaunch as ipcWindowRelaunch, AllIpcProcessors_ipcWindowResetCustomSize as ipcWindowResetCustomSize, AllIpcProcessors_ipcWindowResizeAble as ipcWindowResizeAble, AllIpcProcessors_ipcWindowSetMinimumSize as ipcWindowSetMinimumSize, AllIpcProcessors_ipcWindowSetPosition as ipcWindowSetPosition, AllIpcProcessors_ipcWindowSetSize as ipcWindowSetSize, AllIpcProcessors_ipcWindowShow as ipcWindowShow, AllIpcProcessors_ipcWindowWorkAreaSize as ipcWindowWorkAreaSize };
 }
 
 /**
@@ -1533,24 +1539,12 @@ declare namespace actions {
  */
 
 /**
- * 将一个值转换为 Promise 值
- */
-type PromiseWithValue<Value> = Value extends Promise<any> ? Value : Promise<Value>;
-/**
- * 获取所有的 ipcAction
- */
-type AllAction = {
-    readonly [Key in keyof typeof actions]: (typeof actions)[Key] extends IpcActionType<IpcActionEvent> ? (typeof actions)[Key] : never;
-};
-/**
  * 转换 ipcAction, 获取 key -> handler 的类型.
  * 传递 IpcActionEventType 以获得 HandleHandlers 或者 OnHandlers
  */
-type AllHandlers<IpcActionEventType extends IpcActionEvent> = {
-    readonly [Key in keyof AllAction as AllAction[Key]['channel']]: AllAction[Key]['actionType'] extends IpcActionEventType ? (...args: CutHead<Parameters<AllAction[Key]['action']>>) => RPromiseLike<Awaited<PromiseWithValue<ReturnType<AllAction[Key]['action']>>>, Exception<ExceptionErrorMsgData>> : never;
-};
-type HandleHandlers = ExtractNever<AllHandlers<IpcActionEvent.Handle>>;
-type OnHandlers = ExtractNever<AllHandlers<IpcActionEvent.On>>;
+type AllHandlers = MutateProcessorSheet<typeof AllIpcProcessors>;
+type HandleHandlers = ExtractMutateProcessorSheet<AllHandlers, IpcTypeHandle>;
+type OnHandlers = ExtractMutateProcessorSheet<AllHandlers, IpcTypeOn>;
 /**
  * 原本的 IcpRenderer 返回类型为 Promise<any>, 所需需要自己重新修改一下返回值
  * 需要先 Omit 排除, 然后再编写自己的类型, 否则会覆盖失败
@@ -1559,9 +1553,9 @@ type IpcRenderer = Omit<IpcRenderer$1, 'invoke' | 'send' | 'sendSync'> & {
     /**
      * 向主进程发送事件, 并等待回复
      */
-    invoke<T extends keyof HandleHandlers>(channel: T, ...args: Parameters<HandleHandlers[T]>): ReturnType<HandleHandlers[T]>;
-    send<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
-    sendSync<T extends keyof OnHandlers>(channel: T, ...args: Parameters<OnHandlers[T]>): void;
+    invoke<T extends keyof HandleHandlers>(channel: T, ...args: HandleHandlers[T]['args']): HandleHandlers[T]['return'];
+    send<T extends keyof OnHandlers>(channel: T, ...args: OnHandlers[T]['args']): void;
+    sendSync<T extends keyof OnHandlers>(channel: T, ...args: OnHandlers[T]['args']): void;
 };
 /**
  * 重新创建 ElectronAPI, 来覆盖 window.electron 的类型
@@ -1651,6 +1645,9 @@ interface PrinterServer {
     readonly printSuccess: typeof printer.printSuccess;
 }
 
+type KK = {
+    [Key in keyof HandleHandlers as HandleHandlers[Key]['channel']]: HandleHandlers[Key]['handler'];
+};
 /**
  * 应用的 store 类型
  */
@@ -1658,31 +1655,31 @@ interface AppStoreType {
     /**
      * 获取所有的 store
      */
-    readonly getStore: () => ReturnType<HandleHandlers['IpcStore/appStore/getStore']>;
+    readonly getStore: () => ReturnType<KK['IpcStore/appStore/getStore']>;
     /**
      * 获取 store 的值
      */
-    readonly get: <Key extends keyof AppStoreType$1>(key: Key, defaultValue?: AppStoreType$1[Key]) => ReturnType<HandleHandlers['IpcStore/appStore/get']>;
+    readonly get: <Key extends keyof AppStoreType$1>(key: Key, defaultValue?: AppStoreType$1[Key]) => ReturnType<KK['IpcStore/appStore/get']>;
     /**
      * 设置 store 的值
      */
-    readonly set: <Key extends keyof AppStoreType$1>(key: Key, value: AppStoreType$1[Key]) => ReturnType<HandleHandlers['IpcStore/appStore/set']>;
+    readonly set: <Key extends keyof AppStoreType$1>(key: Key, value: AppStoreType$1[Key]) => ReturnType<KK['IpcStore/appStore/set']>;
     /**
      * 删除 store 的值
      */
-    readonly delete: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<HandleHandlers['IpcStore/appStore/delete']>;
+    readonly delete: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<KK['IpcStore/appStore/delete']>;
     /**
      * 判断 store 是否存在
      */
-    readonly has: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<HandleHandlers['IpcStore/appStore/has']>;
+    readonly has: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<KK['IpcStore/appStore/has']>;
     /**
      * 重置 store 的值
      */
-    readonly reset: <Key extends keyof AppStoreType$1>(...keys: Key[]) => ReturnType<HandleHandlers['IpcStore/appStore/reset']>;
+    readonly reset: <Key extends keyof AppStoreType$1>(...keys: Key[]) => ReturnType<KK['IpcStore/appStore/reset']>;
     /**
      * 清空 store
      */
-    readonly clear: () => ReturnType<HandleHandlers['IpcStore/appStore/clear']>;
+    readonly clear: () => ReturnType<KK['IpcStore/appStore/clear']>;
 }
 
 /**
@@ -1692,7 +1689,7 @@ interface AppStoreType {
 declare const openPage: (options: {
     windowKey?: string;
     subUrl: string;
-}, browserWindowOptions: Partial<Electron.BrowserWindowConstructorOptions>) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}, browserWindowOptions: Partial<Electron.BrowserWindowConstructorOptions>) => Promise<void>;
 /**
  * 刷新页面
  * @returns
@@ -1706,7 +1703,7 @@ declare const windowShow: (options: {
     id?: number;
     windowKey?: string;
     show: boolean;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 窗口是否可以调整大小
  */
@@ -1714,7 +1711,7 @@ declare const windowResizeAble: (options?: {
     id?: number;
     windowKey?: string;
     resizeAble: boolean;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 设置窗口的大小
  * @returns
@@ -1724,7 +1721,7 @@ declare const windowSetSize: (options: {
     windowKey?: string;
     width: number;
     height: number;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 设置窗口的位置
  * @returns
@@ -1734,7 +1731,7 @@ declare const windowSetPosition: (options: {
     windowKey?: string;
     x: number | "center" | "left" | "right";
     y: number | "top" | "center" | "bottom";
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 重启应用
  * @returns
@@ -1742,7 +1739,7 @@ declare const windowSetPosition: (options: {
 declare const windowRelaunch: (options?: {
     id?: number;
     windowKey?: string;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 恢复窗口为定制化大小
  * @returns
@@ -1751,30 +1748,23 @@ declare const windowResetCustomSize: (options: {
     id?: number;
     windowKey?: string;
     type: "mainWindow";
-}) => _suey_pkg_utils.RPromiseLike<boolean, Exception<ExceptionErrorMsgData>>;
+}) => Promise<boolean>;
 /**
  * 最大化窗口
  * @returns
  */
 declare const windowMax: (options?: {
-    /**
-     * 恢复窗口为定制化大小
-     * @returns
-     */
     id?: number;
     windowKey?: string;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 最小化窗口
  * @returns
  */
 declare const windowMin: (options?: {
     id?: number;
-    windowKey?: string; /**
-     * 关闭窗口
-     * @returns
-     */
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+    windowKey?: string;
+}) => Promise<void>;
 /**
  * 还原窗口
  * @returns
@@ -1782,7 +1772,7 @@ declare const windowMin: (options?: {
 declare const windowReduction: (options?: {
     id?: number;
     windowKey?: string;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 关闭窗口
  * @returns
@@ -1791,13 +1781,13 @@ declare const windowClose: (options?: {
     windowKey?: string;
     id?: number;
     fictitious?: boolean;
-}) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+}) => Promise<void>;
 /**
  * 打开窗口开发者工具
  * @param args
  * @returns
  */
-declare const windowDevtool: (status: boolean, options?: Electron.OpenDevToolsOptions) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
+declare const windowDevtool: (status: boolean, options?: Electron.OpenDevToolsOptions) => Promise<void>;
 /**
  * 全屏
  * @param el
@@ -1809,10 +1799,10 @@ declare const windowEnableFullScreen: (el?: HTMLElement) => Promise<void>;
  * @returns
  */
 declare const windowExitFullScreen: () => Promise<void>;
-declare const windowWorkAreaSize: () => _suey_pkg_utils.RPromiseLike<{
+declare const windowWorkAreaSize: () => Promise<{
     readonly width: number;
     readonly height: number;
-}, Exception<ExceptionErrorMsgData>>;
+}>;
 /**
  * 打开一个子窗口
  * @returns
@@ -1820,9 +1810,9 @@ declare const windowWorkAreaSize: () => _suey_pkg_utils.RPromiseLike<{
 declare const windowOpen: (options: {
     windowKey?: string;
     subUrl: string;
-}, browserWindowOptions: Partial<Electron.BrowserWindowConstructorOptions>) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
-declare const windowForwardDataTakeIn: (key: string, data: any) => _suey_pkg_utils.RPromiseLike<void, Exception<ExceptionErrorMsgData>>;
-declare const windowForWardDataTakeOut: (key: string, options?: DepositService.TakeOutOptions) => _suey_pkg_utils.RPromiseLike<any, Exception<ExceptionErrorMsgData>>;
+}, browserWindowOptions: Partial<Electron.BrowserWindowConstructorOptions>) => Promise<void>;
+declare const windowForwardDataTakeIn: (key: string, data: any) => Promise<void>;
+declare const windowForWardDataTakeOut: (key: string, options?: DepositService.TakeOutOptions) => Promise<any>;
 
 declare const ipcActions_openPage: typeof openPage;
 declare const ipcActions_windowClose: typeof windowClose;
@@ -1847,6 +1837,11 @@ declare namespace ipcActions {
   export { ipcActions_openPage as openPage, ipcActions_windowClose as windowClose, ipcActions_windowDevtool as windowDevtool, ipcActions_windowEnableFullScreen as windowEnableFullScreen, ipcActions_windowExitFullScreen as windowExitFullScreen, ipcActions_windowForWardDataTakeOut as windowForWardDataTakeOut, ipcActions_windowForwardDataTakeIn as windowForwardDataTakeIn, ipcActions_windowMax as windowMax, ipcActions_windowMin as windowMin, ipcActions_windowOpen as windowOpen, ipcActions_windowReduction as windowReduction, ipcActions_windowRelaunch as windowRelaunch, ipcActions_windowReload as windowReload, ipcActions_windowResetCustomSize as windowResetCustomSize, ipcActions_windowResizeAble as windowResizeAble, ipcActions_windowSetPosition as windowSetPosition, ipcActions_windowSetSize as windowSetSize, ipcActions_windowShow as windowShow, ipcActions_windowWorkAreaSize as windowWorkAreaSize };
 }
 
+type IpcProcessors = {
+    readonly [Key in keyof typeof AllIpcProcessors]: (typeof AllIpcProcessors)[Key] extends IpcCompatibleProcessor ? (typeof AllIpcProcessors)[Key] : never;
+};
+type IpcProcessorSheet = Omit<MutateProcessorSheet<IpcProcessors>, IpcProcessors['ipcAppStoreClear']['channel'] | IpcProcessors['ipcAppStoreDelete']['channel'] | IpcProcessors['ipcAppStoreGet']['channel'] | IpcProcessors['ipcAppStoreGetStore']['channel'] | IpcProcessors['ipcAppStoreHas']['channel'] | IpcProcessors['ipcAppStoreReset']['channel'] | IpcProcessors['ipcAppStoreSet']['channel']>;
+
 type IpcActions = typeof ipcActions;
 /**
  * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
@@ -1857,6 +1852,7 @@ interface ExposeApi {
      * 打印器对象
      */
     readonly printer: PrinterServer;
+    readonly ipcBCaller: IpcBCaller<IpcProcessorSheet>;
     /**
      * IPC 事件
      */
