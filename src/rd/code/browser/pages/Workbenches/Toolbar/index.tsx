@@ -10,7 +10,7 @@ export const WorkbenchesToolbar = memo(() => {
     //   username: 'helloWorld'
     // })
 
-    window.electron.ipcRenderer.send('IpcBroadcast', 'tool', {
+    window.ipcBCaller.send('IpcBroadcast', 'tool', {
       username: 'HelloWorld',
     })
   }

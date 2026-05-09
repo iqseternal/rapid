@@ -1,676 +1,107 @@
 {
-  "editor.cursorSmoothCaretAnimation": "on",
-  "editor.find.addExtraSpaceOnTop": false,
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.fontAliasing": "antialiased",
-  "editor.fontFamily": "Input Mono, DejavuSansMono Nerd Font, IntoneMono Nerd Font, Consolas, 'Courier New', monospace",
-  "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss06', 'zero'",
-  // styles
-  "editor.bracketPairColorization.enabled": true, // 自动对标点着色
-  "editor.showUnused": true,
-  "editor.tokenColorCustomizations": {
-    "comments": "#32ad47", // 注释
-    "keywords": "#f09e34", // 关键字颜色，如new, if, else, try等
-    "variables": "#dd63ff", // 变量的颜色
-    "strings": "#32a504", // 字符串的颜色
-    "functions": "#fbff00e7", // 函数/方法定义与引用颜色
-    "numbers": "#eeebeb", // 数字的颜色
-    "types": "#FFAA33", // 类型定义与引用的颜色
-    "textMateRules": [ //其他具体的颜色设置
-      { // 变量
-        "scope": [
-          "entity.name.variable",
-        ],
-        "settings": {
-          "foreground": "#9876AA",
-          "fontStyle": "italic"
-        }
-      },
-      { // 成员变量
-        "scope": "variable.other.property",
-        "settings": {
-          "foreground": "#9876AA",
-          "fontStyle": ""
-        }
-      },
-      { // 成员只读变量
-        "scope": "variable.other.constant.property",
-        "settings": {
-          "foreground": "#ffffff",
-          "fontStyle": ""
-        }
-      },
-      { // 变量
-        "scope": [
-          "variable.other.readwrite"
-        ],
-        "settings": {
-          "foreground": "#9876AA",
-          "fontStyle": ""
-        }
-      },
-      { // 导入颜色
-        "scope": [
-          "variable.other.readwrite.alias",
-        ],
-        "settings": {
-          "foreground": "#9876AA",
-          "fontStyle": ""
-        }
-      },
-      {
-        "scope": "variable.other.event",
-        "settings": {
-          "foreground": "#FF0000",
-          "fontStyle": "bold"
-        }
-      },
-      { // 单行注释
-        "scope": "comment.line",
-        "settings": {
-          "foreground": "#32ad47",
-          "fontStyle": ""
-        }
-      },
-      { // 多行注释, 文档注释
-        "scope": "comment.block",
-        "settings": {
-          "foreground": "#32ad47",
-          "fontStyle": ""
-        }
-      },
-      { // 换行符、转义符等如 ：\r \n
-        "scope": "constant.character.escape", //"\r\n"
-        "settings": {
-          "foreground": "#ffc343"
-        }
-      },
-      { // symbol 常量
-        "scope": [
-          "constant.other.symbol"
-        ],
-        "settings": {
-          "foreground": "#e0a118",
-          "fontStyle": ""
-        }
-      },
-      { // 数字, 字符常量
-        "scope": [
-          "constant.numeric",
-          "constant.character"
-        ],
-        "settings": {
-          "foreground": "#eeebeb",
-          "fontStyle": ""
-        }
-      },
-      { // 系统内置的函数名称的颜色 如：print len
-        "scope": [
-          "support.function"
-        ],
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": "bold"
-        }
-      },
-      { // 当框架/库提供类时。
-        "scope": [
-          "support.class"
-        ],
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": ""
-        }
-      },
-      { // 当框架/库提供的类型，这可能仅用于从 C 派生的语言，该语言具有 （和 ）。大多数其他语言会引入新类型作为类
-        "scope": [
-          "support.type"
-        ],
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": ""
-        }
-      },
-      { // ts 类型注释
-        "scope": [
-          "support.type.primitive"
-        ],
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": ""
-        }
-      },
-      { // 框架/库提供的常量（魔术值）
-        "scope": [
-          "support.constant"
-        ],
-        "settings": {
-          "foreground": "#FFF",
-          "fontStyle": ""
-        }
-      },
-      { // 框架/库提供的变量
-        "scope": [
-          "support.variable"
-        ],
-        "settings": {
-          "foreground": "#9876AA",
-          "fontStyle": ""
-        }
-      },
-      { // 函数的名称
-        "scope": [
-          "entity.name.function",
-          "entity.name.function.tsx"
-        ],
-        "settings": {
-          "foreground": "#fbff00e7",
-          "fontStyle": ""
-        }
-      },
-      { // namespace 作用域的颜色, 例如 using namespace std; 中的 std
-        "scope": "entity.name.namespace",
-        "settings": {
-          "foreground": "#fa7000",
-          "fontStyle": "italic"
-        }
-      },
-      { // 成员函数
-        "scope": "entity.name.function.member",
-        "settings": {
-          "foreground": "#fbff00e7",
-          "fontStyle": "italic"
-        }
-      },
-      { // 成员函数宏
-        "scope": "entity.name.function.preprocessor",
-        "settings": {
-          "foreground": "#fa7000",
-          "fontStyle": "italic"
-        }
-      },
-      {
-        "scope": [
-          "entity.name.type.parameter",
-        ],
-        "settings": {
-          "foreground": "#00eccdf4",
-          "fontStyle": ""
-        }
-      },
-      { // 类型定义, type C = number;
-        "scope": "entity.name.type",
-        "settings": {
-          "foreground": "#ffffff",
-          "fontStyle": ""
-        }
-      },
-      { // 类名
-        "scope": "entity.name.type.class",
-        "settings": {
-          "foreground": "#ffffff",
-          "fontStyle": ""
-        }
-      },
-      { // 接口
-        "scope": "entity.name.type.interface",
-        "settings": {
-          "foreground": "#ffffff"
-        }
-      },
-      { // 枚举变量
-        "scope": "entity.name.type.enum",
-        "settings": {
-          "foreground": "#eeeeee",
-          "fontStyle": "italic"
-        }
-      },
-      { // 枚举成员
-        "scope": "variable.other.enummember",
-        "settings": {
-          "foreground": "#eeeeee",
-          "fontStyle": "italic"
-        }
-      },
-      { // 标记语言：标签名称
-        "scope": "entity.name.tag",
-        "settings": {
-          "foreground": "#FFDD55"
-        }
-      },
-      { // 标记语言：标签的尖括号的颜色
-        "name": "HTML:Tags",
-        "scope": [
-          "punctuation.definition.tag.html",
-          "punctuation.definition.tag.begin.html",
-          "punctuation.definition.tag.end.html"
-        ],
-        "settings": {
-          "foreground": "#e0ffdd",
-          "fontStyle": ""
-        }
-      },
-      { // jsx 组件名称
-        "scope": [
-          "support.class.component"
-        ],
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": ""
-        }
-      },
-      { // jsx 属性名
-        "scope": [
-          "entity.other.attribute-name.tsx",
-          "entity.other.attribute-name.jsx"
-        ],
-        "settings": {
-          "foreground": "#e290f8bc",
-          "fontStyle": "italic"
-        }
-      },
-
-      { // 标记语言：标签的属性
-        "name": "HTML: Attribute Names",
-        "scope": [
-          "meta.tag entity.other.attribute-name",
-          "entity.other.attribute-name.html"
-        ],
-        "settings": {
-          "fontStyle": "italic",
-          "foreground": "#9876AA"
-        }
-      },
-      { // 名称是部分/标题的名称。
-        "scope": "entity.name.section",
-        "settings": {
-          "foreground": "#ff0000",
-          "fontStyle": ""
-        }
-      },
-      { // 非法，例如 HTML 中的 & 符号或小于字符（不是实体/标签的一部分）。
-        "scope": "invalid.illegal",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 对于已弃用的内容，例如，使用已弃用的 API 函数或使用严格的 HTML 样式。
-        "scope": "invalid.deprecated",
-        "settings": {
-          "foreground": "#fc9c9c"
-        }
-      },
-      { // 关键字：if, else, try 等控制符
-        "scope": "keyword.control",
-        "settings": {
-          "foreground": "#FF8800",
-          "fontStyle": ""
-        }
-      },
-
-      { // Operator操作符, =, +, -, *, /
-        "scope": "keyword.operator",
-        "settings": {
-          "foreground": "#cecccc"
-        }
-      },
-      { // 其他
-        "scope": "keyword.other",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 标记语言：带下划线的文本。
-        "scope": "markup.underline",
-        "settings": {
-          "foreground": "#ff0000",
-          "fontStyle": "underline"
-        }
-      },
-      { // 这是用于链接的，为了方便起见，这是从中派生出来的，因此如果没有专门针对的主题规则
-        "scope": "markup.underline.link",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 粗体文本
-        "scope": "markup.bold",
-        "settings": {
-          "foreground": "#ff0000",
-          "fontStyle": "bold"
-        }
-      },
-      { // 节标题
-        "scope": "markup.heading",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 斜体文本
-        "scope": "markup.italic",
-        "settings": {
-          "foreground": "#ff0000",
-          "fontStyle": "italic"
-        }
-      },
-      { // 列表项
-        "scope": "markup.list",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 列表项
-        "scope": "markup.list.numbered",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 列表项
-        "scope": "markup.list.unnumbered",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 引用的文本
-        "scope": "markup.quote",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 逐行文本
-        "scope": "markup.raw",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // 其他标记构造
-        "scope": "markup.other",
-        "settings": {
-          "foreground": "#ff0000"
-        }
-      },
-      { // “存储”，修饰符，let const class
-        "scope": "storage.type",
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": ""
-        }
-      },
-      { // 修饰语: public readonly static private...
-        "scope": "storage.modifier",
-        "settings": {
-          "foreground": "#f09090",
-          "fontStyle": ""
-        }
-      },
-      { // 字符串,左单双引号,右单双引号
-        "name": "String",
-        "scope": [
-          "string.quoted",
-          "string.quoted.single",
-          "string.quoted.double",
-          "string.quoted.triple",
-          "string.quoted.other",
-          "string.unquoted",
-          "string.interpolated",
-          "string.regexp",
-          "string.other",
-          "punctuation.definition.string.begin",
-          "punctuation.definition.string.end"
-        ],
-        "settings": {
-          "foreground": "#32a504"
-        }
-      },
-      { // 参数变量
-        "scope": "variable.parameter",
-        "settings": {
-          "foreground": "#c8efff",
-          "fontStyle": "italic"
-        }
-      },
-      { // 保留变量, 例如：self this
-        "scope": "variable.language",
-        "settings": {
-          "foreground": "#9876AA",
-          "fontStyle": "italic"
-        }
-      },
-      { // 常量，只读
-        "scope": [
-          "variable.other.constant",
-          "variable.other.constant.object"
-        ],
-        "settings": {
-          "foreground": "#ffffff",
-          "fontStyle": ""
-        }
-      },
-      { // 布尔值
-        "scope": [
-          "constant.language.boolean"
-        ],
-        "settings": {
-          "foreground": "#FFAA33",
-          "fontStyle": ""
-        }
-      },
-      { // 成员常量
-        "scope": "property.readonly",
-        "settings": {
-          "foreground": "#ffffff",
-          "fontStyle": ""
-        }
-      }
-    ]
-  },
-  "workbench.colorCustomizations": {
-    "editor.selectionBackground": "#a99cf07c", // 选中高亮背景色
-    "emmet.triggerExpansionOnTab": true,
-    "emmet.showAbbreviationSuggestions": true,
-    "editor.selectionHighlightBackground": "#a99cf028" // 选中的和当前元素一样的 的背景色
-  },
-  // Editor
-  // "emmet.triggerExpansionOnTab": true,
-  "editor.accessibilitySupport": "off",
-  "editor.guides.bracketPairs": "active",
-  "editor.inlineSuggest.enabled": true,
-  "editor.lineNumbers": "interval",
-  "editor.multiCursorModifier": "alt",
-  "editor.renderWhitespace": "trailing",
-  "editor.suggestSelection": "recentlyUsed",
-  "editor.tabSize": 2,
-  "editor.unicodeHighlight.invisibleCharacters": false,
+  // ===== 项目级编辑器行为 =====
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
     "source.fixAll.eslint": "never",
     "source.organizeImports": "never"
   },
-  "explorer.confirmDelete": false,
-  "explorer.confirmDragAndDrop": false,
-  "window.autoDetectColorScheme": true,
-  "window.dialogStyle": "custom",
-  "window.nativeTabs": true, // this is great, macOS only
-  "window.titleBarStyle": "custom",
-  "workbench.editor.closeOnFileDelete": true,
-  "workbench.editor.highlightModifiedTabs": true,
-  "workbench.editor.tabCloseButton": "right",
-  "workbench.editor.limit.enabled": true,
-  "workbench.editor.limit.perEditorGroup": true,
-  "workbench.editor.limit.value": 5,
-  "workbench.list.smoothScrolling": true,
-  "workbench.tree.expandMode": "singleClick",
-  "workbench.tree.indent": 10,
-  "extensions.autoUpdate": "onlyEnabledExtensions",
-  "extensions.ignoreRecommendations": true,
+  "editor.tabSize": 2,
+  "editor.indentSize": "tabSize",
+  "editor.detectIndentation": true,
+  "editor.formatOnSave": false,
+  "editor.suggest.showDeprecated": false,
+
+  // ===== 文件 & 排除规则（项目级）=====
   "files.eol": "\n",
   "files.insertFinalNewline": true,
-  "files.simpleDialog.enable": true,
+  "files.trimTrailingWhitespace": true,
+  "files.autoSave": "afterDelay",
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/.git/**": true
+  },
+
+  // ===== Explorer / 文件嵌套 =====
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+
+  // ===== Git（项目级）=====
   "git.autofetch": true,
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
   "git.untrackedChanges": "separate",
+  "git.openRepositoryInParentFolders": "never",
+  "git.ignoreLegacyWarning": true,
+
+  // ===== 终端（项目级）=====
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.fontWeight": "300",
-  "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.tabs.enabled": true,
-  "scm.diffDecorationsGutterWidth": 2,
-  "debug.onTaskErrors": "debugAnyway",
-  "diffEditor.ignoreTrimWhitespace": false,
-  "search.exclude": {
-    "**/.git": true,
-    "**/.github": true,
-    "**/.nuxt": true,
-    "**/.output": true,
-    "**/.pnpm": true,
-    "**/.vscode": true,
-    "**/.yarn": true,
-    "**/bower_components": true,
-    "**/dist/**": true,
-    "**/logs": true,
-    "**/node_modules": true,
-    "**/out/**": true,
-    "**/package-lock.json": true,
-    "**/pnpm-lock.yaml": true,
-    "**/tmp": true,
-    "**/yarn.lock": true
-  },
-  // File Nesting
-  // this might not be up to date with the repo, please check yourself
-  // updated 2022-07-12 03:35
-  // https://github.com/antfu/vscode-file-nesting-config
-  "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.expand": false,
-  "explorer.fileNesting.patterns": {
-    "*.asax": "$(capture).*.cs, $(capture).*.vb",
-    "*.ascx": "$(capture).*.cs, $(capture).*.vb",
-    "*.ashx": "$(capture).*.cs, $(capture).*.vb",
-    "*.aspx": "$(capture).*.cs, $(capture).*.vb",
-    "*.bloc.dart": "$(capture).event.dart, $(capture).state.dart",
-    "*.c": "$(capture).h",
-    "*.cc": "$(capture).hpp, $(capture).h, $(capture).hxx",
-    "*.component.ts": "$(capture).component.html, $(capture).component.spec.ts, $(capture).component.css, $(capture).component.scss, $(capture).component.sass, $(capture).component.less",
-    "*.cpp": "$(capture).hpp, $(capture).h, $(capture).hxx",
-    "*.cshtml": "$(capture).cshtml.cs",
-    "*.csproj": "*.config, *proj.user, appsettings.*, bundleconfig.json",
-    "*.css": "$(capture).css.map, $(capture).*.css",
-    "*.cxx": "$(capture).hpp, $(capture).h, $(capture).hxx",
-    "*.dart": "$(capture).freezed.dart, $(capture).g.dart",
-    "*.ex": "$(capture).html.eex, $(capture).html.heex, $(capture).html.leex",
-    "*.java": "$(capture).class",
-    "*.js": "$(capture).js.map, $(capture).*.js, $(capture)_*.js",
-    "*.jsx": "$(capture).js, $(capture).*.jsx, $(capture)_*.js, $(capture)_*.jsx",
-    "*.master": "$(capture).*.cs, $(capture).*.vb",
-    "*.module.ts": "$(capture).resolver.ts, $(capture).controller.ts, $(capture).service.ts",
-    "*.pubxml": "$(capture).pubxml.user",
-    "*.resx": "$(capture).*.resx, $(capture).designer.cs, $(capture).designer.vb",
-    "*.tex": "$(capture).acn, $(capture).acr, $(capture).alg, $(capture).aux, $(capture).bbl, $(capture).blg, $(capture).fdb_latexmk, $(capture).fls, $(capture).glg, $(capture).glo, $(capture).gls, $(capture).idx, $(capture).ind, $(capture).ist, $(capture).lof, $(capture).log, $(capture).lot, $(capture).out, $(capture).pdf, $(capture).synctex.gz, $(capture).toc, $(capture).xdv",
-    "*.ts": "$(capture).js, $(capture).*.ts, $(capture)_*.js, $(capture)_*.ts",
-    "*.tsx": "$(capture).ts, $(capture).*.tsx, $(capture)_*.ts, $(capture)_*.tsx",
-    "*.vbproj": "*.config, *proj.user, appsettings.*, bundleconfig.json",
-    "*.vue": "$(capture).*.ts, $(capture).*.js",
-    "*.xaml": "$(capture).xaml.cs",
-    ".clang-tidy": ".clang-format, .clangd, compile_commands.json",
-    ".env": "*.env, .env.*, .envrc, env.d.ts",
-    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
-    ".project": ".classpath",
-    "BUILD.bazel": "*.bzl, *.bazel, *.bazelrc, bazel.rc, .bazelignore, .bazelproject, WORKSPACE",
-    "CMakeLists.txt": "*.cmake, *.cmake.in, .cmake-format.yaml, CMakePresets.json",
-    "artisan": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, server.php, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, webpack.mix.js, windi.config.*",
-    "astro.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "cargo.toml": ".clippy.toml, .rustfmt.toml, cargo.lock, clippy.toml, cross.toml, rust-toolchain.toml, rustfmt.toml",
-    "composer.json": ".php*.cache, composer.lock, phpunit.xml*, psalm*.xml",
-    "default.nix": "shell.nix",
-    "deno.json*": "*.env, .env.*, .envrc, api-extractor.json, env.d.ts, import-map.json, import_map.json, jsconfig.*, tsconfig.*, tsdoc.*",
-    "dockerfile": ".dockerignore, docker-compose.*, dockerfile*",
-    "flake.nix": "flake.lock",
-    "gatsby-config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, gatsby-browser.*, gatsby-node.*, gatsby-ssr.*, gatsby-transformer.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "gemfile": ".ruby-version, gemfile.lock",
-    "go.mod": ".air*, go.sum",
-    "mix.exs": ".credo.exs, .dialyzer_ignore.exs, .formatter.exs, .iex.exs, .tool-versions, mix.lock",
-    "next.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, next-env.d.ts, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "nuxt.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "package.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lighthouserc.*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.*, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lighthouserc.*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, package.nls*.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, release-tasks.sh, renovate*, rollup.config.*, stylelint*, tsconfig.*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, unlighthouse*, vercel*, vetur.config.*, vitest.config.*, webpack*, workspace.json, xo.config.*, yarn*",
-    "pubspec.yaml": ".metadata, .packages, all_lint_rules.yaml, analysis_options.yaml, build.yaml, pubspec.lock",
-    "pyproject.toml": ".pdm.toml, pdm.lock, pyproject.toml",
-    "quasar.conf.js": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, quasar.extensions.json, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "readme*": "authors, backers*, changelog*, citation*, code_of_conduct*, codeowners, contributing*, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors*",
-    "remix.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, remix.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "rush.json": ".browserslist*, .circleci*, .codecov, .commitlint*, .cz-config.js, .czrc, .editorconfig, .eslint*, .firebase*, .flowconfig, .github*, .gitlab*, .gitpod*, .huskyrc*, .jslint*, .lighthouserc.*, .lintstagedrc*, .markdownlint*, .mocha*, .node-version, .nodemon*, .npm*, .nvmrc, .pm2*, .pnp.*, .pnpm*, .prettier*, .releaserc*, .sentry*, .stackblitz*, .styleci*, .stylelint*, .tazerc*, .textlint*, .tool-versions, .travis*, .versionrc*, .vscode*, .watchman*, .xo-config*, .yamllint*, .yarnrc*, Procfile, api-extractor.json, apollo.config.*, appveyor*, ava.config.*, azure-pipelines*, bower.json, build.config.*, commitlint*, crowdin*, cypress.*, dangerfile*, dprint.json, firebase.json, grunt*, gulp*, jasmine.*, jenkins*, jest.config.*, jsconfig.*, karma*, lerna*, lighthouserc.*, lint-staged*, nest-cli.*, netlify*, nodemon*, nx.*, package-lock.json, package.nls*.json, phpcs.xml, playwright.config.*, pm2.*, pnpm*, prettier*, pullapprove*, puppeteer.config.*, pyrightconfig.json, release-tasks.sh, renovate*, rollup.config.*, stylelint*, tsconfig.*, tsdoc.*, tslint*, tsup.config.*, turbo*, typedoc*, unlighthouse*, vercel*, vetur.config.*, vitest.config.*, webpack*, workspace.json, xo.config.*, yarn*",
-    "shims.d.ts": "*.d.ts",
-    "svelte.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, mdsvex.config.js, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "vite.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*",
-    "vue.config.*": "*.env, .babelrc*, .codecov, .cssnanorc*, .env.*, .envrc, .htmlnanorc*, .lighthouserc.*, .mocha*, .postcssrc*, .terserrc*, api-extractor.json, ava.config.*, babel.config.*, cssnano.config.*, cypress.*, env.d.ts, formkit.config.*, formulate.config.*, htmlnanorc.*, jasmine.*, jest.config.*, jsconfig.*, karma*, lighthouserc.*, playwright.config.*, postcss.config.*, puppeteer.config.*, svgo.config.*, tailwind.config.*, tsconfig.*, tsdoc.*, unocss.config.*, vitest.config.*, webpack.config.*, windi.config.*"
-  },
-  "workbench.layoutControl.enabled": false,
-  "tabnine.experimentalAutoImports": true,
-  "editor.tabCompletion": "on",
-  "sshfs.configs": [
-    {
-      "name": "root@syan.ink"
-    }
-  ],
-  "remote.SSH.remotePlatform": {
-    "syan.ink": "linux"
-  },
-  "editor.mouseWheelZoom": true,
+
+  // ===== 测试（项目级）=====
   "testing.openTesting": "openOnTestFailure",
-  "editor.suggest.showDeprecated": false,
-  "files.trimTrailingWhitespace": true,
-  "workbench.startupEditor": "none",
-  "editor.fontSize": 15,
-  "workbench.hover.delay": 250,
-  "files.maxMemoryForLargeFilesMB": 8192,
-  "typescript.tsserver.maxTsServerMemory": 8192,
-  "editor.guides.highlightActiveIndentation": "always",
-  "editor.detectIndentation": true,
-  "files.autoSave": "afterDelay",
-  "editor.indentSize": "tabSize",
-  // "files.associations": {
-  //   "*.vue": "html"
-  // },
-  // "editor.quickSuggestions": {
-  //   // "other": "on",
-  //   // "comments": "off",
-  //   "strings": "inline",
-  //   // "singleQuote": true
-  // },
+  "testing.automaticallyOpenTestResults": "openOnTestFailure",
+
+  // ===== TypeScript / JavaScript（项目级）=====
+  "js/ts.validate.enabled": false,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.preferences.quoteStyle": "single",
+  "js/ts.preferences.preferTypeOnlyAutoImports": true,
+  "js/ts.suggest.completeFunctionCalls": false,
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+
+  "js/ts.inlayHints.enumMemberValues.enabled": true,
+  "js/ts.inlayHints.functionLikeReturnTypes.enabled": true,
+  "js/ts.inlayHints.parameterNames.enabled": "literals",
+  "js/ts.inlayHints.parameterTypes.enabled": true,
+  "js/ts.inlayHints.propertyDeclarationTypes.enabled": true,
+  "js/ts.inlayHints.variableTypes.enabled": false,
+
+  // ===== TS 性能（工作区必须）=====
+  "typescript.tsserver.useSeparateDiagnostics": true,
+  "js/ts.tsserver.maxMemory": 8192,
+  "js/ts.tsserver.useSyntaxServer": "never",
+
+  // ===== ESLint =====
+  "eslint.enable": true,
+
+  // ===== 框架 / 工具链（项目强相关）=====
   "emmet.includeLanguages": {
     "vue-html": "html",
     "vue": "html"
   },
-  "rust-analyzer.linkedProjects": [
-    "./Cargo.toml"
-  ],
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "colorHelper.resident": true,
+
   "vue.complete.casing.props": "camel",
-  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
-  "typescript.format.insertSpaceBeforePostfixUnaryOperators": true,
-  "javascript.format.insertSpaceBeforePostfixUnaryOperators": true,
-  "liveServer.settings.donotShowInfoMsg": true,
-  "http.proxyAuthorization": null,
-  "typescript.preferences.quoteStyle": "single",
   "volar.format.initialIndent": {
     "html": true
   },
-  "terminal.integrated.fontSize": 16,
-  "workbench.colorTheme": "GitHub Dark",
-  "terminal.integrated.fontFamily": "Consolas, 'Courier New', monospace",
-  "git.openRepositoryInParentFolders": "never",
-  "git.ignoreLegacyWarning": true,
-  "winopacity.opacity": 254,
-  "editor.smoothScrolling": true,
-  "terminal.integrated.smoothScrolling": true,
-  "editor.mouseWheelScrollSensitivity": 2,
-  "workbench.list.mouseWheelScrollSensitivity": 2,
-  "editor.minimap.enabled": false,
-  "gitlens.views.commitDetails.files.layout": "list",
-  "workbench.editor.tabActionLocation": "right",
-  "javascript.inlayHints.enumMemberValues.enabled": true,
-  "javascript.validate.enable": false,
-  "typescript.tsdk": "node_modules/typescript/lib",
+
+  "rust-analyzer.linkedProjects": [
+    "./Cargo.toml"
+  ],
+
+  // ===== Windsurf / Codeium（项目级）=====
+  "codeium.enableSearch": true,
+  "codeium.enableConfig": {
+    "*": true
+  },
+  "codeium.searchMaxWorkspaceFileCount": 20000,
+  "codeium.enableCrossFileContext": false,
+  "codeium.maxWorkspaceSize": 5000,
+
+  // ===== GitHub Copilot（项目级关闭）=====
+  "github.copilot.enableAutoCompletions": false,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "typescript": false
+  },
+
+  // ===== 拼写（项目词表）=====
   "cSpell.words": [
     "ahooks",
     "androidstudio",
@@ -722,26 +153,14 @@
     "xyflow",
     "Zustand"
   ],
-  "notebook.markup.fontSize": 0,
-  "typescript.inlayHints.enumMemberValues.enabled": true,
-  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
-  "typescript.inlayHints.parameterNames.enabled": "literals",
-  "typescript.inlayHints.parameterTypes.enabled": true,
-  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
-  "typescript.inlayHints.variableTypes.enabled": false,
-  "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.suggest.completeFunctionCalls": false,
-  "terminal.integrated.mouseWheelZoom": false,
-  "workbench.preferredLightColorTheme": "GitHub Dark",
-  "material-icon-theme.opacity": 1,
-  "gitlens.proxy": {
 
-  },
-  "testing.automaticallyOpenTestResults": "openOnTestFailure",
-  "nxConsole.nxWorkspacePath": "",
+  // ===== i18n（项目路径）=====
   "i18n-ally.localesPaths": [
-    "src/rd/code/browser/i18n/locales",
+    "src/rd/code/browser/i18n/locales"
   ],
-  "i18n-ally.displayLanguage": "zh",
-  "i18n-ally.keystyle": "nested"
+
+  // ===== 图标映射（项目资产）=====
+  "material-icon-theme.files.associations": {
+    "rd-builder.config.ts": "rust"
+  }
 }

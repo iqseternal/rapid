@@ -246,11 +246,11 @@ export namespace IpcAbstractReceiver {
 			? (
 				FirstType extends undefined
 					? IpcTypeBoth
-					: (IpcType extends FirstType ? IpcTypeBoth : FirstType)
+					: (IpcType extends FirstType ? IpcTypeBoth : NonNullable<FirstType>)
 				)
 			: (
 				IpcType extends SecondType
-					? (IpcType extends FirstType ? IpcTypeBoth : FirstType)
+					? (IpcType extends FirstType ? IpcTypeBoth : NonNullable<FirstType>)
 					: SecondType
 				)
 		);

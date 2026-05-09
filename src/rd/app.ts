@@ -7,7 +7,7 @@ import { RdCatalogs } from 'rd/catalog';
 import { bus } from './base/main/bus';
 import { Notification, app } from 'electron';
 import { join } from 'path';
-import { PrinterService } from './base/common/service/PrinterService';
+import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 import chokidar from 'chokidar';
 

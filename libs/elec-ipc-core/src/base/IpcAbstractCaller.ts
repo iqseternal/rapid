@@ -61,6 +61,18 @@ export class IpcAbstractCaller<IpcProcessorSheet extends MutateProcessorSheet<Re
 		return response;
 	}
 
+	/**
+	 * 创建 IPC 句柄调用器
+	 *
+	 * @param channel - 句柄名称
+	 * @returns 句柄调用器
+	 * @description 用于快速创建 IPC 句柄调用器
+	 * @example
+	 * ```ts
+	 * const get = ipcCaller.makeInvoker('get');
+	 * const result = await get(...args);
+	 * ```
+	 */
 	public makeInvoker = <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, IpcTypeHandle>>(channel: Key) => {
 		return (...args: IpcProcessorSheet[Key]['args']): Promise<IpcProcessorSheet[Key]['return']> => this.invoke(channel, ...args);
 	}

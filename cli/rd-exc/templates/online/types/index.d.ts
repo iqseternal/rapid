@@ -1,5 +1,5 @@
 import * as _suey_pkg_utils from '@suey/pkg-utils';
-import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, AxiosResponse, CutHead, Ansi } from '@suey/pkg-utils';
+import { AxiosError, RequestConfig, ApiPromiseResultTypeBuilder, AxiosResponse, Ansi, CutHead } from '@suey/pkg-utils';
 import * as _meta2d_core from '@meta2d/core';
 import * as react from 'react';
 import { ComponentType, HTMLAttributes, ReactNode, Component, FC, LazyExoticComponent, ForwardRefExoticComponent, MemoExoticComponent, ReactElement } from 'react';
@@ -17,7 +17,7 @@ import * as zustand from 'zustand';
 import * as moment from 'moment';
 import * as react_transition_group from 'react-transition-group';
 import * as _react_spring_web from '@react-spring/web';
-import { IpcRenderer as IpcRenderer$1, WebFrame, NodeProcess } from '@electron-toolkit/preload';
+import { ElectronAPI } from '@electron-toolkit/preload';
 import { IpcMainInvokeEvent, IpcMainEvent, OpenDevToolsOptions, BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 
 /**
@@ -976,6 +976,125 @@ declare class Invoker<Entries extends Record<InvokerKey, InvokerHandler>> extend
     invoke<K extends keyof Entries>(key: K, ...args: ExtractParameters<Entries[K]>): ExtractReturnType<Entries[K]>;
 }
 
+type PrintMessagesTypeArr = Parameters<typeof Ansi.print>;
+declare class PrinterService {
+    private static readonly printer;
+    /**
+     * 格式化文本
+     */
+    format(...messages: PrintMessagesTypeArr): string;
+    /**
+     * print
+     */
+    print(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 日志信息
+     */
+    printInfo(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 错误信息
+     */
+    printError(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 警告信息
+     */
+    printWarn(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 成功信息
+     */
+    printSuccess(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 格式化文本
+     */
+    static format(...messages: PrintMessagesTypeArr): string;
+    /**
+     * 日志信息静态打印
+     */
+    static printInfo(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 警告信息静态打印
+     */
+    static printWarn(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 成功信息静态打印
+     */
+    static printSuccess(...messages: PrintMessagesTypeArr): void;
+    /**
+     * 错误信息静态打印
+     */
+    static printError(...messages: PrintMessagesTypeArr): void;
+}
+
+/**
+ * renderer 线程打印器
+ */
+declare const printerService: PrinterService;
+/**
+ * renderer 线程打印器类型
+ */
+interface PrinterType {
+    /**
+     * 打印日志
+     */
+    readonly print: typeof printerService.print;
+    /**
+     * 打印日志
+     */
+    readonly printInfo: typeof printerService.printInfo;
+    /**
+     * 打印一条警告信息
+     */
+    readonly printWarn: typeof printerService.printWarn;
+    /**
+     * 打印一条错误信息
+     */
+    readonly printError: typeof printerService.printError;
+    /**
+     * 打印一条成功信息
+     */
+    readonly printSuccess: typeof printerService.printSuccess;
+}
+
+/**
+ * 应用的 store 类型
+ */
+interface IpcStore<StoreSheet extends Record<string | number, any>> {
+    /**
+     * 获取应用的 store
+     */
+    getStore: () => Promise<StoreSheet>;
+    /**
+     *
+     */
+    get: <Key extends keyof StoreSheet>(key: Key, defaultValue?: StoreSheet[Key]) => Promise<StoreSheet[Key]>;
+    /**
+     *
+     */
+    set: <Key extends keyof StoreSheet>(key: Key, value: StoreSheet[Key]) => Promise<void>;
+    /**
+     *
+     */
+    delete: <Key extends keyof StoreSheet>(key: Key) => Promise<void>;
+    /**
+     *
+     */
+    has: <Key extends keyof StoreSheet>(key: Key) => Promise<boolean>;
+    /**
+     *
+     */
+    reset: <Key extends keyof StoreSheet>(...keys: Key[]) => Promise<void>;
+    /**
+     *
+     */
+    clear: () => Promise<void>;
+}
+
+interface AppStoreType {
+    refreshToken: string;
+    accessToken: string;
+    test: number;
+}
+
 /**
  * @rapid/m-ipc-core - Common Types
  *
@@ -1218,6 +1337,18 @@ declare class IpcAbstractCaller<IpcProcessorSheet extends MutateProcessorSheet<R
      * @returns 响应结果
      */
     invoke: <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, "handle">>(channel: Key, ...args: IpcProcessorSheet[Key]["args"]) => Promise<IpcProcessorSheet[Key]["return"]>;
+    /**
+     * 创建 IPC 句柄调用器
+     *
+     * @param channel - 句柄名称
+     * @returns 句柄调用器
+     * @description 用于快速创建 IPC 句柄调用器
+     * @example
+     * ```ts
+     * const get = ipcCaller.makeInvoker('get');
+     * const result = await get(...args);
+     * ```
+     */
     makeInvoker: <Key extends keyof ExtractMutateProcessorSheet<IpcProcessorSheet, "handle">>(channel: Key) => (...args: IpcProcessorSheet[Key]["args"]) => Promise<IpcProcessorSheet[Key]["return"]>;
     /**
      * 发送 IPC 消息
@@ -1347,36 +1478,30 @@ declare const ipcForwardDataTakeIn: IpcProcessor<"handle", WindowService, "IpcFo
  */
 declare const ipcForwardDataTakeOut: IpcProcessor<"handle", WindowService, "IpcForwardData/takeOut", (windowService: WindowService, key: string, options?: DepositService.TakeOutOptions) => Promise<any>>;
 
-interface AppStoreType$1 {
-    refreshToken: string;
-    accessToken: string;
-    test: number;
-}
-
 /**
  * 为渲染进程提供获得 appStore 的能力
  */
-declare const ipcAppStoreGetStore: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/getStore", () => Promise<AppStoreType$1>>;
+declare const ipcAppStoreGetStore: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/getStore", () => Promise<AppStoreType>>;
 /**
  * 渲染进程通过 key 获得一个存储在 appStore 中的数据
  */
-declare const ipcAppStoreGet: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/get", <Key extends keyof AppStoreType$1, V extends Required<AppStoreType$1>[Key]>(_: unknown, key: Key, defaultValue?: V) => Promise<Required<AppStoreType$1>[Key]>>;
+declare const ipcAppStoreGet: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/get", <Key extends keyof AppStoreType, V extends Required<AppStoreType>[Key]>(_: unknown, key: Key, defaultValue?: V) => Promise<Required<AppStoreType>[Key]>>;
 /**
  * 渲染进程通过 key 设置存储在 appStore 中的数据
  */
-declare const ipcAppStoreSet: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/set", <Key extends keyof AppStoreType$1, V extends AppStoreType$1[Key]>(_: unknown, key: Key, value: V) => Promise<void>>;
+declare const ipcAppStoreSet: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/set", <Key extends keyof AppStoreType, V extends AppStoreType[Key]>(_: unknown, key: Key, value: V) => Promise<void>>;
 /**
  * 渲染进程通过 key 重置某些 appStore 中的数据
  */
-declare const ipcAppStoreReset: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/reset", <Key extends keyof AppStoreType$1>(_: unknown, ...keys: Key[]) => Promise<void>>;
+declare const ipcAppStoreReset: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/reset", <Key extends keyof AppStoreType>(_: unknown, ...keys: Key[]) => Promise<void>>;
 /**
  * 渲染进程通过 key 判断 appStore 中是否含有某个 key
  */
-declare const ipcAppStoreHas: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/has", <Key extends keyof AppStoreType$1>(_: unknown, key: Key) => Promise<boolean>>;
+declare const ipcAppStoreHas: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/has", <Key extends keyof AppStoreType>(_: unknown, key: Key) => Promise<boolean>>;
 /**
  * 渲染进程通过 key 删除 appStore 中的数据
  */
-declare const ipcAppStoreDelete: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/delete", <Key extends keyof AppStoreType$1>(_: unknown, key: Key) => Promise<void>>;
+declare const ipcAppStoreDelete: IpcProcessor<"handle", Electron.IpcMainInvokeEvent | Electron.IpcMainEvent, "IpcStore/appStore/delete", <Key extends keyof AppStoreType>(_: unknown, key: Key) => Promise<void>>;
 /**
  * 清空 appStore
  */
@@ -1532,155 +1657,10 @@ declare namespace AllIpcProcessors {
   export { type AllIpcProcessors_WindowProperties as WindowProperties, AllIpcProcessors_ipcAppStoreClear as ipcAppStoreClear, AllIpcProcessors_ipcAppStoreDelete as ipcAppStoreDelete, AllIpcProcessors_ipcAppStoreGet as ipcAppStoreGet, AllIpcProcessors_ipcAppStoreGetStore as ipcAppStoreGetStore, AllIpcProcessors_ipcAppStoreHas as ipcAppStoreHas, AllIpcProcessors_ipcAppStoreReset as ipcAppStoreReset, AllIpcProcessors_ipcAppStoreSet as ipcAppStoreSet, AllIpcProcessors_ipcForwardDataTakeIn as ipcForwardDataTakeIn, AllIpcProcessors_ipcForwardDataTakeOut as ipcForwardDataTakeOut, AllIpcProcessors_ipcOnBroadcast as ipcOnBroadcast, AllIpcProcessors_ipcOpenDevTool as ipcOpenDevTool, AllIpcProcessors_ipcOpenWindow as ipcOpenWindow, AllIpcProcessors_ipcWindowClose as ipcWindowClose, AllIpcProcessors_ipcWindowMaximize as ipcWindowMaximize, AllIpcProcessors_ipcWindowMinimize as ipcWindowMinimize, AllIpcProcessors_ipcWindowProperties as ipcWindowProperties, AllIpcProcessors_ipcWindowReductionSize as ipcWindowReductionSize, AllIpcProcessors_ipcWindowRelaunch as ipcWindowRelaunch, AllIpcProcessors_ipcWindowResetCustomSize as ipcWindowResetCustomSize, AllIpcProcessors_ipcWindowResizeAble as ipcWindowResizeAble, AllIpcProcessors_ipcWindowSetMinimumSize as ipcWindowSetMinimumSize, AllIpcProcessors_ipcWindowSetPosition as ipcWindowSetPosition, AllIpcProcessors_ipcWindowSetSize as ipcWindowSetSize, AllIpcProcessors_ipcWindowShow as ipcWindowShow, AllIpcProcessors_ipcWindowWorkAreaSize as ipcWindowWorkAreaSize };
 }
 
-/**
- * ==========================================
- * preload 需要的类型声明
- * ==========================================
- */
-
-/**
- * 转换 ipcAction, 获取 key -> handler 的类型.
- * 传递 IpcActionEventType 以获得 HandleHandlers 或者 OnHandlers
- */
-type AllHandlers = MutateProcessorSheet<typeof AllIpcProcessors>;
-type HandleHandlers = ExtractMutateProcessorSheet<AllHandlers, IpcTypeHandle>;
-type OnHandlers = ExtractMutateProcessorSheet<AllHandlers, IpcTypeOn>;
-/**
- * 原本的 IcpRenderer 返回类型为 Promise<any>, 所需需要自己重新修改一下返回值
- * 需要先 Omit 排除, 然后再编写自己的类型, 否则会覆盖失败
- */
-type IpcRenderer = Omit<IpcRenderer$1, 'invoke' | 'send' | 'sendSync'> & {
-    /**
-     * 向主进程发送事件, 并等待回复
-     */
-    invoke<T extends keyof HandleHandlers>(channel: T, ...args: HandleHandlers[T]['args']): HandleHandlers[T]['return'];
-    send<T extends keyof OnHandlers>(channel: T, ...args: OnHandlers[T]['args']): void;
-    sendSync<T extends keyof OnHandlers>(channel: T, ...args: OnHandlers[T]['args']): void;
+type IpcProcessorsCompileSheet = {
+    readonly [Key in keyof typeof AllIpcProcessors]: (typeof AllIpcProcessors)[Key] extends IpcCompatibleProcessor ? (typeof AllIpcProcessors)[Key] : never;
 };
-/**
- * 重新创建 ElectronAPI, 来覆盖 window.electron 的类型
- */
-interface ElectronAPI {
-    readonly ipcRenderer: IpcRenderer;
-    readonly webFrame: WebFrame;
-    readonly process: NodeProcess;
-}
-
-type PrintMessagesTypeArr = Parameters<typeof Ansi.print>;
-declare class PrinterService {
-    private static readonly printer;
-    /**
-     * 格式化文本
-     */
-    format(...messages: PrintMessagesTypeArr): string;
-    /**
-     * print
-     */
-    print(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 日志信息
-     */
-    printInfo(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 错误信息
-     */
-    printError(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 警告信息
-     */
-    printWarn(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 成功信息
-     */
-    printSuccess(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 格式化文本
-     */
-    static format(...messages: PrintMessagesTypeArr): string;
-    /**
-     * 日志信息静态打印
-     */
-    static printInfo(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 警告信息静态打印
-     */
-    static printWarn(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 成功信息静态打印
-     */
-    static printSuccess(...messages: PrintMessagesTypeArr): void;
-    /**
-     * 错误信息静态打印
-     */
-    static printError(...messages: PrintMessagesTypeArr): void;
-}
-
-/**
- * renderer 线程打印器
- */
-declare const printer: PrinterService;
-/**
- * renderer 线程打印器类型
- */
-interface PrinterServer {
-    /**
-     * 打印日志
-     */
-    readonly print: typeof printer.print;
-    /**
-     * 打印日志
-     */
-    readonly printInfo: typeof printer.printInfo;
-    /**
-     * 打印一条警告信息
-     */
-    readonly printWarn: typeof printer.printWarn;
-    /**
-     * 打印一条错误信息
-     */
-    readonly printError: typeof printer.printError;
-    /**
-     * 打印一条成功信息
-     */
-    readonly printSuccess: typeof printer.printSuccess;
-}
-
-type KK = {
-    [Key in keyof HandleHandlers as HandleHandlers[Key]['channel']]: HandleHandlers[Key]['handler'];
-};
-/**
- * 应用的 store 类型
- */
-interface AppStoreType {
-    /**
-     * 获取所有的 store
-     */
-    readonly getStore: () => ReturnType<KK['IpcStore/appStore/getStore']>;
-    /**
-     * 获取 store 的值
-     */
-    readonly get: <Key extends keyof AppStoreType$1>(key: Key, defaultValue?: AppStoreType$1[Key]) => ReturnType<KK['IpcStore/appStore/get']>;
-    /**
-     * 设置 store 的值
-     */
-    readonly set: <Key extends keyof AppStoreType$1>(key: Key, value: AppStoreType$1[Key]) => ReturnType<KK['IpcStore/appStore/set']>;
-    /**
-     * 删除 store 的值
-     */
-    readonly delete: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<KK['IpcStore/appStore/delete']>;
-    /**
-     * 判断 store 是否存在
-     */
-    readonly has: <Key extends keyof AppStoreType$1>(key: Key) => ReturnType<KK['IpcStore/appStore/has']>;
-    /**
-     * 重置 store 的值
-     */
-    readonly reset: <Key extends keyof AppStoreType$1>(...keys: Key[]) => ReturnType<KK['IpcStore/appStore/reset']>;
-    /**
-     * 清空 store
-     */
-    readonly clear: () => ReturnType<KK['IpcStore/appStore/clear']>;
-}
+type IpcProcessorSheet = MutateProcessorSheet<IpcProcessorsCompileSheet>;
 
 /**
  * 打开页面
@@ -1837,12 +1817,8 @@ declare namespace ipcActions {
   export { ipcActions_openPage as openPage, ipcActions_windowClose as windowClose, ipcActions_windowDevtool as windowDevtool, ipcActions_windowEnableFullScreen as windowEnableFullScreen, ipcActions_windowExitFullScreen as windowExitFullScreen, ipcActions_windowForWardDataTakeOut as windowForWardDataTakeOut, ipcActions_windowForwardDataTakeIn as windowForwardDataTakeIn, ipcActions_windowMax as windowMax, ipcActions_windowMin as windowMin, ipcActions_windowOpen as windowOpen, ipcActions_windowReduction as windowReduction, ipcActions_windowRelaunch as windowRelaunch, ipcActions_windowReload as windowReload, ipcActions_windowResetCustomSize as windowResetCustomSize, ipcActions_windowResizeAble as windowResizeAble, ipcActions_windowSetPosition as windowSetPosition, ipcActions_windowSetSize as windowSetSize, ipcActions_windowShow as windowShow, ipcActions_windowWorkAreaSize as windowWorkAreaSize };
 }
 
-type IpcProcessors = {
-    readonly [Key in keyof typeof AllIpcProcessors]: (typeof AllIpcProcessors)[Key] extends IpcCompatibleProcessor ? (typeof AllIpcProcessors)[Key] : never;
-};
-type IpcProcessorSheet = Omit<MutateProcessorSheet<IpcProcessors>, IpcProcessors['ipcAppStoreClear']['channel'] | IpcProcessors['ipcAppStoreDelete']['channel'] | IpcProcessors['ipcAppStoreGet']['channel'] | IpcProcessors['ipcAppStoreGetStore']['channel'] | IpcProcessors['ipcAppStoreHas']['channel'] | IpcProcessors['ipcAppStoreReset']['channel'] | IpcProcessors['ipcAppStoreSet']['channel']>;
-
 type IpcActions = typeof ipcActions;
+
 /**
  * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
  */
@@ -1851,7 +1827,7 @@ interface ExposeApi {
     /**
      * 打印器对象
      */
-    readonly printer: PrinterServer;
+    readonly printer: PrinterType;
     readonly ipcBCaller: IpcBCaller<IpcProcessorSheet>;
     /**
      * IPC 事件
@@ -1861,7 +1837,7 @@ interface ExposeApi {
      * 应用的 store
      */
     readonly stores: Exclude<{
-        readonly appStore: AppStoreType;
+        readonly appStore: IpcStore<AppStoreType>;
     }, 'features'>;
 }
 
@@ -1876,9 +1852,9 @@ declare global {
       readonly transitionGroup: typeof react_transition_group;
       readonly moment: typeof moment;
 
-      readonly ipcActions: IpcActions;
-      readonly electron: ElectronAPI;
-      readonly printer: PrinterServer;
+      readonly ipcActions: undefined;
+      readonly electron: undefined;
+      readonly printer: undefined;
 
       readonly extension: ExtensionManager<Rapid.Extend.Extension>;
       readonly metadata: MetadataManager<Rapid.Extend.Metadata.MetadataEntries>;
