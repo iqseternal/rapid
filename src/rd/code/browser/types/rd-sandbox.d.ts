@@ -21,7 +21,7 @@ declare global {
   /**
    * 注入的 printer 打印日志对象
    */
-  const printer: RdSandbox.PrinterServer;
+  const printer: RdSandbox.PrinterType;
 
   /**
    * 注入的 ipc 对象

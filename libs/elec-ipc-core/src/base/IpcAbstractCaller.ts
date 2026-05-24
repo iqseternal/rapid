@@ -1,6 +1,7 @@
 import type { IpcCompatibleProcessor, IpcCallerConfig, MutateProcessorSheet, IpcTypeHandle, ExtractMutateProcessorSheet, IpcTypeOn } from '../types';
 import { ipcRenderer } from 'electron';
-import { toNil } from '@suey/pkg-utils';
+import { toNil, asynced } from '@suey/pkg-utils';
+import type { RPromiseLike } from '@suey/pkg-utils';
 
 /**
  * 渲染进程 IPC 调用器类

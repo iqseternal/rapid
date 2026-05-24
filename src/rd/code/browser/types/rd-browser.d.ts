@@ -6,6 +6,11 @@ import 'reflect-metadata';
 
 declare global {
 
+  interface Window {
+
+
+    __RSA_PUBLIC_KEY__?: string;
+  }
 
   interface Window {
     readonly React: typeof import('react');

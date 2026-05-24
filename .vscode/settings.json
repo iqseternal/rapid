@@ -10,7 +10,12 @@
   "editor.detectIndentation": true,
   "editor.formatOnSave": false,
   "editor.suggest.showDeprecated": false,
-
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.quickSuggestionsDelay": 100, // 延迟AI补全（减少干扰）
   // ===== 文件 & 排除规则（项目级）=====
   "files.eol": "\n",
   "files.insertFinalNewline": true,
@@ -21,11 +26,9 @@
     "**/dist/**": true,
     "**/.git/**": true
   },
-
   // ===== Explorer / 文件嵌套 =====
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
-
   // ===== Git（项目级）=====
   "git.autofetch": true,
   "git.confirmSync": false,
@@ -33,55 +36,62 @@
   "git.untrackedChanges": "separate",
   "git.openRepositoryInParentFolders": "never",
   "git.ignoreLegacyWarning": true,
-
   // ===== 终端（项目级）=====
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.fontWeight": "300",
   "terminal.integrated.tabs.enabled": true,
-
   // ===== 测试（项目级）=====
   "testing.openTesting": "openOnTestFailure",
   "testing.automaticallyOpenTestResults": "openOnTestFailure",
-
   // ===== TypeScript / JavaScript（项目级）=====
-  "js/ts.validate.enabled": false,
+  "js/ts.validate.enabled": true,
   "js/ts.tsdk.path": "node_modules/typescript/lib",
   "js/ts.preferences.quoteStyle": "single",
   "js/ts.preferences.preferTypeOnlyAutoImports": true,
   "js/ts.suggest.completeFunctionCalls": false,
   "js/ts.updateImportsOnFileMove.enabled": "always",
-
   "js/ts.inlayHints.enumMemberValues.enabled": true,
   "js/ts.inlayHints.functionLikeReturnTypes.enabled": true,
   "js/ts.inlayHints.parameterNames.enabled": "literals",
   "js/ts.inlayHints.parameterTypes.enabled": true,
   "js/ts.inlayHints.propertyDeclarationTypes.enabled": true,
   "js/ts.inlayHints.variableTypes.enabled": false,
-
+  "typescript.preferences.quoteStyle": "single", // 自动补全时使用单引号而不是双引号。
+  "typescript.preferences.preferTypeOnlyAutoImports": true, // 自动导入类型时使用 import type语法，有助于Tree Shaking。
+  "typescript.suggest.completeFunctionCalls": false, // 输入函数名时，不自动补全括号和参数。可以加快补全速度。
+  "typescript.updateImportsOnFileMove.enabled": "always", // 当你在资源管理器里移动文件时，自动更新所有相关import语句。
+  "typescript.tsserver.maxTsServerMemory": 8192, // 为TypeScript语言服务器分配8GB内存。大型项目需要这个。
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false, // 关闭实验性的项目级诊断功能，可以减少CPU占用。
+  "typescript.tsserver.watchOptions": { // 使用系统的文件事件监听，比轮询更高效
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriority"
+  },
   // ===== TS 性能（工作区必须）=====
   "typescript.tsserver.useSeparateDiagnostics": true,
+  "typescript.tsserver.useSyntaxServer": "never",
   "js/ts.tsserver.maxMemory": 8192,
   "js/ts.tsserver.useSyntaxServer": "never",
-
+  "js/ts.tsserver.watchOptions": { // 使用系统的文件事件监听，比轮询更高效
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriorityPolling"
+  },
   // ===== ESLint =====
   "eslint.enable": true,
-
   // ===== 框架 / 工具链（项目强相关）=====
   "emmet.includeLanguages": {
     "vue-html": "html",
     "vue": "html"
   },
-
   "vue.complete.casing.props": "camel",
   "volar.format.initialIndent": {
     "html": true
   },
-
   "rust-analyzer.linkedProjects": [
     "./Cargo.toml"
   ],
-
   // ===== Windsurf / Codeium（项目级）=====
   "codeium.enableSearch": true,
   "codeium.enableConfig": {
@@ -90,7 +100,6 @@
   "codeium.searchMaxWorkspaceFileCount": 20000,
   "codeium.enableCrossFileContext": false,
   "codeium.maxWorkspaceSize": 5000,
-
   // ===== GitHub Copilot（项目级关闭）=====
   "github.copilot.enableAutoCompletions": false,
   "github.copilot.enable": {
@@ -100,7 +109,6 @@
     "scminput": false,
     "typescript": false
   },
-
   // ===== 拼写（项目词表）=====
   "cSpell.words": [
     "ahooks",
@@ -153,12 +161,10 @@
     "xyflow",
     "Zustand"
   ],
-
   // ===== i18n（项目路径）=====
   "i18n-ally.localesPaths": [
     "src/rd/code/browser/i18n/locales"
   ],
-
   // ===== 图标映射（项目资产）=====
   "material-icon-theme.files.associations": {
     "rd-builder.config.ts": "rust"

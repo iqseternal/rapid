@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
 import { useResizeObserver, useShallowReactive } from '../../hooks';
 import { isRawObject, isUnDef } from '@suey/pkg-utils';
-import { StringFilters } from '../../common';
 import { debounce } from 'lodash';
 
 import styles from './ellipsis.module.scss';
@@ -100,7 +99,14 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
       return defaultContent;
     }
 
-    return StringFilters.toValidStr(children?.toString(), defaultContent);
+    const str = children?.toString();
+    if (!str || str === "") {
+      return defaultContent;
+    }
+
+    return str;
+
+
   }, [children, defaultContent]);
 
   const resizeObserverCallback = useMemo(() => {

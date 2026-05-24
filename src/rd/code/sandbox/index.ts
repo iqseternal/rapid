@@ -19,6 +19,13 @@ import { IpcBCaller } from '@suey/elec-ipc-core';
 import { ipcActions, ipcBCaller } from './modules/ipc';
 import type { IpcActions, IpcProcessorSheet } from './modules/ipc';
 
+
+export type {
+  ElectronAPI,
+  PrinterType,
+  IpcActions
+}
+
 /**
  * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
  */
