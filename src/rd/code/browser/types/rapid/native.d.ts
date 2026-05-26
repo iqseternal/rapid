@@ -13,7 +13,7 @@ declare global {
 
       readonly ipcActions: RdSandbox.IpcActions;
       readonly electron: RdSandbox.ElectronAPI;
-      readonly printer: RdSandbox.PrinterServer;
+      readonly printer: RdSandbox.PrinterType;
 
       readonly extension: import('@suey/rxp-meta').ExtensionManager<Rapid.Extend.Extension>;
       readonly metadata: import('@suey/rxp-meta').MetadataManager<Rapid.Extend.Metadata.MetadataEntries>;

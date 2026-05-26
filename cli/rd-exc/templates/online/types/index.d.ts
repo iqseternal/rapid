@@ -1852,9 +1852,9 @@ declare global {
       readonly transitionGroup: typeof react_transition_group;
       readonly moment: typeof moment;
 
-      readonly ipcActions: undefined;
-      readonly electron: undefined;
-      readonly printer: undefined;
+      readonly ipcActions: IpcActions;
+      readonly electron: ElectronAPI;
+      readonly printer: PrinterType;
 
       readonly extension: ExtensionManager<Rapid.Extend.Extension>;
       readonly metadata: MetadataManager<Rapid.Extend.Metadata.MetadataEntries>;

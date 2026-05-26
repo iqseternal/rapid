@@ -42,6 +42,8 @@ export async function setupAppListeners() {
 
 export class CodeMain {
   public async main() {
+    await this.setupSingleApplication();
+
     await this.setupIpcListeners();
 
     await setupAppListeners();
@@ -51,6 +53,13 @@ export class CodeMain {
     await setupMainWindowService();
 
     await setupTrayMenu();
+  }
+
+  public async setupSingleApplication() {
+    const goTheLock = app.requestSingleInstanceLock();
+    if (!goTheLock) {
+      return app.quit();
+    }
   }
 
   public async setupIpcListeners() {
