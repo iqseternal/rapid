@@ -7,7 +7,7 @@ import {
   isReactLazyFC,
   isReactMemoFC
 } from '@rapid/libs-web';
-import { Emitter, Invoker } from '@rapid/bus';
+import { Emitter, Invoker } from '@suey/bus';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
   ansi,

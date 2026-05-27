@@ -1,4 +1,4 @@
-import { Invoker, Emitter } from '@rapid/bus';
+import { Invoker, Emitter } from '@suey/bus';
 
 export type BusInvokerEntries = {
 

@@ -1,11 +1,13 @@
 {
-  "name": "@suey/rxp-meta",
-  "version": "0.1.2",
-  "author": "suey",
+  "name": "@suey/bus",
+  "version": "0.0.1",
+  "description": "",
   "private": false,
-  "description": "扩展包",
+  "author": "suey",
+  "license": "MIT",
   "main": "./index.ts",
   "publishConfig": {
+    "access": "public",
     "main": "./dist/commonjs/index.js",
     "module": "./dist/esm/index.js",
     "types": "./dist/lib/index.js",

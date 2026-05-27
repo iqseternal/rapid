@@ -21,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@rapid/bus": "workspace:*",
+    "@suey/bus": "workspace:*",
     "@rapid/libs-web": "workspace:*",
     "@suey/elec-ipc-core": "workspace:*",
     "@suey/rxp-meta": "workspace:*"

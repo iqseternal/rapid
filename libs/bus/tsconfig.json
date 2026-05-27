@@ -1,17 +1,20 @@
 {
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
   "compilerOptions": {
     "incremental": true,
+    "baseUrl": ".",
+    "isolatedModules": true,
+    "outDir": "../../.rd-cache/libs/bus",
+    "lib": ["ESNext", "DOM"],
+    "allowUnusedLabels": true,
     "target": "ESNext",
-    "lib": ["DOM", "ESNext"],
+    "resolveJsonModule": true,
     "module": "ESNext",
-    "rootDir": ".",
     "moduleResolution": "node",
-    "baseUrl": "./src",
-    "paths": {
-      "*": ["./*"],
-      "@/*": ["./src/*"]
-    },
-    "outDir": "../../.rd-cache/libs/pkg-utils",
+
     "types": ["@types/jest"],
     "declaration": true,
     "sourceMap": false,
@@ -34,14 +37,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true
   },
-  "include": [
-    "./src/**/*.ts",
-    "./index.ts"
-  ],
   "exclude": [
-    "./src/**/*.test.ts",
-    "*.test.ts",
-    "dist",
     "node_modules"
   ]
 }
