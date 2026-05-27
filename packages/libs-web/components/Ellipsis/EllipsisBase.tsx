@@ -3,7 +3,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { useEffect, useMemo, useRef, memo, isValidElement } from 'react';
 import { classnames } from '../../common';
 import { useResizeObserver, useShallowReactive } from '../../hooks';
-import { isRawObject, isUnDef } from '@suey/pkg-utils';
+import { is } from '@suey/pkg-utils';
 import { debounce } from 'lodash';
 
 import styles from './ellipsis.module.scss';
@@ -94,7 +94,7 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
 
   // 真实内容
   const realContent = useMemo(() => {
-    if (isRawObject(children)) {
+    if (is.isRawObject(children)) {
       if (isValidElement(children)) return children;
       return defaultContent;
     }
@@ -148,7 +148,7 @@ export const EllipsisBase = memo((props: EllipsisProps) => {
     </div>
   );
 
-  if (isUnDef(children)) return null;
+  if (is.isUnDef(children)) return null;
 
   if (!state.isOverflow) return element;
   return overlayRender(element);

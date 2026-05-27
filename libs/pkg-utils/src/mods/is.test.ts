@@ -4,7 +4,7 @@ import {
   isDef, isUnDef, isUseful, isUnUseful,
   isObject, isRawObject, isFunction, isDate, isPromiseLike,
   isArray, isClass
-} from './judgeType';
+} from './is';
 
 test(`类型判断: isBoolean 函数`, () => {
   // number

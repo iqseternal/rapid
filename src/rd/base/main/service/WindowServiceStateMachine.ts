@@ -1,4 +1,4 @@
-import { isString, isNumber, isNull } from '@suey/pkg-utils';
+import { is } from '@suey/pkg-utils';
 import { RuntimeException, TypeException } from '../exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { BrowserWindow } from 'electron';
@@ -17,8 +17,8 @@ export class WindowServiceStateMachine {
   public static findWindowService(key: string | number): WindowService | null {
     let windowService: WindowService | null = null;
 
-    if (isString(key)) windowService = WindowServiceStateMachine.keyToServiceMap.get(key) ?? null;
-    else if (isNumber(key)) windowService = WindowServiceStateMachine.idToServiceMap.get(key) ?? null;
+    if (is.isString(key)) windowService = WindowServiceStateMachine.keyToServiceMap.get(key) ?? null;
+    else if (is.isNumber(key)) windowService = WindowServiceStateMachine.idToServiceMap.get(key) ?? null;
     else {
       throw new TypeException('传入了未指定类型 type', {
         label: 'WindowServiceStateMachine:findWindowService',
@@ -32,8 +32,8 @@ export class WindowServiceStateMachine {
    * 回当前状态机中是否含有 Service
    */
   public static hasWindowService(key: string | number | WindowService) {
-    if (isString(key)) return WindowServiceStateMachine.keyToServiceMap.has(key);
-    if (isNumber(key)) return WindowServiceStateMachine.idToServiceMap.has(key);
+    if (is.isString(key)) return WindowServiceStateMachine.keyToServiceMap.has(key);
+    if (is.isNumber(key)) return WindowServiceStateMachine.idToServiceMap.has(key);
 
     if (Reflect.has(key, 'window')) {
       const windowService = key as WindowService;

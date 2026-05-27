@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react';
 import { useNormalState, useRefresh, useResizeObserver, useShallowReactive } from '@rapid/libs-web';
-import { isUndefined } from '@suey/pkg-utils';
+import { is } from '@suey/pkg-utils';
 
 /**
  * 收纳盒
@@ -114,13 +114,13 @@ export function useStorageBox<T>(containerRef: RefObject<HTMLElement>, list: T[]
     for (let i = 1; i < normalState.maintenanceStack.length && i < containerRef.current.children.length; i++) {
       if (normalState.otherStack.length === 0) continue;
 
-      if (isUndefined(normalState.otherStack)) continue;
-      if (isUndefined(normalState.otherStack?.[i])) continue;
-      if (isUndefined(normalState.otherStack?.[i - 1])) continue;
+      if (is.isUndefined(normalState.otherStack)) continue;
+      if (is.isUndefined(normalState.otherStack?.[i])) continue;
+      if (is.isUndefined(normalState.otherStack?.[i - 1])) continue;
 
       const tOther = normalState.otherStack[i], ptOther = normalState.otherStack[i - 1];
-      if (isUndefined(tOther)) continue;
-      if (isUndefined(ptOther)) continue;
+      if (is.isUndefined(tOther)) continue;
+      if (is.isUndefined(ptOther)) continue;
 
       tOther.offsetLeftWidth = ptOther.offsetLeftWidth + columnGap + tOther.sourceWidth;
     }

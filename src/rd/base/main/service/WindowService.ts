@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { BrowserWindow, type BrowserWindowConstructorOptions, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
-import { isString } from '@suey/pkg-utils';
+import { is } from '@suey/pkg-utils';
 import { WindowServiceStateMachine } from './WindowServiceStateMachine';
 import { RuntimeException } from '../exceptions';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
@@ -110,7 +110,7 @@ export class WindowService {
   public static findWindowService(key: string | number | IpcMainEvent | IpcMainInvokeEvent): WindowService {
     const exceptionLabel = 'WindowService:findWindowService';
 
-    if (isString(key)) {
+    if (is.isString(key)) {
       const service = WindowServiceStateMachine.findWindowService(key);
       if (service) return service;
       throw new RuntimeException(`Not found WindowService.`, { label: exceptionLabel });

@@ -25,7 +25,7 @@
  *
  * @returns
  */
-export const findArrIndex = <El>(arr: El[], fn: (el: El, index: number) => boolean, startIndex: number = 0, endIndex: number = arr.length - 1): number => {
+export function findIndex<El>(arr: El[], fn: (el: El, index: number) => boolean, startIndex: number = 0, endIndex: number = arr.length - 1): number {
   // 修正边界
   if (startIndex < 0) startIndex = 0;
   if (endIndex >= arr.length) endIndex = arr.length - 1;
@@ -53,8 +53,8 @@ export const findArrIndex = <El>(arr: El[], fn: (el: El, index: number) => boole
  *
  * @returns
  */
-export const findArrElement = <El>(arr: El[], fn: (el: El, index: number) => boolean, startIndex = 0, endIndex = arr.length - 1) => {
-  const targetIndex = findArrIndex(arr, fn, startIndex, endIndex);
+export function findElement<El>(arr: El[], fn: (el: El, index: number) => boolean, startIndex = 0, endIndex = arr.length - 1) {
+  const targetIndex = findIndex(arr, fn, startIndex, endIndex);
 
   if (targetIndex === -1) return null;
 

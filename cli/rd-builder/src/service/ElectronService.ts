@@ -1,8 +1,5 @@
-
-import { resolve } from 'path';
 import type { ChildProcess } from 'child_process';
 import { exec } from 'child_process';
-import { Ansi } from '@suey/pkg-utils';
 import { printError, printInfo } from '../printer';
 
 import treeKill from 'tree-kill';

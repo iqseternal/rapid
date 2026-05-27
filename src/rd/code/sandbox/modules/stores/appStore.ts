@@ -1,7 +1,3 @@
-import { ipcRenderer } from 'electron';
-import { toNil } from '@suey/pkg-utils';
-import type { AppStoreType as RAppStoreType } from 'rd/base/main/stores';
-import type { IpcProcessorsCompileSheet, IpcProcessorSheet } from '../ipc/ipcBCaller';
 import { IpcBCaller } from '@suey/elec-ipc-core';
 import type { IpcCompatibleProcessor, MutateProcessorSheet } from '@suey/elec-ipc-core';
 import type { IpcStore } from './declare';

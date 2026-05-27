@@ -1,4 +1,4 @@
-import { injectReadonlyVariable } from '@suey/pkg-utils';
+import { reflectx } from '@suey/pkg-utils';
 import { NotHasAnyData } from './NotHasAnyData';
 import { Wrong } from './Wrong';
 
@@ -12,7 +12,7 @@ export type EmptyType = (typeof REmptyInstance) & {
 
 export const REmpty: EmptyType = REmptyInstance as EmptyType;
 
-injectReadonlyVariable(REmpty, 'NotHasAnyData', NotHasAnyData);
-injectReadonlyVariable(REmpty, 'Wrong', Wrong);
+reflectx.defineReadonlyProperty(REmpty, 'NotHasAnyData', NotHasAnyData);
+reflectx.defineReadonlyProperty(REmpty, 'Wrong', Wrong);
 
 export default REmpty;

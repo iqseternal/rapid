@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Ansi } from '@suey/pkg-utils';
+import { ansi } from '@suey/pkg-utils';
 
 import type { default as iconInstance } from '@ant-design/icons';
 import * as icons from '@ant-design/icons';
@@ -39,7 +39,7 @@ export const IconFont = memo((props: IconFontProps) => {
 
   if (IS_DEV) {
     if (!icon) {
-      Ansi.print(Ansi.red, `IconFont 组件 icon 参数传递错误`);
+      ansi.print(ansi.red, `IconFont 组件 icon 参数传递错误`);
       return null;
     }
   }

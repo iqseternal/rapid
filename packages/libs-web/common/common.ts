@@ -1,4 +1,4 @@
-import { isBoolean, isClass, isFunction, isNumber, isObject, isRawObject, isString, isUnDef } from '@suey/pkg-utils';
+import { is } from '@suey/pkg-utils';
 import type { Component, FC, ForwardRefExoticComponent, LazyExoticComponent, MemoExoticComponent } from 'react';
 
 /**
@@ -26,16 +26,16 @@ export const classnames = (...args: (string | undefined | boolean | null | numbe
   const classNameList: string[] = [];
 
   for (const arg of args) {
-    if (isString(arg)) {
+    if (is.isString(arg)) {
       const className = arg.trim();
 
       if (className !== '') classNameList.push(className);
       continue;
     }
 
-    if (isRawObject(arg)) {
+    if (is.isRawObject(arg)) {
       for (const key in arg) {
-        if (isString(key)) {
+        if (is.isString(key)) {
           const flag = arg[key];
           const className = key.trim();
 
@@ -54,7 +54,7 @@ export const classnames = (...args: (string | undefined | boolean | null | numbe
  * @returns
  */
 export const isReactLazyFC = <Target extends LazyExoticComponent<FC<any>>>(target: Target | any): target is Target => {
-  if (!isObject(target)) return false;
+  if (!is.isObject(target)) return false;
 
   const isSymbol = typeof (target as any).$$typeof === 'symbol';
   if (!isSymbol) return false;
@@ -64,7 +64,7 @@ export const isReactLazyFC = <Target extends LazyExoticComponent<FC<any>>>(targe
     Reflect.has(target, '_init') &&
     Reflect.has(target, '_payload') &&
     typeof ((target as any)._init) === 'function' &&
-    isObject((target as any)._payload)
+    is.isObject((target as any)._payload)
   );
 }
 
@@ -74,7 +74,7 @@ export const isReactLazyFC = <Target extends LazyExoticComponent<FC<any>>>(targe
  * @returns
  */
 export const isReactForwardFC = <Target extends ForwardRefExoticComponent<any>>(target: Target | any): target is Target => {
-  if (!isObject(target)) return false;
+  if (!is.isObject(target)) return false;
 
   const isSymbol = typeof (target as any).$$typeof === 'symbol';
   if (!isSymbol) return false;
@@ -89,7 +89,7 @@ export const isReactForwardFC = <Target extends ForwardRefExoticComponent<any>>(
  * @returns
  */
 export const isReactMemoFC = <Target extends MemoExoticComponent<any>>(target: Target | any): target is Target => {
-  if (!isObject(target)) return false;
+  if (!is.isObject(target)) return false;
 
   const isSymbol = typeof (target as any).$$typeof === 'symbol';
   if (!isSymbol) return false;
@@ -101,7 +101,7 @@ export const isReactMemoFC = <Target extends MemoExoticComponent<any>>(target: T
 /**
  * 判断是否是 FC
  */
-export const isReactFC = <Target extends FC<any>>(target: Target | any): target is Target => isFunction(target);
+export const isReactFC = <Target extends FC<any>>(target: Target | any): target is Target => is.isFunction(target);
 
 /**
  * 判断是否是一个 类组件
@@ -110,7 +110,7 @@ export const isReactFC = <Target extends FC<any>>(target: Target | any): target 
  */
 export const isReactClassComponent = <Target extends Component<any>>(target: Target | any): target is Target => {
   // 判断类组件
-  return isClass(target) && isFunction(target.prototype.render);
+  return is.isClass(target) && is.isFunction(target.prototype.render);
 }
 
 /**

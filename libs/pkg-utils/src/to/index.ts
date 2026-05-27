@@ -1,5 +1,5 @@
 import { RPromiseLike, PromiseResolvedType, PromiseCatchReasonType, PromiseArrayResolvedType, PromiseArrayCatchReasonType } from '../types';
-import { isNumber, isRawObject } from '../fnUtils';
+import { is } from '../mods';
 
 /**
  * 创建一个 RPromiseLike 函数
@@ -43,7 +43,7 @@ export namespace Nil {
    */
   export const isNilRefusedReason = <T>(target: T | NilRefusedReasonType): target is NilRefusedReasonType => {
     return (
-      isRawObject(target) &&
+      is.isRawObject(target) &&
       Reflect.has(target, '__symbol__') &&
       Reflect.has(target, 'reason') &&
       Reflect.getOwnPropertyDescriptor(target, '__symbol__')?.value === NilRefusedReasonSymbol
@@ -213,7 +213,7 @@ export function toWaitPromise(op?: number | ToWaitPromiseOptions): RPromiseLike<
     waitTime: 2000
   }
 
-  if (isNumber(op)) options.waitTime = op;
+  if (is.isNumber(op)) options.waitTime = op;
   else {
     if (op) {
       options.waitResult = op.waitResult;

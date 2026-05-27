@@ -1,7 +1,7 @@
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { ExceptionFilter } from './declare';
 import { Exception } from 'rd/base/common/exceptions';
-import { injectReadonlyVariable } from '@suey/pkg-utils';
+import { reflectx } from '@suey/pkg-utils';
 
 /**
  * 自定义创建装饰器的结构
@@ -109,10 +109,10 @@ const parser: CatchDecorator['parser'] = (exception) => {
   throw exception;
 }
 
-injectReadonlyVariable(Catch, 'symbol', Symbol('CatchMetadata'));
+reflectx.defineReadonlyProperty(Catch, 'symbol', Symbol('CatchMetadata'));
 
-injectReadonlyVariable(Catch, 'context', {
+reflectx.defineReadonlyProperty(Catch, 'context', {
   mapper: new WeakMap()
 });
 
-injectReadonlyVariable(Catch, 'parser', parser);
+reflectx.defineReadonlyProperty(Catch, 'parser', parser);

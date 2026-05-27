@@ -10,7 +10,7 @@ import {
 import { Emitter, Invoker } from '@rapid/bus';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
-  Ansi,
+  ansi,
   aesDecrypt,
   aesDecryptAlgorithm,
   aesEncrypt,
@@ -22,7 +22,7 @@ import {
   createApiRequest,
   createRequest,
   cryptoTs,
-  injectReadonlyVariable,
+  reflectx,
   jose,
   jsr,
   request,
@@ -122,7 +122,7 @@ const native: Rapid.Native = ({
   },
 
   libs: {
-    injectReadonlyVariable: injectReadonlyVariable,
+    refxDefineReadonlyProperty: reflectx.defineReadonlyProperty,
 
     reactive: reactive,
     watch: watch,
@@ -176,7 +176,7 @@ const native: Rapid.Native = ({
     toNils: toNils,
     toWaitPromise: toWaitPromise,
 
-    Ansi: Ansi,
+    ansi: ansi,
 
     classnames: classnames,
 
@@ -192,4 +192,4 @@ const native: Rapid.Native = ({
   },
 });
 
-injectReadonlyVariable(window, 'native', native);
+reflectx.defineReadonlyProperty(window, 'native', native);

@@ -2,7 +2,7 @@ import { screen } from 'electron';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { WindowService } from '../../service/WindowService';
 import { TypeException } from '../../exceptions';
-import { isNumber, isString, isUnDef, isDef } from '@suey/pkg-utils';
+import { is } from '@suey/pkg-utils';
 import { AppConfigService } from '../../service/AppConfigService';
 import { ipcMReceiver } from '@suey/elec-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
@@ -211,14 +211,14 @@ export const ipcWindowSetPosition = makeHandleProcessor(
 
     let targetPx = currentPx, targetPy = currentPy;
 
-    if (isNumber(x)) targetPx = x;
+    if (is.isNumber(x)) targetPx = x;
     else {
       if (x === 'center') targetPx = maxScreenWidth / 2 - width / 2;
       else if (x === 'left') { targetPx -= width; }
       else if (x === 'right') { targetPx += width; }
     }
 
-    if (isNumber(y)) targetPy = y;
+    if (is.isNumber(y)) targetPy = y;
     else {
       if (y === 'center') targetPy = maxScreenHeight / 2 - height / 2;
       else if (y === 'top') { targetPy -= height; }
@@ -240,8 +240,8 @@ export const ipcOpenWindow = makeHandleProcessor(
 
     let targetWindowService: WindowService | null = null;
 
-    if (isString(windowKey)) targetWindowService = WindowServiceStateMachine.findWindowService(windowKey);
-    if (isUnDef(targetWindowService)) {
+    if (is.isString(windowKey)) targetWindowService = WindowServiceStateMachine.findWindowService(windowKey);
+    if (is.isUnDef(targetWindowService)) {
       targetWindowService = new WindowService(browserWindowOptions, {
         windowKey,
         // url: posix.join(PAGES_WINDOW_MAIN, subUrl),
@@ -334,16 +334,16 @@ export const ipcWindowProperties = makeHandleProcessor(
   async (windowService: WindowService, selectedOptions: { windowKey?: string; }, properties: Partial<WindowProperties>) => {
     const { windowKey } = selectedOptions;
 
-    if (isString(windowKey)) {
+    if (is.isString(windowKey)) {
       const service = WindowService.findWindowService(windowKey);
       if (service) windowService = service;
     }
 
-    if (isNumber(properties.width)) windowService.window.setSize(properties.width, windowService.window.getSize()[1]);
-    if (isNumber(properties.height)) windowService.window.setSize(windowService.window.getSize()[0], properties.height);
+    if (is.isNumber(properties.width)) windowService.window.setSize(properties.width, windowService.window.getSize()[1]);
+    if (is.isNumber(properties.height)) windowService.window.setSize(windowService.window.getSize()[0], properties.height);
 
-    if (isNumber(properties.x)) windowService.window.setPosition(properties.x, windowService.window.getPosition()[1]);
-    if (isNumber(properties.y)) windowService.window.setPosition(windowService.window.getPosition()[0], properties.y);
+    if (is.isNumber(properties.x)) windowService.window.setPosition(properties.x, windowService.window.getPosition()[1]);
+    if (is.isNumber(properties.y)) windowService.window.setPosition(windowService.window.getPosition()[0], properties.y);
   }
 )
 

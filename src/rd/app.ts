@@ -5,7 +5,7 @@ import 'rd/base/main/events';
 import { CodeMain } from './code/main';
 import { RdCatalogs } from 'rd/catalog';
 import { bus } from './base/main/bus';
-import { Notification, app } from 'electron';
+import { app } from 'electron';
 import { join } from 'path';
 import { PrinterService } from 'rd/base/common/service/PrinterService';
 
@@ -33,5 +33,3 @@ code.main().catch(() => {
   app.exit(1);
   process.exit(1);
 });
-
-

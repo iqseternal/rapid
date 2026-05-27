@@ -1,5 +1,5 @@
 import type { RouteMeta, RouteConfig } from '../types';
-import { isString, Ansi } from '@suey/pkg-utils';
+import { is, ansi } from '@suey/pkg-utils';
 
 import path from 'path-browserify';
 
@@ -59,7 +59,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
 
   // 解决重定向
   if (route.redirect) {
-    if (isString(route.redirect)) {
+    if (is.isString(route.redirect)) {
       const redirect = route.redirect;
 
       // 重新向组件 props
@@ -78,7 +78,7 @@ export function makeRequireRouteConfig(route: RouteConfig, basePath = '', isRoot
   }
 
   if (route.children && route.children.length !== 0 && !route.redirect) {
-    Ansi.print(Ansi.red, '路由对象含有 children, 但是不存在 redirect ?');
+    ansi.print(ansi.red, '路由对象含有 children, 但是不存在 redirect ?');
   }
 
   route.children = route.children ? route.children.map(child => {

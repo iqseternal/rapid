@@ -47,7 +47,7 @@ declare global {
       }
 
       readonly libs: {
-        readonly injectReadonlyVariable: typeof import('@suey/pkg-utils').injectReadonlyVariable;
+        readonly refxDefineReadonlyProperty: typeof import('@suey/pkg-utils').refxDefineReadonlyProperty;
 
         readonly reactive: typeof import('@vue/reactivity').reactive;
         readonly watch: typeof import('@vue/reactivity').watch;
@@ -101,7 +101,7 @@ declare global {
         readonly toNils: typeof import('@suey/pkg-utils').toNils;
         readonly toWaitPromise: typeof import('@suey/pkg-utils').toWaitPromise;
 
-        readonly Ansi: typeof import('@suey/pkg-utils').Ansi;
+        readonly ansi: typeof import('@suey/pkg-utils').Ansi;
 
         readonly classnames: typeof import('@rapid/libs-web').classnames;
 
