@@ -10,13 +10,13 @@ export const WorkbenchesToolbar = memo(() => {
     //   username: 'helloWorld'
     // })
 
-    window.ipcBCaller.send('IpcBroadcast', 'tool', {
+    injector.ipcBCaller.send('IpcBroadcast', 'tool', {
       username: 'HelloWorld',
     })
   }
 
   useAsyncEffect(async () => {
-    await window.ipcActions.windowShow({ show: true });
+    await injector.ipcActions.windowShow({ show: true });
     // await windowDevtool(true, { mode: 'detach' });
   }, []);
 

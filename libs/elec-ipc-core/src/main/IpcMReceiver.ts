@@ -46,8 +46,6 @@ export class IpcMReceiver extends IpcAbstractReceiver {
         ipcMain.removeHandler(processor.channel);
       }
 
-
-
       // 注册新的 handler
       ipcMain.handle(processor.channel, processor.listener);
 

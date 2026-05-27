@@ -1,4 +1,4 @@
-import { useRef, memo, useLayoutEffect, useEffect } from 'react';
+import { useRef, memo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useFadeInEffect } from '@/libs/hooks';
@@ -18,6 +18,7 @@ import WindowsCloseWindowWidget from '@/plats/components/WindowsCloseWindowWidge
 import WindowsDebugWidget from '@/plats/components/WindowsDebugWidget';
 import WindowsMinWindowWidget from '@/plats/components/WindowsMinWindowWidget';
 import WindowsReductionWindowWidget from '@/plats/components/WindowsReductionWindowWidget';
+
 
 /**
  * 工作区视图隔离
@@ -115,8 +116,8 @@ const WorkspaceLayoutWrapper = memo(() => {
 
   useFadeInEffect(async () => {
     await Promise.allSettled([
-      ipcActions.windowResizeAble({ resizeAble: true }),
-      ipcActions.windowResetCustomSize({ type: 'mainWindow' })
+      injector.ipcActions.windowResizeAble({ resizeAble: true }),
+      injector.ipcActions.windowResetCustomSize({ type: 'mainWindow' })
     ]);
   }, []);
 

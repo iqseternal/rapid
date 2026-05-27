@@ -37,7 +37,7 @@ export function useFadeInEffect(beforeCallback: () => (void | Promise<any>), dep
     }
 
     setTimeout(async () => {
-      const [err] = await toNil(ipcActions.windowShow({ show: true }));
+      const [err] = await toNil(injector.ipcActions.windowShow({ show: true }));
       if (err) {
         console.dir(err.reason);
         onError(err.reason);
@@ -58,7 +58,7 @@ export async function fadeOut(callback?: () => (void | Promise<unknown>), option
     }
   } = options ?? {};
 
-  const [err] = await toNil(window.ipcActions.windowShow({ show: false }));
+  const [err] = await toNil(injector.ipcActions.windowShow({ show: false }));
   if (err) {
     console.dir(err.reason);
     onError(err.reason);

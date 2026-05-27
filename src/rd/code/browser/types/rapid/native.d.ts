@@ -11,23 +11,16 @@ declare global {
       readonly transitionGroup: typeof import('react-transition-group');
       readonly moment: typeof import('moment');
 
-      readonly ipcActions: RdSandbox.IpcActions;
-      readonly electron: RdSandbox.ElectronAPI;
-      readonly printer: RdSandbox.PrinterType;
-
       readonly extension: import('@suey/rxp-meta').ExtensionManager<Rapid.Extend.Extension>;
       readonly metadata: import('@suey/rxp-meta').MetadataManager<Rapid.Extend.Metadata.MetadataEntries>;
       readonly emitter: import('@rapid/bus').Emitter<Rapid.Bus.BusEmitterEntries>;
       readonly invoker: import('@rapid/bus').Invoker<Bus.BusInvokerEntries>;
-      readonly threads: {}
 
-      readonly stores: RdSandbox.ExposeApi['stores'] & Omit<{
-        readonly features: {
-          readonly useUserStore: typeof import('@/features').useUserStore;
-          readonly useThemeStore: typeof import('@/features').useThemeStore;
-          readonly useDocStore: typeof import('@/features').useDocStore;
-        }
-      }, keyof RdSandbox.ExposeApi['stores']>;
+      readonly features: {
+        readonly useUserStore: typeof import('@/features').useUserStore;
+        readonly useThemeStore: typeof import('@/features').useThemeStore;
+        readonly useDocStore: typeof import('@/features').useDocStore;
+      }
 
       readonly i18n: {
         readonly i18n: typeof import('@/i18n').default;

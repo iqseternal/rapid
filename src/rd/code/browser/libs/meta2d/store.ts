@@ -1,4 +1,3 @@
-
 import type { Pen } from '@meta2d/core';
 import type { Draft } from 'immer';
 import { create, createStore } from 'zustand';

@@ -203,7 +203,7 @@ export function useHeaderViewMenu(): readonly [AntdMenuInstanceType] {
             type: 'item',
             label: t('menus.header.viewmenu.fullscreen', '全屏'),
             onClick: () => {
-              ipcActions.windowEnableFullScreen();
+              injector.ipcActions.windowEnableFullScreen();
             }
           },
           {
@@ -323,14 +323,14 @@ export function useHeaderHelpMenu(): readonly [AntdMenuInstanceType] {
         type: 'item',
         label: t('menus.header.helpmenu.reload', '重新加载'),
         onClick: () => {
-          window.ipcActions.windowReload();
+          injector.ipcActions.windowReload();
         }
       },
       {
         type: 'item',
         label: t('menus.header.helpmenu.devtool', '打开开发人员工具'),
         onClick: () => {
-          window.ipcActions.windowDevtool(true, { mode: 'detach' });
+          injector.ipcActions.windowDevtool(true, { mode: 'detach' });
         }
       },
       {

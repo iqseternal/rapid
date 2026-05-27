@@ -15,7 +15,7 @@ export const WindowsDebugWidget = memo(() => {
       onClick={() => {
         toast.success(t('plats.widgets.control.debug.openDevtool', '打开开发者工具'));
 
-        const response = ipcActions.windowDevtool(true, { mode: 'detach' });
+        const response = injector.ipcActions.windowDevtool(true, { mode: 'detach' });
 
         console.log(response);
       }}

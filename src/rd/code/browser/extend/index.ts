@@ -45,7 +45,7 @@ export class ExtensionManager extends RXPExtensionManager<Rapid.Extend.Extension
         // 分析插件
         const [analysisErr, extension] = await toNil(this.analysisExtensionFromSource({ script_content: extensionSource.script_content }));
         if (analysisErr) {
-          native.printer.printError(analysisErr.reason);
+          injector.printer.printError(analysisErr.reason);
           reject();
           return;
         }

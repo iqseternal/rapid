@@ -11,22 +11,9 @@ declare global {
    * window.electron.ipcRenderer.invoke('xxx');
    * ```
    */
-  interface Window extends ExposeApi { }
+  interface Window extends ExposeApi {}
 
-  /**
-   * 注入的 electron 对象
-   */
-  const electron: RdSandbox.ElectronAPI;
-
-  /**
-   * 注入的 printer 打印日志对象
-   */
-  const printer: RdSandbox.PrinterType;
-
-  /**
-   * 注入的 ipc 对象
-   */
-  const ipcActions: RdSandbox.IpcActions;
+  const injector: RdSandbox.Injector;
 }
 
 export {};

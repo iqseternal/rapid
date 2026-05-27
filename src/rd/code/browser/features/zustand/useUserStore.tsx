@@ -35,7 +35,7 @@ export const useUserStore = create<UserStore>()(
  * 获得用户的 AccessToken
  */
 export const getAccessToken = async () => {
-  const accessToken = await window.stores.appStore.get('accessToken');
+  const accessToken = await injector.stores.appStore.get('accessToken');
   //
   if (accessToken !== useUserStore.getState().accessToken) return Promise.reject('');
 
@@ -43,7 +43,7 @@ export const getAccessToken = async () => {
 }
 
 export const setAccessToken = async (accessToken: string) => {
-  const [err, res] = await toNil(window.stores.appStore.set('accessToken', accessToken));
+  const [err, res] = await toNil(injector.stores.appStore.set('accessToken', accessToken));
   if (err) return Promise.reject(err);
 
   useUserStore.setState({ accessToken });

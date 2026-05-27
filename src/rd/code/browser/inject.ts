@@ -94,10 +94,6 @@ const native: Rapid.Native = ({
   transitionGroup: transitionGroup,
   moment: moment,
 
-  electron: window.electron,
-  ipcActions: window.ipcActions,
-  printer: window.printer,
-
   constants: {
     Timestamp: Timestamp
   },
@@ -107,18 +103,10 @@ const native: Rapid.Native = ({
     useTranslation: useTranslation
   },
 
-  threads: {
-    // rxcThread: rxcThread
-  },
-
-  stores: {
-    appStore: window.stores.appStore,
-
-    features: {
-      useUserStore,
-      useDocStore,
-      useThemeStore,
-    }
+  features: {
+    useUserStore,
+    useDocStore,
+    useThemeStore,
   },
   components: {
     Ellipsis: Ellipsis,

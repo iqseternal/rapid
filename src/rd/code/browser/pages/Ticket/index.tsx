@@ -15,8 +15,8 @@ export const Ticket = memo(() => {
   native.metadata.useFollowMetadataInVector('ui.layout.header.controller.widgets.min', WindowsMinWindowWidget);
 
   useFadeInEffect(async () => {
-    await ipcActions.windowSetSize({ width: 850, height: 550 });
-    await ipcActions.windowResizeAble({ resizeAble: false });
+    await injector.ipcActions.windowSetSize({ width: 850, height: 550 });
+    await injector.ipcActions.windowResizeAble({ resizeAble: false });
   }, []);
 
   return (

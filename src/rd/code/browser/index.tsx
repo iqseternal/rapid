@@ -6,6 +6,8 @@ import { StrictMode } from 'react';
 import { RdAppWrapper } from './app';
 import { injectReadonlyVariable } from '@suey/pkg-utils';
 
+import { useUserStore } from './stores';
+
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 import moment from 'moment';
@@ -15,7 +17,6 @@ import * as spring from '@react-spring/web';
 import * as transitionGroup from 'react-transition-group';
 import * as ReactRouterDOM from 'react-router-dom';
 
-import './i18n';
 import '@/scss/index.scss';
 import './tailwind.css';
 
@@ -32,8 +33,19 @@ async function setupEnvironments() {
   injectReadonlyVariable(window, 'transitionGroup', transitionGroup);
 }
 
+/**
+ * 初始化数据
+ */
+async function initStoresState() {
+  useUserStore.init().catch(() => {
+    injector.printer.printWarn("useUserStore: 数据初始化失败");
+  })
+}
+
 ; ((async () => {
   await setupEnvironments();
+
+  initStoresState().catch(err => err);
 
   const rootContainer = document.getElementById('root');
   if (rootContainer) {

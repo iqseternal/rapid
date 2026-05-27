@@ -1,13 +1,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import type { DragEventHandler } from 'react';
-import { useMeta2dEffect } from 'rd/code/browser/meta2d';
-import { useLocalStorageState, useRefresh, useRoute } from '@rapid/libs-web';
-import { useLocation } from 'react-router-dom';
-import { watch, reactive } from '@vue/reactivity';
-import { MouseEventButton } from 'rd/base/browser/constants';
-
-import Widget from '@/components/Widget';
-import IconFont from 'rd/code/browser/components/IconFont';
+import { useMeta2dEffect } from 'rd/code/browser/libs/meta2d';
 
 const Graphics = memo(() => {
   const dragStart = useCallback<DragEventHandler<HTMLDivElement>>((e) => {
