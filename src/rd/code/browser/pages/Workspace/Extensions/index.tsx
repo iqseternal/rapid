@@ -1,9 +1,6 @@
 import { memo } from 'react';
 import { App, Button, Card, Space } from 'antd';
 import { useAsyncEffect, useShallowReactive } from '@rapid/libs-web';
-import { toNil } from '@suey/pkg-utils';
-import { useExtensionsApi } from 'rd/code/browser/api';
-import { Biz, toBizErrorMsg } from 'rd/base/common/constants';
 
 const Extensions = memo(() => {
 	const { message } = App.useApp();
@@ -17,8 +14,9 @@ const Extensions = memo(() => {
 		<Card>
 			<Space>
 				<span>
-					{state.count}
+					{ state.count }
 				</span>
+
 
 				<Button
 					type='primary'

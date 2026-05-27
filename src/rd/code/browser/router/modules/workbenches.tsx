@@ -9,7 +9,7 @@ import WorkspaceLayoutWrapper from '@/layout/WorkspaceLayout';
 export const workbenchesRoute = makeRoute({
 	name: `Workbenches`,
 	path: `/workspace`,
-	redirect: '/workspace/workstation',
+	redirect: '/workspace/extensions',
 	component: <WorkspaceLayoutWrapper />,
 	hasErrorBoundary: true,
 	errorElement: (

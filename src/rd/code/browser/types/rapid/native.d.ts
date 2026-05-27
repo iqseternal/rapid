@@ -13,8 +13,8 @@ declare global {
 
       readonly extension: import('@suey/rxp-meta').ExtensionManager<Rapid.Extend.Extension>;
       readonly metadata: import('@suey/rxp-meta').MetadataManager<Rapid.Extend.Metadata.MetadataEntries>;
-      readonly emitter: import('@rapid/bus').Emitter<Rapid.Bus.BusEmitterEntries>;
-      readonly invoker: import('@rapid/bus').Invoker<Bus.BusInvokerEntries>;
+      readonly emitter: import('@suey/bus').Emitter<Rapid.Bus.BusEmitterEntries>;
+      readonly invoker: import('@suey/bus').Invoker<Bus.BusInvokerEntries>;
 
       readonly features: {
         readonly useUserStore: typeof import('@/features').useUserStore;
@@ -39,8 +39,8 @@ declare global {
       }
 
       readonly services: {
-        readonly Emitter: typeof import('@rapid/bus').Emitter;
-        readonly Invoker: typeof import('@rapid/bus').Invoker;
+        readonly Emitter: typeof import('@suey/bus').Emitter;
+        readonly Invoker: typeof import('@suey/bus').Invoker;
 
         readonly ExtensionManager: typeof import('@suey/rxp-meta').ExtensionManager;
         readonly MetadataManager: typeof import('@suey/rxp-meta').MetadataManager;
