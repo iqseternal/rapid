@@ -11,6 +11,8 @@ import { PrinterService } from 'rd/base/common/service/PrinterService';
 
 import chokidar from 'chokidar';
 
+import { is } from '@suey/pkg-utils';
+
 app.setAppUserModelId('rapid');
 app.setName('rapid');
 

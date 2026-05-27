@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@suey/pkg-utils": "workspace:*",
     "ahooks": "3.8.4"
   }
 }

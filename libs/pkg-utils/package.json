@@ -1,12 +1,15 @@
 {
   "name": "@suey/pkg-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "suey",
   "license": "MIT",
   "private": false,
   "description": "Compatible universal functions.",
   "main": "./index.ts",
   "publishConfig": {
+    "main": "./dist/commonjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/lib/index.js",
     "exports": {
       ".": {
         "import": "./dist/esm/index.js",

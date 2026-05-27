@@ -1,11 +1,14 @@
 {
   "name": "@suey/rxp-meta",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "suey",
   "private": false,
   "description": "扩展包",
   "main": "./index.ts",
   "publishConfig": {
+    "main": "./dist/commonjs/index.js",
+    "module": "./dist/esm/index.js",
+    "types": "./dist/lib/index.js",
     "exports": {
       ".": {
         "import": "./dist/esm/index.js",
