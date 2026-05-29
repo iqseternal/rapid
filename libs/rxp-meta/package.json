@@ -1,6 +1,6 @@
 {
   "name": "@suey/rxp-meta",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "author": "suey",
   "private": false,
   "description": "扩展包",
@@ -8,12 +8,12 @@
   "publishConfig": {
     "main": "./dist/commonjs/index.js",
     "module": "./dist/esm/index.js",
-    "types": "./dist/lib/index.d.ts",
+    "types": "./lib/index.d.ts",
     "exports": {
       ".": {
         "import": "./dist/esm/index.js",
         "require": "./dist/commonjs/index.js",
-        "types": "./dist/lib/index.d.ts"
+        "types": "./lib/index.d.ts"
       }
     }
   },
@@ -22,7 +22,7 @@
     "build": "pnpm build-commonjs && pnpm build-esm && pnpm build-types",
     "build-esm": "tsc -p . --outDir ./dist/esm --module ESNext --declaration false --removeComments true --incremental false",
     "build-commonjs": "tsc -p . --outDir ./dist/commonjs --module commonjs --declaration false --removeComments true --incremental false",
-    "build-types": "tsc -p . --outDir ./dist/lib --emitDeclarationOnly --removeComments false --incremental false",
+    "build-types": "tsc -p . --outDir ./lib --emitDeclarationOnly --removeComments false --incremental false",
     "test": "jest -o",
     "test:all": "jest",
     "runner": "pnpm -C ./runner dev"

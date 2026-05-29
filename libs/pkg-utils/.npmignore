@@ -11,4 +11,5 @@
 /tsconfig.json
 /pnpm-lock.yaml
 
+dist
 index.ts
