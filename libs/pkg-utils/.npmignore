@@ -10,3 +10,5 @@
 /jest.config.ts
 /tsconfig.json
 /pnpm-lock.yaml
+
+index.ts

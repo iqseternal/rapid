@@ -1,6 +1,6 @@
 {
   "name": "@suey/bus",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "private": false,
   "author": "suey",
@@ -10,7 +10,7 @@
     "access": "public",
     "main": "./dist/commonjs/index.js",
     "module": "./dist/esm/index.js",
-    "types": "./dist/lib/index.js",
+    "types": "./dist/lib/index.d.ts",
     "exports": {
       ".": {
         "import": "./dist/esm/index.js",
