@@ -3,41 +3,29 @@
  * preload 注入变量 Api
  * ==========================================
  */
-import { ExposeService } from 'rd/base/sandbox/service/ExposeService';
+import { ExposeService } from './service/ExposeService';
 
-import type { ElectronAPI } from './server/electron';
-import { electron } from './server/electron';
+import { electronAPI } from '@electron-toolkit/preload';
+import type { ElectronAPI } from '@electron-toolkit/preload';
 
-import type { PrinterServer } from './server/printer';
-import { printerServer } from './server/printer';
+import type { PrinterType } from './modules/printer';
+import { printer } from './modules/printer';
 
-import type { AppStoreType } from './server/stores';
-import { appStore } from './server/stores';
+import type { IpcStore } from './modules/stores';
+import { appStore } from './modules/stores';
+import type { AppStoreType } from 'rd/base/main/stores';
 
-import * as ipcActions from './server/ipcActions';
+import { IpcBCaller } from '@suey/elec-ipc-core';
+import { ipcActions, ipcBCaller } from './modules/ipc';
+import type { IpcActions, IpcProcessorSheet } from './modules/ipc';
 
-export type { ElectronAPI };
-
-export type { PrinterServer };
-
-// export type { LoggerServer };
-
-export type { HandleHandlers, OnHandlers, ExceptionErrorMsgData, Exception } from './server/electron';
-
-export type { AppStoreType };
-
-export type IpcActions = typeof ipcActions;
-
-/**
- * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
- */
-export interface ExposeApi {
-  readonly electron: ElectronAPI;
-
+export interface Injector {
   /**
    * 打印器对象
    */
-  readonly printer: PrinterServer;
+  readonly printer: PrinterType;
+
+  readonly ipcBCaller: IpcBCaller<IpcProcessorSheet>;
 
   /**
    * IPC 事件
@@ -49,20 +37,29 @@ export interface ExposeApi {
    */
   readonly stores: Exclude<
     {
-      readonly appStore: AppStoreType;
+      readonly appStore: IpcStore<AppStoreType>;
     },
     | 'features'
   >;
 }
 
+/**
+ * 实际上是可以直接 autoExpose 暴露 api, 但是 Web 项目需要扩展类型才能够拥有很好的 TS 支持
+ */
+export interface ExposeApi {
+  readonly injector: Injector;
+}
+
 const exposeService = new ExposeService<ExposeApi>();
 
 exposeService.autoExpose({
-  electron,
-  printer: printerServer,
-  ipcActions,
-  stores: {
-    appStore
+  injector: {
+    printer: printer,
+    ipcBCaller: ipcBCaller,
+    ipcActions,
+    stores: {
+      appStore
+    }
   }
 })
 

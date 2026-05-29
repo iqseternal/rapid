@@ -7,10 +7,10 @@ import {
   isReactLazyFC,
   isReactMemoFC
 } from '@rapid/libs-web';
-import { Emitter, Invoker } from '@rapid/bus';
+import { Emitter, Invoker } from '@suey/bus';
 import { ExtensionManager, MetadataManager } from '@suey/rxp-meta';
 import {
-  Ansi,
+  ansi,
   aesDecrypt,
   aesDecryptAlgorithm,
   aesEncrypt,
@@ -22,14 +22,14 @@ import {
   createApiRequest,
   createRequest,
   cryptoTs,
-  injectReadonlyVariable,
+  reflectx,
   jose,
   jsr,
   request,
   toNil,
   toNils,
   toWaitPromise
-} from '@rapid/libs';
+} from '@suey/pkg-utils';
 import {
   reactive,
   watch,
@@ -55,12 +55,11 @@ import {
   isProxy
 } from '@vue/reactivity';
 import { useUserStore, useDocStore, useThemeStore } from './features';
-// import { rxcThread } from './workers';
 import { useTranslation } from 'react-i18next';
 import { rApiGet, rApiDelete, rApiPatch, rApiPost, rApiPut, rCreateApi, rRequest } from 'rd/base/common/api';
 import { Ellipsis } from '@rapid/libs-web';
 import { Timestamp } from 'rd/base/common/constants';
-import { defineRawType, defineCompleteType } from '@rapid/libs';
+import { defineRawType, defineCompleteType } from '@suey/pkg-utils';
 
 import IconFont from './components/IconFont';
 import Empty from './components/Empty';
@@ -95,10 +94,6 @@ const native: Rapid.Native = ({
   transitionGroup: transitionGroup,
   moment: moment,
 
-  electron: window.electron,
-  ipcActions: window.ipcActions,
-  printer: window.printer,
-
   constants: {
     Timestamp: Timestamp
   },
@@ -108,18 +103,10 @@ const native: Rapid.Native = ({
     useTranslation: useTranslation
   },
 
-  threads: {
-    // rxcThread: rxcThread
-  },
-
-  stores: {
-    appStore: window.stores.appStore,
-
-    features: {
-      useUserStore,
-      useDocStore,
-      useThemeStore,
-    }
+  features: {
+    useUserStore,
+    useDocStore,
+    useThemeStore,
   },
   components: {
     Ellipsis: Ellipsis,
@@ -135,7 +122,7 @@ const native: Rapid.Native = ({
   },
 
   libs: {
-    injectReadonlyVariable: injectReadonlyVariable,
+    refxDefineReadonlyProperty: reflectx.defineReadonlyProperty,
 
     reactive: reactive,
     watch: watch,
@@ -189,7 +176,7 @@ const native: Rapid.Native = ({
     toNils: toNils,
     toWaitPromise: toWaitPromise,
 
-    Ansi: Ansi,
+    ansi: ansi,
 
     classnames: classnames,
 
@@ -205,4 +192,4 @@ const native: Rapid.Native = ({
   },
 });
 
-injectReadonlyVariable(window, 'native', native);
+reflectx.defineReadonlyProperty(window, 'native', native);

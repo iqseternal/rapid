@@ -1,9 +1,9 @@
-import { Ansi } from '@rapid/libs';
+import { ansi } from '@suey/pkg-utils';
 import { AppInformationService } from './AppInformationService';
 
 const appInfo = AppInformationService.getInstance();
 
-export type PrintMessagesTypeArr = Parameters<typeof Ansi.print>;
+export type PrintMessagesTypeArr = Parameters<typeof ansi.print>;
 
 export class PrinterService {
   private static readonly printer = new PrinterService();
@@ -12,43 +12,42 @@ export class PrinterService {
    * 格式化文本
    */
   public format(...messages: PrintMessagesTypeArr) {
-    return Ansi.format(...messages);
+    return ansi.format(...messages);
   }
 
   /**
    * print
    */
   public print(...messages: PrintMessagesTypeArr) {
-    return Ansi.print(...messages);
+    return ansi.print(...messages);
   }
 
   /**
    * 日志信息
    */
   public printInfo(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.blue, Ansi.underline, '[INFO]')}`, ' ', ...messages);
+    return this.print(`${ansi.format(ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', ansi.blue, ansi.underline, '[INFO]')}`, ' ', ...messages);
   }
 
   /**
    * 错误信息
    */
   public printError(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.red, Ansi.underline, '[ERRO]')}`, ' ', ...messages);
-
+    return this.print(`${ansi.format(ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', ansi.red, ansi.underline, '[ERRO]')}`, ' ', ...messages);
   }
 
   /**
    * 警告信息
    */
   public printWarn(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.yellow, Ansi.underline, '[WARN]')}`, ' ', ...messages);
+    return this.print(`${ansi.format(ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', ansi.yellow, ansi.underline, '[WARN]')}`, ' ', ...messages);
   }
 
   /**
    * 成功信息
    */
   public printSuccess(...messages: PrintMessagesTypeArr) {
-    return this.print(`${Ansi.format(Ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', Ansi.green, Ansi.underline, '[SUCC]')}`, ' ', ...messages);
+    return this.print(`${ansi.format(ansi.magenta, `[${appInfo.information.appName.toUpperCase()} Host]`, ' ', ansi.green, ansi.underline, '[SUCC]')}`, ' ', ...messages);
   }
 
   /**

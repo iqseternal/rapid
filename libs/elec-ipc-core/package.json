@@ -1,0 +1,22 @@
+{
+  "name": "@suey/elec-ipc-core",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "./index.ts",
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/commonjs/index.js",
+        "types": "./dist/lib/index.d.ts"
+      }
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

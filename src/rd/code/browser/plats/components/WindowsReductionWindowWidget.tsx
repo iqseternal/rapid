@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { toNil } from '@rapid/libs';
+import { toNil } from '@suey/pkg-utils';
 import { useNormalState, useRefresh, useWindowInnerSize, useAsyncEffect } from '@rapid/libs-web';
 import { platControllerMaxImgUrl, platControllerReductionImgUrl } from 'rd/assets';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ export const WindowsReductionWindowWidget = memo(() => {
   );
 
   useAsyncEffect(async () => {
-    const [err, res] = await toNil(window.ipcActions.windowWorkAreaSize());
+    const [err, res] = await toNil(injector.ipcActions.windowWorkAreaSize());
     if (err) return;
     normalState.workAreaSize = {
       width: res.width,
@@ -44,7 +44,7 @@ export const WindowsReductionWindowWidget = memo(() => {
       )}
       size='base'
       className='!cursor-default'
-      onClick={() => ipcActions.windowReduction()}
+      onClick={() => injector.ipcActions.windowReduction()}
     >
       {isFullSize ? (
         <img

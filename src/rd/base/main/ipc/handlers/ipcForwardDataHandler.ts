@@ -7,12 +7,13 @@
  * ==============================================================
  */
 import { WindowService } from '../../service/WindowService';
-import { toMakeIpcAction } from '@rapid/m-ipc-core';
+import { ipcMReceiver } from '@suey/elec-ipc-core';
 import { convertWindowServiceMiddleware } from '../middlewares';
 import { DepositService } from 'rd/base/common/service/DepositService';
 
-const { makeIpcHandleAction } = toMakeIpcAction<[WindowService]>({
-  handleMiddlewares: [convertWindowServiceMiddleware]
+// 创建带有 WindowService 中间件的处理器工厂
+const { makeProcessor, makeHandleProcessor } = ipcMReceiver.withProcessorFactory<WindowService>({
+  middlewares: [convertWindowServiceMiddleware]
 });
 
 const depositService = new DepositService<Record<string, any>>();
@@ -20,11 +21,12 @@ const depositService = new DepositService<Record<string, any>>();
 /**
  * ipc 接口, 渲染进程存放转发数据
  */
-export const ipcForwardDataTakeIn = makeIpcHandleAction(
+export const ipcForwardDataTakeIn = makeHandleProcessor(
   'IpcForwardData/takeIn',
-  [],
-  async (_, key: string, data: any): Promise<void> => {
+  {
 
+  },
+  async (windowService, key: string, data: any): Promise<void> => {
     return depositService.takeIn(key, data);
   }
 )
@@ -32,11 +34,12 @@ export const ipcForwardDataTakeIn = makeIpcHandleAction(
 /**
  * 渲染进程取回数据
  */
-export const ipcForwardDataTakeOut = makeIpcHandleAction(
+export const ipcForwardDataTakeOut = makeHandleProcessor(
   'IpcForwardData/takeOut',
-  [],
-  async (_, key: string, options?: DepositService.TakeOutOptions) => {
+  {
 
+  },
+  async (windowService, key: string, options?: DepositService.TakeOutOptions) => {
     return depositService.takeOut(key, options);
   }
 )

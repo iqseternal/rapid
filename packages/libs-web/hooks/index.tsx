@@ -20,7 +20,7 @@ export { useAsyncEffect } from 'ahooks';
 export { useSetState } from 'ahooks';
 export { useEventListener, useEventListeners } from './useEventListener';
 
-
+export { useMount, useUnmount } from 'ahooks';
 
 
 

@@ -17,7 +17,6 @@ if (IS_DEV) {
       console.error(reason, origin);
       console.dir(err);
 
-
       if (err && err === reason) {
         LoggerService.error(`未捕获的异常`, err, origin);
 

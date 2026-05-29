@@ -13,7 +13,7 @@ import type {
 
 import { MenuItem, SubMenu } from './cpts';
 import type { MenuItemProps, SubMenuProps } from './cpts';
-import { injectReadonlyVariable } from '@rapid/libs';
+import { reflectx } from '@suey/pkg-utils';
 
 import styles from './index.module.scss';
 
@@ -42,7 +42,7 @@ const ContextMenu = memo<ContextMenuProps>((props) => {
 
   return (
     <Menu
-      items={menu.concat([])}
+      items={menu.concat()}
       getPopupContainer={() => document.body}
       triggerSubMenuAction={'click'}
       {...menuAttrs}
@@ -160,12 +160,12 @@ export type AutoMenuType = typeof AutoContextMenu & {
 
 export const AutoMenu: AutoMenuType = AutoContextMenu as AutoMenuType;
 
-injectReadonlyVariable(AutoMenu, 'convertMenuDivider', convertMenuDivider);
-injectReadonlyVariable(AutoMenu, 'convertMenuInstance', convertMenuInstance);
-injectReadonlyVariable(AutoMenu, 'convertMenuItem', convertMenuItem);
-injectReadonlyVariable(AutoMenu, 'convertMenuItemGroupType', convertMenuItemGroupType);
-injectReadonlyVariable(AutoMenu, 'convertSubMenu', convertSubMenu);
-injectReadonlyVariable(AutoMenu, 'MenuItem', MenuItem);
-injectReadonlyVariable(AutoMenu, 'SubMenu', SubMenu);
+reflectx.defineReadonlyProperty(AutoMenu, 'convertMenuDivider', convertMenuDivider);
+reflectx.defineReadonlyProperty(AutoMenu, 'convertMenuInstance', convertMenuInstance);
+reflectx.defineReadonlyProperty(AutoMenu, 'convertMenuItem', convertMenuItem);
+reflectx.defineReadonlyProperty(AutoMenu, 'convertMenuItemGroupType', convertMenuItemGroupType);
+reflectx.defineReadonlyProperty(AutoMenu, 'convertSubMenu', convertSubMenu);
+reflectx.defineReadonlyProperty(AutoMenu, 'MenuItem', MenuItem);
+reflectx.defineReadonlyProperty(AutoMenu, 'SubMenu', SubMenu);
 
 export default AutoMenu;

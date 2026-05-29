@@ -1,6 +1,5 @@
-
-/// <reference types="../@types" />
-/// <reference types="./web-module.d.ts" />
+import '../@types';
+import './web-module.d';
 
 declare global {
 

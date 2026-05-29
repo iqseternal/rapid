@@ -1,0 +1,29 @@
+{
+  "include": [
+    "./index.ts",
+    "./src/**/*.ts"
+  ],
+  "compilerOptions": {
+    "incremental": true,
+    "baseUrl": "./",
+    "composite": true,
+    "rootDir": ".",
+    "isolatedModules": true,
+    "outDir": "../../.rd-cache/libs/elec-ipc-code",
+    "declarationDir": "../../.rd-cache/libs/elec-ipc-code",
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "allowUnusedLabels": true,
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "noImplicitOverride": true,
+    "noImplicitReturns": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

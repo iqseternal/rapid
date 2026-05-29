@@ -5,14 +5,9 @@
     "baseUrl": ".",
     "rootDir": ".",
     "outDir": "../../.rd-cache/src/rd",
-    "paths": {
-      "rd/*": [
-        "./*"
-      ]
-    },
-    "target": "ES2020",
-    "noEmitOnError": true,
-    "module": "ES2020",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "lib": [
       "ESNext",
       "DOM"
@@ -26,16 +21,18 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
-
+    "noEmitOnError": true,
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "moduleResolution": "Node",
     "types": [
       "../rd-dts/@types-node"
-    ]
+    ],
+    "paths": {
+      "rd/*": ["./*"]
+    }
   },
   "include": [
     "./code/sandbox/**/*.ts",

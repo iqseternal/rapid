@@ -1,5 +1,4 @@
-
-/// <reference types="../@types" />
+import '../@types';
 
 type BooleanString = 'true' | 'false';
 

@@ -1,44 +1,41 @@
 import { WindowService } from '../../service/WindowService';
-import { IpcActionMiddleware, IpcActionEvent } from '@rapid/m-ipc-core';
+import { IpcMiddleware, ipcMReceiver, IpcMiddlewareContext } from '@suey/elec-ipc-core';
 import { Catch, RuntimeException } from '../../exceptions';
 import { Exception, ExceptionErrorMsgData } from 'rd/base/common/exceptions';
-import type { RPromiseLike } from '@rapid/libs';
-import { toNil, asynced } from '@rapid/libs';
+import type { RPromiseLike, ExtractUnknown } from '@suey/pkg-utils';
+import { toNil, asynced } from '@suey/pkg-utils';
+import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 
 /**
  * ipc 全局中间件, 用于处理异常和日志行为
  */
-export const ipcExceptionFilterMiddleware: IpcActionMiddleware<IpcActionEvent> = {
+export const ipcExceptionFilterMiddleware: IpcMiddleware = {
   name: 'ipcExceptionFilterMiddleware',
   /**
    * ipc 接口出现了错误, 利用 onError 回调在主进程处理 ipc 产生地异常, 记录日志...
    */
-  onError: async (err, { channel }) => {
+  onError: async (context, err) => {
     if (Exception.is(err)) {
-      err.errMessage.other.channel = channel;
-
       Catch.parser(err);
+      return true;
     }
 
-    return err;
+    return false;
   },
 }
 
 /**
  * 转换响应的函数类型
  */
-export type IpcTransformResponseFc = <Data>(response: Promise<Data>) => RPromiseLike<Data, Exception<ExceptionErrorMsgData>>;
+export type IpcTransformResponseFc = <Data>(ctx: IpcMiddlewareContext, response: Data) => RPromiseLike<Data, Exception<ExceptionErrorMsgData>>;
 
 /**
  * 转换响应的中间件
  */
-export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
+export const ipcResponseMiddleware: IpcMiddleware = {
   name: 'ipcResponseMiddleware',
-  /**
-   * 转换响应, 将 ipc 句柄的响应转换为 RPromiseLike 对象
-   */
-  transformResponse: asynced<IpcTransformResponseFc>(async (response) => {
-    const [err, data] = await toNil(response);
+  transformResponse: asynced<IpcTransformResponseFc>(async (ctx, response) => {
+    const [err, data] = await toNil(Promise.resolve(response));
 
     if (err) {
       if (Exception.is(err.reason)) return Promise.reject(JSON.stringify(err.reason));
@@ -63,14 +60,14 @@ export const ipcResponseMiddleware: IpcActionMiddleware<IpcActionEvent> = {
 /**
  * 转换参数的中间件, 将 ipc 句柄传递的事件 e 转换为 windowService
  */
-export const convertWindowServiceMiddleware: IpcActionMiddleware<IpcActionEvent> = {
+export const convertWindowServiceMiddleware: IpcMiddleware = {
   name: 'convertWindowService',
 
   /**
    * 转换参数, 将事件 e 转换为对应地 WindowService
    */
-  transformArgs: async (e, ...args) => {
-    const windowService = WindowService.findWindowService(e);
+  transformArgs: async (context, event, ...args) => {
+    const windowService = WindowService.findWindowService(event as (IpcMainEvent | IpcMainInvokeEvent));
 
     if (!windowService) {
       throw new RuntimeException(`transformArgs 转换 WindowService 失败`, {

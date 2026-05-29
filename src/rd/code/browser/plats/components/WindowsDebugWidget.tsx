@@ -1,5 +1,4 @@
 import { memo, useState } from 'react';
-import { toNil } from '@rapid/libs';
 import { useTranslation } from 'react-i18next';
 
 import Widget from '@/components/Widget';
@@ -16,7 +15,9 @@ export const WindowsDebugWidget = memo(() => {
       onClick={() => {
         toast.success(t('plats.widgets.control.debug.openDevtool', '打开开发者工具'));
 
-        ipcActions.windowDevtool(true, { mode: 'detach' });
+        const response = injector.ipcActions.windowDevtool(true, { mode: 'detach' });
+
+        console.log(response);
       }}
     />
   )

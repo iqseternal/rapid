@@ -1,0 +1,43 @@
+{
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
+  "compilerOptions": {
+    "incremental": true,
+    "baseUrl": ".",
+    "isolatedModules": true,
+    "outDir": "../../.rd-cache/libs/bus",
+    "lib": ["ESNext", "DOM"],
+    "allowUnusedLabels": true,
+    "target": "ESNext",
+    "resolveJsonModule": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+
+    "types": ["@types/jest"],
+    "declaration": true,
+    "sourceMap": false,
+    "removeComments": false,
+    "noEmitOnError": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "alwaysStrict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

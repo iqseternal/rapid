@@ -16,7 +16,7 @@ export const WindowsCloseWindowWidget = memo(() => {
       }}
       size='base'
       className='!cursor-default'
-      onClick={() => ipcActions.windowClose()}
+      onClick={() => injector.ipcActions.windowClose()}
     >
       <IconFont
         icon='CloseOutlined'

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Monorepo for Electron Program",
   "private": true,
+  "type": "commonjs",
   "main": "out/main/index.js",
   "author": {
     "name": "suey",

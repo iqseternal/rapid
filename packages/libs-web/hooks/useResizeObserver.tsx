@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { DependencyList, Ref, RefObject } from 'react';
 import { useNormalState, useSyncNormalState } from './useReactive';
-import { Ansi } from '@rapid/libs';
+import { ansi } from '@suey/pkg-utils';
 import { useUnmount } from 'ahooks';
 
 /**
@@ -35,7 +35,7 @@ export function useResizeObserver<TElement extends HTMLElement>(dom: RefObject<T
     if (dom instanceof HTMLDivElement) tDomRef.current = dom;
     else if (Reflect.has(dom, 'current')) tDomRef.current = (dom as RefObject<TElement>).current;
     else {
-      Ansi.print(Ansi.red, `useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
+      ansi.print(ansi.red, `useResizeObserver: 传入的 dom 参数似乎是不符合规范的 (非 RefObject | HTMLElement)`);
       return;
     }
 

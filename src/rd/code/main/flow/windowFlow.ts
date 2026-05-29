@@ -3,12 +3,11 @@ import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { AppConfigService } from 'rd/base/main/service/AppConfigService';
 import { WindowService } from 'rd/base/main/service/WindowService';
 import { join } from 'path';
-import { screen, type BrowserWindowConstructorOptions } from 'electron';
+import { screen } from 'electron';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 import { AppRouterService } from 'rd/base/main/service/AppRouterService';
 import { userConfigStore } from 'rd/base/main/stores';
 import { debounce } from 'lodash';
-import { machine } from 'os';
 
 const iconUrl = join(__dirname, '../../resources/icon.ico');
 
@@ -56,9 +55,7 @@ export async function setupMainWindowService() {
 
   windowService.window.setMenu(null);
   windowService.window.setMenuBarVisibility(false);
-
   windowService.window.webContents.setFrameRate(144);
-  windowService.window.webContents.setZoomLevel(1);
   windowService.window.webContents.setWindowOpenHandler((details) => {
     if (details.url) {
       return {
@@ -83,7 +80,6 @@ export async function setupMainWindowService() {
     };
   });
 
-
   const saveWindowSizeToConfig = debounce(() => {
     const bounds = windowService.window.getBounds();
     userConfigStore.set('mainWindowMemoryWidth', bounds.width);
@@ -99,6 +95,11 @@ export async function setupMainWindowService() {
 
   windowService.window.on('resize', saveWindowSizeToConfig);
   windowService.window.on('moved', saveWindowPositionToConfig);
+
+  windowService.window.on('ready-to-show', () => {
+    windowService.window.webContents.setZoomLevel(0);
+    windowService.window.webContents.setZoomFactor(1);
+  })
 
   if (IS_DEV) windowService.window.webContents.openDevTools({ mode: 'detach' });
   return windowService;

@@ -141,16 +141,21 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
       const vector = this.metadataMap.get(metadataKey);
       if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
-      const newVector = vector.map(v => {
-        if (v === metadata) hasThisMetadata = true;
-        return v;
-      });
+      const newVector = [...vector, metadata];
 
-      if (!hasThisMetadata) {
-        newVector.push(metadata);
-        this.metadataMap.set(metadataKey, newVector);
-        this.rxpInnerStore.update();
-      }
+      // const newVector = vector.map(v => {
+      //   if (v === metadata) hasThisMetadata = true;
+      //   return v;
+      // });
+
+      // if (!hasThisMetadata) {
+      //   newVector.push(metadata);
+      //   this.metadataMap.set(metadataKey, newVector);
+      //   this.rxpInnerStore.update();
+      // }
+
+      this.metadataMap.set(metadataKey, newVector);
+      this.rxpInnerStore.update();
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
       this.rxpInnerStore.update();
@@ -233,57 +238,31 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
     const [_, setState] = useState({});
 
     const normalState = useRef({
-      isMounted: false as boolean,
       data: this.getMetadata(metadataKey),
       unsubscribe: void 0 as ((() => void) | undefined),
-      needSync: false as boolean
     })
 
-    /**
-     * refreshComponent
-     * @description 用于更新 state, 让视图进行刷新, 但是由于 setState 需要组件已经挂载, 所以有额外的挂载判断
-     */
-    const refreshComponent = useCallback(() => {
-      if (!normalState.current.isMounted) {
-        // 标记需要同步
-        normalState.current.needSync = true;
-        return;
-      }
-      // 刷新组件 (在组件挂载时才 setState)
-      setState(() => ({}));
-    }, []);
-
-    if (!normalState.current.isMounted || !normalState.current.unsubscribe) {
-      if (normalState.current.unsubscribe) normalState.current.unsubscribe();
-
-      normalState.current.data = this.getMetadata(metadataKey);
+    useEffect(() => {
       normalState.current.unsubscribe = this.rxpInnerStore.subscribe(() => {
         const data = this.getMetadata(metadataKey);
 
         if (data !== normalState.current.data) {
           normalState.current.data = data;
-          refreshComponent();
+          setState(() => ({}));
         }
       })
-    }
 
-    useLayoutEffect(() => {
-      normalState.current.isMounted = true;
-    }, []);
-
-    useEffect(() => {
-      // 因为元数据的注册时间可能不恰当(在组件创建时, 但组件未挂载), 在当前组件都还没挂载时就已经注册
-      // 所以在组件挂载后, 需要进行一次同步
-      if (normalState.current.needSync) setState(() => ({}));
+      const data = this.getMetadata(metadataKey);
+      if (data !== normalState.current.data) {
+        normalState.current.data = data;
+        setState(() => ({}));
+      }
 
       return () => {
-        normalState.current.isMounted = false;
-
         if (normalState.current.unsubscribe) normalState.current.unsubscribe();
         normalState.current.unsubscribe = void 0;
 
         normalState.current.data = null;
-        normalState.current.needSync = false;
       }
     }, []);
 
@@ -321,6 +300,12 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
    */
   public hasMetadata<MetadataKey extends keyof MetadataEntries>(metadataKey: MetadataKey): boolean {
     return this.metadataMap.has(metadataKey);
+  }
+
+  public hasMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): boolean {
+    const vec = this.metadataMap.get(metadataKey);
+    if (!Array.isArray(vec)) return false;
+    return vec.some(value => value === metadata);
   }
 
   /**

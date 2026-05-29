@@ -42,8 +42,7 @@
     ],
     "paths": {
       "rd/*": ["./*"],
-      "@/*": ["./code/browser/*"],
-      "@suey/rxp-meta": ["../../libs/rxp-meta/index.ts"]
+      "@/*": ["./code/browser/*"]
     }
   },
   "include": [
@@ -56,9 +55,6 @@
     "./base/**/*.ts",
     "./code/sandbox/**/*.ts",
     "../../package.json",
-
-    "../../libs/rxp-meta/**/*.ts",
-    "../../libs/rxp-meta/**/*.tsx",
 
     "./catalog/**/*.ts"
   ],

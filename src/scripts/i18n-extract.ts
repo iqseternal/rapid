@@ -6,8 +6,8 @@ import { tmpdir } from 'os';
 import { writeFileSync, unlinkSync, readFileSync } from 'fs';
 
 const browserDir = join(__dirname, '../rd/code/browser');
-const i18nDir = join(browserDir, 'i18n');
-const localesDir = join(i18nDir, 'locales');
+
+const localesDir = join(browserDir, 'i18n/locales');
 
 // 配置解析器参数
 const parserConfig: UserConfig = {
@@ -26,7 +26,8 @@ writeFileSync(tmpConfigPath, JSON.stringify(parserConfig), 'utf8');
 
 const data = readFileSync(tmpConfigPath);
 
-console.log('执行命令中', data.toString());
+Ansi.print(Ansi.blue, `[SCRIPT:i18-extract]`, ' ', Ansi.normal, Ansi.white, '已加载配置: ');
+Ansi.print(JSON.stringify(JSON.parse(data.toString()), null, 4));
 
 exec(`pnpx i18next-parser -c ${tmpConfigPath}`, (error, stdout, stderr) => {
   console.log(stdout);

@@ -1,6 +1,4 @@
-import { IpcMainManager } from 'rd/base/main/ipc';
 import { electronApp, optimizer } from '@electron-toolkit/utils';
-import { PrinterService } from 'rd/base/common/service/PrinterService';
 import { WindowServiceStateMachine } from 'rd/base/main/service/WindowServiceStateMachine';
 import { join } from 'path';
 import { Menu, Tray, app, nativeImage } from 'electron';

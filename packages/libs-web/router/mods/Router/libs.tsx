@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import type { RouteConfig } from '../../types';
-import { isUseful, isString } from '@rapid/libs';
+import { is } from '@suey/pkg-utils';
 import type { RedirectProps } from '../Redirect';
 import { Redirect } from '../Redirect';
 import { createContext, isValidElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
@@ -38,11 +38,11 @@ export function renderRoutes(route: RouteConfig, options: RenderRoutesOptions) {
       let componentsProps = {} as RedirectProps;
 
       // 这是一个重定向组件
-      if (isUseful(redirect)) {
+      if (is.isUseful(redirect)) {
         Component = Redirect;
 
         // RouteConfig 对象中的 redirect 会在创建时被处理为对象模式
-        if (isString(redirect)) {
+        if (is.isString(redirect)) {
           throw new Error(`createRoutesChildren: route 对象 redirect 没有被处理, route 应该由 makeRoute 函数创建`);
         }
 

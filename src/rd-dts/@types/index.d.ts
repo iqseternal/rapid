@@ -1,4 +1,4 @@
-/// <reference types="./module.d.ts" />
+import './module.d';
 
 declare global {
   /**
