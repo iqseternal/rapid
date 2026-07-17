@@ -47,7 +47,7 @@ export async function transformerExtensionsSourceToRdExtension(extensionsSource:
       // 分析插件
       const [analysisErr, extension] = await toNil(analysisExtensionSource({ script_content: extensionSource.script_content }));
       if (analysisErr) {
-        injector.printer.printError(analysisErr.reason);
+        printer.printError(analysisErr.reason);
         reject();
         return;
       }

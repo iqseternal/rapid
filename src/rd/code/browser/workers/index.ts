@@ -30,6 +30,8 @@ rxcThread.handle('rxc:extension-changed', async (extensionIds) => {
 
   const nextExtensionsSource = res.data.data;
 
+  if (!nextExtensionsSource) return;
+
   const nextExtension = await transformerExtensionsSourceToRdExtension(nextExtensionsSource);
 
   await registerAndReplaceExtensions(nextExtension);

@@ -1,7 +1,7 @@
 import type { UserConfig } from 'i18next-parser';
 import { exec } from 'child_process';
 import { join } from 'path';
-import { Ansi } from '@suey/pkg-utils';
+import { ansi } from '@suey/pkg-utils';
 import { tmpdir } from 'os';
 import { writeFileSync, unlinkSync, readFileSync } from 'fs';
 
@@ -26,8 +26,8 @@ writeFileSync(tmpConfigPath, JSON.stringify(parserConfig), 'utf8');
 
 const data = readFileSync(tmpConfigPath);
 
-Ansi.print(Ansi.blue, `[SCRIPT:i18-extract]`, ' ', Ansi.normal, Ansi.white, '已加载配置: ');
-Ansi.print(JSON.stringify(JSON.parse(data.toString()), null, 4));
+ansi.print(ansi.blue, `[SCRIPT:i18-extract]`, ' ', ansi.normal, ansi.white, '已加载配置: ');
+ansi.print(JSON.stringify(JSON.parse(data.toString()), null, 4));
 
 exec(`pnpx i18next-parser -c ${tmpConfigPath}`, (error, stdout, stderr) => {
   console.log(stdout);
@@ -35,14 +35,14 @@ exec(`pnpx i18next-parser -c ${tmpConfigPath}`, (error, stdout, stderr) => {
   try {
     unlinkSync(tmpConfigPath);
   } catch (e) {
-    Ansi.print(Ansi.yellow, `[SCRIPT:i18-extract]`, ' ', Ansi.normal, Ansi.white, '清理临时配置文件失败: ', tmpConfigPath);
+    ansi.print(ansi.yellow, `[SCRIPT:i18-extract]`, ' ', ansi.normal, ansi.white, '清理临时配置文件失败: ', tmpConfigPath);
     process.exit(1);
   }
 
   if (error) {
     // 解析失败
-    Ansi.print(Ansi.red, `[SCRIPT:i18-extract]`, ' ', Ansi.normal, Ansi.white, 'i18n全量解析失败');
-    Ansi.print(Ansi.red, `[SCRIPT:i18-extract]`, ' ', error.message);
+    ansi.print(ansi.red, `[SCRIPT:i18-extract]`, ' ', ansi.normal, ansi.white, 'i18n全量解析失败');
+    ansi.print(ansi.red, `[SCRIPT:i18-extract]`, ' ', error.message);
     process.exit(1);
   }
 });

@@ -1,4 +1,4 @@
-import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig } from '@suey/pkg-utils';
+import { REQ_METHODS, createApiRequest, ApiPromiseResultTypeBuilder, AxiosError, RequestConfig, apiGet } from '@suey/pkg-utils';
 import type { AxiosResponse } from '@suey/pkg-utils';
 import { AppInformationService } from 'rd/base/common/service/AppInformationService';
 
@@ -94,7 +94,7 @@ const rApiConfig: RequestConfig<RApiHConfig> = {
 };
 
 const rApiRequest = createApiRequest<RApiHConfig, RApiSuccessResponse, RApiFailResponse>(
-  appInformation.information.appApiUrls.rApiServerV1,
+  appInformation.information.appApiUrls.rxApiServer,
   rApiConfig,
   {},
   {

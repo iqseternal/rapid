@@ -38,7 +38,7 @@ async function setupEnvironments() {
  */
 async function initStoresState() {
   useUserStore.init().catch(() => {
-    injector.printer.printWarn("useUserStore: 数据初始化失败");
+    printer.printWarn("useUserStore: 数据初始化失败");
   })
 }
 

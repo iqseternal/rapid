@@ -42,7 +42,8 @@ const extensionHeartbeatTask = async () => {
   }
 
   const extensionIds = res.data.data;
-  if (extensionIds.length > 0) {
+
+  if (extensionIds && extensionIds.length > 0) {
     selfThread.send('rxc:extension-changed', extensionIds);
   }
 

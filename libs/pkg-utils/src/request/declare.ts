@@ -47,8 +47,8 @@ export type R<Template, Definition = unknown, CrossAttribute extends string = 'd
   Definition,
   (
     Template extends { [K in CrossAttribute]: infer S }
-    ? Omit<Template, CrossAttribute> & { [K in CrossAttribute]: Definition }
-    : Template & { [K in CrossAttribute]: Definition }
+    ? Omit<Template, CrossAttribute> & { [K in CrossAttribute]?: Definition }
+    : Template & { [K in CrossAttribute]?: Definition }
   )
 >;
 

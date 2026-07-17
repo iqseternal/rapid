@@ -135,26 +135,11 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
    * metadata.defineMetadataInVector('example-key', () => { return (<div />) });
    */
   public defineMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): (() => void) {
-    let hasThisMetadata = false;
-
     if (this.hasMetadata(metadataKey)) {
       const vector = this.metadataMap.get(metadataKey);
       if (!Array.isArray(vector)) throw new Error(`defineMetadataInVector: current metadata value is not an array`);
 
-      const newVector = [...vector, metadata];
-
-      // const newVector = vector.map(v => {
-      //   if (v === metadata) hasThisMetadata = true;
-      //   return v;
-      // });
-
-      // if (!hasThisMetadata) {
-      //   newVector.push(metadata);
-      //   this.metadataMap.set(metadataKey, newVector);
-      //   this.rxpInnerStore.update();
-      // }
-
-      this.metadataMap.set(metadataKey, newVector);
+      this.metadataMap.set(metadataKey, [...vector, metadata]);
       this.rxpInnerStore.update();
     } else {
       this.metadataMap.set(metadataKey, [metadata] as MetadataEntries[MetadataKey]);
@@ -175,7 +160,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
   public delMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): void {
     if (!this.hasMetadata(metadataKey)) return;
 
-    let hasThisMetadata = false;
+    let metadataIsDeleted = false;
 
     const vector = this.metadataMap.get(metadataKey) ?? [];
     if (!Array.isArray(vector)) throw new Error(`delMetadataInVector: current metadata value is not an array`);
@@ -186,21 +171,29 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
       return;
     }
 
-    const fVector = vector.filter(v => {
-      const isThisMetadata = (v === metadata);
-      if (isThisMetadata) hasThisMetadata = true;
-      return !isThisMetadata;
+    const newVector = vector.filter(v => {
+      if (metadataIsDeleted) return true;
+
+      if (v === metadata) {
+        metadataIsDeleted = true;
+        // 过滤此项
+        return false;
+      }
+
+      return true;
     });
 
-    if (hasThisMetadata) {
-      if (fVector.length === 0) {
+    // 是否已经被删除
+    if (metadataIsDeleted) {
+      if (newVector.length === 0) {
         this.metadataMap.delete(metadataKey);
         this.rxpInnerStore.update();
         return;
       }
 
-      this.metadataMap.set(metadataKey, fVector);
+      this.metadataMap.set(metadataKey, newVector);
       this.rxpInnerStore.update();
+      return;
     }
   }
 

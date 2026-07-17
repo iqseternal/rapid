@@ -24,6 +24,8 @@ export async function setupOnlineExtensions() {
   if (err) return;
   await toWaitPromise({ waitTime: 1500 });
 
+  if (!res.data.data) return;
+
   const extensions = await transformerExtensionsSourceToRdExtension(res.data.data);
 
   await registerAndReplaceExtensions(extensions);

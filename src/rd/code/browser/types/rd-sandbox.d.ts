@@ -14,6 +14,8 @@ declare global {
   interface Window extends ExposeApi {}
 
   const injector: RdSandbox.Injector;
+
+  const printer: RdSandbox.PrinterType;
 }
 
 export {};

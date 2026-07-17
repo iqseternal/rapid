@@ -19,12 +19,9 @@ import { IpcBCaller } from '@suey/elec-ipc-core';
 import { ipcActions, ipcBCaller } from './modules/ipc';
 import type { IpcActions, IpcProcessorSheet } from './modules/ipc';
 
-export interface Injector {
-  /**
-   * 打印器对象
-   */
-  readonly printer: PrinterType;
+export type { PrinterType }
 
+export interface Injector {
   readonly ipcBCaller: IpcBCaller<IpcProcessorSheet>;
 
   /**
@@ -48,19 +45,24 @@ export interface Injector {
  */
 export interface ExposeApi {
   readonly injector: Injector;
+
+  /**
+   * 打印器对象
+   */
+  readonly printer: PrinterType;
 }
 
 const exposeService = new ExposeService<ExposeApi>();
 
 exposeService.autoExpose({
   injector: {
-    printer: printer,
     ipcBCaller: ipcBCaller,
     ipcActions,
     stores: {
       appStore
     }
-  }
+  },
+  printer: printer,
 })
 
 
