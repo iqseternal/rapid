@@ -298,7 +298,7 @@ export class MetadataManager<MetadataEntries extends Record<string, any>> {
   public hasMetadataInVector<MetadataKey extends keyof ExtractVectorEntries<MetadataEntries>>(metadataKey: MetadataKey, metadata: ExtractElInArray<MetadataEntries[MetadataKey]>): boolean {
     const vec = this.metadataMap.get(metadataKey);
     if (!Array.isArray(vec)) return false;
-    return vec.some(value => value === metadata);
+    return vec.includes(metadata)
   }
 
   /**
