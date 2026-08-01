@@ -1,5 +1,4 @@
 
-
 export interface RPromiseLike<Success, Failure extends any = any> extends Promise<Success> {
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.

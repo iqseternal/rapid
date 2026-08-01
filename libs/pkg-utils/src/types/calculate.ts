@@ -136,7 +136,7 @@ export type MergeWithParent<T extends Record<string | number | symbol, any>, R e
 /**
  * 切除一个数组的头部，将剩余部分返回结果
  */
-export type CutHead<Tuple extends any[]> = ((...args: Tuple) => any) extends (first: any, ...rest: infer Result) => any ? Result : never; 
+export type CutHead<Tuple extends any[]> = ((...args: Tuple) => any) extends (first: any, ...rest: infer Result) => any ? Result : never;
 
 /**
  * 获取一个 Promise then函数的类型
@@ -281,3 +281,30 @@ export type ExtractUnknown<T> = {
 export type ExtractAny<T> = {
   [K in keyof T as IsAny<T[K], never, K>]: T[K];
 }
+
+/**
+ * 将一个对象中的某些键值设置为可选
+ *
+ * @example
+ * interface A {
+ *   name: string;
+ *   age: number;
+ * }
+ *
+ * type B = OptionalFields<A, 'name'>; // { name?: string; age: number }
+ */
+export type OptionalFields<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+
+/**
+ * 将一个对象中的某些键值设置为必填
+ *
+ * @example
+ * interface A {
+ *   name: string;
+ *   age: number;
+ * }
+ *
+ * type B = RequiredFields<A, 'name'>; // { name: string; age: number }
+ */
+export type RequiredFields<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
